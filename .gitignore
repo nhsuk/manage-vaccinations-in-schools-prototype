@@ -1,0 +1,9 @@
+.DS_Store
+.env
+.port.tmp
+.sass-cache
+.start.pid
+
+.data
+node_modules
+/public

@@ -1,0 +1,28 @@
+{% extends "template.njk" %}
+
+{% from "_macros/action-table.njk" import actionTable %}
+{% from "_macros/heading.njk" import heading %}
+
+{% block head %}
+  <link rel="stylesheet" href="/public/application.css" media="all">
+  <script src="/public/application.js" defer></script>
+{% endblock %}
+
+{% set bodyClasses = "app-unbranded__body" %}
+
+{% block skipLink %}{% endblock %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block headIcons %}{% endblock %}
+
+{% block pageTitle %}
+  {{- "Error: " if errors -}}
+  {{- title if title -}}
+{% endblock %}
+
+{% block outerContent %}
+  {{ backLink({
+    classes: "nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-0",
+    href: paths.back
+  }) if paths.back }}
+{% endblock %}

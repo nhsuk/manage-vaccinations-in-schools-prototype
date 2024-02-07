@@ -1,0 +1,29 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = serviceName + " (Mavis)" %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      {{ heading({
+        size: "xl",
+        title: title
+      }) }}
+
+      {% filter nhsukMarkdown %}
+Use this service to:
+
+- upload cohort lists
+- manage vaccination sessions
+- triage answers to health questions
+- record vaccinations
+- view and download performance reports
+      {% endfilter %}
+
+      {{ button({
+        text: "Start now",
+        href: "/account/sign-in"
+      }) }}
+    </div>
+  </div>
+{% endblock %}

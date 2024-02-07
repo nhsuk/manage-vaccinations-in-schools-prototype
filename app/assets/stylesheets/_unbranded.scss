@@ -1,0 +1,11 @@
+html:has(.app-unbranded__body) {
+  background-color: $color_nhsuk-white;
+  font-family: system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.app-unbranded__body {
+  background-color: transparent;
+  min-height: 100%;
+  min-height: 100dvh;
+}

@@ -1,0 +1,58 @@
+{% extends "template.njk" %}
+
+{% from "_macros/heading.njk" import heading %}
+{% from "_macros/icon.njk" import icon %}
+
+{% block head %}
+  <link rel="stylesheet" href="/public/application.css" media="all">
+  <script src="/public/application.js" defer></script>
+{% endblock %}
+
+{% block pageTitle %}
+  {{- "Error: " if errors -}}
+  {{- title + " – " if title -}}
+  {{- serviceName + " – NHS.UK" -}}
+{% endblock %}
+
+{% set bodyAttributes = {"data-module": "edge"} %}
+
+{% block header %}
+  {{ header({
+    service: {
+      name: serviceName,
+      href: "/"
+    },
+    showNav: "false",
+    showSearch: "false"
+  }) }}
+{% endblock %}
+
+{% block outerContent %}
+  {{ backLink({
+    classes: "nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-0",
+    href: paths.back
+  }) if paths.back }}
+{% endblock %}
+
+{% block beforeContent %}
+  {% block pageNavigation %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+  {{ govukNotificationBanner(success) if success }}
+  {{ govukNotificationBanner(message) if message }}
+{% endblock %}
+
+{% block footer %}
+  {{ footer({
+    links: [
+      {
+        label: "Clear session data",
+        URL: "/clear-session-data"
+      } if useAutoStoreData, {
+        label: "Feature flags",
+        URL: "/feature-flags"
+      }
+    ]
+  }) | replace("&copy; Crown copyright", "&copy; NHS England") }}
+{% endblock %}
