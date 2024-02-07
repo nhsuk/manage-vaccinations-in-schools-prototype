@@ -1,0 +1,9 @@
+{% macro heading(params) -%}
+{%- set size = params.size or "l" -%}
+<h1 class="nhsuk-heading-{{ size }}{%- if params.classes %} {{ params.classes }}{% endif %}">
+  {%- if params.caption -%}
+  <span class="nhsuk-caption-{{ size }}">{{ params.caption }}</span>
+  {%- endif -%}
+  {{ params.title }}
+</h1>
+{%- endmacro %}
