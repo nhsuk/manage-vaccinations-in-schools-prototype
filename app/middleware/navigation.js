@@ -7,6 +7,10 @@ export const navigation = (request, response, next) => {
   response.locals.navigation = {
     primaryLinks: [
       {
+        url: '/vaccines',
+        label: __('vaccine.list.title')
+      },
+      {
         url: '/account',
         label: accountLabel
       },

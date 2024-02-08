@@ -25,6 +25,16 @@ export default (env) => {
   }
 
   /**
+   * Format array as HTML list
+   * @param {Array} array - Array
+   * @returns {string} HTML unordered list with nhsuk-* typography classes
+   */
+  filters.nhsukList = function (array) {
+    const list = array.map((item) => `- ${item}`)
+    return filters.nhsukMarkdown(list.join('\n'))
+  }
+
+  /**
    * Remove last element from an array
    * @param {Array} array - Array
    * @returns {Array} Updated array

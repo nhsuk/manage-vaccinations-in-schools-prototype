@@ -29,6 +29,34 @@
       "label": "Email address"
     }
   },
+  "batch": {
+    "new": {
+      "title": "Add batch",
+      "confirm": "Add batch"
+    },
+    "edit": {
+      "title": "Edit batch {{batch.id}}",
+      "confirm": "Save changes"
+    },
+    "success": {
+      "create": "Batch {{batch.id}} added",
+      "update": "Batch {{batch.id}} updated",
+      "delete": "Batch {{batch.id}} archived"
+    },
+    "created": {
+      "label": "Entered date"
+    },
+    "expires": {
+      "label": "Expiry date",
+      "hint": "For example, 27 10 2025"
+    },
+    "id": {
+      "label": "Batch ID"
+    },
+    "actions": {
+      "label": "Actions"
+    }
+  },
   "user": {
     "list": {
       "title": "Manage team",
@@ -76,6 +104,64 @@
     },
     "registrar": {
       "label": "Professional body"
+    }
+  },
+  "vaccine": {
+    "list": {
+      "title": "Vaccines",
+      "description": "Add or remove batches."
+    },
+    "show": {
+      "summary": "Vaccine details",
+      "delete": "Delete vaccine"
+    },
+    "new": {
+      "title": "Add a new vaccine"
+    },
+    "action": {
+      "title": "Are you sure you want to %s this vaccine?",
+      "description": "This operation cannot be undone.",
+      "confirm": "Yes, %s this vaccine",
+      "cancel": "No, return to vaccine"
+    },
+    "success": {
+      "delete": "Vaccine deleted"
+    },
+    "id": {
+      "label": "Batch"
+    },
+    "created": {
+      "label": "Entered date"
+    },
+    "expires": {
+      "label": "Expiry date"
+    },
+    "actions": {
+      "label": "Actions"
+    },
+    "gtin": {
+      "label": "GTIN"
+    },
+    "brand": {
+      "label": "Brand"
+    },
+    "supplier": {
+      "label": "Supplier"
+    },
+    "name": {
+      "label": "Vaccine"
+    },
+    "method": {
+      "label": "Method"
+    },
+    "dose": {
+      "label": "Dose"
+    },
+    "healthQuestions": {
+      "label": "Health questions"
+    },
+    "preScreenQuestions": {
+      "label": "Pre-screening questions"
     }
   }
 }

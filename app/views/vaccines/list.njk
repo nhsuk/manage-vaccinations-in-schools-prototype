@@ -1,0 +1,86 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("vaccine.list.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  <div class="app-heading-group">
+    {{ heading({
+      size: "xl",
+      title: title
+    }) }}
+
+    {{ button({
+      classes: "nhsuk-button--secondary",
+      text: __("vaccine.new.title"),
+      href: "#"
+    }) if data.token.admin }}
+  </div>
+
+  {% for vaccine in vaccines %}
+    {% set descriptionHtml %}
+      <p class="nhsuk-body-s nhsuk-secondary-text-color">
+        {{ vaccine.supplier }}, GTIN: <span class="app-u-monospace">{{ vaccine.gtin }}</span>
+      </p>
+
+      {{ link(vaccine.uri + "/new", "Add a batch") | nhsukMarkdown}}
+
+      {% set batchRows = [] %}
+      {% for batch in vaccine.batches | sort(false, false, "id") %}
+        {% set batchRows = batchRows | push([
+          {
+            classes: "app-u-monospace",
+            header: __("batch.id.label"),
+            html: batch.id
+          },
+          {
+            header: __("batch.created.label"),
+            html: batch.formattedCreated or "Not provided",
+            attributes: {
+              "data-sort": batch.created
+            }
+          },
+          {
+            header: __("batch.expires.label"),
+            html: batch.formattedExpires or "Not provided",
+            attributes: {
+              "data-sort": batch.expires
+            }
+          },
+          {
+            header: __("vaccine.actions.label"),
+            html: actionList({
+              items: [{
+                text: "Change",
+                href: batch.uri + "/edit"
+              }, {
+                text: "Archive",
+                href: "#"
+              }]
+            })
+          }
+        ]) %}
+      {% endfor %}
+
+      {{ actionTable({
+        sort: "batch",
+        responsive: true,
+        head: [
+          { text: __("batch.id.label") },
+          { text: __("batch.created.label") },
+          { text: __("batch.expires.label") },
+          { text: __("vaccine.actions.label") }
+        ],
+        rows: batchRows
+      }) if batchRows.length }}
+    {% endset %}
+
+    {{ card({
+      heading: vaccine.brandWithName,
+      headingClasses: "nhsuk-heading-m nhsuk-u-margin-bottom-1",
+      href: vaccine.uri,
+      descriptionHtml: descriptionHtml
+    }) }}
+  {% endfor %}
+{% endblock %}

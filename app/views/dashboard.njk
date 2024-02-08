@@ -10,6 +10,18 @@
     title: title
   }) }}
 
+  <ul class="nhsuk-grid-row nhsuk-card-group">
+    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        clickable: true,
+        heading: __("vaccine.list.title"),
+        headingClasses: "nhsuk-heading-m",
+        href: "/vaccines",
+        description: __("vaccine.list.description")
+      }) }}
+    </li>
+  </ul>
+
   {% if data.token.admin %}
   <h2 class="nhsuk-heading-s nhsuk-u-margin-bottom-0">
     <a class="nhsuk-link nhsuk-link--no-visited-state" href="/users">

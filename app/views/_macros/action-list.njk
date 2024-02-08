@@ -1,0 +1,17 @@
+{% macro actionList(params) -%}
+{% if params.items.length == 1 %}
+  <p class="app-action-list{% if params.classes %} {{ params.classes }}{% endif %}">
+    {{ link(params.items[0].href, params.items[0].text) | safe }}
+  </p>
+{% else %}
+  <ul class="app-action-list{% if params.classes %} {{ params.classes }}{% endif %}">
+    {% for action in params.items %}
+      {% if action %}
+        <li class="app-action-list__item">
+          {{- link(action.href, action.text) | safe -}}
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endmacro %}
