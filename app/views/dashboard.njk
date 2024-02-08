@@ -1,0 +1,28 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = serviceName + " (Mavis)" %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    size: "xl",
+    title: title
+  }) }}
+
+  {% if data.token.admin %}
+  <h2 class="nhsuk-heading-s nhsuk-u-margin-bottom-0">
+    <a class="nhsuk-link nhsuk-link--no-visited-state" href="/users">
+      {{ __("user.list.title") }}
+    </a>
+  </h2>
+  <p>{{ __("user.list.description") }}</p>
+  {% endif %}
+
+  <h2 class="nhsuk-heading-s nhsuk-u-margin-bottom-0">
+    <a class="nhsuk-link nhsuk-link--no-visited-state" href="/account">
+      {{ __("account.show.title") }}
+    </a>
+  </h2>
+  <p>{{ __("account.show.description") }}</p>
+{% endblock %}

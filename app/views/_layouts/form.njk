@@ -1,0 +1,18 @@
+{% extends "_layouts/default.njk" %}
+
+{% block content %}
+  {{ super() }}
+
+  <form class="nhsuk-grid-row" method="post" novalidate>
+    <div class="nhsuk-grid-column-two-thirds">
+      {% block form %}
+      {% endblock %}
+
+      {% block afterForm %}
+        {{ button({
+          html: confirmButtonText if confirmButtonText else "Continue"
+        }) if not hideConfirmButton }}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,1 +1,81 @@
-{}
+{
+  "account": {
+    "show": {
+      "title": "Your account",
+      "description": "Change your email address or password."
+    },
+    "edit": {
+      "title": "Edit account details"
+    },
+    "reset-password": {
+      "title": "Reset your password",
+      "confirm": "Reset password"
+    },
+    "sign-in": {
+      "title": "Sign in",
+      "confirm": "Sign in"
+    },
+    "sign-out": {
+      "title": "Sign out"
+    },
+    "success": {
+      "update": "Account details updated"
+    },
+    "password": {
+      "forgot": "I’ve forgotten my password",
+      "label": "Password"
+    },
+    "email": {
+      "label": "Email address"
+    }
+  },
+  "user": {
+    "list": {
+      "title": "Manage team",
+      "description": "Add or remove team members and set permissions."
+    },
+    "show": {
+      "summary": "User details",
+      "delete": "Delete user"
+    },
+    "action": {
+      "title": "Are you sure you want to %s this user?",
+      "description": "This operation cannot be undone.",
+      "confirm": "Yes, %s this user",
+      "cancel": "No, return to user"
+    },
+    "edit": {
+      "title": "Edit %s",
+      "confirm": "Save changes"
+    },
+    "new": {
+      "title": "Invite a team member",
+      "confirm": "Send invitation"
+    },
+    "success": {
+      "create": "Invitation sent to {{user.fullName}}",
+      "update": "Account details for {{user.fullName}} updated",
+      "delete": "User deleted"
+    },
+    "fullName": {
+      "label": "Name"
+    },
+    "registration": {
+      "label": "Registration number",
+      "hint": "Also known as a GMC number or nurse’s pin number"
+    },
+    "email": {
+      "label": "Email address",
+      "hint": "They will use this to access the service"
+    },
+    "firstName": {
+      "label": "First name"
+    },
+    "lastName": {
+      "label": "Last name"
+    },
+    "registrar": {
+      "label": "Professional body"
+    }
+  }
+}

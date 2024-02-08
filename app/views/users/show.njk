@@ -1,0 +1,40 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = user.fullName %}
+{% set paths = { back: "/users" } %}
+
+{% block content %}
+  <div class="nhsuk-u-width-three-quarters">
+    {{ super() }}
+
+    {{ heading({
+      title: title
+    }) }}
+
+    {{ card({
+      heading: __("user.show.summary"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(user, {
+          fullName: {
+            href: user.uri + "/edit"
+          },
+          email: {
+            href: user.uri + "/edit"
+          },
+          registrar: {
+            value: user.registrar,
+            href: user.uri + "/edit"
+          },
+          registration: {
+            href: user.uri + "/edit"
+          }
+        })
+      })
+    }) }}
+
+    <p>
+      <a href="{{ user.uri }}/delete">{{ __("user.show.delete") }}</a>
+    </p>
+  </div>
+{% endblock %}

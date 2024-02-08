@@ -1,0 +1,27 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("user.new.confirm") %}
+{% set paths = { back: "/users" } %}
+{% set title = __("user.new.title") %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ input({
+    label: { text: __("user.firstName.label") },
+    decorate: "user.firstName"
+  }) }}
+
+  {{ input({
+    label: { text: __("user.lastName.label") },
+    decorate: "user.lastName"
+  }) }}
+
+  {{ input({
+    label: { text: __("user.email.label") },
+    hint: { text: __("user.email.hint") },
+    decorate: "user.email"
+  }) }}
+{% endblock %}
