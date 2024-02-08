@@ -1,0 +1,27 @@
+{% extends "_layouts/form.njk" %}
+
+{% set paths = { back: user.uri } %}
+
+{% block form %}
+  {{ heading({
+    caption: user.fullName,
+    title: __("user.action.title", type)
+  }) }}
+
+  {{ __("user.action.description") | nhsukMarkdown }}
+{% endblock %}
+
+{% block afterForm %}
+  <div class="app-button-group">
+    {{ button({
+      classes: "nhsuk-button--warning",
+      text: __("user.action.confirm", type),
+      attributes: {
+        formAction: user.uri + "/" + type
+      }
+    }) }}
+    <a class="nhsuk-link" href="{{ user.uri }}">
+      {{ __("user.action.cancel") }}
+    </a>
+  </div>
+{% endblock %}

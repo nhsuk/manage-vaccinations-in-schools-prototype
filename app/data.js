@@ -1,3 +1,6 @@
+import { readFileSync } from 'fs'
+const users = JSON.parse(readFileSync('.data/users.json'))
+
 /**
  * Default values for user session data
  *
@@ -14,5 +17,6 @@ export default {
       name: 'Demonstration',
       description: 'Show message about feature flags on the home page.'
     }
-  }
+  },
+  users
 }

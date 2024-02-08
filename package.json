@@ -10,7 +10,7 @@
   "scripts": {
     "assets:build": "rollup --config --silent",
     "assets:watch": "rollup --config --silent --watch",
-    "create-data": "node create-data.js",
+    "create-data": "node lib/create-data.js",
     "lint:prettier": "prettier . --check",
     "lint:prettier:fix": "prettier . --write",
     "lint:js": "eslint '**/*.js'",
@@ -26,6 +26,7 @@
     "postinstall": "npm run create-data"
   },
   "dependencies": {
+    "@colinaut/action-table": "^2.4.6",
     "@faker-js/faker": "^8.4.0",
     "date-fns": "^3.6.0",
     "express-flash": "^0.0.2",

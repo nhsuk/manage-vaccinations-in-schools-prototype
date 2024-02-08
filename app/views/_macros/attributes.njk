@@ -1,0 +1,88 @@
+{#
+  Renders component attributes as string
+
+  * By default or using `optional: false`, attrs render as ` name="value"`
+  * Using `optional: true`, attrs with empty (`null`, `undefined` or `false`) values are omitted
+  * Using `optional: true`, attrs with `true` (boolean) values render `name` only without value
+
+  {@link https://developer.mozilla.org/en-US/docs/Glossary/Boolean/HTML}
+
+  @example
+  Output attribute ` aria-hidden="true"` when `true` (boolean) or `"true"` (string)
+
+  ```njk
+  attributes({
+    "aria-hidden": true
+  })
+  ```
+
+  @example
+  Output attribute ` aria-hidden="false"` when `false` (boolean) or `"false"` (string)
+
+  ```njk
+  attributes({
+    "aria-hidden": false
+  })
+  ```
+
+  @example
+  Output attribute ` hidden=""` when `null`, `undefined` or empty `""` (string)
+
+  ```njk
+  attributes({
+    "hidden": undefined
+  })
+  ```
+
+  @example
+  Output attribute ` hidden` as boolean attribute when optional and `true`
+
+  ```njk
+  attributes({
+    hidden: {
+      value: true,
+      optional: true
+    },
+  })
+  ```
+
+  @example
+  Output empty string when optional and `null`, `undefined` or `false`
+
+  ```njk
+  attributes({
+    hidden: {
+      value: undefined,
+      optional: true
+    },
+  })
+  ```
+
+  @private
+  @param {{ [attribute: string]: string | { value: string, optional?: boolean } } | string} attrs - Component attrs param
+#}
+{% macro attributes(attrs) -%}
+  {#- Default attrs output -#}
+  {% set attributesHtml = attrs if attrs is string else "" %}
+
+  {#- Append attribute name/value pairs -#}
+  {%- if attrs is mapping %}
+    {% for name, value in attrs %}
+      {#- Set default attribute options -#}
+      {% set options = value if value is mapping else {
+        value: value,
+        optional: false
+      } %}
+
+      {#- Output ` name` only (no value) for boolean attrs -#}
+      {% if options.optional === true and options.value === true %}
+        {% set attributesHtml = attributesHtml + " " + name | escape %}
+      {#- Skip optional empty attrs or output ` name="value"` pair by default -#}
+      {% elif (options.optional === true and not [undefined, null, false].includes(options.value)) or options.optional !== true %}
+        {% set attributesHtml = attributesHtml + " " + name | escape + '="' + options.value | escape + '"' %}
+      {% endif %}
+    {% endfor %}
+  {% endif -%}
+
+  {{- attributesHtml | safe -}}
+{%- endmacro %}

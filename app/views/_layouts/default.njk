@@ -1,5 +1,6 @@
 {% extends "template.njk" %}
 
+{% from "_macros/action-table.njk" import actionTable %}
 {% from "_macros/heading.njk" import heading %}
 {% from "_macros/icon.njk" import icon %}
 
@@ -20,10 +21,12 @@
   {{ header({
     service: {
       name: serviceName,
-      href: "/"
+      href: "/dashboard" if data.token else "/"
     },
-    showNav: "false",
-    showSearch: "false"
+    homeHref: "/dashboard" if data.token else "/",
+    showNav: "true" if data.token else "false",
+    showSearch: "false",
+    primaryLinks: navigation.primaryLinks
   }) }}
 {% endblock %}
 

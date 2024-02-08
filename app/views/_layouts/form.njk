@@ -1,0 +1,20 @@
+{% extends "_layouts/default.njk" %}
+
+{% set gridColumns = gridColumns or "two-thirds" %}
+
+{% block content %}
+  {{ super() }}
+
+  <form class="nhsuk-grid-row" method="post" novalidate>
+    <div class="nhsuk-grid-column-{{ gridColumns }}">
+      {% block form %}
+      {% endblock %}
+
+      {% block afterForm %}
+        {{ button({
+          html: confirmButtonText if confirmButtonText else "Continue"
+        }) if not hideConfirmButton }}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

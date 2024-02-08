@@ -1,0 +1,42 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("user.edit.confirm") %}
+{% set paths = { back: user.uri } if paths %}
+{% set title = title or __("user.edit.title", user.fullName) %}
+
+{% block form %}
+  {{ heading({
+    size: headingSize,
+    title: title
+  }) }}
+
+  {{ input({
+    label: { text: __("user.firstName.label") },
+    decorate: "user.firstName"
+  }) }}
+
+  {{ input({
+    label: { text: __("user.lastName.label") },
+    decorate: "user.lastName"
+  }) }}
+
+  {{ input({
+    label: { text: __("user.email.label") },
+    decorate: "user.email"
+  }) }}
+
+  {{ radios({
+    fieldset: {
+      legend: { text: __("user.registrar.label") }
+    },
+    items: enumItems(Registrar),
+    decorate: "user.registrar"
+  }) }}
+
+  {{ input({
+    classes: "nhsuk-input--width-10",
+    label: { text: __("user.registration.label") },
+    hint: { text: __("user.registration.hint") },
+    decorate: "user.registration"
+  }) }}
+{% endblock %}

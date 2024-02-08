@@ -1,0 +1,53 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("user.list.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  <div class="app-heading-group">
+    {{ heading({
+      size: "xl",
+      title: title
+    }) }}
+
+    {{ button({
+      classes: "nhsuk-button--secondary",
+      text: __("user.new.title"),
+      href: "/users/new"
+    }) }}
+  </div>
+
+  {% for admin, users in users | groupby("admin") %}
+    {% set userRows = [] %}
+    {% for user in users | sort(false, false, "fullName") %}
+      {% set userRows = userRows | push([
+        {
+          header: __("user.fullName.label"),
+          html: link(user.uri, user.fullName) or "Not provided"
+        },
+        {
+          header: __("user.registration.label"),
+          html: user.registration or "Not provided"
+        },
+        {
+          header: __("user.email.label"),
+          html: user.email or "Not provided"
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      sort: "name",
+      heading: "Admins" if admin == "true" else "Team members",
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("user.fullName.label") },
+        { text: __("user.registration.label") },
+        { text: __("user.email.label") }
+      ],
+      rows: userRows
+    }) }}
+  {% endfor %}
+{% endblock %}

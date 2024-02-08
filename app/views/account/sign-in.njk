@@ -1,0 +1,25 @@
+{% from "govuk/components/password-input/macro.njk" import govukPasswordInput %}
+
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("account.sign-in.confirm") %}
+{% set title = __("account.sign-in.title") %}
+
+{% block form %}
+  {{ heading({
+    size: "xl",
+    title: title
+  }) }}
+
+  {{ input({
+    label: { text: __("account.email.label") },
+    decorate: "email"
+  }) }}
+
+  {{ govukPasswordInput({
+    label: { text: __("account.password.label") },
+    decorate: "password"
+  }) | replace("govuk-input", "nhsuk-input") | replace("govuk-button", "nhsuk-button") }}
+
+  {{ link("/account/reset-password", __("account.password.forgot")) | nhsukMarkdown}}
+{% endblock %}
