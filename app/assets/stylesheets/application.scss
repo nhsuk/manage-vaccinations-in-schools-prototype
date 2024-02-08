@@ -16,6 +16,7 @@ $govuk-assets-path: "/govuk/assets/";
 @import "@x-govuk/govuk-prototype-components/x-govuk/all";
 
 // Import app components
+@import "action-list";
 @import "action-table";
 @import "autocomplete";
 @import "button-group";
@@ -24,3 +25,4 @@ $govuk-assets-path: "/govuk/assets/";
 @import "password-input";
 @import "typography";
 @import "unbranded";
+@import "utilities";

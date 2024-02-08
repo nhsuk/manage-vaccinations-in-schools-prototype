@@ -1,0 +1,26 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("batch.edit.confirm") %}
+{% set paths = { back: "/vaccines" } %}
+{% set title = __("batch.edit.title", { batch: batch }) %}
+
+{% block form %}
+  {{ heading({
+    title: title,
+    caption: vaccine.brand
+  }) }}
+
+  {{ input({
+    classes: "nhsuk-input--width-10 app-u-monospace",
+    label: { text: __("batch.id.label") },
+    decorate: "batch.id"
+  }) }}
+
+  {{ dateInput({
+    fieldset: {
+      legend: { text: __("batch.expires.label") }
+    },
+    hint: { text: __("batch.expires.hint") },
+    decorate: "batch.expires_"
+  }) }}
+{% endblock %}
