@@ -1,0 +1,11 @@
+{{ xGovukSecondaryNavigation({
+  items: [{
+    text: __("campaign.show.title"),
+    href: "/campaigns/" + campaign.uuid,
+    current: view == "show"
+  }, {
+    text: __("campaign.reports.title"),
+    href: "/campaigns/" + campaign.uuid + "/reports",
+    current: view == "reports"
+  }]
+}) }}

@@ -1,0 +1,46 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("campaign.list.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  <div class="app-heading-group">
+    {{ heading({
+      size: "xl",
+      title: title
+    }) }}
+
+    {{ button({
+      classes: "nhsuk-button--secondary",
+      text: __("campaign.new.title"),
+      href: "#"
+    }) if data.token.admin }}
+  </div>
+
+  {% set campaignRows = [] %}
+  {% for campaign in campaigns | sort(false, false, "name") %}
+    {% set campaignRows = campaignRows | push([
+      {
+        header: __("campaign.name.label"),
+        html: link(campaign.uri, campaign.name) or "Not provided"
+      },
+      {
+        header: __("campaign.vaccines.label"),
+        html: campaign.vaccines | join("\n") | nl2br or "Not provided"
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    sort: "name",
+    heading: "Active campaigns",
+    panel: true,
+    responsive: true,
+    head: [
+      { text: __("campaign.name.label") },
+      { text: __("campaign.vaccines.label") }
+    ],
+    rows: campaignRows
+  }) }}
+{% endblock %}

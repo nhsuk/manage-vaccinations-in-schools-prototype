@@ -1,0 +1,152 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = campaign.name + " – " + __("campaign.reports.title") %}
+{% set view = "reports" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: "Home",
+      href: "/dashboard"
+    }, {
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: campaign.name
+  }) }}
+
+  {% include "campaigns/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("campaign.reports.title") }}
+  </h2>
+
+  {% if sessions.length %}
+    <div class="nhsuk-grid-row nhsuk-card-group">
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
+          heading: "Sessions completed",
+          description: "567"
+        }) }}
+      </div>
+
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
+          heading: "Vaccinations delivered",
+          description: "456"
+        }) }}
+      </div>
+
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
+          heading: "Children rescheduled",
+          description: "12"
+        }) }}
+      </div>
+
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
+          heading: "Consent requests and reminders sent",
+          description: "1671"
+        }) }}
+      </div>
+
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
+          heading: "Consent given (versus refused or no response)",
+          description: "78%"
+        }) }}
+      </div>
+
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
+          heading: "Responses received and triaged",
+          description: "98%"
+        }) }}
+      </div>
+    </div>
+
+    {{ table({
+      heading: "Reasons for refusal",
+      panel: true,
+      head: [
+        { text: "Reason" },
+        { text: "Frequency", format: "numeric" }
+      ],
+      rows: [
+        [
+          { text: "Vaccine contains gelatine from pigs" },
+          { text: "11.1%", format: "numeric" }
+        ] if campaign.type == "flu",
+        [
+          { text: "Vaccine already received" },
+          { text: "2.0%", format: "numeric" }
+        ],
+        [
+          { text: "Vaccine will be given elsewhere" },
+          { text: "3.6%", format: "numeric" }
+        ],
+        [
+          { text: "Medical reasons" },
+          { text: "1.0%", format: "numeric" }
+        ],
+        [
+          { text: "Personal choice" },
+          { text: "5.1%", format: "numeric" }
+        ],
+        [
+          { text: "Other" },
+          { text: "1.1%", format: "numeric" }
+        ]
+      ]
+    }) }}
+
+    {% set questionRows = [] %}
+    {% for healthQuestion in campaign.vaccine.healthQuestions %}
+      {% set questionRows = questionRows | push([
+        {
+          text: healthQuestion
+        },
+        {
+          text: ["0.21","0.57","3.45","1.89"] | random + "%",
+          format: "numeric"
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ table({
+      heading: "Consent journey",
+      panel: true,
+      head: [
+        { text: "Question" },
+        { html: "Dropout", format: "numeric" }
+      ],
+      rows: questionRows
+    }) }}
+
+    <p class="nhsuk-body">Average time between parent accessing the start page to submitting their response was<br><b>3 minutes and 12 seconds</b>.</p>
+
+    <hr class="nhsuk-section-break nhsuk-section-break--visible  nhsuk-section-break--m">
+  {% endif %}
+
+  {{ button({
+    href: "/public/downloads/vaccinations.csv",
+    text: __("campaign.reports.download"),
+    attributes: {
+      download: "example.csv"
+    }
+  }) }}
+{% endblock %}

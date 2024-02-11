@@ -30,6 +30,20 @@ export default () => {
   }
 
   /**
+   * Session summary
+   * @param {object} session - Session details
+   * @returns {string} HTML paragraph
+   */
+  globals.sessionSummary = function (session) {
+    return `<p class="nhsuk-u-margin-bottom-0 nhsuk-u-secondary-text-color">
+      ${globals.link(session.uri, session.location.name)}</br>
+      ${session.location.addressLine1},
+      ${session.location.addressLevel1},
+      ${session.location.postalCode}
+    </p>`
+  }
+
+  /**
    * Get summaryList `rows` parameters
    * @param {object} data - Data
    * @param {object} rows - Row configuration

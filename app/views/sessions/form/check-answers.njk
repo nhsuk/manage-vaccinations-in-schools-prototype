@@ -1,0 +1,55 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("session.new.check-answers.confirm") %}
+{% set title = __("session.new.check-answers.title") %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("session.new.check-answers.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(session, {
+        format: {
+          value: session.format,
+          href: session.uri + "/new/format"
+        },
+        campaign_uuid: {
+          value: data.campaigns[session.campaign_uuid].name,
+          href: session.uri + "/new/campaign-uuid"
+        },
+        urn: {
+          value: session.location.name,
+          href: session.uri + "/new/urn"
+        },
+        cohort: {
+          value: __n("session.cohort.count", session.cohort.length),
+          href: session.uri + "/edit/cohort"
+        },
+        date: {
+          value: session.date | date({ dateStyle: "full" }),
+          href: session.uri + "/new/date"
+        },
+        time: {
+          value: session.time,
+          href: session.uri + "/new/date"
+        },
+        open: {
+          value: session.open | date({ dateStyle: "full" }),
+          href: session.uri + "/new/schedule"
+        },
+        reminder: {
+          value: session.reminder | date({ dateStyle: "full" }),
+          href: session.uri + "/new/schedule"
+        },
+        close: {
+          value: session.close | date({ dateStyle: "full" }),
+          href: session.uri + "/new/schedule"
+        }
+      })
+    })
+  }) }}
+{% endblock %}

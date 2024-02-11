@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
+import { formatDate } from './utils/date.js'
 
 /**
  * Prototype specific filters for use in Nunjucks templates.
@@ -8,6 +9,16 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
  */
 export default (env) => {
   const filters = {}
+
+  /**
+   * Format date
+   * @param {string} string - ISO date, for example 07-12-2021
+   * @param {Intl.DateTimeFormatOptions} options - Options
+   * @returns {string} Formatted date, for example Sunday, 7 December 2021
+   */
+  filters.date = (string, options) => {
+    return formatDate(string, options)
+  }
 
   /**
    * Format markdown

@@ -95,3 +95,15 @@ export function addDays(date, days) {
 
   return date
 }
+
+/**
+ * Format a data
+ * @param {string} string - Date string
+ * @param {object} [options] - DateTimeFormat options
+ * @returns {string|undefined} Formatted date
+ */
+export function formatDate(string, options) {
+  if (!string) return
+
+  return new Intl.DateTimeFormat('en-GB', options).format(new Date(string))
+}

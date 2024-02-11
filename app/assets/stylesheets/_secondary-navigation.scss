@@ -1,0 +1,16 @@
+.x-govuk-secondary-navigation {
+  @include nhsuk-responsive-margin(4, "bottom");
+}
+
+.x-govuk-secondary-navigation__list-item {
+  margin: 0;
+}
+
+.x-govuk-secondary-navigation__list-item--current {
+  border-bottom-width: nhsuk-spacing(1);
+}
+
+.x-govuk-secondary-navigation__link {
+  padding-left: nhsuk-spacing(3);
+  padding-right: nhsuk-spacing(3);
+}
