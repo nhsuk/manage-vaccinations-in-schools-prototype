@@ -7,6 +7,14 @@ export const navigation = (request, response, next) => {
   response.locals.navigation = {
     primaryLinks: [
       {
+        url: '/sessions',
+        label: __('session.list.title')
+      },
+      {
+        url: '/campaigns',
+        label: __('campaign.list.title')
+      },
+      {
         url: '/vaccines',
         label: __('vaccine.list.title')
       },

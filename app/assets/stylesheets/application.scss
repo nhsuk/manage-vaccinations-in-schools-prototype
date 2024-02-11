@@ -15,15 +15,22 @@ $govuk-assets-path: "/govuk/assets/";
 // Import GOV.UK Prototype Components
 @import "@x-govuk/govuk-prototype-components/x-govuk/all";
 
+// App options
+// stylelint-disable-next-line scss/dollar-variable-pattern
+$color_app-dark-orange: darken(mix($color_nhsuk-red, $color_nhsuk-warm-yellow, 55%), 10%);
+
 // Import app components
 @import "action-list";
 @import "action-table";
 @import "autocomplete";
 @import "button";
 @import "button-group";
+@import "card";
 @import "header";
 @import "heading-group";
 @import "password-input";
+@import "secondary-navigation";
+@import "table";
 @import "typography";
 @import "unbranded";
 @import "utilities";

@@ -68,6 +68,10 @@ export function convertObjectToIsoDate(object, namePrefix) {
  * @returns {object} `items` for dateInput component
  */
 export function convertIsoDateToObject(isoDate) {
+  if (!isoDate) {
+    return
+  }
+
   const dateObj = new Date(isoDate)
 
   return {
@@ -91,4 +95,14 @@ export function addDays(date, days) {
   date.setDate(date.getDate() + days)
 
   return date
+}
+
+/**
+ * Format a data
+ * @param {string} string - Date string
+ * @param {object} [options] - DateTimeFormat options
+ * @returns {string} Formatted date
+ */
+export function formatDate(string, options) {
+  return new Intl.DateTimeFormat('en-GB', options).format(new Date(string))
 }

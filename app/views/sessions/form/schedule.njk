@@ -1,0 +1,53 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = "What’s the timeline for consent requests?" %}
+
+{% block form %}
+  {{ heading({ title: title }) }}
+
+  {{ insetText({
+    html: "Session scheduled for " + (session.date | date({ dateStyle: "full" })) + " at " + session.location.name | nhsukMarkdown
+  }) }}
+
+  {{ dateInput({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-6"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("session.open.label")
+      }
+    },
+    hint: { text: __("session.open.hint") },
+    decorate: "session.open_"
+  }) }}
+
+  {{ dateInput({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-6"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("session.reminder.label")
+      }
+    },
+    hint: { text: __("session.reminder.hint") },
+    decorate: "session.reminder_"
+  }) }}
+
+  {{ dateInput({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-6"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("session.close.label")
+      }
+    },
+    hint: { text: __("session.close.hint") },
+    decorate: "session.close_"
+  }) }}
+{% endblock %}

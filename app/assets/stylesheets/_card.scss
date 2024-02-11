@@ -1,0 +1,60 @@
+.app-card {
+  &--aqua-green {
+    .nhsuk-card__heading--feature {
+      background-color: $color_nhsuk-aqua-green;
+    }
+  }
+
+  &--dark-orange {
+    .nhsuk-card__heading--feature {
+      background-color: $color_app-dark-orange;
+    }
+  }
+
+  &--green {
+    .nhsuk-card__heading--feature {
+      background-color: $color_nhsuk-green;
+    }
+  }
+
+  &--grey {
+    .nhsuk-card__heading--feature {
+      background-color: $color_nhsuk-grey-1;
+    }
+  }
+
+  &--purple {
+    .nhsuk-card__heading--feature {
+      background-color: $color_nhsuk-purple;
+    }
+  }
+
+  &--red {
+    .nhsuk-card__heading--feature {
+      background-color: $color_nhsuk-red;
+    }
+  }
+
+  &--data {
+    background-color: $color_nhsuk-blue;
+    border-color: $color_nhsuk-blue;
+    color: $color_nhsuk-white;
+    margin-bottom: $nhsuk-gutter;
+
+    .nhsuk-card__content {
+      @include nhsuk-responsive-padding(4);
+    }
+
+    .nhsuk-card__heading {
+      @include nhsuk-typography-responsive(19);
+      @include nhsuk-typography-weight-normal;
+
+      margin-bottom: nhsuk-spacing(2);
+    }
+
+    .nhsuk-card__description {
+      @include nhsuk-typography-responsive(48);
+      @include nhsuk-typography-weight-bold;
+    }
+  }
+}

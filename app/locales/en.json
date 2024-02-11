@@ -57,6 +57,32 @@
       "label": "Actions"
     }
   },
+  "campaign": {
+    "list": {
+      "title": "Campaigns",
+      "description": "Create and manage vaccination campaigns."
+    },
+    "show": {
+      "title": "School sessions"
+    },
+    "reports": {
+      "title": "Reports"
+    },
+    "new": {
+      "title": "Create a new vaccination campaign"
+    },
+    "edit": {
+      "title": "Edit campaign",
+      "confirm": "Save changes",
+      "summary": "Campaign details"
+    },
+    "name": {
+      "label": "Name"
+    },
+    "vaccines": {
+      "label": "Vaccines"
+    }
+  },
   "record": {
     "list": {
       "title": "Records",
@@ -89,6 +115,101 @@
     },
     "urn": {
       "label": "School"
+    }
+  },
+  "session": {
+    "list": {
+      "title": "Today’s sessions",
+      "description": "View all sessions taking place today."
+    },
+    "new": {
+      "title": "Add a new session",
+      "description": "Create a new session or clinic for a campaign.",
+      "check-answers": {
+        "title": "Check and confirm",
+        "confirm": "Save changes",
+        "summary": "New session details"
+      }
+    },
+    "edit": {
+      "title": "Edit session",
+      "confirm": "Save changes",
+      "summary": "Session details",
+      "format": {
+        "title": "What type of session are you adding?"
+      },
+      "campaign_uuid": {
+        "title": "Which campaign is this session part of?"
+      },
+      "urn": {
+        "title": "Which school is it at?"
+      },
+      "cohort": {
+        "title": "Choose cohort for this session"
+      },
+      "date": {
+        "title": "When is the session?"
+      }
+    },
+    "success": {
+      "create": "{{session.name}} created",
+      "update": "{{session.name}} updated"
+    },
+    "cohort": {
+      "label": "Cohort",
+      "count": {
+        "one": "%s child in cohort",
+        "other": "[0] No children in cohort|%s children in cohort"
+      }
+    },
+    "date": {
+      "label": "Date",
+      "hint": "For example, 27 3 2024"
+    },
+    "time": {
+      "label": "Time"
+    },
+    "urn": {
+      "label": "School"
+    },
+    "location": {
+      "label": "Location"
+    },
+    "format": {
+      "label": "Type of session"
+    },
+    "campaign_uuid": {
+      "label": "Campaign"
+    },
+    "open": {
+      "label": "Consent requests",
+      "hint": "When should parents get a request for consent?"
+    },
+    "reminder": {
+      "label": "Reminders",
+      "hint": "When should parents who haven’t responded get a reminder?"
+    },
+    "close": {
+      "label": "Response deadline",
+      "hint": "What’s the latest date a consent response will be accepted?"
+    },
+    "status": {
+      "label": "Status"
+    },
+    "consentWindow": {
+      "label": "Consent period",
+      "Opening": {
+        "label": "Opens {{open}}",
+        "text": "Consent period opens on {{open}}"
+      },
+      "Open": {
+        "label": "Open until {{close}}",
+        "text": "Consent period is open from {{open}} until {{close}}"
+      },
+      "Closed": {
+        "label": "Closed {{close}}",
+        "text": "Consent period closed on {{close}}"
+      }
     }
   },
   "user": {
