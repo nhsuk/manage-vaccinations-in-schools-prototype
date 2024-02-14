@@ -1,0 +1,29 @@
+{% extends "_layouts/unbranded.njk" %}
+
+{% set title = record.fullName %}
+{% set paths = { back: "/records" } %}
+
+{% block content %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("record.show.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(record, {
+        nhsn: {
+          classes: "app-u-monospace",
+          value: record.formattedNhsNumber
+        },
+        fullName: {},
+        dob: { value: record.dobWithAge },
+        sex: {},
+        address: { value: record.formattedAddress | nl2br },
+        gpSurgery: { value: record.formattedGpSurgery },
+        urn: { value: data.schools[record.urn].name }
+      })
+    })
+  }) }}
+{% endblock %}
