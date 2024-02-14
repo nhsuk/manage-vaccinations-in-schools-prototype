@@ -1,0 +1,55 @@
+{% extends "_layouts/unbranded.njk" %}
+
+{% set title = __("record.list.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    caption: __("record.list.caption"),
+    size: "xl",
+    title: title
+  }) }}
+
+  {% set recordRows = [] %}
+  {% for record in records | sort(false, false, "lastName") %}
+    {% set recordRows = recordRows | push([
+      {
+        header: __("record.fullName.label"),
+        html: link(record.uri, record.fullName) or "Not provided",
+        attributes: {
+          "data-sort": record.lastName
+        }
+      },
+      {
+        classes: "app-u-monospace",
+        header: __("record.nhsn.label"),
+        html: record.formattedNhsNumber or "Not provided"
+      },
+      {
+        header: __("record.dob.label"),
+        html: record.formattedDob or "Not provided",
+        attributes: {
+          "data-sort": record.dob
+        }
+      },
+      {
+        header: __("record.sex.label"),
+        html: record.sex or "Not provided"
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    sort: "full name",
+    caption: __n("record.count", records.length),
+    responsive: true,
+    head: [
+      { text: __("record.fullName.label") },
+      { text: __("record.nhsn.label") },
+      { text: __("record.dob.label") },
+      { text: __("record.sex.label") }
+    ],
+    rows: recordRows
+  }) }}
+{% endblock %}

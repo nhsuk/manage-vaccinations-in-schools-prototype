@@ -57,6 +57,40 @@
       "label": "Actions"
     }
   },
+  "record": {
+    "list": {
+      "title": "Records",
+      "caption": "Child Health Information Service"
+    },
+    "show": {
+      "summary": "Child’s details"
+    },
+    "count": {
+      "one": "%s record",
+      "other": "%s records"
+    },
+    "nhsn": {
+      "label": "NHS number"
+    },
+    "fullName": {
+      "label": "Full name"
+    },
+    "dob": {
+      "label": "Date of birth"
+    },
+    "sex": {
+      "label": "Sex"
+    },
+    "address": {
+      "label": "Address"
+    },
+    "gpSurgery": {
+      "label": "GP surgery"
+    },
+    "urn": {
+      "label": "School"
+    }
+  },
   "user": {
     "list": {
       "title": "Manage team",
