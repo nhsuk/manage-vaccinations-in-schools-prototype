@@ -1,0 +1,62 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = patient.record.fullName %}
+{% set view = "show" %}
+
+{% block content %}
+  <div class="nhsuk-u-width-three-quarters">
+    {{ super() }}
+
+    {{ heading({
+      caption: session.location.name,
+      title: title
+    }) }}
+
+    {% include "patient/_secondary-navigation.njk" %}
+
+    <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+      {{ __("patient.show.title") }}
+    </h2>
+
+    {{ card({
+      classes: "app-card--" + patientStatus(patient).colour,
+      heading: patientStatus(patient).title,
+      headingClasses: "nhsuk-heading-m",
+      description: patientStatus(patient).description,
+      feature: true
+    }) }}
+
+    {{ card({
+      heading: __("record.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(patient.record, {
+          nhsn: {
+            classes: "app-u-monospace",
+            value: patient.record.formattedNhsNumber
+          },
+          fullName: {},
+          dob: { value: patient.record.dobWithAge },
+          sex: {},
+          address: { value: patient.record.formattedAddress | nl2br },
+          gpSurgery: {}
+        })
+      })
+    }) }}
+
+    {% set consentDescriptionHtml %}
+      {%- set consentIcon = __("consent." + patient.consent + ".icon") -%}
+      {%- set consentColour = __("consent." + patient.consent + ".colour") -%}
+      <p class="app-status{{ " app-status--" + consentColour if consentColour }}">
+        {{- icon(consentIcon) if consentIcon -}}
+        {{- __("consent." + patient.consent + ".label") -}}
+      </p>
+    {% endset %}
+
+    {{ card({
+      heading: __("consent.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: consentDescriptionHtml
+    }) }}
+  </div>
+{% endblock %}

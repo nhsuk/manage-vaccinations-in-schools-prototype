@@ -1,0 +1,13 @@
+{% set items = [] %}
+{% for item in navigationItems %}
+  {% set items = items | push({
+    text: (item.text + " " + count(item.count)) | safe,
+    href: item.href,
+    current: item.current
+  }) %}
+{% endfor %}
+
+{{ xGovukSecondaryNavigation({
+  classes: "nhsuk-u-margin-bottom-4",
+  items: items
+}) }}

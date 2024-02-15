@@ -1,0 +1,13 @@
+{% macro event(item, users) -%}
+  {% if item.note -%}
+  <blockquote>
+    {{ item.note | nhsukMarkdown }}
+  </blockquote>
+  {%- endif %}
+  <p class="nhsuk-body-s nhsuk-u-margin-0 nhsuk-u-secondary-text-color">
+    {{ item.formattedDateTime }}
+    {% if item.user_uuid %}&middot;
+      {{ link(users[item.user_uuid].uri, users[item.user_uuid].fullName) | safe }}
+    {% endif %}
+  </p>
+{%- endmacro %}

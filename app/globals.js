@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { ConsentOutcome, PatientOutcome } from './models/patient.js'
 
 /**
  * Prototype specific global functions for use in Nunjucks templates.
@@ -27,6 +28,37 @@ export default () => {
    */
   globals.link = function (href, text) {
     return `<a class="nhsuk-link" href="${href}">${text}</a>`
+  }
+
+  /**
+   * Get status details for a patient
+   * @param {import('./models/patient.js').Patient} patient - Patient
+   * @returns {object} Patient status
+   */
+  globals.patientStatus = function (patient) {
+    const { __ } = this.ctx
+
+    let colour
+    let description = false
+    let title
+
+    if (patient.outcome !== PatientOutcome.NoOutcomeYet) {
+      // Patient has outcome
+      colour = __(`outcome.${patient.outcome}.colour`)
+      title = __(`outcome.${patient.outcome}.title`)
+    } else if (patient.screen && this.consent === ConsentOutcome.Given) {
+      // Patient in triage
+      colour = __(`screen.${patient.screen}.colour`)
+      description = __(`screen.${patient.screen}.description`)
+      title = __(`screen.${patient.screen}.title`)
+    } else {
+      // Patient requires consent
+      colour = __(`consent.${patient.consent}.colour`)
+      description = __(`consent.${patient.consent}.description`, patient)
+      title = __(`consent.${patient.consent}.title`)
+    }
+
+    return { colour, description, title }
   }
 
   /**

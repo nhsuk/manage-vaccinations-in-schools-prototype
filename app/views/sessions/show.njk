@@ -36,4 +36,25 @@
       __("session.edit.title")
     ) | safe }}
   </p>
+
+  {% set consentCardDescriptionHtml %}
+    <p>
+      {{ __n("consent.NoResponse.count", patients | where("consent", ConsentOutcome.NoResponse) | length) }}<br>
+      {{ __n("consent.Given.count", patients | where("consent", ConsentOutcome.Given) | length) }}<br>
+      {{ __n("consent.Refused.count", patients | where("consent", ConsentOutcome.Refused) | length) }}<br>
+      {{ __n("consent.Inconsistent.count", patients | where("consent", ConsentOutcome.Inconsistent) | length) }}
+    </p>
+  {% endset %}
+
+  <ul class="nhsuk-grid-row nhsuk-card-group">
+    <li class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+      {{ card({
+        clickable: true,
+        heading: __("session.activity.consent.title"),
+        headingClasses: "nhsuk-heading-m",
+        href:  session.uri + "/consent",
+        descriptionHtml: consentCardDescriptionHtml
+      }) }}
+    </li>
+  </ul>
 {% endblock %}
