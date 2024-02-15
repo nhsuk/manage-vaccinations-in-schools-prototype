@@ -1,0 +1,36 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = patient.record.fullName + " – " + __("patient.events.title") %}
+{% set view = "events" %}
+
+{% block content %}
+  <div class="nhsuk-u-width-three-quarters">
+    {{ super() }}
+
+    {{ heading({
+      caption: session.location.name,
+      title: patient.record.fullName
+    }) }}
+
+    {% include "patient/_secondary-navigation.njk" %}
+
+    <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+      {{ __("patient.events.title") }}
+    </h2>
+
+    {% for formattedDate, items in events | groupby("formattedDate") %}
+      <h3 class="nhsuk-heading-xs nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal">{{ formattedDate }}</h3>
+
+      {% for item in items %}
+        {{ card({
+          heading: item.name,
+          headingClasses: "nhsuk-heading-s",
+          descriptionHtml: event(item, users),
+          attributes: {
+            id: item.uuid
+          }
+        }) }}
+      {% endfor %}
+    {% endfor %}
+  </div>
+{% endblock %}

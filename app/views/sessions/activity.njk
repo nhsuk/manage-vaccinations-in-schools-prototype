@@ -1,0 +1,98 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("session.activity." + activity + ".title") %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: "Home",
+      href: "/dashboard"
+    }, {
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }, {
+      text: data.campaigns[session.campaign_uuid].name,
+      href: "/campaigns/" + session.campaign_uuid
+    }, {
+      text: session.location.name,
+      href: "/sessions/" + session.id
+    }]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ insetText({
+    classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4",
+    html: __("session.consentWindow." + session.consentWindow.key + ".text", {
+      open: session.open | date({
+        day: "numeric",
+        month: "long"
+      }),
+      close: session.close | date({
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      })
+    }) | nhsukMarkdown
+  }) if activity == "consent" }}
+
+  {% include "sessions/_secondary-navigation.njk" %}
+
+  {% set patientRows = [] %}
+  {% for patient in patients | sort(false, false, "firstName") %}
+    {% set patientRows = patientRows | push([
+      {
+        header: __("record.fullName.label"),
+        html: link(session.uri + "/" + patient.nhsn, patient.record.fullName)
+      },
+      {
+        header: __("record.dob.label"),
+        text: patient.record.formattedDob or "Not provided",
+        attributes: {
+          "data-filter": patient.record.dob | date({ dateStyle: "short" }),
+          "data-sort": patient.record.dob
+        }
+      }
+    ]) %}
+  {% endfor %}
+
+  {% if patients.length %}
+    {% call actionTable({
+      classes: "app-patients",
+      tableClasses: "app-patients__table",
+      sort: "name",
+      caption: __n(activity + "." + tab + ".count", patients.length),
+      captionClasses: "nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal nhsuk-u-font-size-19",
+      responsive: true,
+      head: [
+        {
+          text: __("record.fullName.label"),
+          attributes: {
+            "data-col": "name"
+          }
+        },
+        {
+          text: __("record.dob.label"),
+          attributes: {
+            "data-col": "dob"
+          }
+        }
+      ],
+      rows: patientRows
+    }) %}
+      <action-table-filters class="app-patients__filters">
+        {% include "sessions/_filters.njk" %}
+      </action-table-filters>
+    {% endcall %}
+  {% else %}
+    <div class="app-patients">
+      <p class="app-patients__no-results nhsuk-caption-m">{{ __n(activity + "." + tab + ".count", patients.length) }}</p>
+    </div>
+  {% endif %}
+{% endblock %}

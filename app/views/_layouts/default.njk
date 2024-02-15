@@ -2,6 +2,8 @@
 
 {% from "_macros/action-list.njk" import actionList %}
 {% from "_macros/action-table.njk" import actionTable %}
+{% from "_macros/count.njk" import count %}
+{% from "_macros/event.njk" import event %}
 {% from "_macros/heading.njk" import heading %}
 {% from "_macros/icon.njk" import icon %}
 
@@ -17,15 +19,16 @@
 {% endblock %}
 
 {% set bodyAttributes = {"data-module": "edge"} %}
+{% set bodyClasses = "app-signed-in" if not public %}
 
 {% block header %}
   {{ header({
     service: {
       name: serviceName,
-      href: "/dashboard" if data.token else "/"
+      href: "/dashboard" if not public else "/"
     },
-    homeHref: "/dashboard" if data.token else "/",
-    showNav: "true" if data.token else "false",
+    homeHref: "/dashboard" if not public else "/",
+    showNav: "true" if not public else "false",
     showSearch: "false",
     primaryLinks: navigation.primaryLinks
   }) }}

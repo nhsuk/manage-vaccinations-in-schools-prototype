@@ -1,5 +1,6 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { Campaign } from '../models/campaign.js'
+import { Patient } from '../models/patient.js'
 import { Record } from '../models/record.js'
 import { Session, SessionStatus } from '../models/session.js'
 
@@ -22,6 +23,35 @@ export const sessionController = {
 
   show(request, response) {
     response.render('sessions/show')
+  },
+
+  activity(request, response) {
+    const { patients } = request.app.locals
+    const { activity } = request.params
+    const tab = request.query.tab || 'NoResponse'
+    const { __ } = response.locals
+
+    const navigationItems = [
+      'NoResponse',
+      'Given',
+      'Refused',
+      'Inconsistent'
+    ].map((key) => ({
+      text: __(`${activity}.${key}.label`),
+      count: patients.filter((patient) => patient[activity]?.key === key)
+        .length,
+      href: `?tab=${key}`,
+      current: key === tab
+    }))
+
+    request.app.locals.activity = activity
+
+    response.render('sessions/activity', {
+      activity,
+      navigationItems,
+      patients: patients.filter((patient) => patient[activity]?.key === tab),
+      tab
+    })
   },
 
   read(request, response, next) {

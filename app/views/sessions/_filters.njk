@@ -1,0 +1,30 @@
+{% call fieldset({
+  legend: {
+    classes: "nhsuk-fieldset__legend--s",
+    text: "Filter results"
+  }
+}) %}
+  {{ input({
+    id: "name",
+    name: "name",
+    type: "search",
+    label: { text: "By name" }
+  }) }}
+
+  {{ input({
+    id: "dob",
+    name: "dob",
+    type: "search",
+    label: { text: "By date of birth" },
+    hint: {
+      classes: "nhsuk-u-font-size-16",
+      text: "e.g. 2005 or 01/03/2014"
+    }
+  }) }}
+
+  {{ button({
+    classes: "nhsuk-button--secondary app-button--small nhsuk-u-margin-0",
+    type: "reset",
+    text: "Reset filters"
+  }) }}
+{% endcall %}

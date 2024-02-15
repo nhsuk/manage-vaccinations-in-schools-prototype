@@ -16,6 +16,7 @@ $govuk-assets-path: "/govuk/assets/";
 @import "@x-govuk/govuk-prototype-components/x-govuk/all";
 
 // App options
+$app-page-width: 1100px;
 // stylelint-disable-next-line scss/dollar-variable-pattern
 $color_app-dark-orange: darken(mix($color_nhsuk-red, $color_nhsuk-warm-yellow, 55%), 10%);
 
@@ -23,13 +24,35 @@ $color_app-dark-orange: darken(mix($color_nhsuk-red, $color_nhsuk-warm-yellow, 5
 @import "action-list";
 @import "action-table";
 @import "autocomplete";
+@import "button";
 @import "button-group";
 @import "card";
+@import "count";
 @import "header";
 @import "heading-group";
 @import "password-input";
+@import "patients";
 @import "secondary-navigation";
+@import "status";
 @import "table";
+@import "tabs";
 @import "typography";
 @import "unbranded";
 @import "utilities";
+
+// `$nhsuk-page-width` isn’t globally editable, so need to apply manually
+.app-signed-in {
+  .nhsuk-width-container,
+  .nhsuk-header__navigation-list,
+  .nhsuk-header__container {
+    max-width: $app-page-width;
+
+    @include govuk-media-query($from: desktop) {
+      margin: 0 $nhsuk-gutter;
+    }
+
+    @include mq($and: "(min-width: #{($app-page-width + $nhsuk-gutter * 2)})") {
+      margin: 0 auto;
+    }
+  }
+}

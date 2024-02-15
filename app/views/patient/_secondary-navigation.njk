@@ -1,0 +1,11 @@
+{{ xGovukSecondaryNavigation({
+  items: [{
+    text: __("patient.show.title"),
+    href: "/sessions/" + session.id + "/" + patient.nhsn,
+    current: view == "show"
+  }, {
+    text: __("patient.events.title"),
+    href: "/sessions/" + session.id + "/" + patient.nhsn + "/events",
+    current: view == "events"
+  }]
+}) }}

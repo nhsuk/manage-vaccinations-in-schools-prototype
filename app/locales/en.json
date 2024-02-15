@@ -84,7 +84,85 @@
       "label": "Vaccines"
     }
   },
+  "consent": {
+    "label": "Consent",
+    "NoResponse": {
+      "colour": "grey",
+      "description": "No-one responded to our requests for consent.",
+      "icon": false,
+      "label": "No response",
+      "title": "No response",
+      "count": {
+        "one": "%s child without a response",
+        "other": "[0] No children without a response|%s children without a response"
+      }
+    },
+    "Inconsistent": {
+      "colour": "dark-orange",
+      "description": "You can only vaccinate if all respondents give consent.",
+      "icon": "cross",
+      "label": "Conflicts",
+      "title": "Conflicting consent",
+      "count": {
+        "one": "%s child with conflicting consent responses",
+        "other": "[0] No children with conflicting consent|%s children with conflicting consent"
+      }
+    },
+    "Given": {
+      "colour": "aqua-green",
+      "description": "{{patient.fullName}} is safe to vaccinate.",
+      "icon": "tick",
+      "label": "Consent given",
+      "title": "Safe to vaccinate",
+      "count": {
+        "one": "%s child with consent given",
+        "other": "[0] No children with consent given|%s children with consent given"
+      }
+    },
+    "Refused": {
+      "colour": "red",
+      "description": "{{relationships}} refused to give consent.",
+      "icon": "cross",
+      "label": "Refused",
+      "title": "Consent refused",
+      "count": {
+        "one": "%s child with consent refused",
+        "other": "[0] No children with consent refused|%s children with consent refused"
+      }
+    },
+    "FinalRefusal": {
+      "colour": "red",
+      "description": "Refusal to give consent confirmed by {{relationships}}.",
+      "icon": "cross",
+      "label": "Refusal confirmed",
+      "title": "Refusal confirmed",
+      "count": {
+        "one": "%s child with no consent response",
+        "other": "[0] No children with no consent response|%s children with no consent response"
+      }
+    }
+  },
+  "outcome": {
+    "NoOutcomeYet": {
+      "colour": "grey"
+    },
+    "Vaccinated": {
+      "colour": "green"
+    },
+    "CouldNotVaccinate": {
+      "colour": "red"
+    }
+  },
+  "patient": {
+    "show": {
+      "title": "Child record"
+    },
+    "events": {
+      "title": "Activity log"
+    }
+  },
   "record": {
+    "label": "Child record",
     "list": {
       "title": "Records",
       "caption": "Child Health Information Service"
@@ -119,6 +197,11 @@
     }
   },
   "session": {
+    "activity": {
+      "consent": {
+        "title": "Check consent responses"
+      }
+    },
     "list": {
       "title": "Today’s sessions",
       "description": "View all sessions taking place today."
