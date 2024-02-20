@@ -34,6 +34,7 @@ $color_app-dark-orange: darken(mix($color_nhsuk-red, $color_nhsuk-warm-yellow, 5
 @import "patients";
 @import "secondary-navigation";
 @import "status";
+@import "summary-list";
 @import "table";
 @import "tabs";
 @import "typography";

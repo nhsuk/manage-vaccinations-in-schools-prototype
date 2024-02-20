@@ -36,6 +36,7 @@
             value: patient.record.formattedNhsNumber
           },
           fullName: {},
+          preferredNames: { value: patient.preferredNames },
           dob: { value: patient.record.dobWithAge },
           sex: {},
           address: { value: patient.record.formattedAddress | nl2br },
@@ -45,12 +46,51 @@
     }) }}
 
     {% set consentDescriptionHtml %}
-      {%- set consentIcon = __("consent." + patient.consent + ".icon") -%}
-      {%- set consentColour = __("consent." + patient.consent + ".colour") -%}
-      <p class="app-status{{ " app-status--" + consentColour if consentColour }}">
-        {{- icon(consentIcon) if consentIcon -}}
-        {{- __("consent." + patient.consent + ".label") -}}
-      </p>
+      {% if replies.length %}
+        {{ status(
+          __("consent." + patient.consent.key + ".status"),
+          __("consent." + patient.consent.key + ".icon"),
+          __("consent." + patient.consent.key + ".colour")
+        ) }}
+        {% set replyRows = [] %}
+        {% for reply in replies | sort(false, false, "created") %}
+          {% set replyColour = replyStatus(reply).colour %}
+          {% set replyModifier = "grey" if reply.invalid else replyColour %}
+          {% set replyRows = replyRows | push([
+            {
+              classes: "app-table__cell-status--" + replyModifier,
+              header: __("parent.fullName.label"),
+              html: link(reply.uri, reply.parent.fullName) or "Not provided"
+            },
+            {
+              classes: "app-table__cell-status--" + replyModifier,
+              header: __("reply.created.label"),
+              html: reply.formattedCreated or "Not provided",
+              attributes: {
+                "data-sort": reply.created
+              }
+            },
+            {
+              classes: "app-table__cell-status--" + replyModifier,
+              header: __("reply.decision.label"),
+              text: replyDecisionHtml(reply) | safe
+            }
+          ]) %}
+        {% endfor %}
+
+        {{ actionTable({
+          sort: "created",
+          responsive: true,
+          head: [
+            { text: __("parent.fullName.label") },
+            { text: __("reply.created.label") },
+            { text: __("reply.decision.label") }
+          ],
+          rows: replyRows
+        }) }}
+      {% else %}
+        {{ __("consent.NoResponse.description") | nhsukMarkdown }}
+      {% endif %}
     {% endset %}
 
     {{ card({

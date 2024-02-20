@@ -10,6 +10,7 @@ import { batchRoutes } from './routes/batch.js'
 import { campaignRoutes } from './routes/campaign.js'
 import { patientRoutes } from './routes/patient.js'
 import { recordRoutes } from './routes/record.js'
+import { replyRoutes } from './routes/reply.js'
 import { sessionRoutes } from './routes/session.js'
 import { userRoutes } from './routes/user.js'
 import { vaccineRoutes } from './routes/vaccine.js'
@@ -25,6 +26,7 @@ router.use('/campaigns', campaignRoutes)
 router.use('/records', recordRoutes)
 router.use('/sessions', sessionRoutes)
 router.use('/sessions/:id/:nhsn', patientRoutes)
+router.use('/sessions/:id/:nhsn/replies', replyRoutes)
 router.use('/users', userRoutes)
 router.use('/vaccines', vaccineRoutes)
 router.use('/vaccines/:gtin', batchRoutes)

@@ -1,5 +1,6 @@
 import { Event } from '../models/event.js'
 import { Patient } from '../models/patient.js'
+import { Reply } from '../models/reply.js'
 import { Session } from '../models/session.js'
 
 export const patientController = {
@@ -7,8 +8,13 @@ export const patientController = {
     const { id, nhsn } = request.params
     const { data } = request.session
 
-    response.locals.patient = new Patient(data.patients[nhsn])
-    response.locals.session = new Session(data.sessions[id])
+    const patient = new Patient(data.patients[nhsn])
+    const replies = Object.values(patient.replies)
+    const session = new Session(data.sessions[id])
+
+    response.locals.patient = patient
+    response.locals.replies = replies.map((reply) => new Reply(reply))
+    response.locals.session = session
 
     next()
   },

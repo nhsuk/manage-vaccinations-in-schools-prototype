@@ -83,6 +83,27 @@
       "label": "Vaccines"
     }
   },
+  "child": {
+    "label": "Child",
+    "fullName": {
+      "label": "Full name"
+    },
+    "preferredFirstName": {
+      "label": "Preferred first name"
+    },
+    "preferredLastName": {
+      "label": "Preferred last name"
+    },
+    "dob": {
+      "label": "Date of birth"
+    },
+    "gpSurgery": {
+      "label": "GP surgery"
+    },
+    "urn": {
+      "label": "School"
+    }
+  },
   "consent": {
     "label": "Consent",
     "NoResponse": {
@@ -90,6 +111,7 @@
       "description": "No-one responded to our requests for consent.",
       "icon": false,
       "label": "No response",
+      "status": "No response",
       "title": "No response",
       "count": {
         "one": "%s child without a response",
@@ -101,6 +123,7 @@
       "description": "You can only vaccinate if all respondents give consent.",
       "icon": "cross",
       "label": "Conflicts",
+      "status": "Conflicting consent",
       "title": "Conflicting consent",
       "count": {
         "one": "%s child with conflicting consent responses",
@@ -112,6 +135,7 @@
       "description": "{{patient.fullName}} is safe to vaccinate.",
       "icon": "tick",
       "label": "Consent given",
+      "status": "Consent given",
       "title": "Safe to vaccinate",
       "count": {
         "one": "%s child with consent given",
@@ -123,6 +147,7 @@
       "description": "{{relationships}} refused to give consent.",
       "icon": "cross",
       "label": "Refused",
+      "status": "Consent refused",
       "title": "Consent refused",
       "count": {
         "one": "%s child with consent refused",
@@ -134,6 +159,7 @@
       "description": "Refusal to give consent confirmed by {{relationships}}.",
       "icon": "cross",
       "label": "Refusal confirmed",
+      "status": "Refusal confirmed",
       "title": "Refusal confirmed",
       "count": {
         "one": "%s child with no consent response",
@@ -150,6 +176,29 @@
     },
     "CouldNotVaccinate": {
       "colour": "red"
+    }
+  },
+  "parent": {
+    "label": "Parent or guardian",
+    "fullName": {
+      "label": "Name"
+    },
+    "sms": {
+      "label": "Get updates by text message",
+      "true": "Yes",
+      "false": "No"
+    },
+    "relationship": {
+      "label": "Relationship"
+    },
+    "email": {
+      "label": "Email address"
+    },
+    "tel": {
+      "label": "Phone number"
+    },
+    "contactPreference": {
+      "label": "Phone contact method"
     }
   },
   "patient": {
@@ -193,6 +242,33 @@
     },
     "urn": {
       "label": "School"
+    },
+    "preferredNames": {
+      "label": "Known as"
+    }
+  },
+  "reply": {
+    "label": "Response",
+    "Given": {
+      "colour": "aqua-green"
+    },
+    "Refused": {
+      "colour": "red"
+    },
+    "show": {
+      "title": "Consent response from %s"
+    },
+    "decision": {
+      "label": "Decision"
+    },
+    "healthAnswers": {
+      "label": "Answers to health questions"
+    },
+    "refusalReason": {
+      "label": "Reason for refusal"
+    },
+    "created": {
+      "label": "Response date"
     }
   },
   "session": {

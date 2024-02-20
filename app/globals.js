@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { ConsentOutcome, PatientOutcome } from './models/patient.js'
+import { ReplyDecision } from './models/reply.js'
 
 /**
  * Prototype specific global functions for use in Nunjucks templates.
@@ -59,6 +60,33 @@ export default () => {
     }
 
     return { colour, description, title }
+  }
+
+  /**
+   * Get status details for a reply
+   * @param {import('./models/reply.js').Reply} reply - Reply
+   * @returns {object} Reply status
+   */
+  globals.replyStatus = function (reply) {
+    const { __ } = this.ctx
+    const { key } = getEnumKeyAndValue(ReplyDecision, reply.decision)
+
+    return {
+      colour: __(`reply.${key}.colour`)
+    }
+  }
+
+  /**
+   * Get HTML to display a previous reply decision as invalid
+   * @param {import('./models/reply.js').Reply} reply - Reply
+   * @returns {string} HTML string
+   */
+  globals.replyDecisionHtml = function (reply) {
+    if (reply.invalid) {
+      return `<s>${reply.decision}</s><br>Invalid`
+    }
+
+    return reply.decision
   }
 
   /**
