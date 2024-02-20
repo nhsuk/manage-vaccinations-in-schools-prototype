@@ -83,32 +83,32 @@
       heading: "Reasons for refusal",
       panel: true,
       head: [
-        { text: "Reason" },
+        { text: __("reply.refusalReason.label") },
         { text: "Frequency", format: "numeric" }
       ],
       rows: [
         [
-          { text: "Vaccine contains gelatine from pigs" },
+          { text: ReplyRefusal.Gelatine },
           { text: "11.1%", format: "numeric" }
         ] if campaign.type == "flu",
         [
-          { text: "Vaccine already received" },
+          { text: ReplyRefusal.AlreadyGiven },
           { text: "2.0%", format: "numeric" }
         ],
         [
-          { text: "Vaccine will be given elsewhere" },
+          { text: ReplyRefusal.GettingElsewhere },
           { text: "3.6%", format: "numeric" }
         ],
         [
-          { text: "Medical reasons" },
+          { text: ReplyRefusal.Medical },
           { text: "1.0%", format: "numeric" }
         ],
         [
-          { text: "Personal choice" },
+          { text: ReplyRefusal.Personal },
           { text: "5.1%", format: "numeric" }
         ],
         [
-          { text: "Other" },
+          { text: ReplyRefusal.Other },
           { text: "1.1%", format: "numeric" }
         ]
       ]

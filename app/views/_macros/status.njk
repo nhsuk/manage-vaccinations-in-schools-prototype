@@ -1,0 +1,6 @@
+{%- from "_macros/icon.njk" import icon -%}
+{% macro status(text, iconName, colour) -%}
+<p class="app-status{{ " app-status--" + colour if colour }}">
+  {{- icon(iconName) if iconName }}{{ text -}}
+</p>
+{%- endmacro %}

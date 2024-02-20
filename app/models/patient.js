@@ -1,13 +1,14 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { Event, EventType } from './event.js'
 import { Record } from './record.js'
+import { getPreferredNames } from '../utils/reply.js'
 
 export class ConsentOutcome {
   static NoResponse = 'No response'
   static Inconsistent = 'Conflicts'
   static Given = 'Given'
   static Refused = 'Refused'
-  static FinalRefusal = 'Refusal confirmed'
+  // static FinalRefusal = 'Refusal confirmed'
 }
 
 export class ScreenOutcome {
@@ -27,12 +28,14 @@ export class PatientOutcome {
  * @class Patient in-session record
  * @property {string} nhsn - NHS number
  * @property {Array<import('./event.js').Event>} events - Logged events
+ * @property {object} replies - Consent replies
  * @property {ConsentOutcome} consent - Consent outcome
  * @property {ScreenOutcome} screen - Screening outcome
  * @property {PatientOutcome} outcome - Overall outcome
  * @property {import('./record.js').Record} record - CHIS record
  * @property {string} [campaign_uuid] - Campaign UUID
  * @property {string} [session_id] - Session ID
+ * @function preferredNames - Preferred name(s)
  * @function ns - Namespace
  * @function uri - URL
  */
@@ -40,6 +43,7 @@ export class Patient {
   constructor(options) {
     this.nhsn = options?.nhsn || this.#nhsn
     this.events = options?.events || []
+    this.replies = options?.replies || {}
     this.consent = options?.consent || false
     this.screen = options?.screen || false
     this.outcome = options?.outcome || PatientOutcome.NoOutcomeYet
@@ -51,6 +55,7 @@ export class Patient {
   static generate(record) {
     return new Patient({
       nhsn: record.nhsn,
+      consent: faker.helpers.arrayElement(Object.keys(ConsentOutcome)),
       record
     })
   }
@@ -70,6 +75,10 @@ export class Patient {
 
   get fullName() {
     return [this.record.firstName, this.record.lastName].join(' ')
+  }
+
+  get preferredNames() {
+    return getPreferredNames(this.replies)
   }
 
   get ns() {
@@ -101,6 +110,24 @@ export class Patient {
       name: `Invited to session at ${session.location.name}`,
       date: session.created,
       user_uuid: session.created_user_uuid
+    }
+  }
+
+  set respond(reply) {
+    if (!reply) {
+      return
+    }
+
+    const created = !this.replies[reply.uuid]
+
+    this.replies[reply.uuid] = reply
+    this.log = {
+      type: EventType.Consent,
+      name: created
+        ? `${reply.decision} by ${reply.fullName}`
+        : `${reply.decision} in updated response from ${reply.fullName}`,
+      date: created ? reply.created : new Date().toISOString(),
+      user_uuid: reply.created_user_uuid
     }
   }
 }
