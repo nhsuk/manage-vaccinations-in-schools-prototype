@@ -39,10 +39,10 @@
 
   {% set consentCardDescriptionHtml %}
     <p>
-      {{ __n("consent.NoResponse.count", patients | where("consent", ConsentOutcome.NoResponse) | length) }}<br>
-      {{ __n("consent.Given.count", patients | where("consent", ConsentOutcome.Given) | length) }}<br>
-      {{ __n("consent.Refused.count", patients | where("consent", ConsentOutcome.Refused) | length) }}<br>
-      {{ __n("consent.Inconsistent.count", patients | where("consent", ConsentOutcome.Inconsistent) | length) }}
+      {{ __n("consent.NoResponse.count", patients | where("consent.value", ConsentOutcome.NoResponse) | length) }}<br>
+      {{ __n("consent.Given.count", patients | where("consent.value", ConsentOutcome.Given) | length) }}<br>
+      {{ __n("consent.Refused.count", patients | where("consent.value", ConsentOutcome.Refused) | length) }}<br>
+      {{ __n("consent.Inconsistent.count", patients | where("consent.value", ConsentOutcome.Inconsistent) | length) }}
     </p>
   {% endset %}
 

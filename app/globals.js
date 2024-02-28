@@ -1,6 +1,8 @@
 import _ from 'lodash'
+import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import { ConsentOutcome, PatientOutcome } from './models/patient.js'
-import { ReplyDecision } from './models/reply.js'
+import { Reply, ReplyDecision } from './models/reply.js'
+import { getEnumKeyAndValue } from './utils/enum.js'
 
 /**
  * Prototype specific global functions for use in Nunjucks templates.
@@ -21,6 +23,8 @@ export default () => {
     }))
   }
 
+  globals.enumKeyAndValue = getEnumKeyAndValue
+
   /**
    * Format link
    * @param {string} href - Hyperlink reference
@@ -39,24 +43,41 @@ export default () => {
   globals.patientStatus = function (patient) {
     const { __ } = this.ctx
 
+    // Get replies
+    const replies = Object.values(patient.replies).map(
+      (reply) => new Reply(reply)
+    )
+
     let colour
     let description = false
+    let relationships = []
     let title
+
+    // Build list of reply relationships
+    for (let reply of replies) {
+      relationships.push(reply.relationship)
+    }
 
     if (patient.outcome !== PatientOutcome.NoOutcomeYet) {
       // Patient has outcome
       colour = __(`outcome.${patient.outcome}.colour`)
       title = __(`outcome.${patient.outcome}.title`)
-    } else if (patient.screen && this.consent === ConsentOutcome.Given) {
+    } else if (
+      patient.screen &&
+      patient.consent.value === ConsentOutcome.Given
+    ) {
       // Patient in triage
       colour = __(`screen.${patient.screen}.colour`)
       description = __(`screen.${patient.screen}.description`)
       title = __(`screen.${patient.screen}.title`)
     } else {
       // Patient requires consent
-      colour = __(`consent.${patient.consent}.colour`)
-      description = __(`consent.${patient.consent}.description`, patient)
-      title = __(`consent.${patient.consent}.title`)
+      colour = __(`consent.${patient.consent.key}.colour`)
+      description = __(`consent.${patient.consent.key}.description`, {
+        patient,
+        relationships: prototypeFilters.formatList(relationships)
+      })
+      title = __(`consent.${patient.consent.key}.title`)
     }
 
     return { colour, description, title }
