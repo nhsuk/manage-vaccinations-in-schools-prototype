@@ -106,7 +106,7 @@
     }
   },
   "consent": {
-    "label": "Consent",
+    "label": "Consent outcome",
     "NoResponse": {
       "colour": "grey",
       "description": "No-one responded to our requests for consent.",
