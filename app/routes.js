@@ -8,6 +8,7 @@ import { users } from './middleware/users.js'
 import { accountRoutes } from './routes/account.js'
 import { batchRoutes } from './routes/batch.js'
 import { campaignRoutes } from './routes/campaign.js'
+import { gillickRoutes } from './routes/gillick.js'
 import { patientRoutes } from './routes/patient.js'
 import { recordRoutes } from './routes/record.js'
 import { replyRoutes } from './routes/reply.js'
@@ -26,6 +27,7 @@ router.use('/campaigns', campaignRoutes)
 router.use('/records', recordRoutes)
 router.use('/sessions', sessionRoutes)
 router.use('/sessions/:id/:nhsn', patientRoutes)
+router.use('/sessions/:id/:nhsn/gillick', gillickRoutes)
 router.use('/sessions/:id/:nhsn/replies', replyRoutes)
 router.use('/users', userRoutes)
 router.use('/vaccines', vaccineRoutes)

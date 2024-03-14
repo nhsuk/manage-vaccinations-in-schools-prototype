@@ -32,6 +32,7 @@ export class PatientOutcome {
  * @property {ScreenOutcome} screen - Screening outcome
  * @property {PatientOutcome} outcome - Overall outcome
  * @property {import('./record.js').Record} record - CHIS record
+ * @property {import('./gillick.js').Gillick} [gillick] - Gillick assessment
  * @property {string} [campaign_uuid] - Campaign UUID
  * @property {string} [session_id] - Session ID
  * @function consent - Consent outcome
@@ -47,6 +48,7 @@ export class Patient {
     this.screen = options?.screen || false
     this.outcome = options?.outcome || PatientOutcome.NoOutcomeYet
     this.record = new Record(options.record)
+    this.gillick = options?.gillick || {}
     this.campaign_uuid = options.campaign_uuid
     this.session_id = options.session_id
   }
@@ -112,6 +114,19 @@ export class Patient {
       name: `Invited to session at ${session.location.name}`,
       date: session.created,
       user_uuid: session.created_user_uuid
+    }
+  }
+
+  set assess(gillick) {
+    const created = !Object.entries(this.gillick).length
+
+    this.gillick = gillick
+    this.log = {
+      type: EventType.Consent,
+      name: `${created ? 'Completed' : 'Updated'} Gillick assessment`,
+      note: gillick.assessment,
+      date: created ? gillick.created : new Date().toISOString(),
+      user_uuid: gillick.created_user_uuid
     }
   }
 

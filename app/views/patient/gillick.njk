@@ -1,0 +1,66 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("gillick." + form + ".title") %}
+{% set confirmButtonText = __("gillick." + form + ".confirm") %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.record.fullName,
+    title: title
+  }) }}
+
+  {{ insetText({
+    html: __("gillick.text", { patient: patient.record }) | nhsukMarkdown
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("gillick.q1.label") }
+    },
+    items: enumItems(GillickAnswer),
+    decorate: "gillick.q1"
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("gillick.q2.label") }
+    },
+    items: enumItems(GillickAnswer),
+    decorate: "gillick.q2"
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("gillick.q3.label") }
+    },
+    items: enumItems(GillickAnswer),
+    decorate: "gillick.q3"
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("gillick.q4.label") }
+    },
+    items: enumItems(GillickAnswer),
+    decorate: "gillick.q4"
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("gillick.q5.label") }
+    },
+    items: enumItems(GillickAnswer),
+    decorate: "gillick.q5"
+  }) }}
+
+  {{ textarea({
+    label: { text: __("gillick.notes.label") + " (Optional)" },
+    rows: 3,
+    decorate: "gillick.notes"
+  }) }}
+{% endblock %}
