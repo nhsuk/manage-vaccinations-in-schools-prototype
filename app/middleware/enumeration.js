@@ -1,4 +1,5 @@
 import { EventType } from '../models/event.js'
+import { GillickCompetent } from '../models/gillick.js'
 import { ContactPreference, ParentalRelationship } from '../models/parent.js'
 import {
   ConsentOutcome,
@@ -24,6 +25,7 @@ export const enumeration = (request, response, next) => {
   response.locals.ConsentWindow = ConsentWindow
   response.locals.ContactPreference = ContactPreference
   response.locals.EventType = EventType
+  response.locals.GillickCompetent = GillickCompetent
   response.locals.HealthQuestion = HealthQuestion
   response.locals.ParentalRelationship = ParentalRelationship
   response.locals.PatientOutcome = PatientOutcome

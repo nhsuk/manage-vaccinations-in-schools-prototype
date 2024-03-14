@@ -45,6 +45,31 @@
       })
     }) }}
 
+    {% set gillickDescriptionHtml %}
+      {% if patient.gillick.competence %}
+        {{ summaryList({
+          rows: summaryRows(gillick, {
+            competence: {
+              value: patient.gillick.competence,
+              href: patient.uri + "/gillick/edit/competence" if options.editGillick
+            },
+            assessment: {
+              value: patient.gillick.assessment | nhsukMarkdown,
+              href: patient.uri + "/gillick/edit/assessment" if options.editGillick
+            }
+          })
+        }) }}
+      {% else %}
+        {{ link(patient.uri + "/gillick/new", __("gillick.start.confirm")) | nhsukMarkdown if options.editGillick }}
+      {% endif %}
+    {% endset %}
+
+    {{ card({
+      heading: __("gillick.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: gillickDescriptionHtml
+    }) if options.showGillick }}
+
     {% set consentDescriptionHtml %}
       {% if replies.length %}
         {{ status(
@@ -60,7 +85,7 @@
             {
               classes: "app-table__cell-status--" + replyModifier,
               header: __("parent.fullName.label"),
-              html: link(reply.uri, reply.parent.fullName) or "Not provided"
+              html: "<span>" + link(reply.uri, reply.fullName) + ('<br><span class="nhsuk-u-font-size-16">' + reply.relationship + "</span></span>")
             },
             {
               classes: "app-table__cell-status--" + replyModifier,
@@ -79,6 +104,7 @@
         {% endfor %}
 
         {{ actionTable({
+          classes: "nhsuk-u-margin-bottom-4",
           sort: "created",
           responsive: true,
           head: [
@@ -91,6 +117,13 @@
       {% else %}
         {{ __("consent.NoResponse.description") | nhsukMarkdown }}
       {% endif %}
+      {% if options.editReplies %}
+        <p>
+          <a href="{{ session.uri }}/{{ patient.nhsn }}/replies/new">
+            {{ __("patient.reply.start.confirm") }}
+          </a>
+        </p>
+      {% endif %}
     {% endset %}
 
     {{ card({
@@ -98,5 +131,14 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: consentDescriptionHtml
     }) }}
+
+    {{ card({
+      heading: __("healthAnswers.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        classes: "app-summary-list--full-width",
+        rows: healthAnswerRows(patient.consentHealthAnswers)
+      })
+    }) if patient.consentHealthAnswers }}
   </div>
 {% endblock %}

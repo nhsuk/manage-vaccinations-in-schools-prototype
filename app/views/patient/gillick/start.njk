@@ -1,0 +1,23 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("gillick.start.title") %}
+{% set confirmButtonText = __("gillick.start.confirm") %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.record.fullName,
+    title: title
+  }) }}
+
+  {% filter nhsukMarkdown %}
+Can {{ patient.record.firstName }} tell you:
+
+- which vaccination they will have and how many doses they need
+- which disease the vaccination protects against
+- what could happen if they got the disease
+- how the injection will be given
+- which side effects they might experience
+
+Before you make your assessement, you should give {{ patient.record.firstName }} a chance to ask questions.
+  {% endfilter %}
+{% endblock %}

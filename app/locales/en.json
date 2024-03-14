@@ -168,6 +168,28 @@
       }
     }
   },
+  "gillick": {
+    "label": "Gillick assessment",
+    "start": {
+      "title": "Assessing Gillick competence",
+      "confirm": "Give your assessment"
+    },
+    "competence": {
+      "label": "Are they Gillick competent?"
+    },
+    "assessment": {
+      "label": "Details of your assessment"
+    },
+    "check-answers": {
+      "title": "Check and confirm",
+      "confirm": "Save changes",
+      "summary": "Gillick assessment details"
+    },
+    "success": {
+      "create": "Gillick assessment added",
+      "update": "Gillick assessment updated"
+    }
+  },
   "outcome": {
     "NoOutcomeYet": {
       "colour": "grey"

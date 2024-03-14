@@ -1,0 +1,28 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("gillick.check-answers.confirm") %}
+{% set title = __("gillick.check-answers.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.record.fullName,
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("gillick.check-answers.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(gillick, {
+        competence: {
+          value: gillick.competence,
+          href: patient.uri + "/gillick/new/competence"
+        },
+        assessment: {
+          value: gillick.assessment | nhsukMarkdown,
+          href: patient.uri + "/gillick/new/assessment"
+        }
+      })
+    })
+  }) }}
+{% endblock %}
