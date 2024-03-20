@@ -280,14 +280,53 @@
     "show": {
       "title": "Consent response from %s"
     },
+    "new": {
+      "title": "Get consent response",
+      "check-answers": {
+        "title": "Check and confirm",
+        "confirm": "Save changes"
+      }
+    },
+    "success": {
+      "create": "Consent response from {{reply.fullName}} added to [{{patient.fullName}}]({{patient.uri}})’s record",
+      "update": "Consent response from {{reply.fullName}} updated on [{{patient.fullName}}]({{patient.uri}})’s record"
+    },
+    "child": {
+      "title": "Is the child giving consent?"
+    },
+    "parent": {
+      "title": "Who are you trying to get consent from?"
+    },
+    "method": {
+      "title": "How was the response given?",
+      "label": "Response method"
+    },
     "decision": {
-      "label": "Decision"
+      "label": "Decision",
+      "title": {
+        "Child": "Does the child agree to having the {{campaign.name}} vaccine?",
+        "Parent": "Do they agree to {{patient.firstName}} having the {{campaign.name}} vaccine?"
+      }
     },
     "healthAnswers": {
-      "label": "Answers to health questions"
+      "label": "Answers to health questions",
+      "title": "Answers to health questions",
+      "details": "Give details"
     },
     "refusalReason": {
-      "label": "Reason for refusal"
+      "label": "Reason for refusal",
+      "title": "Why do they not agree?"
+    },
+    "refusalReasonOther": {
+      "label": "Give details"
+    },
+    "refusalReasonDetails": {
+      "label": "Give details",
+      "title": {
+        "AlreadyGiven": "Where did the child get their vaccination?",
+        "GettingElsewhere": "Where will the child get their vaccination?",
+        "Medical": "What medical reasons prevent the child from being vaccinated?"
+      }
     },
     "created": {
       "label": "Response date"

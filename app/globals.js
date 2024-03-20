@@ -44,9 +44,9 @@ export default () => {
     const { __ } = this.ctx
 
     // Get replies
-    const replies = Object.values(patient.replies).map(
-      (reply) => new Reply(reply)
-    )
+    const replies = Object.values(patient.replies)
+      .map((reply) => new Reply(reply))
+      .filter((reply) => !reply.invalid)
 
     let colour
     let description = false

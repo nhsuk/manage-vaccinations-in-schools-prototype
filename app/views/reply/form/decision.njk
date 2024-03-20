@@ -1,0 +1,29 @@
+{% extends "_layouts/form.njk" %}
+
+{% if reply.relationship | arrayOrStringIncludes("Child") %}
+  {% set title = __("reply.decision.title.Child", { campaign: campaign }) %}
+{% else %}
+  {% set title = __("reply.decision.title.Parent", { campaign: campaign, patient: patient }) %}
+{% endif %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: patient.record.fullName,
+          title: title
+        })
+      }
+    },
+    items: [{
+      text: "Yes",
+      value: ReplyDecision.Given
+    }, {
+      text: "No",
+      value: ReplyDecision.Refused
+    }],
+    decorate: "reply.decision"
+  }) }}
+{% endblock %}

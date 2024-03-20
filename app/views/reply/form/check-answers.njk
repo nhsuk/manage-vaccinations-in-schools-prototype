@@ -1,0 +1,93 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("reply.new.check-answers.confirm") %}
+{% set title = __("reply.new.check-answers.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.record.fullName,
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("reply.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(reply, {
+        method: {
+          value: reply.method,
+          href: reply.uri + "/new/method"
+        } if reply.method,
+        decision: {
+          value: reply.decision,
+          href: reply.uri + "/new/decision"
+        },
+        refusalReason: {
+          other: reply.refusalReasonOther if reply.refusalReason == ReplyRefusal.Other,
+          href: reply.uri + "/new/refusal-reason"
+        } if reply.refusalReason,
+        refusalReasonDetails: {
+          value: reply.refusalReasonDetails | nhsukMarkdown,
+          href: reply.uri + "/new/refusal-reason-details"
+        } if reply.refusalReasonDetails
+      })
+    })
+  }) }}
+
+  {{ card({
+    heading: __("child.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(reply.child, {
+        fullName: {},
+        preferredFirstName: {},
+        preferredLastName: {},
+        dob: {
+          value: reply.child.formattedDob
+        },
+        gpSurgery: {
+          value: reply.child.formattedGpSurgery
+        },
+        urn: {
+          value: data.schools[reply.child.urn].name
+        }
+      })
+    })
+  }) if reply.child }}
+
+  {{ card({
+    heading: __("parent.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(reply.parent, {
+        fullName: {
+          href: reply.uri + "/new/parent"
+        },
+        relationship: {
+          other: reply.parent.relationshipOther,
+          href: reply.uri + "/new/parent"
+        },
+        tel: {
+          href: reply.uri + "/new/parent"
+        }
+      })
+    })
+  }) if reply.parent }}
+
+  {% set healthAnswerRows = [] %}
+  {% for key, healthAnswer in reply.healthAnswers %}
+    {% set healthAnswerRows = healthAnswerRows | push({
+      key: { text: HealthQuestion[key] },
+      value: { text: healthAnswer or "No" }
+    }) %}
+  {% endfor %}
+
+  {{ card({
+    heading: __("reply.healthAnswers.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      classes: "app-summary-list--full-width",
+      rows: healthAnswerRows
+    })
+  }) if reply.healthAnswers }}
+{% endblock %}

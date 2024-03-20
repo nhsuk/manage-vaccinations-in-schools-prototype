@@ -1,0 +1,16 @@
+{% extends "_layouts/form.njk" %}
+
+{% set refusal = enumKeyAndValue(ReplyRefusal, reply.refusalReason) %}
+{% set title = __("reply.refusalReasonDetails.title." + refusal.key) %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.record.fullName,
+    title: title
+  }) }}
+
+  {{ textarea({
+    label: { text: __("reply.refusalReasonDetails.label") },
+    decorate: "reply.refusalReasonDetails"
+  }) }}
+{% endblock %}
