@@ -1,0 +1,25 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("reply.method.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: patient.record.fullName,
+          title: title
+        })
+      }
+    },
+    items: [{
+      text: ReplyMethod.Phone
+    }, {
+      text: ReplyMethod.InPerson
+    }, {
+      text: ReplyMethod.Paper
+    }],
+    decorate: "reply.method"
+  }) }}
+{% endblock %}

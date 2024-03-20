@@ -1,0 +1,35 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("reply.refusalReason.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: patient.record.fullName,
+          title: title
+        })
+      }
+    },
+    items: [
+      { text: ReplyRefusal.Gelatine } if campaign.type == "flu",
+      { text: ReplyRefusal.AlreadyGiven },
+      { text: ReplyRefusal.GettingElsewhere },
+      { text: ReplyRefusal.Medical },
+      { text: ReplyRefusal.Personal },
+      { divider: "or" },
+      {
+        text: ReplyRefusal.Other,
+        conditional: {
+          html: input({
+            label: { text: __("reply.refusalReasonOther.label") },
+            decorate: "reply.refusalReasonOther"
+          })
+        }
+      }
+    ],
+    decorate: "reply.refusalReason"
+  }) }}
+{% endblock %}

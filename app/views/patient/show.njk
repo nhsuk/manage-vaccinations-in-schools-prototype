@@ -119,8 +119,8 @@
       {% endif %}
       {% if options.editReplies %}
         <p>
-          <a href="{{ session.uri }}/{{ patient.nhsn }}/replies/new">
-            {{ __("patient.reply.start.confirm") }}
+          <a href="{{ patient.uri }}/replies/new">
+            {{ __("reply.new.title") }}
           </a>
         </p>
       {% endif %}

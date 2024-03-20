@@ -14,6 +14,7 @@ export class ReplyMethod {
   static Website = 'Online'
   static Phone = 'By phone'
   static Paper = 'Paper form'
+  static InPerson = 'In person'
 }
 
 export class ReplyRefusal {
@@ -42,6 +43,8 @@ export class ReplyRefusal {
  * @property {string} patient_nhsn - Patient NHS number
  * @property {string} session_id - Session ID
  * @function formattedCreated - Formatted created date
+ * @function fullName - Full name of respondent
+ * @function relationship - Relation of respondent to child
  * @function ns - Namespace
  * @function uri - URL
  */
@@ -130,6 +133,22 @@ export class Reply {
           hourCycle: 'h12'
         }).format(new Date(this.created))
       : false
+  }
+
+  get fullName() {
+    if (this.parent) {
+      return this.parent.fullName
+    } else if (this.child) {
+      return this.child.fullName
+    }
+  }
+
+  get relationship() {
+    if (this.parent?.relationship) {
+      return this.parent.relationship
+    } else if (this.child) {
+      return 'Child (Gillick competent)'
+    }
   }
 
   get ns() {

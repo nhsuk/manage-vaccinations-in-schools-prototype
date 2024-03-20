@@ -1,0 +1,34 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("reply.healthAnswers.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.record.fullName,
+    title: title
+  }) }}
+
+  {% for key in campaign.vaccine.healthQuestionKeys %}
+    {{ radios({
+      classes: "nhsuk-radios--inline",
+      fieldset: {
+        legend: { text: HealthQuestion[key] }
+      },
+      items: [
+        {
+          text: "Yes",
+          conditional: {
+            html: textarea({
+              label: { text: __("reply.healthAnswers.details") },
+              decorate: ["reply", "healthAnswers", key]
+            })
+          }
+        },
+        {
+          text: "No"
+        }
+      ],
+      decorate: ["healthAnswers", key]
+    }) }}
+  {% endfor %}
+{% endblock %}
