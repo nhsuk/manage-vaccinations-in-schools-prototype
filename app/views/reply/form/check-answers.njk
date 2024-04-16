@@ -74,20 +74,12 @@
     })
   }) if reply.parent }}
 
-  {% set healthAnswerRows = [] %}
-  {% for key, healthAnswer in reply.healthAnswers %}
-    {% set healthAnswerRows = healthAnswerRows | push({
-      key: { text: HealthQuestion[key] },
-      value: { text: healthAnswer or "No" }
-    }) %}
-  {% endfor %}
-
   {{ card({
     heading: __("reply.healthAnswers.label"),
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       classes: "app-summary-list--full-width",
-      rows: healthAnswerRows
+      rows: healthAnswerRows(reply.healthAnswers)
     })
   }) if reply.healthAnswers }}
 {% endblock %}

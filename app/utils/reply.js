@@ -4,7 +4,7 @@ import healthConditions from '../datasets/health-conditions.js'
 import { Child } from '../models/child.js'
 import { ParentalRelationship } from '../models/parent.js'
 import { ConsentOutcome } from '../models/patient.js'
-import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
+import { Reply, ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { getEnumKeyAndValue } from './enum.js'
 
 /**
@@ -21,6 +21,68 @@ const enrichWithRealisticAnswer = (key) => {
   }
 
   return false
+}
+
+/**
+ * Get consent responses with answers to health questions
+ * @param {Array} replies - Consent responses
+ * @returns {Array} Consent responses with answers to health questions
+ */
+export function getRepliesWithHealthAnswers(replies) {
+  replies = Array.isArray(replies) ? replies : [replies]
+
+  return replies.filter((reply) => {
+    for (const key in reply.healthAnswers) {
+      if (
+        reply.healthAnswers.hasOwnProperty(key) &&
+        reply.healthAnswers[key] !== false
+      ) {
+        return reply.healthAnswers[key]
+      }
+    }
+  })
+}
+
+/**
+ * Get combined answers to health questions
+ * @param {Array<import('../models/reply.js').Reply>} replies - Consent replies
+ * @returns {object|boolean} Combined answers to health questions
+ */
+export function getConsentHealthAnswers(replies) {
+  let answers = {}
+
+  const repliesWithHealthAnswers = Object.values(replies).filter(
+    (reply) => reply.healthAnswers
+  )
+
+  if (repliesWithHealthAnswers.length === 0) {
+    return false
+  }
+
+  for (let reply of repliesWithHealthAnswers) {
+    reply = new Reply(reply)
+
+    for (const [key, value] of Object.entries(reply.healthAnswers)) {
+      if (!answers[key]) {
+        answers[key] = {}
+      }
+
+      const hasSingleReply = repliesWithHealthAnswers.length === 1
+      const hasSameAnswers = repliesWithHealthAnswers.every(
+        (reply) => reply.healthAnswers[key] === value
+      )
+
+      if (hasSingleReply) {
+        answers[key][reply.relationship] = value
+      } else if (hasSameAnswers) {
+        answers[key].All = value
+      } else {
+        answers[key][reply.relationship] = value
+      }
+    }
+  }
+
+  return answers
 }
 
 /**
