@@ -189,6 +189,9 @@
       "update": "Gillick assessment updated"
     }
   },
+  "healthAnswers": {
+    "label": "All answers to health questions"
+  },
   "outcome": {
     "NoOutcomeYet": {
       "colour": "grey"
