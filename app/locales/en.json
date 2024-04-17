@@ -336,10 +336,36 @@
       "label": "Response date"
     }
   },
+  "screen": {
+    "label": "Triage",
+    "NeedsTriage": {
+      "colour": "blue",
+      "description": "You need to decide if it’s safe to vaccinate.",
+      "title": "Needs triage"
+    },
+    "DelayVaccination": {
+      "colour": "red",
+      "description": "{{user.fullNameWithRegistration}} decided that {{patient.fullName}}’s vaccination should be delayed.",
+      "title": "Delay vaccination to a later date"
+    },
+    "DoNotVaccinate": {
+      "colour": "red",
+      "description": "{{user.fullNameWithRegistration}} decided that {{patient.fullName}} should not be vaccinated.",
+      "title": "Do not vaccinate in campaign"
+    },
+    "Vaccinate": {
+      "colour": "aqua-green",
+      "description": "{{user.fullNameWithRegistration}} decided that {{patient.fullName}} is safe to vaccinate.",
+      "title": "Safe to vaccinate"
+    }
+  },
   "session": {
     "activity": {
       "consent": {
         "title": "Check consent responses"
+      },
+      "triage": {
+        "title": "Triage health questions"
       }
     },
     "list": {
@@ -433,6 +459,46 @@
       "Closed": {
         "label": "Closed {{close}}",
         "text": "Consent period closed on {{close}}"
+      }
+    }
+  },
+  "triage": {
+    "title": "Triage",
+    "label": "Is it safe to vaccinate {{patient.firstName}}?",
+    "confirm": "Save triage",
+    "success": {
+      "create": "Triage outcome updated for [{{patient.fullName}}]({{patient.uri}})",
+      "update": "Triage outcome updated for [{{patient.fullName}}]({{patient.uri}})"
+    },
+    "notes": {
+      "label": "Triage notes"
+    },
+    "outcome": {
+      "label": "Outcome",
+      "Vaccinate": "Yes, it’s safe to vaccinate",
+      "DoNotVaccinate": "No, do not vaccinate",
+      "DelayVaccination": "No, delay vaccination to a later date",
+      "NeedsTriage": "No, keep in triage"
+    },
+    "Needed": {
+      "label": "Triage needed",
+      "count": {
+        "one": "%s child needing triage",
+        "other": "[0] No children needing triage|%s children needing triage"
+      }
+    },
+    "Completed": {
+      "label": "Triage completed",
+      "count": {
+        "one": "%s child with triage completed",
+        "other": "[0] No children with triage completed|%s children with triage completed"
+      }
+    },
+    "NotNeeded": {
+      "label": "No triage needed",
+      "count": {
+        "one": "%s child with no triage needed",
+        "other": "[0] No children with no triage needed|%s children with no triage needed"
       }
     }
   },

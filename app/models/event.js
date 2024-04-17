@@ -29,6 +29,8 @@ export class Event {
     this.name = options.name
     this.note = options.note
     this.user_uuid = options?.user_uuid
+    // Information storage object
+    this.info_ = options.info_
   }
 
   get formattedDate() {

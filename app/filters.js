@@ -21,6 +21,23 @@ export default (env) => {
   }
 
   /**
+   * Convert div.nhsuk-card to form.nhsuk-card
+   * @param {string} string - HTML
+   * @returns {string} Formatted HTML
+   */
+  filters.formCard = function (string) {
+    const { filters } = this.ctx.settings.nunjucksEnv
+    const html = string
+      .replace(
+        /^\n\n<div class="nhsuk-card/,
+        '<form method="post" class="nhsuk-card'
+      )
+      .replace(/<\/div>\n$/, '</form>')
+
+    return filters.safe(html)
+  }
+
+  /**
    * Format markdown
    * @param {string} string - Markdown
    * @returns {string|undefined} HTML decorated with nhsuk-* typography classes

@@ -1,7 +1,9 @@
 import _ from 'lodash'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
+import exampleUsers from './datasets/users.js'
 import { ConsentOutcome, PatientOutcome } from './models/patient.js'
 import { Reply, ReplyDecision } from './models/reply.js'
+import { User } from './models/user.js'
 import { HealthQuestion } from './models/vaccine.js'
 import { getEnumKeyAndValue } from './utils/enum.js'
 
@@ -80,7 +82,10 @@ export default () => {
    * @returns {object} Patient status
    */
   globals.patientStatus = function (patient) {
-    const { __ } = this.ctx
+    const { __, data } = this.ctx
+
+    // Get logged in user, else use placeholder
+    const user = new User(data.token ? data.token : exampleUsers[0])
 
     // Get replies
     const replies = Object.values(patient.replies)
@@ -106,9 +111,12 @@ export default () => {
       patient.consent.value === ConsentOutcome.Given
     ) {
       // Patient in triage
-      colour = __(`screen.${patient.screen}.colour`)
-      description = __(`screen.${patient.screen}.description`)
-      title = __(`screen.${patient.screen}.title`)
+      colour = __(`screen.${patient.screen.key}.colour`)
+      description = __(`screen.${patient.screen.key}.description`, {
+        patient,
+        user
+      })
+      title = __(`screen.${patient.screen.key}.title`)
     } else {
       // Patient requires consent
       colour = __(`consent.${patient.consent.key}.colour`)

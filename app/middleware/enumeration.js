@@ -4,7 +4,8 @@ import { ContactPreference, ParentalRelationship } from '../models/parent.js'
 import {
   ConsentOutcome,
   PatientOutcome,
-  ScreenOutcome
+  ScreenOutcome,
+  TriageOutcome
 } from '../models/patient.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import {
@@ -38,6 +39,7 @@ export const enumeration = (request, response, next) => {
   response.locals.SessionFormat = SessionFormat
   response.locals.SessionTime = SessionTime
   response.locals.SessionStatus = SessionStatus
+  response.locals.TriageOutcome = TriageOutcome
   response.locals.VaccineMethod = VaccineMethod
 
   next()

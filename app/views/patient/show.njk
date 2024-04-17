@@ -140,5 +140,64 @@
         rows: healthAnswerRows(patient.consentHealthAnswers)
       })
     }) if patient.consentHealthAnswers }}
+
+    {% set triageNotesDescriptionHtml %}
+      {% for note in patient.triageNotes | reverse %}
+        <h3 class="nhsuk-heading-s nhsuk-u-margin-bottom-2">{{ note.name }}</h3>
+        {{ event(note, users) }}
+        {% if not loop.last -%}
+          <hr class="nhsuk-section-break nhsuk-section-break--visible  nhsuk-section-break--m">
+        {%- endif %}
+      {% endfor %}
+    {% endset %}
+
+    {{ card({
+      heading: __("triage.notes.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: triageNotesDescriptionHtml
+    }) if patient.triageNotes.length }}
+
+    {% set triageDescriptionHtml %}
+      {{ radios({
+        items: [{
+          text: __("triage.outcome.Vaccinate"),
+          value: ScreenOutcome.Vaccinate
+        }, {
+          divider: "or"
+        }, {
+          text: __("triage.outcome.DoNotVaccinate"),
+          value: ScreenOutcome.DoNotVaccinate
+        }, {
+          text: __("triage.outcome.DelayVaccination"),
+          value: ScreenOutcome.DelayVaccination
+        }, {
+          text: __("triage.outcome.NeedsTriage"),
+          value: ScreenOutcome.NeedsTriage
+        }],
+        decorate: "triage.outcome"
+      }) }}
+
+      {{ textarea({
+        label: {
+          classes: "nhsuk-u-margin-bottom-3 nhsuk-u-margin-top-6",
+          text: __("triage.notes.label") + " (optional)"
+        },
+        rows: 5,
+        decorate: "triage.notes"
+      }) }}
+
+      {{ button({
+        text: __("triage.confirm")
+      }) }}
+    {% endset %}
+
+    {{ card({
+      heading: __("triage.label", { patient: patient }),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: triageDescriptionHtml,
+      attributes: {
+        action: patient.uri + "/triage/new"
+      }
+    }) | formCard if options.editTriage }}
   </div>
 {% endblock %}
