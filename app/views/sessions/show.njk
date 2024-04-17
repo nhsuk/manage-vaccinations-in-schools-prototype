@@ -56,5 +56,14 @@
         descriptionHtml: consentCardDescriptionHtml
       }) }}
     </li>
+    <li class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+      {{ card({
+        clickable: true,
+        heading: __("session.activity.triage.title"),
+        headingClasses: "nhsuk-heading-m",
+        href:  session.uri + "/triage",
+        description: __n("triage.Needed.count", patients | where("triage.value", TriageOutcome.Needed) | length)
+      }) }}
+    </li>
   </ul>
 {% endblock %}

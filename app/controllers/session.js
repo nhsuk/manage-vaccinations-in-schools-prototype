@@ -28,15 +28,22 @@ export const sessionController = {
   activity(request, response) {
     const { patients } = request.app.locals
     const { activity } = request.params
-    const tab = request.query.tab || 'NoResponse'
+    let { tab } = request.query
     const { __ } = response.locals
 
-    const navigationItems = [
-      'NoResponse',
-      'Given',
-      'Refused',
-      'Inconsistent'
-    ].map((key) => ({
+    let tabs = []
+    switch (activity) {
+      case 'consent':
+        tab = tab || 'NoResponse'
+        tabs = ['NoResponse', 'Given', 'Refused', 'Inconsistent']
+        break
+      case 'triage':
+        tab = tab || 'Needed'
+        tabs = ['Needed', 'Completed', 'NotNeeded']
+        break
+    }
+
+    const navigationItems = tabs.map((key) => ({
       text: __(`${activity}.${key}.label`),
       count: patients.filter((patient) => patient[activity]?.key === key)
         .length,

@@ -13,6 +13,7 @@ import { patientRoutes } from './routes/patient.js'
 import { recordRoutes } from './routes/record.js'
 import { replyRoutes } from './routes/reply.js'
 import { sessionRoutes } from './routes/session.js'
+import { triageRoutes } from './routes/triage.js'
 import { userRoutes } from './routes/user.js'
 import { vaccineRoutes } from './routes/vaccine.js'
 
@@ -29,6 +30,7 @@ router.use('/sessions', sessionRoutes)
 router.use('/sessions/:id/:nhsn', patientRoutes)
 router.use('/sessions/:id/:nhsn/gillick', gillickRoutes)
 router.use('/sessions/:id/:nhsn/replies', replyRoutes)
+router.use('/sessions/:id/:nhsn/triage', triageRoutes)
 router.use('/users', userRoutes)
 router.use('/vaccines', vaccineRoutes)
 router.use('/vaccines/:gtin', batchRoutes)

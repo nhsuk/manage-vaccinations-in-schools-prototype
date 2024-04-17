@@ -7,6 +7,7 @@ import {
   getConsentRefusalReasons,
   getPreferredNames
 } from '../utils/reply.js'
+import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 
 export class ConsentOutcome {
   static NoResponse = 'No response'
@@ -23,6 +24,12 @@ export class ScreenOutcome {
   static Vaccinate = 'Safe to vaccinate'
 }
 
+export class TriageOutcome {
+  static Needed = 'Triage needed'
+  static Completed = 'Triage completed'
+  static NotNeeded = 'No triage needed'
+}
+
 export class PatientOutcome {
   static NoOutcomeYet = 'No outcome yet'
   static Vaccinated = 'Vaccinated'
@@ -34,13 +41,13 @@ export class PatientOutcome {
  * @property {string} nhsn - NHS number
  * @property {Array<import('./event.js').Event>} events - Logged events
  * @property {object} replies - Consent replies
- * @property {ScreenOutcome} screen - Screening outcome
  * @property {PatientOutcome} outcome - Overall outcome
  * @property {import('./record.js').Record} record - CHIS record
  * @property {import('./gillick.js').Gillick} [gillick] - Gillick assessment
  * @property {string} [campaign_uuid] - Campaign UUID
  * @property {string} [session_id] - Session ID
  * @function consent - Consent outcome
+ * @function screen - Screening outcome
  * @function preferredNames - Preferred name(s)
  * @function ns - Namespace
  * @function uri - URL
@@ -50,7 +57,6 @@ export class Patient {
     this.nhsn = options?.nhsn || this.#nhsn
     this.events = options?.events || []
     this.replies = options?.replies || {}
-    this.screen = options?.screen || false
     this.outcome = options?.outcome || PatientOutcome.NoOutcomeYet
     this.record = new Record(options.record)
     this.gillick = options?.gillick || {}
@@ -88,6 +94,18 @@ export class Patient {
 
   get consentRefusalReasons() {
     return getConsentRefusalReasons(this.replies)
+  }
+
+  get screen() {
+    return getScreenOutcome(this)
+  }
+
+  get triage() {
+    return getTriageOutcome(this)
+  }
+
+  get triageNotes() {
+    return this.events.filter((event) => event.type === EventType.Screen)
   }
 
   get preferredNames() {
@@ -158,6 +176,22 @@ export class Patient {
         : `${reply.decision} in updated response from ${reply.fullName} (${reply.relationship})`,
       date: created ? reply.created : new Date().toISOString(),
       user_uuid: reply.created_user_uuid
+    }
+  }
+
+  set triage(triage) {
+    const outcome =
+      triage.outcome === ScreenOutcome.NeedsTriage
+        ? 'Keep in triage'
+        : triage.outcome
+
+    this.log = {
+      type: EventType.Screen,
+      name: `Triaged decision: ${outcome}`,
+      note: triage.notes,
+      date: new Date().toISOString(),
+      user_uuid: triage.created_user_uuid,
+      info_: triage
     }
   }
 }
