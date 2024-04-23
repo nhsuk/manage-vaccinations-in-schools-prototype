@@ -128,6 +128,25 @@ export const getConsentOutcome = (patient) => {
 }
 
 /**
+ * Get combined refusal reasons
+ * @param {Array<import('../models/reply.js').Reply>} replies - Consent replies
+ * @returns {object} Refusal reasons
+ */
+export const getConsentRefusalReasons = (replies) => {
+  let reasons = []
+
+  for (const reply of Object.values(replies)) {
+    if (!reply.refusalReason) {
+      continue
+    }
+
+    reasons.push(reply.refusalReason)
+  }
+
+  return reasons ? [...new Set(reasons)] : []
+}
+
+/**
  * Get faked answers for health questions needed for a vaccine
  * @param {import('../models/vaccine.js').Vaccine} vaccine - Vaccine
  * @returns {object} Health answers
