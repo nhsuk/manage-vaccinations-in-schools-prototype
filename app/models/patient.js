@@ -4,6 +4,7 @@ import { Record } from './record.js'
 import {
   getConsentHealthAnswers,
   getConsentOutcome,
+  getConsentRefusalReasons,
   getPreferredNames
 } from '../utils/reply.js'
 
@@ -83,6 +84,10 @@ export class Patient {
 
   get consentHealthAnswers() {
     return getConsentHealthAnswers(this.replies)
+  }
+
+  get consentRefusalReasons() {
+    return getConsentRefusalReasons(this.replies)
   }
 
   get preferredNames() {

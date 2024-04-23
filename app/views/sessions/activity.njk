@@ -1,5 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
+{% set showRefusalReasons = tab == "Refused" or tab == "Inconsistent" %}
 {% set title = __("session.activity." + activity + ".title") %}
 
 {% block beforeContent %}
@@ -58,7 +59,11 @@
           "data-filter": patient.record.dob | date({ dateStyle: "short" }),
           "data-sort": patient.record.dob
         }
-      }
+      },
+      {
+        header: __("reply.refusalReason.label"),
+        html: patient.consentRefusalReasons | join("<br>")
+      } if showRefusalReasons
     ]) %}
   {% endfor %}
 
@@ -82,7 +87,13 @@
           attributes: {
             "data-col": "dob"
           }
-        }
+        },
+        {
+          text: __("reply.refusalReason.label"),
+          attributes: {
+            "no-sort": "no-sort"
+          }
+        } if showRefusalReasons
       ],
       rows: patientRows
     }) %}
