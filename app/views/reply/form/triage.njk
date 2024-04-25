@@ -1,0 +1,27 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("triage.label", patient.record.firstName) %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.record.fullName,
+    title: title
+  }) }}
+
+  {{ radios({
+    fieldset: {
+      legend: { text: __("triage.outcome.label") }
+    },
+    items: enumItems(ScreenOutcome),
+    decorate: "triage.outcome"
+  }) }}
+
+  {{ textarea({
+    label: {
+      classes: "nhsuk-u-margin-bottom-3 nhsuk-u-margin-top-6",
+      text: __("triage.notes.label") + " (optional)"
+    },
+    rows: 5,
+    decorate: "triage.notes"
+  }) }}
+{% endblock %}

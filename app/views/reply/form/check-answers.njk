@@ -82,4 +82,23 @@
       rows: healthAnswerRows(reply.healthAnswers)
     })
   }) if reply.healthAnswers }}
+
+  {{ card({
+    heading: __("triage.label", patient.record.firstName),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(triage, {
+        outcome: {
+          label: __("triage.outcome.label"),
+          value: triage.outcome,
+          href: reply.uri + "/new/triage"
+        },
+        notes: {
+          label: __("triage.notes.label"),
+          value: triage.notes,
+          href: reply.uri + "/new/triage"
+        }
+      })
+    })
+  }) if triage.outcome }}
 {% endblock %}
