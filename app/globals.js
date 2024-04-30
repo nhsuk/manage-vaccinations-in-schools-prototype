@@ -5,6 +5,7 @@ import { ConsentOutcome, PatientOutcome } from './models/patient.js'
 import { Reply, ReplyDecision } from './models/reply.js'
 import { User } from './models/user.js'
 import { HealthQuestion } from './models/vaccine.js'
+import { Vaccination } from './models/vaccination.js'
 import { getEnumKeyAndValue } from './utils/enum.js'
 
 /**
@@ -102,10 +103,10 @@ export default () => {
       relationships.push(reply.relationship)
     }
 
-    if (patient.outcome !== PatientOutcome.NoOutcomeYet) {
+    if (patient.outcome.value !== PatientOutcome.NoOutcomeYet) {
       // Patient has outcome
-      colour = __(`outcome.${patient.outcome}.colour`)
-      title = __(`outcome.${patient.outcome}.title`)
+      colour = __(`outcome.${patient.outcome.key}.colour`)
+      title = __(`outcome.${patient.outcome.key}.title`)
     } else if (
       patient.screen &&
       patient.consent.value === ConsentOutcome.Given
@@ -155,6 +156,29 @@ export default () => {
     }
 
     return reply.decision
+  }
+
+  /**
+   * Show reason could not vaccinate
+   * @param {import('./models/patient.js').Patient} patient - Patient
+   * @returns {string} Reason could not vaccinate
+   */
+  globals.couldNotVaccinateReason = function (patient) {
+    const { __ } = this.ctx
+
+    if (
+      patient?.screen?.value &&
+      patient?.screen?.value !== ScreenOutcome.Vaccinate
+    ) {
+      return __(`screen.${patient.screen.key}.status`)
+    } else if (patient?.consent?.value !== ConsentOutcome.Given) {
+      return __(`consent.${patient.consent.key}.status`)
+    } else if (patient.vaccinations) {
+      const vaccinations = Object.values(patient.vaccinations).map(
+        (vaccination) => new Vaccination(vaccination)
+      )
+      return vaccinations[0].outcome
+    }
   }
 
   /**

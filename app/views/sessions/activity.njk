@@ -1,6 +1,9 @@
 {% extends "_layouts/default.njk" %}
 
 {% set showRefusalReasons = tab == "Refused" or tab == "Inconsistent" %}
+{% set showCouldNotVaccinateReason = tab == "CouldNotVaccinate" %}
+{% set showRegistration = tab == "Register" %}
+{% set showStatus = activity == "capture" or tab == "NoOutcomeYet" %}
 {% set title = __("session.activity." + activity + ".title") %}
 
 {% block beforeContent %}
@@ -43,10 +46,41 @@
     }) | nhsukMarkdown
   }) if activity == "consent" }}
 
+  {{ insetText({
+    classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4",
+    html: __("session.batch_id.text", {
+      batch: data.token.batch[session.id][0],
+      session: session,
+      vaccine: campaign.vaccine
+    }) | nhsukMarkdown
+  }) if activity == "capture" and data.token.batch[session.id] }}
+
   {% include "sessions/_secondary-navigation.njk" %}
 
   {% set patientRows = [] %}
   {% for patient in patients | sort(false, false, "firstName") %}
+    {% set registerButtonHtml %}
+      <form class="app-button-group app-button-group--table" action="{{ patient.uri }}/registration/edit?tab={{tab}}" method="post">
+        {{ button({
+          classes: "nhsuk-button--secondary app-button--small",
+          text: __("registration.update.true.confirm"),
+          decorate: "patient.registered",
+          value: "true",
+          attributes: {
+            "aria-label": __("registration.update.true.label", { patient: patient })
+          }
+        }) }}
+        {{ button({
+          classes: "nhsuk-button--warning app-button--small",
+          text: __("registration.update.false.confirm"),
+          decorate: "patient.registered",
+          value: "false",
+          attributes: {
+            "aria-label": __("registration.update.false.label", { patient: patient })
+          }
+        }) }}
+      </form>
+    {% endset %}
     {% set patientRows = patientRows | push([
       {
         header: __("record.fullName.label"),
@@ -63,7 +97,19 @@
       {
         header: __("reply.refusalReason.label"),
         html: patient.consentRefusalReasons | join("<br>")
-      } if showRefusalReasons
+      } if showRefusalReasons,
+      {
+        header: "Reason",
+        html: couldNotVaccinateReason(patient)
+      } if showCouldNotVaccinateReason,
+      {
+        header: __("capture.label"),
+        html: patientStatus(patient).title
+      } if showStatus,
+      {
+        header: __("registration.label"),
+        html: registerButtonHtml
+      } if showRegistration
     ]) %}
   {% endfor %}
 
@@ -93,7 +139,22 @@
           attributes: {
             "no-sort": "no-sort"
           }
-        } if showRefusalReasons
+        } if showRefusalReasons,
+        {
+          text: "Reason"
+        } if showCouldNotVaccinateReason,
+        {
+          text: __("capture.label"),
+          attributes: {
+            "no-sort": "no-sort"
+          }
+        } if showStatus,
+        {
+          text: __("registration.label"),
+          attributes: {
+            "no-sort": "no-sort"
+          }
+        } if showRegistration
       ],
       rows: patientRows
     }) %}

@@ -1,0 +1,36 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("vaccination.batch_id.title") %}
+
+{% block form %}
+  {% set batches = [] %}
+  {% for batch in batchItems | sort(false, false, "id") %}
+    {% set batches = batches | push({
+      html: __("vaccination.batch_id.batch", { batch: batch }),
+      value: batch.id,
+      conditional: {
+        html: checkboxes({
+          items: [{
+            text: __("vaccination.batch_id.default"),
+            value: batch.id
+          }],
+          decorate: "data.token.batch." + session.id
+        })
+      }
+    }) %}
+  {% endfor %}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: patient.record.fullName,
+          title: title
+        })
+      }
+    },
+    items: batches,
+    decorate: "vaccination.batch_id"
+  }) }}
+{% endblock %}

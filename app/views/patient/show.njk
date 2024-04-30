@@ -3,6 +3,27 @@
 {% set title = patient.record.fullName %}
 {% set view = "show" %}
 
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: "Home",
+      href: "/dashboard"
+    }, {
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }, {
+      text: data.campaigns[session.campaign_uuid].name,
+      href: "/campaigns/" + session.campaign_uuid
+    }, {
+      text: session.location.name,
+      href: "/sessions/" + session.id
+    }, {
+      text: __("session.activity." + activity + ".title"),
+      href: "/sessions/" + session.id + "/" + activity
+    }]
+  }) }}
+{% endblock %}
+
 {% block content %}
   <div class="nhsuk-u-width-three-quarters">
     {{ super() }}
@@ -18,11 +39,41 @@
       {{ __("patient.show.title") }}
     </h2>
 
+    {% set statusDescriptionHtml %}
+      {{ patientStatus(patient).description | nhsukMarkdown }}
+
+      {% for vaccination in vaccinations %}
+        {{ summaryList({
+          rows: summaryRows(vaccination, {
+            outcome: {},
+            vaccine: {
+              value: campaign.vaccine.brandWithName
+            } if vaccination.batch_id,
+            method: {},
+            site: {},
+            formattedDose: {},
+            batch_id: {
+              classes: "app-u-monospace"
+            },
+            formattedCreated: {},
+            created_user_uuid: {
+              value: users[vaccination.created_user_uuid].fullNameWithRegistration
+            } if vaccination.created_user_uuid,
+            location: {},
+            protocol: {},
+            notes: {
+              value: patient.vaccination.notes | nhsukMarkdown
+            } if patient.vaccination.notes
+          })
+        }) }}
+      {% endfor %}
+    {% endset %}
+
     {{ card({
       classes: "app-card--" + patientStatus(patient).colour,
       heading: patientStatus(patient).title,
       headingClasses: "nhsuk-heading-m",
-      description: patientStatus(patient).description,
+      descriptionHtml: statusDescriptionHtml,
       feature: true
     }) }}
 
@@ -179,7 +230,6 @@
 
       {{ textarea({
         label: {
-          classes: "nhsuk-u-margin-bottom-3 nhsuk-u-margin-top-6",
           text: __("triage.notes.label") + " (optional)"
         },
         rows: 5,
@@ -199,5 +249,57 @@
         action: patient.uri + "/triage/new"
       }
     }) | formCard if options.editTriage }}
+
+    {% set preScreenDescriptionHtml %}
+      {{ checkboxes({
+        fieldset: {
+          legend: {
+            text: __("preScreen.questions.label", { patient: patient })
+          }
+        },
+        items: preScreenQuestionItems,
+        decorate: "preScreen.questions"
+      }) }}
+
+      {{ textarea({
+        label: {
+          text: __("preScreen.notes.label")
+        },
+        rows: 3,
+        decorate: "preScreen.notes"
+      }) }}
+
+      <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+
+      {{ radios({
+        fieldset: {
+          legend: {
+            classes: "nhsuk-fieldset__legend--m",
+            text: __("preScreen.outcome.label", { patient: patient })
+          }
+        },
+        items: [{
+          text: __("preScreen.outcome.administer"),
+          value: "administer"
+        }, {
+          text: __("preScreen.outcome.decline"),
+          value: "decline"
+        }],
+        decorate: "preScreen.outcome"
+      }) }}
+
+      {{ button({
+        text: __("preScreen.confirm")
+      }) }}
+    {% endset %}
+
+    {{ card({
+      heading: __("preScreen.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: preScreenDescriptionHtml,
+      attributes: {
+        action: patient.uri + "/pre-screen"
+      }
+    }) | formCard if options.showPreScreen }}
   </div>
 {% endblock %}

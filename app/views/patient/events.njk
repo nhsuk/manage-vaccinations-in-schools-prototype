@@ -3,6 +3,27 @@
 {% set title = patient.record.fullName + " – " + __("patient.events.title") %}
 {% set view = "events" %}
 
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: "Home",
+      href: "/dashboard"
+    }, {
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }, {
+      text: data.campaigns[session.campaign_uuid].name,
+      href: "/campaigns/" + session.campaign_uuid
+    }, {
+      text: session.location.name,
+      href: "/sessions/" + session.id
+    }, {
+      text: __("session.activity." + activity + ".title"),
+      href: "/sessions/" + session.id + "/" + activity
+    }]
+  }) }}
+{% endblock %}
+
 {% block content %}
   <div class="nhsuk-u-width-three-quarters">
     {{ super() }}

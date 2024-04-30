@@ -84,6 +84,45 @@
       "label": "Vaccines"
     }
   },
+  "capture": {
+    "label": "Status",
+    "title": "Record vaccinations",
+    "Register": {
+      "label": "Register",
+      "count": {
+        "one": "%s child still to register",
+        "other": "[0] No children still to register|%s children still to register"
+      }
+    },
+    "GetConsent": {
+      "label": "Get consent",
+      "count": {
+        "one": "%s child without a consent response",
+        "other": "[0] No children without a response|%s children without a response"
+      }
+    },
+    "CheckRefusal": {
+      "label": "Check refusal",
+      "count": {
+        "one": "%s child with refused consent",
+        "other": "[0] No children with refused consent|%s children with refused consent"
+      }
+    },
+    "NeedsTriage": {
+      "label": "Triage",
+      "count": {
+        "one": "%s child needing triage",
+        "other": "[0] No children needing triage|%s children needing triage"
+      }
+    },
+    "Vaccinate": {
+      "label": "Vaccinate",
+      "count": {
+        "one": "%s child ready to vaccinate",
+        "other": "[0] No children ready to vaccinate|%s children ready to vaccinate"
+      }
+    }
+  },
   "child": {
     "label": "Child",
     "fullName": {
@@ -195,13 +234,30 @@
   },
   "outcome": {
     "NoOutcomeYet": {
-      "colour": "grey"
+      "colour": "grey",
+      "label": "No outcome yet",
+      "count": {
+        "one": "%s child without an outcome yet",
+        "other": "[0] No children without an outcome|%s children without an outcome yet"
+      }
     },
     "Vaccinated": {
-      "colour": "green"
+      "colour": "green",
+      "label": "Vaccinated",
+      "title": "Vaccinated",
+      "count": {
+        "one": "%s child vaccinated",
+        "other": "[0] No children vaccinated|%s children vaccinated"
+      }
     },
     "CouldNotVaccinate": {
-      "colour": "red"
+      "colour": "red",
+      "label": "Not vaccinated",
+      "title": "Do not vaccinate",
+      "count": {
+        "one": "%s child could not be vaccinated",
+        "other": "[0] No children could not be vaccinated|%s children could not be vaccinated"
+      }
     }
   },
   "parent": {
@@ -273,6 +329,58 @@
       "label": "Known as"
     }
   },
+  "registration": {
+    "label": "Attendance",
+    "edit": {
+      "title": "Update attendance",
+      "label": "Is {{patient.fullName}} attending this session?",
+      "true": "Yes, they are attending this session",
+      "false": "No, they are absent from this session",
+      "undefined": "They have not been registered yet",
+      "confirm": "Save changes"
+    },
+    "update": {
+      "true": {
+        "confirm": "Attending",
+        "label": "Register {{patient.fullName}} as attending"
+      },
+      "false": {
+        "confirm": "Absent",
+        "label": "Register {{patient.fullName}} as absent"
+      },
+      "success": {
+        "GetConsent": "[{{patient.fullName}}]({{patient.uri}}) is attending the session. They still need consent to vaccinate.",
+        "CheckRefusal": "[{{patient.fullName}}]({{patient.uri}}) needs to leave the session because their parent or guardian refused to give consent.",
+        "NeedsTriage": "[{{patient.fullName}}]({{patient.uri}}) is attending the session. A nurse needs to triage their record.",
+        "Vaccinate": "[{{patient.fullName}}]({{patient.uri}}) is attending the session. They are safe to vaccinate.",
+        "Register": "[{{patient.fullName}}]({{patient.uri}}) is absent from the session.",
+        "Absent": "[{{patient.fullName}}]({{patient.uri}}) is absent from the session."
+      }
+    },
+    "Present": {
+      "label": "Attending",
+      "count": {
+        "one": "%s child attending this session",
+        "other": "[0] No children attending this session|%s children attending this session"
+      },
+      "name": "Registered as attending the session at {{location.name}}"
+    },
+    "Absent": {
+      "label": "Absent",
+      "count": {
+        "one": "%s child absent from this session",
+        "other": "[0] No children absent from this session|%s children absent from this session"
+      },
+      "name": "Registered as absent from the session at {{location.name}}"
+    },
+    "Pending": {
+      "label": "Not registered yet",
+      "count": {
+        "one": "%s child still to register",
+        "other": "[0] No children still to register|%s children still to register"
+      }
+    }
+  },
   "reply": {
     "label": "Response",
     "Given": {
@@ -341,21 +449,25 @@
     "NeedsTriage": {
       "colour": "blue",
       "description": "You need to decide if it’s safe to vaccinate.",
+      "status": "Needs triage",
       "title": "Needs triage"
     },
     "DelayVaccination": {
       "colour": "red",
       "description": "{{user.fullNameWithRegistration}} decided that {{patient.fullName}}’s vaccination should be delayed.",
+      "status": "Vaccination delayed",
       "title": "Delay vaccination to a later date"
     },
     "DoNotVaccinate": {
       "colour": "red",
       "description": "{{user.fullNameWithRegistration}} decided that {{patient.fullName}} should not be vaccinated.",
+      "status": "Do not vaccinate in this campaign",
       "title": "Do not vaccinate in campaign"
     },
     "Vaccinate": {
       "colour": "aqua-green",
       "description": "{{user.fullNameWithRegistration}} decided that {{patient.fullName}} is safe to vaccinate.",
+      "status": "Safe to vaccinate",
       "title": "Safe to vaccinate"
     }
   },
@@ -366,7 +478,21 @@
       },
       "triage": {
         "title": "Triage health questions"
+      },
+      "capture": {
+        "title": "Record session outcomes",
+        "description": "Register attendance and record vaccinations given."
+      },
+      "outcome": {
+        "title": "Review session outcomes",
+        "description": "See how many vaccinations have been given."
       }
+    },
+    "batch_id": {
+      "title": "Select a default batch for this session",
+      "text": "You are currently using {{vaccine.brand}} batch <span class=\"app-u-monospace\">{{batch}}</span>. [Change]({{session.uri}}/default-batch)",
+      "label": "Batch",
+      "batch": "<span class=\"app-u-monospace\">{{batch.id}}</span> (expires {{batch.formattedExpires}})"
     },
     "list": {
       "title": "Today’s sessions",
@@ -408,8 +534,8 @@
     "cohort": {
       "label": "Cohort",
       "count": {
-        "one": "%s child in cohort",
-        "other": "[0] No children in cohort|%s children in cohort"
+        "one": "%s child in the cohort",
+        "other": "[0] No children in the cohort|%s children in the cohort"
       }
     },
     "date": {
@@ -549,6 +675,102 @@
     },
     "registrar": {
       "label": "Professional body"
+    }
+  },
+  "preScreen": {
+    "label": "Pre-screening questions",
+    "questions": {
+      "label": "Have you asked {{patient.firstName}} if:"
+    },
+    "outcome": {
+      "label": "Is {{patient.firstName}} ready to vaccinate in this session?",
+      "text": "Before continuing, ask the child:",
+      "administer": "Yes, they are ready to vaccinate in this session",
+      "decline": "No, they cannot be vaccinated in this session"
+    },
+    "confirm": "Continue",
+    "notes": {
+      "label": "Pre-screening notes (optional)"
+    }
+  },
+  "vaccination": {
+    "new": {
+      "check-answers": {
+        "title": "Check and confirm",
+        "confirm": "Save changes",
+        "summary": "Details"
+      }
+    },
+    "success": {
+      "create": "Vaccination recorded",
+      "update": "Vaccination record updated"
+    },
+    "formattedCreated": {
+      "label": "Date and time"
+    },
+    "created_user_uuid": {
+      "label": "Nurse"
+    },
+    "location": {
+      "label": "Location"
+    },
+    "outcome": {
+      "label": "Outcome",
+      "Vaccinated": "Vaccinated",
+      "PartVaccinated": "Partially vaccinated",
+      "AbsentSchool": "They were absent from school",
+      "AbsentSession": "They were absent from the session",
+      "AlreadyVaccinated": "They have already had the vaccine",
+      "Contraindications": "They had contraindications",
+      "Refused": "They refused it",
+      "Unwell": "They were not well enough"
+    },
+    "method": {
+      "label": "Method"
+    },
+    "site": {
+      "label": "Site"
+    },
+    "formattedDose": {
+      "label": "Dose"
+    },
+    "protocol": {
+      "label": "Protocol"
+    },
+    "batch_id": {
+      "title": "Which batch did you use?",
+      "label": "Batch ID",
+      "batch": "<span class=\"app-u-monospace\">{{batch.id}}</span> (expires {{batch.formattedExpires}})",
+      "default": "Default to this batch for this session"
+    },
+    "vaccine": {
+      "label": "Vaccine"
+    },
+    "notes": {
+      "label": "Notes",
+      "hint": "For example, if the child had a reaction to the vaccine"
+    },
+    "administer": {
+      "title": "Tell us how the vaccination was given"
+    },
+    "dosage": {
+      "title": "Did they get the full dose?",
+      "full": "Yes, they got the full dose",
+      "half": "No, they got half a dose"
+    },
+    "decline": {
+      "title": "Why was the {{vaccine.name}} vaccine not given?"
+    },
+    "created": {
+      "title": "When was the vaccination given?"
+    },
+    "created-date": {
+      "label": "Date",
+      "hint": "For example, 27 10 2025"
+    },
+    "created-time": {
+      "label": "Time",
+      "hint": "For example, 13 15"
     }
   },
   "vaccine": {
