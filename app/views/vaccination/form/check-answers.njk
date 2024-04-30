@@ -1,0 +1,59 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("vaccination.new.check-answers.confirm") %}
+{% set title = __("vaccination.new.check-answers.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.record.fullName,
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("vaccination.new.check-answers.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(vaccination, {
+        outcome: {
+          href: vaccination.uri + "/new/decline" if vaccination.outcome != "Vaccinated" and vaccination.outcome != "Partially vaccinated"
+        },
+        vaccine: {
+          value: campaign.vaccine.brandWithName
+        },
+        method: {
+          href: vaccination.uri + "/new/administer" if campaign.vaccine.method == VaccineMethod.Injection
+        },
+        site: {
+          href: vaccination.uri + "/new/administer" if campaign.vaccine.method == VaccineMethod.Injection
+        },
+        formattedDose: {
+          href: vaccination.uri + "/new/administer" if campaign.vaccine.method == VaccineMethod.Nasal
+        },
+        batch_id: {
+          classes: "app-u-monospace",
+          href: vaccination.uri + "/new/batch-id"
+        },
+        formattedCreated: {
+          href: vaccination.uri + "/new/created"
+        },
+        created_user_uuid: {
+          value: users[vaccination.created_user_uuid].fullNameWithRegistration
+        } if vaccination.created_user_uuid,
+        location: {},
+        protocol: {}
+      })
+    })
+  }) }}
+
+  {{ card({
+    headingHtml: " ",
+    descriptionHtml: textarea({
+      label: {
+        classes: "nhsuk-label--m nhsuk-u-margin-bottom-2",
+        text: __("vaccination.notes.label")
+      },
+      hint: { text: __("vaccination.notes.hint") },
+      decorate: "vaccination.notes"
+    })
+  }) }}
+{% endblock %}

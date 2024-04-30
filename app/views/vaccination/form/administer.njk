@@ -1,0 +1,64 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("vaccination.administer.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.record.fullName,
+    title: title
+  }) if campaign.vaccine.method == VaccineMethod.Injection }}
+
+  {{ input({
+    type: "hidden",
+    value: "full",
+    decorate: "vaccination.dosage"
+  }) if campaign.vaccine.method == VaccineMethod.Injection else radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: patient.record.fullName,
+          title: __("vaccination.dosage.title")
+        })
+      }
+    },
+    items: [{
+      text: __("vaccination.dosage.full"),
+      value: "full"
+    }, {
+      text: __("vaccination.dosage.half"),
+      value: "half"
+    }],
+    decorate: "vaccination.dosage"
+  }) }}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("vaccination.method.label")
+      }
+    },
+    items: methodItems,
+    decorate: "vaccination.method"
+  }) if campaign.vaccine.method == VaccineMethod.Injection else input({
+    type: "hidden",
+    value: VaccinationMethod.Nasal,
+    decorate: "vaccination.method"
+  }) }}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("vaccination.site.label")
+      }
+    },
+    items: siteItems,
+    decorate: "vaccination.site"
+  }) if campaign.vaccine.method == VaccineMethod.Injection else input({
+    type: "hidden",
+    value: VaccinationSite.Nose,
+    decorate: "vaccination.site"
+  }) }}
+{% endblock %}

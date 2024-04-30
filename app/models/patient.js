@@ -7,7 +7,14 @@ import {
   getConsentRefusalReasons,
   getPreferredNames
 } from '../utils/reply.js'
+import {
+  getCaptureOutcome,
+  getRegistrationOutcome,
+  getPatientOutcome
+} from '../utils/capture.js'
+import { stringToBoolean } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
+import { Vaccination, VaccinationOutcome } from './vaccination.js'
 
 export class ConsentOutcome {
   static NoResponse = 'No response'
@@ -30,6 +37,15 @@ export class TriageOutcome {
   static NotNeeded = 'No triage needed'
 }
 
+export class CaptureOutcome {
+  static Register = 'Register attendance'
+  static GetConsent = 'Get consent'
+  static CheckRefusal = 'Check refusal'
+  static NeedsTriage = 'Triage'
+  static DoNotVaccinate = 'Do not vaccinate'
+  static Vaccinate = 'Vaccinate'
+}
+
 export class PatientOutcome {
   static NoOutcomeYet = 'No outcome yet'
   static Vaccinated = 'Vaccinated'
@@ -41,13 +57,17 @@ export class PatientOutcome {
  * @property {string} nhsn - NHS number
  * @property {Array<import('./event.js').Event>} events - Logged events
  * @property {object} replies - Consent replies
- * @property {PatientOutcome} outcome - Overall outcome
  * @property {import('./record.js').Record} record - CHIS record
+ * @property {boolean} [registered] - Checked in?
  * @property {import('./gillick.js').Gillick} [gillick] - Gillick assessment
+ * @property {Array<import('./vaccination.js').Vaccination>} [vaccinations] - Vaccinations
  * @property {string} [campaign_uuid] - Campaign UUID
  * @property {string} [session_id] - Session ID
  * @function consent - Consent outcome
  * @function screen - Screening outcome
+ * @function registration - Registration status
+ * @function capture - Capture outcome
+ * @function outcome - Overall outcome
  * @function preferredNames - Preferred name(s)
  * @function ns - Namespace
  * @function uri - URL
@@ -57,9 +77,10 @@ export class Patient {
     this.nhsn = options?.nhsn || this.#nhsn
     this.events = options?.events || []
     this.replies = options?.replies || {}
-    this.outcome = options?.outcome || PatientOutcome.NoOutcomeYet
     this.record = new Record(options.record)
+    this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick || {}
+    this.vaccinations = options?.vaccinations || {}
     this.campaign_uuid = options.campaign_uuid
     this.session_id = options.session_id
   }
@@ -105,7 +126,21 @@ export class Patient {
   }
 
   get triageNotes() {
-    return this.events.filter((event) => event.type === EventType.Screen)
+    return this.events
+      .map((event) => new Event(event))
+      .filter((event) => event.type === EventType.Screen)
+  }
+
+  get registration() {
+    return getRegistrationOutcome(this)
+  }
+
+  get capture() {
+    return getCaptureOutcome(this)
+  }
+
+  get outcome() {
+    return getPatientOutcome(this)
   }
 
   get preferredNames() {
@@ -192,6 +227,50 @@ export class Patient {
       date: new Date().toISOString(),
       user_uuid: triage.created_user_uuid,
       info_: triage
+    }
+  }
+
+  set register(registration) {
+    this.registered = registration.registered
+    this.log = {
+      type: EventType.Capture,
+      name: registration.name,
+      date: new Date().toISOString(),
+      user_uuid: registration.created_user_uuid
+    }
+  }
+
+  set preScreen(interview) {
+    this.log = {
+      type: EventType.Screen,
+      name: 'Completed pre-screening checks',
+      note: interview.notes,
+      date: new Date().toISOString(),
+      user_uuid: interview.user_uuid
+    }
+  }
+
+  set capture(vaccination) {
+    const created = !this.vaccinations[vaccination.uuid]
+    vaccination = new Vaccination(vaccination)
+
+    let name
+    if (
+      vaccination.outcome === VaccinationOutcome.Vaccinated ||
+      vaccination.outcome === VaccinationOutcome.PartVaccinated
+    ) {
+      name = `Vaccinated with ${vaccination.formattedName}`
+    } else {
+      name = `Unable to vaccinate: ${vaccination.outcome}`
+    }
+
+    this.vaccinations[vaccination.uuid] = vaccination
+    this.log = {
+      type: EventType.Capture,
+      name,
+      note: vaccination.notes,
+      date: created ? vaccination.created : new Date().toISOString(),
+      user_uuid: vaccination.user_uuid
     }
   }
 }

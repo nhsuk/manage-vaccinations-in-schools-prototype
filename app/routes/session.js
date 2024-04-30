@@ -11,7 +11,13 @@ router.post('/:id/?:form(new)/check-answers', sessionController.update)
 router.all('/:id*', sessionController.read)
 
 router.get('/:id', sessionController.show)
-router.get('/:id/:activity(consent|triage)', sessionController.activity)
+router.get(
+  '/:id/:activity(consent|triage|capture|outcome)',
+  sessionController.activity
+)
+
+router.get('/:id/default-batch', sessionController.showBatch)
+router.post('/:id/default-batch', sessionController.updateBatch)
 
 router.get('/:id/?:form(edit)', sessionController.edit)
 router.post('/:id/?:form(edit)', sessionController.update)

@@ -21,6 +21,7 @@ const registrationFormats = {
  * @property {string} lastName - Last/family name
  * @property {string} email - Email address
  * @property {boolean} admin - Has admin user role
+ * @property {object} batch - Default batches
  * @property {Registrar} [registrar] - Regulator who registered user
  * @property {string} [registration] - Registration number
  * @function fullName - Get full name
@@ -36,6 +37,7 @@ export class User {
     this.lastName = options.lastName
     this.email = options.email
     this.admin = options?.admin
+    this.batch = options?.batch || {}
     this.registrar = options?.registrar
     this.registration = options?.registration
   }

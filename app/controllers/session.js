@@ -1,4 +1,5 @@
 import { wizard } from 'nhsuk-prototype-rig'
+import { Batch } from '../models/batch.js'
 import { Campaign } from '../models/campaign.js'
 import { Patient } from '../models/patient.js'
 import { Record } from '../models/record.js'
@@ -41,6 +42,20 @@ export const sessionController = {
         tab = tab || 'Needed'
         tabs = ['Needed', 'Completed', 'NotNeeded']
         break
+      case 'capture':
+        tab = tab || 'Register'
+        tabs = [
+          'Register',
+          'GetConsent',
+          'CheckRefusal',
+          'NeedsTriage',
+          'Vaccinate'
+        ]
+        break
+      case 'outcome':
+        tab = tab || 'Vaccinated'
+        tabs = ['Vaccinated', 'CouldNotVaccinate', 'NoOutcomeYet']
+        break
     }
 
     const navigationItems = tabs.map((key) => ({
@@ -57,15 +72,39 @@ export const sessionController = {
       activity,
       navigationItems,
       patients: patients.filter((patient) => patient[activity]?.key === tab),
+      allPatients: patients,
       tab
     })
+  },
+
+  showBatch(request, response) {
+    const { campaign } = request.app.locals
+    const { data } = request.session
+
+    response.locals.batchItems = Object.values(data.batches)
+      .map((batch) => new Batch(batch))
+      .filter((batch) => batch.vaccine.type === campaign.type)
+
+    response.render('sessions/batch-id')
+  },
+
+  updateBatch(request, response) {
+    const { session } = request.app.locals
+
+    response.redirect(`${session.uri}/outcome`)
   },
 
   read(request, response, next) {
     const { id } = request.params
     const { data } = request.session
 
-    request.app.locals.session = new Session(data.sessions[id])
+    const session = new Session(data.sessions[id])
+    const campaign =
+      session.campaign_uuid &&
+      new Campaign(data.campaigns[session.campaign_uuid])
+
+    request.app.locals.session = session
+    request.app.locals.campaign = campaign
     request.app.locals.patients = Object.values(data.patients)
       .filter((patient) => patient.session_id === id)
       .map((patient) => new Patient(patient))
