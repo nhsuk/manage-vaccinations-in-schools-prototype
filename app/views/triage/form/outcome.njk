@@ -1,0 +1,40 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("triage.edit.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.record.fullName,
+    title: title
+  }) }}
+
+  {{ radios({
+    fieldset: {
+      legend: { text: __("triage.label", { patient: patient }) }
+    },
+    items: [{
+      text: __("triage.outcome.Vaccinate"),
+      value: ScreenOutcome.Vaccinate
+    }, {
+      divider: "or"
+    }, {
+      text: __("triage.outcome.DoNotVaccinate"),
+      value: ScreenOutcome.DoNotVaccinate
+    }, {
+      text: __("triage.outcome.DelayVaccination"),
+      value: ScreenOutcome.DelayVaccination
+    }, {
+      text: __("triage.outcome.NeedsTriage"),
+      value: ScreenOutcome.NeedsTriage
+    }],
+    decorate: "triage.outcome"
+  }) }}
+
+  {{ textarea({
+    label: {
+      text: __("triage.notes.label") + " (optional)"
+    },
+    rows: 5,
+    decorate: "triage.notes"
+  }) }}
+{% endblock %}

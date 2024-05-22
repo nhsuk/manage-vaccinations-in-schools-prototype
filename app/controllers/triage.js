@@ -1,4 +1,4 @@
-import { Patient } from '../models/patient.js'
+import { Patient, ScreenOutcome } from '../models/patient.js'
 import { SessionStatus } from '../models/session.js'
 
 export const triageController = {
@@ -25,5 +25,22 @@ export const triageController = {
     } else {
       response.redirect(`/sessions/${id}/${activity || 'triage'}`)
     }
+  },
+
+  readForm(request, response, next) {
+    const { patient } = response.locals
+
+    response.locals.paths = {
+      back: `${patient.uri}`,
+      next: `${patient.uri}/triage/new`
+    }
+
+    next()
+  },
+
+  showForm(request, response) {
+    const { view } = request.params
+
+    response.render(`triage/form/${view}`)
   }
 }
