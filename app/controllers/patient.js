@@ -58,6 +58,10 @@ export const patientController = {
       editTriage:
         patient.triage?.value === TriageOutcome.Completed &&
         patient.outcome?.value !== PatientOutcome.Vaccinated,
+      showTriage:
+        patient.consentHealthAnswers &&
+        patient.triage?.value === TriageOutcome.Needed &&
+        patient.outcome?.value === PatientOutcome.NoOutcomeYet,
       editRegistration:
         patient.consent?.value === ConsentOutcome.Given &&
         patient.triage?.value !== TriageOutcome.Needed &&

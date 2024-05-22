@@ -592,6 +592,9 @@
     "title": "Triage",
     "label": "Is it safe to vaccinate {{patient.firstName}}?",
     "confirm": "Save triage",
+    "edit": {
+      "title": "Update triage outcome"
+    },
     "success": {
       "create": "Triage outcome updated for [{{patient.fullName}}]({{patient.uri}})",
       "update": "Triage outcome updated for [{{patient.fullName}}]({{patient.uri}})"

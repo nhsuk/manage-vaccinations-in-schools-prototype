@@ -67,6 +67,12 @@
           })
         }) }}
       {% endfor %}
+
+      {{ button({
+        classes: "nhsuk-button--secondary nhsuk-u-margin-0",
+        text: __("triage.edit.title"),
+        href: patient.uri + "/triage/edit/outcome"
+      }) if options.editTriage }}
     {% endset %}
 
     {{ card({
@@ -248,7 +254,7 @@
       attributes: {
         action: patient.uri + "/triage/new"
       }
-    }) | formCard if options.editTriage }}
+    }) | formCard if options.showTriage }}
 
     {% set preScreenDescriptionHtml %}
       {{ checkboxes({
