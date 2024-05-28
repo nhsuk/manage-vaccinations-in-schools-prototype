@@ -1,6 +1,7 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { Batch } from '../models/batch.js'
 import { Patient } from '../models/patient.js'
+import { User } from '../models/user.js'
 import {
   Vaccination,
   VaccinationMethod,
@@ -22,6 +23,18 @@ export const vaccinationController = {
     const { id, nhsn } = request.params
 
     response.redirect(`/sessions/${id}/${nhsn}`)
+  },
+
+  edit(request, response) {
+    const { vaccination } = request.app.locals
+    const { data } = request.session
+
+    request.app.locals.vaccination = new Vaccination({
+      ...vaccination, // Previous values
+      ...data.wizard // Wizard values,
+    })
+
+    response.render('vaccination/edit')
   },
 
   new(request, response) {
@@ -60,7 +73,7 @@ export const vaccinationController = {
       ...data.wizard, // Wizard values (new flow)
       ...request.body.vaccination, // New values (edit flow)
       ...(vaccination.batch_id && { vaccine_gtin: campaign.vaccine.gtin }),
-      ...(data.token && { created_user_uuid: data.token.uuid })
+      created_user_uuid: data.vaccination.created_user_uuid || data.token?.uuid
     })
 
     delete data.wizard
@@ -129,6 +142,23 @@ export const vaccinationController = {
         value
       }))
 
+    response.locals.userItems = Object.entries(data.users)
+      .map(([key, value]) => {
+        const user = new User(value)
+
+        return {
+          text: user.fullNameWithRegistration,
+          value: key
+        }
+      })
+      .sort((a, b) => {
+        const textA = a.text.toUpperCase()
+        const textB = b.text.toUpperCase()
+        if (textA < textB) return -1
+        if (textA > textB) return 1
+        return 0
+      })
+
     response.locals.declineItems = Object.entries(VaccinationOutcome)
       .filter(
         ([, value]) =>
@@ -145,9 +175,9 @@ export const vaccinationController = {
   },
 
   showForm(request, response) {
-    const { view } = request.params
+    const { form, view } = request.params
 
-    response.render(`vaccination/form/${view}`)
+    response.render(`vaccination/form/${view}`, { form })
   },
 
   updateForm(request, response) {

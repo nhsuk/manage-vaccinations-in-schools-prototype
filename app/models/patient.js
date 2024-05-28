@@ -259,7 +259,9 @@ export class Patient {
       vaccination.outcome === VaccinationOutcome.Vaccinated ||
       vaccination.outcome === VaccinationOutcome.PartVaccinated
     ) {
-      name = `Vaccinated with ${vaccination.formattedName}`
+      name = created
+        ? `Vaccinated with ${vaccination.formattedName}`
+        : `Vaccination record for ${vaccination.formattedName} updated`
     } else {
       name = `Unable to vaccinate: ${vaccination.outcome}`
     }

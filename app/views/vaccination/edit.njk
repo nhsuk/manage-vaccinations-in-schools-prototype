@@ -1,0 +1,52 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("vaccination.edit.confirm") %}
+{% set paths = { back: vaccination.uri } %}
+{% set title = __("vaccination.edit.title") %}
+
+{% block form %}
+  {{ super() }}
+
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("vaccination.edit.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(vaccination, {
+        outcome: {},
+        vaccine: {
+          value: campaign.vaccine.brandWithName
+        },
+        method: {
+          href: vaccination.uri + "/edit/method" if campaign.vaccine.method == VaccineMethod.Injection
+        },
+        site: {
+          href: vaccination.uri + "/edit/site" if campaign.vaccine.method == VaccineMethod.Injection
+        },
+        formattedDose: {
+          href: vaccination.uri + "/edit/dose" if campaign.vaccine.method == VaccineMethod.Nasal
+        },
+        batch_id: {
+          classes: "app-u-monospace",
+          href: vaccination.uri + "/edit/batch-id"
+        },
+        formattedCreated: {
+          href: vaccination.uri + "/edit/created"
+        },
+        created_user_uuid: {
+          value: users[vaccination.created_user_uuid].fullNameWithRegistration,
+          href: vaccination.uri + "/edit/created-user-uuid"
+        },
+        location: {},
+        protocol: {},
+        notes: {
+          value: vaccination.notes | nhsukMarkdown,
+          href: vaccination.uri + "/edit/notes"
+        }
+      })
+    })
+  }) }}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("vaccination.dose.title") %}
+
+{% block form %}
+  {{ input({
+    classes: "nhsuk-input--width-5",
+    label: {
+      classes: "nhsuk-label--l",
+      caption: patient.record.fullName,
+      isPageHeading: true,
+      text: title
+    },
+    suffix: "ml",
+    decorate: "vaccination.dose"
+  }) }}
+{% endblock %}
