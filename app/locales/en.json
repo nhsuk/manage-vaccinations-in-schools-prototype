@@ -703,6 +703,11 @@
         "summary": "Details"
       }
     },
+    "edit": {
+      "title": "Edit vaccination record",
+      "confirm": "Save changes",
+      "summary": "Vaccination details"
+    },
     "success": {
       "create": "Vaccination recorded",
       "update": "Vaccination record updated"
@@ -728,10 +733,12 @@
       "Unwell": "They were not well enough"
     },
     "method": {
-      "label": "Method"
+      "label": "Method",
+      "title": "Vaccination method"
     },
     "site": {
-      "label": "Site"
+      "label": "Site",
+      "title": "Vaccination site"
     },
     "formattedDose": {
       "label": "Dose"
@@ -750,7 +757,8 @@
     },
     "notes": {
       "label": "Notes",
-      "hint": "For example, if the child had a reaction to the vaccine"
+      "hint": "For example, if the child had a reaction to the vaccine",
+      "title": "Notes"
     },
     "administer": {
       "title": "Tell us how the vaccination was given"
@@ -759,6 +767,9 @@
       "title": "Did they get the full dose?",
       "full": "Yes, they got the full dose",
       "half": "No, they got half a dose"
+    },
+    "dose": {
+      "title": "Dose"
     },
     "decline": {
       "title": "Why was the {{vaccine.name}} vaccine not given?"
@@ -773,6 +784,9 @@
     "created-time": {
       "label": "Time",
       "hint": "For example, 13 15"
+    },
+    "created-user-uuid": {
+      "title": "Which nurse gave the vaccination?"
     }
   },
   "vaccine": {
