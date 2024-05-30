@@ -1,7 +1,11 @@
 import _ from 'lodash'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import exampleUsers from './datasets/users.js'
-import { ConsentOutcome, PatientOutcome } from './models/patient.js'
+import {
+  ConsentOutcome,
+  PatientOutcome,
+  ScreenOutcome
+} from './models/patient.js'
 import { Reply, ReplyDecision } from './models/reply.js'
 import { User } from './models/user.js'
 import { HealthQuestion } from './models/vaccine.js'
@@ -103,29 +107,53 @@ export default () => {
       relationships.push(reply.relationship)
     }
 
-    if (patient.outcome.value !== PatientOutcome.NoOutcomeYet) {
-      // Patient has outcome
+    if (patient.outcome.value === PatientOutcome.NoOutcomeYet) {
+      // If no outcome, use status colour and title for consent/triage outcome
+
+      if (patient.screen.value === ScreenOutcome.NeedsTriage) {
+        // Patient needs triage
+        colour = __(`screen.${patient.screen.key}.colour`)
+        description = __(`screen.${patient.screen.key}.description`, {
+          patient,
+          user
+        })
+        title = __(`screen.${patient.screen.key}.title`)
+      } else {
+        // Patient requires consent
+        colour = __(`consent.${patient.consent.key}.colour`)
+        description = __(`consent.${patient.consent.key}.description`, {
+          patient,
+          relationships: prototypeFilters.formatList(relationships)
+        })
+        title = __(`consent.${patient.consent.key}.title`)
+      }
+    } else {
+      // If outcome, use status colour and title for that outcome
       colour = __(`outcome.${patient.outcome.key}.colour`)
       title = __(`outcome.${patient.outcome.key}.title`)
-    } else if (
-      patient.screen &&
-      patient.consent.value === ConsentOutcome.Given
-    ) {
-      // Patient in triage
-      colour = __(`screen.${patient.screen.key}.colour`)
-      description = __(`screen.${patient.screen.key}.description`, {
-        patient,
-        user
-      })
-      title = __(`screen.${patient.screen.key}.title`)
-    } else {
-      // Patient requires consent
-      colour = __(`consent.${patient.consent.key}.colour`)
-      description = __(`consent.${patient.consent.key}.description`, {
-        patient,
-        relationships: prototypeFilters.formatList(relationships)
-      })
-      title = __(`consent.${patient.consent.key}.title`)
+
+      // If could not vaccinate, provide a description for why
+      if (patient.outcome.value === PatientOutcome.CouldNotVaccinate) {
+        if (
+          patient.screen.value === ScreenOutcome.DelayVaccination ||
+          patient.screen.value === ScreenOutcome.DoNotVaccinate
+        ) {
+          // Patient had a triage outcome that prevented vaccination
+          description = __(`screen.${patient.screen.key}.description`, {
+            patient,
+            user
+          })
+        } else if (
+          // Patient wasn’t able to get consent for vaccination
+          patient.consent.value === ConsentOutcome.Inconsistent ||
+          patient.consent.value === ConsentOutcome.Refused
+        ) {
+          description = __(`consent.${patient.consent.key}.description`, {
+            patient,
+            relationships: prototypeFilters.formatList(relationships)
+          })
+        }
+      }
     }
 
     return { colour, description, title }
