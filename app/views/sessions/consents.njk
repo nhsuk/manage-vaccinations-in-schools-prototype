@@ -1,0 +1,91 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("session.consents.title") %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: "Home",
+      href: "/dashboard"
+    }, {
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }, {
+      text: data.campaigns[session.campaign_uuid].name,
+      href: "/campaigns/" + session.campaign_uuid
+    }, {
+      text: session.location.name,
+      href: "/sessions/" + session.id
+    }]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: title
+  }) }}
+
+  {% set consentRows = [] %}
+  {% for consent in consents | sort(false, false, "created") %}
+    {% set consentRows = consentRows | push([
+      {
+        header: __("consent.created.label"),
+        text: consent.formattedCreated
+      },
+      {
+        header: __("consent.child.label"),
+        text: consent.child.fullName
+      },
+      {
+        header: __("consent.parent.label"),
+        text: consent.parent.fullName
+      },
+      {
+        header: __("consent.actions.label"),
+        html: actionList({
+          items: [{
+            text: "Find match",
+            href: "#"
+          }, {
+            text: "Archive",
+            href: "#"
+          }]
+        })
+      }
+    ]) %}
+  {% endfor %}
+
+  {% if consents.length %}
+    {{ actionTable({
+      classes: "app-patients",
+      tableClasses: "app-patients__table",
+      sort: "created",
+      caption: __n("session.consents.count", consents.length),
+      captionClasses: "nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal nhsuk-u-font-size-19",
+      responsive: true,
+      head: [
+        {
+          text: __("consent.created.label")
+        },
+        {
+          text: __("consent.child.label")
+        },
+        {
+          text: __("consent.parent.label")
+        },
+        {
+          text: __("consent.actions.label")
+        }
+      ],
+      rows: consentRows
+    }) }}
+  {% else %}
+    <div class="app-patients">
+      <p class="app-patients__no-results nhsuk-caption-m">
+        {{ __n("session.consents.count", consents.length) }}
+      </p>
+    </div>
+  {% endif %}
+{% endblock %}

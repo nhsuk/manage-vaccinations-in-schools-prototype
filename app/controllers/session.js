@@ -3,6 +3,7 @@ import { Batch } from '../models/batch.js'
 import { Campaign } from '../models/campaign.js'
 import { Patient } from '../models/patient.js'
 import { Record } from '../models/record.js'
+import { Reply } from '../models/reply.js'
 import { Session, SessionStatus } from '../models/session.js'
 
 export const sessionController = {
@@ -75,6 +76,16 @@ export const sessionController = {
       allPatients: patients,
       tab
     })
+  },
+
+  consents(request, response) {
+    const { session } = request.app.locals
+
+    response.locals.consents = Object.values(session.consents).map(
+      (consent) => new Reply(consent)
+    )
+
+    response.render('sessions/consents')
   },
 
   showBatch(request, response) {
