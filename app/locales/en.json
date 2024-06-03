@@ -165,7 +165,7 @@
       "status": "Conflicting consent",
       "title": "Conflicting consent",
       "count": {
-        "one": "%s child with conflicting consent responses",
+        "one": "%s child with conflicting consent",
         "other": "[0] No children with conflicting consent|%s children with conflicting consent"
       }
     },
@@ -204,6 +204,18 @@
         "one": "%s child with no consent response",
         "other": "[0] No children with no consent response|%s children with no consent response"
       }
+    },
+    "created": {
+      "label": "Response date"
+    },
+    "child": {
+      "label": "Child"
+    },
+    "parent": {
+      "label": "Parent"
+    },
+    "actions": {
+      "label": "Actions"
     }
   },
   "gillick": {
@@ -402,11 +414,16 @@
       "create": "Consent response from {{reply.fullName}} added to [{{patient.fullName}}]({{patient.uri}})’s record",
       "update": "Consent response from {{reply.fullName}} updated on [{{patient.fullName}}]({{patient.uri}})’s record"
     },
+    "created": {
+      "label": "Response date"
+    },
     "child": {
-      "title": "Is the child giving consent?"
+      "title": "Is the child giving consent?",
+      "label": "Child"
     },
     "parent": {
-      "title": "Who are you trying to get consent from?"
+      "title": "Who are you trying to get consent from?",
+      "label": "Parent or guardian"
     },
     "method": {
       "title": "How was the response given?",
@@ -438,9 +455,6 @@
         "GettingElsewhere": "Where will the child get their vaccination?",
         "Medical": "What medical reasons prevent the child from being vaccinated?"
       }
-    },
-    "created": {
-      "label": "Response date"
     }
   },
   "screen": {
@@ -584,6 +598,13 @@
       "Closed": {
         "label": "Closed {{close}}",
         "text": "Consent period closed on {{close}}"
+      }
+    },
+    "consents": {
+      "title": "Review unmatched consent responses",
+      "count": {
+        "one": "%s unmatched response",
+        "other": "[0] No unmatched responses|%s unmatched responses"
       }
     }
   },

@@ -67,7 +67,16 @@
         }) }}
       </li>
     {% else %}
-      <li class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+      <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          clickable: true,
+          heading: __("session.consents.title"),
+          headingClasses: "nhsuk-heading-m",
+          href:  session.uri + "/consents",
+          description: __n("session.consents.count", session.consents | length)
+        }) }}
+      </li>
+      <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
         {{ card({
           clickable: true,
           heading: __("session.activity.consent.title"),
@@ -76,7 +85,7 @@
           descriptionHtml: consentCardDescriptionHtml
         }) }}
       </li>
-      <li class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+      <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
         {{ card({
           clickable: true,
           heading: __("session.activity.triage.title"),

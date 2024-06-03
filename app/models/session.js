@@ -45,6 +45,7 @@ export class SessionStatus {
  * @property {number} [reminder] - Date to send reminders
  * @property {object} [close] - Date consent window closes
  * @property {SessionStatus} [status] - Status (planned, in progress, archived)
+ * @property {object} [consents] – (Unmatched) consent replies
  * @property {string} [campaign_uuid] - Campaign UUID
  * @function formattedDate - Formatted date
  * @function consentWindow - Consent window (open, opening or closed)
@@ -66,6 +67,7 @@ export class Session {
     this.reminder = options?.reminder
     this.close = options?.close
     this.status = options?.status
+    this.consents = options?.consents || {}
     this.campaign_uuid = options?.campaign_uuid
     // dateInput objects
     this.date_ = options?.date_

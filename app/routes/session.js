@@ -15,6 +15,7 @@ router.get(
   '/:id/:activity(consent|triage|capture|outcome)',
   sessionController.activity
 )
+router.get('/:id/consents', sessionController.consents)
 
 router.get('/:id/default-batch', sessionController.showBatch)
 router.post('/:id/default-batch', sessionController.updateBatch)

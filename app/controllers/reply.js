@@ -7,9 +7,11 @@ import { Reply, ReplyDecision, ReplyRefusal } from '../models/reply.js'
 export const replyController = {
   read(request, response, next) {
     const { uuid } = request.params
-    const { patient } = response.locals
+    const { patient, session } = response.locals
 
-    request.app.locals.reply = new Reply(patient.replies[uuid])
+    const reply = patient.replies[uuid] || session.consents[uuid]
+
+    request.app.locals.reply = new Reply(reply)
 
     next()
   },
