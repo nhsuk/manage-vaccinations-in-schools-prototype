@@ -1,0 +1,31 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = HealthQuestion[key] | replace ("the child", "your child") %}
+{% set hint = __("consent.healthAnswers.hint." + key) %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          title: title
+        })
+      }
+    },
+    hint: { text: hint } if hint,
+    items: [{
+      text: __("consent.healthAnswers.yes"),
+      conditional: {
+        html: textarea({
+          label: { text: __("consent.healthAnswers.details") },
+          decorate: ["consent", "healthAnswers", key]
+        })
+      }
+    },
+    {
+      text: __("consent.healthAnswers.no")
+    }],
+    decorate: ["healthAnswers", key]
+  }) }}
+{% endblock %}

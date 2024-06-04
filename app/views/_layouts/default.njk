@@ -27,10 +27,12 @@
     service: {
       name: serviceName,
       href: "/dashboard" if not public else "/"
-    },
+    } if not transactionalService,
     homeHref: "/dashboard" if not public else "/",
     showNav: "true" if not public else "false",
     showSearch: "false",
+    transactional: true if transactionalService,
+    transactionalService: transactionalService,
     primaryLinks: navigation.primaryLinks
   }) }}
 {% endblock %}
@@ -56,6 +58,14 @@
     copyright: "© NHS England",
     links: [
       {
+        label: 'Homepage',
+        URL: '/'
+      },
+      {
+        label: 'CHIS records',
+        URL: '/records'
+      },
+      {
         label: "Clear session data",
         URL: "/clear-session-data"
       } if useAutoStoreData,
@@ -64,9 +74,12 @@
         URL: "/feature-flags"
       },
       {
-        label: "CHIS records",
-        URL: "/records"
+        label: "Design history",
+        URL: "https://childhood-vaccinations.designhistory.app"
       }
-    ]
+    ],
+    linksColumn2: navigation.footerLinks[0],
+    linksColumn3: navigation.footerLinks[1],
+    metaLinks: navigation.footerLinks[2]
   }) }}
 {% endblock %}

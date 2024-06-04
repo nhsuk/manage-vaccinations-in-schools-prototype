@@ -1,0 +1,34 @@
+Dear {{ consent.parent.fullName }},
+
+{{ consent.child.fullAndPreferredNames }} had their {{ campaign.name | replace("Flu", "flu") }} vaccination at {{ session.location.name }} today.{% if data.schools[session.urn].phase == "Primary" %} They were very brave.{% endif %}
+
+We suggest you record the following details {% if data.schools[session.urn].phase == "Primary" %}in their red book (also known as their personal child health record){% else %}somewhere{% endif %}:
+
+- Vaccination: {{ campaign.vaccine.name }}
+- Vaccine: {{ campaign.vaccine.brand }}
+- Date of vaccination: {{ session.formattedDate }}
+- Batch number: AB1234
+
+## Your child might have some side effects
+
+Your child might have some of the following side effects:
+
+{% if campaign.vaccine.method == VaccinationMethod.Nasal %}
+- a runny or blocked nose
+- a headache
+- general tiredness
+- loss of appetite
+
+{% else %}
+- bruising or itching at the site of the injection
+- a high temperature, or feeling hot and shivery
+- feeling sick (nausea)
+- pain in the arms, hands, fingers
+
+{% endif %}
+
+If you’re concerned about your child’s reaction to the vaccine, contact your GP in the usual way.
+
+{{ data.organisation.name }}<br>
+{{ data.organisation.email }}<br>
+{{ data.organisation.tel }}

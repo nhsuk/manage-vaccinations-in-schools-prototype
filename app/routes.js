@@ -8,6 +8,7 @@ import { users } from './middleware/users.js'
 import { accountRoutes } from './routes/account.js'
 import { batchRoutes } from './routes/batch.js'
 import { campaignRoutes } from './routes/campaign.js'
+import { consentRoutes } from './routes/consent.js'
 import { gillickRoutes } from './routes/gillick.js'
 import { patientRoutes } from './routes/patient.js'
 import { preScreenRoutes } from './routes/pre-screen.js'
@@ -28,6 +29,7 @@ router.use(flash(), navigation, notification, users)
 
 router.use('/account', accountRoutes)
 router.use('/campaigns', campaignRoutes)
+router.use('/consents', consentRoutes)
 router.use('/records', recordRoutes)
 router.use('/sessions', sessionRoutes)
 router.use('/sessions/:id/:nhsn', patientRoutes)

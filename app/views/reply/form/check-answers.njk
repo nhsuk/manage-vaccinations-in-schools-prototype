@@ -79,7 +79,10 @@
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       classes: "app-summary-list--full-width",
-      rows: healthAnswerRows(reply.healthAnswers)
+      rows: healthAnswerRows(
+        reply.healthAnswers,
+        reply.uri + "/new/health-answers"
+      )
     })
   }) if reply.healthAnswers }}
 

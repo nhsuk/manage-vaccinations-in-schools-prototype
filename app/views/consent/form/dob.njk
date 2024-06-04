@@ -1,0 +1,18 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("consent.child.dob.title") %}
+
+{% block form %}
+  {{ dateInput({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          title: title
+        })
+      }
+    },
+    hint: { text: __("consent.child.dob.hint") },
+    decorate: "consent.child.dob_"
+  }) }}
+{% endblock %}

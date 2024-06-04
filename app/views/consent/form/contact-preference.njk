@@ -1,0 +1,35 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("consent.parent.contactPreference.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          title: title
+        })
+      }
+    },
+    hint: { text: __("consent.parent.contactPreference.hint") },
+    items: [{
+      text: __("consent.parent.contactPreference.sms")
+    }, {
+      text: __("consent.parent.contactPreference.voice")
+    }, {
+      text: __("consent.parent.contactPreference.other"),
+      conditional: {
+        html: textarea({
+          label: { text: __("consent.parent.contactPreferenceOther.label") },
+          decorate: "consent.parent.contactPreferenceOther"
+        })
+      }
+    }, {
+      divider: "or"
+    }, {
+      text: __("consent.parent.contactPreference.none")
+    }],
+    decorate: "consent.parent.contactPreference"
+  }) }}
+{% endblock %}

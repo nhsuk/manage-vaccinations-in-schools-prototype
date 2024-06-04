@@ -8,6 +8,7 @@ import {
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient.js'
+import { GPRegistered } from '../models/record.js'
 import { RegistrationOutcome } from '../models/registration.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import {
@@ -36,6 +37,7 @@ export const enumeration = (request, response, next) => {
   response.locals.ContactPreference = ContactPreference
   response.locals.EventType = EventType
   response.locals.GillickCompetent = GillickCompetent
+  response.locals.GPRegistered = GPRegistered
   response.locals.HealthQuestion = HealthQuestion
   response.locals.ParentalRelationship = ParentalRelationship
   response.locals.PatientOutcome = PatientOutcome

@@ -1,0 +1,47 @@
+{% extends "_layouts/default.njk" %}
+
+{% block skipLink %}{% endblock %}
+{% block header %}{% endblock %}
+
+{% set template = data.template or defaultTemplate %}
+
+{% set navigationItems = [] %}
+{% for theme, items in templates %}
+  {% for item in items %}
+    {% set navigationItems = navigationItems | push({
+      text: __("texts." + dir + "." + item + ".label"),
+      href: "?template=" + item,
+      current: template === item,
+      theme: theme
+    }) %}
+  {% endfor %}
+{% endfor %}
+
+{% set cardDescriptionHtml %}
+  <article class="app-message--text">
+    {{ __("texts." + dir + "." + template + ".text", placeholders) | nhsukMarkdown }}
+  </article>
+{% endset %}
+
+{% block content %}
+  {{ heading({
+    caption: caption,
+    title: title or "Text messages"
+  }) }}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-one-quarter">
+      {{ xGovukSubNavigation({
+        items: navigationItems
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-three-quarters">
+      {{ card({
+        heading: __("texts." + dir + "." + template + ".name"),
+        headingClasses: "nhsuk-heading-s",
+        descriptionHtml: cardDescriptionHtml
+      }) }}
+    <div>
+  </div>
+{% endblock %}

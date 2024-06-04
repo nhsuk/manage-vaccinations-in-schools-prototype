@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import { stringToBoolean } from '../utils/string.js'
 
 export class ContactPreference {
   static None = 'No preference'
@@ -22,6 +23,7 @@ export class ParentalRelationship {
  * @property {string} uuid - UUID
  * @property {string} fullName - Full name
  * @property {ParentalRelationship} relationship - Relationship to child
+ * @property {boolean} hasParentalResponsibility - Has parental responsibility
  * @property {string} relationshipOther - Other relationship to child
  * @property {string} email - Email address
  * @property {string} tel - Phone number
@@ -38,9 +40,12 @@ export class Parent {
     this.fullName = options.fullName
     this.relationship = options.relationship
     this.relationshipOther = options.relationshipOther
+    this.hasParentalResponsibility = stringToBoolean(
+      options.hasParentalResponsibility
+    )
     this.email = options.email
-    this.tel = options.tel || ''
-    this.sms = options.sms || false
+    this.tel = options.tel
+    this.sms = stringToBoolean(options.sms) || false
     this.contactPreference = options?.contactPreference
     this.contactPreferenceOther = options?.contactPreferenceOther
   }

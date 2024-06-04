@@ -27,6 +27,11 @@ export default {
       description: 'Show message about feature flags on the home page.'
     }
   },
+  organisation: {
+    name: 'ACME Child Immunisation Service',
+    email: 'acme-sais@nhs.net',
+    tel: '0117 496 1234'
+  },
   patients,
   records,
   schools,

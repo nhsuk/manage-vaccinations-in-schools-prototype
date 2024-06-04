@@ -134,10 +134,25 @@
     "preferredLastName": {
       "label": "Preferred last name"
     },
+    "preferredName": {
+      "label": "Preferred name"
+    },
     "dob": {
       "label": "Date of birth"
     },
+    "formattedDob": {
+      "label": "Date of birth"
+    },
+    "address": {
+      "label": "Home address"
+    },
+    "formattedAddress": {
+      "label": "Home address"
+    },
     "gpSurgery": {
+      "label": "GP surgery"
+    },
+    "formattedGpSurgery": {
       "label": "GP surgery"
     },
     "urn": {
@@ -206,17 +221,248 @@
         "other": "[0] No children with no consent response|%s children with no consent response"
       }
     },
+    "start": {
+      "flu": {
+        "title": "Give or refuse consent for a flu vaccination",
+        "label": "Flu consent",
+        "description": "The vaccination helps to protect children against flu. It also protects others who are vulnerable to flu, such as babies and older people."
+      },
+      "hpv": {
+        "title": "Give or refuse consent for an HPV vaccination",
+        "label": "HPV consent",
+        "description": "The HPV vaccine helps to prevent HPV related cancers from developing in boys and girls.\n\nThe number of doses you need depends on your age and how well your immune system works. Young people usually only need 1 dose."
+      },
+      "3-in-1-men-acwy": {
+        "title": "Give or refuse consent for the 3-in-1 teenage booster and MenACWY vaccine",
+        "label": "3-in-1 consent",
+        "description": "The 3-in-1 teenage booster, also known as the Td/IPV vaccine, boosts protection against 3 diseases: tetanus, diptheria and polio.\n\nThe MenACWY vaccine, which helps to prevent meningitis and septicaemia, is normally given at the same time as the 3-in-1.\n\nBoth vaccines are offered to all young people aged 13 to 15 (in school Years 9 and 10). They’re given as injections into the upper arm."
+      },
+      "confirm": "Start now",
+      "language": {
+        "title": "Use this service in another language",
+        "en": "Change language (English)"
+      }
+    },
+    "closed": {
+      "title": "You can no longer use this service",
+      "description": "The deadline for responding has passed. This means you can no longer take part in the pilot.\n\nIf you have any questions, you can contact {{organisation.email}}."
+    },
+    "unavailable": {
+      "title": "You cannot give or refuse consent through this service",
+      "description": "This service is being piloted with a small number of schools. It’s only for parents whose children attend participating schools.\n\nIf you have any questions, please contact the local health team by calling 01234 321456, or email <england.manage-childrens-vaccinations@nhs.net>."
+    },
+    "new": {
+      "check-answers": {
+        "confirm": "Confirm",
+        "title": "Check and confirm"
+      }
+    },
     "created": {
       "label": "Response date"
     },
     "child": {
-      "label": "Child"
+      "title": "What is your child’s name?",
+      "label": "Child",
+      "summary": "About your child",
+      "description": "Give the official name that’s on their passport or birth certificate. If their name has changed, tell us their current name.",
+      "firstName": {
+        "label": "First name"
+      },
+      "lastName": {
+        "label": "Last name"
+      },
+      "hasPreferredName": {
+        "label": "Do they use a different name in school?",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "preferredFirstName": {
+        "label": "Preferred first name"
+      },
+      "preferredLastName": {
+        "label": "Preferred last name"
+      },
+      "gpRegistered": {
+        "title": "Is your child registered with a GP?",
+        "yes": "Yes, they are registered with a GP",
+        "no": "No, they are not registered with a GP",
+        "unknown": "I don’t know"
+      },
+      "gpSurgery": {
+        "label": "Name of GP surgery"
+      },
+      "dob": {
+        "title": "What is your child’s date of birth?",
+        "hint": "For example, 27 3 2017"
+      },
+      "school": {
+        "title": "Confirm your child’s school",
+        "label": "Is this their school?",
+        "yes": "Yes, they go to this school",
+        "no": "No, they go to a different school"
+      },
+      "address": {
+        "title": "Home address",
+        "hint": "Give the child’s primary address. We use this to confirm their identity.",
+        "line1": "Address line 1",
+        "line2": "Address line 2",
+        "level2": "Town or city",
+        "postalCode": "Postcode"
+      }
     },
     "parent": {
-      "label": "Parent"
+      "summary": "About you",
+      "title": "About you",
+      "label": "Parent",
+      "fullName": {
+        "label": "Name"
+      },
+      "relationship": {
+        "label": "Relationship to child"
+      },
+      "email": {
+        "label": "Email address",
+        "hint": "We use this to send you confirmation messages"
+      },
+      "tel": {
+        "label": "Phone number",
+        "hint": "A nurse might call you about your child’s vaccination"
+      },
+      "sms": {
+        "label": "Tick this box if you'd like to get updates by text message"
+      },
+      "contactPreference": {
+        "title": "Phone contact method",
+        "hint": "Tell us if you have specific needs",
+        "sms": "I can only receive text messages",
+        "voice": "I can only receive voice calls",
+        "other": "Other",
+        "none": "I do not have specific needs"
+      },
+      "contactPreferenceOther": {
+        "label": "Give details"
+      },
+      "relationshipOther": {
+        "label": "Relationship to the child",
+        "hint": "For example, carer"
+      },
+      "hasParentalResponsibility": {
+        "label": "Do you have parental responsibility?",
+        "hint": "This means you have legal rights and duties relating to the child"
+      }
+    },
+    "decision": {
+      "summary": "Consent for the {{campaign.name}} vaccination",
+      "title": "Do you agree to them having a {{campaign.name}} vaccination?",
+      "label": "Decision",
+      "hint": {
+        "flu": "The nasal flu spray contains gelatine which comes from pigs."
+      },
+      "yes": {
+        "flu": "Yes, I agree to them having a nasal vaccine",
+        "hpv": "Yes, I agree",
+        "3-in-1": "Yes, I agree to them having the 3-in-1 teenage booster",
+        "men-acwy": "Yes, I agree to them having the MenACWY vaccine"
+      },
+      "no": "No"
+    },
+    "refusalReason": {
+      "title": "Please tell us why you do not agree",
+      "label": "Refusal reason"
+    },
+    "refusalReasonDetails": {
+      "label": "Refusal details",
+      "title": {
+        "AlreadyGiven": "Where did the child get their vaccination?",
+        "GettingElsewhere": "Where will the child get their vaccination?",
+        "Medical": "What medical reasons prevent the child from being vaccinated?"
+      }
+    },
+    "healthAnswers": {
+      "label": "Answers to health questions",
+      "yes": "Yes",
+      "no": "No",
+      "details": "Give details",
+      "hint": {
+        "Allergy": false,
+        "Aspirin": "Also known as Salicylate therapy",
+        "Asthma": false,
+        "AsthmaSteroids": "Include the steroid name, dose and length of course",
+        "AsthmaAdmitted": false,
+        "EggAllergy": false,
+        "ImmuneSystem": false,
+        "HouseholdImmuneSystem": false,
+        "PreviousReaction": false,
+        "MedicalConditions": false,
+        "MedicationAllergies": false,
+        "RecentFluVaccination": false,
+        "Support": "For example, they’re autistic, or extremely anxious"
+      }
+    },
+    "confirmation": {
+      "title": {
+        "Given": "{{consent.child.fullName}} is due to get the {{campaign.vaccine.name}} vaccination at school on {{session.formattedDate}}",
+        "Refused": "You’ve told us that you do not want your child to get the {{campaign.vaccine.name}} vaccine at school"
+      },
+      "description": {
+        "Given": "We’ll send a confirmation once the vaccination has been given.\n\nIf the vaccination does not take place due to illness or absence, we’ll contact you about a catch-up session.",
+        "Refused": "We’ve sent a confirmation to {{consent.parent.email}}."
+      }
     },
     "actions": {
       "label": "Actions"
+    }
+  },
+  "emails": {
+    "consent": {
+      "invite": {
+        "label": "Invitation",
+        "name": "{{campaign.name}} vaccination on {{session.formattedDate}}"
+      },
+      "invite-reminder": {
+        "label": "Reminder",
+        "name": "Please respond to our request for consent by {{session.formattedClose}}"
+      },
+      "consent-given": {
+        "label": "Consent given",
+        "name": "{{campaign.name}} vaccination on {{session.formattedDate}}"
+      },
+      "consent-conflicts": {
+        "label": "Consent conflicts",
+        "name": "Your child will not have their flu vaccination"
+      },
+      "consent-refused": {
+        "label": "Consent refused",
+        "name": "{{campaign.name}} vaccination on {{session.formattedDate}}"
+      },
+      "triage-needed": {
+        "label": "Triage needed",
+        "name": "{{campaign.name}} vaccination on {{session.formattedDate}}"
+      },
+      "triage-vaccinate": {
+        "label": "Vaccinate",
+        "name": "Your child can have the {{campaign.name}} vaccination on {{session.formattedDate}}"
+      },
+      "triage-do-not-vaccinate": {
+        "label": "Do not vaccinate",
+        "name": "Your child will not have the {{campaign.name}} vaccination in school"
+      },
+      "session-reminder": {
+        "label": "Session reminder",
+        "name": "{{consent.child.fullName}} will get their {{campaign.name}} vaccination on {{session.formattedDate}}"
+      },
+      "session-outcome-vaccinated": {
+        "label": "Vaccinated",
+        "name": "Your child had their {{campaign.name}} vaccination today"
+      },
+      "session-outcome-could-not-vaccinate": {
+        "label": "Could not vaccinate",
+        "name": "Your child did not have their {{campaign.name}} vaccination today"
+      },
+      "information-child": {
+        "label": "Information for students",
+        "name": "You can get an {{campaign.name}} vaccination on {{session.formattedDate}}"
+      }
     }
   },
   "gillick": {
@@ -284,6 +530,9 @@
     },
     "relationship": {
       "label": "Relationship"
+    },
+    "hasParentalResponsibility": {
+      "label": "Parental responsibility"
     },
     "email": {
       "label": "Email address"
@@ -606,6 +855,55 @@
       "count": {
         "one": "%s unmatched response",
         "other": "[0] No unmatched responses|%s unmatched responses"
+      }
+    }
+  },
+  "texts": {
+    "consent": {
+      "invite": {
+        "label": "Invitation",
+        "name": "Inviting parent to give or refuse consent",
+        "text": "Give or refuse consent for your child’s {{campaign.name}} vaccination by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}). You need to do this by {{session.formattedClose}}.\n\nResponding will take less than 5 minutes."
+      },
+      "invite-reminder": {
+        "label": "Reminder",
+        "name": "Reminding parent to give or refuse consent",
+        "text": "We recently asked for your consent to vaccinate your child against {{campaign.name}}.\n\nGo to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}) to submit a response. This will take less than 5 minutes."
+      },
+      "consent-given": {
+        "label": "Consent given",
+        "name": "Confirmation that consent has been given",
+        "text": "You’ve given consent for {{consent.child.firstName}} to get their {{campaign.name}} vaccination at school on {{session.formattedDate}}. Please let them know what to expect."
+      },
+      "consent-given-child": {
+        "label": "Consent given",
+        "name": "Confirmation that consent has been given",
+        "text": "Your parent or guardian has agreed for you to have the {{campaign.name}} vaccination at school on {{session.formattedDate}}."
+      },
+      "consent-refused": {
+        "label": "Consent refused",
+        "name": "Confirmation that consent has been refused",
+        "text": "You’ve refused to give consent for {{consent.child.fullName}} to have their {{campaign.name}} vaccination. Please let them know they will not be vaccinated at school."
+      },
+      "session-reminder": {
+        "label": "Session reminder",
+        "name": "Reminder (to go out the day before the vaccination)",
+        "text": "{{consent.child.firstName}} will get their {{campaign.name}} vaccination at school tomorrow ({{session.formattedDate}}). Please make sure they have breakfast and encourage them to wear a short-sleeved shirt."
+      },
+      "session-reminder-child": {
+        "label": "Session reminder",
+        "name": "Reminder (to go out the day before the vaccination)",
+        "text": "You’re due to get your {{campaign.name}} vaccination at school tomorrow ({{session.formattedDate}}). Please wear a short-sleeved shirt and make sure you eat something before the session."
+      },
+      "session-outcome-vaccinated": {
+        "label": "Vaccinated",
+        "name": "Child has been vaccinated",
+        "text": "{{consent.child.firstName}} had their {{campaign.name}} vaccination at school today. They might have some side effects, including bruising or itching at the injection site, a high temperature, nausea, or pain in the arms, hands, or fingers.\n\nIf you’re concerned, contact your GP in the usual way."
+      },
+      "session-outcome-could-not-vaccinate": {
+        "label": "Could not vaccinate",
+        "name": "Child did not get their vaccination despite having consent",
+        "text": "{{consent.child.firstName}} did not have their {{campaign.name}} vaccination at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact the local health team by calling [{{organisation.tel}}](#), or email [{{organisation.email}}](#)."
       }
     }
   },
