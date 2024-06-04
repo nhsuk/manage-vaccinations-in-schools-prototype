@@ -1,0 +1,105 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("consent.new.check-answers.confirm") %}
+{% set title = __("consent.new.check-answers.title") %}
+{% set refusalReasonHasDetails = consent.refusalReason != RefusalReason.PersonalChoice or consent.refusalReason != RefusalReason.Other %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("consent.decision.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(consent, {
+        decision: {
+          href: consent.uri + "/edit/decision"
+        },
+        refusalReason: {
+          value: consent.refusalReason,
+          other: consent.refusalReasonOther if consent.refusalReason == ReplyRefusal.Other,
+          href: consent.uri + "/edit/refusal-reason"
+        } if consent.refusalReason,
+        refusalReasonDetails: {
+          value: consent.refusalReasonDetails | nhsukMarkdown,
+          href: consent.uri + "/edit/refusal-reason-details"
+        } if refusalReasonHasDetails
+      })
+    })
+  }) }}
+
+  {{ card({
+    heading: __("consent.child.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(consent.child, {
+        fullName: {
+          href: consent.uri + "/edit/child"
+        },
+        preferredName: {
+          href: consent.uri + "/edit/child"
+        },
+        formattedDob: {
+          href: consent.uri + "/edit/dob"
+        },
+        formattedAddress: {
+          href: consent.uri + "/edit/address"
+        } if consent.decision != ReplyDecision.Refused,
+        formattedGpSurgery: {
+          changeLabel: "GP surgery",
+          href: consent.uri + "/edit/gp-registered"
+        } if consent.decision != ReplyDecision.Refused,
+        urn: {
+          value: session.location.name,
+          href: consent.uri + "/edit/school"
+        }
+      })
+    })
+  }) }}
+
+  {{ card({
+    heading: __("consent.parent.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(consent.parent, {
+        fullName: {
+          href: consent.uri + "/edit/parent"
+        },
+        relationship: {
+          other: conssent.parent.relationshipOther,
+          href: consent.uri + "/edit/parent"
+        },
+        hasParentalResponsibility: {
+          href: consent.uri + "/edit/parent"
+        } if consent.parent.relationship == ParentalRelationship.Other,
+        email: {
+          href: consent.uri + "/edit/parent"
+        },
+        tel: {
+          href: consent.uri + "/edit/parent"
+        },
+        sms: {
+          href: consent.uri + "/edit/parent"
+        },
+        contactPreference: {
+          other: consent.parent.contactPreferenceOther,
+          href: consent.uri + "/edit/contact-preference"
+        }
+      })
+    })
+  }) }}
+
+  {{ card({
+    heading: __("consent.healthAnswers.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      classes: "app-summary-list--full-width",
+      rows: healthAnswerRows(
+        consent.healthAnswers,
+        consent.uri + "/edit/health-question-{{key}}"
+      )
+    })
+  }) if consent.decision != ReplyDecision.Refused }}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "_layouts/form.njk" %}
+
+{% set refusal = enumKeyAndValue(ReplyRefusal, consent.refusalReason) %}
+{% set title = __("consent.refusalReasonDetails.title." + refusal.key) %}
+
+{% block form %}
+  {{ textarea({
+    label: {
+      html: heading({
+        classes: "nhsuk-label--l",
+        title: title
+      })
+    },
+    decorate: "consent.refusalReasonDetails"
+  }) }}
+{% endblock %}

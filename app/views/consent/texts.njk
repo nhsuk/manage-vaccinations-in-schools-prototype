@@ -1,0 +1,29 @@
+{% extends "_layouts/texts.njk" %}
+
+{% set caption = __("consent.start." + campaign.type + ".title") %}
+
+{% set placeholders = {
+  campaign: campaign,
+  consent: consent,
+  organisation: data.organisation,
+  reason: "they were absent from the session",
+  session: session
+} %}
+
+{% set defaultTemplate = "invite" %}
+{% set dir = "consent" %}
+{% set templates = {
+  "Sent to parents": [
+    "invite",
+    "invite-reminder",
+    "consent-given",
+    "consent-refused",
+    "session-reminder",
+    "session-outcome-vaccinated",
+    "session-outcome-could-not-vaccinate"
+  ],
+  "Sent to children": [
+    "consent-given-child",
+    "session-reminder-child"
+  ]
+} %}

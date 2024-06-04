@@ -1,0 +1,52 @@
+We wrote to you recently about a visit by a local health team to {{ session.location.name }} on {{ session.formattedDate }}.
+
+If you want your child to get the {{ campaign.name | replace("Flu", "flu") }} vaccination during this visit, you need to give consent by {{ session.formattedClose }}.
+
+If you’ve already responded to the consent request, you can ignore this message.
+
+{% if campaign.type == "flu" %}
+## About the flu vaccine
+
+The vaccination is a quick and painless spray up the nose. Even if your child had the vaccine last year, the type of flu can vary each winter, so we recommend they have it again this year.
+
+The nasal spray contains gelatine. If your child does not use gelatine products, they could have an injection instead.
+
+[Find out more about the flu vaccine on NHS.UK](https://www.nhs.uk/conditions/vaccinations/child-flu-vaccine/)
+
+{% elif campaign.type == "hpv" %}
+## What the vaccine is for
+
+The HPV vaccine helps protect against cancers caused by HPV, including:
+
+- cervical cancer
+- some mouth and throat (head and neck) cancers
+- some cancers of the anal and genital areas
+
+It also helps protect against genital warts.
+
+The HPV vaccine works best if it’s given before young people become sexually active.
+
+[Find out more about the HPV vaccine on NHS.UK](https://www.nhs.uk/conditions/vaccinations/hpv-human-papillomavirus-vaccine/)
+
+{% endif %}
+
+## Please give or refuse consent
+
+[Give or refuse consent for the {{ campaign.name | replace("Flu", "flu") }} vaccination]({{ session.uri }})
+
+Responding will take less than 5 minutes. If you do not give consent, it’s still important for you to respond.
+
+{% if campaign.type != "flu" %}
+## Talk to your child about what they want
+
+We suggest you talk to your child about the vaccine before you respond to us.
+
+{% endif %}
+
+## If you have trouble using the online form
+
+If you have any trouble using the online form, you can respond over the phone using the contact details below.
+
+## Contact the local health team
+
+Speak to a member of the local health team by calling {{ data.organisation.tel }}, or email {{ data.organisation.email }}.

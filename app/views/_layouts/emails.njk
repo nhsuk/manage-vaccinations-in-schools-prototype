@@ -1,0 +1,56 @@
+{% extends "_layouts/default.njk" %}
+
+{% from "_macros/logo.njk" import logo %}
+
+{% block skipLink %}{% endblock %}
+{% block header %}{% endblock %}
+
+{% set template = data.template or defaultTemplate %}
+
+{% set navigationItems = [] %}
+{% for theme, items in templates %}
+  {% for item in items %}
+    {% set navigationItems = navigationItems | push({
+      text: __("emails." + dir + "." + item + ".label"),
+      href: "?template=" + item,
+      current: template === item,
+      theme: theme
+    }) %}
+  {% endfor %}
+{% endfor %}
+
+{% set cardDescriptionHtml %}
+  <article class="app-message--email">
+    <header class="app-message--email__header">
+      From: <span class="nhsuk-u-secondary-text-color">{{ placeholders.from.name }} &lt;{{ placeholders.from.email }}&gt;</span><br>
+      To: <span class="nhsuk-u-secondary-text-color">{{ placeholders.to.name }} &lt;{{ placeholders.to.email }}&gt;</span>
+    </header>
+    {{ logo(54) }}
+    {% filter nhsukMarkdown %}
+      {%- include "emails/" + dir + "/" + template + ".njk" %}
+    {% endfilter %}
+  </article>
+{% endset %}
+
+{% block content %}
+  {{ heading({
+    caption: caption,
+    title: title or "Email messages"
+  }) }}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-one-quarter">
+      {{ xGovukSubNavigation({
+        items: navigationItems
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-three-quarters">
+      {{ card({
+        heading: __("emails." + dir + "." + template + ".name", placeholders),
+        headingClasses: "nhsuk-heading-s",
+        descriptionHtml: cardDescriptionHtml
+      }) }}
+    <div>
+  </div>
+{% endblock %}

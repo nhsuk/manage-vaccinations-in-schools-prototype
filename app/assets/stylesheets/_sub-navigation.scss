@@ -1,0 +1,12 @@
+.x-govuk-sub-navigation__section {
+  @include nhsuk-font($size: 16);
+}
+
+.x-govuk-sub-navigation__theme {
+  color: $nhsuk-secondary-text-color;
+  font-weight: bold;
+}
+
+.x-govuk-sub-navigation__section-item--current {
+  background-color: transparent;
+}

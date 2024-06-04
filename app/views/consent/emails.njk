@@ -1,0 +1,44 @@
+{% extends "_layouts/emails.njk" %}
+
+{% set caption = __("consent.start." + campaign.type + ".title") %}
+
+{% set placeholders = {
+  from: {
+    name: data.organisation.name,
+    email: data.organisation.email
+  },
+  to: {
+    name: consent.parent.fullName,
+    email: consent.parent.email
+  },
+  campaign: campaign,
+  consent: consent,
+  reason: "they were absent from the session",
+  refuser: "James Smith",
+  session: session
+} %}
+
+{% set defaultTemplate = "invite" %}
+{% set dir = "consent" %}
+{% set templates = {
+  "Get consent": [
+    "invite",
+    "invite-reminder",
+    "consent-given",
+    "consent-conflicts",
+    "consent-refused"
+  ],
+  "Triage": [
+    "triage-needed",
+    "triage-vaccinate",
+    "triage-do-not-vaccinate"
+  ],
+  "Vaccination": [
+    "session-reminder",
+    "session-outcome-vaccinated",
+    "session-outcome-could-not-vaccinate"
+  ],
+  "Sent to children": [
+    "information-child"
+  ] if campaign.type == "hpv"
+} %}

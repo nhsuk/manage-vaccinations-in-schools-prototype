@@ -30,9 +30,11 @@ $color_app-dark-orange: darken(mix($color_nhsuk-red, $color_nhsuk-warm-yellow, 5
 @import "count";
 @import "header";
 @import "heading-group";
+@import "message";
 @import "password-input";
 @import "patients";
 @import "secondary-navigation";
+@import "sub-navigation";
 @import "status";
 @import "summary-list";
 @import "table";

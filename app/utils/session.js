@@ -1,5 +1,5 @@
 import { isAfter, isBefore } from 'date-fns'
-import { ConsentWindow } from '../models/session.js'
+import { ConsentWindow, Session } from '../models/session.js'
 import { getEnumKeyAndValue } from './enum.js'
 
 /**
@@ -23,4 +23,12 @@ export const getConsentWindow = (session) => {
     default:
       return getEnumKeyAndValue(ConsentWindow, ConsentWindow.None)
   }
+}
+
+export const getCampaignSession = (campaigns, sessions, type = 'flu') => {
+  return Object.values(sessions)
+    .map((session) => new Session(session))
+    .filter((session) => campaigns[session.campaign_uuid].type === type)
+    .filter((session) => session.consentWindow.value === ConsentWindow.Open)
+    .at(-1)
 }

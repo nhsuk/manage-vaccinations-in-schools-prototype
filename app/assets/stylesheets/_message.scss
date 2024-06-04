@@ -1,0 +1,58 @@
+$text-message-background-color: mix($color_nhsuk-grey-4, $color_nhsuk-white, 50%);
+
+.app-message--email {
+  font-family: Helvetica, Arial, sans-serif;
+
+  &__header {
+    @include nhsuk-font($size: 16);
+    border-bottom: 1px solid $nhsuk-border-color;
+    margin-bottom: nhsuk-spacing(4);
+    padding-bottom: nhsuk-spacing(3);
+  }
+
+  .nhsuk-logo {
+    color: $color_nhsuk-blue;
+    margin-bottom: nhsuk-spacing(4);
+  }
+
+  .nhsuk-heading-l {
+    @include nhsuk-font($size: 24, $weight: bold);
+  }
+}
+
+.app-message--text {
+  background-color: $text-message-background-color;
+  border-radius: nhsuk-spacing(3);
+  font-family: Helvetica, Arial, sans-serif;
+  padding: nhsuk-spacing(3);
+  position: relative;
+  max-width: 400px;
+
+  &::before {
+    background: $text-message-background-color;
+    border-bottom-right-radius: nhsuk-spacing(3);
+    bottom: 0;
+    content: "";
+    left: #{nhsuk-spacing(2) * -1};
+    height: nhsuk-spacing(3);
+    position: absolute;
+    width: nhsuk-spacing(4);
+    z-index: 0;
+  }
+
+  &::after {
+    background: $color_nhsuk-white;
+    border-bottom-right-radius: nhsuk-spacing(2);
+    bottom: 0;
+    content: "";
+    height: nhsuk-spacing(3);
+    left: #{nhsuk-spacing(2) * -1};
+    position: absolute;
+    width: nhsuk-spacing(2);
+    z-index: 1;
+  }
+
+  *:last-child {
+    margin: 0;
+  }
+}

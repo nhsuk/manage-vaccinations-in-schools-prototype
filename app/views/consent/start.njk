@@ -1,0 +1,29 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("consent.start." + campaign.type + ".title") %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      {{ heading({
+        size: "xl",
+        title: title
+      }) }}
+
+      {{ __("consent.start." + campaign.type + ".description") | nhsukMarkdown }}
+
+      {{ button({
+        text: __("consent.start.confirm"),
+        href: "/consents/" + session.id + "/new"
+      }) }}
+
+      <h2 class="nhsuk-heading-m">
+        {{ __("consent.start.language.title") }}
+      </h2>
+
+      <ul class="nhsuk-list">
+        <li><a href="#">{{ __("consent.start.language.en") }}</a></li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}

@@ -11,6 +11,7 @@ import { User } from './models/user.js'
 import { HealthQuestion } from './models/vaccine.js'
 import { Vaccination } from './models/vaccination.js'
 import { getEnumKeyAndValue } from './utils/enum.js'
+import { pascalToKebabCase } from './utils/string.js'
 
 /**
  * Prototype specific global functions for use in Nunjucks templates.
@@ -18,6 +19,15 @@ import { getEnumKeyAndValue } from './utils/enum.js'
  */
 export default () => {
   const globals = {}
+
+  /**
+   * Get boolean form field items
+   * @returns {object} Form field items
+   */
+  globals.booleanItems = [
+    { text: 'Yes', value: true },
+    { text: 'No', value: false }
+  ]
 
   /**
    * Get form field items for a given Enum
@@ -36,9 +46,10 @@ export default () => {
   /**
    * Get health answers for summary list rows
    * @param {object} healthAnswers - Health answers
+   * @param {string} edit - Edit link
    * @returns {Array|undefined} Parameters for summary list component
    */
-  globals.healthAnswerRows = function (healthAnswers) {
+  globals.healthAnswerRows = function (healthAnswers, edit) {
     if (healthAnswers.length === 0) {
       return
     }
@@ -62,9 +73,22 @@ export default () => {
           : `<p>No<p>`
       }
 
+      const key = pascalToKebabCase(id)
+
       rows.push({
         key: { text: HealthQuestion[id] },
-        value: { html }
+        value: { html },
+        ...(edit && {
+          actions: {
+            items: [
+              {
+                href: edit.replace(`{{key}}`, key),
+                text: 'Change',
+                visuallyHiddenText: HealthQuestion[id]
+              }
+            ]
+          }
+        })
       })
     }
 

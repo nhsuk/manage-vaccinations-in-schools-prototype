@@ -1,0 +1,25 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("consent.decision.title", { campaign: campaign }) %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          title: title
+        })
+      }
+    },
+    hint: { text: __("consent.decision.hint.flu") if campaign.vaccine.type == "flu" and campaign.vaccine.method == VaccinationMethod.Nasal },
+    items: [{
+      text: __("consent.decision.yes." + campaign.vaccine.type),
+      value: ReplyDecision.Given
+    }, {
+      text: __("consent.decision.no"),
+      value: ReplyDecision.Refused
+    }],
+    decorate: "consent.decision"
+  }) }}
+{% endblock %}

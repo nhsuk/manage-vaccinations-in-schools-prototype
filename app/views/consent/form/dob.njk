@@ -1,0 +1,15 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("consent.child.dob.title") %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ dateInput({
+    label: { text: __("consent.child.dob.label") },
+    hint: { text: __("consent.child.dob.hint") },
+    decorate: "consent.child.dob_"
+  }) }}
+{% endblock %}

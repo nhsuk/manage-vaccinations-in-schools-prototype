@@ -1,0 +1,35 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("consent.child.school.title") %}
+
+{% set schoolName -%}
+<p>
+  <span class="nhsuk-heading-m nhsuk-u-margin-bottom-0">{{ session.location.name }}</span>
+  {{ session.location.postalCode }}
+</p>
+{%- endset %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ insetText({
+    html: schoolName,
+    classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4"
+  }) }}
+
+  {{ radios({
+    fieldset: {
+      legend: { text: __("consent.child.school.label") }
+    },
+    items: [{
+      text: __("consent.child.school.yes"),
+      value: "yes"
+    }, {
+      text: __("consent.child.school.no"),
+      value: "no"
+    }],
+    decorate: "consent.child.school"
+  }) }}
+{% endblock %}
