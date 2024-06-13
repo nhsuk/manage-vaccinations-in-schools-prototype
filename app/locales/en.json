@@ -137,14 +137,23 @@
     "preferredName": {
       "label": "Preferred name"
     },
+    "fullAndPreferredNames": {
+      "label": "Name"
+    },
     "dob": {
+      "label": "Date of birth"
+    },
+    "dobWithAge": {
       "label": "Date of birth"
     },
     "formattedDob": {
       "label": "Date of birth"
     },
     "address": {
-      "label": "Home address"
+      "label": "Home address",
+      "postalCode": {
+        "label": "Postcode"
+      }
     },
     "formattedAddress": {
       "label": "Home address"
@@ -161,6 +170,7 @@
   },
   "consent": {
     "label": "Consent outcome",
+    "summary": "Details of child given in consent response",
     "NoResponse": {
       "colour": "grey",
       "description": "No-one responded to our requests for consent.",
@@ -282,6 +292,9 @@
       "preferredLastName": {
         "label": "Preferred last name"
       },
+      "fullAndPreferredNames": {
+        "label": "Child’s name"
+      },
       "gpRegistered": {
         "title": "Is your child registered with a GP?",
         "yes": "Yes, they are registered with a GP",
@@ -293,6 +306,7 @@
       },
       "dob": {
         "title": "What is your child’s date of birth?",
+        "label": "Child’s date of birth",
         "hint": "For example, 27 3 2017"
       },
       "school": {
@@ -303,6 +317,7 @@
       },
       "address": {
         "title": "Home address",
+        "label": "Child’s home address",
         "hint": "Give the child’s primary address. We use this to confirm their identity.",
         "line1": "Address line 1",
         "line2": "Address line 2",
@@ -792,7 +807,8 @@
     },
     "success": {
       "create": "{{session.name}} created",
-      "update": "{{session.name}} updated"
+      "update": "{{session.name}} updated",
+      "link": "Consent response from {{consent.parent.fullName}} linked to [{{patient.fullName}}]({{patient.uri}})’s record"
     },
     "cohort": {
       "label": "Cohort",
@@ -856,6 +872,16 @@
         "one": "%s unmatched response",
         "other": "[0] No unmatched responses|%s unmatched responses"
       }
+    },
+    "consent-match": {
+      "title": "Search for a child record",
+      "caption": "Consent response from {{parent.fullName}}"
+    },
+    "consent-link": {
+      "title": "Link consent response with child record?",
+      "caption": "Consent response from {{parent.fullName}}",
+      "confirm": "Link response with record",
+      "summary": "Compare child details"
     }
   },
   "texts": {
