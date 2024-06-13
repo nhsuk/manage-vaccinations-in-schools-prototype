@@ -2,7 +2,12 @@ import { wizard } from 'nhsuk-prototype-rig'
 import { GillickCompetent } from '../models/gillick.js'
 import { Parent, ParentalRelationship } from '../models/parent.js'
 import { Patient } from '../models/patient.js'
-import { Reply, ReplyDecision, ReplyRefusal } from '../models/reply.js'
+import {
+  Reply,
+  ReplyDecision,
+  ReplyMethod,
+  ReplyRefusal
+} from '../models/reply.js'
 
 export const replyController = {
   read(request, response, next) {
@@ -35,21 +40,21 @@ export const replyController = {
     delete data.triage
     delete data.wizard
 
+    const isSelfConsent = patient.gillick?.competence === GillickCompetent.Yes
+
     const reply = new Reply({
       child: patient.record,
       patient_nhsn: patient.nhsn,
-      session_id: session.id
+      session_id: session.id,
+      ...(!isSelfConsent && { method: ReplyMethod.Phone })
     })
 
     data.wizard = reply
 
-    request.app.locals.start =
-      patient.gillick?.competence === GillickCompetent.Yes
-        ? 'decision'
-        : 'parent'
+    const start = isSelfConsent ? 'decision' : 'parent'
 
     response.redirect(
-      `/sessions/${id}/${nhsn}/replies/${reply.uuid}/new/${request.app.locals.start}`
+      `/sessions/${id}/${nhsn}/replies/${reply.uuid}/new/${start}`
     )
   },
 
@@ -87,7 +92,7 @@ export const replyController = {
   },
 
   readForm(request, response, next) {
-    const { reply, start, triage } = request.app.locals
+    const { isSelfConsent, reply, triage } = request.app.locals
     const { form, uuid, nhsn } = request.params
     const { data } = request.session
 
@@ -111,9 +116,8 @@ export const replyController = {
 
     const journey = {
       [`/`]: {},
-      ...(start === 'parent' && {
-        [`/${uuid}/${form}/parent`]: {},
-        [`/${uuid}/${form}/method`]: {}
+      ...(!isSelfConsent && {
+        [`/${uuid}/${form}/parent`]: {}
       }),
       [`/${uuid}/${form}/decision`]: {
         [`/${uuid}/${form}/health-answers`]: {
@@ -204,8 +208,9 @@ export const replyController = {
 
   updateForm(request, response) {
     const { parents, reply, triage } = request.app.locals
+    const { uuid } = request.params
     const { data } = request.session
-    const { paths } = response.locals
+    const { paths, patient } = response.locals
 
     // If parent selected, add parent to reply
     if (data.parent) {
@@ -222,6 +227,8 @@ export const replyController = {
       ...request.body.triage // New triage value
     }
 
-    response.redirect(paths.next)
+    response.redirect(
+      paths.next || `${patient.uri}/replies/${uuid}/new/check-answers`
+    )
   }
 }
