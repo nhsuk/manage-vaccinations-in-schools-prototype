@@ -1,0 +1,92 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("session.consent-match.title") %}
+{% set paths = {
+  back: "/sessions/" + session.id + "/consents"
+} %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    caption: __("session.consent-match.caption", { parent: consent.parent } ),
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("consent.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(consent.child, {
+        fullAndPreferredNames: {},
+        dobWithAge: {},
+        formattedAddress: {
+          value: consent.child.formattedAddress | nl2br
+        }
+      })
+    })
+  }) }}
+
+  {% set patientRows = [] %}
+  {% for patient in patients %}
+    {% set patientRows = patientRows | push([
+      {
+        header: __("child.fullName.label"),
+        html: link("/sessions/" + session.id + "/consents/" + consent.uuid + "/link?nhsn=" + patient.nhsn, patient.record.fullName) + ('<br><span class="nhsuk-u-font-size-16">Known as: ' + patient.preferredNames + "</span>" if patient.preferredNames)
+      },
+      {
+        header: __("child.address.postalCode.label"),
+        text: patient.record.address.postalCode
+      },
+      {
+        header: __("child.dob.label"),
+        text: patient.record.formattedDob or "Not provided",
+        attributes: {
+          "data-filter": patient.record.dob | date({ dateStyle: "short" }),
+          "data-sort": patient.record.dob
+        }
+      }
+    ]) %}
+  {% endfor %}
+
+  {% if patients.length %}
+    {% call actionTable({
+      classes: "app-patients",
+      tableClasses: "app-patients__table",
+      sort: "name",
+      caption: "Children in this cohort",
+      captionClasses: "nhsuk-u-font-size-24",
+      responsive: true,
+      head: [
+        {
+          text: __("child.fullName.label"),
+          attributes: {
+            "data-col": "name"
+          }
+        },
+        {
+          text: __("child.address.postalCode.label"),
+          attributes: {
+            "data-col": "postalCode"
+          }
+        },
+        {
+          text: __("child.dob.label"),
+          attributes: {
+            "data-col": "dob"
+          }
+        }
+      ],
+      rows: patientRows
+    }) %}
+      <action-table-filters class="app-patients__filters">
+        {% set showPostalCode = true %}
+        {% include "sessions/_filters.njk" %}
+      </action-table-filters>
+    {% endcall %}
+  {% else %}
+    <div class="app-patients">
+      <p class="app-patients__no-results nhsuk-caption-m">{{ __n(activity + "." + tab + ".count", patients.length) }}</p>
+    </div>
+  {% endif %}
+{% endblock %}

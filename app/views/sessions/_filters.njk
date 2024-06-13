@@ -22,6 +22,13 @@
     }
   }) }}
 
+  {{ input({
+    id: "postalCode",
+    name: "postalCode",
+    type: "search",
+    label: { text: "By postcode" }
+  }) if showPostalCode }}
+
   {{ checkboxes({
     name: "status",
     fieldset: {

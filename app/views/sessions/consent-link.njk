@@ -1,0 +1,91 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("session.consent-link.title") %}
+{% set confirmButtonText = __("session.consent-link.confirm") %}
+{% set paths = {
+  back: "/sessions/" + session.id + "/consents/" + consent.uuid
+} %}
+
+{% block form %}
+  {{ super() }}
+
+  {{ heading({
+    caption: __("session.consent-link.caption", { parent: consent.parent } ),
+    title: title
+  }) }}
+
+  {{ table({
+    panel: true,
+    classes: "app-compare",
+    tableClasses: "app-compare__table",
+    caption: __("session.consent-link.summary"),
+    captionClasses: "nhsuk-u-padding-top-4",
+    firstCellIsHeader: true,
+    head: [
+      { html: "<span class=\"nhsuk-u-visually-hidden\">Field</span>" },
+      { text: __("consent.label") },
+      { text: __("record.label") }
+    ],
+    rows: [
+      [
+        { html: __("child.fullName.label") },
+        { html: consent.child.fullName | highlightDifference(patient.fullName) },
+        { text: patient.fullName }
+      ],
+      [
+        { html: __("child.dob.label") },
+        { html: consent.child.formattedDob | highlightDifference(patient.record.formattedDob) },
+        { text: patient.record.formattedDob }
+      ],
+      [
+        { text: __("child.address.label") },
+        { html: consent.child.formattedAddress | nl2br | highlightDifference(patient.record.formattedAddress | nl2br) },
+        { html: patient.record.formattedAddress | nl2br }
+      ],
+      [
+        { text: __("child.gpSurgery.label") },
+        { html: consent.child.formattedGpSurgery | highlightDifference(patient.record.formattedGpSurgery) },
+        { text: patient.record.formattedGpSurgery }
+      ]
+    ]
+  }) }}
+
+  {{ card({
+    heading: __("parent.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(consent.parent, {
+        fullName: {},
+        relationship: {
+          other: reply.parent.relationshipOther
+        },
+        hasParentalResponsibility: {},
+        email: {},
+        tel: {},
+        contactPreference: {
+          other: reply.parent.contactPreferenceOther
+        },
+        sms: {}
+      })
+    })
+  }) }}
+
+  {{ card({
+    heading: __("consent.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(consent, {
+        created: {
+          value: consent.formattedCreated
+        },
+        decision: {},
+        refusalReason: {
+          other: consent.refusalReasonOther
+        } if consent.refusalReason,
+        refusalReasonDetails: {
+          value: consent.refusalReasonDetails | nhsukMarkdown
+        } if consent.refusalReasonDetails
+      })
+    })
+  }) }}
+{% endblock %}
