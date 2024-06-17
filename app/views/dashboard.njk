@@ -17,7 +17,7 @@
         heading: __("session.list.title"),
         headingClasses: "nhsuk-heading-m",
         href: "/sessions",
-        description: __("session.list.description")
+        descriptionHtml: __("session.list.description") | nhsukMarkdown
       }) }}
     </li>
     <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
@@ -26,7 +26,7 @@
         heading: __("campaign.list.title"),
         headingClasses: "nhsuk-heading-m",
         href: "/campaigns",
-        description: __("campaign.list.description")
+        descriptionHtml: __("campaign.list.description") | nhsukMarkdown
       }) }}
     </li>
     <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
@@ -35,7 +35,7 @@
         heading: __("vaccine.list.title"),
         headingClasses: "nhsuk-heading-m",
         href: "/vaccines",
-        description: __("vaccine.list.description")
+        descriptionHtml: __("vaccine.list.description") | nhsukMarkdown
       }) }}
     </li>
   </ul>
