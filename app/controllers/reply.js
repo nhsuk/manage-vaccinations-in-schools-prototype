@@ -40,7 +40,7 @@ export const replyController = {
     delete data.triage
     delete data.wizard
 
-    const isSelfConsent = patient.gillick?.competence === GillickCompetent.Yes
+    const isSelfConsent = patient.gillick?.competence === GillickCompetent.True
 
     const reply = new Reply({
       child: patient.record,

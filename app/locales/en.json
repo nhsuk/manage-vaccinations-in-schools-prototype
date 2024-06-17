@@ -481,24 +481,48 @@
   },
   "gillick": {
     "label": "Gillick assessment",
-    "start": {
-      "title": "Assessing Gillick competence",
-      "confirm": "Give your assessment"
+    "text": "Before you make your assessment, you should give {{patient.firstName}} a chance to ask questions.",
+    "new": {
+      "title": "Assess Gillick competence",
+      "confirm": "Complete your assessment"
     },
-    "competence": {
-      "label": "Are they Gillick competent?"
-    },
-    "assessment": {
-      "label": "Details of your assessment"
-    },
-    "check-answers": {
-      "title": "Check and confirm",
-      "confirm": "Save changes",
-      "summary": "Gillick assessment details"
+    "edit": {
+      "title": "Edit Gillick competence",
+      "confirm": "Update assessment"
     },
     "success": {
       "create": "Gillick assessment added",
       "update": "Gillick assessment updated"
+    },
+    "q1": {
+      "label": "The child knows which vaccination they will have"
+    },
+    "q2": {
+      "label": "The child knows which disease the vaccination protects against"
+    },
+    "q3": {
+      "label": "The child knows what could happen if they got the disease"
+    },
+    "q4": {
+      "label": "The child knows how the injection will be given"
+    },
+    "q5": {
+      "label": "The child knows which side effects they might experience"
+    },
+    "notes": {
+      "label": "Assessment notes"
+    },
+    "competent": {
+      "True": {
+        "colour": "aqua-green",
+        "icon": "tick",
+        "status": "Child assessed as Gillick competent"
+      },
+      "False": {
+        "colour": "red",
+        "icon": "cross",
+        "status": "Child assessed as not Gillick competent"
+      }
     }
   },
   "healthAnswers": {

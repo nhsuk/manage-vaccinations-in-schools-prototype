@@ -1,5 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { Event, EventType } from './event.js'
+import { Gillick } from './gillick.js'
 import { Record } from './record.js'
 import {
   getConsentHealthAnswers,
@@ -79,7 +80,7 @@ export class Patient {
     this.replies = options?.replies || {}
     this.record = new Record(options.record)
     this.registered = stringToBoolean(options?.registered)
-    this.gillick = options?.gillick || {}
+    this.gillick = new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
     this.campaign_uuid = options.campaign_uuid
     this.session_id = options.session_id
@@ -190,7 +191,7 @@ export class Patient {
     this.log = {
       type: EventType.Consent,
       name: `${created ? 'Completed' : 'Updated'} Gillick assessment`,
-      note: gillick.assessment,
+      note: gillick.notes,
       date: created ? gillick.created : new Date().toISOString(),
       user_uuid: gillick.created_user_uuid
     }
