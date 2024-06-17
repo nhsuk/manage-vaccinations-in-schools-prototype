@@ -10,7 +10,6 @@ import {
 import { Reply } from '../models/reply.js'
 import { Session, SessionStatus } from '../models/session.js'
 import { Vaccination } from '../models/vaccination.js'
-import { PreScreenQuestion } from '../models/vaccine.js'
 
 export const patientController = {
   read(request, response, next) {
@@ -30,12 +29,6 @@ export const patientController = {
     response.locals.vaccinations = vaccinations.map(
       (vaccination) => new Vaccination(vaccination)
     )
-    response.locals.preScreenQuestionItems = Object.values(
-      campaign.vaccine.preScreenQuestionKeys
-    ).map((value) => ({
-      text: PreScreenQuestion[value],
-      value
-    }))
 
     next()
   },

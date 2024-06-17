@@ -1054,15 +1054,12 @@
     "questions": {
       "label": "Have you asked {{patient.firstName}} if:"
     },
-    "outcome": {
-      "label": "Is {{patient.firstName}} ready to vaccinate in this session?",
-      "text": "Before continuing, ask the child:",
-      "administer": "Yes, they are ready to vaccinate in this session",
-      "decline": "No, they cannot be vaccinated in this session"
+    "continue": {
+      "label": "Is {{patient.firstName}} ready to vaccinate in this session?"
     },
     "confirm": "Continue",
     "notes": {
-      "label": "Pre-screening notes (optional)"
+      "label": "Pre-screening notes"
     }
   },
   "vaccination": {
