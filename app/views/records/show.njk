@@ -26,4 +26,18 @@
       })
     })
   }) }}
+
+  {{ card({
+    heading: __("parent.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(record.parent, {
+        fullName: {},
+        relationship: {
+          other: record.parent.relationshipOther
+        },
+        tel: {}
+      })
+    })
+  }) }}
 {% endblock %}
