@@ -1,0 +1,18 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("parent.notify.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          caption: patient.record.fullName,
+          title: title
+        })
+      }
+    },
+    items: booleanItems,
+    decorate: "reply.parent.notify"
+  }) }}
+{% endblock %}

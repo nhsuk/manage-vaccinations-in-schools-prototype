@@ -2,6 +2,7 @@
 
 {% set confirmButtonText = __("reply.new.check-answers.confirm") %}
 {% set title = __("reply.new.check-answers.title") %}
+{% set refusalReasonHasDetails = reply.refusalReason != RefusalReason.PersonalChoice or reply.refusalReason != RefusalReason.Other %}
 
 {% block form %}
   {{ heading({
@@ -29,7 +30,7 @@
         refusalReasonDetails: {
           value: reply.refusalReasonDetails | nhsukMarkdown,
           href: reply.uri + "/new/refusal-reason-details"
-        } if reply.refusalReasonDetails
+        } if refusalReasonHasDetails
       })
     })
   }) }}
@@ -67,12 +68,21 @@
           other: reply.parent.relationshipOther,
           href: reply.uri + "/new/parent"
         },
+        hasParentalResponsibility: {
+          href: reply.uri + "/new/parent"
+        } if reply.parent.relationship == ParentalRelationship.Other,
+        notify: {
+          href: reply.uri + "/new/notify-parent"
+        },
+        email: {
+          href: reply.uri + "/new/parent"
+        },
         tel: {
           href: reply.uri + "/new/parent"
         }
       })
     })
-  }) if reply.parent }}
+  }) if reply.parent.relationship or reply.parent.notify !== undefined }}
 
   {{ card({
     heading: __("reply.healthAnswers.label"),

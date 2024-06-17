@@ -25,6 +25,7 @@ export class ParentalRelationship {
  * @property {ParentalRelationship} relationship - Relationship to child
  * @property {boolean} hasParentalResponsibility - Has parental responsibility
  * @property {string} relationshipOther - Other relationship to child
+ * @property {boolean} notify - Notify about consent and vaccination events
  * @property {string} email - Email address
  * @property {string} tel - Phone number
  * @property {boolean} sms - Update via SMS
@@ -43,6 +44,7 @@ export class Parent {
     this.hasParentalResponsibility = stringToBoolean(
       options.hasParentalResponsibility
     )
+    this.notify = stringToBoolean(options?.notify)
     this.email = options.email
     this.tel = options.tel
     this.sms = stringToBoolean(options.sms) || false

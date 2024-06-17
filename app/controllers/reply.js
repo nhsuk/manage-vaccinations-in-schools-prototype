@@ -1,6 +1,5 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { GillickCompetent } from '../models/gillick.js'
-import { Parent, ParentalRelationship } from '../models/parent.js'
 import { Patient } from '../models/patient.js'
 import {
   Reply,
@@ -40,7 +39,8 @@ export const replyController = {
     delete data.triage
     delete data.wizard
 
-    const isSelfConsent = patient.gillick?.competence === GillickCompetent.True
+    const isSelfConsent =
+      patient.gillick?.competent?.value === GillickCompetent.True
 
     const reply = new Reply({
       child: patient.record,
@@ -49,13 +49,11 @@ export const replyController = {
       ...(!isSelfConsent && { method: ReplyMethod.Phone })
     })
 
-    data.wizard = reply
+    data.wizard = { reply }
 
-    const start = isSelfConsent ? 'decision' : 'parent'
+    request.app.locals.isSelfConsent = isSelfConsent
 
-    response.redirect(
-      `/sessions/${id}/${nhsn}/replies/${reply.uuid}/new/${start}`
-    )
+    response.redirect(`/sessions/${id}/${nhsn}/replies/${reply.uuid}/new/uuid`)
   },
 
   update(request, response) {
@@ -100,12 +98,12 @@ export const replyController = {
 
     request.app.locals.reply = new Reply({
       ...(form === 'edit' && reply), // Previous values
-      ...data.wizard // Wizard values,
+      ...data.wizard?.reply // Wizard values
     })
 
     request.app.locals.triage = {
       ...(form === 'edit' && triage), // Previous values
-      ...data.wizard // Wizard values,
+      ...data.wizard?.triage // Wizard values
     }
 
     const replyNeedsTriage = (reply) => {
@@ -116,19 +114,22 @@ export const replyController = {
 
     const journey = {
       [`/`]: {},
+      [`/${uuid}/${form}/uuid`]: {},
       ...(!isSelfConsent && {
         [`/${uuid}/${form}/parent`]: {}
       }),
       [`/${uuid}/${form}/decision`]: {
-        [`/${uuid}/${form}/health-answers`]: {
-          data: 'reply.decision',
-          value: ReplyDecision.Given
-        },
+        [`/${uuid}/${form}/${isSelfConsent ? 'notify-parent' : 'health-answers'}`]:
+          {
+            data: 'reply.decision',
+            value: ReplyDecision.Given
+          },
         [`/${uuid}/${form}/refusal-reason`]: {
           data: 'reply.decision',
           value: ReplyDecision.Refused
         }
       },
+      [`/${uuid}/${form}/notify-parent`]: {},
       [`/${uuid}/${form}/health-answers`]: {
         [`/${uuid}/${form}/${replyNeedsTriage(request.session.data.reply) ? 'triage' : 'check-answers'}`]: true
       },
@@ -160,42 +161,33 @@ export const replyController = {
       })
     }
 
-    const { lastName } = patient.record
+    const consentRefusals = Object.values(patient.replies).filter(
+      (reply) => reply.decision === ReplyDecision.Refused
+    )
 
-    request.app.locals.parents = {
-      a: new Parent({
-        firstName: 'Anthony',
-        lastName,
-        fullName: `Anthony ${lastName}`,
-        tel: '0117 123 4567',
-        relationship: ParentalRelationship.Dad
-      }),
-      b: new Parent({
-        firstName: 'Bethany',
-        lastName,
-        fullName: `Bethany ${lastName}`,
-        tel: '0117 987 6543',
-        relationship: ParentalRelationship.Mum
-      })
+    if (Object.values(consentRefusals).length > 0) {
+      response.locals.uuidItems = consentRefusals.map(({ parent, uuid }) => ({
+        text: `${parent.fullName} (${parent.relationship})`,
+        hint: { text: parent.tel },
+        value: uuid
+      }))
+    } else {
+      const { parent } = patient.record
+      response.locals.uuidItems = [
+        {
+          text: `${parent.fullName} (${parent.relationship})`,
+          hint: { text: parent.tel },
+          value: 'record'
+        }
+      ]
     }
 
-    const { parents } = request.app.locals
-    response.locals.parentItems = [
-      {
-        text: `${parents.a.fullName} (${parents.a.relationship})`,
-        value: 'a',
-        hint: {
-          text: parents.a.tel
-        }
-      },
-      {
-        text: `${parents.b.fullName} (${parents.b.relationship})`,
-        value: 'b',
-        hint: {
-          text: parents.b.tel
-        }
-      }
-    ]
+    if (isSelfConsent) {
+      response.locals.uuidItems.unshift({
+        text: request.app.locals.reply.relationship,
+        value: 'self'
+      })
+    }
 
     next()
   },
@@ -207,24 +199,48 @@ export const replyController = {
   },
 
   updateForm(request, response) {
-    const { parents, reply, triage } = request.app.locals
+    const { reply, triage } = request.app.locals
     const { uuid } = request.params
     const { data } = request.session
     const { paths, patient } = response.locals
 
-    // If parent selected, add parent to reply
-    if (data.parent) {
-      reply.parent = parents[data.parent]
-      delete data.parent
+    // Create parent based on choice of respondent
+    if (request.body.uuid) {
+      switch (data.uuid) {
+        case 'new': // Consent response is from a new contact
+          reply.parent = {}
+          break
+        case 'record': // Consent response is from CHIS record
+          reply.parent = patient.record.parent
+          break
+        case 'self':
+          reply.parent = false
+          break
+        default: // Consent response is an existing respondent
+          patient.replies[data.uuid].invalid = true
+          reply.parent = patient.replies[data.uuid].parent
+      }
     }
 
     delete data.healthAnswers
+    delete data.uuid
 
-    data.wizard = {
-      ...reply, // Previous reply values
-      ...triage, // Previous triage values
-      ...request.body.reply, // New reply value
-      ...request.body.triage // New triage value
+    data.wizard.reply = new Reply({
+      ...reply, // Previous values
+      ...request.body.reply, // New value
+      child: {
+        ...reply?.child,
+        ...request.body.reply?.child
+      },
+      parent: {
+        ...reply?.parent,
+        ...request.body.reply?.parent
+      }
+    })
+
+    data.wizard.triage = {
+      ...triage, // Previous values
+      ...request.body.triage // New value
     }
 
     response.redirect(

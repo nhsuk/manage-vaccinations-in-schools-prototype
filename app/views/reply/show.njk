@@ -66,16 +66,13 @@
           relationship: {
             other: reply.parent.relationshipOther
           },
-          email: {
-            value: reply.parent.email or "Not provided" | urlize
-          },
+          hasParentalResponsibility: {},
+          email: {},
           tel: {},
           contactPreference: {
             other: reply.parent.contactPreferenceOther
-          } if reply.parent.tel,
-          sms: {
-            value: __("parent.sms." + reply.parent.sms)
-          }
+          },
+          sms: {}
         })
       })
     }) if reply.parent }}

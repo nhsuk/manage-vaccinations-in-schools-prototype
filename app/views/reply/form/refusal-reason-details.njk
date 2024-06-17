@@ -4,13 +4,13 @@
 {% set title = __("reply.refusalReasonDetails.title." + refusal.key) %}
 
 {% block form %}
-  {{ heading({
-    caption: patient.record.fullName,
-    title: title
-  }) }}
-
   {{ textarea({
-    label: { text: __("reply.refusalReasonDetails.label") },
+    label: {
+      html: heading({
+        caption: patient.record.fullName,
+        title: title
+      })
+    },
     decorate: "reply.refusalReasonDetails"
   }) }}
 {% endblock %}
