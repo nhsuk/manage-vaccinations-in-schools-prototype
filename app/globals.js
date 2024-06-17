@@ -6,6 +6,7 @@ import {
   PatientOutcome,
   ScreenOutcome
 } from './models/patient.js'
+import { Sex } from './models/record.js'
 import { Reply, ReplyDecision } from './models/reply.js'
 import { User } from './models/user.js'
 import { HealthQuestion } from './models/vaccine.js'
@@ -208,6 +209,21 @@ export default () => {
     }
 
     return reply.decision
+  }
+
+  /**
+   * Show relevant pre-screening questions based on sex of the patient
+   * @param {import('./models/campaign.js').Campaign} campaign - Campaign
+   * @param {import('./models/patient.js').Patient} patient - Patient
+   * @returns {Array[string]} Pre-screening question keys
+   */
+  globals.preScreenQuestionKeys = function (campaign, patient) {
+    const { preScreenQuestionKeys } = campaign.vaccine
+    const { sex } = patient.record
+
+    return preScreenQuestionKeys.filter((value) =>
+      sex === Sex.Male ? value !== 'isPregnant' : value
+    )
   }
 
   /**

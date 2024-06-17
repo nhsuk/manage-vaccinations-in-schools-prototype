@@ -257,20 +257,19 @@
     }) | formCard if options.showTriage }}
 
     {% set preScreenDescriptionHtml %}
-      {{ checkboxes({
-        fieldset: {
-          legend: {
-            text: __("preScreen.questions.label", { patient: patient })
-          }
-        },
-        items: preScreenQuestionItems,
-        decorate: "preScreen.questions"
-      }) }}
+      {% for key in preScreenQuestionKeys(campaign, patient) %}
+        {{ radios({
+          classes: "nhsuk-radios--inline",
+          fieldset: {
+            legend: { text: PreScreenQuestion[key] }
+          },
+          items: booleanItems,
+          decorate: ["preScreen", key]
+        }) }}
+      {% endfor %}
 
       {{ textarea({
-        label: {
-          text: __("preScreen.notes.label")
-        },
+        label: { text: __("preScreen.notes.label") + " (Optional)" },
         rows: 3,
         decorate: "preScreen.notes"
       }) }}
@@ -278,20 +277,15 @@
       <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
 
       {{ radios({
+        classes: "nhsuk-radios--inline",
         fieldset: {
           legend: {
             classes: "nhsuk-fieldset__legend--m",
-            text: __("preScreen.outcome.label", { patient: patient })
+            text: __("preScreen.continue.label", { patient: patient })
           }
         },
-        items: [{
-          text: __("preScreen.outcome.administer"),
-          value: "administer"
-        }, {
-          text: __("preScreen.outcome.decline"),
-          value: "decline"
-        }],
-        decorate: "preScreen.outcome"
+        items: booleanItems,
+        decorate: "preScreen.continue"
       }) }}
 
       {{ button({

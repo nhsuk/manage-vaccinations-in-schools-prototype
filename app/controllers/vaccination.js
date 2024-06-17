@@ -41,7 +41,8 @@ export const vaccinationController = {
     const { data } = request.session
     const { patient, session } = response.locals
 
-    request.app.locals.start = data.preScreen.outcome
+    request.app.locals.start =
+      data.preScreen.continue === 'true' ? 'administer' : 'decline'
 
     delete data.preScreen
     delete data.wizard

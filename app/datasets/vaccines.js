@@ -21,7 +21,13 @@ export default {
       'Aspirin',
       'Support'
     ],
-    preScreenQuestionKeys: ['isHappy', 'isWell', 'isAllergic']
+    preScreenQuestionKeys: [
+      'isHappy',
+      'isVaccinated',
+      'isWell',
+      'isAllergic',
+      'isMedicated'
+    ]
   },
   5000123114115: {
     gtin: '5000123114115',
@@ -37,7 +43,13 @@ export default {
       'PreviousReaction',
       'Support'
     ],
-    preScreenQuestionKeys: ['isHappy', 'isWell', 'isAllergic']
+    preScreenQuestionKeys: [
+      'isHappy',
+      'isVaccinated',
+      'isWell',
+      'isAllergic',
+      'isMedicated'
+    ]
   },
   // HPV vaccines
   // Possible others: Gardasil, Cervarix
@@ -56,7 +68,13 @@ export default {
       'PreviousReaction',
       'Support'
     ],
-    preScreenQuestionKeys: ['isHappy', 'isWell', 'isAllergic', 'isPregnant']
+    preScreenQuestionKeys: [
+      'isHappy',
+      'isVaccinated',
+      'isWell',
+      'isAllergic',
+      'isPregnant'
+    ]
   },
   // 3-in-1 and MenACWY vaccines
   // Possible others: Pediacel, Repevax, Infanrix IPV
@@ -75,7 +93,13 @@ export default {
       'Immunosuppressant',
       'Support'
     ],
-    preScreenQuestionKeys: ['isHappy', 'isWell', 'isAllergic']
+    preScreenQuestionKeys: [
+      'isHappy',
+      'isVaccinated',
+      'isWell',
+      'isAllergic',
+      'isMedicated'
+    ]
   },
   // Menveo, Nimenrix and MenQuadfi
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1076053/Meningococcal-greenbook-chapter-22_17May2022.pdf
@@ -93,6 +117,12 @@ export default {
       'Immunosuppressant',
       'Support'
     ],
-    preScreenQuestionKeys: ['isHappy', 'isWell', 'isAllergic']
+    preScreenQuestionKeys: [
+      'isHappy',
+      'isVaccinated',
+      'isWell',
+      'isAllergic',
+      'isMedicated'
+    ]
   }
 }
