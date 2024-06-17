@@ -50,8 +50,8 @@ export class Parent {
     this.contactPreferenceOther = options?.contactPreferenceOther
   }
 
-  static generate(childLastName, firstReply) {
-    const relationship = firstReply
+  static generate(childLastName, parentsOnly) {
+    const relationship = parentsOnly
       ? faker.helpers.weightedArrayElement([
           { value: ParentalRelationship.Mum, weight: 5 },
           { value: ParentalRelationship.Dad, weight: 2 }

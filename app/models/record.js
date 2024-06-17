@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import firstNames from '../datasets/first-names.js'
 import gpSurgeries from '../datasets/gp-surgeries.js'
 import schools from '../datasets/schools.js'
+import { Parent } from './parent.js'
 
 const primarySchools = Object.values(schools).filter(
   (school) => school.phase === 'Primary'
@@ -32,6 +33,7 @@ export class GPRegistered {
  * @property {GPRegistered} gpRegistered - Registered with a GP
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} urn - School URN
+ * @property {Parent} [parent] - Parent
  * @function age - Age in years
  * @function dobWithAge - Date of birth with age in brackets
  * @function fullName - Get full name
@@ -52,6 +54,7 @@ export class Record {
     this.gpRegistered = options.gpRegistered
     this.gpSurgery = options.gpSurgery
     this.urn = options.urn
+    this.parent = options?.parent && new Parent(options.parent)
   }
 
   static generate() {
@@ -75,6 +78,14 @@ export class Record {
       urn = faker.helpers.arrayElement(secondarySchools).urn
     }
 
+    const parent = Parent.generate(lastName, true)
+
+    // CHIS records provide only a subset of parent data
+    delete parent.email
+    delete parent.sms
+    delete parent.contactPreference
+    delete parent.contactPreferenceOther
+
     return new Record({
       firstName,
       lastName,
@@ -87,7 +98,8 @@ export class Record {
       },
       gpRegistered,
       gpSurgery,
-      urn
+      urn,
+      parent
     })
   }
 
