@@ -1,5 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { Event, EventType } from './event.js'
+import { Gillick } from './gillick.js'
 import { Record } from './record.js'
 import {
   getConsentHealthAnswers,
@@ -59,7 +60,7 @@ export class PatientOutcome {
  * @property {object} replies - Consent replies
  * @property {import('./record.js').Record} record - CHIS record
  * @property {boolean} [registered] - Checked in?
- * @property {import('./gillick.js').Gillick} [gillick] - Gillick assessment
+ * @property {Gillick} [gillick] - Gillick assessment
  * @property {Array<import('./vaccination.js').Vaccination>} [vaccinations] - Vaccinations
  * @property {string} [campaign_uuid] - Campaign UUID
  * @property {string} [session_id] - Session ID
@@ -79,7 +80,7 @@ export class Patient {
     this.replies = options?.replies || {}
     this.record = new Record(options.record)
     this.registered = stringToBoolean(options?.registered)
-    this.gillick = options?.gillick || {}
+    this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
     this.campaign_uuid = options.campaign_uuid
     this.session_id = options.session_id
@@ -190,7 +191,7 @@ export class Patient {
     this.log = {
       type: EventType.Consent,
       name: `${created ? 'Completed' : 'Updated'} Gillick assessment`,
-      note: gillick.assessment,
+      note: gillick.notes,
       date: created ? gillick.created : new Date().toISOString(),
       user_uuid: gillick.created_user_uuid
     }

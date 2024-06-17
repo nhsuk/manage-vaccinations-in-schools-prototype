@@ -109,21 +109,15 @@
     }) }}
 
     {% set gillickDescriptionHtml %}
-      {% if patient.gillick.competence %}
-        {{ summaryList({
-          rows: summaryRows(gillick, {
-            competence: {
-              value: patient.gillick.competence,
-              href: patient.uri + "/gillick/edit/competence" if options.editGillick
-            },
-            assessment: {
-              value: patient.gillick.assessment | nhsukMarkdown,
-              href: patient.uri + "/gillick/edit/assessment" if options.editGillick
-            }
-          })
-        }) }}
+      {% if patient.gillick.competent %}
+        {{ status(
+          __("gillick.competent." + patient.gillick.competent.key + ".status"),
+          __("gillick.competent." + patient.gillick.competent.key + ".icon"),
+          __("gillick.competent." + patient.gillick.competent.key + ".colour")
+        ) }}
+        {{ link(patient.uri + "/gillick/edit", __("gillick.edit.title")) | nhsukMarkdown if options.editGillick }}
       {% else %}
-        {{ link(patient.uri + "/gillick/new", __("gillick.start.confirm")) | nhsukMarkdown if options.editGillick }}
+        {{ link(patient.uri + "/gillick/new", __("gillick.new.title")) | nhsukMarkdown if options.editGillick }}
       {% endif %}
     {% endset %}
 
