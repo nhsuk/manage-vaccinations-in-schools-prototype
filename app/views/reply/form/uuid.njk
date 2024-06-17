@@ -1,0 +1,24 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("reply.uuid.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: patient.record.fullName,
+          title: title
+        })
+      }
+    },
+    items: uuidItems | push({
+      divider: "or"
+    }) | push({
+      text: __("reply.uuid.new"),
+      value: "new"
+    }),
+    decorate: "uuid"
+  }) }}
+{% endblock %}

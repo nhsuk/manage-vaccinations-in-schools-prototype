@@ -334,6 +334,9 @@
       "relationship": {
         "label": "Relationship to child"
       },
+      "notify": {
+        "label": "Send notifications"
+      },
       "email": {
         "label": "Email address",
         "hint": "We use this to send you confirmation messages"
@@ -570,7 +573,8 @@
       "label": "Relationship"
     },
     "hasParentalResponsibility": {
-      "label": "Parental responsibility"
+      "label": "Parental responsibility",
+      "hint": "They have the legal rights and duties relating to the child"
     },
     "email": {
       "label": "Email address"
@@ -580,6 +584,14 @@
     },
     "contactPreference": {
       "label": "Phone contact method"
+    },
+    "relationshipOther": {
+      "label": "Give details",
+      "hint": "For example, carer"
+    },
+    "notify": {
+      "title": "Does the child want their parent or guardian to get confirmation of the vaccination?",
+      "label": "Notify parent"
     }
   },
   "patient": {
@@ -705,13 +717,17 @@
     "created": {
       "label": "Response date"
     },
+    "uuid": {
+      "title": "Who are you trying to get consent from?",
+      "label": "Parent or guardian",
+      "new": "Add a new parental contact"
+    },
     "child": {
-      "title": "Is the child giving consent?",
       "label": "Child"
     },
     "parent": {
-      "title": "Who are you trying to get consent from?",
-      "label": "Parent or guardian"
+      "title": "Details for parent or guardian",
+      "label": "Parent"
     },
     "method": {
       "title": "How was the response given?",
@@ -737,7 +753,7 @@
       "label": "Give details"
     },
     "refusalReasonDetails": {
-      "label": "Give details",
+      "label": "Refusal details",
       "title": {
         "AlreadyGiven": "Where did the child get their vaccination?",
         "GettingElsewhere": "Where will the child get their vaccination?",

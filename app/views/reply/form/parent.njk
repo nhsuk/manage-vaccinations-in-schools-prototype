@@ -3,17 +3,51 @@
 {% set title = __("reply.parent.title") %}
 
 {% block form %}
+  {{ heading({
+    caption: patient.record.fullName,
+    title: title
+  }) }}
+
+  {{ input({
+    label: { text: __("parent.fullName.label") },
+    decorate: "reply.parent.fullName"
+  }) if data.uuid == "new" }}
+
   {{ radios({
     fieldset: {
-      legend: {
-        html: heading({
-          classes: "nhsuk-fieldset__legend--l",
-          caption: patient.record.fullName,
-          title: title
+      legend: { text: __("parent.relationship.label") }
+    },
+    items: enumItems(ParentalRelationship) | pop | push({
+      text: ParentalRelationship.Other,
+      conditional: {
+        html: input({
+          label: { text: __("parent.relationshipOther.label") },
+          hint: { text: __("parent.relationshipOther.hint") },
+          decorate: "reply.parent.relationshipOther"
+        }) + radios({
+          fieldset: {
+            legend: { text: __("parent.hasParentalResponsibility.label") }
+          },
+          hint: { text: __("parent.hasParentalResponsibility.hint") },
+          items: [{
+            text: "Yes"
+          }, {
+            text: "No"
+          }],
+          decorate: "reply.parent.hasParentalResponsibility"
         })
       }
-    },
-    items: parentItems,
-    decorate: "parent"
+    }),
+    decorate: "reply.parent.relationship"
+  }) if data.uuid == "new" }}
+
+  {{ input({
+    label: { text: __("parent.email.label") },
+    decorate: "reply.parent.email"
+  }) }}
+
+  {{ input({
+    label: { text: __("parent.tel.label") + " (optional)" },
+    decorate: "reply.parent.tel"
   }) }}
 {% endblock %}
