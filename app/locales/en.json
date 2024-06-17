@@ -60,7 +60,7 @@
   "campaign": {
     "list": {
       "title": "Campaigns",
-      "description": "Create and manage vaccination campaigns."
+      "description": "Use this area to:\n- create new campaigns\n- review consent responses\n- triage health records"
     },
     "show": {
       "title": "School sessions"
@@ -773,7 +773,7 @@
     },
     "list": {
       "title": "Today’s sessions",
-      "description": "View all sessions taking place today."
+      "description": "Use this area to:\n- register attendance\n- record vaccinations\n- review session outcomes"
     },
     "new": {
       "title": "Add a new session",
@@ -1137,7 +1137,7 @@
   "vaccine": {
     "list": {
       "title": "Vaccines",
-      "description": "Add or remove batches."
+      "description": "Use this area to:\n- add new vaccine batches\n- edit details for existing batches"
     },
     "show": {
       "summary": "Vaccine details",
