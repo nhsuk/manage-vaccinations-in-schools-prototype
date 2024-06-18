@@ -22,5 +22,5 @@
     decorate: "password"
   }) | replace("govuk-input", "nhsuk-input") | replace("govuk-button", "nhsuk-button") }}
 
-  {{ link("/account/reset-password", __("account.password.forgot")) | nhsukMarkdown}}
+  {{ link("/account/reset-password", __("account.password.forgot")) | nhsukMarkdown }}
 {% endblock %}

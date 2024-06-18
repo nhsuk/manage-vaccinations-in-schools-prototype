@@ -1,3 +1,5 @@
+{% from "_macros/logo.njk" import logo %}
+
 {% extends "_layouts/default.njk" %}
 
 {% set public = true %}
@@ -21,10 +23,21 @@ Use this service to:
 - view and download performance reports
       {% endfilter %}
 
+      {% set buttonHtml %}
+        {{ logo(27) }}
+        <div>
+          <span>Log in with my </span>
+          Care Identity
+        </div>
+      {% endset %}
+
       {{ button({
-        text: "Start now",
-        href: "/account/sign-in"
+        classes: "app-button--cis2 nhsuk-u-margin-bottom-4",
+        html: buttonHtml,
+        href: "/account/cis2"
       }) }}
+
+      {{ link("https://manage-care-identities.care-identity-service2.nhs.uk/#/self-service/unlock-authenticator", __("account.cis2.unlock")) | nhsukMarkdown }}
     </div>
   </div>
 {% endblock %}
