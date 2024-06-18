@@ -1,0 +1,33 @@
+{% extends "_layouts/form.njk" %}
+
+{% set public = true %}
+{% set transactionalService = {
+  name: "CIS2 - Care Identity Authentication"
+} %}
+{% set title = __("account.cis2.method.label") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          title: title
+        })
+      }
+    },
+    name: "method",
+    items: [
+      { text: __("account.cis2.method.smartcard") },
+      { text: __("account.cis2.method.hello") },
+      { text: __("account.cis2.method.key") },
+      { text: __("account.cis2.method.ipad") }
+    ]
+  }) }}
+
+  {{ checkboxes({
+    items: [{
+      text: __("account.cis2.remember.label"),
+      hint: { text: __("account.cis2.remember.hint") }
+    }]
+  }) }}
+{% endblock %}

@@ -12,11 +12,11 @@
       "confirm": "Reset password"
     },
     "sign-in": {
-      "title": "Sign in",
-      "confirm": "Sign in"
+      "title": "Log in",
+      "confirm": "Log in"
     },
     "sign-out": {
-      "title": "Sign out"
+      "title": "Log out"
     },
     "success": {
       "update": "Account details updated"
@@ -27,6 +27,30 @@
     },
     "email": {
       "label": "Email address"
+    },
+    "cis2": {
+      "unlock": "I need to unlock my smartcard",
+      "change-role": "Change role",
+      "method": {
+        "label": "Select your login method",
+        "smartcard": "Smartcard",
+        "hello": "Windows Hello",
+        "key": "Security key",
+        "ipad": "iPad app"
+      },
+      "remember": {
+        "label": "Remember my selection",
+        "hint": "Do not check this box if you are using a shared machine"
+      }
+    },
+    "permissions": {
+      "org": {
+        "title": "Your organisation is not using this service yet",
+        "description": "{{ra}} is not currently set up to use Mavis."
+      },
+      "user": {
+        "title": "You do not have permission to use this service"
+      }
     }
   },
   "batch": {
