@@ -83,8 +83,9 @@
   },
   "campaign": {
     "list": {
-      "title": "Campaigns",
-      "description": "Use this area to:\n- create new campaigns\n- review consent responses\n- triage health records"
+      "title": "Vaccination programmes",
+      "description": "Use this area to:\n- create new programmes\n- review consent responses\n- triage health records",
+      "active": "Active programmes"
     },
     "show": {
       "title": "School sessions"
@@ -94,12 +95,12 @@
       "download": "Download immunisation report (CSV)"
     },
     "new": {
-      "title": "Create a new vaccination campaign"
+      "title": "Create a new vaccination programme"
     },
     "edit": {
-      "title": "Edit campaign",
+      "title": "Edit programme",
       "confirm": "Save changes",
-      "summary": "Campaign details"
+      "summary": "Programme details"
     },
     "name": {
       "label": "Name"
@@ -806,8 +807,8 @@
     "DoNotVaccinate": {
       "colour": "red",
       "description": "{{user.fullNameWithRegistration}} decided that {{patient.fullName}} should not be vaccinated.",
-      "status": "Do not vaccinate in this campaign",
-      "title": "Do not vaccinate in campaign"
+      "status": "Do not vaccinate in this year’s programme",
+      "title": "Do not vaccinate in year’s programme"
     },
     "Vaccinate": {
       "colour": "aqua-green",
@@ -845,7 +846,7 @@
     },
     "new": {
       "title": "Add a new session",
-      "description": "Create a new session or clinic for a campaign.",
+      "description": "Create a new session or clinic for a programme.",
       "check-answers": {
         "title": "Check and confirm",
         "confirm": "Save changes",
@@ -860,7 +861,7 @@
         "title": "What type of session are you adding?"
       },
       "campaign_uuid": {
-        "title": "Which campaign is this session part of?"
+        "title": "Which programme is this session part of?"
       },
       "urn": {
         "title": "Which school is it at?"
@@ -901,7 +902,7 @@
       "label": "Type of session"
     },
     "campaign_uuid": {
-      "label": "Campaign"
+      "label": "Programme"
     },
     "open": {
       "label": "Consent requests",

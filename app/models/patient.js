@@ -168,7 +168,7 @@ export class Patient {
     this.campaign_uuid = campaign.uuid
     this.log = {
       type: EventType.Select,
-      name: `Selected for ${campaign.name} campaign cohort`,
+      name: `Selected for ${campaign.name} vaccination programme cohort`,
       date: campaign.created,
       user_uuid: campaign.created_user_uuid
     }
