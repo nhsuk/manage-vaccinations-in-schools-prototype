@@ -1,5 +1,6 @@
-import { Patient } from '../models/patient.js'
+import { Patient, PatientOutcome } from '../models/patient.js'
 import { Registration } from '../models/registration.js'
+import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
 
 export const registrationController = {
   edit(request, response) {
@@ -11,13 +12,13 @@ export const registrationController = {
     // Convert string to boolean
     switch (true) {
       case patient.registered === true:
-        response.locals.patient.registered = 'true'
+        response.locals.patient.registered = true
         break
       case patient.registered === false:
-        response.locals.patient.registered = 'false'
+        response.locals.patient.registered = false
         break
       default:
-        response.locals.patient.registered = 'undefined'
+        response.locals.patient.registered = undefined
     }
 
     response.render('registration/edit')
@@ -46,18 +47,32 @@ export const registrationController = {
         key = 'Pending'
     }
 
+    // Register attendance
     patient.register = new Registration({
       name: __(`registration.${key}.name`, { location: session.location }),
       registered,
       ...(data.token && { created_user_uuid: data.token.uuid })
     })
-    data.patients[nhsn] = patient
 
-    const captureKey = patient.capture.key
+    // Capture vaccination outcome as absent from session if safe to vaccinate
+    if (
+      registered === false &&
+      patient.outcome?.value !== PatientOutcome.CouldNotVaccinate
+    ) {
+      patient.capture = new Vaccination({
+        location: session.location.name,
+        outcome: VaccinationOutcome.AbsentSession,
+        patient_nhsn: patient.nhsn,
+        session_id: session.id,
+        ...(data.token && { created_user_uuid: data.token.uuid })
+      })
+    }
+
+    data.patients[nhsn] = patient
 
     request.flash(
       'message',
-      __(`registration.update.success.${captureKey}`, { patient })
+      __(`registration.update.success.${patient.capture.key}`, { patient })
     )
 
     if (tab) {
