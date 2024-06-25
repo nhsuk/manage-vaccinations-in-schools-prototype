@@ -269,5 +269,38 @@ export const replyController = {
 
     request.flash('success', __(`reply.success.invalidate`, { reply }))
     response.redirect(patient.uri)
+  },
+
+  showWithdraw(request, response) {
+    response.render('reply/withdraw')
+  },
+
+  updateWithdraw(request, response) {
+    const { reply } = request.app.locals
+    const { data } = request.session
+    const { patient } = response.locals
+    const { __ } = response.locals
+
+    const { refusalReason, refusalReasonOther } = data.reply
+
+    // Invalidate existing reply
+    patient.replies[reply.uuid].invalid = true
+
+    // Create a new reply
+    patient.respond = new Reply({
+      ...reply,
+      uuid: false,
+      created: new Date().toISOString(),
+      decision: ReplyDecision.Refused,
+      refusalReason,
+      ...(refusalReason === ReplyRefusal.Other && { refusalReasonOther }),
+      ...(data.reply?.notes && { notes: data.reply.notes }),
+      ...(data.token && { created_user_uuid: data.token.uuid })
+    })
+
+    delete data.reply
+
+    request.flash('success', __(`reply.success.withdraw`, { reply }))
+    response.redirect(patient.uri)
   }
 }
