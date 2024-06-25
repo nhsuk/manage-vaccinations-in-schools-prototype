@@ -22,4 +22,7 @@ router.post('/:uuid/?:form(new|edit)/:view', replyController.updateForm)
 router.get('/:uuid/invalidate', replyController.showInvalidate)
 router.post('/:uuid/invalidate', replyController.updateInvalidate)
 
+router.get('/:uuid/withdraw', replyController.showWithdraw)
+router.post('/:uuid/withdraw', replyController.updateWithdraw)
+
 export const replyRoutes = router

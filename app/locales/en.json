@@ -739,7 +739,8 @@
     "success": {
       "create": "Consent response from {{reply.fullName}} added to [{{patient.fullName}}]({{patient.uri}})’s record",
       "update": "Consent response from {{reply.fullName}} updated on [{{patient.fullName}}]({{patient.uri}})’s record",
-      "invalidate": "Consent response from {{reply.fullName}} marked as invalid"
+      "invalidate": "Consent response from {{reply.fullName}} marked as invalid",
+      "withdraw": "Consent response from {{reply.fullName}} withdrawn"
     },
     "created": {
       "label": "Response date"
@@ -802,6 +803,12 @@
       "label": "Mark as invalid",
       "confirm": "Mark response as invalid",
       "description": "This operation cannot be undone."
+    },
+    "withdraw": {
+      "caption": "Consent response from {{reply.fullName}}",
+      "title": "Withdraw consent",
+      "label": "Withdraw consent",
+      "confirm": "Withdraw consent"
     }
   },
   "screen": {
