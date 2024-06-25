@@ -38,6 +38,7 @@
     {% endfor %}
 
     {{ actionTable({
+      id: "users",
       sort: "name",
       heading: "Admins" if admin == "true" else "Team members",
       panel: true,

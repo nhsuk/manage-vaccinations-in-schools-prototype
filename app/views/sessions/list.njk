@@ -39,6 +39,7 @@
     {% endfor %}
 
     {{ actionTable({
+      id: "sessions",
       sort: "date",
       heading: data.campaigns[sessions[0].campaign_uuid].name,
       panel: true,
