@@ -202,14 +202,20 @@ export class Patient {
       return
     }
 
-    const created = !this.replies[reply.uuid]
+    const { decision, fullName, invalid, relationship, uuid } = reply
+    const created = !this.replies[uuid]
 
-    this.replies[reply.uuid] = reply
+    let name = `${decision} by ${fullName} (${relationship})`
+    if (invalid) {
+      name = `${decision} by ${fullName} (${relationship}) marked as invalid`
+    } else if (created) {
+      name = `${decision} in updated response from ${fullName} (${relationship})`
+    }
+
+    this.replies[uuid] = reply
     this.log = {
       type: EventType.Consent,
-      name: created
-        ? `${reply.decision} by ${reply.fullName} (${reply.relationship})`
-        : `${reply.decision} in updated response from ${reply.fullName} (${reply.relationship})`,
+      name,
       date: created ? reply.created : new Date().toISOString(),
       user_uuid: reply.created_user_uuid
     }

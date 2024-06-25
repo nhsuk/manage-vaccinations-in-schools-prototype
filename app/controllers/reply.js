@@ -246,5 +246,28 @@ export const replyController = {
     response.redirect(
       paths.next || `${patient.uri}/replies/${uuid}/new/check-answers`
     )
+  },
+
+  showInvalidate(request, response) {
+    response.render('reply/invalidate')
+  },
+
+  updateInvalidate(request, response) {
+    const { reply } = request.app.locals
+    const { data } = request.session
+    const { patient } = response.locals
+    const { __ } = response.locals
+
+    patient.respond = new Reply({
+      ...reply,
+      ...(data.reply?.notes && { notes: data.reply.notes }),
+      ...(data.token && { created_user_uuid: data.token.uuid }),
+      invalid: true
+    })
+
+    delete data.reply
+
+    request.flash('success', __(`reply.success.invalidate`, { reply }))
+    response.redirect(patient.uri)
   }
 }

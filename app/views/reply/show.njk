@@ -11,6 +11,15 @@
       title: title
     }) }}
 
+    <p class="nhsuk-body nhsuk-u-margin-bottom-7">
+      {{ tag({
+        classes: "nhsuk-tag--grey nhsuk-u-margin-right-3",
+        text: __("reply.invalid.label")
+      }) if reply.invalid else link(
+        reply.uri + "/invalidate", __("reply.invalidate.label")
+      ) | safe }}
+    </p>
+
     {{ card({
       heading: __("reply.label"),
       headingClasses: "nhsuk-heading-m",
@@ -28,7 +37,10 @@
           } if reply.refusalReason,
           refusalReasonDetails: {
             value: reply.refusalReasonDetails | nhsukMarkdown
-          } if reply.refusalReasonDetails
+          } if reply.refusalReasonDetails,
+          notes: {
+            value: reply.notes | nhsukMarkdown
+          }
         })
       })
     }) }}

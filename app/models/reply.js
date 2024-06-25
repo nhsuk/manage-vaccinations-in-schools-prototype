@@ -40,6 +40,7 @@ export class ReplyRefusal {
  * @property {ReplyRefusal} [refusalReason] - Refusal reason
  * @property {string} [refusalReasonOther] - Other refusal reason
  * @property {string} [refusalReasonDetails] - Refusal reason details
+ * @property {string} [notes] - Notes about this response
  * @property {string} patient_nhsn - Patient NHS number
  * @property {string} session_id - Session ID
  * @function formattedCreated - Formatted created date
@@ -62,6 +63,7 @@ export class Reply {
     this.refusalReason = options?.refusalReason
     this.refusalReasonOther = options?.refusalReasonOther
     this.refusalReasonDetails = options?.refusalReasonDetails
+    this.notes = options?.notes
     this.patient_nhsn = options?.patient_nhsn
     this.session_id = options?.session_id
   }
