@@ -1,7 +1,7 @@
 {%- from "tables/macro.njk" import table -%}
 {%- from "./attributes.njk" import attributes -%}
 {% macro actionTable(params) -%}
-<action-table sort="{{ params.sort }}"
+<action-table sort="{{ params.sort }}" store="{{ params.id }}"
   {%- if params.classes %} class="{{ params.classes }}"{% endif %}>
 {%  if params.panel %}
   <div class="nhsuk-table__panel-with-heading-tab
