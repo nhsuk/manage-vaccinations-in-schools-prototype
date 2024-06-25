@@ -19,4 +19,7 @@ router.all('/:uuid/?:form(new|edit)/:view', replyController.readForm)
 router.get('/:uuid/?:form(new|edit)/:view', replyController.showForm)
 router.post('/:uuid/?:form(new|edit)/:view', replyController.updateForm)
 
+router.get('/:uuid/invalidate', replyController.showInvalidate)
+router.post('/:uuid/invalidate', replyController.updateInvalidate)
+
 export const replyRoutes = router
