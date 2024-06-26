@@ -57,12 +57,19 @@ export const replyController = {
   },
 
   update(request, response) {
-    const { activity, reply, triage } = request.app.locals
+    const { activity, invalidUuid, reply, triage } = request.app.locals
     const { form, id } = request.params
     const { data } = request.session
     const { __ } = response.locals
     const patient = new Patient(response.locals.patient)
 
+    // Mark previous reply as invalid when following up on a refusal
+    if (invalidUuid) {
+      patient.replies[invalidUuid].invalid = true
+      delete request.app.locals.invalidUuid
+    }
+
+    // Add new reply
     patient.respond = new Reply({
       ...reply, // Previous values
       ...data.wizard, // Wizard values
@@ -92,6 +99,7 @@ export const replyController = {
   readForm(request, response, next) {
     const { isSelfConsent, reply, triage } = request.app.locals
     const { form, uuid, nhsn } = request.params
+    const { referrer } = request.query
     const { data } = request.session
 
     const patient = new Patient(data.patients[nhsn])
@@ -158,7 +166,8 @@ export const replyController = {
       ...(form === 'edit' && {
         back: `${patient.uri}/replies/${uuid}/edit`,
         next: `${patient.uri}/replies/${uuid}/edit`
-      })
+      }),
+      ...(referrer && { back: referrer })
     }
 
     const consentRefusals = Object.values(patient.replies).filter(
@@ -217,7 +226,10 @@ export const replyController = {
           reply.parent = false
           break
         default: // Consent response is an existing respondent
-          patient.replies[data.uuid].invalid = true
+          // Store reply that needs marked as invalid
+          // We only want to do this when submitting replacement reply
+          request.app.locals.invalidUuid = data.uuid
+
           reply.parent = patient.replies[data.uuid].parent
       }
     }
@@ -245,6 +257,31 @@ export const replyController = {
 
     response.redirect(
       paths.next || `${patient.uri}/replies/${uuid}/new/check-answers`
+    )
+  },
+
+  newFollowUp(request, response) {
+    const { reply } = request.app.locals
+    const { id, nhsn } = request.params
+    const { data } = request.session
+    const { patient, session } = response.locals
+
+    // Store reply that needs marked as invalid
+    // We only want to do this when submitting replacement reply
+    request.app.locals.invalidUuid = reply.uuid
+
+    const newReply = new Reply({
+      child: patient.record,
+      parent: patient.replies[reply.uuid].parent,
+      patient_nhsn: patient.nhsn,
+      session_id: session.id,
+      method: ReplyMethod.Phone
+    })
+
+    data.wizard = { reply: newReply }
+
+    response.redirect(
+      `/sessions/${id}/${nhsn}/replies/${reply.uuid}/new/parent?referrer=${reply.uri}`
     )
   },
 

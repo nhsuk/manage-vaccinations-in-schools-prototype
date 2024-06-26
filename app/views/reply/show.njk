@@ -19,6 +19,10 @@
           href: reply.uri + "/withdraw"
         } if not reply.invalid and reply.decision == ReplyDecision.Given,
         {
+          text: __("reply.follow-up.label"),
+          href: reply.uri + "/follow-up"
+        } if not reply.invalid and reply.decision == ReplyDecision.Refused,
+        {
           text: __("reply.invalidate.label"),
           href: reply.uri + "/invalidate"
         } if not reply.invalid
