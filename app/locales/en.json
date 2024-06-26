@@ -797,6 +797,9 @@
     "notes": {
       "label": "Notes"
     },
+    "follow-up": {
+      "label": "Follow up"
+    },
     "invalidate": {
       "caption": "Consent response from {{reply.fullName}}",
       "title": "Mark response as invalid",
