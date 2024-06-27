@@ -73,6 +73,7 @@ export const replyController = {
     patient.respond = new Reply({
       ...reply, // Previous values
       ...data.wizard, // Wizard values
+      ...request.body.reply, // New value
       ...(data.token && { created_user_uuid: data.token.uuid })
     })
 
@@ -93,7 +94,11 @@ export const replyController = {
     const action = form === 'edit' ? 'update' : 'create'
     request.flash('success', __(`reply.success.${action}`, { reply, patient }))
 
-    response.redirect(`/sessions/${id}/${activity || 'consent'}`)
+    const next = form === 'edit'
+      ? reply.uri
+      : `/sessions/${id}/${activity || 'consent'}`
+
+    response.redirect(next)
   },
 
   readForm(request, response, next) {

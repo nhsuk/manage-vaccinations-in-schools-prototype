@@ -47,7 +47,8 @@
             value: reply.refusalReasonDetails | nhsukMarkdown
           } if reply.refusalReasonDetails,
           notes: {
-            value: reply.notes | nhsukMarkdown
+            value: reply.notes | nhsukMarkdown,
+            href: reply.uri + "/edit/notes"
           }
         })
       })
