@@ -1,0 +1,17 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = "Save changes" %}
+{% set title = __("reply.notes.title") %}
+
+{% block form %}
+  {{ textarea({
+    label: {
+      html: heading({
+        classes: "nhsuk-label--l",
+        caption: __("reply.show.title", reply.fullName),
+        title: title
+      })
+    },
+    decorate: "reply.notes"
+  }) }}
+{% endblock %}

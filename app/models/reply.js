@@ -63,7 +63,7 @@ export class Reply {
     this.refusalReason = options?.refusalReason
     this.refusalReasonOther = options?.refusalReasonOther
     this.refusalReasonDetails = options?.refusalReasonDetails
-    this.notes = options?.notes
+    this.notes = options?.notes || ''
     this.patient_nhsn = options?.patient_nhsn
     this.session_id = options?.session_id
   }

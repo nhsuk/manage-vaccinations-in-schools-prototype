@@ -791,6 +791,7 @@
       }
     },
     "notes": {
+      "title": "Notes",
       "label": "Notes"
     },
     "follow-up": {
