@@ -17,7 +17,6 @@ import {
   SessionTime,
   SessionStatus
 } from '../models/session.js'
-import { Registrar } from '../models/user.js'
 import {
   VaccinationMethod,
   VaccinationOutcome,
@@ -42,7 +41,6 @@ export const enumeration = (request, response, next) => {
   response.locals.ParentalRelationship = ParentalRelationship
   response.locals.PatientOutcome = PatientOutcome
   response.locals.PreScreenQuestion = PreScreenQuestion
-  response.locals.Registrar = Registrar
   response.locals.RegistrationOutcome = RegistrationOutcome
   response.locals.ReplyDecision = ReplyDecision
   response.locals.ReplyMethod = ReplyMethod

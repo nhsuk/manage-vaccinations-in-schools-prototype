@@ -27,10 +27,6 @@
           html: link(user.uri, user.fullName) or "Not provided"
         },
         {
-          header: __("user.registration.label"),
-          html: user.registration or "Not provided"
-        },
-        {
           header: __("user.email.label"),
           html: user.email or "Not provided"
         }
@@ -45,7 +41,6 @@
       responsive: true,
       head: [
         { text: __("user.fullName.label") },
-        { text: __("user.registration.label") },
         { text: __("user.email.label") }
       ],
       rows: userRows

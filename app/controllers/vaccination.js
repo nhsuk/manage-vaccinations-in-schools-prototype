@@ -148,7 +148,7 @@ export const vaccinationController = {
         const user = new User(value)
 
         return {
-          text: user.fullNameWithRegistration,
+          text: user.fullName,
           value: key
         }
       })
