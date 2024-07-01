@@ -799,6 +799,8 @@
       "label": "Notes"
     },
     "follow-up": {
+      "caption": "Consent response from {{reply.fullName}}",
+      "title": "Does their original decision still stand?",
       "label": "Follow up"
     },
     "invalidate": {

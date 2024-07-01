@@ -94,9 +94,8 @@ export const replyController = {
     const action = form === 'edit' ? 'update' : 'create'
     request.flash('success', __(`reply.success.${action}`, { reply, patient }))
 
-    const next = form === 'edit'
-      ? reply.uri
-      : `/sessions/${id}/${activity || 'consent'}`
+    const next =
+      form === 'edit' ? reply.uri : `/sessions/${id}/${activity || 'consent'}`
 
     response.redirect(next)
   },
@@ -265,29 +264,36 @@ export const replyController = {
     )
   },
 
-  newFollowUp(request, response) {
+  showFollowUp(request, response) {
+    response.render('reply/follow-up')
+  },
+
+  updateFollowUp(request, response) {
     const { reply } = request.app.locals
-    const { id, nhsn } = request.params
     const { data } = request.session
     const { patient, session } = response.locals
 
-    // Store reply that needs marked as invalid
-    // We only want to do this when submitting replacement reply
-    request.app.locals.invalidUuid = reply.uuid
+    if (request.body.decision === 'true') {
+      response.redirect(
+        `${reply.uri}/edit/notes?referrer=${reply.uri}/follow-up`
+      )
+    } else {
+      // Store reply that needs marked as invalid
+      // We only want to do this when submitting replacement reply
+      request.app.locals.invalidUuid = reply.uuid
 
-    const newReply = new Reply({
-      child: patient.record,
-      parent: patient.replies[reply.uuid].parent,
-      patient_nhsn: patient.nhsn,
-      session_id: session.id,
-      method: ReplyMethod.Phone
-    })
+      const newReply = new Reply({
+        child: patient.record,
+        parent: patient.replies[reply.uuid].parent,
+        patient_nhsn: patient.nhsn,
+        session_id: session.id,
+        method: ReplyMethod.Phone
+      })
 
-    data.wizard = { reply: newReply }
+      data.wizard = { reply: newReply }
 
-    response.redirect(
-      `/sessions/${id}/${nhsn}/replies/${reply.uuid}/new/parent?referrer=${reply.uri}`
-    )
+      response.redirect(`${newReply.uri}/new/parent?referrer=${reply.uri}`)
+    }
   },
 
   showInvalidate(request, response) {
