@@ -17,7 +17,8 @@ router.all('/:uuid/?:form(new|edit)/:view', replyController.readForm)
 router.get('/:uuid/?:form(new|edit)/:view', replyController.showForm)
 router.post('/:uuid/?:form(new)/:view', replyController.updateForm)
 
-router.get('/:uuid/follow-up', replyController.newFollowUp)
+router.get('/:uuid/follow-up', replyController.showFollowUp)
+router.post('/:uuid/follow-up', replyController.updateFollowUp)
 
 router.get('/:uuid/invalidate', replyController.showInvalidate)
 router.post('/:uuid/invalidate', replyController.updateInvalidate)

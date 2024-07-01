@@ -1,0 +1,19 @@
+{% extends "_layouts/form.njk" %}
+
+{% set paths = { back: reply.uri } %}
+{% set title = __("reply.follow-up.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          caption: __("reply.follow-up.caption", { reply: reply }),
+          title: title
+        })
+      }
+    },
+    items: booleanItems,
+    decorate: "decision"
+  }) }}
+{% endblock %}
