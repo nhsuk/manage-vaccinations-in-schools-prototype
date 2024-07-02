@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
 import { Child } from './child.js'
 import { Parent } from './parent.js'
+import { stringToBoolean } from '../utils/string.js'
 
 export class ReplyDecision {
   static Given = 'Consent given'
@@ -34,6 +35,7 @@ export class ReplyRefusal {
  * @property {import('./child.js').Child} [child] - Child
  * @property {import('./parent.js').Parent} [parent] - Parent or guardian
  * @property {ReplyDecision} [decision] - Consent decision
+ * @property {boolean} [confirmed] - Decision confirmed
  * @property {boolean} invalid - Reply is invalid
  * @property {ReplyMethod} [method] - Reply method
  * @property {object} [healthAnswers] - Answers to health questions
@@ -57,7 +59,8 @@ export class Reply {
     this.child = options?.child && new Child(options.child)
     this.parent = options?.parent && new Parent(options.parent)
     this.decision = options?.decision
-    this.invalid = options?.invalid || false
+    this.confirmed = stringToBoolean(options?.confirmed)
+    this.invalid = stringToBoolean(options?.invalid) || false
     this.method = options?.method
     this.healthAnswers = options?.healthAnswers
     this.refusalReason = options?.refusalReason

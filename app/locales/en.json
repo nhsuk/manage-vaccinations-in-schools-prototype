@@ -609,7 +609,7 @@
       "label": "Phone number"
     },
     "contactPreference": {
-      "label": "Phone contact method"
+      "label": "Contact preference"
     },
     "relationshipOther": {
       "label": "Give details",
@@ -743,7 +743,7 @@
       "withdraw": "Consent response from {{reply.fullName}} withdrawn"
     },
     "created": {
-      "label": "Response date"
+      "label": "Date"
     },
     "uuid": {
       "title": "Who are you trying to get consent from?",
@@ -762,7 +762,7 @@
     },
     "method": {
       "title": "How was the response given?",
-      "label": "Response method"
+      "label": "Method"
     },
     "decision": {
       "label": "Decision",
@@ -800,8 +800,11 @@
     },
     "follow-up": {
       "caption": "Consent response from {{reply.fullName}}",
-      "title": "Does their original decision still stand?",
-      "label": "Follow up"
+      "title": "Follow up refusal",
+      "label": "Follow up",
+      "decision": {
+        "label": "Does their original decision still stand?"
+      }
     },
     "invalidate": {
       "caption": "Consent response from {{reply.fullName}}",
@@ -815,6 +818,12 @@
       "title": "Withdraw consent",
       "label": "Withdraw consent",
       "confirm": "Withdraw consent"
+    },
+    "outcome": {
+      "title": "Update consent response"
+    },
+    "confirmed": {
+      "label": "Confirm consent refusal?"
     }
   },
   "screen": {

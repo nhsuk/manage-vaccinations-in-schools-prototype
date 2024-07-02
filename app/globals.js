@@ -206,6 +206,8 @@ export default () => {
   globals.replyDecisionHtml = function (reply) {
     if (reply.invalid) {
       return `<s>${reply.decision}</s><br>Invalid`
+    } else if (reply.confirmed) {
+      return `${reply.decision}<br><b>Confirmed</b>`
     }
 
     return reply.decision

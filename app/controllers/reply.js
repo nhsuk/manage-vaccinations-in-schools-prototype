@@ -58,7 +58,8 @@ export const replyController = {
   },
 
   update(request, response) {
-    const { activity, invalidUuid, reply, triage } = request.app.locals
+    const { activity, invalidUuid, reply, triage, vaccination } =
+      request.app.locals
     const { form, id } = request.params
     const { data } = request.session
     const { __ } = response.locals
@@ -68,6 +69,12 @@ export const replyController = {
     if (invalidUuid) {
       patient.replies[invalidUuid].invalid = true
       delete request.app.locals.invalidUuid
+    }
+
+    // Record vaccination that has already been given
+    if (vaccination) {
+      patient.capture = new Vaccination(vaccination)
+      delete request.app.locals.vaccination
     }
 
     // Add new reply
@@ -220,7 +227,7 @@ export const replyController = {
     const { reply, triage } = request.app.locals
     const { uuid } = request.params
     const { data } = request.session
-    const { paths, patient } = response.locals
+    const { paths, patient, session } = response.locals
 
     // Create parent based on choice of respondent
     if (request.body.uuid) {
@@ -240,6 +247,17 @@ export const replyController = {
           request.app.locals.invalidUuid = data.uuid
 
           reply.parent = patient.replies[data.uuid].parent
+      }
+    }
+
+    // Store vaccination if refusal reason is vaccination already given
+    if (request.body.reply?.refusalReason === ReplyRefusal.AlreadyGiven) {
+      request.app.locals.vaccination = {
+        outcome: VaccinationOutcome.AlreadyVaccinated,
+        patient_nhsn: patient.nhsn,
+        session_id: session.id,
+        ...(data.reply?.notes && { notes }),
+        ...(data.token && { created_user_uuid: data.token.uuid })
       }
     }
 
@@ -279,9 +297,8 @@ export const replyController = {
     const { patient, session } = response.locals
 
     if (request.body.decision === 'true') {
-      response.redirect(
-        `${reply.uri}/edit/notes?referrer=${reply.uri}/follow-up`
-      )
+      response.locals.paths = { back: `${reply.uri}/follow-up` }
+      response.redirect(`${reply.uri}/edit/outcome`)
     } else {
       // Store reply that needs marked as invalid
       // We only want to do this when submitting replacement reply
@@ -297,7 +314,7 @@ export const replyController = {
 
       data.wizard = { reply: newReply }
 
-      response.redirect(`${newReply.uri}/new/parent?referrer=${reply.uri}`)
+      response.redirect(`${newReply.uri}/new/decision?referrer=${reply.uri}`)
     }
   },
 
