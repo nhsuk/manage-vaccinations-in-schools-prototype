@@ -7,6 +7,7 @@ import {
   ReplyMethod,
   ReplyRefusal
 } from '../models/reply.js'
+import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
 
 export const replyController = {
   read(request, response, next) {
@@ -330,10 +331,10 @@ export const replyController = {
   updateWithdraw(request, response) {
     const { reply } = request.app.locals
     const { data } = request.session
-    const { patient } = response.locals
+    const { patient, session } = response.locals
     const { __ } = response.locals
 
-    const { refusalReason, refusalReasonOther } = data.reply
+    const { refusalReason, refusalReasonOther, notes } = data.reply
 
     // Invalidate existing reply
     patient.replies[reply.uuid].invalid = true
@@ -346,9 +347,19 @@ export const replyController = {
       decision: ReplyDecision.Refused,
       refusalReason,
       ...(refusalReason === ReplyRefusal.Other && { refusalReasonOther }),
-      ...(data.reply?.notes && { notes: data.reply.notes }),
+      ...(data.reply?.notes && { notes }),
       ...(data.token && { created_user_uuid: data.token.uuid })
     })
+
+    if (request.body.reply?.refusalReason === ReplyRefusal.AlreadyGiven) {
+      patient.capture = new Vaccination({
+        outcome: VaccinationOutcome.AlreadyVaccinated,
+        patient_nhsn: patient.nhsn,
+        session_id: session.id,
+        ...(data.reply?.notes && { notes }),
+        ...(data.token && { created_user_uuid: data.token.uuid })
+      })
+    }
 
     delete data.reply
 
