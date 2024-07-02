@@ -74,6 +74,10 @@ export const replyController = {
       ...reply, // Previous values
       ...data.wizard, // Wizard values
       ...request.body.reply, // New value
+      parent: {
+        ...reply?.parent, // Previous parent values
+        ...request.body.reply?.parent // New parent value
+      },
       ...(data.token && { created_user_uuid: data.token.uuid })
     })
 

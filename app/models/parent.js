@@ -46,7 +46,7 @@ export class Parent {
     )
     this.notify = stringToBoolean(options?.notify)
     this.email = options.email
-    this.tel = options.tel
+    this.tel = options.tel || ''
     this.sms = stringToBoolean(options.sms) || false
     this.contactPreference = options?.contactPreference
     this.contactPreferenceOther = options?.contactPreferenceOther
