@@ -87,23 +87,35 @@ export function getConsentHealthAnswers(replies) {
 
 /**
  * Get consent outcome
+ * @param {import('../models/reply.js').Reply} reply - Reply
+ * @returns {object} Consent outcome
+ */
+export const getConfirmedConsentOutcome = (reply) => {
+  const { key } = getEnumKeyAndValue(ReplyDecision, reply.decision)
+
+  if (key === 'Refused' && reply.confirmed) {
+    return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.FinalRefusal)
+  }
+
+  return getEnumKeyAndValue(ConsentOutcome, key)
+}
+
+/**
+ * Get consent outcome
  * @param {import('../models/patient.js').Patient} patient - Patient
- * @returns {string} Consent outcome
+ * @returns {object} Consent outcome
  */
 export const getConsentOutcome = (patient) => {
   const parentalRelationships = Object.values(ParentalRelationship)
   const replies = Object.values(patient.replies)
-    .map(reply => new Reply(reply))
-    .filter(reply => !reply.invalid)
+    .map((reply) => new Reply(reply))
+    .filter((reply) => !reply.invalid)
 
   if (replies.length === 1) {
     // Reply decision value matches consent outcome key
-    const { key } = getEnumKeyAndValue(ReplyDecision, replies[0].decision)
-    return getEnumKeyAndValue(ConsentOutcome, key)
+    return getConfirmedConsentOutcome(replies[0])
   } else if (replies.length > 1) {
-    // Exclude invalid responses
     const decisions = _.uniqBy(replies, 'decision')
-      .filter(reply => !reply.invalid)
 
     if (decisions.length > 1) {
       // If one of the replies is not from parent (so from child), use that
@@ -111,20 +123,16 @@ export const getConsentOutcome = (patient) => {
         (reply) => !parentalRelationships.includes(reply.relationship)
       )
       if (childReply) {
-        return getEnumKeyAndValue(ReplyDecision, childReply.decision)
+        return getConfirmedConsentOutcome(childReply)
       }
 
       return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.Inconsistent)
-    } else if (decisions[0].decision === ReplyDecision.Given) {
-      return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.Given)
-    } else if (decisions[0].decision === ReplyDecision.Refused) {
-      return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.Refused)
+    } else {
+      return getConfirmedConsentOutcome(decisions[0])
     }
-  } else {
-    return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.NoResponse)
   }
 
-  return
+  return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.NoResponse)
 }
 
 /**

@@ -1,0 +1,25 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = "Save changes" %}
+{% set title = __("reply.outcome.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: __("reply.show.title", reply.fullName),
+    title: title
+  }) }}
+
+  {{ textarea({
+    label: { text: __("reply.notes.label") },
+    decorate: "reply.notes"
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("reply.confirmed.label") }
+    },
+    items: booleanItems,
+    decorate: "reply.confirmed"
+  }) }}
+{% endblock %}

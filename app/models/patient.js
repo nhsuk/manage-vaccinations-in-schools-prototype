@@ -22,7 +22,7 @@ export class ConsentOutcome {
   static Inconsistent = 'Conflicts'
   static Given = 'Given'
   static Refused = 'Refused'
-  // static FinalRefusal = 'Refusal confirmed'
+  static FinalRefusal = 'Refusal confirmed'
 }
 
 export class ScreenOutcome {
