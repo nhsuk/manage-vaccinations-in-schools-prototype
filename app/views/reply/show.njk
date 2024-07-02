@@ -55,30 +55,6 @@
     }) }}
 
     {{ card({
-      heading: __("child.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(reply.child, {
-          fullName: {},
-          preferredFirstName: {},
-          preferredLastName: {},
-          dob: {
-            value: reply.child.formattedDob
-          },
-          formattedAddress: {
-            value: reply.child.formattedAddress | nl2br
-          },
-          gpSurgery: {
-            value: reply.child.formattedGpSurgery
-          },
-          urn: {
-            value: data.schools[reply.child.urn].name
-          }
-        })
-      })
-    }) if reply.child }}
-
-    {{ card({
       heading: __("parent.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
@@ -101,6 +77,30 @@
         })
       })
     }) if reply.parent }}
+
+    {{ card({
+      heading: __("child.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(reply.child, {
+          fullName: {},
+          preferredFirstName: {},
+          preferredLastName: {},
+          dob: {
+            value: reply.child.formattedDob
+          },
+          formattedAddress: {
+            value: reply.child.formattedAddress | nl2br
+          },
+          gpSurgery: {
+            value: reply.child.formattedGpSurgery
+          },
+          urn: {
+            value: data.schools[reply.child.urn].name
+          }
+        })
+      })
+    }) if reply.child }}
 
     {{ card({
       heading: __("reply.healthAnswers.label"),
