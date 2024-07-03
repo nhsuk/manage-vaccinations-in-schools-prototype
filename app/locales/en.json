@@ -94,18 +94,49 @@
       "title": "Reports"
     },
     "new": {
-      "title": "Create a new vaccination programme"
+      "title": "Create a new vaccination programme",
+      "check-answers": {
+        "title": "Check and confirm",
+        "confirm": "Save changes",
+        "summary": "New programme details"
+      }
     },
     "edit": {
       "title": "Edit programme",
       "confirm": "Save changes",
       "summary": "Programme details"
     },
+    "success": {
+      "create": "{{campaign.name}} created",
+      "update": "{{campaign.name}} updated"
+    },
+    "details": {
+      "title": "Programme details"
+    },
     "name": {
       "label": "Name"
     },
+    "year": {
+      "label": "Academic year"
+    },
+    "period": {
+      "title": "When does this programme run?"
+    },
+    "start": {
+      "label": "Start date"
+    },
+    "formattedStart": {
+      "label": "Start date"
+    },
+    "end": {
+      "label": "End date"
+    },
+    "formattedEnd": {
+      "label": "End date"
+    },
     "vaccines": {
-      "label": "Vaccines"
+      "label": "Vaccines",
+      "title": "Which vaccine(s) does this programme administer?"
     }
   },
   "capture": {

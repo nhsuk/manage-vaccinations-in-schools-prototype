@@ -14,7 +14,7 @@
     {{ button({
       classes: "nhsuk-button--secondary",
       text: __("campaign.new.title"),
-      href: "#"
+      href: "/campaigns/new"
     }) if data.token.admin }}
   </div>
 
@@ -26,8 +26,12 @@
         html: link(campaign.uri, campaign.name) or "Not provided"
       },
       {
+        header: __("campaign.year.label"),
+        text: campaign.year or "Not provided"
+      },
+      {
         header: __("campaign.vaccines.label"),
-        html: campaign.vaccines | join("\n") | nl2br or "Not provided"
+        html: campaign.formattedVaccines | join("\n") | nl2br or "Not provided"
       }
     ]) %}
   {% endfor %}
@@ -40,6 +44,7 @@
     responsive: true,
     head: [
       { text: __("campaign.name.label") },
+      { text: __("campaign.year.label") },
       { text: __("campaign.vaccines.label") }
     ],
     rows: campaignRows
