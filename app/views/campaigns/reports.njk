@@ -19,7 +19,18 @@
   {{ super() }}
 
   {{ heading({
+    classes: "nhsuk-u-margin-bottom-2",
     title: campaign.name
+  }) }}
+
+  <p class="nhsuk-caption-l nhsuk-u-margin-bottom-4">{{ campaign.year }}</p>
+
+  {{ actionList({
+    classes: "nhsuk-u-margin-bottom-7",
+    items: [{
+      text: __("campaign.edit.title"),
+      href: campaign.uri + "/edit"
+    }]
   }) }}
 
   {% include "campaigns/_secondary-navigation.njk" %}

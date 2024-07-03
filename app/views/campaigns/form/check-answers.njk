@@ -1,36 +1,33 @@
 {% extends "_layouts/form.njk" %}
 
-{% set confirmButtonText = __("campaign.edit.confirm") %}
-{% set paths = { back: campaign.uri } %}
-{% set title = __("campaign.edit.title") %}
+{% set confirmButtonText = __("campaign.new.check-answers.confirm") %}
+{% set title = __("campaign.new.check-answers.title") %}
 
 {% block form %}
-  {{ super() }}
-
   {{ heading({
     title: title
   }) }}
 
   {{ card({
-    heading: __("campaign.edit.summary"),
+    heading: __("campaign.new.check-answers.summary"),
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(campaign, {
         name: {
-          href: campaign.uri + "/edit/details"
+          href: campaign.uri + "/new/details"
         },
         year: {
-          href: campaign.uri + "/edit/details"
+          href: campaign.uri + "/new/details"
         },
         formattedStart: {
-          href: campaign.uri + "/edit/period"
+          href: campaign.uri + "/new/period"
         },
         formattedEnd: {
-          href: campaign.uri + "/edit/period"
+          href: campaign.uri + "/new/period"
         },
         vaccines: {
           value: campaign.formattedVaccines | join("\n") | nl2br,
-          href: campaign.uri + "/edit/vaccines"
+          href: campaign.uri + "/new/vaccines"
         }
       })
     })

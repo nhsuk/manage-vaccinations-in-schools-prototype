@@ -1,0 +1,29 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("campaign.period.title") %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ dateInput({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("campaign.start.label")
+      }
+    },
+    decorate: "campaign.start_"
+  }) }}
+
+  {{ dateInput({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("campaign.end.label")
+      }
+    },
+    decorate: "campaign.end_"
+  }) }}
+{% endblock %}

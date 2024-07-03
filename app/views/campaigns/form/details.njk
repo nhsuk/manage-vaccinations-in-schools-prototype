@@ -1,0 +1,28 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("campaign.details.title") %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ input({
+    label: {
+      classes: "nhsuk-label--m",
+      text: __("campaign.name.label")
+    },
+    decorate: "campaign.name"
+  }) }}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("campaign.year.label")
+      }
+    },
+    items: enumItems(AcademicYear),
+    decorate: "campaign.year"
+  }) }}
+{% endblock %}
