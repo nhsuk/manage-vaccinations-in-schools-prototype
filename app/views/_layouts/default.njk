@@ -26,9 +26,9 @@
   {{ header({
     service: {
       name: serviceName,
-      href: "/dashboard" if not public else "/"
+      href: "/home" if not public else "/"
     } if not transactionalService,
-    homeHref: "/dashboard" if not public else "/",
+    homeHref: "/home" if not public else "/",
     showNav: "true" if not public else "false",
     showSearch: "false",
     transactional: true if transactionalService,

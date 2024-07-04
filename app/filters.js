@@ -38,6 +38,23 @@ export default (env) => {
   }
 
   /**
+   * Convert div.nhsuk-card to button.nhsuk-card
+   * @param {string} string - HTML
+   * @returns {string} Formatted HTML
+   */
+  filters.buttonCard = function (string) {
+    const { filters } = this.ctx.settings.nunjucksEnv
+    const html = string
+      .replace(
+        /^\n\n<div class="nhsuk-card/,
+        '<button class="nhsuk-card nhsuk-card--button'
+      )
+      .replace(/<\/div>\n$/, '</button>')
+
+    return filters.safe(html)
+  }
+
+  /**
    * Highlight difference
    * @param {string} a - Value in consent response
    * @param {string} b - Value in patient record

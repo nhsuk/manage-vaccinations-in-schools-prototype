@@ -14,7 +14,10 @@
 
       {{ __("account.permissions.org.description", { ra: ra }) | nhsukMarkdown if type == "org" }}
 
-      {{ link("#", __("account.cis2.change-role")) | nhsukMarkdown }}
+      {{ button({
+        href: "/account/change-role",
+        text: __("account.change-role.label")
+      }) }}
 
       {% if type == "user" %}
         <h2 class="nhsuk-heading-m">Contact your registration authority</h2>

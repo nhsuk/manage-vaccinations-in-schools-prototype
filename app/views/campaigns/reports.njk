@@ -6,9 +6,6 @@
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: "Home",
-      href: "/dashboard"
-    }, {
       text: __("campaign.list.title"),
       href: "/campaigns"
     }]
@@ -31,7 +28,7 @@
       text: __("campaign.edit.title"),
       href: campaign.uri + "/edit"
     }]
-  }) }}
+  }) if data.token.role != UserRole.DataConsumer }}
 
   {% include "campaigns/_secondary-navigation.njk" %}
 

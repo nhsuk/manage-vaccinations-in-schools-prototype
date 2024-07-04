@@ -15,7 +15,7 @@
       classes: "nhsuk-button--secondary",
       text: __("session.new.title"),
       href: "/sessions/new"
-    }) if data.token.admin }}
+    }) }}
   </div>
 
   {% for type, sessions in sessions | groupby("campaign_uuid") %}

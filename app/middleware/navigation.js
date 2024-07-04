@@ -1,3 +1,4 @@
+import { UserRole } from '../models/user.js'
 import { getCampaignSession } from '../utils/session.js'
 
 export const navigation = (request, response, next) => {
@@ -9,25 +10,43 @@ export const navigation = (request, response, next) => {
   const hpvSession = getCampaignSession(campaigns, sessions, 'hpv')
   const tioSession = getCampaignSession(campaigns, sessions, '3-in-1-men-acwy')
 
+  const primaryLinks =
+    data.token?.role != UserRole.DataConsumer
+      ? [
+          {
+            url: '/sessions',
+            label: __('session.list.title')
+          },
+          {
+            url: '/campaigns',
+            label: __('campaign.list.title')
+          },
+          {
+            url: '/vaccines',
+            label: __('vaccine.list.title')
+          },
+          {
+            url: '/account/change-role',
+            label: __('account.change-role.label')
+          },
+          {
+            url: '/account/sign-out',
+            label: __('account.sign-out.title')
+          }
+        ]
+      : [
+          {
+            url: '/account/change-role',
+            label: __('account.change-role.label')
+          },
+          {
+            url: '/account/sign-out',
+            label: __('account.sign-out.title')
+          }
+        ]
+
   response.locals.navigation = {
-    primaryLinks: [
-      {
-        url: '/sessions',
-        label: __('session.list.title')
-      },
-      {
-        url: '/campaigns',
-        label: __('campaign.list.title')
-      },
-      {
-        url: '/vaccines',
-        label: __('vaccine.list.title')
-      },
-      {
-        url: '/account/sign-out',
-        label: __('account.sign-out.title')
-      }
-    ],
+    primaryLinks,
     footerLinks: [
       ...(fluSession
         ? [

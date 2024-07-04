@@ -6,9 +6,6 @@
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: "Home",
-      href: "/dashboard"
-    }, {
       text: __("campaign.list.title"),
       href: "/campaigns"
     }]
@@ -30,7 +27,7 @@
       text: __("campaign.edit.title"),
       href: campaign.uri + "/edit"
     }]
-  }) }}
+  }) if data.token.role != UserRole.DataConsumer }}
 
   {% include "campaigns/_secondary-navigation.njk" %}
 
@@ -105,6 +102,6 @@
       classes: "nhsuk-button--secondary",
       text: __("session.new.title"),
       href: "/sessions/new"
-    }) if data.token.admin }}
+    }) if data.token.role != UserRole.DataConsumer }}
   {% endfor %}
 {% endblock %}
