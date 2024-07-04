@@ -15,7 +15,7 @@
       classes: "nhsuk-button--secondary",
       text: __("campaign.new.title"),
       href: "/campaigns/new"
-    }) if data.token.admin }}
+    }) if data.token.role != UserRole.DataConsumer }}
   </div>
 
   {% set campaignRows = [] %}

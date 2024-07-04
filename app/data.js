@@ -29,6 +29,7 @@ export default {
   },
   organisation: {
     name: 'ACME Child Immunisation Service',
+    code: 'ACM',
     email: 'acme-sais@nhs.net',
     tel: '0117 496 1234'
   },

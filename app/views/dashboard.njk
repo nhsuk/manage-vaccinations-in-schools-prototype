@@ -40,12 +40,10 @@
     </li>
   </ul>
 
-  {% if data.token.admin %}
-    <h2 class="nhsuk-heading-s nhsuk-u-margin-bottom-0">
-      <a class="nhsuk-link nhsuk-link--no-visited-state" href="/sessions/new">
-        {{ __("session.new.title") }}
-      </a>
-    </h2>
-    <p>{{ __("session.new.description") }}</p>
-  {% endif %}
+  <h2 class="nhsuk-heading-s nhsuk-u-margin-bottom-0">
+    <a class="nhsuk-link nhsuk-link--no-visited-state" href="/sessions/new">
+      {{ __("session.new.title") }}
+    </a>
+  </h2>
+  <p>{{ __("session.new.description") }}</p>
 {% endblock %}

@@ -1,5 +1,9 @@
 {
   "account": {
+    "change-role": {
+      "title": "Select a role",
+      "label": "Change role"
+    },
     "reset-password": {
       "title": "Reset your password",
       "confirm": "Reset password"
@@ -20,7 +24,6 @@
     },
     "cis2": {
       "unlock": "I need to unlock my smartcard",
-      "change-role": "Change role",
       "method": {
         "label": "Select your login method",
         "smartcard": "Smartcard",
@@ -1119,6 +1122,9 @@
     },
     "lastName": {
       "label": "Last name"
+    },
+    "role": {
+      "label": "Role"
     }
   },
   "preScreen": {

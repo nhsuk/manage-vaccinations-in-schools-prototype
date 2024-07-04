@@ -11,7 +11,7 @@
     title: title
   }) }}
 
-  {% for admin, users in users | groupby("admin") %}
+  {% for role, users in users | groupby("role") %}
     {% set userRows = [] %}
     {% for user in users | sort(false, false, "fullName") %}
       {% set userRows = userRows | push([
@@ -34,7 +34,7 @@
       classes: "nhsuk-u-margin-bottom-6",
       id: "users",
       sort: "name",
-      caption: "Admins" if admin == "true" else "Team members",
+      caption: role,
       captionClasses: "nhsuk-u-font-size-32",
       responsive: true,
       head: [

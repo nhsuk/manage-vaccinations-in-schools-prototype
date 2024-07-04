@@ -1,13 +1,19 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+export class UserRole {
+  static ClinicalAdmin = 'Nurse'
+  static DataAdmin = 'Data administrator'
+  static DataConsumer = 'Data consumer'
+}
+
 /**
  * @class User
  * @property {string} uid - User ID
  * @property {string} firstName - First/given name
  * @property {string} lastName - Last/family name
  * @property {string} email - Email address
- * @property {boolean} admin - Has admin user role
- * @property {object} batch - Default batches
+ * @property {UserRole} role - User role
+ * @property {object} [batch] - Default batches
  * @function fullName - Get full name
  * @function ns - Namespace
  * @function uri - URL
@@ -18,7 +24,7 @@ export class User {
     this.firstName = options.firstName
     this.lastName = options.lastName
     this.email = options.email
-    this.admin = options?.admin
+    this.role = options.role
     this.batch = options?.batch || {}
   }
 
@@ -35,7 +41,8 @@ export class User {
           lastName,
           provider: 'example.nhs.net'
         })
-        .toLowerCase()
+        .toLowerCase(),
+      role: faker.helpers.arrayElement(Object.values(UserRole))
     })
   }
 

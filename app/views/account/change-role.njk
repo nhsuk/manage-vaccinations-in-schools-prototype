@@ -1,0 +1,28 @@
+{% extends "_layouts/form.njk" %}
+
+{% set hideConfirmButton = true %}
+{% set public = true %}
+{% set transactionalService = {
+  name: "CIS2 - Care Identity Authentication"
+} %}
+{% set title = __("account.change-role.title") %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {% for role in enumItems(UserRole) %}
+    {{ card({
+      attributes: {
+        name: "[token][role]",
+        value: role.value
+      },
+      classes: "nhsuk-u-margin-bottom-3",
+      heading: (data.organisation.name + " (" + data.organisation.code + ")") | upper,
+      headingClasses: "nhsuk-heading-s nhsuk-u-margin-bottom-2",
+      clickable: true,
+      description: role.text
+    }) | buttonCard }}
+  {% endfor %}
+{% endblock %}

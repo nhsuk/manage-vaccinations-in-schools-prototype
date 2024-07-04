@@ -1,24 +1,24 @@
-export const accountController = {
-  resetPassword(request, response) {
-    response.render('account/reset-password')
-  },
+import { UserRole } from '../models/user.js'
 
-  signIn(request, response) {
-    response.render('account/sign-in')
+export const accountController = {
+  changeRole(request, response) {
+    response.redirect('/home')
   },
 
   login(request, response) {
     const { email } = request.body
     const { data } = request.session
 
+    // Username/Password
     const user = Object.values(data.users).find((user) => user.email === email)
 
-    const fallbackUser = Object.values(data.users).at(-1)
-    fallbackUser.admin = true
+    // CIS2
+    const cis2User = Object.values(data.users).at(-1)
+    cis2User.role = UserRole.ClinicalAdmin
 
-    request.session.data.token = user || fallbackUser
+    request.session.data.token = user || cis2User
 
-    response.redirect('/dashboard')
+    response.redirect('/account/change-role')
   },
 
   logout(request, response) {

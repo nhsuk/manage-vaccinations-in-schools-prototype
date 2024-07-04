@@ -10,6 +10,7 @@ import { batchRoutes } from './routes/batch.js'
 import { campaignRoutes } from './routes/campaign.js'
 import { consentRoutes } from './routes/consent.js'
 import { gillickRoutes } from './routes/gillick.js'
+import { homeRoutes } from './routes/home.js'
 import { patientRoutes } from './routes/patient.js'
 import { preScreenRoutes } from './routes/pre-screen.js'
 import { recordRoutes } from './routes/record.js'
@@ -27,6 +28,7 @@ router.use(enumeration)
 router.use(internationalisation)
 router.use(flash(), navigation, notification, users)
 
+router.use('/home', homeRoutes)
 router.use('/account', accountRoutes)
 router.use('/campaigns', campaignRoutes)
 router.use('/consents', consentRoutes)
