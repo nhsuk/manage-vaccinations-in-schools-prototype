@@ -1,6 +1,10 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("reply.parent.title") %}
+{% if reply.parent.fullName %}
+  {% set title = __("reply.parent.title.edit", { parent: reply.parent }) %}
+{% else %}
+  {% set title = __("reply.parent.title.new") %}
+{% endif %}
 
 {% block form %}
   {{ heading({
@@ -11,7 +15,7 @@
   {{ input({
     label: { text: __("parent.fullName.label") },
     decorate: "reply.parent.fullName"
-  }) if data.uuid == "new" }}
+  }) if not reply.parent.fullName }}
 
   {{ radios({
     fieldset: {
@@ -39,7 +43,7 @@
       }
     }),
     decorate: "reply.parent.relationship"
-  }) if data.uuid == "new" }}
+  }) if not reply.parent.relationship }}
 
   {{ input({
     label: { text: __("parent.email.label") },

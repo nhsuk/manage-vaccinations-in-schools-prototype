@@ -777,7 +777,10 @@
       "label": "Child"
     },
     "parent": {
-      "title": "Details for parent or guardian",
+      "title": {
+        "new": "Details for parent or guardian",
+        "edit": "Details for {{parent.nameAndRelationship}}"
+      },
       "label": "Parent"
     },
     "method": {
