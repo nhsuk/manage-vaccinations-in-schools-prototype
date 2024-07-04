@@ -43,7 +43,7 @@ export class VaccinationProtocol {
  * @class Vaccination
  * @property {string} uuid - UUID
  * @property {string} created - Vaccination date
- * @property {string} [created_user_uuid] - User who performed vaccination
+ * @property {string} [created_user_uid] - User who performed vaccination
  * @property {string} [location] - Location
  * @property {VaccinationOutcome} [outcome] - Outcome
  * @property {VaccinationMethod} [method] - Administration method
@@ -62,7 +62,7 @@ export class Vaccination {
   constructor(options) {
     this.uuid = options?.uuid || faker.string.uuid()
     this.created = options?.created || new Date().toISOString()
-    this.created_user_uuid = options?.created_user_uuid
+    this.created_user_uid = options?.created_user_uid
     this.location = options?.location
     this.outcome = options?.outcome
     this.method = options?.method

@@ -2,7 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 /**
  * @class User
- * @property {string} uuid - UUID
+ * @property {string} uid - User ID
  * @property {string} firstName - First/given name
  * @property {string} lastName - Last/family name
  * @property {string} email - Email address
@@ -14,7 +14,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
  */
 export class User {
   constructor(options) {
-    this.uuid = options?.uuid || faker.string.uuid()
+    this.uid = options?.uid || faker.string.numeric(12)
     this.firstName = options.firstName
     this.lastName = options.lastName
     this.email = options.email
@@ -48,6 +48,6 @@ export class User {
   }
 
   get uri() {
-    return `/users/${this.uuid}`
+    return `/users/${this.uid}`
   }
 }

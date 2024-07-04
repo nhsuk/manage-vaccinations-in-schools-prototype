@@ -86,14 +86,14 @@ export const replyController = {
         ...reply?.parent, // Previous parent values
         ...request.body.reply?.parent // New parent value
       },
-      ...(data.token && { created_user_uuid: data.token.uuid })
+      ...(data.token && { created_user_uid: data.token?.uid })
     })
 
     if (triage.outcome) {
       patient.triage = {
         ...triage,
         ...data.wizard, // Wizard values
-        ...(data.token && { created_user_uuid: data.token.uuid })
+        ...(data.token && { created_user_uid: data.token?.uid })
       }
     }
 
@@ -257,7 +257,7 @@ export const replyController = {
         patient_nhsn: patient.nhsn,
         session_id: session.id,
         ...(data.reply?.notes && { notes }),
-        ...(data.token && { created_user_uuid: data.token.uuid })
+        ...(data.token && { created_user_uid: data.token?.uid })
       }
     }
 
@@ -331,7 +331,7 @@ export const replyController = {
     patient.respond = new Reply({
       ...reply,
       ...(data.reply?.notes && { notes: data.reply.notes }),
-      ...(data.token && { created_user_uuid: data.token.uuid }),
+      ...(data.token && { created_user_uid: data.token?.uid }),
       invalid: true
     })
 
@@ -365,7 +365,7 @@ export const replyController = {
       refusalReason,
       ...(refusalReason === ReplyRefusal.Other && { refusalReasonOther }),
       ...(data.reply?.notes && { notes }),
-      ...(data.token && { created_user_uuid: data.token.uuid })
+      ...(data.token && { created_user_uid: data.token?.uid })
     })
 
     if (request.body.reply?.refusalReason === ReplyRefusal.AlreadyGiven) {
@@ -374,7 +374,7 @@ export const replyController = {
         patient_nhsn: patient.nhsn,
         session_id: session.id,
         ...(data.reply?.notes && { notes }),
-        ...(data.token && { created_user_uuid: data.token.uuid })
+        ...(data.token && { created_user_uid: data.token?.uid })
       })
     }
 

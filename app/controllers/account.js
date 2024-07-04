@@ -1,5 +1,3 @@
-import { User } from '../models/user.js'
-
 export const accountController = {
   resetPassword(request, response) {
     response.render('account/reset-password')
@@ -27,36 +25,5 @@ export const accountController = {
     delete request.session.data.token
 
     response.redirect('/')
-  },
-
-  edit(request, response) {
-    const { __ } = response.locals
-
-    response.render('users/edit', {
-      headingSize: 'xl',
-      paths: false,
-      title: __('account.show.title')
-    })
-  },
-
-  read(request, response, next) {
-    const { data } = request.session
-
-    request.app.locals.user = data.token && new User(data.token)
-
-    next()
-  },
-
-  update(request, response) {
-    const { user } = request.app.locals
-    const { __ } = response.locals
-
-    request.session.data.users[user.uuid] = new User({
-      ...user,
-      ...request.body.user
-    })
-    request.flash('success', __(`account.success.update`))
-
-    response.redirect(request.originalUrl)
   }
 }

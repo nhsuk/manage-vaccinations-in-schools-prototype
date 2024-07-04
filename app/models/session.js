@@ -36,7 +36,7 @@ export class SessionStatus {
  * @class Session
  * @property {string} id - ID
  * @property {string} created - Created date
- * @property {string} [created_user_uuid] - User who created session
+ * @property {string} [created_user_uid] - User who created session
  * @property {SessionFormat} [format] - Format
  * @property {string} [urn] - School
  * @property {object} [date] - Date
@@ -58,7 +58,7 @@ export class Session {
   constructor(options) {
     this.id = options?.id || faker.helpers.replaceSymbols('??##')
     this.created = options?.created || new Date().toISOString()
-    this.created_user_uuid = options?.created_user_uuid
+    this.created_user_uid = options?.created_user_uid
     this.format = options?.format
     this.urn = options?.urn
     this.date = options?.date
@@ -114,7 +114,7 @@ export class Session {
 
     return new Session({
       created,
-      created_user_uuid: user.uuid,
+      created_user_uid: user.uuid,
       format: faker.helpers.arrayElement(Object.values(SessionFormat)),
       urn,
       date,

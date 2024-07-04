@@ -6,8 +6,8 @@
   {%- endif %}
   <p class="nhsuk-body-s nhsuk-u-margin-0 nhsuk-u-secondary-text-color">
     {{ item.formattedDateTime }}
-    {% if item.user_uuid %}&middot;
-      {{ link(users[item.user_uuid].uri, users[item.user_uuid].fullName) | safe }}
+    {% if item.user_uid %}&middot;
+      {{ link(users[item.user_uid].uri, users[item.user_uid].fullName) | safe }}
     {% endif %}
   </p>
 {%- endmacro %}

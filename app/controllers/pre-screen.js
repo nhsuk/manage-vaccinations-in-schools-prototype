@@ -10,7 +10,7 @@ export const preScreenController = {
     // Pre-screen interview
     patient.preScreen = {
       notes: data.preScreen.notes,
-      ...(data.token && { user_uuid: data.token.uuid })
+      ...(data.token && { user_uid: data.token?.uid })
     }
 
     response.redirect(`/sessions/${id}/${nhsn}/vaccinations/new`)

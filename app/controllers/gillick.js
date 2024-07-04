@@ -25,7 +25,7 @@ export const gillickController = {
 
     data.patients[nhsn].assess = new Gillick({
       ...request.body.gillick,
-      ...(data.token && { created_user_uuid: data.token.uuid })
+      ...(data.token && { created_user_uid: data.token?.uid })
     })
 
     delete data.gillick

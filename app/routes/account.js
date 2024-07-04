@@ -10,9 +10,4 @@ router.post(['/sign-in', '/cis2'], accountController.login)
 
 router.get('/sign-out', accountController.logout)
 
-router.all('/*', accountController.read)
-
-router.get('/', accountController.edit)
-router.post('/', accountController.update)
-
 export const accountRoutes = router

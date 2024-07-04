@@ -5,7 +5,6 @@ export const navigation = (request, response, next) => {
   const { __ } = response.locals
   const { campaigns, sessions } = data
 
-  const accountLabel = data?.token?.email || __('account.show.title')
   const fluSession = getCampaignSession(campaigns, sessions, 'flu')
   const hpvSession = getCampaignSession(campaigns, sessions, 'hpv')
   const tioSession = getCampaignSession(campaigns, sessions, '3-in-1-men-acwy')
@@ -23,10 +22,6 @@ export const navigation = (request, response, next) => {
       {
         url: '/vaccines',
         label: __('vaccine.list.title')
-      },
-      {
-        url: '/account',
-        label: accountLabel
       },
       {
         url: '/account/sign-out',

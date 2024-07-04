@@ -203,7 +203,7 @@ export const sessionController = {
     data.sessions[id] = new Session({
       ...session, // Previous values
       ...data.wizard, // Wizard values
-      ...(data.token && { created_user_uuid: data.token.uuid })
+      ...(data.token && { created_user_uid: data.token?.uid })
     })
 
     delete data.wizard
