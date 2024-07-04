@@ -1,30 +1,27 @@
-{% extends "_layouts/default.njk" %}
+{% extends "_layouts/unbranded.njk" %}
 
 {% set title = __("user.list.title") %}
 
 {% block content %}
   {{ super() }}
 
-  <div class="app-heading-group">
-    {{ heading({
-      size: "xl",
-      title: title
-    }) }}
-
-    {{ button({
-      classes: "nhsuk-button--secondary",
-      text: __("user.new.title"),
-      href: "/users/new"
-    }) }}
-  </div>
+  {{ heading({
+    caption: __("user.list.caption"),
+    size: "xl",
+    title: title
+  }) }}
 
   {% for admin, users in users | groupby("admin") %}
     {% set userRows = [] %}
     {% for user in users | sort(false, false, "fullName") %}
       {% set userRows = userRows | push([
         {
+          header: __("user.uid.label"),
+          html: link(user.uri, user.uid) or "Not provided"
+        },
+        {
           header: __("user.fullName.label"),
-          html: link(user.uri, user.fullName) or "Not provided"
+          html: user.fullName or "Not provided"
         },
         {
           header: __("user.email.label"),
@@ -34,12 +31,14 @@
     {% endfor %}
 
     {{ actionTable({
+      classes: "nhsuk-u-margin-bottom-6",
       id: "users",
       sort: "name",
-      heading: "Admins" if admin == "true" else "Team members",
-      panel: true,
+      caption: "Admins" if admin == "true" else "Team members",
+      captionClasses: "nhsuk-u-font-size-32",
       responsive: true,
       head: [
+        { text: __("user.uid.label") },
         { text: __("user.fullName.label") },
         { text: __("user.email.label") }
       ],

@@ -51,7 +51,7 @@ export const registrationController = {
     patient.register = new Registration({
       name: __(`registration.${key}.name`, { location: session.location }),
       registered,
-      ...(data.token && { created_user_uuid: data.token.uuid })
+      ...(data.token && { created_user_uid: data.token?.uid })
     })
 
     // Capture vaccination outcome as absent from session if safe to vaccinate
@@ -64,7 +64,7 @@ export const registrationController = {
         outcome: VaccinationOutcome.AbsentSession,
         patient_nhsn: patient.nhsn,
         session_id: session.id,
-        ...(data.token && { created_user_uuid: data.token.uuid })
+        ...(data.token && { created_user_uid: data.token?.uid })
       })
     }
 

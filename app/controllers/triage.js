@@ -12,7 +12,7 @@ export const triageController = {
     data.patients[nhsn] = patient
     data.patients[nhsn].triage = {
       ...data.triage,
-      ...(data.token && { created_user_uuid: data.token.uuid })
+      ...(data.token && { created_user_uid: data.token?.uid })
     }
 
     delete data.triage

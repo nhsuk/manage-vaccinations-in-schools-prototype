@@ -10,7 +10,7 @@ export class GillickCompetent {
  * @class Gillick assessment
  * @property {string} uuid - UUID
  * @property {string} created - Created date
- * @property {string} [created_user_uuid] - User who created session
+ * @property {string} [created_user_uid] - User who created session
  * @property {boolean} [q1] - Question 1
  * @property {boolean} [q2] - Question 2
  * @property {boolean} [q3] - Question 3
@@ -22,7 +22,7 @@ export class GillickCompetent {
 export class Gillick {
   constructor(options) {
     this.created = options?.created || new Date().toISOString()
-    this.created_user_uuid = options?.created_user_uuid
+    this.created_user_uid = options?.created_user_uid
     this.q1 = stringToBoolean(options?.q1)
     this.q2 = stringToBoolean(options?.q2)
     this.q3 = stringToBoolean(options?.q3)

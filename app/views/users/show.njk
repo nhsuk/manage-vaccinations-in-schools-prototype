@@ -1,4 +1,4 @@
-{% extends "_layouts/default.njk" %}
+{% extends "_layouts/unbranded.njk" %}
 
 {% set title = user.fullName %}
 {% set paths = { back: "/users" } %}
@@ -8,6 +8,7 @@
     {{ super() }}
 
     {{ heading({
+      caption: __("user.list.title"),
       title: title
     }) }}
 
@@ -16,18 +17,11 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         rows: summaryRows(user, {
-          fullName: {
-            href: user.uri + "/edit"
-          },
-          email: {
-            href: user.uri + "/edit"
-          }
+          uid: {},
+          fullName: {},
+          email: {}
         })
       })
     }) }}
-
-    <p>
-      <a href="{{ user.uri }}/delete">{{ __("user.show.delete") }}</a>
-    </p>
   </div>
 {% endblock %}

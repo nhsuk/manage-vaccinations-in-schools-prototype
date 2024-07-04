@@ -52,7 +52,7 @@ export const vaccinationController = {
       location: session.location.name,
       patient_nhsn: patient.nhsn,
       session_id: session.id,
-      ...(data.token && { created_user_uuid: data.token.uuid })
+      ...(data.token && { created_user_uid: data.token?.uid })
     })
 
     data.wizard = vaccination
@@ -74,7 +74,7 @@ export const vaccinationController = {
       ...data.wizard, // Wizard values (new flow)
       ...request.body.vaccination, // New values (edit flow)
       ...(vaccination.batch_id && { vaccine_gtin: campaign.vaccine.gtin }),
-      created_user_uuid: data.vaccination.created_user_uuid || data.token?.uuid
+      created_user_uid: data.vaccination.created_user_uid || data.token?.uid
     })
 
     delete data.wizard

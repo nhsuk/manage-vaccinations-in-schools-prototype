@@ -1,12 +1,5 @@
 {
   "account": {
-    "show": {
-      "title": "Your account",
-      "description": "Change your email address or password."
-    },
-    "edit": {
-      "title": "Edit account details"
-    },
     "reset-password": {
       "title": "Reset your password",
       "confirm": "Reset password"
@@ -17,9 +10,6 @@
     },
     "sign-out": {
       "title": "Log out"
-    },
-    "success": {
-      "update": "Account details updated"
     },
     "password": {
       "forgot": "I’ve forgotten my password",
@@ -1113,38 +1103,20 @@
   },
   "user": {
     "list": {
-      "title": "Manage team",
-      "description": "Add or remove team members and set permissions."
+      "title": "Users",
+      "caption": "Care Identity Service"
     },
     "show": {
-      "summary": "User details",
-      "delete": "Delete user"
+      "summary": "User details"
     },
-    "action": {
-      "title": "Are you sure you want to %s this user?",
-      "description": "This operation cannot be undone.",
-      "confirm": "Yes, %s this user",
-      "cancel": "No, return to user"
-    },
-    "edit": {
-      "title": "Edit %s",
-      "confirm": "Save changes"
-    },
-    "new": {
-      "title": "Invite a team member",
-      "confirm": "Send invitation"
-    },
-    "success": {
-      "create": "Invitation sent to {{user.fullName}}",
-      "update": "Account details for {{user.fullName}} updated",
-      "delete": "User deleted"
+    "uid": {
+      "label": "User ID"
     },
     "fullName": {
       "label": "Name"
     },
     "email": {
-      "label": "Email address",
-      "hint": "They will use this to access the service"
+      "label": "Email address"
     },
     "firstName": {
       "label": "First name"
@@ -1186,7 +1158,7 @@
     "formattedCreated": {
       "label": "Date and time"
     },
-    "created_user_uuid": {
+    "created_user_uid": {
       "label": "Nurse"
     },
     "location": {
@@ -1256,7 +1228,7 @@
       "label": "Time",
       "hint": "For example, 13 15"
     },
-    "created-user-uuid": {
+    "created-user-uid": {
       "title": "Which nurse gave the vaccination?"
     }
   },

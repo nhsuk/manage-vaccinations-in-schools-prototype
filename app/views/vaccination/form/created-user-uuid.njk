@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("vaccination.created-user-uuid.title") %}
+{% set title = __("vaccination.created-user-uid.title") %}
 
 {% block form %}
   {{ radios({
@@ -13,6 +13,6 @@
       }
     },
     items: userItems,
-    decorate: "vaccination.created_user_uuid"
+    decorate: "vaccination.created_user_uid"
   }) }}
 {% endblock %}

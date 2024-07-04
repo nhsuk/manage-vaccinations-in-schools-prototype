@@ -6,7 +6,7 @@ export const users = (request, response, next) => {
 
   const users = Object.values(data.users).map((user) => new User(user))
 
-  request.app.locals.users = _.keyBy(users, 'uuid')
+  request.app.locals.users = _.keyBy(users, 'uid')
 
   next()
 }

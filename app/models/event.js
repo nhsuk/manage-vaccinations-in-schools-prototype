@@ -16,7 +16,7 @@ export class EventType {
  * @property {EventType} type - Activity type
  * @property {string} name - Name
  * @property {string} [note] - Notes
- * @property {string} [user_uuid] - User UUID
+ * @property {string} [user_uid] - User UUID
  * @function formattedDate - Formatted date
  * @function ns - Namespace
  * @function uri - URL
@@ -28,7 +28,7 @@ export class Event {
     this.type = options.type
     this.name = options.name
     this.note = options.note
-    this.user_uuid = options?.user_uuid
+    this.user_uid = options?.user_uid
     // Information storage object
     this.info_ = options.info_
   }

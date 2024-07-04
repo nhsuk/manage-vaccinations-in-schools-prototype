@@ -170,7 +170,7 @@ export class Patient {
       type: EventType.Select,
       name: `Selected for ${campaign.name} vaccination programme cohort`,
       date: campaign.created,
-      user_uuid: campaign.created_user_uuid
+      user_uid: campaign.created_user_uid
     }
   }
 
@@ -180,7 +180,7 @@ export class Patient {
       type: EventType.Invite,
       name: `Invited to session at ${session.location.name}`,
       date: session.created,
-      user_uuid: session.created_user_uuid
+      user_uid: session.created_user_uid
     }
   }
 
@@ -193,7 +193,7 @@ export class Patient {
       name: `${created ? 'Completed' : 'Updated'} Gillick assessment`,
       note: gillick.notes,
       date: created ? gillick.created : new Date().toISOString(),
-      user_uuid: gillick.created_user_uuid
+      user_uid: gillick.created_user_uid
     }
   }
 
@@ -217,7 +217,7 @@ export class Patient {
       type: EventType.Consent,
       name,
       date: created ? reply.created : new Date().toISOString(),
-      user_uuid: reply.created_user_uuid
+      user_uid: reply.created_user_uid
     }
   }
 
@@ -232,7 +232,7 @@ export class Patient {
       name: `Triaged decision: ${outcome}`,
       note: triage.notes,
       date: new Date().toISOString(),
-      user_uuid: triage.created_user_uuid,
+      user_uid: triage.created_user_uid,
       info_: triage
     }
   }
@@ -243,7 +243,7 @@ export class Patient {
       type: EventType.Capture,
       name: registration.name,
       date: new Date().toISOString(),
-      user_uuid: registration.created_user_uuid
+      user_uid: registration.created_user_uid
     }
   }
 
@@ -253,7 +253,7 @@ export class Patient {
       name: 'Completed pre-screening checks',
       note: interview.notes,
       date: new Date().toISOString(),
-      user_uuid: interview.user_uuid
+      user_uid: interview.user_uid
     }
   }
 
@@ -279,7 +279,7 @@ export class Patient {
       name,
       note: vaccination.notes,
       date: created ? vaccination.created : new Date().toISOString(),
-      user_uuid: vaccination.user_uuid
+      user_uid: vaccination.user_uid
     }
   }
 }

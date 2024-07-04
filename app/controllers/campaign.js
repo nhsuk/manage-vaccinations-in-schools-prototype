@@ -77,7 +77,7 @@ export const campaignController = {
     const updatedCampaign = new Campaign({
       ...campaign, // Previous values
       ...data.wizard, // Wizard values
-      ...(data.token && { created_user_uuid: data.token.uuid })
+      ...(data.token && { created_user_uid: data.token?.uid })
     })
 
     data.campaigns[uuid] = updatedCampaign

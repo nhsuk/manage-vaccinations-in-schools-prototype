@@ -8,7 +8,7 @@ export class RegistrationOutcome {
 /**
  * @class Registration
  * @property {string} created - Created date
- * @property {string} [created_user_uuid] - User who registered patient
+ * @property {string} [created_user_uid] - User who registered patient
  * @property {string} [name] - Event name
  * @property {string} [registered] - Registration status
  * @function ns - Namespace
@@ -16,7 +16,7 @@ export class RegistrationOutcome {
 export class Registration {
   constructor(options) {
     this.created = options?.created || new Date().toISOString()
-    this.created_user_uuid = options?.created_user_uuid
+    this.created_user_uid = options?.created_user_uid
     this.name = options?.name
     this.registered = options?.registered
   }
