@@ -18,11 +18,9 @@
   {{ super() }}
 
   {{ heading({
-    classes: "nhsuk-u-margin-bottom-2",
-    title: title
+    title: title,
+    summary: session.formattedDate + " (" + session.time + ") · " + __n("session.cohort.count", patients.length)
   }) }}
-
-  <p class="nhsuk-caption-l nhsuk-u-margin-bottom-4">{{ session.formattedDate }} ({{ session.time }}) · {{ __n("session.cohort.count", patients.length) }}</p>
 
   <p class="nhsuk-body nhsuk-u-margin-bottom-7">
     {{ tag({
