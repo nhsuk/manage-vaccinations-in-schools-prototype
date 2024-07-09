@@ -16,11 +16,9 @@
   {{ super() }}
 
   {{ heading({
-    classes: "nhsuk-u-margin-bottom-2",
-    title: campaign.name
+    title: campaign.name,
+    summary: campaign.year
   }) }}
-
-  <p class="nhsuk-caption-l nhsuk-u-margin-bottom-4">{{ campaign.year }}</p>
 
   {{ actionList({
     classes: "nhsuk-u-margin-bottom-7",
