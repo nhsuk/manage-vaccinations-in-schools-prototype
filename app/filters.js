@@ -62,7 +62,7 @@ export default (env) => {
    */
   filters.highlightDifference = (a, b) => {
     if (a !== b) {
-      return `<span class="nhsuk-u-visually-hidden">Inconsistent: </span><mark>${a}</mark>`
+      return `<mark class="app-highlight">${a}</mark>`
     }
 
     return a
