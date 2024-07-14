@@ -1,0 +1,98 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = campaign.name + " – " + __("campaign.sessions.title") %}
+{% set view = "sessions" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: campaign.name,
+    summary: campaign.year
+  }) }}
+
+  {% include "campaigns/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("campaign.sessions.title") }}
+  </h2>
+
+  {% set sessions = sessions | sort(false, false, "status") %}
+  {% for status, sessions in sessions | groupby("status") %}
+    {% set sessionRows = [] %}
+    {% for session in sessions | sort(false, false, "date") %}
+      {% set sessionRows = sessionRows | push([
+        {
+          header: __("session.date.label"),
+          html: session.formattedDate or "Not provided",
+          attributes: {
+            "data-sort": session.date
+          }
+        },
+        {
+          header: __("session.time.label"),
+          html: session.time or "Not provided"
+        },
+        {
+          header: __("session.location.label"),
+          html: sessionSummary(session) or "Not provided"
+        },
+        {
+          header: __("session.consentWindow.label"),
+          html: __("session.consentWindow." + session.consentWindow.key + ".label", {
+            open: session.open | date({
+              day: "numeric",
+              month: "long"
+            }),
+            close: session.close | date({
+              day: "numeric",
+              month: "long"
+            })
+          })
+        },
+        {
+          header: __("session.cohort.label"),
+          html: session.cohort.length or "None",
+          format: "numeric"
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "sessions",
+      sort: "date",
+      panel: true,
+      heading: status + " sessions",
+      responsive: true,
+      head: [
+        { text: __("session.date.label") },
+        { text: __("session.time.label") },
+        { text: __("session.location.label") },
+        { text: __("session.consentWindow.label") },
+        {
+          text: __("session.cohort.label"),
+          format: "numeric",
+          attributes: {
+            "no-sort": "no-sort"
+          }
+        }
+      ],
+      rows: sessionRows
+    }) }}
+  {% else %}
+    {{ button({
+      classes: "nhsuk-button--secondary",
+      text: __("session.new.title"),
+      href: "/sessions/new"
+    }) if data.token.role != UserRole.DataConsumer }}
+  {% endfor %}
+{% endblock %}
