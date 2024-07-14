@@ -20,6 +20,12 @@
     summary: campaign.year
   }) }}
 
+  {% include "campaigns/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("campaign.show.title") }}
+  </h2>
+
   {{ actionList({
     items: [{
       text: __("campaign.edit.title"),
@@ -27,79 +33,125 @@
     }]
   }) if data.token.role != UserRole.DataConsumer }}
 
-  {% include "campaigns/_secondary-navigation.njk" %}
+  {% if sessions.length %}
+    <div class="nhsuk-grid-row nhsuk-card-group">
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
+          heading: "Sessions completed",
+          description: "567"
+        }) }}
+      </div>
 
-  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("campaign.show.title") }}
-  </h2>
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
+          heading: "Vaccinations delivered",
+          description: "456"
+        }) }}
+      </div>
 
-  {% set sessions = sessions | sort(false, false, "status") %}
-  {% for status, sessions in sessions | groupby("status") %}
-    {% set sessionRows = [] %}
-    {% for session in sessions | sort(false, false, "date") %}
-      {% set sessionRows = sessionRows | push([
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
+          heading: "Children rescheduled",
+          description: "12"
+        }) }}
+      </div>
+
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
+          heading: "Consent requests and reminders sent",
+          description: "1671"
+        }) }}
+      </div>
+
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
+          heading: "Consent given (versus refused or no response)",
+          description: "78%"
+        }) }}
+      </div>
+
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
+          heading: "Responses received and triaged",
+          description: "98%"
+        }) }}
+      </div>
+    </div>
+
+    {{ table({
+      heading: "Reasons for refusal",
+      panel: true,
+      head: [
+        { text: __("reply.refusalReason.label") },
+        { text: "Frequency", format: "numeric" }
+      ],
+      rows: [
+        [
+          { text: ReplyRefusal.Gelatine },
+          { text: "11.1%", format: "numeric" }
+        ] if campaign.type == "flu",
+        [
+          { text: ReplyRefusal.AlreadyGiven },
+          { text: "2.0%", format: "numeric" }
+        ],
+        [
+          { text: ReplyRefusal.GettingElsewhere },
+          { text: "3.6%", format: "numeric" }
+        ],
+        [
+          { text: ReplyRefusal.Medical },
+          { text: "1.0%", format: "numeric" }
+        ],
+        [
+          { text: ReplyRefusal.Personal },
+          { text: "5.1%", format: "numeric" }
+        ],
+        [
+          { text: ReplyRefusal.Other },
+          { text: "1.1%", format: "numeric" }
+        ]
+      ]
+    }) }}
+
+    {% set questionRows = [] %}
+    {% for healthQuestion in campaign.vaccine.healthQuestions %}
+      {% set questionRows = questionRows | push([
         {
-          header: __("session.date.label"),
-          html: session.formattedDate or "Not provided",
-          attributes: {
-            "data-sort": session.date
-          }
+          text: healthQuestion
         },
         {
-          header: __("session.time.label"),
-          html: session.time or "Not provided"
-        },
-        {
-          header: __("session.location.label"),
-          html: sessionSummary(session) or "Not provided"
-        },
-        {
-          header: __("session.consentWindow.label"),
-          html: __("session.consentWindow." + session.consentWindow.key + ".label", {
-            open: session.open | date({
-              day: "numeric",
-              month: "long"
-            }),
-            close: session.close | date({
-              day: "numeric",
-              month: "long"
-            })
-          })
-        },
-        {
-          header: __("session.cohort.label"),
-          html: session.cohort.length or "None",
+          text: ["0.21","0.57","3.45","1.89"] | random + "%",
           format: "numeric"
         }
       ]) %}
     {% endfor %}
 
-    {{ actionTable({
-      id: "sessions",
-      sort: "date",
+    {{ table({
+      heading: "Consent journey",
       panel: true,
-      heading: status + " sessions",
-      responsive: true,
       head: [
-        { text: __("session.date.label") },
-        { text: __("session.time.label") },
-        { text: __("session.location.label") },
-        { text: __("session.consentWindow.label") },
-        {
-          text: __("session.cohort.label"),
-          format: "numeric",
-          attributes: {
-            "no-sort": "no-sort"
-          }
-        }
+        { text: "Question" },
+        { html: "Dropout", format: "numeric" }
       ],
-      rows: sessionRows
+      rows: questionRows
     }) }}
-  {% else %}
-    {{ button({
-      classes: "nhsuk-button--secondary",
-      text: __("session.new.title"),
-      href: "/sessions/new"
-    }) if data.token.role != UserRole.DataConsumer }}
-  {% endfor %}
+
+    <p class="nhsuk-body">Average time between parent accessing the start page to submitting their response was<br><b>3 minutes and 12 seconds</b>.</p>
+
+    <hr class="nhsuk-section-break nhsuk-section-break--visible  nhsuk-section-break--m">
+  {% endif %}
+
+  {{ button({
+    href: "/public/downloads/vaccinations.csv",
+    text: __("campaign.show.download"),
+    attributes: {
+      download: "example.csv"
+    }
+  }) }}
 {% endblock %}

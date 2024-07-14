@@ -80,11 +80,11 @@
       "description": "Use this area to:\n- create new programmes\n- review consent responses\n- triage health records",
       "active": "Active programmes"
     },
-    "show": {
+    "sessions": {
       "title": "School sessions"
     },
-    "reports": {
-      "title": "Reports",
+    "show": {
+      "title": "Overview",
       "download": "Download immunisation report (CSV)"
     },
     "new": {

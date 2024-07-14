@@ -14,12 +14,12 @@ export const campaignController = {
     })
   },
 
-  show(request, response) {
-    response.render('campaigns/show')
+  sessions(request, response) {
+    response.render('campaigns/sessions')
   },
 
-  reports(request, response) {
-    response.render('campaigns/reports')
+  show(request, response) {
+    response.render('campaigns/show')
   },
 
   read(request, response, next) {

@@ -11,7 +11,7 @@ router.post('/:uuid/?:form(new)/check-answers', campaignController.update)
 router.all('/:uuid*', campaignController.read)
 
 router.get('/:uuid', campaignController.show)
-router.get('/:uuid/reports', campaignController.reports)
+router.get('/:uuid/sessions', campaignController.sessions)
 
 router.get('/:uuid/?:form(edit)', campaignController.edit)
 router.post('/:uuid/?:form(edit)', campaignController.update)
