@@ -1,15 +1,14 @@
 {% extends "_layouts/default.njk" %}
 
+{% set paths = { back: "/home" } if data.token.role == UserRole.DataConsumer %}
 {% set title = campaign.name + " – " + __("campaign.show.title") %}
 {% set view = "show" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
-    items: [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
-    }]
-  }) }}
+    text: __("campaign.list.title"),
+    href: "/campaigns"
+  }) if data.token.role != UserRole.DataConsumer }}
 {% endblock %}
 
 {% block content %}
@@ -20,26 +19,36 @@
     summary: campaign.year
   }) }}
 
-  {% include "campaigns/_secondary-navigation.njk" %}
+  {% if data.token.role != UserRole.DataConsumer %}
+    {% include "campaigns/_secondary-navigation.njk" %}
 
-  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("campaign.show.title") }}
-  </h2>
+    <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+      {{ __("campaign.show.title") }}
+    </h2>
 
-  {{ actionList({
-    items: [{
-      text: __("campaign.edit.title"),
-      href: campaign.uri + "/edit"
-    }]
-  }) if data.token.role != UserRole.DataConsumer }}
+    {{ actionList({
+      items: [{
+        text: __("campaign.edit.title"),
+        href: campaign.uri + "/edit"
+      }]
+    }) }}
+  {% endif %}
 
   {% if sessions.length %}
     <div class="nhsuk-grid-row nhsuk-card-group">
       <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
         {{ card({
           classes: "app-card--data",
+          heading: "Cohort",
+          description: campaign.cohort.length or "0"
+        }) }}
+      </div>
+
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
+          classes: "app-card--data",
           heading: "Sessions completed",
-          description: "567"
+          description: sessions | where("status", SessionStatus.Completed) | length or "0"
         }) }}
       </div>
 
@@ -47,15 +56,7 @@
         {{ card({
           classes: "app-card--data",
           heading: "Vaccinations delivered",
-          description: "456"
-        }) }}
-      </div>
-
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ card({
-          classes: "app-card--data",
-          heading: "Children rescheduled",
-          description: "12"
+          description: vaccinations.length or "0"
         }) }}
       </div>
 
@@ -83,6 +84,14 @@
         }) }}
       </div>
     </div>
+
+    {{ button({
+      href: "/public/downloads/vaccinations.csv",
+      text: __("campaign.show.download"),
+      attributes: {
+        download: "example.csv"
+      }
+    }) }}
 
     {{ table({
       heading: "Reasons for refusal",
@@ -141,17 +150,5 @@
       ],
       rows: questionRows
     }) }}
-
-    <p class="nhsuk-body">Average time between parent accessing the start page to submitting their response was<br><b>3 minutes and 12 seconds</b>.</p>
-
-    <hr class="nhsuk-section-break nhsuk-section-break--visible  nhsuk-section-break--m">
   {% endif %}
-
-  {{ button({
-    href: "/public/downloads/vaccinations.csv",
-    text: __("campaign.show.download"),
-    attributes: {
-      download: "example.csv"
-    }
-  }) }}
 {% endblock %}

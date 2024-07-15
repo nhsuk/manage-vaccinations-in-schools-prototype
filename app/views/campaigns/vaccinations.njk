@@ -1,0 +1,77 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = campaign.name + " – " + __("campaign.vaccinations.title") %}
+{% set view = "vaccinations" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }],
+    text: campaign.name,
+    href: campaign.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: campaign.name,
+    summary: campaign.year
+  }) }}
+
+  {% include "campaigns/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("campaign.vaccinations.title") }}
+  </h2>
+
+  {% if vaccinations.length %}
+    {% set vaccinationRows = [] %}
+    {% for vaccination in vaccinations %}
+      {% set vaccinationRows = vaccinationRows | push([
+        {
+          header: __("record.fullName.label"),
+          html: link(vaccination.uri, vaccination.record.fullName)
+        },
+        {
+          classes: "app-u-monospace",
+          header: __("record.nhsn.label"),
+          html: vaccination.record.formattedNhsNumber
+        },
+        {
+          header: __("record.dob.label"),
+          html: vaccination.record.formattedDob
+        },
+        {
+          header: __("record.postalCode.label"),
+          html: vaccination.record.postalCode
+        },
+        {
+          header: __("vaccination.created.label"),
+          html: vaccination.formatted.created_date
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "vaccinations",
+      sort: "name",
+      heading: __n("campaign.vaccinations.count", vaccinations.length),
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("record.fullName.label") },
+        { text: __("record.nhsn.label") },
+        { text: __("record.dob.label") },
+        { text: __("record.postalCode.label") },
+        { text: __("vaccination.created.label") }
+      ],
+      rows: vaccinationRows
+    }) }}
+  {% else %}
+    {{ __n("campaign.vaccinations.count", vaccinations.length) | nhsukMarkdown }}
+  {% endif %}
+{% endblock %}

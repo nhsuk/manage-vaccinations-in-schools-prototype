@@ -4,7 +4,7 @@
 
 {% block form %}
   {{ heading({
-    caption: patient.record.fullName,
+    caption: record.fullName,
     title: title
   }) }}
 
@@ -12,10 +12,10 @@
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--m",
-        text: __("vaccination.created-date.label")
+        text: __("vaccination.created_date.label")
       }
     },
-    hint: { text: __("vaccination.created-date.hint") },
+    hint: { text: __("vaccination.created_date.hint") },
     decorate: "vaccination.created_"
   }) }}
 
@@ -23,10 +23,10 @@
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--m",
-        text: __("vaccination.created-time.label")
+        text: __("vaccination.created_time.label")
       }
     },
-    hint: { text: __("vaccination.created-time.hint") },
+    hint: { text: __("vaccination.created_time.hint") },
     items: [{
       classes: "nhsuk-input--width-2",
       label: "Hour",

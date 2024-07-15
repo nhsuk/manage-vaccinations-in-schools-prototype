@@ -4,7 +4,7 @@
 
 {% block form %}
   {{ heading({
-    caption: patient.record.fullName,
+    caption: record.fullName,
     title: title
   }) if campaign.vaccine.method == VaccineMethod.Injection }}
 
@@ -17,7 +17,7 @@
       legend: {
         html: heading({
           classes: "nhsuk-fieldset__legend--l",
-          caption: patient.record.fullName,
+          caption: record.fullName,
           title: __("vaccination.dosage.title")
         })
       }
@@ -32,6 +32,12 @@
     decorate: "vaccination.dosage"
   }) }}
 
+  {{ input({
+    type: "hidden",
+    value: VaccinationSequence.P1,
+    decorate: "vaccination.sequence"
+  }) if campaign.vaccine.sequenceLimit }}
+
   {{ radios({
     fieldset: {
       legend: {
@@ -39,13 +45,9 @@
         text: __("vaccination.method.label")
       }
     },
-    items: methodItems,
-    decorate: "vaccination.method"
-  }) if campaign.vaccine.method == VaccineMethod.Injection else input({
-    type: "hidden",
-    value: VaccinationMethod.Nasal,
-    decorate: "vaccination.method"
-  }) }}
+    items: injectionMethodItems,
+    decorate: "vaccination.injectionMethod"
+  }) if campaign.vaccine.method == VaccineMethod.Injection }}
 
   {{ radios({
     fieldset: {
@@ -54,11 +56,7 @@
         text: __("vaccination.site.label")
       }
     },
-    items: siteItems,
-    decorate: "vaccination.site"
-  }) if campaign.vaccine.method == VaccineMethod.Injection else input({
-    type: "hidden",
-    value: VaccinationSite.Nose,
-    decorate: "vaccination.site"
-  }) }}
+    items: injectionSiteItems,
+    decorate: "vaccination.injectionSite"
+  }) if campaign.vaccine.method == VaccineMethod.Injection }}
 {% endblock %}

@@ -1,0 +1,73 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = record.fullName %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }, {
+      text: data.campaigns[vaccination.campaign_uuid].name,
+      href: "/campaigns/" + vaccination.campaign_uuid
+    }],
+    text: __("campaign.vaccinations.title"),
+    href: "/campaigns/" + vaccination.campaign_uuid + "/vaccinations"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-u-width-three-quarters">
+    {{ super() }}
+
+    {{ heading({
+      title: title
+    }) }}
+
+    {{ card({
+      heading: __("record.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(record, {
+          nhsn: {
+            classes: "app-u-monospace",
+            value: record.formattedNhsNumber
+          },
+          fullName: {},
+          dobWithAge: {},
+          sex: {},
+          postalCode: {},
+          urn: { value: data.schools[record.urn].name }
+        })
+      })
+    }) }}
+
+    {{ card({
+      heading: __("vaccination.show.summary"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(vaccination, {
+          outcome: {},
+          vaccine_gtin: {},
+          method: {},
+          site: {},
+          dose: {},
+          sequence: {},
+          batch_id: {},
+          batch_expires: {},
+          location: {},
+          created: {},
+          updated: {},
+          created_user_uid: {
+            value: users[vaccination.created_user_uid].fullName
+          },
+          protocol: {}
+        })
+      }) + button({
+        classes: "nhsuk-button--secondary nhsuk-u-margin-0",
+        text: __("vaccination.edit.title"),
+        href: vaccination.uri + "/edit"
+      })
+    }) }}
+  </div>
+{% endblock %}

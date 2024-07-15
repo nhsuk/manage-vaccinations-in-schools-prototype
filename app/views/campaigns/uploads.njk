@@ -1,0 +1,80 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = campaign.name + " – " + __("campaign.uploads.title") %}
+{% set view = "uploads" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }],
+    text: campaign.name,
+    href: campaign.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: campaign.name,
+    summary: campaign.year
+  }) }}
+
+  {% include "campaigns/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("campaign.uploads.title") }}
+  </h2>
+
+  {{ button({
+    href: campaign.uri + "/uploads/new",
+    text: __("upload.new.label")
+  }) }}
+
+  {% if uploads.length %}
+    {% set uploadRows = [] %}
+    {% for upload in uploads | sort(false, false, "created") %}
+      {% set uploadRows = uploadRows | push([
+        {
+          header: __("upload.created.label"),
+          html: link(upload.uri, upload.formattedCreated),
+          attributes: {
+            "data-col": "created",
+            "data-sort": upload.formattedCreated
+          }
+        },
+        {
+          header: __("upload.created_user_uid.label"),
+          html: users[upload.created_user_uid].fullName or "Not provided"
+        },
+        {
+          header: __("upload.vaccinations.label"),
+          html: upload.vaccinations.length or "None",
+          format: "numeric"
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "uploads",
+      sort: "created",
+      heading: __n("campaign.uploads.count", uploads.length) ,
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("upload.created.label") },
+        { text: __("upload.created_user_uid.label") },
+        {
+          text: __("upload.vaccinations.label"),
+          format: "numeric",
+          attributes: {
+            "no-sort": "no-sort"
+          }
+        }
+      ],
+      rows: uploadRows
+    }) }}
+  {% endif %}
+{% endblock %}

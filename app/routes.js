@@ -18,6 +18,7 @@ import { registrationRoutes } from './routes/registration.js'
 import { replyRoutes } from './routes/reply.js'
 import { sessionRoutes } from './routes/session.js'
 import { triageRoutes } from './routes/triage.js'
+import { uploadRoutes } from './routes/upload.js'
 import { userRoutes } from './routes/user.js'
 import { vaccinationRoutes } from './routes/vaccination.js'
 import { vaccineRoutes } from './routes/vaccine.js'
@@ -31,6 +32,8 @@ router.use(flash(), navigation, notification, users)
 router.use('/home', homeRoutes)
 router.use('/account', accountRoutes)
 router.use('/campaigns', campaignRoutes)
+router.use('/campaigns/:uuid/uploads', uploadRoutes)
+router.use('/campaigns/:uuid/vaccinations', vaccinationRoutes)
 router.use('/consents', consentRoutes)
 router.use('/records', recordRoutes)
 router.use('/sessions', sessionRoutes)
@@ -40,7 +43,6 @@ router.use('/sessions/:id/:nhsn/pre-screen', preScreenRoutes)
 router.use('/sessions/:id/:nhsn/registration', registrationRoutes)
 router.use('/sessions/:id/:nhsn/replies', replyRoutes)
 router.use('/sessions/:id/:nhsn/triage', triageRoutes)
-router.use('/sessions/:id/:nhsn/vaccinations', vaccinationRoutes)
 router.use('/users', userRoutes)
 router.use('/vaccines', vaccineRoutes)
 router.use('/vaccines/:gtin', batchRoutes)

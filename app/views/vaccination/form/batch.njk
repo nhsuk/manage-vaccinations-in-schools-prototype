@@ -1,0 +1,24 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("vaccination.batch.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: record.fullName,
+    title: title
+  }) }}
+
+  {{ input ({
+    classes: "nhsuk-input--width-10 app-u-monospace",
+    label: { text: __("batch.id.label") },
+    decorate: "vaccination.batch_id"
+  }) }}
+
+  {{ dateInput({
+    fieldset: {
+      legend: { text: __("batch.expires.label") }
+    },
+    hint: { text: __("batch.expires.hint") },
+    decorate: "vaccination.batch_expires_"
+  }) }}
+{% endblock %}

@@ -28,7 +28,7 @@ export const registrationController = {
     const { id, nhsn } = request.params
     const { tab } = request.query
     const { data } = request.session
-    const { __, patient, session } = response.locals
+    const { __, campaign, patient, session } = response.locals
 
     // Convert boolean to string
     let registered
@@ -63,6 +63,7 @@ export const registrationController = {
         location: session.location.name,
         outcome: VaccinationOutcome.AbsentSession,
         patient_nhsn: patient.nhsn,
+        campaign_uuid: campaign.uuid,
         session_id: session.id,
         ...(data.token && { created_user_uid: data.token?.uid })
       })

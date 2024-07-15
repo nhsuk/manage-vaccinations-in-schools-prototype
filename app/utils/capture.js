@@ -16,16 +16,10 @@ import { getEnumKeyAndValue } from './enum.js'
  */
 export const getPatientOutcome = (patient) => {
   // Vaccination outcome
-  const vaccinations = Object.values(patient.vaccinations).map(
-    (vaccination) => new Vaccination(vaccination)
-  )
+  const vaccinations = Object.values(patient.vaccinations)
 
   if (vaccinations.length === 1) {
-    if (
-      vaccinations[0].outcome === VaccinationOutcome.Vaccinated ||
-      vaccinations[0].outcome === VaccinationOutcome.PartVaccinated ||
-      vaccinations[0].outcome === VaccinationOutcome.AlreadyVaccinated
-    ) {
+    if (vaccinations[0] === true) {
       return getEnumKeyAndValue(PatientOutcome, PatientOutcome.Vaccinated)
     } else {
       return getEnumKeyAndValue(

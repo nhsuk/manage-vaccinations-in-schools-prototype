@@ -1,0 +1,84 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("upload.show.title", { upload: upload }) %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }, {
+      text: data.campaigns[upload.campaign_uuid].name,
+      href: "/campaigns/" + upload.campaign_uuid
+    }],
+    text: __("campaign.uploads.title"),
+    href: "/campaigns/" + upload.campaign_uuid + "/uploads"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("upload.show.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(upload, {
+        formattedCreated: {},
+        created_user_uid: {
+          value: users[upload.created_user_uid].fullName
+        },
+        campaign_uuid: {
+          value: data.campaigns[upload.campaign_uuid].name
+        }
+      })
+    })
+  }) }}
+
+  {% set vaccinationRows = [] %}
+  {% for vaccination in vaccinations %}
+    {% set vaccinationRows = vaccinationRows | push([
+      {
+        header: __("record.fullName.label"),
+        html: link(vaccination.uri, vaccination.record.fullName)
+      },
+      {
+        classes: "app-u-monospace",
+        header: __("record.nhsn.label"),
+        html: vaccination.record.formattedNhsNumber
+      },
+      {
+        header: __("record.dob.label"),
+        html: vaccination.record.formattedDob
+      },
+      {
+        header: __("record.postalCode.label"),
+        html: vaccination.record.postalCode
+      },
+      {
+        header: __("vaccination.created.label"),
+        html: vaccination.formatted.created_date
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    id: "vaccinations",
+    sort: "name",
+    panel: true,
+    heading: __n("upload.vaccinations.count", vaccinations.length),
+    responsive: true,
+    head: [
+      { text: __("record.fullName.label") },
+      { text: __("record.nhsn.label") },
+      { text: __("record.dob.label") },
+      { text: __("record.postalCode.label") },
+      { text: __("vaccination.created.label") }
+    ],
+    rows: vaccinationRows
+  }) }}
+{% endblock %}

@@ -1,4 +1,5 @@
-import { readFileSync } from 'fs'
+import { readFileSync } from 'node:fs'
+import process from 'node:process'
 import schools from './datasets/schools.js'
 import vaccines from './datasets/vaccines.js'
 const batches = JSON.parse(readFileSync('.data/batches.json'))
@@ -7,6 +8,7 @@ const patients = JSON.parse(readFileSync('.data/patients.json'))
 const records = JSON.parse(readFileSync('.data/records.json'))
 const sessions = JSON.parse(readFileSync('.data/sessions.json'))
 const users = JSON.parse(readFileSync('.data/users.json'))
+const vaccinations = JSON.parse(readFileSync('.data/vaccinations.json'))
 
 /**
  * Default values for user session data
@@ -19,12 +21,12 @@ const users = JSON.parse(readFileSync('.data/users.json'))
 export default {
   batches,
   campaigns,
-  // Set feature flags using the `features` key
   features: {
-    demo: {
-      on: false,
-      name: 'Demonstration',
-      description: 'Show message about feature flags on the home page.'
+    uploads: {
+      on: process.env.FEATURE_UPLOADS === 'true',
+      name: 'Uploads',
+      description:
+        'Require vaccinations to be uploaded before appearing on CHIS records.'
     }
   },
   organisation: {
@@ -37,6 +39,8 @@ export default {
   records,
   schools,
   sessions,
+  uploads: {},
   users,
+  vaccinations,
   vaccines
 }

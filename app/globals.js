@@ -45,6 +45,24 @@ export default () => {
   globals.enumKeyAndValue = getEnumKeyAndValue
 
   /**
+   * Convert errors object to array for errorSummary component
+   * @param {object} errors - Error messages
+   * @returns {Array} Error list
+   */
+  globals.errorList = function (errors) {
+    let errorsList = []
+
+    for (const [key, value] of Object.entries(errors)) {
+      errorsList.push({
+        text: value,
+        href: `#${key}`
+      })
+    }
+
+    return errorsList
+  }
+
+  /**
    * Get health answers for summary list rows
    * @param {object} healthAnswers - Health answers
    * @param {string} edit - Edit link
@@ -231,10 +249,10 @@ export default () => {
   /**
    * Show reason could not vaccinate
    * @param {import('./models/patient.js').Patient} patient - Patient
-   * @returns {string} Reason could not vaccinate
+   * @returns {string|undefined} Reason could not vaccinate
    */
   globals.couldNotVaccinateReason = function (patient) {
-    const { __ } = this.ctx
+    const { __, data } = this.ctx
 
     if (
       patient?.screen?.value &&
@@ -244,8 +262,8 @@ export default () => {
     } else if (patient?.consent?.value !== ConsentOutcome.Given) {
       return __(`consent.${patient.consent.key}.status`)
     } else if (patient.vaccinations) {
-      const vaccinations = Object.values(patient.vaccinations).map(
-        (vaccination) => new Vaccination(vaccination)
+      const vaccinations = Object.keys(patient.vaccinations).map(
+        (uuid) => new Vaccination(data.vaccinations[uuid])
       )
       return vaccinations[0].outcome
     }
@@ -276,8 +294,19 @@ export default () => {
     const summaryRows = []
 
     for (const key in rows) {
+      // Formatted value may be an empty string, so only check for `undefined`
+      let formattedValue
+      if (data?.formatted?.[key] !== undefined) {
+        formattedValue = data.formatted[key]
+      } else {
+        formattedValue = data[key]
+      }
+
+      // Allow value to be explicitly set
+      let value = rows[key]?.value || formattedValue
+
+      // Append other value, if one is provided
       let other = rows[key].other
-      let value = rows[key].value || data[key]
       value = other ? [value, other].join(' – ') : value
 
       // Don’t show row for conditional answer

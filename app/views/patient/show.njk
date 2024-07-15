@@ -43,16 +43,14 @@
         {{ summaryList({
           rows: summaryRows(vaccination, {
             outcome: {},
-            vaccine: {
-              value: campaign.vaccine.brandWithName
-            } if vaccination.batch_id,
+            vaccine_gtin: {},
             method: {},
             site: {},
-            formattedDose: {},
-            batch_id: {
-              classes: "app-u-monospace"
-            },
-            formattedCreated: {},
+            dose: {},
+            sequence: {},
+            batch_id: {},
+            created: {},
+            updated: {},
             created_user_uid: {
               value: users[vaccination.created_user_uid].fullName
             } if vaccination.created_user_uid,

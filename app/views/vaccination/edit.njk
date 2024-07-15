@@ -8,6 +8,7 @@
   {{ super() }}
 
   {{ heading({
+    caption: record.fullName,
     title: title
   }) }}
 
@@ -16,31 +17,40 @@
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(vaccination, {
-        outcome: {},
-        vaccine: {
-          value: campaign.vaccine.brandWithName
+        outcome: {
+          href: vaccination.uri + "/edit/outcome"
+        },
+        vaccine_gtin: {
+          href: vaccination.uri + "/edit/vaccine"
         },
         method: {
-          href: vaccination.uri + "/edit/method" if campaign.vaccine.method == VaccineMethod.Injection
+          href: vaccination.uri + "/edit/injection" if vaccination.vaccine.method == VaccineMethod.Injection
         },
         site: {
-          href: vaccination.uri + "/edit/site" if campaign.vaccine.method == VaccineMethod.Injection
+          href: vaccination.uri + "/edit/injection" if vaccination.vaccine.method == VaccineMethod.Injection
         },
-        formattedDose: {
-          href: vaccination.uri + "/edit/dose" if campaign.vaccine.method == VaccineMethod.Nasal
+        dose: {
+          href: vaccination.uri + "/edit/dose"
+        },
+        sequence: {
+          href: vaccination.uri + "/edit/sequence"
         },
         batch_id: {
-          classes: "app-u-monospace",
-          href: vaccination.uri + "/edit/batch-id"
+          href: vaccination.uri + "/edit/batch"
         },
-        formattedCreated: {
+        batch_expires: {
+          href: vaccination.uri + "/edit/batch"
+        },
+        location: {
+          href: vaccination.uri + "/edit/location"
+        },
+        created: {
           href: vaccination.uri + "/edit/created"
         },
         created_user_uid: {
           value: users[vaccination.created_user_uid].fullName,
           href: vaccination.uri + "/edit/created-user-uid"
         },
-        location: {},
         protocol: {},
         notes: {
           value: vaccination.notes | nhsukMarkdown,

@@ -12,6 +12,8 @@ router.all('/:uuid*', campaignController.read)
 
 router.get('/:uuid', campaignController.show)
 router.get('/:uuid/sessions', campaignController.sessions)
+router.get('/:uuid/uploads', campaignController.uploads)
+router.get('/:uuid/vaccinations', campaignController.vaccinations)
 
 router.get('/:uuid/?:form(edit)', campaignController.edit)
 router.post('/:uuid/?:form(edit)', campaignController.update)

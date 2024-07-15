@@ -55,6 +55,7 @@ export class VaccineMethod {
  * @property {string} brand - Brand
  * @property {string} manufacturer - Manufacturer
  * @property {number} dose - Dosage
+ * @property {number} sequenceLimit - Maximum doses in sequence
  * @property {VaccineMethod} method - Method
  * @property {Array[string]} healthQuestionKeys - Health question keys
  * @property {Array[string]} preScreenQuestionKeys - Pre-screening question keys
@@ -72,6 +73,7 @@ export class Vaccine {
     this.brand = options.brand
     this.manufacturer = options.manufacturer
     this.dose = options.dose
+    this.sequenceLimit = options.sequenceLimit
     this.method = options.method
     this.healthQuestionKeys = options.healthQuestionKeys
     this.preScreenQuestionKeys = options.preScreenQuestionKeys

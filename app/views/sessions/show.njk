@@ -52,6 +52,8 @@
           description: __("session.activity.capture.description")
         }) }}
       </li>
+    {% endif %}
+    {% if session.status != SessionStatus.Planned %}
       <li class="nhsuk-grid-column-one-half nhsuk-card-group__item">
         {{ card({
           clickable: true,
@@ -61,7 +63,8 @@
           description: __("session.activity.outcome.description")
         }) }}
       </li>
-    {% else %}
+    {% endif %}
+    {% if session.status == SessionStatus.Planned %}
       <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
         {{ card({
           clickable: true,

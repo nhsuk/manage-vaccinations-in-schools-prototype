@@ -20,14 +20,13 @@ export const patientController = {
     const replies = Object.values(patient.replies)
     const session = new Session(data.sessions[id])
     const campaign = new Campaign(data.campaigns[session.campaign_uuid])
-    const vaccinations = Object.values(patient.vaccinations)
 
     response.locals.patient = patient
     response.locals.replies = replies.map((reply) => new Reply(reply))
     response.locals.session = session
     response.locals.campaign = campaign
-    response.locals.vaccinations = vaccinations.map(
-      (vaccination) => new Vaccination(vaccination)
+    response.locals.vaccinations = Object.keys(patient.vaccinations).map(
+      (uuid) => new Vaccination(data.vaccinations[uuid])
     )
 
     next()

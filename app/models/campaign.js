@@ -39,7 +39,8 @@ export class Campaign {
     this.start = options?.start
     this.end = options?.end
     this.cohort = options?.cohort || []
-    this.vaccines = options?.vaccines
+    this.vaccines = options?.vaccines || []
+    this.pendingVaccinations = options?.pendingVaccinations || []
     // dateInput objects
     this.start_ = options?.start_
     this.end_ = options?.end_

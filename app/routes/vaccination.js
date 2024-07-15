@@ -10,6 +10,8 @@ router.post('/:uuid/?:form(new)/check-answers', vaccinationController.update)
 
 router.all('/:uuid*', vaccinationController.read)
 
+router.get('/:uuid', vaccinationController.show)
+
 router.get('/:uuid/?:form(edit)', vaccinationController.edit)
 router.post('/:uuid/?:form(edit)', vaccinationController.update)
 

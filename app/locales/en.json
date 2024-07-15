@@ -1,4 +1,7 @@
 {
+  "error": {
+    "title": "There is a problem"
+  },
   "account": {
     "change-role": {
       "title": "Select a role",
@@ -85,7 +88,21 @@
     },
     "show": {
       "title": "Overview",
-      "download": "Download immunisation report (CSV)"
+      "download": "Download vaccination report (CSV)"
+    },
+    "uploads": {
+      "title": "Uploads",
+      "count": {
+        "one": "%s upload",
+        "other": "[0] No uploads|%s uploads"
+      }
+    },
+    "vaccinations": {
+      "title": "Vaccination records",
+      "count": {
+        "one": "%s vaccination record",
+        "other": "[0] No vaccination records|%s vaccination records"
+      }
     },
     "new": {
       "title": "Create a new vaccination programme",
@@ -674,11 +691,17 @@
     "dob": {
       "label": "Date of birth"
     },
+    "dobWithAge": {
+      "label": "Date of birth"
+    },
     "sex": {
       "label": "Sex"
     },
     "address": {
       "label": "Address"
+    },
+    "postalCode": {
+      "label": "Postcode"
     },
     "gpSurgery": {
       "label": "GP surgery"
@@ -688,6 +711,9 @@
     },
     "preferredNames": {
       "label": "Known as"
+    },
+    "vaccinations": {
+      "label": "Vaccinations"
     }
   },
   "registration": {
@@ -1144,7 +1170,94 @@
       "label": "Pre-screening notes"
     }
   },
+  "upload": {
+    "label": "Vaccination record upload",
+    "success": {
+      "create": "%s vaccination records uploaded"
+    },
+    "show": {
+      "title": "Upload ({{upload.formattedCreated}})",
+      "summary": "Details"
+    },
+    "new": {
+      "label": "Upload new vaccination records",
+      "check-answers": {
+        "title": "Check and confirm",
+        "warning": "Duplicate or incomplete vaccination records",
+        "confirm": "Upload records",
+        "summary": "Details"
+      },
+      "count": {
+        "one": "%s new vaccination record",
+        "other": "[0] No new vaccination records|%s new vaccination records"
+      }
+    },
+    "import": {
+      "title": "Upload {{campaign.formatted.type}} vaccination records",
+      "hint": "These will go to %s. Make sure the CSV you upload has the same format as your usual reporting template.",
+      "confirm": "Continue",
+      "errors": {
+        "invalid": "The selected file must be a CSV"
+      }
+    },
+    "errors": {
+      "title": "Vaccination records cannot be uploaded",
+      "description": "It wasn’t possible to upload any records due to the following errors in the CSV file:"
+    },
+    "devoid": {
+      "title": "Vaccination records already uploaded",
+      "description": "All records in this CSV file have been uploaded."
+    },
+    "exact": {
+      "one": "%s previously uploaded record has been omitted",
+      "other": "[0] No previously uploaded records have been omitted|%s previously uploaded records have been omitted"
+    },
+    "inexact": {
+      "one": "%s duplicate record needs review",
+      "other": "[0] No duplicate records need review|%s duplicate records need review",
+      "count": {
+        "one": "%s duplicate record",
+        "other": "[0] No duplicate records|%s duplicate records"
+      }
+    },
+    "incomplete": {
+      "one": "%s record with a missing NHS number will use information from the Personal Demographics Service (PDS)",
+      "other": "[0] records with missing NHS numbers will use information from the Personal Demographics Service (PDS)|%s records with missing NHS numbers will use information from the Personal Demographics Service (PDS)"
+    },
+    "id": {
+      "label": "ID"
+    },
+    "created": {
+      "label": "Upload date"
+    },
+    "formattedCreated": {
+      "label": "Uploaded on"
+    },
+    "created_user_uid": {
+      "label": "Uploaded by"
+    },
+    "campaign_uuid": {
+      "label": "Campaign"
+    },
+    "vaccinations": {
+      "label": "Vaccination records",
+      "count": {
+        "one": "%s vaccination record",
+        "other": "[0] No vaccination records|%s vaccination records"
+      }
+    }
+  },
   "vaccination": {
+    "label": "Vaccination record",
+    "show": {
+      "summary": "Vaccination details"
+    },
+    "administer": {
+      "title": "Tell us how the vaccination was given"
+    },
+    "decline": {
+      "title": "Why was the {{vaccine.name}} vaccine not given?"
+    },
     "new": {
       "check-answers": {
         "title": "Check and confirm",
@@ -1161,17 +1274,32 @@
       "create": "Vaccination recorded",
       "update": "Vaccination record updated"
     },
-    "formattedCreated": {
-      "label": "Date and time"
+    "created": {
+      "label": "Vaccination date",
+      "title": "When was the vaccination given?"
+    },
+    "created_date": {
+      "label": "Date",
+      "hint": "For example, 27 10 2025"
+    },
+    "created_time": {
+      "label": "Time",
+      "hint": "For example, 13 15"
     },
     "created_user_uid": {
-      "label": "Nurse"
+      "label": "Nurse",
+      "title": "Which nurse gave the vaccination?"
+    },
+    "updated": {
+      "label": "Record updated"
     },
     "location": {
-      "label": "Location"
+      "label": "Location",
+      "title": "Location"
     },
     "outcome": {
       "label": "Outcome",
+      "title": "Vaccination outcome",
       "Vaccinated": "Vaccinated",
       "PartVaccinated": "Partially vaccinated",
       "AbsentSchool": "They were absent from school",
@@ -1181,19 +1309,21 @@
       "Refused": "They refused it",
       "Unwell": "They were not well enough"
     },
+    "injection": {
+      "title": "How was the vaccination was given?"
+    },
     "method": {
-      "label": "Method",
-      "title": "Vaccination method"
+      "label": "Method"
     },
     "site": {
-      "label": "Site",
-      "title": "Vaccination site"
-    },
-    "formattedDose": {
-      "label": "Dose"
+      "label": "Site"
     },
     "protocol": {
       "label": "Protocol"
+    },
+    "batch": {
+      "label": "Batch",
+      "title": "Batch"
     },
     "batch_id": {
       "title": "Which batch did you use?",
@@ -1201,41 +1331,30 @@
       "batch": "<span class=\"app-u-monospace\">{{batch.id}}</span> (expires {{batch.formattedExpires}})",
       "default": "Default to this batch for this session"
     },
-    "vaccine": {
-      "label": "Vaccine"
+    "batch_expires": {
+      "label": "Batch expiry date"
     },
     "notes": {
       "label": "Notes",
       "hint": "For example, if the child had a reaction to the vaccine",
       "title": "Notes"
     },
-    "administer": {
-      "title": "Tell us how the vaccination was given"
+    "dose": {
+      "label": "Dose volume",
+      "title": "What was the dose amount?"
     },
     "dosage": {
       "title": "Did they get the full dose?",
       "full": "Yes, they got the full dose",
       "half": "No, they got half a dose"
     },
-    "dose": {
-      "title": "Dose"
+    "sequence": {
+      "label": "Dose number",
+      "title": "Which dose was this?"
     },
-    "decline": {
-      "title": "Why was the {{vaccine.name}} vaccine not given?"
-    },
-    "created": {
-      "title": "When was the vaccination given?"
-    },
-    "created-date": {
-      "label": "Date",
-      "hint": "For example, 27 10 2025"
-    },
-    "created-time": {
-      "label": "Time",
-      "hint": "For example, 13 15"
-    },
-    "created-user-uid": {
-      "title": "Which nurse gave the vaccination?"
+    "vaccine_gtin": {
+      "title": "Vaccine",
+      "label": "Vaccine"
     }
   },
   "vaccine": {

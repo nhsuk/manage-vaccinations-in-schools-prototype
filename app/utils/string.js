@@ -26,3 +26,25 @@ export function pascalToKebabCase(string) {
 export function stringToBoolean(value) {
   return typeof value === 'string' ? value === 'true' : value
 }
+
+/**
+ * Format millilitres
+ * @param {string|number} string - Amount
+ * @returns {string|undefined} Formatted string
+ */
+export function formatMillilitres(string) {
+  if (!string) return
+
+  return `${string} ml`
+}
+
+/**
+ * Format monospaced
+ * @param {string|number} string - String
+ * @returns {string|undefined} Formatted HTML
+ */
+export function formatMonospace(string) {
+  if (!string) return
+
+  return `<span class="app-u-monospace">${string}</span>`
+}
