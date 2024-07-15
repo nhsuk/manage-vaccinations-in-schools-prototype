@@ -1,7 +1,10 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { Campaign } from '../models/campaign.js'
+import { Record } from '../models/record.js'
 import { Session } from '../models/session.js'
 import { Vaccine } from '../models/vaccine.js'
+import { Upload } from '../models/upload.js'
+import { Vaccination } from '../models/vaccination.js'
 
 export const campaignController = {
   list(request, response) {
@@ -16,6 +19,21 @@ export const campaignController = {
 
   sessions(request, response) {
     response.render('campaigns/sessions')
+  },
+
+  uploads(request, response) {
+    const { uuid } = request.params
+    const { data } = request.session
+
+    response.locals.uploads = Object.values(data.uploads)
+      .filter((upload) => upload.campaign_uuid === uuid)
+      .map((upload) => new Upload(upload))
+
+    response.render('campaigns/uploads')
+  },
+
+  vaccinations(request, response) {
+    response.render('campaigns/vaccinations')
   },
 
   show(request, response) {
@@ -38,6 +56,33 @@ export const campaignController = {
         )
         return session
       })
+
+    const uuids = []
+    if (data.features.uploads.on) {
+      const uploads = Object.values(data.uploads).filter(
+        (upload) => upload.campaign_uuid === uuid
+      )
+
+      for (const upload of uploads) {
+        for (const uuid of upload.vaccinations) {
+          uuids.push(uuid)
+        }
+      }
+    } else {
+      Object.values(data.vaccinations)
+        .filter((vaccination) => vaccination.campaign_uuid === uuid)
+        .forEach((vaccination) => uuids.push(vaccination.uuid))
+    }
+
+    const vaccinations = []
+    for (const uuid of uuids) {
+      const vaccination = new Vaccination(data.vaccinations[uuid])
+      vaccination.record = new Record(data.records[vaccination.patient_nhsn])
+
+      vaccinations.push(vaccination)
+    }
+
+    request.app.locals.vaccinations = vaccinations
 
     next()
   },

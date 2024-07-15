@@ -1,9 +1,13 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import vaccines from '../datasets/vaccines.js'
+import { Batch } from './batch.js'
+import { Vaccine, VaccineMethod } from './vaccine.js'
 import {
   convertIsoDateToObject,
-  convertObjectToIsoDate
+  convertObjectToIsoDate,
+  formatDate
 } from '../utils/date.js'
+import { formatMillilitres, formatMonospace } from '../utils/string.js'
 
 export class VaccinationOutcome {
   static Vaccinated = 'Vaccinated'
@@ -22,6 +26,12 @@ export class VaccinationMethod {
   static Nasal = 'Nasal spray'
   static Intramuscular = 'Intramuscular (IM) injection'
   static Subcutaneous = 'Subcutaneous injection'
+}
+
+export class VaccinationSequence {
+  static P1 = 'First'
+  static P2 = 'Second'
+  static P3 = 'Third'
 }
 
 export class VaccinationSite {
@@ -44,16 +54,20 @@ export class VaccinationProtocol {
  * @property {string} uuid - UUID
  * @property {string} created - Vaccination date
  * @property {string} [created_user_uid] - User who performed vaccination
+ * @property {string} [updated] - Vaccination updated date
  * @property {string} [location] - Location
  * @property {VaccinationOutcome} [outcome] - Outcome
- * @property {VaccinationMethod} [method] - Administration method
- * @property {VaccinationSite} [site] - Site on body
+ * @property {VaccinationMethod} [injectionMethod] - Injection method
+ * @property {VaccinationSite} [injectionSite] - Injection site on body
  * @property {number} [dose] - Dosage (ml)
- * @property {string} protocol - Protocol
+ * @property {VaccinationSequence} [sequence] - Dose sequence
+ * @property {string} [protocol] - Protocol
  * @property {string} [notes] - Notes
+ * @property {string} [campaign_uuid] - Campaign UUID
  * @property {string} [session_id] - Session ID
  * @property {string} [patient_nhsn] - Patient NHS number
  * @property {string} [batch_id] - Batch ID
+ * @property {string} [batch_expires] - Batch expiry date
  * @property {string} [vaccine_gtin] - Vaccine GTIN
  * @function ns - Namespace
  * @function uri - URL
@@ -63,19 +77,86 @@ export class Vaccination {
     this.uuid = options?.uuid || faker.string.uuid()
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
+    this.updated = options?.updated
     this.location = options?.location
     this.outcome = options?.outcome
-    this.method = options?.method
-    this.site = options?.site
-    this.dose = options?.dose
-    this.protocol = options?.batch_id && VaccinationProtocol.PGD
+    this.given =
+      this.outcome === VaccinationOutcome.Vaccinated ||
+      this.outcome === VaccinationOutcome.PartVaccinated ||
+      this.outcome === VaccinationOutcome.AlreadyVaccinated
+    this.injectionMethod = options?.injectionMethod
+    this.injectionSite = options?.injectionSite
+    this.dose = this.given ? options?.dose || '' : undefined
+    this.sequence = options?.sequence
+    this.protocol = this.given ? VaccinationProtocol.PGD : undefined
     this.notes = options?.notes
+    this.campaign_uuid = options?.campaign_uuid
     this.session_id = options?.session_id
     this.patient_nhsn = options?.patient_nhsn
-    this.batch_id = options?.batch_id
-    this.vaccine_gtin = options?.vaccine_gtin
+    this.batch_id = this.given ? options?.batch_id || '' : undefined
+    this.batch_expires = this.given ? options?.batch_expires || '' : undefined
+    this.vaccine_gtin = this.given ? options?.vaccine_gtin || '' : undefined
     // dateInput objects
     this.created_ = options?.created_
+  }
+
+  static generate(record, campaign, session, location, users) {
+    const user = users[faker.number.int({ min: 0, max: 19 })]
+
+    let injectionMethod
+    let injectionSite
+    let sequence
+    let vaccine_gtin
+    switch (campaign.type) {
+      case 'flu':
+        vaccine_gtin = '05000456078276'
+        break
+      case 'hpv':
+        injectionMethod = VaccinationMethod.Subcutaneous
+        injectionSite = VaccinationSite.ArmRightUpper
+        sequence = VaccinationSequence.P1
+        vaccine_gtin = '00191778001693'
+        break
+      case '3-in-1-men-acwy':
+        injectionMethod = VaccinationMethod.Subcutaneous
+        injectionSite = VaccinationSite.ArmRightUpper
+        vaccine_gtin = '3664798042948'
+        break
+    }
+
+    const { dose } = vaccines[vaccine_gtin]
+
+    const outcome = faker.helpers.weightedArrayElement([
+      { value: VaccinationOutcome.Vaccinated, weight: 7 },
+      { value: VaccinationOutcome.PartVaccinated, weight: 1 },
+      { value: VaccinationOutcome.NoConsent, weight: 1 },
+      { value: VaccinationOutcome.Refused, weight: 1 }
+    ])
+
+    const vaccinated =
+      outcome === VaccinationOutcome.Vaccinated ||
+      outcome === VaccinationOutcome.PartVaccinated
+
+    const batch = Batch.generate({ vaccine_gtin })
+
+    return new Vaccination({
+      created: session.date,
+      created_user_uid: user.uid,
+      outcome,
+      location,
+      campaign_uuid: campaign.uuid,
+      session_id: session.id,
+      patient_nhsn: record.nhsn,
+      ...(vaccinated && {
+        batch_id: batch.id,
+        batch_expires: batch.expires,
+        dose,
+        sequence,
+        injectionMethod,
+        injectionSite,
+        vaccine_gtin
+      })
+    })
   }
 
   get created_() {
@@ -88,23 +169,74 @@ export class Vaccination {
     }
   }
 
-  get formattedCreated() {
-    return new Intl.DateTimeFormat('en-GB', {
-      dateStyle: 'long',
-      timeStyle: 'short',
-      hourCycle: 'h12'
-    }).format(new Date(this.created))
+  get updated_() {
+    return convertIsoDateToObject(this.updated)
   }
 
-  get formattedDose() {
-    return this.dose && `${this.dose} ml`
-  }
-
-  get formattedName() {
-    if (this.vaccine_gtin) {
-      const vaccine = vaccines[this.vaccine_gtin]
-      return `${vaccine.brand} (${vaccine.name})`
+  set updated_(object) {
+    if (object) {
+      this.updated = convertObjectToIsoDate(object)
     }
+  }
+
+  get batch_expires_() {
+    return convertIsoDateToObject(this.batch_expires)
+  }
+
+  set batch_expires_(object) {
+    if (object) {
+      this.batch_expires = convertObjectToIsoDate(object)
+    }
+  }
+
+  get formatted() {
+    return {
+      created: formatDate(this.created, {
+        dateStyle: 'long',
+        timeStyle: 'short',
+        hourCycle: 'h12'
+      }),
+      created_date: formatDate(this.created, {
+        dateStyle: 'long'
+      }),
+      updated: formatDate(this.updated, {
+        dateStyle: 'long',
+        timeStyle: 'short',
+        hourCycle: 'h12'
+      }),
+      batch_id: formatMonospace(this.batch_id),
+      batch_expires: formatDate(this.batch_expires, {
+        dateStyle: 'long'
+      }),
+      dose: formatMillilitres(this.dose),
+      vaccine_gtin: this.vaccine?.brandWithName
+    }
+  }
+
+  get vaccine() {
+    if (!this.vaccine_gtin || !this.given) return
+
+    return new Vaccine(vaccines[this.vaccine_gtin])
+  }
+
+  get method() {
+    if (!this.vaccine || !this.given) return
+
+    if (this.vaccine.method == VaccineMethod.Nasal) {
+      return VaccinationMethod.Nasal
+    }
+
+    return this.injectionMethod || ''
+  }
+
+  get site() {
+    if (!this.vaccine || !this.given) return
+
+    if (this.vaccine.method == VaccineMethod.Nasal) {
+      return VaccinationSite.Nose
+    }
+
+    return this.injectionSite || ''
   }
 
   get ns() {
@@ -112,6 +244,6 @@ export class Vaccination {
   }
 
   get uri() {
-    return `/sessions/${this.session_id}/${this.patient_nhsn}/vaccinations/${this.uuid}`
+    return `/campaigns/${this.campaign_uuid}/vaccinations/${this.uuid}`
   }
 }

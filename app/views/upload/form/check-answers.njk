@@ -1,0 +1,110 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("upload.new.check-answers.confirm") %}
+{% set gridColumns = "full" %}
+{% set title = __("upload.new.check-answers.title") %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+{% set warningCalloutMarkdown %}
+{% if data.exact %}- {{ __n("upload.exact", data.exact) }}{% endif %}
+{% if data.inexact %}- {{ __n("upload.inexact", data.inexact) }}{% endif %}
+{% if data.incomplete %}- {{ __n("upload.incomplete", data.incomplete) }}{% endif %}
+{% endset %}
+
+  {{ warningCallout({
+    heading: __("upload.new.check-answers.warning"),
+    HTML: warningCalloutMarkdown | nhsukMarkdown
+  }) if data.exact or data.inexact or data.incomplete }}
+
+  {{ button({
+    text: confirmButtonText
+  }) }}
+
+  {% set inexactRecordRows = [] %}
+  {% for vaccination in inexact %}
+    {% set inexactRecordRows = inexactRecordRows | push([
+      {
+        header: __("record.fullName.label"),
+        html: link(vaccination.uri, vaccination.record.fullName)
+      },
+      {
+        header: __("record.nhsn.label"),
+        html: vaccination.record.formatted.nhsn
+      },
+      {
+        header: __("record.dob.label"),
+        html: vaccination.record.formatted.dob
+      },
+      {
+        header: __("record.postalCode.label"),
+        html: vaccination.record.postalCode
+      },
+      {
+        header: __("vaccination.created.label"),
+        html: vaccination.formatted.created_date
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    id: "inexact-records",
+    sort: "name",
+    panel: true,
+    heading: __n("upload.inexact.count", inexact.length),
+    responsive: true,
+    head: [
+      { text: __("record.fullName.label") },
+      { text: __("record.nhsn.label") },
+      { text: __("record.dob.label") },
+      { text: __("record.postalCode.label") },
+      { text: __("vaccination.created.label") }
+    ],
+    rows: inexactRecordRows
+  }) if data.inexact }}
+
+  {% set newRecordRows = [] %}
+  {% for vaccination in vaccinations %}
+    {% set newRecordRows = newRecordRows | push([
+      {
+        header: __("record.fullName.label"),
+        html: link(vaccination.uri, vaccination.record.fullName)
+      },
+      {
+        header: __("record.nhsn.label"),
+        html: vaccination.record.formatted.nhsn
+      },
+      {
+        header: __("record.dob.label"),
+        html: vaccination.record.formatted.dob
+      },
+      {
+        header: __("record.postalCode.label"),
+        html: vaccination.record.postalCode
+      },
+      {
+        header: __("vaccination.created.label"),
+        html: vaccination.formatted.created_date
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    id: "new-records",
+    sort: "name",
+    panel: true,
+    heading: __n("upload.new.count", vaccinations.length),
+    responsive: true,
+    head: [
+      { text: __("record.fullName.label") },
+      { text: __("record.nhsn.label") },
+      { text: __("record.dob.label") },
+      { text: __("record.postalCode.label") },
+      { text: __("vaccination.created.label") }
+    ],
+    rows: newRecordRows
+  }) }}
+{% endblock %}

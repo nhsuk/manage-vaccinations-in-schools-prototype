@@ -7,5 +7,13 @@
     text: __("campaign.sessions.title"),
     href: "/campaigns/" + campaign.uuid + "/sessions",
     current: view == "sessions"
-  }]
+  }, {
+    text: __("campaign.vaccinations.title"),
+    href: "/campaigns/" + campaign.uuid + "/vaccinations",
+    current: view == "vaccinations"
+  }, {
+    text: __("campaign.uploads.title"),
+    href: "/campaigns/" + campaign.uuid + "/uploads",
+    current: view == "uploads"
+  } if data.features.uploads.on]
 }) }}

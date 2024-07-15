@@ -6,10 +6,11 @@
   {{ input({
     classes: "nhsuk-input--width-5",
     label: {
-      classes: "nhsuk-label--l",
-      caption: patient.record.fullName,
-      isPageHeading: true,
-      text: title
+      html: heading({
+        classes: "nhsuk-label--l",
+        caption: record.fullName,
+        title: title
+      })
     },
     suffix: "ml",
     decorate: "vaccination.dose"

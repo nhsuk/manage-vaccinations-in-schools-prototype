@@ -62,6 +62,7 @@ export default {
     manufacturer: 'Merck Sharp & Dohme (UK) Ltd',
     method: 'Injection',
     dose: 0.5,
+    sequenceLimit: 3,
     healthQuestionKeys: [
       'Allergy',
       'MedicalConditions',
@@ -81,7 +82,7 @@ export default {
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/147952/Green-Book-Chapter-15.pdf
   3664798042948: {
     gtin: '3664798042948',
-    type: '3-in-1-teenage-booster',
+    type: '3-in-1',
     name: '3-in-1 teenage booster',
     brand: 'Revaxis',
     manufacturer: 'Sanofi',

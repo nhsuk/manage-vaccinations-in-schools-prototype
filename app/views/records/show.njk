@@ -40,4 +40,46 @@
       })
     })
   }) }}
+
+  {% set vaccinationDescriptionHtml %}
+    {% set vaccinationRows = [] %}
+    {% for vaccination in record.vaccinations | sort(false, false, "created") %}
+      {% set vaccinationRows = vaccinationRows | push([
+        {
+          header: __("vaccination.created.label"),
+          text: vaccination.formatted.created_date,
+          attributes: {
+            "data-col": "created",
+            "data-sort": vaccination.created
+          }
+        },
+        {
+          header: __("vaccination.vaccine_gtin.label"),
+          text: vaccination.formatted.vaccine_gtin
+        },
+        {
+          header: __("vaccination.location.label"),
+          text: vaccination.location
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      tableClasses: "nhsuk-u-margin-0",
+      id: "vaccinations",
+      sort: "created",
+      head: [
+        { text: __("vaccination.created.label") },
+        { text: __("vaccination.vaccine_gtin.label") },
+        { text: __("vaccination.location.label") }
+      ],
+      rows: vaccinationRows
+    }) }}
+  {% endset %}
+
+  {{ card({
+    heading: __("record.vaccinations.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: vaccinationDescriptionHtml
+  }) if record.vaccinations.length }}
 {% endblock %}

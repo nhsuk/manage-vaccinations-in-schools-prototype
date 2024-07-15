@@ -5,7 +5,7 @@
 
 {% block form %}
   {{ heading({
-    caption: patient.record.fullName,
+    caption: record.fullName,
     title: title
   }) }}
 
@@ -17,23 +17,25 @@
         outcome: {
           href: vaccination.uri + "/new/decline" if vaccination.outcome != "Vaccinated" and vaccination.outcome != "Partially vaccinated"
         },
-        vaccine: {
+        vaccine_gtin: {
           value: campaign.vaccine.brandWithName
         },
         method: {
-          href: vaccination.uri + "/new/administer" if campaign.vaccine.method == VaccineMethod.Injection
+          href: vaccination.uri + "/new/administer" if vaccination.vaccine.method == VaccineMethod.Injection
         },
         site: {
-          href: vaccination.uri + "/new/administer" if campaign.vaccine.method == VaccineMethod.Injection
+          href: vaccination.uri + "/new/administer" if vaccination.vaccine.method == VaccineMethod.Injection
         },
-        formattedDose: {
-          href: vaccination.uri + "/new/administer" if campaign.vaccine.method == VaccineMethod.Nasal
+        dose: {
+          href: vaccination.uri + "/new/administer" if vaccination.vaccine.method == VaccineMethod.Nasal else vaccination.uri + "/new/dose"
+        },
+        sequence: {
+          href: vaccination.uri + "/new/sequence"
         },
         batch_id: {
-          classes: "app-u-monospace",
           href: vaccination.uri + "/new/batch-id"
         },
-        formattedCreated: {
+        created: {
           href: vaccination.uri + "/new/created"
         },
         created_user_uid: {

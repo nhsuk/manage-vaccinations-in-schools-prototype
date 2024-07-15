@@ -1,4 +1,5 @@
 import { Record } from '../models/record.js'
+import { Vaccination } from '../models/vaccination.js'
 
 export const recordController = {
   list(request, response) {
@@ -14,10 +15,17 @@ export const recordController = {
   },
 
   read(request, response, next) {
-    const { data } = request.session
     const { nhsn } = request.params
+    const { data } = request.session
 
-    response.locals.record = new Record(data.records[nhsn])
+    const record = new Record(data.records[nhsn])
+
+    // Add complete vaccination record
+    record.vaccinations = record.vaccinations.map(
+      (uuid) => new Vaccination(data.vaccinations[uuid])
+    )
+
+    response.locals.record = record
 
     next()
   }

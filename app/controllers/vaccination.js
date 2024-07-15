@@ -1,6 +1,8 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { Batch } from '../models/batch.js'
 import { Patient } from '../models/patient.js'
+import { Record } from '../models/record.js'
+import { Session } from '../models/session.js'
 import { User } from '../models/user.js'
 import {
   Vaccination,
@@ -8,15 +10,26 @@ import {
   VaccinationOutcome,
   VaccinationSite
 } from '../models/vaccination.js'
+import { Vaccine } from '../models/vaccine.js'
 
 export const vaccinationController = {
   read(request, response, next) {
+    const { patient } = request.app.locals
     const { uuid } = request.params
-    const { patient } = response.locals
+    const { data } = request.session
 
-    request.app.locals.vaccination = new Vaccination(patient.vaccinations[uuid])
+    const vaccination = new Vaccination(data.vaccinations[uuid])
+    const nhsn = vaccination?.patient_nhsn || patient?.nhsn
+    const record = new Record(data.records[nhsn])
+
+    request.app.locals.vaccination = vaccination
+    request.app.locals.record = record
 
     next()
+  },
+
+  show(request, response) {
+    response.render('vaccination/show')
   },
 
   redirect(request, response) {
@@ -38,19 +51,25 @@ export const vaccinationController = {
   },
 
   new(request, response) {
+    const { campaign } = request.app.locals
     const { data } = request.session
-    const { patient, session } = response.locals
+    const { patient_nhsn, session_id } = request.query
 
     request.app.locals.start =
       data.preScreen.continue === 'true' ? 'administer' : 'decline'
+
+    request.app.locals.patient = data.patients[patient_nhsn]
 
     delete data.preScreen
     delete data.wizard
     delete data.vaccination
 
+    const session = new Session(data.sessions[session_id])
+
     const vaccination = new Vaccination({
       location: session.location.name,
-      patient_nhsn: patient.nhsn,
+      patient_nhsn,
+      campaign_uuid: campaign.uuid,
       session_id: session.id,
       ...(data.token && { created_user_uid: data.token?.uid })
     })
@@ -61,28 +80,49 @@ export const vaccinationController = {
   },
 
   update(request, response) {
-    const { vaccination } = request.app.locals
-    const { form, id, nhsn } = request.params
+    const { campaign, vaccination } = request.app.locals
+    const { form } = request.params
     const { data } = request.session
-    const { __, campaign, patient } = response.locals
+    const { __ } = response.locals
 
-    data.patients[nhsn] = new Patient(patient)
+    const patient = new Patient(data.patients[vaccination.patient_nhsn])
 
     // Capture vaccination
-    data.patients[nhsn].capture = new Vaccination({
+    const updatedVaccination = new Vaccination({
       ...vaccination, // Previous values
       ...data.wizard, // Wizard values (new flow)
       ...request.body.vaccination, // New values (edit flow)
-      ...(vaccination.batch_id && { vaccine_gtin: campaign.vaccine.gtin }),
+      vaccine_gtin: campaign.vaccine.gtin,
+      batch_expires:
+        vaccination.batch_expires || data.batches[vaccination.batch_id].expires,
       created_user_uid: data.vaccination.created_user_uid || data.token?.uid
     })
 
+    // Check if new vaccination record or updating an existing one
+    if (Object.keys(data.vaccinations).includes(updatedVaccination.uuid)) {
+      updatedVaccination.updated = new Date().toISOString()
+    }
+
+    // Add vaccination
+    data.vaccinations[updatedVaccination.uuid] = updatedVaccination
+
+    // Add vaccination outcome to patient
+    patient.capture = updatedVaccination
+
+    // Add vaccination directly to CHIS record
+    if (!data.features.uploads.on && !updatedVaccination.updated) {
+      data.records[patient.nhsn].vaccinations.push(updatedVaccination.uuid)
+    }
+
     delete data.wizard
+    delete request.app.locals.vaccination
 
     const action = form === 'edit' ? 'update' : 'create'
     request.flash('success', __(`vaccination.success.${action}`))
 
-    response.redirect(`/sessions/${id}/${nhsn}`)
+    const redirect = form === 'edit' ? updatedVaccination.uri : patient.uri
+
+    response.redirect(redirect)
   },
 
   readForm(request, response, next) {
@@ -129,19 +169,26 @@ export const vaccinationController = {
       .map((batch) => new Batch(batch))
       .filter((batch) => batch.vaccine.type === campaign.type)
 
-    response.locals.methodItems = Object.entries(VaccinationMethod)
+    response.locals.injectionMethodItems = Object.entries(VaccinationMethod)
       .filter(([, value]) => value !== VaccinationMethod.Nasal)
       .map(([key, value]) => ({
         text: VaccinationMethod[key],
         value
       }))
 
-    response.locals.siteItems = Object.entries(VaccinationSite)
+    response.locals.injectionSiteItems = Object.entries(VaccinationSite)
       .filter(([, value]) => value !== VaccinationSite.Nose)
       .map(([key, value]) => ({
         text: VaccinationSite[key],
         value
       }))
+
+    response.locals.locationItems = Object.entries(data.schools).map(
+      ([urn, school]) => ({
+        text: school.name,
+        value: school.name
+      })
+    )
 
     response.locals.userItems = Object.entries(data.users)
       .map(([key, value]) => {
@@ -159,6 +206,14 @@ export const vaccinationController = {
         if (textA > textB) return 1
         return 0
       })
+
+    response.locals.vaccineItems = Object.values(data.vaccines)
+      .filter((vaccine) => campaign.type.includes(vaccine.type))
+      .map((vaccine) => (vaccine = new Vaccine(vaccine)))
+      .map((vaccine) => ({
+        text: vaccine.brandWithName,
+        value: vaccine.gtin
+      }))
 
     response.locals.declineItems = Object.entries(VaccinationOutcome)
       .filter(
@@ -182,10 +237,10 @@ export const vaccinationController = {
   },
 
   updateForm(request, response) {
-    const { vaccination } = request.app.locals
+    const { campaign, vaccination } = request.app.locals
     const { id } = request.params
     const { data } = request.session
-    const { campaign, paths } = response.locals
+    const { paths } = response.locals
 
     // Add dose amount and vaccination outcome based on dosage answer
     if (request.body.vaccination.dosage) {
@@ -204,10 +259,12 @@ export const vaccinationController = {
       vaccination.batch_id = data.token.batch[id][0]
     }
 
-    data.wizard = new Vaccination({
-      ...vaccination, // Previous values
-      ...request.body.vaccination // New value
-    })
+    data.wizard = new Vaccination(
+      Object.assign(
+        vaccination, // Previous values
+        request.body.vaccination // New value
+      )
+    )
 
     response.redirect(paths.next || `${vaccination.uri}/new/check-answers`)
   }

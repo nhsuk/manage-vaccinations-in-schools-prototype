@@ -1,0 +1,32 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("vaccination.injection.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: record.fullName,
+    title: title
+  }) }}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("vaccination.method.label")
+      }
+    },
+    items: injectionMethodItems,
+    decorate: "vaccination.injectionMethod"
+  }) }}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("vaccination.site.label")
+      }
+    },
+    items: injectionSiteItems,
+    decorate: "vaccination.injectionSite"
+  }) }}
+{% endblock %}

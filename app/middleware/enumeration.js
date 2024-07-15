@@ -9,7 +9,7 @@ import {
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient.js'
-import { GPRegistered } from '../models/record.js'
+import { GPRegistered, Sex } from '../models/record.js'
 import { RegistrationOutcome } from '../models/registration.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import {
@@ -23,6 +23,7 @@ import {
   VaccinationMethod,
   VaccinationOutcome,
   VaccinationProtocol,
+  VaccinationSequence,
   VaccinationSite
 } from '../models/vaccination.js'
 import {
@@ -52,11 +53,13 @@ export const enumeration = (request, response, next) => {
   response.locals.SessionFormat = SessionFormat
   response.locals.SessionTime = SessionTime
   response.locals.SessionStatus = SessionStatus
+  response.locals.Sex = Sex
   response.locals.TriageOutcome = TriageOutcome
   response.locals.UserRole = UserRole
   response.locals.VaccinationMethod = VaccinationMethod
   response.locals.VaccinationOutcome = VaccinationOutcome
   response.locals.VaccinationProtocol = VaccinationProtocol
+  response.locals.VaccinationSequence = VaccinationSequence
   response.locals.VaccinationSite = VaccinationSite
   response.locals.VaccineMethod = VaccineMethod
 

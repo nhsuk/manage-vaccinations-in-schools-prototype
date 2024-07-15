@@ -4,6 +4,7 @@ export const preScreenController = {
   new(request, response) {
     const { id, nhsn } = request.params
     const { data } = request.session
+    const { campaign } = response.locals
 
     const patient = new Patient(data.patients[nhsn])
 
@@ -13,6 +14,8 @@ export const preScreenController = {
       ...(data.token && { user_uid: data.token?.uid })
     }
 
-    response.redirect(`/sessions/${id}/${nhsn}/vaccinations/new`)
+    response.redirect(
+      `/campaigns/${campaign.uuid}/vaccinations/new?patient_nhsn=${nhsn}&session_id=${id}`
+    )
   }
 }

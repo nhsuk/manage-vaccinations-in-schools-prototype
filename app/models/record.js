@@ -34,6 +34,7 @@ export class GPRegistered {
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} urn - School URN
  * @property {Parent} [parent] - Parent
+ * @property {Array<string>} [vaccinations] - Vaccination UUIDs
  * @function age - Age in years
  * @function dobWithAge - Date of birth with age in brackets
  * @function fullName - Get full name
@@ -55,6 +56,7 @@ export class Record {
     this.gpSurgery = options.gpSurgery
     this.urn = options.urn
     this.parent = options?.parent && new Parent(options.parent)
+    this.vaccinations = options?.vaccinations || []
   }
 
   static generate() {

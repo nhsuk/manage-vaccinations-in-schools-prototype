@@ -15,7 +15,7 @@ import {
 } from '../utils/capture.js'
 import { stringToBoolean } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
-import { Vaccination, VaccinationOutcome } from './vaccination.js'
+import { Vaccination } from './vaccination.js'
 
 export class ConsentOutcome {
   static NoResponse = 'No response'
@@ -61,7 +61,7 @@ export class PatientOutcome {
  * @property {import('./record.js').Record} record - CHIS record
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
- * @property {Array<import('./vaccination.js').Vaccination>} [vaccinations] - Vaccinations
+ * @property {Array<string>} [vaccinations] - Vaccination UUIDs
  * @property {string} [campaign_uuid] - Campaign UUID
  * @property {string} [session_id] - Session ID
  * @function consent - Consent outcome
@@ -258,27 +258,25 @@ export class Patient {
   }
 
   set capture(vaccination) {
-    const created = !this.vaccinations[vaccination.uuid]
     vaccination = new Vaccination(vaccination)
 
     let name
-    if (
-      vaccination.outcome === VaccinationOutcome.Vaccinated ||
-      vaccination.outcome === VaccinationOutcome.PartVaccinated
-    ) {
-      name = created
-        ? `Vaccinated with ${vaccination.formattedName}`
-        : `Vaccination record for ${vaccination.formattedName} updated`
+    if (vaccination.given) {
+      name = vaccination.updated
+        ? `Vaccination record for ${vaccination.formatted.vaccine_gtin} updated`
+        : `Vaccinated with ${vaccination.formatted.vaccine_gtin}`
     } else {
       name = `Unable to vaccinate: ${vaccination.outcome}`
     }
 
-    this.vaccinations[vaccination.uuid] = vaccination
+    // Providing a boolean for vaccination enables patient outcome calculation
+    this.vaccinations[vaccination.uuid] = vaccination.given
+
     this.log = {
       type: EventType.Capture,
       name,
       note: vaccination.notes,
-      date: created ? vaccination.created : new Date().toISOString(),
+      date: vaccination.updated || vaccination.created,
       user_uid: vaccination.user_uid
     }
   }

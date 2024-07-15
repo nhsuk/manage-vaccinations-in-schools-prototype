@@ -1,0 +1,18 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("upload.devoid.title") %}
+{% set paths = {
+  back: campaign.uri + "/uploads/new"
+} %}
+
+{% block content %}
+  <div class="nhsuk-u-width-three-quarters">
+    {{ heading({
+      title: title
+    }) }}
+
+    {{ __("upload.devoid.description") | nhsukMarkdown }}
+
+    {{ link(campaign.uri + "/uploads/new", __("upload.new.label")) | nhsukMarkdown }}
+  </div>
+{% endblock %}

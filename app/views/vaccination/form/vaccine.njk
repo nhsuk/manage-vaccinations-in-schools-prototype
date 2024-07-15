@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("vaccination.decline.title", { vaccine: campaign.vaccine }) %}
+{% set title = __("vaccination.vaccine_gtin.title") %}
 
 {% block form %}
   {{ radios({
@@ -13,7 +13,7 @@
         })
       }
     },
-    items: declineItems,
-    decorate: "vaccination.outcome"
+    items: vaccineItems,
+    decorate: "vaccination.vaccine_gtin"
   }) }}
 {% endblock %}

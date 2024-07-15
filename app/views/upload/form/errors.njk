@@ -1,0 +1,32 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("upload.errors.title") %}
+{% set paths = {
+  back: campaign.uri + "/uploads/new"
+} %}
+
+{% block content %}
+  <div class="nhsuk-u-width-three-quarters">
+    {{ heading({
+      title: title
+    }) }}
+
+    {{ __("upload.errors.description") | nhsukMarkdown }}
+
+    {% filter nhsukMarkdown %}
+## Row 3
+
+- `PERSON_FORENAME` is required but missing
+- `PERSON_POSTCODE` ‘24 High Street’ should be a postcode, like SW1A 1AA
+- `NHS_NUMBER` ‘QQ 12 34 56 A’ should be a valid NHS number, like 485 777 3456
+
+## Row 8
+
+- `PERSON_DOB` ‘Simon’ should be formatted as YYYY-MM-DD
+
+---
+
+[{{ __("upload.new.label") }}]({{ campaign.uri + "/uploads/new" }})
+    {% endfilter %}
+  </div>
+{% endblock %}
