@@ -1,3 +1,4 @@
+import { SessionStatus } from '../models/session.js'
 import { UserRole } from '../models/user.js'
 import { getCampaignSession } from '../utils/session.js'
 
@@ -5,6 +6,20 @@ export const navigation = (request, response, next) => {
   const { data } = request.session
   const { __ } = response.locals
   const { campaigns, sessions } = data
+
+  const root = request.path.split('/')[1]
+  const id = request.path.split('/')[2]
+
+  // Get currently active section
+  let current = root
+  if (root === 'sessions' && id) {
+    const { status } = data.sessions[id]
+    if (status === SessionStatus.Active) {
+      current = 'sessions'
+    } else {
+      current = 'campaigns'
+    }
+  }
 
   const fluSession = getCampaignSession(campaigns, sessions, 'flu')
   const hpvSession = getCampaignSession(campaigns, sessions, 'hpv')
@@ -15,19 +30,23 @@ export const navigation = (request, response, next) => {
       ? [
           {
             url: '/sessions',
-            label: __('session.list.title')
+            label: __('session.list.title'),
+            current: current === 'sessions'
           },
           {
             url: '/campaigns',
-            label: __('campaign.list.title')
+            label: __('campaign.list.title'),
+            current: current === 'campaigns'
           },
           {
             url: '/vaccines',
-            label: __('vaccine.list.title')
+            label: __('vaccine.list.title'),
+            current: current === 'vaccines'
           },
           {
             url: '/account/change-role',
-            label: __('account.change-role.label')
+            label: __('account.change-role.label'),
+            classes: 'app-header__navigation-item--divider'
           },
           {
             url: '/account/sign-out',
@@ -37,7 +56,8 @@ export const navigation = (request, response, next) => {
       : [
           {
             url: '/account/change-role',
-            label: __('account.change-role.label')
+            label: __('account.change-role.label'),
+            classes: 'app-header__navigation-item--divider'
           },
           {
             url: '/account/sign-out',

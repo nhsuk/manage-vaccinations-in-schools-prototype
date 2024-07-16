@@ -1,3 +1,12 @@
-.nhsuk-header__navigation-item:has(a[href="/account/change-role"]) {
+.app-header__navigation-item--divider {
   margin-left: auto;
+}
+
+.nhsuk-header__navigation-link[aria-current]:not(:focus):not(:active) {
+  border-bottom: nhsuk-spacing(1) solid $nhsuk-border-color;
+  text-decoration: none;
+
+  .nhsuk-header__drop-down & {
+    border-bottom-color: transparent;
+  }
 }
