@@ -1,5 +1,5 @@
 import { SessionStatus } from '../models/session.js'
-import { UserRole } from '../models/user.js'
+import { User, UserRole } from '../models/user.js'
 import { getCampaignSession } from '../utils/session.js'
 
 export const navigation = (request, response, next) => {
@@ -7,8 +7,35 @@ export const navigation = (request, response, next) => {
   const { __ } = response.locals
   const { campaigns, sessions } = data
 
+  const user = new User(data.token)
   const root = request.path.split('/')[1]
   const id = request.path.split('/')[2]
+
+  // Get account navigation
+  const account = data.token
+    ? {
+        user: {
+          text: user.fullName
+        },
+        items: [
+          {
+            label: { text: __('account.change-role.label') },
+            href: '/account/change-role'
+          },
+          {
+            label: { text: __('account.sign-out.title') },
+            href: '/account/sign-out'
+          }
+        ]
+      }
+    : {
+        items: [
+          {
+            label: { text: __('account.sign-in.title') },
+            href: '/'
+          }
+        ]
+      }
 
   // Get currently active section
   let current = root
@@ -20,10 +47,6 @@ export const navigation = (request, response, next) => {
       current = 'campaigns'
     }
   }
-
-  const fluSession = getCampaignSession(campaigns, sessions, 'flu')
-  const hpvSession = getCampaignSession(campaigns, sessions, 'hpv')
-  const tioSession = getCampaignSession(campaigns, sessions, '3-in-1-men-acwy')
 
   const primaryLinks =
     data.token?.role != UserRole.DataConsumer
@@ -42,30 +65,16 @@ export const navigation = (request, response, next) => {
             url: '/vaccines',
             label: __('vaccine.list.title'),
             current: current === 'vaccines'
-          },
-          {
-            url: '/account/change-role',
-            label: __('account.change-role.label'),
-            classes: 'app-header__navigation-item--divider'
-          },
-          {
-            url: '/account/sign-out',
-            label: __('account.sign-out.title')
           }
         ]
-      : [
-          {
-            url: '/account/change-role',
-            label: __('account.change-role.label'),
-            classes: 'app-header__navigation-item--divider'
-          },
-          {
-            url: '/account/sign-out',
-            label: __('account.sign-out.title')
-          }
-        ]
+      : []
+
+  const fluSession = getCampaignSession(campaigns, sessions, 'flu')
+  const hpvSession = getCampaignSession(campaigns, sessions, 'hpv')
+  const tioSession = getCampaignSession(campaigns, sessions, '3-in-1-men-acwy')
 
   response.locals.navigation = {
+    account,
     primaryLinks,
     footerLinks: [
       ...(fluSession

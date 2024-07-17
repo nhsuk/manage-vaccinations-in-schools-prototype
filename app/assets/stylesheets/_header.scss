@@ -1,12 +1,71 @@
-.app-header__navigation-item--divider {
-  margin-left: auto;
+.app-header__content {
+  display: flex;
+  flex-flow: column wrap;
+  gap: nhsuk-spacing(2);
+
+  @include mq($until: tablet) {
+    margin-top: nhsuk-spacing(3);
+  }
 }
 
-.nhsuk-header__navigation-link[aria-current]:not(:focus):not(:active) {
-  border-bottom: nhsuk-spacing(1) solid $nhsuk-border-color;
-  text-decoration: none;
+.app-header__account {
+  border-radius: $nhsuk-border-radius;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  overflow: hidden;
+}
 
-  .nhsuk-header__drop-down & {
-    border-bottom-color: transparent;
+.app-header__account-item {
+  align-items: start;
+  background-color: shade($nhsuk-link-color, 20%);
+  color: $color_nhsuk-white;
+  display: inline-flex;
+  flex-grow: 1;
+  gap: nhsuk-spacing(2);
+  padding: nhsuk-spacing(2) nhsuk-spacing(3);
+
+  &:first-child {
+    flex-grow: 999;
+  }
+}
+
+.app-header__account-icon {
+  flex-shrink: 0;
+  position: relative;
+  top: 1px;
+}
+
+.app-header__account-link {
+  color: $color_nhsuk-white;
+  display: block;
+  margin: #{nhsuk-spacing(2) * -1} #{nhsuk-spacing(3) * -1};
+  padding: nhsuk-spacing(2) nhsuk-spacing(3);
+
+  &:visited {
+    color: $color_nhsuk-white;
+  }
+
+  &:active,
+  &:focus {
+    background-color: $nhsuk-focus-color;
+    border-bottom: $nhsuk-focus-width solid $nhsuk-focus-text-color;
+    color: $nhsuk-focus-text-color;
+    padding-bottom: nhsuk-spacing(1);
+  }
+}
+
+.app-header {
+  .nhsuk-header__search-form {
+    margin-top: 0;
+  }
+
+  .nhsuk-header__navigation-link[aria-current]:not(:focus):not(:active) {
+    border-bottom: nhsuk-spacing(1) solid $nhsuk-border-color;
+    text-decoration: none;
+
+    .nhsuk-header__drop-down & {
+      border-bottom-color: transparent;
+    }
   }
 }

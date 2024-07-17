@@ -30,11 +30,10 @@
       href: "/home" if not public else "/"
     } if not transactionalService,
     homeHref: "/home" if not public else "/",
-    showNav: "true" if not public else "false",
-    showSearch: "false",
     transactional: true if transactionalService,
     transactionalService: transactionalService,
-    primaryLinks: navigation.primaryLinks
+    primaryLinks: navigation.primaryLinks if not public,
+    account: navigation.account if not public
   }) }}
 {% endblock %}
 

@@ -1,9 +1,7 @@
+{%- from "_macros/header-account.njk" import headerAccount -%}
 {%- from "_macros/header-navigation.njk" import headerNavigation -%}
 {%- from "_macros/header-search.njk" import headerSearch -%}
 {% macro serviceheader(params) -%}
-{% set showNav = params.showNav if params.showNav else "false" %}
-{% set showSearch = params.showSearch if params.showSearch else "false" %}
-
 {% set nhsLogo %}
   <svg class="nhsuk-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 16" height="40" width="100">
     <path class="nhsuk-logo__background" fill="#005eb8" d="M0 0h40v16H0z"></path>
@@ -11,15 +9,15 @@
   </svg>
 {% endset %}
 
-<header class="nhsuk-header
+<header class="nhsuk-header app-header
 {%- if params.transactional or params.transactionalService %} nhsuk-header__transactional{% endif %}
 {%- if params.organisation and params.organisation.name %} nhsuk-header--organisation{% endif %}
 {%- if params.classes %} {{ params.classes }}{% endif %}" role="banner"
 {%- for attribute, value in params.attributes %} {{ attribute }}="{{ value }}"{% endfor %}>
   <div class="nhsuk-header__container">
     <div class="nhsuk-header__logo
-    {%- if showNav == "false" and showSearch == "false" and params.transactionalService %} nhsuk-header__transactional--logo{% endif %}
-    {%- if showNav == "false" and showSearch == "false" and not params.transactionalService %} nhsuk-header__logo--only{% endif %}">
+    {%- if not params.primaryLinks and not params.search and params.transactionalService %} nhsuk-header__transactional--logo{% endif %}
+    {%- if not params.primaryLinks and not params.search and not params.transactionalService %} nhsuk-header__logo--only{% endif %}">
     {%- if params.organisation %}
       <a class="nhsuk-header__link" href="{% if params.homeHref %}{{ params.homeHref }}{% else %}/{% endif %}" aria-label="{{ params.organisation.name }} {{ params.organisation.split }} {{ params.organisation.descriptor }} homepage">
         {%- if params.organisation.logoURL %}
@@ -40,35 +38,24 @@
     {%- endif %}
     </div>
 
-{%- if showNav == "false" and showSearch == "false"%}
+{%- if not params.primaryLinks and not params.search %}
   {%- if params.transactionalService %}
     <div class="nhsuk-header__transactional-service-name">
       <a class="nhsuk-header__transactional-service-name--link" href="{% if params.transactionalService.href %}{{ params.transactionalService.href }}{% else %}/{% endif %}">{{ params.transactionalService.name }}</a>
     </div>
   {%- endif %}
-  </div>{# close nhsuk-header__container #}
 {% endif -%}
 
-{% if showNav == "true" and params.primaryLinks and showSearch == "true" %}
-    <div class="nhsuk-header__content" id="content-header">
-      {{ headerSearch() | safe }}
+{%- if params.account or params.search %}
+    <div class="nhsuk-header__content app-header__content">
+      {{ headerAccount(params.account) if params.account }}
+      {{ headerSearch(params.search) if params.search }}
     </div>
-  </div>{# close nhsuk-header__container #}
-
-  {{ headerNavigation({ items: params.primaryLinks }) | safe }}
 {% endif -%}
+  </div>
 
-{% if showSearch == "true" and showNav == "false" %}
-    <div class="nhsuk-header__content" id="content-header">
-      {{ headerSearch({ classes: "nhsuk-header__search-no-nav" }) | safe }}
-    </div>
-  </div>{# close nhsuk-header__container #}
-{% endif -%}
-
-{% if showNav == "true" and params.primaryLinks and showSearch == "false" %}
-  </div>{# close nhsuk-header__container #}
-
-  {{ headerNavigation({ items: params.primaryLinks }) | safe }}
+{%- if params.primaryLinks %}
+  {{ headerNavigation(params.primaryLinks) }}
 {% endif -%}
 </header>
 {% endmacro %}
