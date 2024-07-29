@@ -1,5 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import { stringToBoolean } from '../utils/string.js'
+import { formatOther, stringToBoolean } from '../utils/string.js'
 
 export class ContactPreference {
   static None = 'No preference'
@@ -23,8 +23,8 @@ export class ParentalRelationship {
  * @property {string} uuid - UUID
  * @property {string} fullName - Full name
  * @property {ParentalRelationship} relationship - Relationship to child
- * @property {boolean} hasParentalResponsibility - Has parental responsibility
- * @property {string} relationshipOther - Other relationship to child
+ * @property {string} [relationshipOther] - Other relationship to child
+ * @property {boolean} [hasParentalResponsibility] - Has parental responsibility
  * @property {boolean} notify - Notify about consent and vaccination events
  * @property {string} email - Email address
  * @property {string} tel - Phone number
@@ -40,16 +40,23 @@ export class Parent {
     this.uuid = options?.uuid || faker.string.uuid()
     this.fullName = options.fullName
     this.relationship = options.relationship
-    this.relationshipOther = options.relationshipOther
-    this.hasParentalResponsibility = stringToBoolean(
-      options.hasParentalResponsibility
-    )
+    this.relationshipOther =
+      this.relationship === ParentalRelationship.Other
+        ? options?.relationshipOther
+        : undefined
+    this.hasParentalResponsibility =
+      this.relationship === ParentalRelationship.Other
+        ? stringToBoolean(options.hasParentalResponsibility)
+        : undefined
     this.notify = stringToBoolean(options?.notify)
     this.email = options.email
     this.tel = options.tel || ''
     this.sms = stringToBoolean(options.sms) || false
     this.contactPreference = options?.contactPreference
-    this.contactPreferenceOther = options?.contactPreferenceOther
+    this.contactPreferenceOther =
+      this.contactPreference === ContactPreference.Other
+        ? options?.contactPreferenceOther
+        : undefined
   }
 
   static generate(childLastName, parentsOnly) {
@@ -115,6 +122,16 @@ export class Parent {
       : this.relationship
 
     return `${this.fullName} (${relationship})`
+  }
+
+  get formatted() {
+    return {
+      contactPreference: formatOther(
+        this.contactPreferenceOther,
+        this.contactPreference
+      ),
+      relationship: formatOther(this.relationshipOther, this.relationship)
+    }
   }
 
   get ns() {

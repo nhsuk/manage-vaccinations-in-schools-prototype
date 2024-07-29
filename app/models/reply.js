@@ -2,7 +2,12 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
 import { Child } from './child.js'
 import { Parent } from './parent.js'
-import { stringToBoolean } from '../utils/string.js'
+import { formatDate } from '../utils/date.js'
+import {
+  formatMarkdown,
+  formatOther,
+  stringToBoolean
+} from '../utils/string.js'
 
 export class ReplyDecision {
   static Given = 'Consent given'
@@ -45,7 +50,6 @@ export class ReplyRefusal {
  * @property {string} [notes] - Notes about this response
  * @property {string} patient_nhsn - Patient NHS number
  * @property {string} session_id - Session ID
- * @function formattedCreated - Formatted created date
  * @function fullName - Full name of respondent
  * @function relationship - Relation of respondent to child
  * @function ns - Namespace
@@ -130,16 +134,6 @@ export class Reply {
     })
   }
 
-  get formattedCreated() {
-    return this.created
-      ? new Intl.DateTimeFormat('en-GB', {
-          dateStyle: 'long',
-          timeStyle: 'short',
-          hourCycle: 'h12'
-        }).format(new Date(this.created))
-      : false
-  }
-
   get fullName() {
     if (this.parent) {
       return this.parent.fullName
@@ -153,6 +147,30 @@ export class Reply {
       return this.parent.relationship
     } else if (this.child) {
       return 'Child (Gillick competent)'
+    }
+  }
+
+  get formatted() {
+    const decision = () => {
+      if (this.invalid) {
+        return `<s>${this.decision}</s><br>Invalid`
+      } else if (this.confirmed) {
+        return `${this.decision}<br><b>Confirmed</b>`
+      }
+
+      return this.decision
+    }
+
+    return {
+      created: formatDate(this.created, {
+        dateStyle: 'long',
+        timeStyle: 'short',
+        hourCycle: 'h12'
+      }),
+      decision: decision(),
+      refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
+      refusalReasonDetails: formatMarkdown(this.refusalReasonDetails),
+      notes: formatMarkdown(this.notes)
     }
   }
 

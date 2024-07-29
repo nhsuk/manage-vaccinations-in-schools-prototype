@@ -37,13 +37,12 @@
           html: link(vaccination.uri, vaccination.record.fullName)
         },
         {
-          classes: "app-u-monospace",
           header: __("record.nhsn.label"),
-          html: vaccination.record.formattedNhsNumber
+          html: vaccination.record.formatted.nhsn
         },
         {
           header: __("record.dob.label"),
-          html: vaccination.record.formattedDob
+          html: vaccination.record.formatted.dob
         },
         {
           header: __("record.postalCode.label"),

@@ -6,7 +6,7 @@
   {% set batches = [] %}
   {% for batch in batchItems %}
     {% set batches = batches | push({
-      html: __("session.batch_id.batch", { batch: batch }),
+      html: batch.formatted.name,
       value: batch.id
     }) %}
   {% endfor %}

@@ -17,7 +17,6 @@
     descriptionHtml: summaryList({
       rows: summaryRows(session, {
         format: {
-          value: session.format,
           href: session.uri + "/edit/format"
         },
         campaign_uuid: {
@@ -25,7 +24,6 @@
           href: session.uri + "/edit/campaign-uuid"
         },
         urn: {
-          value: session.location.name,
           href: session.uri + "/edit/urn"
         },
         cohort: {
@@ -33,23 +31,18 @@
           href: session.uri + "/edit/cohort"
         },
         date: {
-          value: session.date | date({ dateStyle: "full" }),
           href: session.uri + "/edit/date"
         },
         time: {
-          value: session.time,
           href: session.uri + "/edit/date"
         },
         open: {
-        value: session.open | date({ dateStyle: "full" }),
           href: session.uri + "/edit/schedule"
         },
         reminder: {
-          value: session.reminder | date({ dateStyle: "full" }),
           href: session.uri + "/edit/schedule"
         },
         close: {
-          value: session.close | date({ dateStyle: "full" }),
           href: session.uri + "/edit/schedule"
         }
       })

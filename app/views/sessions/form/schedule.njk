@@ -6,7 +6,7 @@
   {{ heading({ title: title }) }}
 
   {{ insetText({
-    html: "Session scheduled for " + (session.date | date({ dateStyle: "full" })) + " at " + session.location.name | nhsukMarkdown
+    html: ("Session scheduled for " + session.formatted.date + " at " + session.location.name) | nhsukMarkdown
   }) }}
 
   {{ dateInput({

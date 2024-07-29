@@ -34,18 +34,18 @@
       ],
       [
         { html: __("child.dob.label") },
-        { html: consent.child.formattedDob | highlightDifference(patient.record.formattedDob) },
-        { text: patient.record.formattedDob }
+        { html: consent.child.formatted.dob | highlightDifference(patient.record.formatted.dob) },
+        { text: patient.record.formatted.dob }
       ],
       [
         { text: __("child.address.label") },
-        { html: consent.child.formattedAddress | nl2br | highlightDifference(patient.record.formattedAddress | nl2br) },
-        { html: patient.record.formattedAddress | nl2br }
+        { html: consent.child.formatted.address | highlightDifference(patient.record.formatted.address) },
+        { html: patient.record.formatted.address }
       ],
       [
         { text: __("child.gpSurgery.label") },
-        { html: consent.child.formattedGpSurgery | highlightDifference(patient.record.formattedGpSurgery) },
-        { text: patient.record.formattedGpSurgery }
+        { html: consent.child.formatted.gpSurgery | highlightDifference(patient.record.formatted.gpSurgery) },
+        { text: patient.record.formatted.gpSurgery }
       ]
     ]
   }) }}
@@ -56,15 +56,11 @@
     descriptionHtml: summaryList({
       rows: summaryRows(consent.parent, {
         fullName: {},
-        relationship: {
-          other: reply.parent.relationshipOther
-        },
+        relationship: {},
         hasParentalResponsibility: {},
         email: {},
         tel: {},
-        contactPreference: {
-          other: reply.parent.contactPreferenceOther
-        },
+        contactPreference: {},
         sms: {}
       })
     })
@@ -75,16 +71,10 @@
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(consent, {
-        created: {
-          value: consent.formattedCreated
-        },
+        created: {},
         decision: {},
-        refusalReason: {
-          other: consent.refusalReasonOther
-        } if consent.refusalReason,
-        refusalReasonDetails: {
-          value: consent.refusalReasonDetails | nhsukMarkdown
-        } if consent.refusalReasonDetails
+        refusalReason: {},
+        refusalReasonDetails: {}
       })
     })
   }) }}

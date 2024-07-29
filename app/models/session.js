@@ -6,6 +6,7 @@ import {
   convertObjectToIsoDate,
   formatDate
 } from '../utils/date.js'
+import { formatLink } from '../utils/string.js'
 import { getConsentWindow } from '../utils/session.js'
 
 export class ConsentWindow {
@@ -47,7 +48,6 @@ export class SessionStatus {
  * @property {SessionStatus} [status] - Status (planned, in progress, archived)
  * @property {object} [consents] – (Unmatched) consent replies
  * @property {string} [campaign_uuid] - Campaign UUID
- * @function formattedDate - Formatted date
  * @function consentWindow - Consent window (open, opening or closed)
  * @function school - Get school details
  * @function location - Get location details
@@ -137,14 +137,6 @@ export class Session {
     }
   }
 
-  get formattedDate() {
-    return this.date
-      ? new Intl.DateTimeFormat('en-GB', {
-          dateStyle: 'long'
-        }).format(new Date(this.date))
-      : false
-  }
-
   get open_() {
     return convertIsoDateToObject(this.open)
   }
@@ -175,14 +167,6 @@ export class Session {
     }
   }
 
-  get formattedClose() {
-    return this.close
-      ? new Intl.DateTimeFormat('en-GB', {
-          dateStyle: 'long'
-        }).format(new Date(this.close))
-      : false
-  }
-
   get consentWindow() {
     return getConsentWindow(this)
   }
@@ -210,6 +194,47 @@ export class Session {
       const date = formatDate(this.date, { dateStyle: 'full' })
 
       return `${this.time} session at ${this.location.name} on ${date}`
+    }
+  }
+
+  get summary() {
+    return `<span class="nhsuk-u-secondary-text-color">
+      ${formatLink(this.uri, this.location.name)}</br>
+      ${this.location.addressLine1},
+      ${this.location.addressLevel1},
+      ${this.location.postalCode}
+    </span>`
+  }
+
+  get formatted() {
+    let consentWindow
+    const consentDateStyle = { day: 'numeric', month: 'long' }
+    switch (this.consentWindow.value) {
+      case ConsentWindow.Opening:
+        consentWindow = `Opens ${formatDate(this.open, consentDateStyle)}`
+        break
+      case ConsentWindow.Closed:
+        consentWindow = `Closed ${formatDate(this.close, consentDateStyle)}`
+        break
+      default:
+        consentWindow = `Open until ${formatDate(this.close, consentDateStyle)}`
+    }
+
+    return {
+      date: formatDate(this.date, {
+        dateStyle: 'full'
+      }),
+      open: formatDate(this.open, {
+        dateStyle: 'full'
+      }),
+      reminder: formatDate(this.reminder, {
+        dateStyle: 'full'
+      }),
+      close: formatDate(this.date, {
+        dateStyle: 'full'
+      }),
+      urn: this.location.name,
+      consentWindow
     }
   }
 

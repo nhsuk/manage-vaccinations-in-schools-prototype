@@ -1,5 +1,10 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import vaccines from '../datasets/vaccines.js'
+import {
+  formatList,
+  formatMillilitres,
+  formatMonospace
+} from '../utils/string.js'
 
 export class HealthQuestion {
   static Aspirin = 'Does the child take regular aspirin?'
@@ -83,10 +88,6 @@ export class Vaccine {
     return `${this.brand} (${this.name})`
   }
 
-  get formattedDose() {
-    return `${this.dose} ml`
-  }
-
   get healthQuestions() {
     return vaccines[this.gtin].healthQuestionKeys.map(
       (key) => HealthQuestion[key]
@@ -97,6 +98,15 @@ export class Vaccine {
     return vaccines[this.gtin].preScreenQuestionKeys.map(
       (key) => PreScreenQuestion[key]
     )
+  }
+
+  get formatted() {
+    return {
+      gtin: formatMonospace(this.gtin),
+      healthQuestions: formatList(this.healthQuestions),
+      preScreenQuestions: formatList(this.preScreenQuestions),
+      dose: formatMillilitres(this.dose)
+    }
   }
 
   get ns() {

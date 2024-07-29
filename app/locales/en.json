@@ -212,22 +212,13 @@
     "dobWithAge": {
       "label": "Date of birth"
     },
-    "formattedDob": {
-      "label": "Date of birth"
-    },
     "address": {
       "label": "Home address",
       "postalCode": {
         "label": "Postcode"
       }
     },
-    "formattedAddress": {
-      "label": "Home address"
-    },
     "gpSurgery": {
-      "label": "GP surgery"
-    },
-    "formattedGpSurgery": {
       "label": "GP surgery"
     },
     "urn": {
@@ -485,7 +476,7 @@
     },
     "confirmation": {
       "title": {
-        "Given": "{{consent.child.fullName}} is due to get the {{campaign.vaccine.name}} vaccination at school on {{session.formattedDate}}",
+        "Given": "{{consent.child.fullName}} is due to get the {{campaign.vaccine.name}} vaccination at school on {{session.formatted.date}}",
         "Refused": "You’ve told us that you do not want your child to get the {{campaign.vaccine.name}} vaccine at school"
       },
       "description": {
@@ -501,15 +492,15 @@
     "consent": {
       "invite": {
         "label": "Invitation",
-        "name": "{{campaign.name}} vaccination on {{session.formattedDate}}"
+        "name": "{{campaign.name}} vaccination on {{session.formatted.date}}"
       },
       "invite-reminder": {
         "label": "Reminder",
-        "name": "Please respond to our request for consent by {{session.formattedClose}}"
+        "name": "Please respond to our request for consent by {{session.formatted.close}}"
       },
       "consent-given": {
         "label": "Consent given",
-        "name": "{{campaign.name}} vaccination on {{session.formattedDate}}"
+        "name": "{{campaign.name}} vaccination on {{session.formatted.date}}"
       },
       "consent-conflicts": {
         "label": "Consent conflicts",
@@ -517,15 +508,15 @@
       },
       "consent-refused": {
         "label": "Consent refused",
-        "name": "{{campaign.name}} vaccination on {{session.formattedDate}}"
+        "name": "{{campaign.name}} vaccination on {{session.formatted.date}}"
       },
       "triage-needed": {
         "label": "Triage needed",
-        "name": "{{campaign.name}} vaccination on {{session.formattedDate}}"
+        "name": "{{campaign.name}} vaccination on {{session.formatted.date}}"
       },
       "triage-vaccinate": {
         "label": "Vaccinate",
-        "name": "Your child can have the {{campaign.name}} vaccination on {{session.formattedDate}}"
+        "name": "Your child can have the {{campaign.name}} vaccination on {{session.formatted.date}}"
       },
       "triage-do-not-vaccinate": {
         "label": "Do not vaccinate",
@@ -533,7 +524,7 @@
       },
       "session-reminder": {
         "label": "Session reminder",
-        "name": "{{consent.child.fullName}} will get their {{campaign.name}} vaccination on {{session.formattedDate}}"
+        "name": "{{consent.child.fullName}} will get their {{campaign.name}} vaccination on {{session.formatted.date}}"
       },
       "session-outcome-vaccinated": {
         "label": "Vaccinated",
@@ -545,7 +536,7 @@
       },
       "information-child": {
         "label": "Information for students",
-        "name": "You can get an {{campaign.name}} vaccination on {{session.formattedDate}}"
+        "name": "You can get an {{campaign.name}} vaccination on {{session.formatted.date}}"
       }
     }
   },
@@ -923,8 +914,7 @@
     "batch_id": {
       "title": "Select a default batch for this session",
       "text": "You are currently using {{vaccine.brand}} batch <span class=\"app-u-monospace\">{{batch}}</span>. [Change]({{session.uri}}/default-batch)",
-      "label": "Batch",
-      "batch": "<span class=\"app-u-monospace\">{{batch.id}}</span> (expires {{batch.formattedExpires}})"
+      "label": "Batch"
     },
     "list": {
       "title": "Today’s sessions",
@@ -1008,15 +998,12 @@
     "consentWindow": {
       "label": "Consent period",
       "Opening": {
-        "label": "Opens {{open}}",
         "text": "Consent period opens on {{open}}"
       },
       "Open": {
-        "label": "Open until {{close}}",
         "text": "Consent period is open from {{open}} until {{close}}"
       },
       "Closed": {
-        "label": "Closed {{close}}",
         "text": "Consent period closed on {{close}}"
       }
     },
@@ -1043,7 +1030,7 @@
       "invite": {
         "label": "Invitation",
         "name": "Inviting parent to give or refuse consent",
-        "text": "Give or refuse consent for your child’s {{campaign.name}} vaccination by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}). You need to do this by {{session.formattedClose}}.\n\nResponding will take less than 5 minutes."
+        "text": "Give or refuse consent for your child’s {{campaign.name}} vaccination by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}). You need to do this by {{session.formatted.close}}.\n\nResponding will take less than 5 minutes."
       },
       "invite-reminder": {
         "label": "Reminder",
@@ -1053,12 +1040,12 @@
       "consent-given": {
         "label": "Consent given",
         "name": "Confirmation that consent has been given",
-        "text": "You’ve given consent for {{consent.child.firstName}} to get their {{campaign.name}} vaccination at school on {{session.formattedDate}}. Please let them know what to expect."
+        "text": "You’ve given consent for {{consent.child.firstName}} to get their {{campaign.name}} vaccination at school on {{session.formatted.date}}. Please let them know what to expect."
       },
       "consent-given-child": {
         "label": "Consent given",
         "name": "Confirmation that consent has been given",
-        "text": "Your parent or guardian has agreed for you to have the {{campaign.name}} vaccination at school on {{session.formattedDate}}."
+        "text": "Your parent or guardian has agreed for you to have the {{campaign.name}} vaccination at school on {{session.formatted.date}}."
       },
       "consent-refused": {
         "label": "Consent refused",
@@ -1068,12 +1055,12 @@
       "session-reminder": {
         "label": "Session reminder",
         "name": "Reminder (to go out the day before the vaccination)",
-        "text": "{{consent.child.firstName}} will get their {{campaign.name}} vaccination at school tomorrow ({{session.formattedDate}}). Please make sure they have breakfast and encourage them to wear a short-sleeved shirt."
+        "text": "{{consent.child.firstName}} will get their {{campaign.name}} vaccination at school tomorrow ({{session.formatted.date}}). Please make sure they have breakfast and encourage them to wear a short-sleeved shirt."
       },
       "session-reminder-child": {
         "label": "Session reminder",
         "name": "Reminder (to go out the day before the vaccination)",
-        "text": "You’re due to get your {{campaign.name}} vaccination at school tomorrow ({{session.formattedDate}}). Please wear a short-sleeved shirt and make sure you eat something before the session."
+        "text": "You’re due to get your {{campaign.name}} vaccination at school tomorrow ({{session.formatted.date}}). Please wear a short-sleeved shirt and make sure you eat something before the session."
       },
       "session-outcome-vaccinated": {
         "label": "Vaccinated",
@@ -1176,7 +1163,7 @@
       "create": "%s vaccination records uploaded"
     },
     "show": {
-      "title": "Upload ({{upload.formattedCreated}})",
+      "title": "Upload ({{upload.formatted.created}})",
       "summary": "Details"
     },
     "new": {
@@ -1228,9 +1215,6 @@
       "label": "ID"
     },
     "created": {
-      "label": "Upload date"
-    },
-    "formattedCreated": {
       "label": "Uploaded on"
     },
     "created_user_uid": {
@@ -1328,7 +1312,6 @@
     "batch_id": {
       "title": "Which batch did you use?",
       "label": "Batch ID",
-      "batch": "<span class=\"app-u-monospace\">{{batch.id}}</span> (expires {{batch.formattedExpires}})",
       "default": "Default to this batch for this session"
     },
     "batch_expires": {

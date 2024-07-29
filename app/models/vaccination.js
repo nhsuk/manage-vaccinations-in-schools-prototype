@@ -7,7 +7,11 @@ import {
   convertObjectToIsoDate,
   formatDate
 } from '../utils/date.js'
-import { formatMillilitres, formatMonospace } from '../utils/string.js'
+import {
+  formatMillilitres,
+  formatMarkdown,
+  formatMonospace
+} from '../utils/string.js'
 
 export class VaccinationOutcome {
   static Vaccinated = 'Vaccinated'
@@ -209,7 +213,8 @@ export class Vaccination {
         dateStyle: 'long'
       }),
       dose: formatMillilitres(this.dose),
-      vaccine_gtin: this.vaccine?.brandWithName
+      vaccine_gtin: this.vaccine?.brandWithName,
+      notes: formatMarkdown(this.notes)
     }
   }
 

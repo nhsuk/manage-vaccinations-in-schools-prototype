@@ -36,8 +36,8 @@
       {{ __("patient.events.title") }}
     </h2>
 
-    {% for formattedDate, items in events | groupby("formattedDate") %}
-      <h3 class="nhsuk-heading-xs nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal">{{ formattedDate }}</h3>
+    {% for group, items in patient.groupedEvents %}
+      <h3 class="nhsuk-heading-xs nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal">{{ group }}</h3>
 
       {% for item in items %}
         {{ card({

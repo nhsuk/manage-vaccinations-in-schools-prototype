@@ -30,20 +30,19 @@
       {% for batch in vaccine.batches | sort(false, false, "id") %}
         {% set batchRows = batchRows | push([
           {
-            classes: "app-u-monospace",
             header: __("batch.id.label"),
-            html: batch.id
+            html: batch.formatted.id
           },
           {
             header: __("batch.created.label"),
-            html: batch.formattedCreated or "Not provided",
+            html: batch.formatted.created or "Not provided",
             attributes: {
               "data-sort": batch.created
             }
           },
           {
             header: __("batch.expires.label"),
-            html: batch.formattedExpires or "Not provided",
+            html: batch.formatted.expires or "Not provided",
             attributes: {
               "data-sort": batch.expires
             }

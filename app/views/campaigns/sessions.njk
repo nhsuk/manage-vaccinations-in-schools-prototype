@@ -35,35 +35,26 @@
       {% set sessionRows = sessionRows | push([
         {
           header: __("session.date.label"),
-          html: session.formattedDate or "Not provided",
+          text: session.formatted.date or "Not provided",
           attributes: {
             "data-sort": session.date
           }
         },
         {
           header: __("session.time.label"),
-          html: session.time or "Not provided"
+          text: session.time or "Not provided"
         },
         {
           header: __("session.location.label"),
-          html: sessionSummary(session) or "Not provided"
+          html: session.summary or "Not provided"
         },
         {
           header: __("session.consentWindow.label"),
-          html: __("session.consentWindow." + session.consentWindow.key + ".label", {
-            open: session.open | date({
-              day: "numeric",
-              month: "long"
-            }),
-            close: session.close | date({
-              day: "numeric",
-              month: "long"
-            })
-          })
+          text: session.formatted.consentWindow
         },
         {
           header: __("session.cohort.label"),
-          html: session.cohort.length or "None",
+          text: session.cohort.length or "None",
           format: "numeric"
         }
       ]) %}

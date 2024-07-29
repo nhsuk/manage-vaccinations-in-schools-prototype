@@ -33,21 +33,12 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         rows: summaryRows(reply, {
-          created: {
-            value: reply.formattedCreated
-          },
-          method: {} if reply.method,
-          decision: {
-            value: replyDecisionHtml(reply) | safe
-          },
-          refusalReason: {
-            other: reply.refusalReasonOther
-          } if reply.refusalReason,
-          refusalReasonDetails: {
-            value: reply.refusalReasonDetails | nhsukMarkdown
-          } if reply.refusalReasonDetails,
+          created: {},
+          method: {},
+          decision: {},
+          refusalReason: {},
+          refusalReasonDetails: {},
           notes: {
-            value: reply.notes | nhsukMarkdown,
             href: reply.uri + "/edit/notes"
           }
         })
@@ -60,9 +51,7 @@
       descriptionHtml: summaryList({
         rows: summaryRows(reply.parent, {
           fullName: {},
-          relationship: {
-            other: reply.parent.relationshipOther
-          },
+          relationship: {},
           hasParentalResponsibility: {},
           email: {
             href: reply.uri + "/edit/parent"
@@ -70,9 +59,7 @@
           tel: {
             href: reply.uri + "/edit/parent"
           },
-          contactPreference: {
-            other: reply.parent.contactPreferenceOther
-          },
+          contactPreference: {},
           sms: {}
         })
       })
@@ -86,18 +73,10 @@
           fullName: {},
           preferredFirstName: {},
           preferredLastName: {},
-          dob: {
-            value: reply.child.formattedDob
-          },
-          formattedAddress: {
-            value: reply.child.formattedAddress | nl2br
-          },
-          gpSurgery: {
-            value: reply.child.formattedGpSurgery
-          },
-          urn: {
-            value: data.schools[reply.child.urn].name
-          }
+          dob: {},
+          address: {},
+          gpSurgery: {},
+          urn: {}
         })
       })
     }) if reply.child }}

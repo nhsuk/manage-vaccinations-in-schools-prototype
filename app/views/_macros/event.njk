@@ -5,7 +5,11 @@
   </blockquote>
   {%- endif %}
   <p class="nhsuk-body-s nhsuk-u-margin-0 nhsuk-u-secondary-text-color">
-    {{ item.formattedDateTime }}
+    {{ item.date | date({
+      dateStyle: 'long',
+      timeStyle: 'short',
+      hourCycle: 'h12'
+    }) }}
     {% if item.user_uid %}&middot;
       {{ link(users[item.user_uid].uri, users[item.user_uid].fullName) | safe }}
     {% endif %}

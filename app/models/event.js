@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import { formatDate } from '../utils/date.js'
 
 export class EventType {
   static Select = 'Select'
@@ -17,7 +18,6 @@ export class EventType {
  * @property {string} name - Name
  * @property {string} [note] - Notes
  * @property {string} [user_uid] - User UUID
- * @function formattedDate - Formatted date
  * @function ns - Namespace
  * @function uri - URL
  */
@@ -33,18 +33,12 @@ export class Event {
     this.info_ = options.info_
   }
 
-  get formattedDate() {
-    return new Intl.DateTimeFormat('en-GB', {
-      dateStyle: 'long'
-    }).format(new Date(this.date))
-  }
-
-  get formattedDateTime() {
-    return new Intl.DateTimeFormat('en-GB', {
-      dateStyle: 'long',
-      timeStyle: 'short',
-      hourCycle: 'h12'
-    }).format(new Date(this.date))
+  get formatted() {
+    return {
+      date: formatDate(this.date, {
+        dateStyle: 'long'
+      })
+    }
   }
 
   get ns() {

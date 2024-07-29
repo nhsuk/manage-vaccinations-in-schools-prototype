@@ -1,3 +1,5 @@
+import prototypeFilters from '@x-govuk/govuk-prototype-filters'
+
 /**
  * kebab-case to PascalCase
  * @param {string} string - String to convert
@@ -28,6 +30,44 @@ export function stringToBoolean(value) {
 }
 
 /**
+ * Format link
+ * @param {string} href - Hyperlink reference
+ * @param {string} text - Hyperlink text
+ * @returns {string} HTML anchor decorated with nhsuk-link class
+ */
+export function formatLink(href, text) {
+  return `<a class="nhsuk-link" href="${href}">${text}</a>`
+}
+
+/**
+ * Format array as HTML list
+ * @param {Array} array - Array
+ * @returns {string|undefined} HTML unordered list with nhsuk-* classes
+ */
+export function formatList(array) {
+  if (!Array.isArray(array)) return
+
+  const list = array.map((item) => `- ${item}`)
+  return formatMarkdown(list.join('\n'))
+}
+
+/**
+ * Format markdown
+ * @param {string} string - Markdown
+ * @returns {string|undefined} HTML decorated with nhsuk-* classes
+ */
+export function formatMarkdown(string) {
+  if (!string) return
+
+  const markdown = prototypeFilters.govukMarkdown(string, {
+    headingsStartWith: 'l'
+  })
+  const nhsukMarkdown = markdown.replaceAll('govuk-', 'nhsuk-')
+
+  return nhsukMarkdown
+}
+
+/**
  * Format millilitres
  * @param {string|number} string - Amount
  * @returns {string|undefined} Formatted string
@@ -39,6 +79,17 @@ export function formatMillilitres(string) {
 }
 
 /**
+ * Format highlight
+ * @param {string|number} string - String
+ * @returns {string|undefined} Formatted HTML
+ */
+export function formatHighlight(string) {
+  if (!string) return
+
+  return `<mark class="app-highlight">${string}</mark>`
+}
+
+/**
  * Format monospaced
  * @param {string|number} string - String
  * @returns {string|undefined} Formatted HTML
@@ -47,4 +98,16 @@ export function formatMonospace(string) {
   if (!string) return
 
   return `<span class="app-u-monospace">${string}</span>`
+}
+
+/**
+ * Append other value, if one is provided
+ * @param {string} other - Other option name (typically ‘Other’)
+ * @param {string} string - Other value
+ * @returns {string|undefined} Full other value
+ */
+export function formatOther(other, string) {
+  if (!other) return
+
+  return other ? [string, other].join(' – ') : string
 }

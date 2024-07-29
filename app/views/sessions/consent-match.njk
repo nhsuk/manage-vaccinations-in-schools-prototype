@@ -20,9 +20,7 @@
       rows: summaryRows(consent.child, {
         fullAndPreferredNames: {},
         dobWithAge: {},
-        formattedAddress: {
-          value: consent.child.formattedAddress | nl2br
-        }
+        address: {}
       })
     })
   }) }}
@@ -40,7 +38,7 @@
       },
       {
         header: __("child.dob.label"),
-        text: patient.record.formattedDob or "Not provided",
+        text: patient.record.formatted.dob or "Not provided",
         attributes: {
           "data-filter": patient.record.dob | date({ dateStyle: "short" }),
           "data-sort": patient.record.dob

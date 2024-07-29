@@ -22,13 +22,12 @@
         }
       },
       {
-        classes: "app-u-monospace",
         header: __("record.nhsn.label"),
-        html: record.formattedNhsNumber or "Not provided"
+        html: record.formatted.nhsn or "Not provided"
       },
       {
         header: __("record.dob.label"),
-        html: record.formattedDob or "Not provided",
+        html: record.formatted.dob or "Not provided",
         attributes: {
           "data-sort": record.dob
         }
