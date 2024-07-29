@@ -29,15 +29,12 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         rows: summaryRows(record, {
-          nhsn: {
-            classes: "app-u-monospace",
-            value: record.formattedNhsNumber
-          },
+          nhsn: {},
           fullName: {},
           dobWithAge: {},
           sex: {},
           postalCode: {},
-          urn: { value: data.schools[record.urn].name }
+          urn: {}
         })
       })
     }) }}

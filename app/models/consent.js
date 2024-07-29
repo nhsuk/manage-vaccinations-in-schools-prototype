@@ -1,4 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import { formatDate } from '../utils/date.js'
+import { formatMarkdown, formatOther } from '../utils/string.js'
 import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
 import { Child } from './child.js'
 import { Parent } from './parent.js'
@@ -18,7 +20,6 @@ import { ReplyDecision, ReplyMethod, ReplyRefusal } from './reply.js'
  * @property {string} [refusalReasonDetails] - Refusal reason details
  * @property {string} [patient_nhsn] - Patient NHS number
  * @property {string} session_id - Session ID
- * @function formattedCreated - Formatted created date
  * @function fullName - Full name of respondent
  * @function relationship - Relation of respondent to child
  * @function ns - Namespace
@@ -31,11 +32,18 @@ export class Consent {
     this.child = options?.child && new Child(options.child)
     this.parent = options?.parent && new Parent(options.parent)
     this.decision = options?.decision || ''
+    this.given = this.decision === ReplyDecision.Given
     this.method = options?.method || ReplyMethod.Website
     this.healthAnswers = options?.healthAnswers
-    this.refusalReason = options?.refusalReason
-    this.refusalReasonOther = options?.refusalReasonOther
-    this.refusalReasonDetails = options?.refusalReasonDetails
+    this.refusalReason = !this.given ? options?.refusalReason || '' : undefined
+    this.refusalReasonOther =
+      this.refusalReason === ReplyRefusal.Other
+        ? options?.refusalReasonOther || ''
+        : undefined
+    this.refusalReasonDetails =
+      !this.given && this.refusalReason !== ReplyRefusal.Personal
+        ? options?.refusalReasonDetails || ''
+        : undefined
     this.patient_nhsn = options?.patient_nhsn
     this.session_id = options.session_id
   }
@@ -88,14 +96,16 @@ export class Consent {
     })
   }
 
-  get formattedCreated() {
-    return this.created
-      ? new Intl.DateTimeFormat('en-GB', {
-          dateStyle: 'long',
-          timeStyle: 'short',
-          hourCycle: 'h12'
-        }).format(new Date(this.created))
-      : false
+  get formatted() {
+    return {
+      created: formatDate(this.created, {
+        dateStyle: 'long',
+        timeStyle: 'short',
+        hourCycle: 'h12'
+      }),
+      refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
+      refusalReasonDetails: formatMarkdown(this.refusalReasonDetails)
+    }
   }
 
   get ns() {

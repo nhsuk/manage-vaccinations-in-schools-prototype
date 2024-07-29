@@ -16,21 +16,17 @@
     descriptionHtml: summaryList({
       rows: summaryRows(reply, {
         method: {
-          value: reply.method,
           href: reply.uri + "/new/method"
-        } if reply.method,
+        },
         decision: {
-          value: reply.decision,
           href: reply.uri + "/new/decision"
         },
         refusalReason: {
-          other: reply.refusalReasonOther if reply.refusalReason == ReplyRefusal.Other,
           href: reply.uri + "/new/refusal-reason"
-        } if reply.refusalReason,
+        },
         refusalReasonDetails: {
-          value: reply.refusalReasonDetails | nhsukMarkdown,
           href: reply.uri + "/new/refusal-reason-details"
-        } if refusalReasonHasDetails
+        }
       })
     })
   }) }}
@@ -43,15 +39,9 @@
         fullName: {},
         preferredFirstName: {},
         preferredLastName: {},
-        dob: {
-          value: reply.child.formattedDob
-        },
-        gpSurgery: {
-          value: reply.child.formattedGpSurgery
-        },
-        urn: {
-          value: data.schools[reply.child.urn].name
-        }
+        dob: {},
+        gpSurgery: {},
+        urn: {}
       })
     })
   }) if reply.child }}
@@ -65,12 +55,11 @@
           href: reply.uri + "/new/parent"
         },
         relationship: {
-          other: reply.parent.relationshipOther,
           href: reply.uri + "/new/parent"
         },
         hasParentalResponsibility: {
           href: reply.uri + "/new/parent"
-        } if reply.parent.relationship == ParentalRelationship.Other,
+        },
         notify: {
           href: reply.uri + "/new/notify-parent"
         },

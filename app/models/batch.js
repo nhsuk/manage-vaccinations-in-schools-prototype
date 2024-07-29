@@ -3,8 +3,10 @@ import vaccines from '../datasets/vaccines.js'
 import {
   addDays,
   convertIsoDateToObject,
-  convertObjectToIsoDate
+  convertObjectToIsoDate,
+  formatDate
 } from '../utils/date.js'
+import { formatMonospace } from '../utils/string.js'
 
 /**
  * @class Batch
@@ -13,8 +15,6 @@ import {
  * @property {string} expires - Expiry date
  * @property {string} vaccine_gtin - Vaccine GTIN
  * @function vaccine - Vaccine
- * @function formattedCreated - Formatted created date
- * @function formattedExpires - Formatted expiry date
  * @function ns - Namespace
  * @function uri - URL
  */
@@ -55,24 +55,17 @@ export class Batch {
     }
   }
 
-  get formattedCreated() {
-    return this.created
-      ? new Intl.DateTimeFormat('en-GB', {
-          dateStyle: 'long'
-        }).format(new Date(this.created))
-      : false
-  }
-
-  get formattedExpires() {
-    return this.expires
-      ? new Intl.DateTimeFormat('en-GB', {
-          dateStyle: 'long'
-        }).format(new Date(this.expires))
-      : false
-  }
-
   get vaccine() {
     return vaccines[this.vaccine_gtin]
+  }
+
+  get formatted() {
+    const created = formatDate(this.created, { dateStyle: 'long' })
+    const expires = formatDate(this.expires, { dateStyle: 'long' })
+    const id = formatMonospace(this.id)
+    const name = `${id} (${expires})`
+
+    return { created, expires, id, name }
   }
 
   get ns() {

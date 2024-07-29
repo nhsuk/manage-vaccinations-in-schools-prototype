@@ -39,10 +39,10 @@
       {% set uploadRows = uploadRows | push([
         {
           header: __("upload.created.label"),
-          html: link(upload.uri, upload.formattedCreated),
+          html: link(upload.uri, upload.formatted.created),
           attributes: {
             "data-col": "created",
-            "data-sort": upload.formattedCreated
+            "data-sort": upload.created
           }
         },
         {

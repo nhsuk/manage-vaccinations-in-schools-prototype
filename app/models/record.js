@@ -3,6 +3,8 @@ import firstNames from '../datasets/first-names.js'
 import gpSurgeries from '../datasets/gp-surgeries.js'
 import schools from '../datasets/schools.js'
 import { Parent } from './parent.js'
+import { formatDate } from '../utils/date.js'
+import { formatMonospace } from '../utils/string.js'
 
 const primarySchools = Object.values(schools).filter(
   (school) => school.phase === 'Primary'
@@ -38,9 +40,6 @@ export class GPRegistered {
  * @function age - Age in years
  * @function dobWithAge - Date of birth with age in brackets
  * @function fullName - Get full name
- * @function formattedDob - Formatted date of birth
- * @function formattedAddress - Get full address, with line breaks
- * @function formattedNhsNumber - Get formatted NHS number
  * @function ns - Namespace
  * @function uri - URL
  */
@@ -111,41 +110,35 @@ export class Record {
     return Math.floor((new Date() - new Date(this.dob).getTime()) / 3.15576e10)
   }
 
-  get formattedDob() {
-    return new Intl.DateTimeFormat('en-GB', {
-      dateStyle: 'long'
-    }).format(new Date(this.dob))
-  }
-
   get dobWithAge() {
-    return `${this.formattedDob} (aged ${this.age})`
+    return `${this.formatted.dob} (aged ${this.age})`
   }
 
   get fullName() {
     return [this.firstName, this.lastName].join(' ')
   }
 
-  get formattedNhsNumber() {
-    const numberArray = this.nhsn.split('')
-    numberArray.splice(3, 0, ' ')
-    numberArray.splice(8, 0, ' ')
-    return numberArray.join('')
-  }
-
-  get formattedAddress() {
-    return Object.values(this.address).join('\n')
-  }
-
   get postalCode() {
     return this.address.postalCode
   }
 
-  get formattedGpSurgery() {
-    if (this.gpRegistered === GPRegistered.Yes) {
-      return this.gpSurgery
-    }
+  get formatted() {
+    const nhsn = this.nhsn
+      .toString()
+      .replace(/(\d{3})(\d{4})(\d{3})/, '$1 $2 $3')
 
-    return this.gpRegistered
+    return {
+      nhsn: formatMonospace(nhsn),
+      dob: formatDate(this.dob, {
+        dateStyle: 'long'
+      }),
+      address: Object.values(this.address).join('<br>'),
+      gpSurgery:
+        this.gpRegistered === GPRegistered.Yes
+          ? this.gpSurgery
+          : this.gpRegistered,
+      urn: schools[this.urn].name
+    }
   }
 
   get ns() {

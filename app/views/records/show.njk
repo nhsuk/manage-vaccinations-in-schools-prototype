@@ -13,16 +13,13 @@
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(record, {
-        nhsn: {
-          classes: "app-u-monospace",
-          value: record.formattedNhsNumber
-        },
+        nhsn: {},
         fullName: {},
-        dob: { value: record.dobWithAge },
+        dob: {},
         sex: {},
-        address: { value: record.formattedAddress | nl2br },
-        gpSurgery: { value: record.formattedGpSurgery },
-        urn: { value: data.schools[record.urn].name }
+        address: {},
+        gpSurgery: {},
+        urn: {}
       })
     })
   }) }}
@@ -33,9 +30,7 @@
     descriptionHtml: summaryList({
       rows: summaryRows(record.parent, {
         fullName: {},
-        relationship: {
-          other: record.parent.relationshipOther
-        },
+        relationship: {},
         tel: {}
       })
     })

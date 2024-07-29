@@ -76,21 +76,13 @@ export const patientController = {
 
   events(request, response) {
     const { activity } = request.app.locals
-    const { data } = request.session
-    const { patient, session } = response.locals
+    const { session } = response.locals
 
     response.render('patient/events', {
       activity:
         activity || session.status !== SessionStatus.Active
           ? 'consent'
-          : 'capture',
-      events: Object.values(patient.events)
-        .map((event) => ({
-          ...new Event(event),
-          ...{ formattedDate: new Event(event).formattedDate },
-          ...{ formattedDateTime: new Event(event).formattedDateTime }
-        }))
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
+          : 'capture'
     })
   }
 }

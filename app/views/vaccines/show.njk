@@ -16,22 +16,14 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         rows: summaryRows(vaccine, {
-          gtin: {
-            classes: "app-u-monospace"
-          },
+          gtin: {},
           name: {},
           brand: {},
           manufacturer: {},
           method: {},
-          dose: {
-            value: vaccine.formattedDose
-          },
-          healthQuestions: {
-            value: vaccine.healthQuestions | nhsukList
-          },
-          preScreenQuestions: {
-            value: vaccine.preScreenQuestions | nhsukList
-          }
+          dose: {},
+          healthQuestions: {},
+          preScreenQuestions: {}
         })
       })
     }) }}

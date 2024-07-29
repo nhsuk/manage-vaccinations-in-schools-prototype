@@ -1,8 +1,11 @@
+import schools from '../datasets/schools.js'
 import { GPRegistered } from './record.js'
 import {
   convertIsoDateToObject,
-  convertObjectToIsoDate
+  convertObjectToIsoDate,
+  formatDate
 } from '../utils/date.js'
+import { formatMonospace } from '../utils/string.js'
 
 /**
  * @class Child
@@ -12,7 +15,7 @@ import {
  * @property {string} [preferredFirstName] - Preferred first name
  * @property {string} [preferredLastName] - Preferred last name
  * @property {string} dob - Date of birth
- * @property {object} [address] - Address
+ * @property {object} address - Address
  * @property {GPRegistered} [gpRegistered] - Registered with a GP
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} [urn] - School
@@ -73,20 +76,12 @@ export class Child {
     }
   }
 
-  get formattedDob() {
-    if (!this.dob) return ''
-
-    return new Intl.DateTimeFormat('en-GB', {
-      dateStyle: 'long'
-    }).format(new Date(this.dob))
-  }
-
   get age() {
     return Math.floor((new Date() - new Date(this.dob).getTime()) / 3.15576e10)
   }
 
   get dobWithAge() {
-    return `${this.formattedDob} (aged ${this.age})`
+    return `${this.formatted.dob} (aged ${this.age})`
   }
 
   get fullName() {
@@ -112,20 +107,28 @@ export class Child {
       : this.fullName
   }
 
-  get formattedAddress() {
-    if (!this.address) return
+  get formatted() {
+    const nhsn =
+      this.nhsn &&
+      this.nhsn.toString().replace(/(\d{3})(\d{4})(\d{3})/, '$1 $2 $3')
 
-    if (Object.values(this.address).every((value) => value === '')) return ''
+    const address =
+      this.address && Object.values(this.address).every((value) => value !== '')
+        ? Object.values(this.address).join('<br>')
+        : ''
 
-    return Object.values(this.address).join('\n')
-  }
-
-  get formattedGpSurgery() {
-    if (!this.gpRegistered) return
-
-    return this.gpRegistered === GPRegistered.Yes
-      ? this.gpSurgery
-      : this.gpRegistered
+    return {
+      nhsn: formatMonospace(nhsn),
+      dob: formatDate(this.dob, {
+        dateStyle: 'long'
+      }),
+      address,
+      gpSurgery:
+        this.gpRegistered === GPRegistered.Yes
+          ? this.gpSurgery
+          : this.gpRegistered,
+      urn: schools[this.urn]?.name
+    }
   }
 
   get ns() {

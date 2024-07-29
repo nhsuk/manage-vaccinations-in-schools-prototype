@@ -1,4 +1,4 @@
-Your local health team are coming to {{ session.location.name }} on {{ session.formattedDate }} to give {% if campaign.type == "flu" %}
+Your local health team are coming to {{ session.location.name }} on {{ session.formatted.date }} to give {% if campaign.type == "flu" %}
 this year’s flu vaccine{% elif campaign.type == "hpv" %}the human papillomavirus (HPV) vaccine to pupils in Year 8{% elif campaign.type == "3-in-1-men-acwy" %}the 3-in-1 teenage booster and MenACWY vaccines{% endif %}.
 
 ## What the vaccine is for
@@ -32,7 +32,7 @@ Both vaccines are offered to all young people aged 13 to 15 (in school Years 9 a
 
 ## Please give or refuse consent
 
-If you want your child to get this vaccine at school, you need to give consent by {{ session.formattedClose }}.
+If you want your child to get this vaccine at school, you need to give consent by {{ session.formatted.close }}.
 
 [Give or refuse consent for the {{ campaign.name | replace("Flu", "flu") }} vaccination](/consents/{{ session.id }})
 

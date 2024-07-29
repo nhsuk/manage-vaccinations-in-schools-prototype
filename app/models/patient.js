@@ -95,19 +95,22 @@ export class Patient {
 
   #nhsn = '999#######'.replace(/#+/g, (m) => faker.string.numeric(m.length))
 
-  get formattedNhsNumber() {
-    const numberArray = this.nhsn.split('')
-    numberArray.splice(3, 0, ' ')
-    numberArray.splice(8, 0, ' ')
-    return numberArray.join('')
-  }
-
   get firstName() {
     return this.record.firstName
   }
 
   get fullName() {
     return [this.record.firstName, this.record.lastName].join(' ')
+  }
+
+  get groupedEvents() {
+    const events = this.events.sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    )
+
+    return Object.groupBy(events, (event) => {
+      return new Event(event).formatted.date
+    })
   }
 
   get consentHealthAnswers() {

@@ -18,14 +18,11 @@
           href: consent.uri + "/edit/decision"
         },
         refusalReason: {
-          value: consent.refusalReason,
-          other: consent.refusalReasonOther if consent.refusalReason == ReplyRefusal.Other,
           href: consent.uri + "/edit/refusal-reason"
-        } if consent.refusalReason,
+        },
         refusalReasonDetails: {
-          value: consent.refusalReasonDetails | nhsukMarkdown,
           href: consent.uri + "/edit/refusal-reason-details"
-        } if refusalReasonHasDetails
+        }
       })
     })
   }) }}
@@ -41,16 +38,16 @@
         preferredName: {
           href: consent.uri + "/edit/child"
         },
-        formattedDob: {
+        dob: {
           href: consent.uri + "/edit/dob"
         },
-        formattedAddress: {
+        address: {
           href: consent.uri + "/edit/address"
-        } if consent.decision != ReplyDecision.Refused,
-        formattedGpSurgery: {
+        } if consent.given,
+        gpSurgery: {
           changeLabel: "GP surgery",
           href: consent.uri + "/edit/gp-registered"
-        } if consent.decision != ReplyDecision.Refused,
+        } if consent.given,
         urn: {
           value: session.location.name,
           href: consent.uri + "/edit/school"
@@ -68,12 +65,11 @@
           href: consent.uri + "/edit/parent"
         },
         relationship: {
-          other: conssent.parent.relationshipOther,
           href: consent.uri + "/edit/parent"
         },
         hasParentalResponsibility: {
           href: consent.uri + "/edit/parent"
-        } if consent.parent.relationship == ParentalRelationship.Other,
+        },
         email: {
           href: consent.uri + "/edit/parent"
         },
@@ -84,7 +80,6 @@
           href: consent.uri + "/edit/parent"
         },
         contactPreference: {
-          other: consent.parent.contactPreferenceOther,
           href: consent.uri + "/edit/contact-preference"
         }
       })
@@ -101,5 +96,5 @@
         consent.uri + "/edit/health-question-{{key}}"
       )
     })
-  }) if consent.decision != ReplyDecision.Refused }}
+  }) if consent.given }}
 {% endblock %}

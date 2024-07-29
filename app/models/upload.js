@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import { formatDate } from '../utils/date.js'
 
 /**
  * @class National Immunisation and Vaccination System (NIVS) upload
@@ -30,12 +31,14 @@ export class Upload {
     })
   }
 
-  get formattedCreated() {
-    return new Intl.DateTimeFormat('en-GB', {
-      dateStyle: 'long',
-      timeStyle: 'short',
-      hourCycle: 'h12'
-    }).format(new Date(this.created))
+  get formatted() {
+    return {
+      created: formatDate(this.created, {
+        dateStyle: 'long',
+        timeStyle: 'short',
+        hourCycle: 'h12'
+      })
+    }
   }
 
   get ns() {

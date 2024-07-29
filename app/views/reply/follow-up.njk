@@ -27,18 +27,11 @@
         },
         contactPreference: {
           label: __("parent.contactPreference.label"),
-          value: reply.parent.contactPreference,
-          other: reply.parent.contactPreferenceOther
+          value: reply.parent.contactPreference
         },
-        refusalReason: {
-          other: reply.refusalReasonOther
-        } if reply.refusalReason,
-        refusalReasonDetails: {
-          value: reply.refusalReasonDetails | nhsukMarkdown
-        } if reply.refusalReasonDetails,
-        notes: {
-          value: reply.notes | nhsukMarkdown
-        }
+        refusalReason: {},
+        refusalReasonDetails: {},
+        notes: {}
       })
     })
   }) }}

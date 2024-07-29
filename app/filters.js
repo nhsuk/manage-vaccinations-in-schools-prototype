@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import { formatDate } from './utils/date.js'
+import { formatHighlight, formatList, formatMarkdown } from './utils/string.js'
 
 /**
  * Prototype specific filters for use in Nunjucks templates.
@@ -62,7 +62,7 @@ export default (env) => {
    */
   filters.highlightDifference = (a, b) => {
     if (a !== b) {
-      return `<mark class="app-highlight">${a}</mark>`
+      return env.filters.safe(formatHighlight(a))
     }
 
     return a
@@ -71,14 +71,10 @@ export default (env) => {
   /**
    * Format markdown
    * @param {string} string - Markdown
-   * @returns {string|undefined} HTML decorated with nhsuk-* typography classes
+   * @returns {string} HTML decorated with nhsuk-* typography classes
    */
   filters.nhsukMarkdown = (string) => {
-    if (!string) return
-
-    const markdown = prototypeFilters.govukMarkdown(string)
-    const nhsukMarkdown = markdown.replaceAll('govuk-', 'nhsuk-')
-    return env.filters.safe(nhsukMarkdown)
+    return env.filters.safe(formatMarkdown(string))
   }
 
   /**
@@ -87,8 +83,7 @@ export default (env) => {
    * @returns {string} HTML unordered list with nhsuk-* typography classes
    */
   filters.nhsukList = function (array) {
-    const list = array.map((item) => `- ${item}`)
-    return filters.nhsukMarkdown(list.join('\n'))
+    return env.filters.safe(formatList(array))
   }
 
   /**

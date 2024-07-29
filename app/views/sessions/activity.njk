@@ -85,7 +85,7 @@
       },
       {
         header: __("record.dob.label"),
-        text: patient.record.formattedDob or "Not provided",
+        text: patient.record.formatted.dob or "Not provided",
         attributes: {
           "data-filter": patient.record.dob | date({ dateStyle: "short" }),
           "data-sort": patient.record.dob

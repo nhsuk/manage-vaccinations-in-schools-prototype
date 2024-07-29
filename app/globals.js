@@ -12,7 +12,7 @@ import { User } from './models/user.js'
 import { HealthQuestion } from './models/vaccine.js'
 import { Vaccination } from './models/vaccination.js'
 import { getEnumKeyAndValue } from './utils/enum.js'
-import { pascalToKebabCase } from './utils/string.js'
+import { formatLink, pascalToKebabCase } from './utils/string.js'
 
 /**
  * Prototype specific global functions for use in Nunjucks templates.
@@ -121,7 +121,7 @@ export default () => {
    * @returns {string} HTML anchor decorated with nhsuk-link class
    */
   globals.link = function (href, text) {
-    return `<a class="nhsuk-link" href="${href}">${text}</a>`
+    return formatLink(href, text)
   }
 
   /**
@@ -217,21 +217,6 @@ export default () => {
   }
 
   /**
-   * Get HTML to display a previous reply decision as invalid
-   * @param {import('./models/reply.js').Reply} reply - Reply
-   * @returns {string} HTML string
-   */
-  globals.replyDecisionHtml = function (reply) {
-    if (reply.invalid) {
-      return `<s>${reply.decision}</s><br>Invalid`
-    } else if (reply.confirmed) {
-      return `${reply.decision}<br><b>Confirmed</b>`
-    }
-
-    return reply.decision
-  }
-
-  /**
    * Show relevant pre-screening questions based on sex of the patient
    * @param {import('./models/campaign.js').Campaign} campaign - Campaign
    * @param {import('./models/patient.js').Patient} patient - Patient
@@ -270,20 +255,6 @@ export default () => {
   }
 
   /**
-   * Session summary
-   * @param {object} session - Session details
-   * @returns {string} HTML paragraph
-   */
-  globals.sessionSummary = function (session) {
-    return `<p class="nhsuk-u-margin-bottom-0 nhsuk-u-secondary-text-color">
-      ${globals.link(session.uri, session.location.name)}</br>
-      ${session.location.addressLine1},
-      ${session.location.addressLevel1},
-      ${session.location.postalCode}
-    </p>`
-  }
-
-  /**
    * Get summaryList `rows` parameters
    * @param {object} data - Data
    * @param {object} rows - Row configuration
@@ -304,10 +275,6 @@ export default () => {
 
       // Allow value to be explicitly set
       let value = rows[key]?.value || formattedValue
-
-      // Append other value, if one is provided
-      let other = rows[key].other
-      value = other ? [value, other].join(' – ') : value
 
       // Don’t show row for conditional answer
       if (typeof value === 'undefined') {

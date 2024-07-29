@@ -56,9 +56,7 @@
             } if vaccination.created_user_uid,
             location: {},
             protocol: {},
-            notes: {
-              value: vaccination.notes | nhsukMarkdown
-            }
+            notes: {}
           })
         }) }}
 
@@ -89,15 +87,12 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         rows: summaryRows(patient.record, {
-          nhsn: {
-            classes: "app-u-monospace",
-            value: patient.record.formattedNhsNumber
-          },
+          nhsn: {},
           fullName: {},
           preferredNames: { value: patient.preferredNames },
           dob: { value: patient.record.dobWithAge },
           sex: {},
-          address: { value: patient.record.formattedAddress | nl2br },
+          address: {},
           gpSurgery: {}
         })
       })
@@ -142,7 +137,7 @@
             {
               classes: "app-table__cell-status--" + replyModifier,
               header: __("reply.created.label"),
-              html: reply.formattedCreated or "Not provided",
+              html: reply.formatted.created or "Not provided",
               attributes: {
                 "data-sort": reply.created
               }
@@ -150,7 +145,7 @@
             {
               classes: "app-table__cell-status--" + replyModifier,
               header: __("reply.decision.label"),
-              text: replyDecisionHtml(reply) | safe
+              html: reply.formatted.decision
             }
           ]) %}
         {% endfor %}

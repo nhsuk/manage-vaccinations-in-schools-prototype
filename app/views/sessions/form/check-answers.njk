@@ -14,7 +14,6 @@
     descriptionHtml: summaryList({
       rows: summaryRows(session, {
         format: {
-          value: session.format,
           href: session.uri + "/new/format"
         },
         campaign_uuid: {
@@ -30,15 +29,12 @@
           href: session.uri + "/edit/cohort"
         },
         date: {
-          value: session.date | date({ dateStyle: "full" }),
           href: session.uri + "/new/date"
         },
         time: {
-          value: session.time,
           href: session.uri + "/new/date"
         },
         open: {
-          value: session.open | date({ dateStyle: "full" }),
           href: session.uri + "/new/schedule"
         },
         reminder: {
