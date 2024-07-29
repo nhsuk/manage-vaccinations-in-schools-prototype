@@ -19,17 +19,19 @@
         name: {
           href: campaign.uri + "/edit/details"
         },
+        type: {
+          href: campaign.uri + "/edit/details"
+        },
         year: {
           href: campaign.uri + "/edit/details"
         },
-        formattedStart: {
+        start: {
           href: campaign.uri + "/edit/period"
         },
-        formattedEnd: {
+        end: {
           href: campaign.uri + "/edit/period"
         },
         vaccines: {
-          value: campaign.formattedVaccines | join("\n") | nl2br,
           href: campaign.uri + "/edit/vaccines"
         }
       })

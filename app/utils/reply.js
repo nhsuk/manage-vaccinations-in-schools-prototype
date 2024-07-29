@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { faker } from '@faker-js/faker'
 import healthConditions from '../datasets/health-conditions.js'
+import { CampaignType } from '../models/campaign.js'
 import { Child } from '../models/child.js'
 import { ParentalRelationship } from '../models/parent.js'
 import { ConsentOutcome } from '../models/patient.js'
@@ -189,13 +190,13 @@ export const getPreferredNames = (replies) => {
 
 /**
  * Get valid refusal reasons for a campaign
- * @param {string} type - Campaign type
+ * @param {CampaignType} type - Campaign type
  * @returns {string} Refusal reason
  */
 export const getRefusalReason = (type) => {
   // Gelatine content only a valid refusal reason for flu vaccine
   const refusalReasons = Object.values(ReplyRefusal).filter((value) =>
-    type !== 'flu' ? value !== ReplyRefusal.Gelatine : value
+    type !== CampaignType.FLU ? value !== ReplyRefusal.Gelatine : value
   )
 
   return faker.helpers.arrayElement(refusalReasons)

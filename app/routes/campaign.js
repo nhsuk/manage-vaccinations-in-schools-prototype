@@ -6,20 +6,20 @@ const router = express.Router({ strict: true })
 router.get('/', campaignController.list)
 
 router.get('/new', campaignController.new)
-router.post('/:uuid/?:form(new)/check-answers', campaignController.update)
+router.post('/:uid/?:form(new)/check-answers', campaignController.update)
 
-router.all('/:uuid*', campaignController.read)
+router.all('/:uid*', campaignController.read)
 
-router.get('/:uuid', campaignController.show)
-router.get('/:uuid/sessions', campaignController.sessions)
-router.get('/:uuid/uploads', campaignController.uploads)
-router.get('/:uuid/vaccinations', campaignController.vaccinations)
+router.get('/:uid', campaignController.show)
+router.get('/:uid/sessions', campaignController.sessions)
+router.get('/:uid/uploads', campaignController.uploads)
+router.get('/:uid/vaccinations', campaignController.vaccinations)
 
-router.get('/:uuid/?:form(edit)', campaignController.edit)
-router.post('/:uuid/?:form(edit)', campaignController.update)
+router.get('/:uid/?:form(edit)', campaignController.edit)
+router.post('/:uid/?:form(edit)', campaignController.update)
 
-router.all('/:uuid/?:form(new|edit)/:view', campaignController.readForm)
-router.get('/:uuid/?:form(new|edit)/:view', campaignController.showForm)
-router.post('/:uuid/?:form(new|edit)/:view', campaignController.updateForm)
+router.all('/:uid/?:form(new|edit)/:view', campaignController.readForm)
+router.get('/:uid/?:form(new|edit)/:view', campaignController.showForm)
+router.post('/:uid/?:form(new|edit)/:view', campaignController.updateForm)
 
 export const campaignRoutes = router

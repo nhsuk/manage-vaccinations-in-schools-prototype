@@ -67,8 +67,7 @@ export const consentController = {
 
     const session = new Session(data.sessions[id])
     const campaign =
-      session.campaign_uuid &&
-      new Campaign(data.campaigns[session.campaign_uuid])
+      session.campaign_uid && new Campaign(data.campaigns[session.campaign_uid])
 
     request.app.locals.campaign = campaign
     request.app.locals.session = session

@@ -63,7 +63,7 @@ export const registrationController = {
         location: session.location.name,
         outcome: VaccinationOutcome.AbsentSession,
         patient_nhsn: patient.nhsn,
-        campaign_uuid: campaign.uuid,
+        campaign_uid: campaign.uid,
         session_id: session.id,
         ...(data.token && { created_user_uid: data.token?.uid })
       })

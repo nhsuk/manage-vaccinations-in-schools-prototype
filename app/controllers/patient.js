@@ -1,4 +1,4 @@
-import { Campaign } from '../models/campaign.js'
+import { Campaign, CampaignType } from '../models/campaign.js'
 import { Event } from '../models/event.js'
 import {
   CaptureOutcome,
@@ -19,7 +19,7 @@ export const patientController = {
     const patient = new Patient(data.patients[nhsn])
     const replies = Object.values(patient.replies)
     const session = new Session(data.sessions[id])
-    const campaign = new Campaign(data.campaigns[session.campaign_uuid])
+    const campaign = new Campaign(data.campaigns[session.campaign_uid])
 
     response.locals.patient = patient
     response.locals.replies = replies.map((reply) => new Reply(reply))
@@ -41,7 +41,7 @@ export const patientController = {
         patient.consent?.value !== ConsentOutcome.Given &&
         patient.outcome?.value !== PatientOutcome.Vaccinated,
       showGillick:
-        campaign.type !== 'flu' &&
+        campaign.type !== CampaignType.FLU &&
         session.status === SessionStatus.Active &&
         patient.consent?.value !== ConsentOutcome.Given,
       editReplies:

@@ -4,7 +4,7 @@ If you want your child to get the {{ campaign.name | replace("Flu", "flu") }} va
 
 If you’ve already responded to the consent request, you can ignore this message.
 
-{% if campaign.type == "flu" %}
+{% if campaign.type == CampaignType.FLU %}
 ## About the flu vaccine
 
 The vaccination is a quick and painless spray up the nose. Even if your child had the vaccine last year, the type of flu can vary each winter, so we recommend they have it again this year.
@@ -13,7 +13,7 @@ The nasal spray contains gelatine. If your child does not use gelatine products,
 
 [Find out more about the flu vaccine on NHS.UK](https://www.nhs.uk/conditions/vaccinations/child-flu-vaccine/)
 
-{% elif campaign.type == "hpv" %}
+{% elif campaign.type == CampaignType.HPV %}
 ## What the vaccine is for
 
 The HPV vaccine helps protect against cancers caused by HPV, including:
@@ -36,7 +36,7 @@ The HPV vaccine works best if it’s given before young people become sexually a
 
 Responding will take less than 5 minutes. If you do not give consent, it’s still important for you to respond.
 
-{% if campaign.type != "flu" %}
+{% if campaign.type != CampaignType.FLU %}
 ## Talk to your child about what they want
 
 We suggest you talk to your child about the vaccine before you respond to us.

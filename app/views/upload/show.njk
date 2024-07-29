@@ -8,11 +8,11 @@
       text: __("campaign.list.title"),
       href: "/campaigns"
     }, {
-      text: data.campaigns[upload.campaign_uuid].name,
-      href: "/campaigns/" + upload.campaign_uuid
+      text: data.campaigns[upload.campaign_uid].name,
+      href: "/campaigns/" + upload.campaign_uid
     }],
     text: __("campaign.uploads.title"),
-    href: "/campaigns/" + upload.campaign_uuid + "/uploads"
+    href: "/campaigns/" + upload.campaign_uid + "/uploads"
   }) }}
 {% endblock %}
 
@@ -32,8 +32,8 @@
         created_user_uid: {
           value: users[upload.created_user_uid].fullName
         },
-        campaign_uuid: {
-          value: data.campaigns[upload.campaign_uuid].name
+        campaign_uid: {
+          value: data.campaigns[upload.campaign_uid].name
         }
       })
     })

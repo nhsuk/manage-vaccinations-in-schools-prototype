@@ -1,19 +1,19 @@
 {{ xGovukSecondaryNavigation({
   items: [{
     text: __("campaign.show.title"),
-    href: "/campaigns/" + campaign.uuid,
+    href: campaign.uri,
     current: view == "show"
   }, {
     text: __("campaign.sessions.title"),
-    href: "/campaigns/" + campaign.uuid + "/sessions",
+    href: campaign.uri + "/sessions",
     current: view == "sessions"
   }, {
     text: __("campaign.vaccinations.title"),
-    href: "/campaigns/" + campaign.uuid + "/vaccinations",
+    href: campaign.uri + "/vaccinations",
     current: view == "vaccinations"
   }, {
     text: __("campaign.uploads.title"),
-    href: "/campaigns/" + campaign.uuid + "/uploads",
+    href: campaign.uri + "/uploads",
     current: view == "uploads"
   } if data.features.uploads.on]
 }) }}

@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import vaccines from '../datasets/vaccines.js'
 import { Batch } from './batch.js'
+import { CampaignType } from './campaign.js'
 import { Vaccine, VaccineMethod } from './vaccine.js'
 import {
   convertIsoDateToObject,
@@ -67,7 +68,7 @@ export class VaccinationProtocol {
  * @property {VaccinationSequence} [sequence] - Dose sequence
  * @property {string} [protocol] - Protocol
  * @property {string} [notes] - Notes
- * @property {string} [campaign_uuid] - Campaign UUID
+ * @property {string} [campaign_uid] - Campaign UUID
  * @property {string} [session_id] - Session ID
  * @property {string} [patient_nhsn] - Patient NHS number
  * @property {string} [batch_id] - Batch ID
@@ -94,7 +95,7 @@ export class Vaccination {
     this.sequence = options?.sequence
     this.protocol = this.given ? VaccinationProtocol.PGD : undefined
     this.notes = options?.notes
-    this.campaign_uuid = options?.campaign_uuid
+    this.campaign_uid = options?.campaign_uid
     this.session_id = options?.session_id
     this.patient_nhsn = options?.patient_nhsn
     this.batch_id = this.given ? options?.batch_id || '' : undefined
@@ -112,16 +113,16 @@ export class Vaccination {
     let sequence
     let vaccine_gtin
     switch (campaign.type) {
-      case 'flu':
+      case CampaignType.FLU:
         vaccine_gtin = '05000456078276'
         break
-      case 'hpv':
+      case CampaignType.HPV:
         injectionMethod = VaccinationMethod.Subcutaneous
         injectionSite = VaccinationSite.ArmRightUpper
         sequence = VaccinationSequence.P1
         vaccine_gtin = '00191778001693'
         break
-      case '3-in-1-men-acwy':
+      case CampaignType.TIO:
         injectionMethod = VaccinationMethod.Subcutaneous
         injectionSite = VaccinationSite.ArmRightUpper
         vaccine_gtin = '3664798042948'
@@ -148,7 +149,7 @@ export class Vaccination {
       created_user_uid: user.uid,
       outcome,
       location,
-      campaign_uuid: campaign.uuid,
+      campaign_uid: campaign.uid,
       session_id: session.id,
       patient_nhsn: record.nhsn,
       ...(vaccinated && {
@@ -249,6 +250,6 @@ export class Vaccination {
   }
 
   get uri() {
-    return `/campaigns/${this.campaign_uuid}/vaccinations/${this.uuid}`
+    return `/campaigns/${this.campaign_uid}/vaccinations/${this.uuid}`
   }
 }

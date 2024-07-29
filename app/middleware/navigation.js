@@ -1,3 +1,4 @@
+import { CampaignType } from '../models/campaign.js'
 import { SessionStatus } from '../models/session.js'
 import { User, UserRole } from '../models/user.js'
 import { getCampaignSession } from '../utils/session.js'
@@ -69,9 +70,9 @@ export const navigation = (request, response, next) => {
         ]
       : []
 
-  const fluSession = getCampaignSession(campaigns, sessions, 'flu')
-  const hpvSession = getCampaignSession(campaigns, sessions, 'hpv')
-  const tioSession = getCampaignSession(campaigns, sessions, '3-in-1-men-acwy')
+  const fluSession = getCampaignSession(campaigns, sessions, CampaignType.FLU)
+  const hpvSession = getCampaignSession(campaigns, sessions, CampaignType.HPV)
+  const tioSession = getCampaignSession(campaigns, sessions, CampaignType.TIO)
 
   response.locals.navigation = {
     account,
@@ -82,15 +83,15 @@ export const navigation = (request, response, next) => {
             [
               {
                 URL: `/consents/${fluSession.id}`,
-                label: `${__('consent.start.flu.label')} journey`
+                label: 'Flu consent journey'
               },
               {
                 URL: `/consents/${fluSession.id}/emails`,
-                label: `${__('consent.start.flu.label')} emails`
+                label: 'Flu consent emails'
               },
               {
                 URL: `/consents/${fluSession.id}/texts`,
-                label: `${__('consent.start.flu.label')} texts`
+                label: 'Flu consent texts'
               }
             ]
           ]
@@ -100,15 +101,15 @@ export const navigation = (request, response, next) => {
             [
               {
                 URL: `/consents/${hpvSession.id}`,
-                label: `${__('consent.start.hpv.label')} journey`
+                label: 'HPV consent journey'
               },
               {
                 URL: `/consents/${hpvSession.id}/emails`,
-                label: `${__('consent.start.hpv.label')} emails`
+                label: 'HPV consent emails'
               },
               {
                 URL: `/consents/${hpvSession.id}/texts`,
-                label: `${__('consent.start.hpv.label')} texts`
+                label: 'HPV consent texts'
               }
             ]
           ]
@@ -118,15 +119,15 @@ export const navigation = (request, response, next) => {
             [
               {
                 URL: `/consents/${tioSession.id}`,
-                label: `${__('consent.start.3-in-1-men-acwy.label')} journey`
+                label: '3-in-1 consent journey'
               },
               {
                 URL: `/consents/${tioSession.id}/emails`,
-                label: `${__('consent.start.3-in-1-men-acwy.label')} emails`
+                label: '3-in-1 consent emails'
               },
               {
                 URL: `/consents/${tioSession.id}/texts`,
-                label: `${__('consent.start.3-in-1-men-acwy.label')} texts`
+                label: '3-in-1 consent texts'
               }
             ]
           ]

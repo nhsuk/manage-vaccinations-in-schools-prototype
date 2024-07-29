@@ -18,7 +18,7 @@
     }) }}
   </div>
 
-  {% for type, sessions in sessions | groupby("campaign_uuid") %}
+  {% for type, sessions in sessions | groupby("campaign_uid") %}
     {% set sessionRows = [] %}
     {% for session in sessions %}
       {% set sessionRows = sessionRows | push([
@@ -41,7 +41,7 @@
     {{ actionTable({
       id: "sessions",
       sort: "date",
-      heading: data.campaigns[sessions[0].campaign_uuid].name,
+      heading: data.campaigns[sessions[0].campaign_uid].name,
       panel: true,
       responsive: true,
       head: [
