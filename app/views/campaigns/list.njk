@@ -31,7 +31,7 @@
       },
       {
         header: __("campaign.vaccines.label"),
-        html: campaign.formattedVaccines | join("\n") | nl2br or "Not provided"
+        html: campaign.formatted.vaccines or "Not provided"
       }
     ]) %}
   {% endfor %}

@@ -22,11 +22,11 @@ export const campaignController = {
   },
 
   uploads(request, response) {
-    const { uuid } = request.params
+    const { uid } = request.params
     const { data } = request.session
 
     response.locals.uploads = Object.values(data.uploads)
-      .filter((upload) => upload.campaign_uuid === uuid)
+      .filter((upload) => upload.campaign_uid === uid)
       .map((upload) => new Upload(upload))
 
     response.render('campaigns/uploads')
@@ -41,14 +41,14 @@ export const campaignController = {
   },
 
   read(request, response, next) {
-    const { uuid } = request.params
+    const { uid } = request.params
     const { data } = request.session
 
-    const campaign = new Campaign(data.campaigns[uuid])
+    const campaign = new Campaign(data.campaigns[uid])
 
     request.app.locals.campaign = campaign
     request.app.locals.sessions = Object.values(data.sessions)
-      .filter((session) => session.campaign_uuid === uuid)
+      .filter((session) => session.campaign_uid === uid)
       .map((session) => {
         session = new Session(session)
         session.cohort = Object.values(data.patients).filter(
@@ -60,7 +60,7 @@ export const campaignController = {
     const uuids = []
     if (data.features.uploads.on) {
       const uploads = Object.values(data.uploads).filter(
-        (upload) => upload.campaign_uuid === uuid
+        (upload) => upload.campaign_uid === uid
       )
 
       for (const upload of uploads) {
@@ -70,7 +70,7 @@ export const campaignController = {
       }
     } else {
       Object.values(data.vaccinations)
-        .filter((vaccination) => vaccination.campaign_uuid === uuid)
+        .filter((vaccination) => vaccination.campaign_uid === uid)
         .forEach((vaccination) => uuids.push(vaccination.uuid))
     }
 
@@ -110,12 +110,12 @@ export const campaignController = {
 
     data.wizard = campaign
 
-    response.redirect(`/campaigns/${campaign.uuid}/new/details`)
+    response.redirect(`${campaign.uri}/new/details`)
   },
 
   update(request, response) {
     const { campaign } = request.app.locals
-    const { form, uuid } = request.params
+    const { form, uid } = request.params
     const { data } = request.session
     const { __ } = response.locals
 
@@ -125,7 +125,7 @@ export const campaignController = {
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
-    data.campaigns[uuid] = updatedCampaign
+    data.campaigns[uid] = updatedCampaign
 
     delete data.wizard
 
@@ -135,12 +135,12 @@ export const campaignController = {
       __(`campaign.success.${action}`, { campaign: updatedCampaign })
     )
 
-    response.redirect(`/campaigns/${uuid}`)
+    response.redirect(updatedCampaign.uri)
   },
 
   readForm(request, response, next) {
     const { campaign } = request.app.locals
-    const { form, uuid } = request.params
+    const { form, uid } = request.params
     const { data } = request.session
 
     request.app.locals.campaign = new Campaign({
@@ -150,18 +150,18 @@ export const campaignController = {
 
     const journey = {
       [`/`]: {},
-      [`/${uuid}/${form}/details`]: {},
-      [`/${uuid}/${form}/period`]: {},
-      [`/${uuid}/${form}/vaccines`]: {},
-      [`/${uuid}/${form}/check-answers`]: {},
-      [`/${uuid}`]: {}
+      [`/${uid}/${form}/details`]: {},
+      [`/${uid}/${form}/period`]: {},
+      [`/${uid}/${form}/vaccines`]: {},
+      [`/${uid}/${form}/check-answers`]: {},
+      [`/${uid}`]: {}
     }
 
     response.locals.paths = {
       ...wizard(journey, request),
       ...(form === 'edit' && {
-        back: `/campaigns/${uuid}/edit`,
-        next: `/campaigns/${uuid}/edit`
+        back: `${campaign.uri}/edit`,
+        next: `${campaign.uri}/edit`
       })
     }
 

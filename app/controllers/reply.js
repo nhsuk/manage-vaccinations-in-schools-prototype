@@ -372,7 +372,7 @@ export const replyController = {
       patient.capture = new Vaccination({
         outcome: VaccinationOutcome.AlreadyVaccinated,
         patient_nhsn: patient.nhsn,
-        campaign_uuid: campaign.uuid,
+        campaign_uid: campaign.uid,
         session_id: session.id,
         ...(data.reply?.notes && { notes }),
         ...(data.token && { created_user_uid: data.token?.uid })

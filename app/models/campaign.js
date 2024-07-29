@@ -5,8 +5,16 @@ import { Vaccine } from './vaccine.js'
 import {
   addDays,
   convertIsoDateToObject,
-  convertObjectToIsoDate
+  convertObjectToIsoDate,
+  formatDate
 } from '../utils/date.js'
+import { formatList } from '../utils/string.js'
+
+export class CampaignType {
+  static FLU = 'Flu'
+  static HPV = 'HPV'
+  static TIO = '3-in-1 teenage booster and MenACWY'
+}
 
 export class AcademicYear {
   static Y2023 = '2023/24'
@@ -15,22 +23,22 @@ export class AcademicYear {
 
 /**
  * @class Campaign
- * @property {string} uuid - UUID
+ * @property {string} uid - UID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created campaign
- * @property {string} [type] - Campaign type
+ * @property {CampaignType} [type] - Campaign type
  * @property {string} [name] - Campaign name
  * @property {string} [year] - Academic year
  * @property {object} [start] - Date consent window opens
  * @property {object} [end] - Date consent window closes
- * @property {Array[string]} [cohort] - Cohort
- * @property {Array[string]} [vaccines] - Vaccines administered
+ * @property {Array[string]} cohort - Cohort
+ * @property {Array[string]} vaccines - Vaccines administered
  * @function ns - Namespace
  * @function uri - URL
  */
 export class Campaign {
   constructor(options) {
-    this.uuid = options?.uuid || faker.string.uuid()
+    this.uid = options?.uid || this.#uid
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.type = options?.type
@@ -55,14 +63,14 @@ export class Campaign {
     cohort = [...new Set(cohort)]
 
     // Use typical dates for winter flu versus other campaigns
-    const startDate = type === 'flu' ? '2023-10-15' : '2024-03-01'
-    const endDate = type === 'flu' ? '2024-02-29' : '2024-06-20'
+    const startDate = type === CampaignType.FLU ? '2023-10-15' : '2024-03-01'
+    const endDate = type === CampaignType.FLU ? '2024-02-29' : '2024-06-20'
 
     return new Campaign({
       type,
       created,
       created_user_uid: user.uuid,
-      name: campaignTypes[type].name,
+      name: type,
       year: AcademicYear.Y2023,
       start: new Date(startDate),
       end: new Date(endDate),
@@ -70,6 +78,8 @@ export class Campaign {
       vaccines: campaignTypes[type].vaccines
     })
   }
+
+  #uid = faker.helpers.replaceSymbols('???')
 
   get start_() {
     return convertIsoDateToObject(this.start)
@@ -79,14 +89,6 @@ export class Campaign {
     if (object) {
       this.start = convertObjectToIsoDate(object)
     }
-  }
-
-  get formattedStart() {
-    return this.start
-      ? new Intl.DateTimeFormat('en-GB', {
-          dateStyle: 'long'
-        }).format(new Date(this.start))
-      : false
   }
 
   get end_() {
@@ -99,14 +101,6 @@ export class Campaign {
     }
   }
 
-  get formattedEnd() {
-    return this.end
-      ? new Intl.DateTimeFormat('en-GB', {
-          dateStyle: 'long'
-        }).format(new Date(this.end))
-      : false
-  }
-
   /**
    * @todo A campaign can use multiple vaccines, and one used for a patient will
    * depend on answers to screening questions in consent flow. For now however,
@@ -117,14 +111,20 @@ export class Campaign {
     return new Vaccine(vaccines[this.vaccines[0]])
   }
 
-  get formattedType() {
-    return campaignTypes[this.type].name
-  }
+  get formatted() {
+    const vaccineList = Array.isArray(this.vaccines)
+      ? this.vaccines.map((gtin) => new Vaccine(vaccines[gtin]).brandWithName)
+      : []
 
-  get formattedVaccines() {
-    return this.vaccines.map(
-      (gtin) => new Vaccine(vaccines[gtin]).brandWithName
-    )
+    return {
+      start: formatDate(this.start, {
+        dateStyle: 'long'
+      }),
+      end: formatDate(this.end, {
+        dateStyle: 'long'
+      }),
+      vaccines: vaccineList.join('<br>')
+    }
   }
 
   get ns() {
@@ -132,6 +132,6 @@ export class Campaign {
   }
 
   get uri() {
-    return `/campaigns/${this.uuid}`
+    return `/campaigns/${this.uid}`
   }
 }

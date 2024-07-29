@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("session.edit.campaign_uuid.title") %}
+{% set title = __("session.edit.campaign_uid.title") %}
 
 {% block form %}
   {{ radios({
@@ -12,6 +12,6 @@
       }
     },
     items: campaignItems,
-    decorate: "session.campaign_uuid"
+    decorate: "session.campaign_uid"
   }) }}
 {% endblock %}

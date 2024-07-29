@@ -47,7 +47,7 @@ export class SessionStatus {
  * @property {object} [close] - Date consent window closes
  * @property {SessionStatus} [status] - Status (planned, in progress, archived)
  * @property {object} [consents] – (Unmatched) consent replies
- * @property {string} [campaign_uuid] - Campaign UUID
+ * @property {string} [campaign_uid] - Campaign UID
  * @function consentWindow - Consent window (open, opening or closed)
  * @function school - Get school details
  * @function location - Get location details
@@ -56,7 +56,7 @@ export class SessionStatus {
  */
 export class Session {
   constructor(options) {
-    this.id = options?.id || faker.helpers.replaceSymbols('??##')
+    this.id = options?.id || `${options.campaign_uid}-${this.#id}`
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.format = options?.format
@@ -68,7 +68,7 @@ export class Session {
     this.close = options?.close
     this.status = options?.status
     this.consents = options?.consents || {}
-    this.campaign_uuid = options?.campaign_uuid
+    this.campaign_uid = options?.campaign_uid
     // dateInput objects
     this.date_ = options?.date_
     this.open_ = options?.open_
@@ -123,9 +123,11 @@ export class Session {
       reminder: new Date(reminder),
       close: new Date(close),
       status,
-      campaign_uuid: campaign.uuid
+      campaign_uid: campaign.uid
     })
   }
+
+  #id = faker.helpers.replaceSymbols('###')
 
   get date_() {
     return convertIsoDateToObject(this.date)

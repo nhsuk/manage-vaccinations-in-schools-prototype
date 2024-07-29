@@ -7,7 +7,7 @@ import { formatDate } from '../utils/date.js'
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created upload
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
- * @property {string} [campaign_uuid] - Campaign UUID
+ * @property {string} [campaign_uid] - Campaign UID
  * @function ns - Namespace
  * @function uri - URL
  */
@@ -16,7 +16,7 @@ export class Upload {
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
-    this.campaign_uuid = options?.campaign_uuid
+    this.campaign_uid = options?.campaign_uid
     this.vaccinations = options?.vaccinations || []
   }
 
@@ -26,7 +26,7 @@ export class Upload {
     return new Upload({
       created,
       created_user_uid: user.uid,
-      campaign_uuid: campaign.uuid,
+      campaign_uid: campaign.uid,
       vaccinations
     })
   }
@@ -46,6 +46,6 @@ export class Upload {
   }
 
   get uri() {
-    return `/campaigns/${this.campaign_uuid}/uploads/${this.id}`
+    return `/campaigns/${this.campaign_uid}/uploads/${this.id}`
   }
 }

@@ -1,4 +1,4 @@
-import { AcademicYear } from '../models/campaign.js'
+import { AcademicYear, CampaignType } from '../models/campaign.js'
 import { EventType } from '../models/event.js'
 import { GillickCompetent } from '../models/gillick.js'
 import { ContactPreference, ParentalRelationship } from '../models/parent.js'
@@ -34,6 +34,7 @@ import {
 
 export const enumeration = (request, response, next) => {
   response.locals.AcademicYear = AcademicYear
+  response.locals.CampaignType = CampaignType
   response.locals.CaptureOutcome = CaptureOutcome
   response.locals.ConsentOutcome = ConsentOutcome
   response.locals.ConsentWindow = ConsentWindow

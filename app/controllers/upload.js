@@ -53,18 +53,18 @@ export const uploadController = {
   },
 
   new(request, response) {
+    const { uid } = request.params
     const { data } = request.session
-    const { uuid } = request.params
 
     // Get pending upload from campaign
-    const { pendingVaccinations } = new Campaign(data.campaigns[uuid])
+    const { pendingVaccinations } = new Campaign(data.campaigns[uid])
 
     // Delete previous data
     delete data.upload
     delete data.wizard
 
     const upload = new Upload({
-      campaign_uuid: uuid,
+      campaign_uid: uid,
       vaccinations: pendingVaccinations,
       ...(data.token && { created_user_uid: data.token?.uid })
     })

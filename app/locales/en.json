@@ -124,6 +124,9 @@
     "details": {
       "title": "Programme details"
     },
+    "type": {
+      "label": "Programme type"
+    },
     "name": {
       "label": "Name"
     },
@@ -136,13 +139,7 @@
     "start": {
       "label": "Start date"
     },
-    "formattedStart": {
-      "label": "Start date"
-    },
     "end": {
-      "label": "End date"
-    },
-    "formattedEnd": {
       "label": "End date"
     },
     "vaccines": {
@@ -289,19 +286,16 @@
       }
     },
     "start": {
-      "flu": {
+      "Flu": {
         "title": "Give or refuse consent for a flu vaccination",
-        "label": "Flu consent",
         "description": "The vaccination helps to protect children against flu. It also protects others who are vulnerable to flu, such as babies and older people."
       },
-      "hpv": {
+      "HPV": {
         "title": "Give or refuse consent for an HPV vaccination",
-        "label": "HPV consent",
         "description": "The HPV vaccine helps to prevent HPV related cancers from developing in boys and girls.\n\nThe number of doses you need depends on your age and how well your immune system works. Young people usually only need 1 dose."
       },
-      "3-in-1-men-acwy": {
+      "3-in-1 teenage booster and MenACWY": {
         "title": "Give or refuse consent for the 3-in-1 teenage booster and MenACWY vaccine",
-        "label": "3-in-1 consent",
         "description": "The 3-in-1 teenage booster, also known as the Td/IPV vaccine, boosts protection against 3 diseases: tetanus, diptheria and polio.\n\nThe MenACWY vaccine, which helps to prevent meningitis and septicaemia, is normally given at the same time as the 3-in-1.\n\nBoth vaccines are offered to all young people aged 13 to 15 (in school Years 9 and 10). They’re given as injections into the upper arm."
       },
       "confirm": "Start now",
@@ -431,11 +425,11 @@
       "title": "Do you agree to them having a {{campaign.name}} vaccination?",
       "label": "Decision",
       "hint": {
-        "flu": "The nasal flu spray contains gelatine which comes from pigs."
+        "Flu": "The nasal flu spray contains gelatine which comes from pigs."
       },
       "yes": {
-        "flu": "Yes, I agree to them having a nasal vaccine",
-        "hpv": "Yes, I agree",
+        "Flu": "Yes, I agree to them having a nasal vaccine",
+        "HPV": "Yes, I agree",
         "3-in-1": "Yes, I agree to them having the 3-in-1 teenage booster",
         "men-acwy": "Yes, I agree to them having the MenACWY vaccine"
       },
@@ -936,7 +930,7 @@
       "format": {
         "title": "What type of session are you adding?"
       },
-      "campaign_uuid": {
+      "campaign_uid": {
         "title": "Which programme is this session part of?"
       },
       "urn": {
@@ -977,7 +971,7 @@
     "format": {
       "label": "Type of session"
     },
-    "campaign_uuid": {
+    "campaign_uid": {
       "label": "Programme"
     },
     "open": {
@@ -1220,7 +1214,7 @@
     "created_user_uid": {
       "label": "Uploaded by"
     },
-    "campaign_uuid": {
+    "campaign_uid": {
       "label": "Campaign"
     },
     "vaccinations": {

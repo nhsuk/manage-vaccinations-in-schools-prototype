@@ -1,16 +1,16 @@
-Your local health team are coming to {{ session.location.name }} on {{ session.formatted.date }} to give {% if campaign.type == "flu" %}
-this year’s flu vaccine{% elif campaign.type == "hpv" %}the human papillomavirus (HPV) vaccine to pupils in Year 8{% elif campaign.type == "3-in-1-men-acwy" %}the 3-in-1 teenage booster and MenACWY vaccines{% endif %}.
+Your local health team are coming to {{ session.location.name }} on {{ session.formatted.date }} to give {% if campaign.type == CampaignType.FLU %}
+this year’s flu vaccine{% elif campaign.type == CampaignType.HPV %}the human papillomavirus (HPV) vaccine to pupils in Year 8{% elif campaign.type == CampaignType.TIO %}the 3-in-1 teenage booster and MenACWY vaccines{% endif %}.
 
 ## What the vaccine is for
 
-{% if campaign.type == "flu" %}
+{% if campaign.type == CampaignType.FLU %}
 The vaccine protects against flu, which can cause serious health problems.
 
 By preventing the spread of flu, the vaccine also protects others who are vulnerable, such as babies and older people.
 
 The vaccination is a quick and painless spray up the nose. Even if your child had the vaccine last year, the type of flu can vary each winter, so it is recommended to have it again this year.
 
-{% elif campaign.type == "hpv" %}
+{% elif campaign.type == CampaignType.HPV %}
 The HPV vaccine helps protect boys and girls against cancers caused by HPV, including:
 
 - cervical cancer
@@ -21,7 +21,7 @@ It also helps protect against genital warts.
 
 The HPV vaccine works best if it’s given before young people become sexually active.
 
-{% elif campaign.type == "3-in-1-men-acwy" %}
+{% elif campaign.type == CampaignType.TIO %}
 The 3-in-1 teenage booster, also known as the Td/IPV vaccine, boosts protection against 3 diseases: tetanus, diptheria and polio.
 
 The MenACWY vaccine, which helps to prevent meningitis and septicaemia, is normally given at the same time as the 3-in-1.
@@ -38,7 +38,7 @@ If you want your child to get this vaccine at school, you need to give consent b
 
 Responding will take less than 5 minutes. If you do not give consent, it’s still important for you to let us know.
 
-{% if campaign.type == "flu" %}
+{% if campaign.type == CampaignType.FLU %}
 ## About the flu vaccine
 
 The nasal spray contains gelatine. If your child does not use gelatine products, or the nasal spray is not suitable for medical reasons, they could have an injection instead.
@@ -49,7 +49,7 @@ The nasal spray gives children the best protection against flu. However, the inj
 
 [Find out more about the use of gelatine in the flu vaccine (including the views of faith communities)](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1107767/UKHSA-12462-vaccines-porcine-gelatine-English.pdf)
 
-{% elif campaign.type == "hpv" %}
+{% elif campaign.type == CampaignType.HPV %}
 ## About the HPV vaccine
 
 Girls and boys in England are offered the HPV vaccination when they’re in Year 8.
@@ -61,7 +61,7 @@ The number of doses you need depends on your age and how well your immune system
 [Find out more about the HPV vaccine on NHS.UK](https://www.nhs.uk/conditions/vaccinations/hpv-human-papillomavirus-vaccine/)
 {% endif %}
 
-{% if campaign.type != "flu" %}
+{% if campaign.type != CampaignType.FLU %}
 ## Talk to your child about what they want
 
 We suggest you talk to your child about the vaccine before you respond to us.

@@ -156,8 +156,7 @@ export const sessionController = {
 
     const session = new Session(data.sessions[id])
     const campaign =
-      session.campaign_uuid &&
-      new Campaign(data.campaigns[session.campaign_uuid])
+      session.campaign_uid && new Campaign(data.campaigns[session.campaign_uid])
 
     request.app.locals.session = session
     request.app.locals.campaign = campaign
@@ -227,7 +226,7 @@ export const sessionController = {
     const journey = {
       [`/`]: {},
       [`/${id}/${form}/format`]: {},
-      [`/${id}/${form}/campaign-uuid`]: {},
+      [`/${id}/${form}/campaign-uid`]: {},
       [`/${id}/${form}/urn`]: {},
       [`/${id}/${form}/cohort`]: {},
       [`/${id}/${form}/date`]: {},
@@ -245,9 +244,9 @@ export const sessionController = {
     }
 
     response.locals.campaignItems = Object.entries(data.campaigns).map(
-      ([uuid, campaign]) => ({
+      ([uid, campaign]) => ({
         text: campaign.name,
-        value: uuid
+        value: uid
       })
     )
 
@@ -258,9 +257,9 @@ export const sessionController = {
       })
     )
 
-    if (request.app.locals.session.campaign_uuid) {
-      const { campaign_uuid } = request.app.locals.session
-      const campaign = new Campaign(data.campaigns[campaign_uuid])
+    if (request.app.locals.session.campaign_uid) {
+      const { campaign_uid } = request.app.locals.session
+      const campaign = new Campaign(data.campaigns[campaign_uid])
       response.locals.cohortItems = campaign.cohort
         // Only show records where child is at the selected school
         .filter((nhsn) => {

@@ -3,7 +3,7 @@ export default {
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1107978/Influenza-green-book-chapter19-16September22.pdf
   '05000456078276': {
     gtin: '05000456078276',
-    type: 'flu',
+    type: 'Flu',
     name: 'Flu',
     brand: 'Fluenz Tetra',
     manufacturer: 'AstraZeneca UK Ltd',
@@ -31,7 +31,7 @@ export default {
   },
   5000123114115: {
     gtin: '5000123114115',
-    type: 'flu',
+    type: 'Flu',
     name: 'Flu',
     brand: 'Fluarix Tetra',
     manufacturer: 'GlaxoSmithKline UK Ltd',
@@ -56,7 +56,7 @@ export default {
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1065283/HPV-greenbook-chapter-18a.pdf
   '00191778001693': {
     gtin: '00191778001693',
-    type: 'hpv',
+    type: 'HPV',
     name: 'HPV',
     brand: 'Gardasil 9',
     manufacturer: 'Merck Sharp & Dohme (UK) Ltd',
@@ -82,7 +82,7 @@ export default {
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/147952/Green-Book-Chapter-15.pdf
   3664798042948: {
     gtin: '3664798042948',
-    type: '3-in-1',
+    type: '3-in-1 teenage booster and MenACWY',
     name: '3-in-1 teenage booster',
     brand: 'Revaxis',
     manufacturer: 'Sanofi',
@@ -106,7 +106,7 @@ export default {
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1076053/Meningococcal-greenbook-chapter-22_17May2022.pdf
   5415062370568: {
     gtin: '5415062370568',
-    type: 'men-acwy',
+    type: '3-in-1 teenage booster and MenACWY',
     name: 'MenACWY',
     brand: 'Nimenrix',
     manufacturer: 'Pfizer Ltd',

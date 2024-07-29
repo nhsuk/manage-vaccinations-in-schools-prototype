@@ -62,7 +62,7 @@ export class PatientOutcome {
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
- * @property {string} [campaign_uuid] - Campaign UUID
+ * @property {string} [campaign_uid] - Campaign UID
  * @property {string} [session_id] - Session ID
  * @function consent - Consent outcome
  * @function screen - Screening outcome
@@ -82,7 +82,7 @@ export class Patient {
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
-    this.campaign_uuid = options.campaign_uuid
+    this.campaign_uid = options.campaign_uid
     this.session_id = options.session_id
   }
 
@@ -168,7 +168,7 @@ export class Patient {
   }
 
   set select(campaign) {
-    this.campaign_uuid = campaign.uuid
+    this.campaign_uid = campaign.uid
     this.log = {
       type: EventType.Select,
       name: `Selected for ${campaign.name} vaccination programme cohort`,

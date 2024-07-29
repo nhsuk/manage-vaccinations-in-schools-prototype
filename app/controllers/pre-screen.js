@@ -15,7 +15,7 @@ export const preScreenController = {
     }
 
     response.redirect(
-      `/campaigns/${campaign.uuid}/vaccinations/new?patient_nhsn=${nhsn}&session_id=${id}`
+      `${campaign.uri}/vaccinations/new?patient_nhsn=${nhsn}&session_id=${id}`
     )
   }
 }

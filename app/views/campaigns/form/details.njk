@@ -19,6 +19,17 @@
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--m",
+        text: __("campaign.type.label")
+      }
+    },
+    items: enumItems(CampaignType),
+    decorate: "campaign.type"
+  }) }}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
         text: __("campaign.year.label")
       }
     },

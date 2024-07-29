@@ -8,11 +8,11 @@
       text: __("campaign.list.title"),
       href: "/campaigns"
     }, {
-      text: data.campaigns[vaccination.campaign_uuid].name,
-      href: "/campaigns/" + vaccination.campaign_uuid
+      text: data.campaigns[vaccination.campaign_uid].name,
+      href: "/campaigns/" + vaccination.campaign_uid
     }],
     text: __("campaign.vaccinations.title"),
-    href: "/campaigns/" + vaccination.campaign_uuid + "/vaccinations"
+    href: "/campaigns/" + vaccination.campaign_uid + "/vaccinations"
   }) }}
 {% endblock %}
 
