@@ -4,6 +4,7 @@ import schools from './datasets/schools.js'
 import vaccines from './datasets/vaccines.js'
 const batches = JSON.parse(readFileSync('.data/batches.json'))
 const campaigns = JSON.parse(readFileSync('.data/campaigns.json'))
+const organisations = JSON.parse(readFileSync('.data/organisations.json'))
 const patients = JSON.parse(readFileSync('.data/patients.json'))
 const records = JSON.parse(readFileSync('.data/records.json'))
 const sessions = JSON.parse(readFileSync('.data/sessions.json'))
@@ -29,12 +30,8 @@ export default {
         'Require vaccinations to be uploaded before appearing on CHIS records.'
     }
   },
-  organisation: {
-    name: 'ACME Child Immunisation Service',
-    code: 'ACM',
-    email: 'acme-sais@nhs.net',
-    tel: '0117 496 1234'
-  },
+  organisation: Object.values(organisations)[0],
+  organisations,
   patients,
   records,
   schools,
