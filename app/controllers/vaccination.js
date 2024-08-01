@@ -68,6 +68,7 @@ export const vaccinationController = {
 
     const vaccination = new Vaccination({
       location: session.location.name,
+      urn: session.urn,
       patient_nhsn,
       campaign_uid: campaign.uid,
       session_id: session.id,
