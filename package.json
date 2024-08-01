@@ -56,7 +56,7 @@
     "stylelint-order": "^6.0.4"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.18.0"
+    "@rollup/rollup-linux-x64-gnu": "^4.19.2"
   },
   "engines": {
     "node": "^22"
