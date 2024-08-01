@@ -23,6 +23,7 @@
     "start": "npm-run-all --serial assets:build serve",
     "watch": "npm-run-all --parallel assets:watch serve",
     "dev": "node --env-file .env --run watch",
+    "dev-create-data": "node --env-file .env --run watch",
     "postinstall": "npm run create-data"
   },
   "dependencies": {
