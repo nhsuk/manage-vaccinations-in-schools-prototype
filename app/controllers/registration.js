@@ -61,6 +61,7 @@ export const registrationController = {
     ) {
       patient.capture = new Vaccination({
         location: session.location.name,
+        urn: session.urn,
         outcome: VaccinationOutcome.AbsentSession,
         patient_nhsn: patient.nhsn,
         campaign_uid: campaign.uid,

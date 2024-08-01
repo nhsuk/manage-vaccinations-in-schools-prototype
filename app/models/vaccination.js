@@ -61,6 +61,7 @@ export class VaccinationProtocol {
  * @property {string} [created_user_uid] - User who performed vaccination
  * @property {string} [updated] - Vaccination updated date
  * @property {string} [location] - Location
+ * @property {string} [urn] - School URN
  * @property {VaccinationOutcome} [outcome] - Outcome
  * @property {VaccinationMethod} [injectionMethod] - Injection method
  * @property {VaccinationSite} [injectionSite] - Injection site on body
@@ -84,6 +85,7 @@ export class Vaccination {
     this.created_user_uid = options?.created_user_uid
     this.updated = options?.updated
     this.location = options?.location
+    this.urn = options?.urn
     this.outcome = options?.outcome
     this.given =
       this.outcome === VaccinationOutcome.Vaccinated ||
