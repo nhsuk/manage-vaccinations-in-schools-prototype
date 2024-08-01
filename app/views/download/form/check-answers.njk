@@ -1,0 +1,33 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("download.new.check-answers.confirm") %}
+{% set title = __("download.new.check-answers.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: campaign.name,
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("download.new.check-answers.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(download, {
+        from: {
+          href: download.uri + "/new/dates"
+        },
+        until: {
+          href: download.uri + "/new/dates"
+        },
+        providers: {
+          href: download.uri + "/new/providers"
+        },
+        format: {
+          href: download.uri + "/new/format"
+        },
+        vaccinations: {}
+      })
+    })
+  }) }}
+{% endblock %}

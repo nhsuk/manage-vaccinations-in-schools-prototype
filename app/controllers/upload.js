@@ -1,20 +1,8 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { Campaign } from '../models/campaign.js'
-import { Record } from '../models/record.js'
 import { Upload } from '../models/upload.js'
 import { Vaccination } from '../models/vaccination.js'
-
-const getVaccinations = (data, uuids) => {
-  const vaccinations = []
-  for (const uuid of uuids) {
-    const vaccination = new Vaccination(data.vaccinations[uuid])
-    vaccination.record = new Record(data.records[vaccination.patient_nhsn])
-
-    vaccinations.push(vaccination)
-  }
-
-  return vaccinations
-}
+import { getVaccinations } from '../utils/vaccination.js'
 
 export const uploadController = {
   redirect(request, response) {

@@ -1,4 +1,5 @@
 import { AcademicYear, CampaignType } from '../models/campaign.js'
+import { DownloadFormat } from '../models/download.js'
 import { EventType } from '../models/event.js'
 import { GillickCompetent } from '../models/gillick.js'
 import { ContactPreference, ParentalRelationship } from '../models/parent.js'
@@ -39,6 +40,7 @@ export const enumeration = (request, response, next) => {
   response.locals.ConsentOutcome = ConsentOutcome
   response.locals.ConsentWindow = ConsentWindow
   response.locals.ContactPreference = ContactPreference
+  response.locals.DownloadFormat = DownloadFormat
   response.locals.EventType = EventType
   response.locals.GillickCompetent = GillickCompetent
   response.locals.GPRegistered = GPRegistered

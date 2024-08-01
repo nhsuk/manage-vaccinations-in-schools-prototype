@@ -1,0 +1,19 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("download.format.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: campaign.name,
+          title: title
+        })
+      }
+    },
+    items: enumItems(DownloadFormat),
+    decorate: "download.format"
+  }) }}
+{% endblock %}

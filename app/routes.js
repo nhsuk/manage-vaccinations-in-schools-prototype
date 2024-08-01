@@ -9,6 +9,7 @@ import { accountRoutes } from './routes/account.js'
 import { batchRoutes } from './routes/batch.js'
 import { campaignRoutes } from './routes/campaign.js'
 import { consentRoutes } from './routes/consent.js'
+import { downloadRoutes } from './routes/download.js'
 import { gillickRoutes } from './routes/gillick.js'
 import { homeRoutes } from './routes/home.js'
 import { patientRoutes } from './routes/patient.js'
@@ -32,6 +33,7 @@ router.use(flash(), navigation, notification, users)
 router.use('/home', homeRoutes)
 router.use('/account', accountRoutes)
 router.use('/campaigns', campaignRoutes)
+router.use('/campaigns/:uid/download', downloadRoutes)
 router.use('/campaigns/:uid/uploads', uploadRoutes)
 router.use('/campaigns/:uid/vaccinations', vaccinationRoutes)
 router.use('/consents', consentRoutes)

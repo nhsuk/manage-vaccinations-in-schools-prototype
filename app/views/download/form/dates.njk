@@ -1,0 +1,35 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("download.dates.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: campaign.name,
+    title: title
+  }) }}
+
+  {{ dateInput({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-6"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("download.from.label")
+      }
+    },
+    hint: { text: __("download.from.hint") },
+    decorate: "download.from_"
+  }) }}
+
+  {{ dateInput({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("download.until.label")
+      }
+    },
+    hint: { text: __("download.until.hint") },
+    decorate: "download.until_"
+  }) }}
+{% endblock %}

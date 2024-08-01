@@ -86,11 +86,8 @@
     </div>
 
     {{ button({
-      href: "/public/downloads/vaccinations.csv",
-      text: __("campaign.show.download"),
-      attributes: {
-        download: "example.csv"
-      }
+      href: campaign.uri + "/download/new",
+      text: __("download.new.label")
     }) }}
 
     {{ table({
