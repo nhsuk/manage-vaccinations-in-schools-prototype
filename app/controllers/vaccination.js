@@ -82,7 +82,7 @@ export const vaccinationController = {
 
   update(request, response) {
     const { campaign, vaccination } = request.app.locals
-    const { form } = request.params
+    const { id, form } = request.params
     const { data } = request.session
     const { __ } = response.locals
 
@@ -95,8 +95,9 @@ export const vaccinationController = {
       ...request.body.vaccination, // New values (edit flow)
       vaccine_gtin: campaign.vaccine.gtin,
       batch_expires:
-        vaccination.batch_expires || data.batches[vaccination.batch_id].expires,
-      created_user_uid: data.vaccination.created_user_uid || data.token?.uid
+        vaccination.batch_expires ||
+        data.batches[vaccination.batch_id]?.expires,
+      created_user_uid: data.vaccination?.created_user_uid || data.token?.uid
     })
 
     // Check if new vaccination record or updating an existing one
@@ -121,7 +122,14 @@ export const vaccinationController = {
     const action = form === 'edit' ? 'update' : 'create'
     request.flash('success', __(`vaccination.success.${action}`))
 
-    const redirect = form === 'edit' ? updatedVaccination.uri : patient.uri
+    let redirect
+    if (id) {
+      // Updating vaccination in new upload
+      redirect = `${campaign.uri}/uploads/${id}/new/check-answers`
+    } else {
+      // Updating existing vaccination
+      redirect = form === 'edit' ? updatedVaccination.uri : patient.uri
+    }
 
     response.redirect(redirect)
   },
@@ -267,6 +275,15 @@ export const vaccinationController = {
       )
     )
 
-    response.redirect(paths.next || `${vaccination.uri}/new/check-answers`)
+    let redirect
+    if (id) {
+      // Updating vaccination field in new upload
+      redirect = `${campaign.uri}/uploads/${id}/vaccinations/${vaccination.uuid}/new/check-answers`
+    } else {
+      // Updating existing vaccination field
+      redirect = paths.next || `${vaccination.uri}/new/check-answers`
+    }
+
+    response.redirect(redirect)
   }
 }

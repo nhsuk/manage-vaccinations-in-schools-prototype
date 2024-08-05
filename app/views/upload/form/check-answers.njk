@@ -30,7 +30,7 @@
     {% set inexactRecordRows = inexactRecordRows | push([
       {
         header: __("record.fullName.label"),
-        html: link(vaccination.uri, vaccination.record.fullName)
+        text: vaccination.record.fullName
       },
       {
         header: __("record.nhsn.label"),
@@ -38,15 +38,20 @@
       },
       {
         header: __("record.dob.label"),
-        html: vaccination.record.formatted.dob
-      },
-      {
-        header: __("record.postalCode.label"),
-        html: vaccination.record.postalCode
+        text: vaccination.record.formatted.dob
       },
       {
         header: __("vaccination.created.label"),
-        html: vaccination.formatted.created_date
+        text: vaccination.formatted.created_date
+      },
+      {
+        header: __("vaccination.actions.label"),
+        html: actionList({
+          items: [{
+            text: "Edit",
+            href: upload.uri + "/vaccinations/" + vaccination.uuid + "/edit"
+          }]
+        })
       }
     ]) %}
   {% endfor %}
@@ -61,8 +66,13 @@
       { text: __("record.fullName.label") },
       { text: __("record.nhsn.label") },
       { text: __("record.dob.label") },
-      { text: __("record.postalCode.label") },
-      { text: __("vaccination.created.label") }
+      { text: __("vaccination.created.label") },
+      {
+        text: __("vaccination.actions.label"),
+        attributes: {
+          "no-sort": "no-sort"
+        }
+      }
     ],
     rows: inexactRecordRows
   }) if data.inexact }}
@@ -72,7 +82,7 @@
     {% set newRecordRows = newRecordRows | push([
       {
         header: __("record.fullName.label"),
-        html: link(vaccination.uri, vaccination.record.fullName)
+        text: vaccination.record.fullName
       },
       {
         header: __("record.nhsn.label"),
@@ -83,12 +93,17 @@
         html: vaccination.record.formatted.dob
       },
       {
-        header: __("record.postalCode.label"),
-        html: vaccination.record.postalCode
-      },
-      {
         header: __("vaccination.created.label"),
         html: vaccination.formatted.created_date
+      },
+      {
+        header: __("vaccination.actions.label"),
+        html: actionList({
+          items: [{
+            text: "Edit",
+            href: upload.uri + "/vaccinations/" + vaccination.uuid + "/edit"
+          }]
+        })
       }
     ]) %}
   {% endfor %}
@@ -103,8 +118,13 @@
       { text: __("record.fullName.label") },
       { text: __("record.nhsn.label") },
       { text: __("record.dob.label") },
-      { text: __("record.postalCode.label") },
-      { text: __("vaccination.created.label") }
+      { text: __("vaccination.created.label") },
+      {
+        text: __("vaccination.actions.label"),
+        attributes: {
+          "no-sort": "no-sort"
+        }
+      }
     ],
     rows: newRecordRows
   }) }}
