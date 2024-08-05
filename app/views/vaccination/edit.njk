@@ -18,42 +18,42 @@
     descriptionHtml: summaryList({
       rows: summaryRows(vaccination, {
         outcome: {
-          href: vaccination.uri + "/edit/outcome"
+          href: "edit/outcome"
         },
         vaccine_gtin: {
-          href: vaccination.uri + "/edit/vaccine"
+          href: "edit/vaccine"
         },
         method: {
-          href: vaccination.uri + "/edit/injection" if vaccination.vaccine.method == VaccineMethod.Injection
+          href: "edit/injection" if vaccination.vaccine.method == VaccineMethod.Injection
         },
         site: {
-          href: vaccination.uri + "/edit/injection" if vaccination.vaccine.method == VaccineMethod.Injection
+          href: "edit/injection" if vaccination.vaccine.method == VaccineMethod.Injection
         },
         dose: {
-          href: vaccination.uri + "/edit/dose"
+          href: "edit/dose"
         },
         sequence: {
-          href: vaccination.uri + "/edit/sequence"
+          href: "edit/sequence"
         },
         batch_id: {
-          href: vaccination.uri + "/edit/batch"
+          href: "edit/batch"
         },
         batch_expires: {
-          href: vaccination.uri + "/edit/batch"
+          href: "edit/batch"
         },
         location: {
-          href: vaccination.uri + "/edit/location"
+          href: "edit/location"
         },
         created: {
-          href: vaccination.uri + "/edit/created"
+          href: "edit/created"
         },
         created_user_uid: {
           value: users[vaccination.created_user_uid].fullName,
-          href: vaccination.uri + "/edit/created-user-uid"
+          href: "edit/created-user-uid"
         },
         protocol: {},
         notes: {
-          href: vaccination.uri + "/edit/notes"
+          href: "edit/notes"
         }
       })
     })

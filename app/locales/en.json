@@ -1332,6 +1332,9 @@
     "vaccine_gtin": {
       "title": "Vaccine",
       "label": "Vaccine"
+    },
+    "actions": {
+      "label": "Actions"
     }
   },
   "vaccine": {
