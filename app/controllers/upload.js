@@ -49,7 +49,7 @@ export const uploadController = {
 
     // Delete previous data
     delete data.upload
-    delete data.wizard
+    delete data?.wizard?.upload
 
     const upload = new Upload({
       campaign_uid: uid,
@@ -57,7 +57,7 @@ export const uploadController = {
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
-    data.wizard = upload
+    data.wizard = { upload }
 
     response.redirect(`${upload.uri}/new/import`)
   },
@@ -69,11 +69,13 @@ export const uploadController = {
 
     const updatedUpload = new Upload({
       ...upload, // Previous values
-      ...data.wizard // Wizard values
+      ...data?.wizard?.upload // Wizard values
     })
 
     // Add upload
     data.uploads[upload.id] = updatedUpload
+
+    delete data?.wizard?.uploads
 
     // Update CHIS records
     for (const uuid of upload.vaccinations) {
@@ -96,7 +98,7 @@ export const uploadController = {
 
     request.app.locals.upload = new Upload({
       ...(form === 'edit' && upload), // Previous values
-      ...data.wizard // Wizard values,
+      ...data?.wizard?.upload // Wizard values,
     })
 
     const journey = {
@@ -161,7 +163,7 @@ export const uploadController = {
         next = paths.next
     }
 
-    data.wizard = new Upload({
+    data.wizard.upload = new Upload({
       ...upload, // Previous values
       ...request.body.upload // New value
     })

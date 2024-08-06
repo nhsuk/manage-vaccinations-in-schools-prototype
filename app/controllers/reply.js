@@ -38,7 +38,8 @@ export const replyController = {
 
     delete data.reply
     delete data.triage
-    delete data.wizard
+    delete data?.wizard?.reply
+    delete data?.wizard?.triage
 
     const isSelfConsent =
       patient.gillick?.competent?.value === GillickCompetent.True
@@ -80,7 +81,7 @@ export const replyController = {
     // Add new reply
     patient.respond = new Reply({
       ...reply, // Previous values
-      ...data.wizard, // Wizard values
+      ...data?.wizard?.reply, // Wizard values
       ...request.body.reply, // New value
       parent: {
         ...reply?.parent, // Previous parent values
@@ -92,14 +93,16 @@ export const replyController = {
     if (triage.outcome) {
       patient.triage = {
         ...triage,
-        ...data.wizard, // Wizard values
+        ...data?.wizard?.triage, // Wizard values
         ...(data.token && { created_user_uid: data.token?.uid })
       }
     }
 
     delete data.reply
     delete data.triage
-    delete data.wizard
+    delete data?.wizard?.reply
+    delete data?.wizard?.triage
+
     delete request.app.locals.reply
     delete request.app.locals.triage
 
@@ -122,12 +125,12 @@ export const replyController = {
 
     request.app.locals.reply = new Reply({
       ...(form === 'edit' && reply), // Previous values
-      ...data.wizard?.reply // Wizard values
+      ...data?.wizard?.reply // Wizard values
     })
 
     request.app.locals.triage = {
       ...(form === 'edit' && triage), // Previous values
-      ...data.wizard?.triage // Wizard values
+      ...data?.wizard?.triage // Wizard values
     }
 
     const replyNeedsTriage = (reply) => {
@@ -266,20 +269,20 @@ export const replyController = {
 
     data.wizard.reply = new Reply({
       ...reply, // Previous values
-      ...request.body.reply, // New value
+      ...request.body?.reply, // New value
       child: {
         ...reply?.child,
         ...request.body.reply?.child
       },
       parent: {
         ...reply?.parent,
-        ...request.body.reply?.parent
+        ...request.body?.reply?.parent
       }
     })
 
     data.wizard.triage = {
       ...triage, // Previous values
-      ...request.body.triage // New value
+      ...request.body?.triage // New value
     }
 
     response.redirect(

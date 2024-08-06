@@ -18,7 +18,7 @@ export const downloadController = {
 
     // Delete previous data
     delete data.download
-    delete data.wizard
+    delete data?.wizard?.download
 
     // Get pending upload from campaign
     const campaign = new Campaign(data.campaigns[uid])
@@ -30,7 +30,7 @@ export const downloadController = {
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
-    data.wizard = download
+    data.wizard = { download }
 
     response.redirect(`${download.uri}/new/dates`)
   },
@@ -64,7 +64,7 @@ export const downloadController = {
 
     request.app.locals.download = new Download({
       ...(form === 'edit' && download), // Previous values
-      ...data.wizard // Wizard values,
+      ...data?.wizard?.download // Wizard values,
     })
 
     const journey = {
@@ -108,7 +108,7 @@ export const downloadController = {
     const { data } = request.session
     const { paths } = response.locals
 
-    data.wizard = new Download({
+    data.wizard.download = new Download({
       ...download, // Previous values
       ...request.body.download // New value
     })

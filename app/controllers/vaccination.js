@@ -44,7 +44,7 @@ export const vaccinationController = {
 
     request.app.locals.vaccination = new Vaccination({
       ...vaccination, // Previous values
-      ...data.wizard // Wizard values,
+      ...data?.wizard?.vaccination // Wizard values,
     })
 
     response.render('vaccination/edit')
@@ -61,8 +61,8 @@ export const vaccinationController = {
     request.app.locals.patient = data.patients[patient_nhsn]
 
     delete data.preScreen
-    delete data.wizard
     delete data.vaccination
+    delete data?.wizard?.vaccination
 
     const session = new Session(data.sessions[session_id])
 
@@ -75,7 +75,7 @@ export const vaccinationController = {
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
-    data.wizard = vaccination
+    data.wizard = { vaccination }
 
     response.redirect(`${vaccination.uri}/new/${request.app.locals.start}`)
   },
@@ -91,7 +91,7 @@ export const vaccinationController = {
     // Capture vaccination
     const updatedVaccination = new Vaccination({
       ...vaccination, // Previous values
-      ...data.wizard, // Wizard values (new flow)
+      ...data?.wizard?.vaccination, // Wizard values (new flow)
       ...request.body.vaccination, // New values (edit flow)
       vaccine_gtin: campaign.vaccine.gtin,
       batch_expires:
@@ -115,7 +115,7 @@ export const vaccinationController = {
       data.records[patient.nhsn].vaccinations.push(updatedVaccination.uuid)
     }
 
-    delete data.wizard
+    delete data?.wizard?.vaccination
     delete request.app.locals.vaccination
 
     const action = form === 'edit' ? 'update' : 'create'
@@ -134,7 +134,7 @@ export const vaccinationController = {
 
     request.app.locals.vaccination = new Vaccination({
       ...(form === 'edit' && vaccination), // Previous values
-      ...data.wizard // Wizard values,
+      ...data?.wizard?.vaccination // Wizard values,
     })
 
     const journey = {
@@ -260,7 +260,7 @@ export const vaccinationController = {
       vaccination.batch_id = data.token.batch[id][0]
     }
 
-    data.wizard = new Vaccination(
+    data.wizard.vaccination = new Vaccination(
       Object.assign(
         vaccination, // Previous values
         request.body.vaccination // New value

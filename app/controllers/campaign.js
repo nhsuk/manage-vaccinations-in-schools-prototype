@@ -89,11 +89,11 @@ export const campaignController = {
 
   edit(request, response) {
     const { campaign } = request.app.locals
-    const { data } = request.session
+    const { data } = request.session.data
 
     request.app.locals.campaign = new Campaign({
       ...campaign, // Previous values
-      ...data.wizard // Wizard values
+      ...data?.wizard?.campaign // Wizard values
     })
 
     response.render('campaigns/edit')
@@ -104,11 +104,11 @@ export const campaignController = {
 
     // Delete previous data
     delete data.campaign
-    delete data.wizard
+    delete data?.wizard?.campaign
 
     const campaign = new Campaign()
 
-    data.wizard = campaign
+    data.wizard = { campaign }
 
     response.redirect(`${campaign.uri}/new/details`)
   },
@@ -121,13 +121,13 @@ export const campaignController = {
 
     const updatedCampaign = new Campaign({
       ...campaign, // Previous values
-      ...data.wizard, // Wizard values
+      ...data?.wizard?.campaign, // Wizard values
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
     data.campaigns[uid] = updatedCampaign
 
-    delete data.wizard
+    delete data?.wizard?.campaign
 
     const action = form === 'edit' ? 'update' : 'create'
     request.flash(
@@ -145,7 +145,7 @@ export const campaignController = {
 
     request.app.locals.campaign = new Campaign({
       ...(form === 'edit' && campaign), // Previous values
-      ...data.wizard // Wizard values,
+      ...data?.wizard?.campaign // Wizard values,
     })
 
     const journey = {
@@ -186,7 +186,7 @@ export const campaignController = {
     const { data } = request.session
     const { paths } = response.locals
 
-    data.wizard = new Campaign({
+    data.wizard.campaign = new Campaign({
       ...campaign, // Previous values
       ...request.body.campaign // New value
     })

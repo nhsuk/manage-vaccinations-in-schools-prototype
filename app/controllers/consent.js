@@ -22,13 +22,13 @@ export const consentController = {
 
     // Delete previous data
     delete data.consent
-    delete data.wizard
+    delete data?.wizard?.consent
 
     const consent = new Consent({
       session_id: session.id
     })
 
-    data.wizard = consent
+    data.wizard = { consent }
 
     response.redirect(`${consent.uri}/new/child`)
   },
@@ -102,7 +102,7 @@ export const consentController = {
 
     request.app.locals.consent = new Consent({
       ...(form === 'edit' && consent), // Previous values
-      ...data.wizard // Wizard values,
+      ...data?.wizard?.consent // Wizard values,
     })
 
     const journey = {
@@ -176,7 +176,7 @@ export const consentController = {
 
     delete data.healthAnswers
 
-    data.wizard = new Consent({
+    data.wizard.consent = new Consent({
       ...consent, // Previous values
       ...request.body.consent, // New value
       child: {

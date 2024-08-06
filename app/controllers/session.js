@@ -173,7 +173,7 @@ export const sessionController = {
 
     request.app.locals.session = new Session({
       ...session, // Previous values
-      ...data.wizard // Wizard values
+      ...data?.wizard?.session // Wizard values
     })
 
     response.render('sessions/edit')
@@ -184,11 +184,11 @@ export const sessionController = {
 
     // Delete previous data
     delete data.session
-    delete data.wizard
+    delete data?.wizard?.session
 
     const session = new Session()
 
-    data.wizard = session
+    data.wizard = { session }
 
     response.redirect(`/sessions/${session.id}/new/format`)
   },
@@ -201,11 +201,11 @@ export const sessionController = {
 
     data.sessions[id] = new Session({
       ...session, // Previous values
-      ...data.wizard, // Wizard values
+      ...data?.wizard?.session, // Wizard values
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
-    delete data.wizard
+    delete data?.wizard?.session
 
     const action = form === 'edit' ? 'update' : 'create'
     request.flash('success', __(`session.success.${action}`, { session }))
@@ -220,7 +220,7 @@ export const sessionController = {
 
     request.app.locals.session = new Session({
       ...(form === 'edit' && session), // Previous values
-      ...data.wizard // Wizard values,
+      ...data?.wizard?.session // Wizard values,
     })
 
     const journey = {
@@ -291,7 +291,7 @@ export const sessionController = {
     const { data } = request.session
     const { paths } = response.locals
 
-    data.wizard = new Session({
+    data.wizard.session = new Session({
       ...session, // Previous values
       ...request.body.session // New value
     })
