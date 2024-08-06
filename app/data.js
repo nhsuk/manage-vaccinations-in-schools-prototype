@@ -39,5 +39,6 @@ export default {
   uploads: {},
   users,
   vaccinations,
-  vaccines
+  vaccines,
+  wizard: {}
 }
