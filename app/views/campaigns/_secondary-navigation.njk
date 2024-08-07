@@ -15,5 +15,9 @@
     text: __("campaign.uploads.title"),
     href: campaign.uri + "/uploads",
     current: view == "uploads"
-  } if data.features.uploads.on]
+  } if data.features.uploads.on, {
+    text: (__("campaign.reviews.title") + " " + count(reviews.length)) | safe,
+    href: campaign.uri + "/reviews",
+    current: view == "reviews"
+  } if data.features.uploads.on and reviews.length]
 }) }}

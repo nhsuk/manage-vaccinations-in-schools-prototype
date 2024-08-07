@@ -34,8 +34,8 @@ export const uploadController = {
     const vaccinations = getVaccinations(data, upload.vaccinations)
 
     request.app.locals.upload = upload
-    request.app.locals.vaccinations = vaccinations
-    request.app.locals.inexact = vaccinations.slice(0, 3)
+    request.app.locals.vaccinations = vaccinations.slice(0, -3)
+    request.app.locals.inexact = vaccinations.slice(-3)
 
     next()
   },

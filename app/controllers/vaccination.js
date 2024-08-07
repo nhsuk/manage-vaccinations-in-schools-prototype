@@ -32,6 +32,23 @@ export const vaccinationController = {
     response.render('vaccination/show')
   },
 
+  review(request, response) {
+    const { record, vaccination } = request.app.locals
+
+    const duplicateVaccination = new Vaccination(vaccination)
+    const duplicateRecord = new Record(record)
+
+    // Fake issue with date of birth field
+    const dob = new Date(duplicateRecord.dob)
+    dob.setFullYear(dob.getFullYear() - 2)
+    duplicateRecord.dob = dob
+
+    response.render('vaccination/review', {
+      duplicateVaccination,
+      duplicateRecord
+    })
+  },
+
   redirect(request, response) {
     const { id, nhsn } = request.params
 

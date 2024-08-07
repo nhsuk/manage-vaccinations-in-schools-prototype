@@ -1,0 +1,151 @@
+{% extends "_layouts/form.njk" %}
+
+{% set gridColumns = "full" %}
+{% set title = __("vaccination.review.title") %}
+{% set confirmButtonText = __("vaccination.review.confirm") %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }, {
+      text: data.campaigns[vaccination.campaign_uid].name,
+      href: "/campaigns/" + vaccination.campaign_uid
+    }],
+    text: __("campaign.reviews.title"),
+    href: "/campaigns/" + vaccination.campaign_uid + "/reviews"
+  }) }}
+{% endblock %}
+
+{% block form %}
+  {{ super() }}
+
+  {{ heading({
+    caption: record.fullName,
+    title: title
+  }) }}
+
+  {{ warningCallout({
+    heading: __("vaccination.review.issue.title"),
+    HTML: __("vaccination.review.issue.text") | nhsukMarkdown
+  }) }}
+
+  <div class="nhsuk-grid-row nhsuk-card-group">
+    <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+      {% set descriptionHtml %}
+        <h3 class="nhsuk-heading-s">{{ __("vaccination.review.duplicate.record") }}</h3>
+
+        {{ summaryList({
+          rows: summaryRows(duplicateRecord, {
+            nhsn: {},
+            fullName: {},
+            dob: {
+              value: duplicateRecord.formatted.dob | highlightDifference(record.formatted.dob)
+            },
+            sex: {},
+            postalCode: {},
+            urn: {}
+          })
+        }) }}
+
+        <h3 class="nhsuk-heading-s">{{ __("vaccination.review.duplicate.vaccination") }}</h3>
+        {{ summaryList({
+          rows: summaryRows(duplicateVaccination, {
+            outcome: {},
+            vaccine_gtin: {},
+            method: {},
+            site: {},
+            dose: {},
+            sequence: {},
+            batch_id: {},
+            batch_expires: {},
+            location: {},
+            created: {},
+            updated: {},
+            created_user_uid: {
+              value: users[vaccination.created_user_uid].fullName
+            },
+            protocol: {}
+          })
+        }) }}
+      {% endset %}
+
+      {{ card({
+        feature: true,
+        heading: __("vaccination.review.duplicate.label"),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: descriptionHtml
+      }) }}
+    </div>
+    <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+      {% set descriptionHtml %}
+        <h3 class="nhsuk-heading-s">{{ __("vaccination.review.original.record") }}</h3>
+
+        {{ summaryList({
+          rows: summaryRows(record, {
+            nhsn: {},
+            fullName: {},
+            dob: {},
+            sex: {},
+            postalCode: {},
+            urn: {}
+          })
+        }) }}
+
+        <h3 class="nhsuk-heading-s">{{ __("vaccination.review.original.vaccination") }}</h3>
+        {{ summaryList({
+          rows: summaryRows(vaccination, {
+            outcome: {},
+            vaccine_gtin: {},
+            method: {},
+            site: {},
+            dose: {},
+            sequence: {},
+            batch_id: {},
+            batch_expires: {},
+            location: {},
+            created: {},
+            updated: {},
+            created_user_uid: {
+              value: users[vaccination.created_user_uid].fullName
+            },
+            protocol: {}
+          })
+        }) }}
+      {% endset %}
+
+      {{ card({
+        feature: true,
+        heading: __("vaccination.review.original.label"),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: descriptionHtml
+      }) }}
+    </div>
+  </div>
+
+  {{ radios({
+    formGroup: {
+      classes: "nhsuk-u-width-one-half"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: "Which record do you want to keep?"
+      }
+    },
+    items: [{
+      text: "Use duplicate record",
+      label: "duplicate",
+      hint: {
+        text: "The duplicate record will replace the previously uploaded record."
+      }
+    }, {
+      text: "Keep previously uploaded record",
+      label: "original",
+      hint: {
+        text: "The previously uploaded record will be kept and the duplicate record will be discarded."
+      }
+    }]
+  }) }}
+{% endblock %}

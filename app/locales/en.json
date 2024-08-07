@@ -145,6 +145,13 @@
     "vaccines": {
       "label": "Vaccines",
       "title": "Which vaccine(s) does this programme administer?"
+    },
+    "reviews": {
+      "title": "Upload issues",
+      "count": {
+        "one": "%s uploaded record needs review",
+        "other": "[0] No uploaded records need review|%s uploaded records need review"
+      }
     }
   },
   "capture": {
@@ -1335,6 +1342,28 @@
     },
     "actions": {
       "label": "Actions"
+    },
+    "review": {
+      "title": "Review duplicate vaccination record",
+      "duplicate": {
+        "label": "Duplicate record",
+        "record": "Duplicate child record",
+        "vaccination": "Duplicate vaccination record"
+      },
+      "original": {
+        "label": "Previously uploaded record",
+        "record": "Previously uploaded child record",
+        "vaccination": "Previously uploaded vaccination record"
+      },
+      "confirm": "Resolve duplicate",
+      "issue": {
+        "label": "Issue to review",
+        "title": "This record needs reviewing",
+        "text": "A field in a duplicate record does not the match previously uploaded record"
+      },
+      "actions": {
+        "label": "Actions"
+      }
     }
   },
   "vaccine": {
@@ -1425,6 +1454,12 @@
     },
     "vaccinations": {
       "label": "Records"
+    }
+  },
+  "review": {
+    "issue": {
+      "label": "review.issue.label",
+      "text": "review.issue.text"
     }
   }
 }

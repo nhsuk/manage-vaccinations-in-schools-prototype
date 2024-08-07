@@ -30,26 +30,18 @@
     {% set inexactRecordRows = inexactRecordRows | push([
       {
         header: __("record.fullName.label"),
-        text: vaccination.record.fullName
+        html: vaccination.record.fullName
       },
       {
-        header: __("record.nhsn.label"),
-        html: vaccination.record.formatted.nhsn
+        header: __("vaccination.review.issue.label"),
+        html: __("vaccination.review.issue.text")
       },
       {
-        header: __("record.dob.label"),
-        text: vaccination.record.formatted.dob
-      },
-      {
-        header: __("vaccination.created.label"),
-        text: vaccination.formatted.created_date
-      },
-      {
-        header: __("vaccination.actions.label"),
+        header: __("vaccination.review.actions.label"),
         html: actionList({
           items: [{
-            text: "Edit",
-            href: upload.uri + "/vaccinations/" + vaccination.uuid + "/edit"
+            text: "Review",
+            href: upload.uri + "/vaccinations/" + vaccination.uuid + "/review"
           }]
         })
       }
@@ -63,15 +55,17 @@
     heading: __n("upload.inexact.count", inexact.length),
     responsive: true,
     head: [
-      { text: __("record.fullName.label") },
-      { text: __("record.nhsn.label") },
-      { text: __("record.dob.label") },
-      { text: __("vaccination.created.label") },
       {
-        text: __("vaccination.actions.label"),
-        attributes: {
-          "no-sort": "no-sort"
-        }
+        text: __("record.label"),
+        attributes: { "no-sort": "no-sort" }
+      },
+      {
+        text: __("vaccination.review.issue.label"),
+        attributes: { "no-sort": "no-sort" }
+      },
+      {
+        text: __("vaccination.review.actions.label"),
+        attributes: { "no-sort": "no-sort" }
       }
     ],
     rows: inexactRecordRows
