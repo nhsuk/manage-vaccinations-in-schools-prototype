@@ -1,5 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
+{% set gridColumns = "full" %}
 {% set title = __("session.consent-link.title") %}
 {% set confirmButtonText = __("session.consent-link.confirm") %}
 {% set paths = {
@@ -14,68 +15,57 @@
     title: title
   }) }}
 
-  {{ table({
-    panel: true,
-    classes: "app-compare",
-    tableClasses: "app-compare__table",
-    caption: __("session.consent-link.summary"),
-    captionClasses: "nhsuk-u-padding-top-4",
-    firstCellIsHeader: true,
-    head: [
-      { html: "<span class=\"nhsuk-u-visually-hidden\">Field</span>" },
-      { text: __("consent.label") },
-      { text: __("record.label") }
-    ],
-    rows: [
-      [
-        { html: __("child.fullName.label") },
-        { html: consent.child.fullName | highlightDifference(patient.fullName) },
-        { text: patient.fullName }
-      ],
-      [
-        { html: __("child.dob.label") },
-        { html: consent.child.formatted.dob | highlightDifference(patient.record.formatted.dob) },
-        { text: patient.record.formatted.dob }
-      ],
-      [
-        { text: __("child.address.label") },
-        { html: consent.child.formatted.address | highlightDifference(patient.record.formatted.address) },
-        { html: patient.record.formatted.address }
-      ],
-      [
-        { text: __("child.gpSurgery.label") },
-        { html: consent.child.formatted.gpSurgery | highlightDifference(patient.record.formatted.gpSurgery) },
-        { text: patient.record.formatted.gpSurgery }
-      ]
-    ]
-  }) }}
-
-  {{ card({
-    heading: __("parent.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(consent.parent, {
-        fullName: {},
-        relationship: {},
-        hasParentalResponsibility: {},
-        email: {},
-        tel: {},
-        contactPreference: {},
-        sms: {}
-      })
-    })
-  }) }}
-
-  {{ card({
-    heading: __("consent.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(consent, {
-        created: {},
-        decision: {},
-        refusalReason: {},
-        refusalReasonDetails: {}
-      })
-    })
-  }) }}
+  <div class="nhsuk-grid-row nhsuk-card-group">
+    <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+      {{ card({
+        feature: true,
+        heading: __("consent.label"),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: summaryList({
+          rows: summaryRows(consent.child, {
+            fullName: {
+              value: consent.child.fullName | highlightDifference(patient.fullName)
+            },
+            dob: {
+              value: consent.child.formatted.dob | highlightDifference(patient.record.formatted.dob)
+            },
+            address: {
+              value: consent.child.formatted.address | highlightDifference(patient.record.formatted.address)
+            },
+            gpSurgery: {
+              value: consent.child.formatted.gpSurgery | highlightDifference(patient.record.formatted.gpSurgery)
+            }
+          })
+        }) + details({
+          text: __("parent.label"),
+          HTML: summaryList({
+            rows: summaryRows(consent.parent, {
+              fullName: {},
+              relationship: {},
+              hasParentalResponsibility: {},
+              email: {},
+              tel: {},
+              contactPreference: {},
+              sms: {}
+            })
+          })
+        })
+      }) }}
+    </div>
+    <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+      {{ card({
+        feature: true,
+        heading: __("record.label"),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: summaryList({
+          rows: summaryRows(patient.record, {
+            fullName: {},
+            dob: {},
+            address: {},
+            gpSurgery: {}
+          })
+        })
+      }) }}
+    </div>
+  </div>
 {% endblock %}
