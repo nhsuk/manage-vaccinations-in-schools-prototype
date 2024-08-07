@@ -59,6 +59,13 @@
   }
 }
 
+// Adjust spacing around details content within a card
+.nhsuk-card .nhsuk-details__text {
+  border-left-width: $nhsuk-border-width-inset-text;
+  margin-left: #{nhsuk-spacing(5) * -1};
+  padding-right: 0;
+}
+
 // Used only to simulate CIS2 role switcher
 // @link https://digital.nhs.uk/services/care-identity-service/applications-and-services/cis2-authentication/guidance-for-developers/detailed-guidance/role-selection
 .nhsuk-card--button {

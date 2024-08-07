@@ -223,7 +223,7 @@
     }
   },
   "consent": {
-    "label": "Consent outcome",
+    "label": "Consent response",
     "summary": "Details of child given in consent response",
     "NoResponse": {
       "colour": "grey",
