@@ -1,10 +1,9 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { Campaign } from '../models/campaign.js'
-import { Record } from '../models/record.js'
 import { Session } from '../models/session.js'
 import { Vaccine } from '../models/vaccine.js'
 import { Upload } from '../models/upload.js'
-import { Vaccination } from '../models/vaccination.js'
+import { getVaccinations } from '../utils/vaccination.js'
 
 export const campaignController = {
   list(request, response) {
@@ -15,6 +14,10 @@ export const campaignController = {
         (campaign) => new Campaign(campaign)
       )
     })
+  },
+
+  reviews(request, response) {
+    response.render('campaigns/reviews')
   },
 
   sessions(request, response) {
@@ -68,21 +71,16 @@ export const campaignController = {
           uuids.push(uuid)
         }
       }
+
+      // If upload has occurred, fake issues with 3 uploaded records
+      request.app.locals.reviews = getVaccinations(data, uuids.slice(0, 3))
     } else {
       Object.values(data.vaccinations)
         .filter((vaccination) => vaccination.campaign_uid === uid)
         .forEach((vaccination) => uuids.push(vaccination.uuid))
     }
 
-    const vaccinations = []
-    for (const uuid of uuids) {
-      const vaccination = new Vaccination(data.vaccinations[uuid])
-      vaccination.record = new Record(data.records[vaccination.patient_nhsn])
-
-      vaccinations.push(vaccination)
-    }
-
-    request.app.locals.vaccinations = vaccinations
+    request.app.locals.vaccinations = getVaccinations(data, uuids)
 
     next()
   },

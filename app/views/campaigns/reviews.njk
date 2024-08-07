@@ -1,0 +1,66 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = campaign.name + " – " + __("campaign.reviews.title") %}
+{% set view = "reviews" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }],
+    text: campaign.name,
+    href: campaign.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: campaign.name,
+    summary: campaign.year
+  }) }}
+
+  {% include "campaigns/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("campaign.reviews.title") }}
+  </h2>
+
+  {% if reviews.length %}
+    {% set reviewRows = [] %}
+    {% for vaccination in reviews %}
+      {% set reviewRows = reviewRows | push([
+        {
+          header: __("record.fullName.label"),
+          html: link(vaccination.uri + "/review", vaccination.record.fullName)
+        },
+        {
+          header: __("vaccination.created.label"),
+          html: vaccination.formatted.created_date
+        },
+        {
+          header: __("vaccination.review.issue.label"),
+          html: __("vaccination.review.issue.text")
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "reviews",
+      sort: "name",
+      heading: __n("campaign.reviews.count", reviews.length),
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("record.label") },
+        { text: __("upload.created.label") },
+        { text: __("vaccination.review.issue.label") }
+      ],
+      rows: reviewRows
+    }) }}
+  {% else %}
+    {{ __n("campaign.reviews.count", reviews.length) | nhsukMarkdown }}
+  {% endif %}
+{% endblock %}
