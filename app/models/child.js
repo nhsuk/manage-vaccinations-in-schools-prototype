@@ -5,7 +5,7 @@ import {
   convertObjectToIsoDate,
   formatDate
 } from '../utils/date.js'
-import { formatMonospace } from '../utils/string.js'
+import { formatNhsNumber } from '../utils/string.js'
 
 /**
  * @class Child
@@ -118,7 +118,7 @@ export class Child {
         : ''
 
     return {
-      nhsn: formatMonospace(nhsn),
+      nhsn: formatNhsNumber(nhsn),
       dob: formatDate(this.dob, {
         dateStyle: 'long'
       }),

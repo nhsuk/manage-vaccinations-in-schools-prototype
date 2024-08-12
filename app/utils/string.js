@@ -103,6 +103,21 @@ export function formatMonospace(string) {
 }
 
 /**
+ * Format NHS number
+ * Replace each space in number with a non-breaking space and zero-width word
+ * joiner to prevent telephone format detection
+ * @param {string|number} string - String
+ * @returns {string|undefined} Formatted HTML
+ */
+export function formatNhsNumber(string) {
+  if (!string) return
+
+  string = string.replaceAll(/\s/g, '&nbsp;&zwj;')
+
+  return formatMonospace(string)
+}
+
+/**
  * Append other value, if one is provided
  * @param {string} other - Other option name (typically ‘Other’)
  * @param {string} string - Other value

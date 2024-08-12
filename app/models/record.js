@@ -4,7 +4,7 @@ import gpSurgeries from '../datasets/gp-surgeries.js'
 import schools from '../datasets/schools.js'
 import { Parent } from './parent.js'
 import { formatDate } from '../utils/date.js'
-import { formatMonospace } from '../utils/string.js'
+import { formatNhsNumber } from '../utils/string.js'
 
 const primarySchools = Object.values(schools).filter(
   (school) => school.phase === 'Primary'
@@ -128,7 +128,7 @@ export class Record {
       .replace(/(\d{3})(\d{4})(\d{3})/, '$1 $2 $3')
 
     return {
-      nhsn: formatMonospace(nhsn),
+      nhsn: formatNhsNumber(nhsn),
       dob: formatDate(this.dob, {
         dateStyle: 'long'
       }),
