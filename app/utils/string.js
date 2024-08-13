@@ -112,9 +112,18 @@ export function formatMonospace(string) {
 export function formatNhsNumber(string) {
   if (!string) return
 
-  string = string.replaceAll(/\s/g, '&nbsp;&zwj;')
+  // Patients without an NHS number have a 10 character alphanumeric UID
+  const isNhsNumber = string.match(/^\d{10}$/)
 
-  return formatMonospace(string)
+  if (isNhsNumber) {
+    string = string
+      .toString()
+      .replaceAll(/(\d{3})(\d{4})(\d{3})/g, '$1&nbsp;&zwj;$2&nbsp;&zwj;$3')
+
+    return formatMonospace(string)
+  }
+
+  return null
 }
 
 /**

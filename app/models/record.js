@@ -45,7 +45,7 @@ export class GPRegistered {
  */
 export class Record {
   constructor(options) {
-    this.nhsn = options?.nhsn || this.#nhsn
+    this.nhsn = options?.nhsn || this.nhsNumber
     this.firstName = options.firstName
     this.lastName = options.lastName
     this.dob = options.dob
@@ -105,6 +105,14 @@ export class Record {
   }
 
   #nhsn = '999#######'.replace(/#+/g, (m) => faker.string.numeric(m.length))
+  #temporaryNhsn = faker.string.alpha(10)
+
+  // 5% of records don’t have an NHS number
+  get nhsNumber() {
+    const hasNhsNumber = faker.helpers.maybe(() => true, { probability: 0.95 })
+
+    return hasNhsNumber ? this.#nhsn : this.#temporaryNhsn
+  }
 
   get age() {
     return Math.floor((new Date() - new Date(this.dob).getTime()) / 3.15576e10)
@@ -123,12 +131,8 @@ export class Record {
   }
 
   get formatted() {
-    const nhsn = this.nhsn
-      .toString()
-      .replace(/(\d{3})(\d{4})(\d{3})/, '$1 $2 $3')
-
     return {
-      nhsn: formatNhsNumber(nhsn),
+      nhsn: formatNhsNumber(this.nhsn),
       dob: formatDate(this.dob, {
         dateStyle: 'long'
       }),

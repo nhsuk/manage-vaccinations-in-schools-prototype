@@ -108,17 +108,13 @@ export class Child {
   }
 
   get formatted() {
-    const nhsn =
-      this.nhsn &&
-      this.nhsn.toString().replace(/(\d{3})(\d{4})(\d{3})/, '$1 $2 $3')
-
     const address =
       this.address && Object.values(this.address).every((value) => value !== '')
         ? Object.values(this.address).join('<br>')
         : ''
 
     return {
-      nhsn: formatNhsNumber(nhsn),
+      nhsn: formatNhsNumber(this.nhsn),
       dob: formatDate(this.dob, {
         dateStyle: 'long'
       }),
