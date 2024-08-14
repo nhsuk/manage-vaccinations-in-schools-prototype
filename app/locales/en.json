@@ -1182,7 +1182,7 @@
       "label": "Upload new vaccination records",
       "check-answers": {
         "title": "Check and confirm",
-        "warning": "Duplicate or incomplete vaccination records",
+        "warning": "Upload contains invalid or incomplete records",
         "confirm": "Upload records",
         "summary": "Details"
       },
@@ -1208,20 +1208,32 @@
       "description": "All records in this CSV file have been uploaded."
     },
     "exact": {
-      "one": "%s previously uploaded record has been omitted",
-      "other": "[0] No previously uploaded records have been omitted|%s previously uploaded records have been omitted"
+      "label": "Previously uploaded",
+      "count": {
+        "one": "%s previously uploaded record omitted",
+        "other": "[0] No previously uploaded records omitted|%s previously uploaded records omitted"
+      }
     },
     "inexact": {
-      "one": "%s duplicate record needs review",
-      "other": "[0] No duplicate records need review|%s duplicate records need review",
+      "label": "Duplicates",
       "count": {
-        "one": "%s duplicate record",
-        "other": "[0] No duplicate records|%s duplicate records"
+        "one": "%s duplicate record needs review",
+        "other": "[0] No duplicate records need review|%s duplicate records need review"
+      }
+    },
+    "invalid": {
+      "label": "Missing vaccination",
+      "count": {
+        "one": "%s record with no vaccination event omitted",
+        "other": "[0] No records with no vaccination events omitted|%s records with no vaccination events omitted"
       }
     },
     "incomplete": {
-      "one": "%s record without an NHS number will use information from the Personal Demographics Service (PDS)",
-      "other": "[0] records without NHS numbers will use information from the Personal Demographics Service (PDS)|%s records without NHS numbers will use information from the Personal Demographics Service (PDS)"
+      "label": "Incomplete",
+      "count": {
+        "one": "%s record without an NHS number will use information from the Personal Demographics Service (PDS)",
+        "other": "[0] No records without NHS numbers will use information from the Personal Demographics Service (PDS)|%s records without NHS numbers will use information from the Personal Demographics Service (PDS)"
+      }
     },
     "id": {
       "label": "ID"

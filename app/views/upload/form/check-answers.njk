@@ -11,15 +11,15 @@
   }) }}
 
 {% set warningCalloutMarkdown %}
-{% if data.exact %}- {{ __n("upload.exact", data.exact) }}{% endif %}
-{% if data.inexact %}- {{ __n("upload.inexact", data.inexact) }}{% endif %}
-{% if data.incomplete %}- {{ __n("upload.incomplete", data.incomplete) }}{% endif %}
+{% if invalid.length %}- {{ __n("upload.invalid.count", invalid.length) }}{% endif %}
+{% if exact.length %}- {{ __n("upload.exact.count", exact.length) }}{% endif %}
+{% if incomplete.length %}- {{ __n("upload.incomplete.count", incomplete.length) }}{% endif %}
 {% endset %}
 
   {{ warningCallout({
     heading: __("upload.new.check-answers.warning"),
     HTML: warningCalloutMarkdown | nhsukMarkdown
-  }) if data.exact or data.inexact or data.incomplete }}
+  }) if exact.length or inexact.length or invalid.length or incomplete.length }}
 
   {{ button({
     text: confirmButtonText
@@ -69,7 +69,7 @@
       }
     ],
     rows: inexactRecordRows
-  }) if data.inexact }}
+  }) if inexact.length }}
 
   {% set newRecordRows = [] %}
   {% for vaccination in vaccinations %}

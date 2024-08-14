@@ -1,5 +1,7 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { Campaign } from '../models/campaign.js'
+import { Patient } from '../models/patient.js'
+import { Record } from '../models/record.js'
 import { Upload } from '../models/upload.js'
 import { Vaccination } from '../models/vaccination.js'
 import { getVaccinations } from '../utils/vaccination.js'
@@ -31,11 +33,14 @@ export const uploadController = {
     const { data } = request.session
 
     upload = new Upload(upload || data.uploads[id])
-    const vaccinations = getVaccinations(data, upload.vaccinations)
 
+    // Add patient records to vaccination records
     request.app.locals.upload = upload
-    request.app.locals.vaccinations = vaccinations.slice(0, -3)
-    request.app.locals.inexact = vaccinations.slice(-3)
+    request.app.locals.vaccinations = getVaccinations(data, upload.vaccinations)
+    request.app.locals.incomplete = getVaccinations(data, upload.incomplete)
+    request.app.locals.invalid = getVaccinations(data, upload.invalid)
+    request.app.locals.exact = getVaccinations(data, upload.exact)
+    request.app.locals.inexact = getVaccinations(data, upload.inexact)
 
     next()
   },
@@ -47,13 +52,51 @@ export const uploadController = {
     // Get pending upload from campaign
     const { pendingVaccinations } = new Campaign(data.campaigns[uid])
 
+    // Get UUIDs for all vaccinations that were given
+    const givenVaccinations = pendingVaccinations
+      .map((uuid) => new Vaccination(data.vaccinations[uuid]))
+      .filter((vaccination) => vaccination.given)
+      .map((vaccination) => vaccination.uuid)
+
+    // Get UUIDs for all vaccinations that were not given (these are invalid)
+    const invalid = pendingVaccinations
+      .map((uuid) => new Vaccination(data.vaccinations[uuid]))
+      .filter((vaccination) => !vaccination.given)
+      .map((vaccination) => vaccination.uuid)
+
+    // Get UUIDs for all vaccinations with records missing an NHS number
+    const incomplete = pendingVaccinations
+      .map((uuid) => new Vaccination(data.vaccinations[uuid]))
+      .filter((vaccination) => {
+        const patient = new Patient(data.patients[vaccination.patient_uuid])
+        const record = new Record(patient.record)
+
+        return record.missingNhsNumber
+      })
+      .map((vaccination) => vaccination.uuid)
+
+    // Remove 3 UUIDs from given vaccinations…
+    const vaccinations = givenVaccinations.slice(0, -6)
+
+    // …because we’ll say these are an inexact match
+    const inexact = givenVaccinations.slice(-3)
+
+    // Add use 10 existing vaccinations as a placeholder for exact duplicates
+    const exact = Object.values(data.vaccinations)
+      .map((vaccination) => vaccination.uuid)
+      .slice(-10)
+
     // Delete previous data
     delete data.upload
     delete data?.wizard?.upload
 
     const upload = new Upload({
       campaign_uid: uid,
-      vaccinations: pendingVaccinations,
+      vaccinations,
+      incomplete,
+      invalid,
+      inexact,
+      exact,
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
@@ -151,15 +194,6 @@ export const uploadController = {
         break
       case 'devoid':
         next = `${upload.uri}/new/devoid`
-        break
-      case 'exact':
-        next = `${upload.uri}/new/check-answers?exact=11`
-        break
-      case 'inexact':
-        next = `${upload.uri}/new/check-answers?inexact=3`
-        break
-      case 'incomplete':
-        next = `${upload.uri}/new/check-answers?incomplete=5`
         break
       default:
         next = paths.next

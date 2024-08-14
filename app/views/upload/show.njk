@@ -34,10 +34,65 @@
         },
         campaign_uid: {
           value: data.campaigns[upload.campaign_uid].name
+        },
+        invalid: {
+          value: __n("upload.invalid.count", invalid.length)
+        },
+        exact: {
+          value: __n("upload.exact.count", exact.length)
+        },
+        inexact: {
+          value: __n("upload.inexact.count", inexact.length)
         }
       })
     })
   }) }}
+
+  {% set inexactRecordRows = [] %}
+  {% for vaccination in inexact %}
+    {% set inexactRecordRows = inexactRecordRows | push([
+      {
+        header: __("record.fullName.label"),
+        html: vaccination.record.fullName
+      },
+      {
+        header: __("vaccination.review.issue.label"),
+        html: __("vaccination.review.issue.text")
+      },
+      {
+        header: __("vaccination.review.actions.label"),
+        html: actionList({
+          items: [{
+            text: "Review",
+            href: upload.uri + "/vaccinations/" + vaccination.uuid + "/review"
+          }]
+        })
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    id: "inexact-records",
+    sort: "name",
+    panel: true,
+    heading: __n("upload.inexact.count", inexact.length),
+    responsive: true,
+    head: [
+      {
+        text: __("record.label"),
+        attributes: { "no-sort": "no-sort" }
+      },
+      {
+        text: __("vaccination.review.issue.label"),
+        attributes: { "no-sort": "no-sort" }
+      },
+      {
+        text: __("vaccination.review.actions.label"),
+        attributes: { "no-sort": "no-sort" }
+      }
+    ],
+    rows: inexactRecordRows
+  }) if inexact.length }}
 
   {% set vaccinationRows = [] %}
   {% for vaccination in vaccinations %}
@@ -69,7 +124,7 @@
     id: "vaccinations",
     sort: "name",
     panel: true,
-    heading: __n("upload.vaccinations.count", vaccinations.length),
+    heading: __n("upload.vaccinations.count", upload.vaccinations.length),
     responsive: true,
     head: [
       { text: __("record.fullName.label") },

@@ -6,8 +6,12 @@ import { formatDate } from '../utils/date.js'
  * @property {string} id - Upload ID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created upload
- * @property {Array<string>} [vaccinations] - Vaccination UUIDs
  * @property {string} [campaign_uid] - Campaign UID
+ * @property {Array<string>} [vaccinations] - Vaccination UUIDs
+ * @property {Array<string>} [incomplete] - Incomplete records (no NHS number)
+ * @property {Array<string>} [invalid] - Invalid records (no vaccination event)
+ * @property {Array<string>} [exact] - Exact duplicate records found
+ * @property {Array<string>} [inexact] - Inexact duplicate records found
  * @function ns - Namespace
  * @function uri - URL
  */
@@ -18,6 +22,10 @@ export class Upload {
     this.created_user_uid = options?.created_user_uid
     this.campaign_uid = options?.campaign_uid
     this.vaccinations = options?.vaccinations || []
+    this.incomplete = options?.incomplete || []
+    this.invalid = options?.invalid || []
+    this.exact = options?.exact || []
+    this.inexact = options?.inexact || []
   }
 
   static generate(campaign, user, vaccinations) {
