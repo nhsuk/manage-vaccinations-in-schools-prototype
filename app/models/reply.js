@@ -49,6 +49,7 @@ export class ReplyRefusal {
  * @property {string} [refusalReasonDetails] - Refusal reason details
  * @property {string} [notes] - Notes about this response
  * @property {string} patient_nhsn - Patient NHS number
+ * @property {string} patient_uuid - Patient UUID
  * @property {string} session_id - Session ID
  * @function fullName - Full name of respondent
  * @function relationship - Relation of respondent to child
@@ -72,6 +73,7 @@ export class Reply {
     this.refusalReasonDetails = options?.refusalReasonDetails
     this.notes = options?.notes || ''
     this.patient_nhsn = options?.patient_nhsn
+    this.patient_uuid = options?.patient_uuid
     this.session_id = options?.session_id
   }
 
@@ -130,6 +132,7 @@ export class Reply {
         })
       }),
       patient_nhsn: patient.nhsn,
+      patient_uuid: patient.uuid,
       session_id: session.id
     })
   }

@@ -1,16 +1,15 @@
-import { Patient, ScreenOutcome } from '../models/patient.js'
+import { Patient } from '../models/patient.js'
 import { SessionStatus } from '../models/session.js'
 
 export const triageController = {
   update(request, response) {
     const { activity, session } = request.app.locals
-    const { form, id, nhsn } = request.params
+    const { form, id } = request.params
     const { data } = request.session
-    const { __ } = response.locals
-    const patient = new Patient(response.locals.patient)
+    const { __, patient } = response.locals
 
-    data.patients[nhsn] = patient
-    data.patients[nhsn].triage = {
+    data.patients[patient.uuid] = new Patient(patient)
+    data.patients[patient.uuid].triage = {
       ...data.triage,
       ...(data.token && { created_user_uid: data.token?.uid })
     }

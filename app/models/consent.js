@@ -18,7 +18,7 @@ import { ReplyDecision, ReplyMethod, ReplyRefusal } from './reply.js'
  * @property {ReplyRefusal} [refusalReason] - Refusal reason
  * @property {string} [refusalReasonOther] - Other refusal reason
  * @property {string} [refusalReasonDetails] - Refusal reason details
- * @property {string} [patient_nhsn] - Patient NHS number
+ * @property {string} [patient_uuid] - Patient UUID
  * @property {string} session_id - Session ID
  * @function fullName - Full name of respondent
  * @function relationship - Relation of respondent to child
@@ -44,7 +44,7 @@ export class Consent {
       !this.given && this.refusalReason !== ReplyRefusal.Personal
         ? options?.refusalReasonDetails || ''
         : undefined
-    this.patient_nhsn = options?.patient_nhsn
+    this.patient_uuid = options?.patient_uuid
     this.session_id = options.session_id
   }
 

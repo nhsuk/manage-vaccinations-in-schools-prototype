@@ -19,8 +19,8 @@ export const vaccinationController = {
     const { data } = request.session
 
     const vaccination = new Vaccination(data.vaccinations[uuid])
-    const nhsn = vaccination?.patient_nhsn || patient?.nhsn
-    const record = new Record(data.records[nhsn])
+    const patient_uuid = vaccination?.patient_uuid || patient?.uuid
+    const record = new Record(data.patients[patient_uuid].record)
 
     request.app.locals.vaccination = vaccination
     request.app.locals.record = record
@@ -70,12 +70,12 @@ export const vaccinationController = {
   new(request, response) {
     const { campaign } = request.app.locals
     const { data } = request.session
-    const { patient_nhsn, session_id } = request.query
+    const { patient_uuid, session_id } = request.query
 
     request.app.locals.start =
       data.preScreen.continue === 'true' ? 'administer' : 'decline'
 
-    request.app.locals.patient = data.patients[patient_nhsn]
+    request.app.locals.patient = data.patients[patient_uuid]
 
     delete data.preScreen
     delete data.vaccination
@@ -86,7 +86,7 @@ export const vaccinationController = {
     const vaccination = new Vaccination({
       location: session.location.name,
       urn: session.urn,
-      patient_nhsn,
+      patient_uuid,
       campaign_uid: campaign.uid,
       session_id: session.id,
       ...(data.token && { created_user_uid: data.token?.uid })
@@ -103,7 +103,7 @@ export const vaccinationController = {
     const { data } = request.session
     const { __ } = response.locals
 
-    const patient = new Patient(data.patients[vaccination.patient_nhsn])
+    const patient = new Patient(data.patients[vaccination.patient_uuid])
 
     // Capture vaccination
     const updatedVaccination = new Vaccination({

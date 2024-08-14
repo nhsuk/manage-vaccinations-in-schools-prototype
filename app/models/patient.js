@@ -55,7 +55,7 @@ export class PatientOutcome {
 
 /**
  * @class Patient in-session record
- * @property {string} nhsn - NHS number
+ * @property {string} uuid - UUID
  * @property {Array<import('./event.js').Event>} events - Logged events
  * @property {object} replies - Consent replies
  * @property {import('./record.js').Record} record - CHIS record
@@ -75,10 +75,10 @@ export class PatientOutcome {
  */
 export class Patient {
   constructor(options) {
-    this.nhsn = options?.nhsn || this.#nhsn
+    this.uuid = options?.uuid || faker.string.uuid()
     this.events = options?.events || []
     this.replies = options?.replies || {}
-    this.record = new Record(options.record)
+    this.record = options?.record && new Record(options.record)
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
@@ -93,7 +93,9 @@ export class Patient {
     })
   }
 
-  #nhsn = '999#######'.replace(/#+/g, (m) => faker.string.numeric(m.length))
+  get nhsn() {
+    return this.record.nhsn
+  }
 
   get firstName() {
     return this.record.firstName
@@ -188,7 +190,7 @@ export class Patient {
   }
 
   set assess(gillick) {
-    const created = !Object.entries(this.gillick).length
+    const created = this.gillick && !Object.entries(this.gillick).length
 
     this.gillick = gillick
     this.log = {

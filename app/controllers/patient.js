@@ -16,12 +16,14 @@ export const patientController = {
     const { id, nhsn } = request.params
     const { data } = request.session
 
-    const patient = new Patient(data.patients[nhsn])
+    const patient = Object.values(data.patients).find(
+      (patient) => new Patient(patient).nhsn === nhsn
+    )
     const replies = Object.values(patient.replies)
     const session = new Session(data.sessions[id])
     const campaign = new Campaign(data.campaigns[session.campaign_uid])
 
-    response.locals.patient = patient
+    response.locals.patient = new Patient(patient)
     response.locals.replies = replies.map((reply) => new Reply(reply))
     response.locals.session = session
     response.locals.campaign = campaign

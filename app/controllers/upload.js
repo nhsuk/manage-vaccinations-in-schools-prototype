@@ -79,8 +79,10 @@ export const uploadController = {
 
     // Update CHIS records
     for (const uuid of upload.vaccinations) {
-      const { patient_nhsn } = new Vaccination(data.vaccinations[uuid])
-      data.records[patient_nhsn].vaccinations.push(uuid)
+      const { patient_uuid } = new Vaccination(data.vaccinations[uuid])
+      const patient = new Patient(data.patients[patient_uuid])
+
+      data.records[patient.nhsn].vaccinations.push(uuid)
     }
 
     request.flash(

@@ -6,7 +6,9 @@ export const preScreenController = {
     const { data } = request.session
     const { campaign } = response.locals
 
-    const patient = new Patient(data.patients[nhsn])
+    const patient = Object.values(data.patients).find(
+      (patient) => new Patient(patient).nhsn === nhsn
+    )
 
     // Pre-screen interview
     patient.preScreen = {
@@ -15,7 +17,7 @@ export const preScreenController = {
     }
 
     response.redirect(
-      `${campaign.uri}/vaccinations/new?patient_nhsn=${nhsn}&session_id=${id}`
+      `${campaign.uri}/vaccinations/new?patient_uuid=${patient.uuid}&session_id=${id}`
     )
   }
 }

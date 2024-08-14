@@ -115,11 +115,8 @@ export const sessionController = {
     const { nhsn } = request.query
     const { __ } = response.locals
 
-    // Add NHS number to consent response
-    const consent = session.consents[uuid]
-    consent.patient_nhsn = nhsn
-
     // Add consent response to patient record
+    const consent = session.consents[uuid]
     const patient = new Patient(
       patients.find((patient) => patient.nhsn === nhsn)
     )

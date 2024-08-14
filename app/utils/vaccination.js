@@ -11,7 +11,11 @@ export const getVaccinations = (data, uuids) => {
   const vaccinations = []
   for (const uuid of uuids) {
     const vaccination = new Vaccination(data.vaccinations[uuid])
-    vaccination.record = new Record(data.records[vaccination.patient_nhsn])
+
+    // Add patient record to vaccination record
+    vaccination.record = new Record(
+      data.patients[vaccination.patient_uuid].record
+    )
 
     vaccinations.push(vaccination)
   }

@@ -46,7 +46,7 @@ export const replyController = {
 
     const reply = new Reply({
       child: patient.record,
-      patient_nhsn: patient.nhsn,
+      patient_uuid: patient.uuid,
       session_id: session.id,
       ...(!isSelfConsent && { method: ReplyMethod.Phone })
     })
@@ -121,7 +121,9 @@ export const replyController = {
     const { referrer } = request.query
     const { data } = request.session
 
-    const patient = new Patient(data.patients[nhsn])
+    const patient = Object.values(data.patients).find(
+      (patient) => new Patient(patient).nhsn === nhsn
+    )
 
     request.app.locals.reply = new Reply({
       ...(form === 'edit' && reply), // Previous values
@@ -257,7 +259,7 @@ export const replyController = {
     if (request.body.reply?.refusalReason === ReplyRefusal.AlreadyGiven) {
       request.app.locals.vaccination = {
         outcome: VaccinationOutcome.AlreadyVaccinated,
-        patient_nhsn: patient.nhsn,
+        patient_uuid: patient.uuid,
         session_id: session.id,
         ...(data.reply?.notes && { notes }),
         ...(data.token && { created_user_uid: data.token?.uid })
@@ -310,7 +312,7 @@ export const replyController = {
       const newReply = new Reply({
         child: patient.record,
         parent: patient.replies[reply.uuid].parent,
-        patient_nhsn: patient.nhsn,
+        patient_uuid: patient.uuid,
         session_id: session.id,
         method: ReplyMethod.Phone
       })
@@ -374,7 +376,7 @@ export const replyController = {
     if (request.body.reply?.refusalReason === ReplyRefusal.AlreadyGiven) {
       patient.capture = new Vaccination({
         outcome: VaccinationOutcome.AlreadyVaccinated,
-        patient_nhsn: patient.nhsn,
+        patient_uuid: patient.uuid,
         campaign_uid: campaign.uid,
         session_id: session.id,
         ...(data.reply?.notes && { notes }),

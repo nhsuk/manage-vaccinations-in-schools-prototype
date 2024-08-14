@@ -7,7 +7,9 @@ export const registrationController = {
     const { nhsn } = request.params
     const { data } = request.session
 
-    const patient = new Patient(data.patients[nhsn])
+    const patient = Object.values(data.patients).find(
+      (patient) => new Patient(patient).nhsn === nhsn
+    )
 
     // Convert string to boolean
     switch (true) {
@@ -63,14 +65,14 @@ export const registrationController = {
         location: session.location.name,
         urn: session.urn,
         outcome: VaccinationOutcome.AbsentSession,
-        patient_nhsn: patient.nhsn,
+        patient_uuid: patient.uuid,
         campaign_uid: campaign.uid,
         session_id: session.id,
         ...(data.token && { created_user_uid: data.token?.uid })
       })
     }
 
-    data.patients[nhsn] = patient
+    data.patients[patient.uuid] = patient
 
     request.flash(
       'message',

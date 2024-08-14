@@ -71,7 +71,7 @@ export class VaccinationProtocol {
  * @property {string} [notes] - Notes
  * @property {string} [campaign_uid] - Campaign UUID
  * @property {string} [session_id] - Session ID
- * @property {string} [patient_nhsn] - Patient NHS number
+ * @property {string} [patient_uuid] - Patient UUID
  * @property {string} [batch_id] - Batch ID
  * @property {string} [batch_expires] - Batch expiry date
  * @property {string} [vaccine_gtin] - Vaccine GTIN
@@ -99,7 +99,7 @@ export class Vaccination {
     this.notes = options?.notes
     this.campaign_uid = options?.campaign_uid
     this.session_id = options?.session_id
-    this.patient_nhsn = options?.patient_nhsn
+    this.patient_uuid = options?.patient_uuid
     this.batch_id = this.given ? options?.batch_id || '' : undefined
     this.batch_expires = this.given ? options?.batch_expires || '' : undefined
     this.vaccine_gtin = this.given ? options?.vaccine_gtin || '' : undefined
@@ -107,7 +107,7 @@ export class Vaccination {
     this.created_ = options?.created_
   }
 
-  static generate(record, campaign, session, location, users) {
+  static generate(patient, campaign, session, location, users) {
     const user = users[faker.number.int({ min: 0, max: 19 })]
 
     let injectionMethod
@@ -153,7 +153,7 @@ export class Vaccination {
       location,
       campaign_uid: campaign.uid,
       session_id: session.id,
-      patient_nhsn: record.nhsn,
+      patient_uuid: patient.uuid,
       ...(vaccinated && {
         batch_id: batch.id,
         batch_expires: batch.expires,
