@@ -41,7 +41,7 @@ export const navigation = (request, response, next) => {
   // Get currently active section
   let current = root
   if (root === 'sessions' && id) {
-    const { status } = data.sessions[id]
+    const status = data.sessions[id]?.status
     if (status === SessionStatus.Active) {
       current = 'sessions'
     } else {
