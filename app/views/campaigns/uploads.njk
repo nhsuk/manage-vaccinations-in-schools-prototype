@@ -28,9 +28,11 @@
     {{ __("campaign.uploads.title") }}
   </h2>
 
-  {{ button({
-    href: campaign.uri + "/uploads/new",
-    text: __("upload.new.label")
+  {{ actionList({
+    items: [{
+      href: campaign.uri + "/uploads/new",
+      text: __("upload.new.label")
+    }]
   }) }}
 
   {% if uploads.length %}

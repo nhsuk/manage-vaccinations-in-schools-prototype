@@ -28,6 +28,10 @@
 
     {{ actionList({
       items: [{
+        href: campaign.uri + "/download/new",
+        text: __("download.new.label")
+      },
+      {
         text: __("campaign.edit.title"),
         href: campaign.uri + "/edit"
       }]
@@ -84,11 +88,6 @@
         }) }}
       </div>
     </div>
-
-    {{ button({
-      href: campaign.uri + "/download/new",
-      text: __("download.new.label")
-    }) }}
 
     {{ table({
       heading: "Reasons for refusal",
