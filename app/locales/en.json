@@ -659,6 +659,9 @@
     },
     "events": {
       "title": "Activity log"
+    },
+    "success": {
+      "update": "Child record updated"
     }
   },
   "record": {
@@ -675,7 +678,8 @@
       "other": "%s records"
     },
     "nhsn": {
-      "label": "NHS number"
+      "label": "NHS number",
+      "title": "Add the child’s NHS number"
     },
     "fullName": {
       "label": "Full name"
@@ -706,6 +710,13 @@
     },
     "vaccinations": {
       "label": "Vaccinations"
+    },
+    "missingNhsNumber": {
+      "label": "Missing NHS number",
+      "count": {
+        "one": "%s record is without an NHS number",
+        "other": "[0] No records without an NHS number|%s records without an NHS number"
+      }
     }
   },
   "registration": {
@@ -1209,8 +1220,8 @@
       }
     },
     "incomplete": {
-      "one": "%s record with a missing NHS number will use information from the Personal Demographics Service (PDS)",
-      "other": "[0] records with missing NHS numbers will use information from the Personal Demographics Service (PDS)|%s records with missing NHS numbers will use information from the Personal Demographics Service (PDS)"
+      "one": "%s record without an NHS number will use information from the Personal Demographics Service (PDS)",
+      "other": "[0] records without NHS numbers will use information from the Personal Demographics Service (PDS)|%s records without NHS numbers will use information from the Personal Demographics Service (PDS)"
     },
     "id": {
       "label": "ID"

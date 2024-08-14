@@ -1,0 +1,17 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("record.nhsn.title") %}
+
+{% block form %}
+  {{ input ({
+    classes: "nhsuk-input--width-10 app-u-monospace",
+    label: {
+      html: heading({
+        caption: patient.fullName,
+        title: title
+      })
+    },
+    value: "",
+    decorate: "patient.record.nhsn"
+  }) }}
+{% endblock %}

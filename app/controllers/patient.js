@@ -1,5 +1,4 @@
 import { Campaign, CampaignType } from '../models/campaign.js'
-import { Event } from '../models/event.js'
 import {
   CaptureOutcome,
   ConsentOutcome,
@@ -7,29 +6,34 @@ import {
   PatientOutcome,
   TriageOutcome
 } from '../models/patient.js'
+import { Record } from '../models/record.js'
 import { Reply } from '../models/reply.js'
 import { Session, SessionStatus } from '../models/session.js'
 import { Vaccination } from '../models/vaccination.js'
 
 export const patientController = {
   read(request, response, next) {
-    const { id, nhsn } = request.params
+    const { id, nhsn, uid } = request.params
     const { data } = request.session
 
+    const campaign_uid = uid || id.split('-')[0]
+    const campaign = data.campaigns[campaign_uid]
     const patient = Object.values(data.patients).find(
       (patient) => new Patient(patient).nhsn === nhsn
     )
     const replies = Object.values(patient.replies)
-    const session = new Session(data.sessions[id])
-    const campaign = new Campaign(data.campaigns[session.campaign_uid])
 
+    response.locals.campaign = new Campaign(campaign)
     response.locals.patient = new Patient(patient)
     response.locals.replies = replies.map((reply) => new Reply(reply))
-    response.locals.session = session
-    response.locals.campaign = campaign
     response.locals.vaccinations = Object.keys(patient.vaccinations).map(
       (uuid) => new Vaccination(data.vaccinations[uuid])
     )
+
+    // Patient in session
+    if (id) {
+      response.locals.session = new Session(data.sessions[id])
+    }
 
     next()
   },
@@ -86,5 +90,53 @@ export const patientController = {
           ? 'consent'
           : 'capture'
     })
+  },
+
+  readForm(request, response, next) {
+    const { patient } = response.locals
+
+    response.locals.paths = {
+      back: patient.uri,
+      next: patient.uri
+    }
+
+    next()
+  },
+
+  showForm(request, response) {
+    const { form, view } = request.params
+
+    response.render(`patient/form/${view}`, { form })
+  },
+
+  updateForm(request, response) {
+    const { data } = request.session
+    const { uid, uuid } = request.params
+    const { __, patient } = response.locals
+
+    const updatedRecord = new Record(
+      Object.assign(
+        patient.record, // Previous record values
+        request.body.patient.record // New record values
+      )
+    )
+
+    const updatedPatient = new Patient(
+      Object.assign(patient, { record: updatedRecord })
+    )
+
+    data.patients[updatedPatient.uuid] = updatedPatient
+
+    request.flash('success', __('patient.success.update'))
+
+    let redirect
+    if (uid && uuid) {
+      // Return to campaign vaccinations list
+      redirect = `/campaigns/${uid}/vaccinations/${uuid}`
+    } else {
+      redirect = updatedPatient.uri
+    }
+
+    response.redirect(redirect)
   }
 }

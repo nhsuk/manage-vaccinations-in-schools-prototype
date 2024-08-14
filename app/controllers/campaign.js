@@ -80,7 +80,12 @@ export const campaignController = {
         .forEach((vaccination) => uuids.push(vaccination.uuid))
     }
 
-    request.app.locals.vaccinations = getVaccinations(data, uuids)
+    const vaccinations = getVaccinations(data, uuids)
+
+    request.app.locals.vaccinations = vaccinations
+    request.app.locals.missingNhsNumber = vaccinations.filter(
+      (vaccination) => vaccination.record.missingNhsNumber
+    )
 
     next()
   },

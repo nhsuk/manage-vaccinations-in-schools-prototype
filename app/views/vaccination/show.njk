@@ -29,7 +29,10 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         rows: summaryRows(record, {
-          nhsn: {},
+          nhsn: {
+            changeLabel: "the child’s NHS number",
+            href: vaccination.uri + "/patient/" + record.nhsn + "/edit/nhsn" if record.missingNhsNumber
+          },
           fullName: {},
           dobWithAge: {},
           sex: {},

@@ -87,7 +87,10 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         rows: summaryRows(patient.record, {
-          nhsn: {},
+          nhsn: {
+            changeLabel: "the child’s NHS number",
+            href: patient.uri + "/edit/nhsn" if patient.record.missingNhsNumber
+          },
           fullName: {},
           preferredNames: { value: patient.preferredNames },
           dob: { value: patient.record.dobWithAge },

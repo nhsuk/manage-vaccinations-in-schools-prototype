@@ -114,6 +114,10 @@ export class Record {
     return hasNhsNumber ? this.#nhsn : this.#temporaryNhsn
   }
 
+  get missingNhsNumber() {
+    return !this.nhsn.match(/^\d{10}$/)
+  }
+
   get age() {
     return Math.floor((new Date() - new Date(this.dob).getTime()) / 3.15576e10)
   }

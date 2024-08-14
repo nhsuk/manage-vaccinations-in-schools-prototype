@@ -9,4 +9,8 @@ router.get('/', patientController.show)
 
 router.get('/events', patientController.events)
 
+router.all('/?:form(edit)/:view', patientController.readForm)
+router.get('/?:form(edit)/:view', patientController.showForm)
+router.post('/?:form(edit)/:view', patientController.updateForm)
+
 export const patientRoutes = router

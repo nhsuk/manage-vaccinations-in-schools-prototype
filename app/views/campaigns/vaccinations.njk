@@ -28,6 +28,11 @@
     {{ __("campaign.vaccinations.title") }}
   </h2>
 
+  {{ insetText({
+    classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4",
+    html: __n("record.missingNhsNumber.count", missingNhsNumber | length) | nhsukMarkdown
+  }) if missingNhsNumber.length }}
+
   {% if vaccinations.length %}
     {% set vaccinationRows = [] %}
     {% for vaccination in vaccinations %}
