@@ -56,7 +56,7 @@ export class SessionStatus {
  */
 export class Session {
   constructor(options) {
-    this.id = options?.id || `${options.campaign_uid}-${this.#id}`
+    this.id = options?.id || `${options?.campaign_uid}-${this.#id}`
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.format = options?.format
@@ -66,7 +66,7 @@ export class Session {
     this.open = options?.open
     this.reminder = options?.reminder
     this.close = options?.close
-    this.status = options?.status
+    this.status = options?.status || SessionStatus.Planned
     this.consents = options?.consents || {}
     this.campaign_uid = options?.campaign_uid
     // dateInput objects

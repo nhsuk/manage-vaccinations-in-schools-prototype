@@ -180,13 +180,16 @@ export const sessionController = {
   },
 
   new(request, response) {
+    const { campaign_uid } = request.query
     const { data } = request.session
 
     // Delete previous data
     delete data.session
     delete data?.wizard?.session
 
-    const session = new Session()
+    const session = new Session({
+      campaign_uid
+    })
 
     data.wizard = { session }
 
@@ -226,7 +229,6 @@ export const sessionController = {
     const journey = {
       [`/`]: {},
       [`/${id}/${form}/format`]: {},
-      [`/${id}/${form}/campaign-uid`]: {},
       [`/${id}/${form}/urn`]: {},
       [`/${id}/${form}/cohort`]: {},
       [`/${id}/${form}/date`]: {},

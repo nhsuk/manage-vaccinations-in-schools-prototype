@@ -5,18 +5,10 @@
 {% block content %}
   {{ super() }}
 
-  <div class="app-heading-group">
-    {{ heading({
-      size: "xl",
-      title: title
-    }) }}
-
-    {{ button({
-      classes: "nhsuk-button--secondary",
-      text: __("session.new.title"),
-      href: "/sessions/new"
-    }) }}
-  </div>
+  {{ heading({
+    size: "xl",
+    title: title
+  }) }}
 
   {% for type, sessions in sessions | groupby("campaign_uid") %}
     {% set sessionRows = [] %}
