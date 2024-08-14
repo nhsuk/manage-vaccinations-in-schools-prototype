@@ -63,7 +63,7 @@
         {{ button({
           classes: "nhsuk-button--secondary nhsuk-u-margin-0",
           text: __("vaccination.edit.title"),
-          href: vaccination.uri + "/edit"
+          href: vaccination.uri + "/edit?referrer=" + patient.uri
         }) }}
       {% endfor %}
 

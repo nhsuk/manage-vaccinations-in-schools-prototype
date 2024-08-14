@@ -56,8 +56,12 @@ export const vaccinationController = {
   },
 
   edit(request, response) {
-    const { vaccination } = request.app.locals
+    const { currentReferrer, vaccination } = request.app.locals
+    const { referrer } = request.query
     const { data } = request.session
+
+    request.app.locals.currentReferrer =
+      referrer || currentReferrer || vaccination.uri
 
     request.app.locals.vaccination = new Vaccination({
       ...vaccination, // Previous values
@@ -72,10 +76,13 @@ export const vaccinationController = {
     const { data } = request.session
     const { patient_uuid, session_id } = request.query
 
+    const patient = new Patient(data.patients[patient_uuid])
+
+    request.app.locals.patient = patient
+    request.app.locals.currentReferrer = patient.uri
+
     request.app.locals.start =
       data.preScreen.continue === 'true' ? 'administer' : 'decline'
-
-    request.app.locals.patient = data.patients[patient_uuid]
 
     delete data.preScreen
     delete data.vaccination
@@ -98,8 +105,8 @@ export const vaccinationController = {
   },
 
   update(request, response) {
-    const { campaign, vaccination } = request.app.locals
-    const { id, form } = request.params
+    const { campaign, currentReferrer, vaccination } = request.app.locals
+    const { form } = request.params
     const { data } = request.session
     const { __ } = response.locals
 
@@ -134,28 +141,24 @@ export const vaccinationController = {
     }
 
     delete data?.wizard?.vaccination
+    delete request.app.locals.currentReferrer
     delete request.app.locals.vaccination
 
     const action = form === 'edit' ? 'update' : 'create'
     request.flash('success', __(`vaccination.success.${action}`))
 
-    let redirect
-    if (id) {
-      // Updating vaccination in new upload
-      redirect = `${campaign.uri}/uploads/${id}/new/check-answers`
-    } else {
-      // Updating existing vaccination
-      redirect = form === 'edit' ? updatedVaccination.uri : patient.uri
-    }
-
+    const redirect = currentReferrer || updatedVaccination.uri
     response.redirect(redirect)
   },
 
   readForm(request, response, next) {
-    const { start, campaign, vaccination } = request.app.locals
+    const { currentReferrer, start, campaign, vaccination } = request.app.locals
     const { form, id, uuid } = request.params
+    const { referrer } = request.query
     const { data } = request.session
     const { __ } = response.locals
+
+    request.app.locals.referrer = referrer || currentReferrer
 
     request.app.locals.vaccination = new Vaccination({
       ...(form === 'edit' && vaccination), // Previous values
@@ -292,14 +295,7 @@ export const vaccinationController = {
       )
     )
 
-    let redirect
-    if (id) {
-      // Updating vaccination field in new upload
-      redirect = `${campaign.uri}/uploads/${id}/vaccinations/${vaccination.uuid}/new/check-answers`
-    } else {
-      // Updating existing vaccination field
-      redirect = paths.next || `${vaccination.uri}/new/check-answers`
-    }
+    const redirect = paths.next || `${vaccination.uri}/new/check-answers`
 
     response.redirect(redirect)
   }
