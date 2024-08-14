@@ -1378,6 +1378,17 @@
         "record": "Previously uploaded child record",
         "vaccination": "Previously uploaded vaccination record"
       },
+      "decision": {
+        "label": "Which record do you want to keep?",
+        "duplicate": {
+          "label": "Use duplicate record",
+          "hint": "The duplicate record will replace the previously uploaded record."
+        },
+        "original": {
+          "label": "Keep previously uploaded record",
+          "hint": "The previously uploaded record will be kept and the duplicate record will be discarded."
+        }
+      },
       "confirm": "Resolve duplicate",
       "issue": {
         "label": "Issue to review",

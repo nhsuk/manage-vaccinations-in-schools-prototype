@@ -62,6 +62,9 @@
             batch_expires: {},
             location: {},
             created: {},
+            created: {
+              value: duplicateVaccination.formatted.created | highlightDifference(vaccination.formatted.created)
+            },
             updated: {},
             created_user_uid: {
               value: users[vaccination.created_user_uid].fullName
@@ -131,21 +134,18 @@
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--m",
-        text: "Which record do you want to keep?"
+        text: __("vaccination.review.decision.label")
       }
     },
     items: [{
-      text: "Use duplicate record",
-      label: "duplicate",
-      hint: {
-        text: "The duplicate record will replace the previously uploaded record."
-      }
+      text: __("vaccination.review.decision.duplicate.label"),
+      hint: { text: __("vaccination.review.decision.duplicate.hint") },
+      value: "duplicate"
     }, {
-      text: "Keep previously uploaded record",
-      label: "original",
-      hint: {
-        text: "The previously uploaded record will be kept and the duplicate record will be discarded."
-      }
-    }]
+      text: __("vaccination.review.decision.original.label"),
+      hint: { text: __("vaccination.review.decision.original.hint") },
+      value: "original"
+    }],
+    decorate: "decision"
   }) }}
 {% endblock %}
