@@ -35,26 +35,37 @@
     }
   }
 
-  &--data {
+  &--reversed {
     background-color: $color_nhsuk-blue;
-    border-color: $color_nhsuk-blue;
+    border-color: shade($nhsuk-link-color, 25%);
     color: $color_nhsuk-white;
-    margin-bottom: $nhsuk-gutter;
+
+    &:active {
+      border-color: shade($nhsuk-link-color, 50%);
+    }
+
+    .nhsuk-card__link {
+      @include app-link-style-inverse;
+    }
+  }
+
+  &--data {
+    display: flex;
 
     .nhsuk-card__content {
-      @include nhsuk-responsive-padding(4);
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
     }
 
     .nhsuk-card__heading {
-      @include nhsuk-typography-responsive(19);
       @include nhsuk-typography-weight-normal;
-
-      margin-bottom: nhsuk-spacing(2);
     }
 
     .nhsuk-card__description {
       @include nhsuk-typography-responsive(48);
       @include nhsuk-typography-weight-bold;
+      margin-top: auto;
     }
   }
 }

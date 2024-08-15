@@ -20,6 +20,9 @@ $app-page-width: 1160px;
 // stylelint-disable-next-line scss/dollar-variable-pattern
 $color_app-dark-orange: darken(mix($color_nhsuk-red, $color_nhsuk-warm-yellow, 55%), 10%);
 
+// Import app helpers
+@import "helpers/link";
+
 // Import app components
 @import "action-list";
 @import "action-table";
