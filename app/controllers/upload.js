@@ -118,7 +118,7 @@ export const uploadController = {
     // Add upload
     data.uploads[upload.id] = updatedUpload
 
-    delete data?.wizard?.uploads
+    delete data?.wizard?.upload
 
     // Update CHIS records
     for (const uuid of upload.vaccinations) {
