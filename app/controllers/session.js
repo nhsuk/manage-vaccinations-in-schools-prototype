@@ -259,16 +259,13 @@ export const sessionController = {
     if (request.app.locals.session.campaign_uid) {
       const { campaign_uid } = request.app.locals.session
       const campaign = new Campaign(data.campaigns[campaign_uid])
-      response.locals.cohortItems = campaign.cohort
+      response.locals.cohortItems = Object.values(data.patients)
+        .map((patient) => new Patient(patient))
         // Only show records where child is at the selected school
-        .filter((nhsn) => {
-          const record = data.records[nhsn]
-          return record.urn === Number(session.urn)
-        })
+        .filter((patient) => patient.record.urn === Number(session.urn))
         // Check records already assigned to session
-        .map((nhsn) => {
-          const record = new Record(data.records[nhsn])
-          const patient = data.patients[record.nhsn]
+        .map((patient) => {
+          const record = new Record(data.records[patient.nhsn])
 
           record.checked = patient.session_id === id
 
