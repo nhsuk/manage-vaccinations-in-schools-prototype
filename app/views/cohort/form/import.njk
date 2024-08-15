@@ -1,0 +1,57 @@
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("cohort.import.confirm") %}
+{% set title = __("cohort.import.title", { campaign: campaign }) %}
+
+{% block form %}
+  {{ errorSummary({
+    titleText: __("error.title"),
+    errorList: errorList(errors)
+  }) if errors }}
+
+  {{ govukFileUpload({
+    id: "import",
+    name: "import",
+    label: {
+      classes: "nhsuk-label--m",
+      html: heading({
+        caption: campaign.name,
+        title: title
+      })
+    },
+    hint: {
+      text: __("cohort.import.hint")
+    },
+    errorMessage: {
+      text: errors.import
+    } if errors.import
+  }) | replace("govuk-", "nhsuk-") }}
+
+  {{ radios({
+    formGroup: {
+      classes: "app-prototype"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: "Select an upload scenario"
+      }
+    },
+    items: [{
+      text: "File not in the correct format",
+      value: "invalid"
+    }, {
+      text: "File contains records with validation errors",
+      value: "errors"
+    }, {
+      text: "File contains only previously uploaded records",
+      value: "devoid"
+    }, {
+      text: __("cohort.new.check-answers.warning"),
+      value: "happy"
+    }],
+    decorate: "scenario"
+  }) }}
+{% endblock %}

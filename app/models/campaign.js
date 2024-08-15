@@ -47,19 +47,17 @@ export class Campaign {
     this.end = options?.end
     this.cohort = options?.cohort || []
     this.vaccines = options?.vaccines || []
+    this.pendingCohort = options?.pendingCohort || []
     this.pendingVaccinations = options?.pendingVaccinations || []
     // dateInput objects
     this.start_ = options?.start_
     this.end_ = options?.end_
   }
 
-  static generate(type, cohort, user) {
+  static generate(type, user) {
     // Create session 60-90 days ago
     const today = new Date()
     const created = addDays(today, faker.number.int({ min: 60, max: 90 }) * -1)
-
-    // Ensure cohort only contains unique values
-    cohort = [...new Set(cohort)]
 
     // Use typical dates for winter flu versus other campaigns
     const startDate = type === CampaignType.FLU ? '2023-10-15' : '2024-03-01'
@@ -73,7 +71,6 @@ export class Campaign {
       year: AcademicYear.Y2023,
       start: new Date(startDate),
       end: new Date(endDate),
-      cohort,
       vaccines: campaignTypes[type].vaccines
     })
   }

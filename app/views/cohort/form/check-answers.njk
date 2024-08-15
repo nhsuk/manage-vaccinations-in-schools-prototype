@@ -1,0 +1,104 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("cohort.new.check-answers.confirm") %}
+{% set gridColumns = "full" %}
+{% set title = __("cohort.new.check-answers.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: campaign.name,
+    title: title
+  }) }}
+
+  {% set warningCalloutMarkdown %}
+  {% if invalid.length %}- {{ __n("cohort.invalid.count", invalid.length) }}{% endif %}
+  {% if exact.length %}- {{ __n("cohort.exact.count", exact.length) }}{% endif %}
+  {% endset %}
+
+  {{ warningCallout({
+    heading: __("cohort.new.check-answers.warning"),
+    HTML: warningCalloutMarkdown | nhsukMarkdown
+  }) if exact.length or inexact.length }}
+
+  {{ button({
+    text: confirmButtonText
+  }) }}
+
+  {% set inexactRecordRows = [] %}
+  {% for record in inexact %}
+    {% set inexactRecordRows = inexactRecordRows | push([
+      {
+        header: __("record.fullName.label"),
+        html: record.fullName
+      },
+      {
+        header: __("vaccination.review.issue.label"),
+        html: __("vaccination.review.issue.text")
+      },
+      {
+        header: __("vaccination.review.actions.label"),
+        html: actionList({
+          items: [{
+            text: "Review",
+            href: cohort.uri + "/vaccinations/" + vaccination.uuid + "/review"
+          }]
+        })
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    id: "inexact-records",
+    sort: "name",
+    panel: true,
+    heading: __n("cohort.inexact.count", inexact.length),
+    responsive: true,
+    head: [
+      {
+        text: __("record.label"),
+        attributes: { "no-sort": "no-sort" }
+      },
+      {
+        text: __("record.issue.label"),
+        attributes: { "no-sort": "no-sort" }
+      },
+      {
+        text: __("record.actions.label"),
+        attributes: { "no-sort": "no-sort" }
+      }
+    ],
+    rows: inexactRecordRows
+  }) if inexact.length }}
+
+  {% set newRecordRows = [] %}
+  {% for record in records %}
+    {% set newRecordRows = newRecordRows | push([
+      {
+        header: __("record.fullName.label"),
+        text: record.fullName
+      },
+      {
+        header: __("record.nhsn.label"),
+        html: record.formatted.nhsn or "Not provided"
+      },
+      {
+        header: __("record.dob.label"),
+        html: record.formatted.dob
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    id: "new-records",
+    sort: "name",
+    panel: true,
+    heading: __n("cohort.new.count", records.length),
+    responsive: true,
+    head: [
+      { text: __("record.fullName.label") },
+      { text: __("record.nhsn.label") },
+      { text: __("record.dob.label") }
+    ],
+    rows: newRecordRows
+  }) }}
+{% endblock %}

@@ -31,14 +31,16 @@
 
   {{ actionList({
     items: [{
-      text: __("cohort.new.title"),
-      href: "#"
+      href: campaign.uri + "/cohort/new",
+      text: __("cohort.new.label")
     }]
   }) if data.token.role != UserRole.DataConsumer }}
 
   {% if cohort.length %}
     {% set cohortRows = [] %}
     {% for patient in cohort %}
+      {% set outcome = enumKeyAndValue(PatientOutcome, patient.outcome.value) %}
+      {% set tagColor = __("outcome." + outcome.key + ".colour") %}
       {% set cohortRows = cohortRows | push([
         {
           header: __("record.fullName.label"),
@@ -53,15 +55,17 @@
           html: patient.record.formatted.dob
         },
         {
-          header: __("record.postalCode.label"),
-          html: patient.record.postalCode
+          header: __("outcome.label"),
+          html: tag({
+            classes: "nhsuk-tag--" + tagColor,
+            text: patient.outcome.value
+          })
         }
       ]) %}
     {% endfor %}
 
     {{ actionTable({
       id: "cohort",
-      sort: "name",
       heading: __n("campaign.cohort.count", cohort.length),
       panel: true,
       responsive: true,
@@ -69,7 +73,7 @@
         { text: __("record.fullName.label") },
         { text: __("record.nhsn.label") },
         { text: __("record.dob.label") },
-        { text: __("record.postalCode.label") }
+        { text: __("outcome.label") }
       ],
       rows: cohortRows
     }) }}

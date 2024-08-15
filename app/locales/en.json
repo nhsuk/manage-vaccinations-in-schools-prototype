@@ -238,7 +238,39 @@
   },
   "cohort": {
     "new": {
-      "title": "Add children to programme cohort"
+      "label": "Add children to programme cohort",
+      "check-answers": {
+        "title": "Check and confirm",
+        "warning": "Uploaded records will differ from the file",
+        "confirm": "Upload records",
+        "summary": "Details"
+      },
+      "count": {
+        "one": "%s new record",
+        "other": "[0] No new records|%s new records"
+      }
+    },
+    "import": {
+      "title": "Upload cohort records",
+      "hint": "Make sure the CSV you upload has the same format as your standard cohort template.",
+      "confirm": "Continue",
+      "errors": {
+        "invalid": "The selected file must be a CSV"
+      }
+    },
+    "errors": {
+      "title": "Cohort records cannot be uploaded",
+      "description": "It wasn’t possible to upload any records due to the following errors in the CSV file:"
+    },
+    "devoid": {
+      "title": "Cohort records already uploaded",
+      "description": "All records in this CSV file have been uploaded."
+    },
+    "success": {
+      "create": {
+        "one": "%s child added to this programme’s cohort",
+        "other": "[0] No children added to this programme’s cohort|%s children added to this programme’s cohort"
+      }
     }
   },
   "consent": {
@@ -603,6 +635,7 @@
     "label": "All answers to health questions"
   },
   "outcome": {
+    "label": "Outcome",
     "NoOutcomeYet": {
       "colour": "grey",
       "label": "No outcome yet",

@@ -125,11 +125,11 @@ export class Patient {
   }
 
   get consentHealthAnswers() {
-    return getConsentHealthAnswers(this.replies)
+    return this.session_id ? getConsentHealthAnswers(this.replies) : false
   }
 
   get consentRefusalReasons() {
-    return getConsentRefusalReasons(this.replies)
+    return this.session_id ? getConsentRefusalReasons(this.replies) : false
   }
 
   get screen() {
@@ -171,7 +171,9 @@ export class Patient {
   }
 
   get uri() {
-    return `/sessions/${this.session_id}/${this.nhsn}`
+    return this.session_id
+      ? `/sessions/${this.session_id}/${this.nhsn}`
+      : `/campaigns/${this.campaign_uid}/cohort/${this.nhsn}`
   }
 
   set log(event) {

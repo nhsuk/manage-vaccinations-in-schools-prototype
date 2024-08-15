@@ -8,6 +8,7 @@ import { users } from './middleware/users.js'
 import { accountRoutes } from './routes/account.js'
 import { batchRoutes } from './routes/batch.js'
 import { campaignRoutes } from './routes/campaign.js'
+import { cohortRoutes } from './routes/cohort.js'
 import { consentRoutes } from './routes/consent.js'
 import { downloadRoutes } from './routes/download.js'
 import { gillickRoutes } from './routes/gillick.js'
@@ -33,6 +34,8 @@ router.use(flash(), navigation, notification, users)
 router.use('/home', homeRoutes)
 router.use('/account', accountRoutes)
 router.use('/campaigns', campaignRoutes)
+router.use('/campaigns/:uid/cohort', cohortRoutes)
+router.use('/campaigns/:uid/cohort/:nhsn', patientRoutes)
 router.use('/campaigns/:uid/download', downloadRoutes)
 router.use('/campaigns/:uid/uploads', uploadRoutes)
 router.use('/campaigns/:uid/uploads/:id/vaccinations', vaccinationRoutes)

@@ -22,11 +22,12 @@ export const patientController = {
       (patient) => new Patient(patient).nhsn === nhsn
     )
     const replies = Object.values(patient.replies)
+    const vaccinations = Object.keys(patient.vaccinations)
 
     response.locals.campaign = new Campaign(campaign)
     response.locals.patient = new Patient(patient)
     response.locals.replies = replies.map((reply) => new Reply(reply))
-    response.locals.vaccinations = Object.keys(patient.vaccinations).map(
+    response.locals.vaccinations = vaccinations.map(
       (uuid) => new Vaccination(data.vaccinations[uuid])
     )
 
@@ -48,7 +49,7 @@ export const patientController = {
         patient.outcome?.value !== PatientOutcome.Vaccinated,
       showGillick:
         campaign.type !== CampaignType.FLU &&
-        session.status === SessionStatus.Active &&
+        session?.status === SessionStatus.Active &&
         patient.consent?.value !== ConsentOutcome.Given,
       editReplies:
         patient.consent?.value !== ConsentOutcome.Given &&
@@ -72,7 +73,7 @@ export const patientController = {
 
     response.render('patient/show', {
       activity:
-        activity || session.status !== SessionStatus.Active
+        activity || session?.status !== SessionStatus.Active
           ? 'consent'
           : 'capture',
       options,
@@ -86,7 +87,7 @@ export const patientController = {
 
     response.render('patient/events', {
       activity:
-        activity || session.status !== SessionStatus.Active
+        activity || session?.status !== SessionStatus.Active
           ? 'consent'
           : 'capture'
     })

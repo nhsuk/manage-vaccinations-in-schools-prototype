@@ -1,0 +1,19 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("cohort.devoid.title") %}
+{% set paths = {
+  back: campaign.uri + "/cohort/new"
+} %}
+
+{% block content %}
+  <div class="nhsuk-u-width-three-quarters">
+    {{ heading({
+      caption: campaign.name,
+      title: title
+    }) }}
+
+    {{ __("cohort.devoid.description") | nhsukMarkdown }}
+
+    {{ link(campaign.uri + "/cohort/new", __("cohort.new.label")) | nhsukMarkdown }}
+  </div>
+{% endblock %}

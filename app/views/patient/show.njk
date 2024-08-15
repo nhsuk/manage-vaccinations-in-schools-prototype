@@ -9,16 +9,25 @@
       text: __("campaign.list.title"),
       href: "/campaigns"
     }, {
-      text: data.campaigns[session.campaign_uid].name,
-      href: "/campaigns/" + session.campaign_uid
+      text: data.campaigns[campaign.uid].name,
+      href: "/campaigns/" + campaign.uid
     }, {
       text: session.location.name,
       href: "/sessions/" + session.id
     }, {
       text: __("session.activity." + activity + ".title"),
       href: "/sessions/" + session.id + "/" + activity
+    }] if patient.session_id else [{
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }, {
+      text: data.campaigns[campaign.uid].name,
+      href: "/campaigns/" + campaign.uid
+    }, {
+      text: __("campaign.cohort.title"),
+      href: "/campaigns/" + campaign.uid + "/cohort"
     }]
-  }) }}
+  })  }}
 {% endblock %}
 
 {% block content %}
@@ -26,7 +35,7 @@
     {{ super() }}
 
     {{ heading({
-      caption: session.location.name,
+      caption: session.location.name if patient.session_id,
       title: title
     }) }}
 
@@ -80,7 +89,7 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: statusDescriptionHtml,
       feature: true
-    }) }}
+    }) if patient.session_id }}
 
     {{ card({
       heading: __("record.label"),
@@ -181,7 +190,7 @@
       heading: __("consent.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: consentDescriptionHtml
-    }) }}
+    }) if patient.session_id }}
 
     {{ card({
       heading: __("healthAnswers.label"),
