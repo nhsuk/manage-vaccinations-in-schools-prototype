@@ -1194,7 +1194,7 @@
       "label": "Upload new vaccination records",
       "check-answers": {
         "title": "Check and confirm",
-        "warning": "Upload contains invalid or incomplete records",
+        "warning": "Uploaded records will differ from the file",
         "confirm": "Upload records",
         "summary": "Details"
       },
@@ -1222,8 +1222,8 @@
     "exact": {
       "label": "Previously uploaded",
       "count": {
-        "one": "%s previously uploaded record omitted",
-        "other": "[0] No previously uploaded records omitted|%s previously uploaded records omitted"
+        "one": "%s previously uploaded record was omitted",
+        "other": "[0] No previously uploaded record were omitted|%s previously uploaded record were omitted"
       }
     },
     "inexact": {
@@ -1236,8 +1236,8 @@
     "invalid": {
       "label": "Missing vaccination",
       "count": {
-        "one": "%s record with no vaccination event omitted",
-        "other": "[0] No records with no vaccination events omitted|%s records with no vaccination events omitted"
+        "one": "%s record for a child who was not vaccinated were omitted",
+        "other": "[0] No records for children who were not vaccinated were omitted|%s records for children who were not vaccinated were omitted"
       }
     },
     "incomplete": {
@@ -1257,7 +1257,7 @@
       "label": "Uploaded by"
     },
     "campaign_uid": {
-      "label": "Campaign"
+      "label": "Programme"
     },
     "vaccinations": {
       "label": "Vaccination records",
@@ -1405,7 +1405,7 @@
       "issue": {
         "label": "Issue to review",
         "title": "This record needs reviewing",
-        "text": "A field in a duplicate record does not the match previously uploaded record"
+        "text": "A field in a duplicate record does not match a previously uploaded record"
       },
       "actions": {
         "label": "Actions"
