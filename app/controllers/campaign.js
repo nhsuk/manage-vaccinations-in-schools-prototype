@@ -1,5 +1,6 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { Campaign } from '../models/campaign.js'
+import { Patient } from '../models/patient.js'
 import { Session } from '../models/session.js'
 import { Vaccine } from '../models/vaccine.js'
 import { Upload } from '../models/upload.js'
@@ -14,6 +15,10 @@ export const campaignController = {
         (campaign) => new Campaign(campaign)
       )
     })
+  },
+
+  cohort(request, response) {
+    response.render('campaigns/cohort')
   },
 
   reviews(request, response) {
@@ -50,6 +55,9 @@ export const campaignController = {
     const campaign = new Campaign(data.campaigns[uid])
 
     request.app.locals.campaign = campaign
+    request.app.locals.cohort = Object.values(data.patients)
+      .filter((patient) => patient.campaign_uid === uid)
+      .map((patient) => new Patient(patient))
     request.app.locals.sessions = Object.values(data.sessions)
       .filter((session) => session.campaign_uid === uid)
       .map((session) => {

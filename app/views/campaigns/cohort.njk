@@ -1,0 +1,79 @@
+{% extends "_layouts/default.njk" %}
+
+{% set paths = { back: "/home" } if data.token.role == UserRole.DataConsumer %}
+{% set title = campaign.name + " – " + __("campaign.cohort.title") %}
+{% set view = "cohort" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }],
+    text: campaign.name,
+    href: campaign.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: campaign.name,
+    summary: campaign.year
+  }) }}
+
+  {% include "campaigns/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("campaign.cohort.title") }}
+  </h2>
+
+  {{ actionList({
+    items: [{
+      text: __("cohort.new.title"),
+      href: "#"
+    }]
+  }) if data.token.role != UserRole.DataConsumer }}
+
+  {% if cohort.length %}
+    {% set cohortRows = [] %}
+    {% for patient in cohort %}
+      {% set cohortRows = cohortRows | push([
+        {
+          header: __("record.fullName.label"),
+          html: patient.link.fullName
+        },
+        {
+          header: __("record.nhsn.label"),
+          html: patient.record.formatted.nhsn or "Not provided"
+        },
+        {
+          header: __("record.dob.label"),
+          html: patient.record.formatted.dob
+        },
+        {
+          header: __("record.postalCode.label"),
+          html: patient.record.postalCode
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "cohort",
+      sort: "name",
+      heading: __n("campaign.cohort.count", cohort.length),
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("record.fullName.label") },
+        { text: __("record.nhsn.label") },
+        { text: __("record.dob.label") },
+        { text: __("record.postalCode.label") }
+      ],
+      rows: cohortRows
+    }) }}
+  {% else %}
+    {{ __n("campaign.cohort.count", cohort.length) | nhsukMarkdown }}
+  {% endif %}
+{% endblock %}

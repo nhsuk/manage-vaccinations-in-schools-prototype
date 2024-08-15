@@ -83,6 +83,13 @@
       "description": "Use this area to:\n- create new programmes\n- review consent responses\n- triage health records",
       "active": "Active programmes"
     },
+    "cohort": {
+      "title": "Cohort",
+      "count": {
+        "one": "%s child in this programme’s cohort",
+        "other": "[0] No children in this programme’s cohort|%s children in this programme’s cohort"
+      }
+    },
     "sessions": {
       "title": "School sessions"
     },
@@ -98,7 +105,7 @@
       }
     },
     "vaccinations": {
-      "title": "Vaccination records",
+      "title": "Vaccinations",
       "count": {
         "one": "%s vaccination record",
         "other": "[0] No vaccination records|%s vaccination records"
@@ -227,6 +234,11 @@
     },
     "urn": {
       "label": "School"
+    }
+  },
+  "cohort": {
+    "new": {
+      "title": "Add children to programme cohort"
     }
   },
   "consent": {
