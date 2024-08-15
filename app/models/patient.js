@@ -13,7 +13,7 @@ import {
   getRegistrationOutcome,
   getPatientOutcome
 } from '../utils/capture.js'
-import { stringToBoolean } from '../utils/string.js'
+import { formatLink, stringToBoolean } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 import { Vaccination } from './vaccination.js'
 
@@ -103,6 +103,15 @@ export class Patient {
 
   get fullName() {
     return [this.record.firstName, this.record.lastName].join(' ')
+  }
+
+  get link() {
+    let fullName = `${formatLink(this.uri, this.fullName)}`
+    if (this.preferredNames) {
+      fullName += `<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">Known as: ${this.preferredNames}</span>`
+    }
+
+    return { fullName }
   }
 
   get groupedEvents() {
