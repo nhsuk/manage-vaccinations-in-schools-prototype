@@ -30,7 +30,7 @@ export class SessionTime {
 export class SessionStatus {
   static Planned = 'Planned'
   static Active = 'In progress'
-  static Completed = 'Past'
+  static Completed = 'Completed'
 }
 
 /**

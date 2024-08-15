@@ -35,7 +35,7 @@
     }]
   }) if data.token.role != UserRole.DataConsumer }}
 
-  {% set sessions = sessions | sort(false, false, "status") %}
+  {% set sessions = sessions | sort(true, false, "status") %}
   {% for status, sessions in sessions | groupby("status") %}
     {% set sessionRows = [] %}
     {% for session in sessions | sort(false, false, "date") %}
