@@ -193,19 +193,34 @@ export class Session {
 
   get name() {
     if (this.location) {
-      const date = formatDate(this.date, { dateStyle: 'full' })
-
-      return `${this.time} session at ${this.location.name} on ${date}`
+      return `${this.time} session at ${this.location.name} on ${this.formatted.date}`
     }
   }
 
   get summary() {
-    return `<span class="nhsuk-u-secondary-text-color">
-      ${formatLink(this.uri, this.location.name)}</br>
-      ${this.location.addressLine1},
-      ${this.location.addressLevel1},
-      ${this.location.postalCode}
-    </span>`
+    return {
+      location: `${this.location.name}</br>
+      <span class="nhsuk-u-secondary-text-color">
+        ${this.location.addressLine1},
+        ${this.location.addressLevel1},
+        ${this.location.postalCode}
+      </span>`
+    }
+  }
+
+  get link() {
+    return {
+      date: `<span class="nhsuk-u-secondary-text-color">
+        ${formatLink(this.uri, this.formatted.date)}</br>
+        ${this.time}
+      </span>`,
+      location: `${formatLink(this.uri, this.location.name)}</br>
+        <span class="nhsuk-u-secondary-text-color">
+          ${this.location.addressLine1},
+          ${this.location.addressLevel1},
+          ${this.location.postalCode}
+        </span>`
+    }
   }
 
   get formatted() {

@@ -42,18 +42,14 @@
       {% set sessionRows = sessionRows | push([
         {
           header: __("session.date.label"),
-          text: session.formatted.date or "Not provided",
+          html: session.link.date or "Not provided",
           attributes: {
             "data-sort": session.date
           }
         },
         {
-          header: __("session.time.label"),
-          text: session.time or "Not provided"
-        },
-        {
           header: __("session.location.label"),
-          html: session.summary or "Not provided"
+          html: session.summary.location or "Not provided"
         },
         {
           header: __("session.consentWindow.label"),
@@ -75,7 +71,6 @@
       responsive: true,
       head: [
         { text: __("session.date.label") },
-        { text: __("session.time.label") },
         { text: __("session.location.label") },
         { text: __("session.consentWindow.label") },
         {
