@@ -43,11 +43,11 @@
         header: __("consent.actions.label"),
         html: actionList({
           items: [{
-            text: "Find match",
+            text: __("session.consent-match.label"),
             href: session.uri + "/consents/" + consent.uuid + "/match"
           }, {
-            text: "Archive",
-            href: "#"
+            text: __("session.consent-add.label"),
+            href: session.uri + "/consents/" + consent.uuid + "/add"
           }]
         })
       }

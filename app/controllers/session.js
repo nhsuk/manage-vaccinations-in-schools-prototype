@@ -130,6 +130,34 @@ export const sessionController = {
     response.redirect(`${session.uri}/consents`)
   },
 
+  showConsentAdd(request, response) {
+    const { session } = request.app.locals
+    const { uuid } = request.params
+
+    request.app.locals.consent = new Reply(session.consents[uuid])
+
+    response.render('sessions/consent-add')
+  },
+
+  updateConsentAdd(request, response) {
+    const { consent, patients, session } = request.app.locals
+    const { uuid } = request.params
+    const { __ } = response.locals
+
+    const patient = new Patient(
+      patients.find((patient) => patient.nhsn === consent.child.nhsn)
+    )
+
+    patient.respond = new Reply(consent)
+
+    // Remove unmatched consent response
+    delete session.consents[uuid]
+
+    request.flash('success', __(`session.success.add`, { consent, patient }))
+
+    response.redirect(`${session.uri}/consents`)
+  },
+
   showBatch(request, response) {
     const { campaign } = request.app.locals
     const { data } = request.session
