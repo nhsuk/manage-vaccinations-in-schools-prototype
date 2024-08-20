@@ -706,7 +706,12 @@
       "title": "Activity log"
     },
     "success": {
+      "invite": "Child invited to {{session.name}}",
       "update": "Child record updated"
+    },
+    "invite": {
+      "title": "Invite to session",
+      "confirm": "Invite"
     }
   },
   "record": {

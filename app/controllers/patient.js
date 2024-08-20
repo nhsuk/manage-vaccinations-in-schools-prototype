@@ -139,5 +139,45 @@ export const patientController = {
     }
 
     response.redirect(redirect)
+  },
+
+  showInvite(request, response) {
+    const { data } = request.session
+    const { campaign } = response.locals
+
+    response.locals.sessionIdItems = Object.values(data.sessions)
+      .map((session) => new Session(session))
+      .filter((session) => session.campaign_uid === campaign.uid)
+      .filter((session) => session.status !== SessionStatus.Completed)
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
+      .map((session) => ({
+        text: session.location.name,
+        hint: { text: `${session.formatted.date} (${session.time})` },
+        value: session.id
+      }))
+
+    response.render('patient/invite')
+  },
+
+  updateInvite(request, response) {
+    const { data } = request.session
+    const { patient } = response.locals
+    const { __ } = response.locals
+
+    const { session_id } = data.patient
+
+    const session = new Session(data.sessions[session_id])
+
+    // Invite patient to session
+    patient.invite = session
+
+    // Update patient record
+    data.patients[patient.uuid] = patient
+
+    // Delete patient session data
+    delete data.patient
+
+    request.flash('success', __(`patient.success.invite`, { session }))
+    response.redirect(patient.uri)
   }
 }
