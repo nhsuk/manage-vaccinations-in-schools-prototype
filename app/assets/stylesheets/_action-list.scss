@@ -1,6 +1,6 @@
 .app-action-list {
   @include nhsuk-typography-responsive(19);
-  @include nhsuk-responsive-margin(4, "bottom");
+  @include nhsuk-responsive-margin(7, "bottom");
 
   display: flex;
   padding: 0;

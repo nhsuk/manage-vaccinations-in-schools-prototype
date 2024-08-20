@@ -22,15 +22,17 @@
     summary: session.formatted.date + " (" + session.time + ") · " + __n("session.cohort.count", patients.length)
   }) }}
 
-  <p class="nhsuk-body nhsuk-u-margin-bottom-7">
-    {{ tag({
-      classes: "nhsuk-tag--blue nhsuk-u-margin-right-3",
-      text: session.status
-    }) if session.status == SessionStatus.Active else link(
-      session.uri + "/edit",
-      __("session.edit.title")
-    ) | safe }}
-  </p>
+  {{ actionList({
+    items: [{
+      tag: {
+        classes: "nhsuk-tag--blue",
+        text: session.status
+      }
+    } if session.status == SessionStatus.Active else {
+      text: __("session.edit.title"),
+      href: session.uri + "/edit"
+    }]
+  }) }}
 
   {% set consentCardDescriptionHtml %}
     <p>

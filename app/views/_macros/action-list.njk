@@ -1,17 +1,29 @@
-{% macro actionList(params) -%}
-{% if params.items.length == 1 %}
+{%- from "tag/macro.njk" import tag -%}
+
+{%- macro _action(params) -%}
+{%- if params.href -%}
+  {{- link(params.href, params.text) | safe -}}
+{%- elif params.tag -%}
+  {{- tag(params.tag) -}}
+{%- else -%}
+  {{- params.text -}}
+{%- endif -%}
+{%- endmacro -%}
+
+{%- macro actionList(params) -%}
+{%- if params.items.length == 1 %}
   <p class="app-action-list{% if params.classes %} {{ params.classes }}{% endif %}">
-    {{ link(params.items[0].href, params.items[0].text) | safe }}
+    {{ _action(params.items[0]) }}
   </p>
-{% else %}
+{%- else %}
   <ul class="app-action-list{% if params.classes %} {{ params.classes }}{% endif %}">
-    {% for action in params.items %}
-      {% if action %}
-        <li class="app-action-list__item">
-          {{- link(action.href, action.text) | safe -}}
-        </li>
-      {% endif %}
-    {% endfor %}
+  {%- for item in params.items -%}
+    {%- if item -%}
+    <li class="app-action-list__item">
+      {{ _action(item) }}
+    </li>
+    {%- endif -%}
+  {%- endfor -%}
   </ul>
-{% endif %}
-{% endmacro %}
+{%- endif %}
+{%- endmacro %}

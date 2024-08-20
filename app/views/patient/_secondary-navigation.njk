@@ -1,17 +1,15 @@
-{% if patient.session_id and session.status == SessionStatus.Active %}
-  <p class="nhsuk-body nhsuk-u-margin-bottom-7">
-    {% set tagColor = "red" if patient.registration.value == RegistrationOutcome.Absent else "blue" %}
-    {{ tag({
-      classes: "nhsuk-tag--" + tagColor + " nhsuk-u-margin-right-3",
+{% set tagColor = "red" if patient.registration.value == RegistrationOutcome.Absent else "blue" %}
+{{ actionList({
+  items: [{
+    tag: {
+      classes: "nhsuk-tag--" + tagColor,
       text: patient.registration.value
-    }) if session.status == SessionStatus.Active }}
-    {% if patient.registration.value != RegistrationOutcome.Complete %}
-      <a class="nhsuk-link" href="{{ patient.uri }}/registration/edit">{{
-        __("registration.edit.title")
-      }}</a>
-    {% endif %}
-  </p>
-{% endif %}
+    }
+  } if session.status == SessionStatus.Active, {
+    text: __("registration.edit.title"),
+    href: patient.uri + "/registration/edit"
+  } if patient.registration.value != RegistrationOutcome.Complete]
+}) if patient.session_id and session.status == SessionStatus.Active }}
 
 {{ xGovukSecondaryNavigation({
   items: [{
