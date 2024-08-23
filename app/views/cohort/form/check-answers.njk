@@ -10,15 +10,10 @@
     title: title
   }) }}
 
-  {% set warningCalloutMarkdown %}
-  {% if invalid.length %}- {{ __n("cohort.invalid.count", invalid.length) }}{% endif %}
-  {% if exact.length %}- {{ __n("cohort.exact.count", exact.length) }}{% endif %}
-  {% endset %}
-
   {{ warningCallout({
     heading: __("cohort.new.check-answers.warning"),
-    HTML: warningCalloutMarkdown | nhsukMarkdown
-  }) if exact.length or inexact.length }}
+    HTML: __n("cohort.exact.count", exact.length) | nhsukMarkdown
+  }) if exact.length }}
 
   {{ button({
     text: confirmButtonText
@@ -40,7 +35,7 @@
         html: actionList({
           items: [{
             text: "Review",
-            href: cohort.uri + "/" + record.nhsn + "/review"
+            href: cohort.uri + "/" + record.nhsn + "/review?referrer=" + cohort.uri + "/new/check-answers"
           }]
         })
       }
