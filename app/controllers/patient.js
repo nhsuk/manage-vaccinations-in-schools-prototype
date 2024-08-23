@@ -194,7 +194,11 @@ export const patientController = {
   },
 
   readReview(request, response, next) {
+    const { back } = request.app.locals
     const { patient } = response.locals
+    const { referrer } = request.query
+
+    request.app.locals.back = referrer || back || patient.uri
 
     // Fake issue with date of birth field
     const duplicateRecord = new Record(patient.record)
@@ -212,7 +216,7 @@ export const patientController = {
   },
 
   updateReview(request, response) {
-    const { patient } = request.app.locals
+    const { back } = request.app.locals
     const { decision } = request.body
     const { __ } = response.locals
 
@@ -221,6 +225,6 @@ export const patientController = {
       request.flash('success', __('patient.success.update'))
     }
 
-    response.redirect(patient.uri)
+    response.redirect(back)
   }
 }
