@@ -33,7 +33,10 @@ export const vaccinationController = {
   },
 
   readReview(request, response, next) {
-    const { record, vaccination } = request.app.locals
+    const { back, record, vaccination } = request.app.locals
+    const { referrer } = request.query
+
+    request.app.locals.back = referrer || back || vaccination.uri
 
     // Fake issue with date of birth field
     const duplicateRecord = new Record(record)
@@ -58,7 +61,7 @@ export const vaccinationController = {
   },
 
   updateReview(request, response) {
-    const { vaccination } = request.app.locals
+    const { back } = request.app.locals
     const { decision } = request.body
     const { __ } = response.locals
 
@@ -67,7 +70,7 @@ export const vaccinationController = {
       request.flash('success', __('vaccination.success.update'))
     }
 
-    response.redirect(vaccination.uri)
+    response.redirect(back)
   },
 
   redirect(request, response) {
@@ -77,12 +80,11 @@ export const vaccinationController = {
   },
 
   edit(request, response) {
-    const { currentReferrer, vaccination } = request.app.locals
+    const { back, vaccination } = request.app.locals
     const { referrer } = request.query
     const { data } = request.session
 
-    request.app.locals.currentReferrer =
-      referrer || currentReferrer || vaccination.uri
+    request.app.locals.back = referrer || back || vaccination.uri
 
     request.app.locals.vaccination = new Vaccination({
       ...vaccination, // Previous values
@@ -100,7 +102,7 @@ export const vaccinationController = {
     const patient = new Patient(data.patients[patient_uuid])
 
     request.app.locals.patient = patient
-    request.app.locals.currentReferrer = patient.uri
+    request.app.locals.back = patient.uri
 
     request.app.locals.start =
       data.preScreen.continue === 'true' ? 'administer' : 'decline'
@@ -126,7 +128,7 @@ export const vaccinationController = {
   },
 
   update(request, response) {
-    const { campaign, currentReferrer, vaccination } = request.app.locals
+    const { back, campaign, vaccination } = request.app.locals
     const { form } = request.params
     const { data } = request.session
     const { __ } = response.locals
@@ -162,24 +164,24 @@ export const vaccinationController = {
     }
 
     delete data?.wizard?.vaccination
-    delete request.app.locals.currentReferrer
+    delete request.app.locals.back
     delete request.app.locals.vaccination
 
     const action = form === 'edit' ? 'update' : 'create'
     request.flash('success', __(`vaccination.success.${action}`))
 
-    const redirect = currentReferrer || updatedVaccination.uri
+    const redirect = back || updatedVaccination.uri
     response.redirect(redirect)
   },
 
   readForm(request, response, next) {
-    const { currentReferrer, start, campaign, vaccination } = request.app.locals
+    const { back, start, campaign, vaccination } = request.app.locals
     const { form, id, uuid } = request.params
     const { referrer } = request.query
     const { data } = request.session
     const { __ } = response.locals
 
-    request.app.locals.referrer = referrer || currentReferrer
+    request.app.locals.referrer = referrer || back
 
     request.app.locals.vaccination = new Vaccination({
       ...(form === 'edit' && vaccination), // Previous values

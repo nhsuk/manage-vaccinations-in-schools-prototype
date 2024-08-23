@@ -40,8 +40,8 @@
 {% block outerContent %}
   {{ backLink({
     classes: "nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-0",
-    href: paths.back
-  }) if paths.back }}
+    href: paths.back or back
+  }) if paths.back or back }}
 {% endblock %}
 
 {% block beforeContent %}
