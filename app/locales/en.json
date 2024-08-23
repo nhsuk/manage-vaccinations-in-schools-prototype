@@ -274,6 +274,20 @@
         "one": "%s child added to this programme’s cohort",
         "other": "[0] No children added to this programme’s cohort|%s children added to this programme’s cohort"
       }
+    },
+    "exact": {
+      "label": "Previously uploaded",
+      "count": {
+        "one": "%s previously uploaded record was omitted",
+        "other": "[0] No previously uploaded record were omitted|%s previously uploaded records were omitted"
+      }
+    },
+    "inexact": {
+      "label": "Duplicates",
+      "count": {
+        "one": "%s duplicate record needs review",
+        "other": "[0] No duplicate records need review|%s duplicate records need review"
+      }
     }
   },
   "consent": {
@@ -715,6 +729,37 @@
     "invite": {
       "title": "Invite to session",
       "confirm": "Invite"
+    },
+    "review": {
+      "title": "Review duplicate child record",
+      "duplicate": {
+        "label": "Duplicate record",
+        "record": "Duplicate child record"
+      },
+      "original": {
+        "label": "Existing record",
+        "record": "Existing child record"
+      },
+      "decision": {
+        "label": "Which record do you want to keep?",
+        "duplicate": {
+          "label": "Use duplicate record",
+          "hint": "The duplicate record will replace the existing child record."
+        },
+        "original": {
+          "label": "Keep previously uploaded record",
+          "hint": "The existing record will be kept and the duplicate record will be discarded."
+        }
+      },
+      "confirm": "Resolve duplicate",
+      "issue": {
+        "label": "Issue to review",
+        "title": "This record needs reviewing",
+        "text": "A field in a duplicate record does not match an existing child record"
+      },
+      "actions": {
+        "label": "Actions"
+      }
     }
   },
   "record": {
@@ -770,6 +815,14 @@
         "one": "%s record is without an NHS number",
         "other": "[0] No records without an NHS number|%s records without an NHS number"
       }
+    },
+    "issue": {
+      "label": "Issue to review",
+      "title": "This record needs reviewing",
+      "text": "A field in a duplicate record does not match that in an existing record"
+    },
+    "actions": {
+      "label": "Actions"
     }
   },
   "registration": {
@@ -1272,7 +1325,7 @@
       "label": "Previously uploaded",
       "count": {
         "one": "%s previously uploaded record was omitted",
-        "other": "[0] No previously uploaded record were omitted|%s previously uploaded record were omitted"
+        "other": "[0] No previously uploaded record were omitted|%s previously uploaded records were omitted"
       }
     },
     "inexact": {
@@ -1454,7 +1507,7 @@
       "issue": {
         "label": "Issue to review",
         "title": "This record needs reviewing",
-        "text": "A field in a duplicate record does not match a previously uploaded record"
+        "text": "A field in a duplicate record does not match that in a previously uploaded record"
       },
       "actions": {
         "label": "Actions"
@@ -1549,12 +1602,6 @@
     },
     "vaccinations": {
       "label": "Records"
-    }
-  },
-  "review": {
-    "issue": {
-      "label": "review.issue.label",
-      "text": "review.issue.text"
     }
   }
 }

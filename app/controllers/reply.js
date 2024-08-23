@@ -122,7 +122,7 @@ export const replyController = {
     const { data } = request.session
 
     const patient = Object.values(data.patients).find(
-      (patient) => new Patient(patient).nhsn === nhsn
+      (patient) => patient.record.nhsn === nhsn
     )
 
     request.app.locals.reply = new Reply({

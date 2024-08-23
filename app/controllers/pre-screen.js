@@ -7,7 +7,7 @@ export const preScreenController = {
     const { campaign } = response.locals
 
     const patient = Object.values(data.patients).find(
-      (patient) => new Patient(patient).nhsn === nhsn
+      (patient) => patient.record.nhsn === nhsn
     )
 
     // Pre-screen interview

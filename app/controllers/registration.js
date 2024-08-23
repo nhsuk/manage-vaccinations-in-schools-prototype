@@ -8,7 +8,7 @@ export const registrationController = {
     const { data } = request.session
 
     const patient = Object.values(data.patients).find(
-      (patient) => new Patient(patient).nhsn === nhsn
+      (patient) => patient.record.nhsn === nhsn
     )
 
     // Convert string to boolean

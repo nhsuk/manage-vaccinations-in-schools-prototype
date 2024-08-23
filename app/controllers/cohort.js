@@ -18,9 +18,16 @@ export const cohortController = {
     // Get pending cohort from campaign
     const { pendingCohort } = new Campaign(data.campaigns[uid])
 
-    const records = pendingCohort
-    const inexact = []
-    const exact = []
+    // Remove 3 UUIDs from pending cohort…
+    const records = pendingCohort.slice(0, -3)
+
+    // …because we’ll say these are an inexact match
+    const inexact = pendingCohort.slice(-3)
+
+    // Add use 10 existing records as a placeholder for exact duplicates
+    const exact = Object.values(data.records)
+      .map((record) => record.nhsn)
+      .slice(-10)
 
     // Delete previous data
     delete data.cohort
@@ -95,6 +102,12 @@ export const cohortController = {
 
     request.app.locals.cohort = cohort
     request.app.locals.records = cohort.records.map(
+      (nhsn) => new Record(data.records[nhsn])
+    )
+    request.app.locals.inexact = cohort.inexact.map(
+      (nhsn) => new Record(data.records[nhsn])
+    )
+    request.app.locals.exact = cohort.exact.map(
       (nhsn) => new Record(data.records[nhsn])
     )
 

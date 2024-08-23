@@ -76,7 +76,7 @@ export const uploadController = {
       .map((vaccination) => vaccination.uuid)
 
     // Remove 3 UUIDs from given vaccinations…
-    const vaccinations = givenVaccinations.slice(0, -6)
+    const vaccinations = givenVaccinations.slice(0, -3)
 
     // …because we’ll say these are an inexact match
     const inexact = givenVaccinations.slice(-3)
