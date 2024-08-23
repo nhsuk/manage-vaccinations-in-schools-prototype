@@ -18,9 +18,21 @@ export const patientController = {
 
     const campaign_uid = uid || id.split('-')[0]
     const campaign = data.campaigns[campaign_uid]
-    const patient = Object.values(data.patients).find(
-      (patient) => new Patient(patient).nhsn === nhsn
+    let patient = Object.values(data.patients).find(
+      (patient) => patient.record.nhsn === nhsn
     )
+
+    // If no patient found, locate record (patient not added to a cohort yet)
+    if (!patient) {
+      const record = Object.values(data.records).find(
+        (record) => record.nhsn === nhsn
+      )
+      patient = new Patient({
+        campaign_uid,
+        record
+      })
+    }
+
     const replies = Object.values(patient.replies)
     const vaccinations = Object.keys(patient.vaccinations)
 
@@ -178,6 +190,37 @@ export const patientController = {
     delete data.patient
 
     request.flash('success', __(`patient.success.invite`, { session }))
+    response.redirect(patient.uri)
+  },
+
+  readReview(request, response, next) {
+    const { patient } = response.locals
+
+    // Fake issue with date of birth field
+    const duplicateRecord = new Record(patient.record)
+    const dob = new Date(duplicateRecord.dob)
+    dob.setFullYear(dob.getFullYear() - 2)
+    duplicateRecord.dob = dob
+
+    response.locals.duplicateRecord = duplicateRecord
+
+    next()
+  },
+
+  showReview(request, response) {
+    response.render('patient/review')
+  },
+
+  updateReview(request, response) {
+    const { patient } = request.app.locals
+    const { decision } = request.body
+    const { __ } = response.locals
+
+    // Doesn’t change any values, but shows a confirmation message
+    if (decision === 'duplicate') {
+      request.flash('success', __('patient.success.update'))
+    }
+
     response.redirect(patient.uri)
   }
 }
