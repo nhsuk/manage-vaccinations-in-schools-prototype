@@ -31,7 +31,13 @@
     } if session.status == SessionStatus.Active else {
       text: __("session.edit.title"),
       href: session.uri + "/edit"
-    }]
+    }, {
+      text: __("session.download-consent-form.title"),
+      href: "/public/downloads/hpv-consent-form.pdf",
+      attributes: {
+        download: true
+      }
+    } if campaign.type == "HPV" and session.status != SessionStatus.Completed]
   }) }}
 
   {% set consentCardDescriptionHtml %}

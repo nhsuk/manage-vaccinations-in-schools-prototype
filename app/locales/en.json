@@ -1034,6 +1034,9 @@
       "text": "You are currently using {{vaccine.brand}} batch <span class=\"app-u-monospace\">{{batch}}</span>. [Change]({{session.uri}}/default-batch)",
       "label": "Batch"
     },
+    "download-consent-form": {
+      "title": "Download consent form (PDF)"
+    },
     "list": {
       "title": "Today’s sessions",
       "description": "Use this area to:\n- register attendance\n- record vaccinations\n- review session outcomes"
