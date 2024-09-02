@@ -2,7 +2,7 @@
 
 {%- macro _action(params) -%}
 {%- if params.href -%}
-  {{- link(params.href, params.text) | safe -}}
+  {{- link(params.href, params.text, params.attributes) | safe -}}
 {%- elif params.tag -%}
   {{- tag(params.tag) -}}
 {%- else -%}

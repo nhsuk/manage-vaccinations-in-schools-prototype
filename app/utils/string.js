@@ -33,10 +33,22 @@ export function stringToBoolean(value) {
  * Format link
  * @param {string} href - Hyperlink reference
  * @param {string} text - Hyperlink text
+ * @param {object} [attributes] - Hyperlink attributes
  * @returns {string} HTML anchor decorated with nhsuk-link class
  */
-export function formatLink(href, text) {
-  return `<a class="nhsuk-link" href="${href}">${text}</a>`
+export function formatLink(href, text, attributes = {}) {
+  let attrs = []
+
+  for (const [key, value] of Object.entries(attributes)) {
+    if (value === true || value === 'true') {
+      attrs.push(key)
+    } else if (value !== undefined || value !== null || value !== false) {
+      attrs.push(`${key}="${value}"`)
+    }
+  }
+  attrs = attrs.join(' ')
+
+  return `<a class="nhsuk-link" href="${href}"${attrs}>${text}</a>`
 }
 
 /**

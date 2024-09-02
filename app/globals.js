@@ -118,10 +118,11 @@ export default () => {
    * Format link
    * @param {string} href - Hyperlink reference
    * @param {string} text - Hyperlink text
+   * @param {object} [attributes] - Hyperlink attributes
    * @returns {string} HTML anchor decorated with nhsuk-link class
    */
-  globals.link = function (href, text) {
-    return formatLink(href, text)
+  globals.link = function (href, text, attributes) {
+    return formatLink(href, text, attributes)
   }
 
   /**
