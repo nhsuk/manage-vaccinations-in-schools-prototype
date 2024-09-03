@@ -38,7 +38,7 @@
       items: [{
         href: campaign.uri + "/download/new",
         text: __("download.new.label")
-      },
+      } if vaccinations.length,
       {
         text: __("campaign.edit.title"),
         href: campaign.uri + "/edit"
@@ -46,69 +46,71 @@
     }) }}
   {% endif %}
 
-  {% if sessions.length %}
-    <div class="nhsuk-grid-row nhsuk-card-group">
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ card({
-          classes: "app-card--data app-card--reversed",
-          clickable: true if not isDataConsumer,
-          heading: __("campaign.cohort.title"),
-          headingClasses: "nhsuk-heading-xs",
-          href: campaign.uri + "/cohort" if not isDataConsumer,
-          description: campaign.cohort.length or "0"
-        }) }}
-      </div>
-
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ card({
-          classes: "app-card--data app-card--reversed",
-          clickable: true if not isDataConsumer,
-          heading: "Sessions completed",
-          headingClasses: "nhsuk-heading-xs",
-          href: campaign.uri + "/sessions" if not isDataConsumer,
-          description: sessions | where("status", SessionStatus.Completed) | length or "0"
-        }) }}
-      </div>
-
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ card({
-          classes: "app-card--data app-card--reversed",
-          clickable: true if not isDataConsumer,
-          heading: __("campaign.vaccinations.title"),
-          headingClasses: "nhsuk-heading-xs",
-          href: campaign.uri + "/vaccinations" if not isDataConsumer,
-          description: vaccinations.length or "0"
-        }) }}
-      </div>
-
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ card({
-          classes: "app-card--data app-card--reversed",
-          heading: "Consent requests and reminders sent",
-          headingClasses: "nhsuk-heading-xs",
-          description: "1671"
-        }) }}
-      </div>
-
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ card({
-          classes: "app-card--data app-card--reversed",
-          heading: "Consent given (versus refused or no response)",
-          headingClasses: "nhsuk-heading-xs",
-          description: "78%"
-        }) }}
-      </div>
-
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ card({
-          classes: "app-card--data app-card--reversed",
-          heading: "Responses received and triaged",
-          headingClasses: "nhsuk-heading-xs",
-          description: "98%"
-        }) }}
-      </div>
+  <div class="nhsuk-grid-row nhsuk-card-group">
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data app-card--reversed",
+        clickable: true if not isDataConsumer,
+        heading: __("campaign.cohort.title"),
+        headingClasses: "nhsuk-heading-xs",
+        href: campaign.uri + "/cohort" if not isDataConsumer,
+        description: campaign.cohort.length or "0"
+      }) }}
     </div>
 
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data app-card--reversed",
+        clickable: true if not isDataConsumer,
+        heading: "Sessions completed",
+        headingClasses: "nhsuk-heading-xs",
+        href: campaign.uri + "/sessions" if not isDataConsumer,
+        description: sessions | where("status", SessionStatus.Completed) | length or "0"
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data app-card--reversed",
+        clickable: true if not isDataConsumer,
+        heading: __("campaign.vaccinations.title"),
+        headingClasses: "nhsuk-heading-xs",
+        href: campaign.uri + "/vaccinations" if not isDataConsumer,
+        description: vaccinations.length or "0"
+      }) }}
+    </div>
+
+  {% if sessions.length %}
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data",
+        heading: "Consent requests and reminders sent",
+        headingClasses: "nhsuk-heading-xs",
+        description: "1671"
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data",
+        heading: "Consent given (versus refused or no response)",
+        headingClasses: "nhsuk-heading-xs",
+        description: "78%"
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data",
+        heading: "Responses received and triaged",
+        headingClasses: "nhsuk-heading-xs",
+        description: "98%"
+      }) }}
+    </div>
+  {% endif %}
+  </div>
+
+  {% if sessions.length %}
     {{ table({
       heading: "Reasons for refusal",
       panel: true,
