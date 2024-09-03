@@ -97,6 +97,9 @@ export const campaignController = {
       (vaccination) => vaccination.record.missingNhsNumber
     )
 
+    // Remove any back state that have been stored
+    delete request.app.locals.back
+
     next()
   },
 
