@@ -1,6 +1,8 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { Campaign } from '../models/campaign.js'
+import { Cohort } from '../models/cohort.js'
 import { Patient } from '../models/patient.js'
+import { Record } from '../models/record.js'
 import { Session } from '../models/session.js'
 import { Vaccine } from '../models/vaccine.js'
 import { Upload } from '../models/upload.js'
@@ -135,6 +137,15 @@ export const campaignController = {
       ...data?.wizard?.campaign, // Wizard values
       ...(data.token && { created_user_uid: data.token?.uid })
     })
+
+    // Create a pending cohort
+    const records = Object.values(data.records).map(
+      (record) => new Record(record)
+    )
+    const cohort = Cohort.generate(campaign, records, data.token)
+
+    // Add pending cohort to campaign
+    updatedCampaign.pendingCohort = cohort.records
 
     data.campaigns[uid] = updatedCampaign
 
