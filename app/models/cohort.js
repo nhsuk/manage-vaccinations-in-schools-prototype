@@ -54,7 +54,7 @@ export class Cohort {
 
     return new Cohort({
       created,
-      created_user_uid: user.uid,
+      created_user_uid: user?.uid || '000123456789',
       campaign_uid: campaign.uid,
       records
     })
