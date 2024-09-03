@@ -83,5 +83,7 @@
       ],
       rows: sessionRows
     }) }}
+  {% else %}
+    {{ __n("campaign.sessions.count", sessions.length) | nhsukMarkdown }}
   {% endfor %}
 {% endblock %}

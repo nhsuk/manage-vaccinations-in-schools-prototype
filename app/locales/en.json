@@ -91,7 +91,11 @@
       }
     },
     "sessions": {
-      "title": "School sessions"
+      "title": "School sessions",
+      "count": {
+        "one": "%s school session organised",
+        "other": "[0] No school sessions organised|%s school sessions organised"
+      }
     },
     "show": {
       "title": "Overview",
