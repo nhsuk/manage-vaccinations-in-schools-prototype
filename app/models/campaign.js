@@ -32,6 +32,8 @@ export class AcademicYear {
  * @property {object} [end] - Date consent window closes
  * @property {Array[string]} cohort - Cohort
  * @property {Array[string]} vaccines - Vaccines administered
+ * @property {Array[string]} pendingCohort - Pending cohort record NHS numbers
+ * @property {Array[string]} pendingVaccinations - Pending vaccinations UUIDS
  * @function ns - Namespace
  * @function uri - URL
  */
