@@ -78,5 +78,7 @@
       ],
       rows: uploadRows
     }) }}
+  {% else %}
+    {{ __n("campaign.uploads.count", uploads.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}
