@@ -60,6 +60,15 @@
             classes: "nhsuk-tag--" + tagColor,
             text: patient.outcome.value
           })
+        },
+        {
+          header: __("record.actions.label"),
+          html: actionList({
+            items: [{
+              text: "Remove",
+              href: "#"
+            }]
+          }) if not patient.session_id else " "
         }
       ]) %}
     {% endfor %}
@@ -73,7 +82,11 @@
         { text: __("record.fullName.label") },
         { text: __("record.nhsn.label") },
         { text: __("record.dob.label") },
-        { text: __("outcome.label") }
+        { text: __("outcome.label") },
+        {
+          text: __("record.actions.label"),
+          attributes: { "no-sort": "no-sort" }
+        }
       ],
       rows: cohortRows
     }) }}
