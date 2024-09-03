@@ -18,7 +18,10 @@ export const cohortController = {
     // Get pending cohort from campaign
     const { pendingCohort } = new Campaign(data.campaigns[uid])
 
-    // Remove 3 UUIDs from pending cohort…
+    // Get all records missing an NHS number
+    const incomplete = pendingCohort.filter((nhsn) => !nhsn.match(/^\d{10}$/))
+
+    // Remove 3 records from pending cohort…
     const records = pendingCohort.slice(0, -3)
 
     // …because we’ll say these are an inexact match
@@ -37,6 +40,7 @@ export const cohortController = {
       campaign_uid: uid,
       records,
       inexact,
+      incomplete,
       exact,
       ...(data.token && { created_user_uid: data.token?.uid })
     })
@@ -104,6 +108,9 @@ export const cohortController = {
     request.app.locals.records = cohort.records.map(
       (nhsn) => new Record(data.records[nhsn])
     )
+    request.app.locals.incomplete = cohort.incomplete.map(
+      (nhsn) => new Record(data.records[nhsn])
+    )
     request.app.locals.inexact = cohort.inexact.map(
       (nhsn) => new Record(data.records[nhsn])
     )
@@ -129,6 +136,7 @@ export const cohortController = {
     // Delete previous scenarios
     delete data.exact
     delete data.inexact
+    delete data.incomplete
 
     let next
     switch (scenario) {

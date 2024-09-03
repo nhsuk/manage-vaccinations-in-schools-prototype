@@ -10,10 +10,15 @@
     title: title
   }) }}
 
+{% set warningCalloutMarkdown %}
+{% if exact.length %}- {{ __n("cohort.exact.count", exact.length) }}{% endif %}
+{% if incomplete.length %}- {{ __n("cohort.incomplete.count", incomplete.length) }}{% endif %}
+{% endset %}
+
   {{ warningCallout({
     heading: __("cohort.new.check-answers.warning"),
-    HTML: __n("cohort.exact.count", exact.length) | nhsukMarkdown
-  }) if exact.length }}
+    HTML: warningCalloutMarkdown | nhsukMarkdown
+  }) if exact.length or incomplete.length }}
 
   {{ button({
     text: confirmButtonText

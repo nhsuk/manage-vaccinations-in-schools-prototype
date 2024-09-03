@@ -288,6 +288,13 @@
         "one": "%s duplicate record needs review",
         "other": "[0] No duplicate records need review|%s duplicate records need review"
       }
+    },
+    "incomplete": {
+      "label": "Incomplete",
+      "count": {
+        "one": "%s record without an NHS number will use information from the Personal Demographics Service (PDS)",
+        "other": "[0] No records without NHS numbers will use information from the Personal Demographics Service (PDS)|%s records without NHS numbers will use information from the Personal Demographics Service (PDS)"
+      }
     }
   },
   "consent": {
