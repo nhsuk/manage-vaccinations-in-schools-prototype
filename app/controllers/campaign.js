@@ -176,7 +176,6 @@ export const campaignController = {
     const journey = {
       [`/`]: {},
       [`/${uid}/${form}/details`]: {},
-      [`/${uid}/${form}/period`]: {},
       [`/${uid}/${form}/vaccines`]: {},
       [`/${uid}/${form}/check-answers`]: {},
       [`/${uid}`]: {}

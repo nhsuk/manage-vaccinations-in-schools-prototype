@@ -2,12 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import campaignTypes from '../datasets/campaign-types.js'
 import vaccines from '../datasets/vaccines.js'
 import { Vaccine } from './vaccine.js'
-import {
-  addDays,
-  convertIsoDateToObject,
-  convertObjectToIsoDate,
-  formatDate
-} from '../utils/date.js'
+import { addDays } from '../utils/date.js'
 
 export class CampaignType {
   static FLU = 'Flu'
@@ -28,8 +23,6 @@ export class AcademicYear {
  * @property {CampaignType} [type] - Campaign type
  * @property {string} [name] - Campaign name
  * @property {string} [year] - Academic year
- * @property {object} [start] - Date consent window opens
- * @property {object} [end] - Date consent window closes
  * @property {Array[string]} cohort - Cohort
  * @property {Array[string]} vaccines - Vaccines administered
  * @property {Array[string]} pendingCohort - Pending cohort record NHS numbers
@@ -45,15 +38,10 @@ export class Campaign {
     this.type = options?.type
     this.name = options?.name
     this.year = options?.year
-    this.start = options?.start
-    this.end = options?.end
     this.cohort = options?.cohort || []
     this.vaccines = options?.vaccines || []
     this.pendingCohort = options?.pendingCohort || []
     this.pendingVaccinations = options?.pendingVaccinations || []
-    // dateInput objects
-    this.start_ = options?.start_
-    this.end_ = options?.end_
   }
 
   static generate(type, user) {
@@ -61,43 +49,17 @@ export class Campaign {
     const today = new Date()
     const created = addDays(today, faker.number.int({ min: 60, max: 90 }) * -1)
 
-    // Use typical dates for winter flu versus other campaigns
-    const startDate = type === CampaignType.FLU ? '2023-10-15' : '2024-03-01'
-    const endDate = type === CampaignType.FLU ? '2024-02-29' : '2024-06-20'
-
     return new Campaign({
       type,
       created,
       created_user_uid: user.uuid,
       name: type,
       year: AcademicYear.Y2023,
-      start: new Date(startDate),
-      end: new Date(endDate),
       vaccines: campaignTypes[type].vaccines
     })
   }
 
   #uid = faker.helpers.replaceSymbols('???')
-
-  get start_() {
-    return convertIsoDateToObject(this.start)
-  }
-
-  set start_(object) {
-    if (object) {
-      this.start = convertObjectToIsoDate(object)
-    }
-  }
-
-  get end_() {
-    return convertIsoDateToObject(this.end)
-  }
-
-  set end_(object) {
-    if (object) {
-      this.end = convertObjectToIsoDate(object)
-    }
-  }
 
   /**
    * @todo A campaign can use multiple vaccines, and one used for a patient will
@@ -115,12 +77,6 @@ export class Campaign {
       : []
 
     return {
-      start: formatDate(this.start, {
-        dateStyle: 'long'
-      }),
-      end: formatDate(this.end, {
-        dateStyle: 'long'
-      }),
       vaccines: vaccineList.join('<br>')
     }
   }

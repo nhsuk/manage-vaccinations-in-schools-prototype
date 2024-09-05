@@ -144,15 +144,6 @@
     "year": {
       "label": "Academic year"
     },
-    "period": {
-      "title": "When does this programme run?"
-    },
-    "start": {
-      "label": "Start date"
-    },
-    "end": {
-      "label": "End date"
-    },
     "vaccines": {
       "label": "Vaccines",
       "title": "Which vaccine(s) does this programme administer?"
