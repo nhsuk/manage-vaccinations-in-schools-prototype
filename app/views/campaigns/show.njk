@@ -2,7 +2,7 @@
 
 {% set isDataConsumer = data.token.role == UserRole.DataConsumer %}
 {% set paths = { back: "/home" } if isDataConsumer %}
-{% set title = campaign.name + " – " + __("campaign.show.title") %}
+{% set title = campaign.type + " – " + __("campaign.show.title") %}
 {% set view = "show" %}
 
 {% block beforeContent %}
@@ -16,7 +16,7 @@
   {{ super() }}
 
   {{ heading({
-    title: campaign.name,
+    title: campaign.type,
     summary: campaign.year
   }) }}
 

@@ -22,8 +22,8 @@
   {% for campaign in campaigns | sort(false, false, "name") %}
     {% set campaignRows = campaignRows | push([
       {
-        header: __("campaign.name.label"),
-        html: link(campaign.uri, campaign.name) or "Not provided"
+        header: __("campaign.type.label"),
+        html: link(campaign.uri, campaign.type) or "Not provided"
       },
       {
         header: __("campaign.year.label"),
@@ -43,7 +43,7 @@
     panel: true,
     responsive: true,
     head: [
-      { text: __("campaign.name.label") },
+      { text: __("campaign.type.label") },
       { text: __("campaign.year.label") },
       { text: __("campaign.vaccines.label") }
     ],

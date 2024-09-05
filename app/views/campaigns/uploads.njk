@@ -1,6 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = campaign.name + " – " + __("campaign.uploads.title") %}
+{% set title = campaign.type + " – " + __("campaign.uploads.title") %}
 {% set view = "uploads" %}
 
 {% block beforeContent %}
@@ -9,7 +9,7 @@
       text: __("campaign.list.title"),
       href: "/campaigns"
     }],
-    text: campaign.name,
+    text: campaign.type,
     href: campaign.uri
   }) }}
 {% endblock %}
@@ -18,7 +18,7 @@
   {{ super() }}
 
   {{ heading({
-    title: campaign.name,
+    title: campaign.type,
     summary: campaign.year
   }) }}
 

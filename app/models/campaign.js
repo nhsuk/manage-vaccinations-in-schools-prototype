@@ -21,7 +21,6 @@ export class AcademicYear {
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created campaign
  * @property {CampaignType} [type] - Campaign type
- * @property {string} [name] - Campaign name
  * @property {string} [year] - Academic year
  * @property {Array[string]} cohort - Cohort
  * @property {Array[string]} vaccines - Vaccines administered
@@ -36,7 +35,6 @@ export class Campaign {
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.type = options?.type
-    this.name = options?.name
     this.year = options?.year
     this.cohort = options?.cohort || []
     this.vaccines = options?.vaccines || []
@@ -53,7 +51,6 @@ export class Campaign {
       type,
       created,
       created_user_uid: user.uuid,
-      name: type,
       year: AcademicYear.Y2023,
       vaccines: campaignTypes[type].vaccines
     })

@@ -1,7 +1,7 @@
 {% extends "_layouts/default.njk" %}
 
 {% set paths = { back: "/home" } if data.token.role == UserRole.DataConsumer %}
-{% set title = campaign.name + " – " + __("campaign.cohort.title") %}
+{% set title = campaign.type + " – " + __("campaign.cohort.title") %}
 {% set view = "cohort" %}
 
 {% block beforeContent %}
@@ -10,7 +10,7 @@
       text: __("campaign.list.title"),
       href: "/campaigns"
     }],
-    text: campaign.name,
+    text: campaign.type,
     href: campaign.uri
   }) }}
 {% endblock %}
@@ -19,7 +19,7 @@
   {{ super() }}
 
   {{ heading({
-    title: campaign.name,
+    title: campaign.type,
     summary: campaign.year
   }) }}
 

@@ -129,17 +129,14 @@
       "summary": "Programme details"
     },
     "success": {
-      "create": "{{campaign.name}} created",
-      "update": "{{campaign.name}} updated"
+      "create": "{{campaign.type}} created",
+      "update": "{{campaign.type}} updated"
     },
     "details": {
       "title": "Programme details"
     },
     "type": {
       "label": "Programme type"
-    },
-    "name": {
-      "label": "Name"
     },
     "year": {
       "label": "Academic year"
@@ -491,8 +488,8 @@
       }
     },
     "decision": {
-      "summary": "Consent for the {{campaign.name}} vaccination",
-      "title": "Do you agree to them having a {{campaign.name}} vaccination?",
+      "summary": "Consent for the {{campaign.type}} vaccination",
+      "title": "Do you agree to them having a {{campaign.type}} vaccination?",
       "label": "Decision",
       "hint": {
         "Flu": "The nasal flu spray contains gelatine which comes from pigs."
@@ -556,7 +553,7 @@
     "consent": {
       "invite": {
         "label": "Invitation",
-        "name": "{{campaign.name}} vaccination on {{session.formatted.date}}"
+        "name": "{{campaign.type}} vaccination on {{session.formatted.date}}"
       },
       "invite-reminder": {
         "label": "Reminder",
@@ -564,7 +561,7 @@
       },
       "consent-given": {
         "label": "Consent given",
-        "name": "{{campaign.name}} vaccination on {{session.formatted.date}}"
+        "name": "{{campaign.type}} vaccination on {{session.formatted.date}}"
       },
       "consent-conflicts": {
         "label": "Consent conflicts",
@@ -572,35 +569,35 @@
       },
       "consent-refused": {
         "label": "Consent refused",
-        "name": "{{campaign.name}} vaccination on {{session.formatted.date}}"
+        "name": "{{campaign.type}} vaccination on {{session.formatted.date}}"
       },
       "triage-needed": {
         "label": "Triage needed",
-        "name": "{{campaign.name}} vaccination on {{session.formatted.date}}"
+        "name": "{{campaign.type}} vaccination on {{session.formatted.date}}"
       },
       "triage-vaccinate": {
         "label": "Vaccinate",
-        "name": "Your child can have the {{campaign.name}} vaccination on {{session.formatted.date}}"
+        "name": "Your child can have the {{campaign.type}} vaccination on {{session.formatted.date}}"
       },
       "triage-do-not-vaccinate": {
         "label": "Do not vaccinate",
-        "name": "Your child will not have the {{campaign.name}} vaccination in school"
+        "name": "Your child will not have the {{campaign.type}} vaccination in school"
       },
       "session-reminder": {
         "label": "Session reminder",
-        "name": "{{consent.child.fullName}} will get their {{campaign.name}} vaccination on {{session.formatted.date}}"
+        "name": "{{consent.child.fullName}} will get their {{campaign.type}} vaccination on {{session.formatted.date}}"
       },
       "session-outcome-vaccinated": {
         "label": "Vaccinated",
-        "name": "Your child had their {{campaign.name}} vaccination today"
+        "name": "Your child had their {{campaign.type}} vaccination today"
       },
       "session-outcome-could-not-vaccinate": {
         "label": "Could not vaccinate",
-        "name": "Your child did not have their {{campaign.name}} vaccination today"
+        "name": "Your child did not have their {{campaign.type}} vaccination today"
       },
       "information-child": {
         "label": "Information for students",
-        "name": "You can get an {{campaign.name}} vaccination on {{session.formatted.date}}"
+        "name": "You can get an {{campaign.type}} vaccination on {{session.formatted.date}}"
       }
     }
   },
@@ -928,8 +925,8 @@
     "decision": {
       "label": "Decision",
       "title": {
-        "Child": "Does the child agree to having the {{campaign.name}} vaccine?",
-        "Parent": "Do they agree to {{patient.firstName}} having the {{campaign.name}} vaccine?"
+        "Child": "Does the child agree to having the {{campaign.type}} vaccine?",
+        "Parent": "Do they agree to {{patient.firstName}} having the {{campaign.type}} vaccine?"
       }
     },
     "invalid": {
@@ -1161,47 +1158,47 @@
       "invite": {
         "label": "Invitation",
         "name": "Inviting parent to give or refuse consent",
-        "text": "Give or refuse consent for your child’s {{campaign.name}} vaccination by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}). You need to do this by {{session.formatted.close}}.\n\nResponding will take less than 5 minutes."
+        "text": "Give or refuse consent for your child’s {{campaign.type}} vaccination by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}). You need to do this by {{session.formatted.close}}.\n\nResponding will take less than 5 minutes."
       },
       "invite-reminder": {
         "label": "Reminder",
         "name": "Reminding parent to give or refuse consent",
-        "text": "We recently asked for your consent to vaccinate your child against {{campaign.name}}.\n\nGo to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}) to submit a response. This will take less than 5 minutes."
+        "text": "We recently asked for your consent to vaccinate your child against {{campaign.type}}.\n\nGo to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}) to submit a response. This will take less than 5 minutes."
       },
       "consent-given": {
         "label": "Consent given",
         "name": "Confirmation that consent has been given",
-        "text": "You’ve given consent for {{consent.child.firstName}} to get their {{campaign.name}} vaccination at school on {{session.formatted.date}}. Please let them know what to expect."
+        "text": "You’ve given consent for {{consent.child.firstName}} to get their {{campaign.type}} vaccination at school on {{session.formatted.date}}. Please let them know what to expect."
       },
       "consent-given-child": {
         "label": "Consent given",
         "name": "Confirmation that consent has been given",
-        "text": "Your parent or guardian has agreed for you to have the {{campaign.name}} vaccination at school on {{session.formatted.date}}."
+        "text": "Your parent or guardian has agreed for you to have the {{campaign.type}} vaccination at school on {{session.formatted.date}}."
       },
       "consent-refused": {
         "label": "Consent refused",
         "name": "Confirmation that consent has been refused",
-        "text": "You’ve refused to give consent for {{consent.child.fullName}} to have their {{campaign.name}} vaccination. Please let them know they will not be vaccinated at school."
+        "text": "You’ve refused to give consent for {{consent.child.fullName}} to have their {{campaign.type}} vaccination. Please let them know they will not be vaccinated at school."
       },
       "session-reminder": {
         "label": "Session reminder",
         "name": "Reminder (to go out the day before the vaccination)",
-        "text": "{{consent.child.firstName}} will get their {{campaign.name}} vaccination at school tomorrow ({{session.formatted.date}}). Please make sure they have breakfast and encourage them to wear a short-sleeved shirt."
+        "text": "{{consent.child.firstName}} will get their {{campaign.type}} vaccination at school tomorrow ({{session.formatted.date}}). Please make sure they have breakfast and encourage them to wear a short-sleeved shirt."
       },
       "session-reminder-child": {
         "label": "Session reminder",
         "name": "Reminder (to go out the day before the vaccination)",
-        "text": "You’re due to get your {{campaign.name}} vaccination at school tomorrow ({{session.formatted.date}}). Please wear a short-sleeved shirt and make sure you eat something before the session."
+        "text": "You’re due to get your {{campaign.type}} vaccination at school tomorrow ({{session.formatted.date}}). Please wear a short-sleeved shirt and make sure you eat something before the session."
       },
       "session-outcome-vaccinated": {
         "label": "Vaccinated",
         "name": "Child has been vaccinated",
-        "text": "{{consent.child.firstName}} had their {{campaign.name}} vaccination at school today. They might have some side effects, including bruising or itching at the injection site, a high temperature, nausea, or pain in the arms, hands, or fingers.\n\nIf you’re concerned, contact your GP in the usual way."
+        "text": "{{consent.child.firstName}} had their {{campaign.type}} vaccination at school today. They might have some side effects, including bruising or itching at the injection site, a high temperature, nausea, or pain in the arms, hands, or fingers.\n\nIf you’re concerned, contact your GP in the usual way."
       },
       "session-outcome-could-not-vaccinate": {
         "label": "Could not vaccinate",
         "name": "Child did not get their vaccination despite having consent",
-        "text": "{{consent.child.firstName}} did not have their {{campaign.name}} vaccination at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact the local health team by calling [{{organisation.tel}}](#), or email [{{organisation.email}}](#)."
+        "text": "{{consent.child.firstName}} did not have their {{campaign.type}} vaccination at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact the local health team by calling [{{organisation.tel}}](#), or email [{{organisation.email}}](#)."
       }
     }
   },

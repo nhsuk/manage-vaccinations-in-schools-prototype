@@ -272,7 +272,7 @@ export const sessionController = {
 
     response.locals.campaignItems = Object.entries(data.campaigns).map(
       ([uid, campaign]) => ({
-        text: campaign.name,
+        text: campaign.type,
         value: uid
       })
     )
