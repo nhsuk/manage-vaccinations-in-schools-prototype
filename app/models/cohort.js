@@ -19,11 +19,21 @@ function getCohortFromAgeRange(records, minAge, maxAge) {
     .map((record) => record.nhsn)
 }
 
+export class AcademicYear {
+  static Y2019 = '2019/20'
+  static Y2020 = '2020/21'
+  static Y2021 = '2021/22'
+  static Y2022 = '2022/23'
+  static Y2023 = '2023/24'
+  static Y2024 = '2024/25'
+}
+
 /**
  * @class Cohort upload
  * @property {string} uuid - Cohort upload UUID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created upload
+ * @property {AcademicYear} [year] - Academic year
  * @property {string} [campaign_uid] - Campaign UID
  * @property {Array<string>} [records] - Child records
  * @property {Array<string>} [exact] - Exact duplicate records found
@@ -36,6 +46,7 @@ export class Cohort {
     this.uuid = options?.id || faker.string.uuid()
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
+    this.year = options?.year
     this.campaign_uid = options?.campaign_uid
     this.records = options?.records || []
     this.incomplete = options?.incomplete || []
@@ -55,6 +66,7 @@ export class Cohort {
     return new Cohort({
       created,
       created_user_uid: user?.uid || '000123456789',
+      year: AcademicYear.Y2024,
       campaign_uid: campaign.uid,
       records
     })

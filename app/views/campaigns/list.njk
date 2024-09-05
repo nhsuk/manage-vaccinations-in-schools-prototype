@@ -26,10 +26,6 @@
         html: link(campaign.uri, campaign.type) or "Not provided"
       },
       {
-        header: __("campaign.year.label"),
-        text: campaign.year or "Not provided"
-      },
-      {
         header: __("campaign.vaccines.label"),
         html: campaign.formatted.vaccines or "Not provided"
       }
@@ -44,7 +40,6 @@
     responsive: true,
     head: [
       { text: __("campaign.type.label") },
-      { text: __("campaign.year.label") },
       { text: __("campaign.vaccines.label") }
     ],
     rows: campaignRows

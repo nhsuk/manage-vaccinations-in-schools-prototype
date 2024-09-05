@@ -136,10 +136,8 @@
       "title": "Programme details"
     },
     "type": {
-      "label": "Programme type"
-    },
-    "year": {
-      "label": "Academic year"
+      "label": "Programme type",
+      "title": "What is the programme type?"
     },
     "vaccines": {
       "label": "Vaccines",
@@ -287,6 +285,9 @@
         "one": "%s record without an NHS number will use information from the Personal Demographics Service (PDS)",
         "other": "[0] No records without NHS numbers will use information from the Personal Demographics Service (PDS)|%s records without NHS numbers will use information from the Personal Demographics Service (PDS)"
       }
+    },
+    "year": {
+      "label": "Academic year"
     }
   },
   "consent": {

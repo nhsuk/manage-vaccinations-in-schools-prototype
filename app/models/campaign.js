@@ -10,18 +10,12 @@ export class CampaignType {
   static TIO = '3-in-1 teenage booster and MenACWY'
 }
 
-export class AcademicYear {
-  static Y2023 = '2023/24'
-  static Y2024 = '2024/25'
-}
-
 /**
  * @class Campaign
  * @property {string} uid - UID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created campaign
  * @property {CampaignType} [type] - Campaign type
- * @property {string} [year] - Academic year
  * @property {Array[string]} cohort - Cohort
  * @property {Array[string]} vaccines - Vaccines administered
  * @property {Array[string]} pendingCohort - Pending cohort record NHS numbers
@@ -35,7 +29,6 @@ export class Campaign {
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.type = options?.type
-    this.year = options?.year
     this.cohort = options?.cohort || []
     this.vaccines = options?.vaccines || []
     this.pendingCohort = options?.pendingCohort || []
@@ -51,7 +44,6 @@ export class Campaign {
       type,
       created,
       created_user_uid: user.uuid,
-      year: AcademicYear.Y2023,
       vaccines: campaignTypes[type].vaccines
     })
   }

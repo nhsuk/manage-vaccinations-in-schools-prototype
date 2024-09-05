@@ -1,4 +1,5 @@
-import { AcademicYear, CampaignType } from '../models/campaign.js'
+import { CampaignType } from '../models/campaign.js'
+import { AcademicYear } from '../models/cohort.js'
 import { DownloadFormat } from '../models/download.js'
 import { EventType } from '../models/event.js'
 import { GillickCompetent } from '../models/gillick.js'
