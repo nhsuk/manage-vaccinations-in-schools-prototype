@@ -8,7 +8,7 @@
       text: __("campaign.list.title"),
       href: "/campaigns"
     }, {
-      text: data.campaigns[upload.campaign_uid].name,
+      text: data.campaigns[upload.campaign_uid].type,
       href: "/campaigns/" + upload.campaign_uid
     }],
     text: __("campaign.uploads.title"),
@@ -33,7 +33,7 @@
           value: users[upload.created_user_uid].fullName
         },
         campaign_uid: {
-          value: data.campaigns[upload.campaign_uid].name
+          value: data.campaigns[upload.campaign_uid].type
         },
         invalid: {
           value: __n("upload.invalid.count", invalid.length)
