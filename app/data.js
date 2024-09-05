@@ -4,6 +4,7 @@ import schools from './datasets/schools.js'
 import vaccines from './datasets/vaccines.js'
 const batches = JSON.parse(readFileSync('.data/batches.json'))
 const campaigns = JSON.parse(readFileSync('.data/campaigns.json'))
+const cohorts = JSON.parse(readFileSync('.data/cohorts.json'))
 const organisations = JSON.parse(readFileSync('.data/organisations.json'))
 const patients = JSON.parse(readFileSync('.data/patients.json'))
 const records = JSON.parse(readFileSync('.data/records.json'))
@@ -22,6 +23,7 @@ const vaccinations = JSON.parse(readFileSync('.data/vaccinations.json'))
 export default {
   batches,
   campaigns,
+  cohorts,
   features: {
     uploads: {
       on: process.env.FEATURE_UPLOADS === 'true',

@@ -19,8 +19,8 @@ export const campaignController = {
     })
   },
 
-  cohort(request, response) {
-    response.render('campaigns/cohort')
+  cohorts(request, response) {
+    response.render('campaigns/cohorts')
   },
 
   reviews(request, response) {
@@ -57,9 +57,9 @@ export const campaignController = {
     const campaign = new Campaign(data.campaigns[uid])
 
     request.app.locals.campaign = campaign
-    request.app.locals.cohort = Object.values(data.patients)
-      .filter((patient) => patient.campaign_uid === uid)
-      .map((patient) => new Patient(patient))
+    request.app.locals.cohorts = Object.values(data.cohorts)
+      .filter((cohort) => cohort.campaign_uid === campaign.uid)
+      .map((cohort) => new Cohort(cohort))
     request.app.locals.sessions = Object.values(data.sessions)
       .filter((session) => session.campaign_uid === uid)
       .map((session) => {

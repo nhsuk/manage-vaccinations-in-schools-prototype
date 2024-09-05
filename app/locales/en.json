@@ -83,11 +83,11 @@
       "description": "Use this area to:\n- create new programmes\n- review consent responses\n- triage health records",
       "active": "Active programmes"
     },
-    "cohort": {
-      "title": "Cohort",
+    "cohorts": {
+      "title": "Cohorts",
       "count": {
-        "one": "%s child in this programme’s cohort",
-        "other": "[0] No children in this programme’s cohort|%s children in this programme’s cohort"
+        "one": "%s cohort in this programme",
+        "other": "[0] No cohorts in this programme|%s cohorts in this programme"
       }
     },
     "sessions": {
@@ -288,6 +288,18 @@
     },
     "year": {
       "label": "Academic year"
+    },
+    "patients": {
+      "count": {
+        "one": "1 child in this cohort",
+        "other": "[0] No children in this cohort|%s children in this cohort"
+      }
+    },
+    "size": {
+      "label": "Cohort size"
+    },
+    "name": {
+      "label": "cohort.name.label"
     }
   },
   "consent": {
@@ -678,6 +690,9 @@
         "one": "%s child could not be vaccinated",
         "other": "[0] No children could not be vaccinated|%s children could not be vaccinated"
       }
+    },
+    "undefined": {
+      "colour": "outcome.undefined.colour"
     }
   },
   "parent": {
@@ -823,6 +838,9 @@
     },
     "actions": {
       "label": "Actions"
+    },
+    "schoolYear": {
+      "label": "record.schoolYear.label"
     }
   },
   "registration": {

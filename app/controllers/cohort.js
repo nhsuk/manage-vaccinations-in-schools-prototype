@@ -8,7 +8,25 @@ export const cohortController = {
   redirect(request, response) {
     const { uid } = request.params
 
-    response.redirect(`/campaigns/${uid}/cohort`)
+    response.redirect(`/campaigns/${uid}/cohorts`)
+  },
+
+  read(request, response, next) {
+    const { uuid } = request.params
+    const { data } = request.session
+
+    const cohort = new Cohort(data.cohorts[uuid])
+
+    request.app.locals.cohort = cohort
+    request.app.locals.patients = Object.values(data.patients)
+      .filter((patient) => patient.cohort_uuid === cohort.uuid)
+      .map((patient) => new Patient(patient))
+
+    next()
+  },
+
+  show(request, response) {
+    response.render('cohort/show')
   },
 
   new(request, response) {

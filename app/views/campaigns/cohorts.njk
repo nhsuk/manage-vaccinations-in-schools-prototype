@@ -1,0 +1,67 @@
+{% extends "_layouts/default.njk" %}
+
+{% set paths = { back: "/home" } if data.token.role == UserRole.DataConsumer %}
+{% set title = campaign.type + " – " + __("campaign.cohorts.title") %}
+{% set view = "cohorts" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }],
+    text: campaign.type,
+    href: campaign.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: campaign.type
+  }) }}
+
+  {% include "campaigns/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("campaign.cohorts.title") }}
+  </h2>
+
+  {{ actionList({
+    items: [{
+      href: campaign.uri + "/cohorts/new",
+      text: __("cohort.new.label")
+    }]
+  }) if data.token.role != UserRole.DataConsumer }}
+
+  {% if cohorts.length %}
+    {% set cohortRows = [] %}
+    {% for cohort in cohorts %}
+      {% set cohortRows = cohortRows | push([
+        {
+          header: __("cohort.name.label"),
+          html: link(cohort.uri, cohort.name)
+        },
+        {
+          header: __("cohort.size.label"),
+          html: cohort.records.length or "0"
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "cohorts",
+      heading: __n("campaign.cohorts.count", cohorts.length),
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("cohort.year.label") },
+        { text: __("cohort.size.label") }
+      ],
+      rows: cohortRows
+    }) }}
+  {% else %}
+    {{ __n("campaign.cohorts.count", cohorts.length) | nhsukMarkdown }}
+  {% endif %}
+{% endblock %}

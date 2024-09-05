@@ -16,9 +16,9 @@ export class CampaignType {
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created campaign
  * @property {CampaignType} [type] - Campaign type
- * @property {Array[string]} cohort - Cohort
+ * @property {Array[string]} cohort - Cohorts
  * @property {Array[string]} vaccines - Vaccines administered
- * @property {Array[string]} pendingCohort - Pending cohort record NHS numbers
+ * @property {Array[string]} pendingCohort - Pending cohort UUIDS
  * @property {Array[string]} pendingVaccinations - Pending vaccinations UUIDS
  * @function ns - Namespace
  * @function uri - URL
@@ -41,6 +41,7 @@ export class Campaign {
     const created = addDays(today, faker.number.int({ min: 60, max: 90 }) * -1)
 
     return new Campaign({
+      uid: campaignTypes[type].id,
       type,
       created,
       created_user_uid: user.uuid,

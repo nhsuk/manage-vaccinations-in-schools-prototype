@@ -1,23 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import campaignTypes from '../datasets/campaign-types.js'
+import { getCohortFromYearGroup } from '../utils/cohort.js'
 import { formatDate } from '../utils/date.js'
-
-/**
- * Get NHS Numbers of CHIS records within age range
- * @param {Array} records - CHIS records
- * @param {number} minAge - Minimum age
- * @param {number} maxAge - Maximum age
- * @returns {Array} NHS numbers of selected cohort
- */
-function getCohortFromAgeRange(records, minAge, maxAge) {
-  const ages = Array(maxAge - minAge + 1)
-    .fill()
-    .map((_, index) => minAge + index)
-
-  return Object.values(records)
-    .filter((record) => ages.includes(record.age))
-    .map((record) => record.nhsn)
-}
+import { formatYearGroup } from '../utils/string.js'
 
 export class AcademicYear {
   static Y2019 = '2019/20'
@@ -33,6 +17,7 @@ export class AcademicYear {
  * @property {string} uuid - Cohort upload UUID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created upload
+ * @property {string} [name] - Name
  * @property {AcademicYear} [year] - Academic year
  * @property {string} [campaign_uid] - Campaign UID
  * @property {Array<string>} [records] - Child records
@@ -43,9 +28,10 @@ export class AcademicYear {
  */
 export class Cohort {
   constructor(options) {
-    this.uuid = options?.id || faker.string.uuid()
+    this.uuid = options?.uuid || faker.string.uuid()
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
+    this.name = options?.name
     this.year = options?.year
     this.campaign_uid = options?.campaign_uid
     this.records = options?.records || []
@@ -54,11 +40,10 @@ export class Cohort {
     this.inexact = options?.inexact || []
   }
 
-  static generate(campaign, records, user) {
+  static generate(campaign, records, user, yearGroup) {
     const created = faker.date.recent()
 
-    const { minAge, maxAge } = campaignTypes[campaign.type]
-    records = getCohortFromAgeRange(records, minAge, maxAge)
+    records = getCohortFromYearGroup(records, yearGroup)
 
     // Ensure cohort only contain unique records
     records = [...new Set(records)]
@@ -66,6 +51,7 @@ export class Cohort {
     return new Cohort({
       created,
       created_user_uid: user?.uid || '000123456789',
+      name: formatYearGroup(yearGroup),
       year: AcademicYear.Y2024,
       campaign_uid: campaign.uid,
       records
@@ -87,6 +73,6 @@ export class Cohort {
   }
 
   get uri() {
-    return `/campaigns/${this.campaign_uid}/cohort`
+    return `/campaigns/${this.campaign_uid}/cohorts/${this.uuid}`
   }
 }

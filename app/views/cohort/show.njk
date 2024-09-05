@@ -1,17 +1,18 @@
 {% extends "_layouts/default.njk" %}
 
-{% set paths = { back: "/home" } if data.token.role == UserRole.DataConsumer %}
-{% set title = campaign.type + " – " + __("campaign.cohort.title") %}
-{% set view = "cohort" %}
+{% set title = cohort.name %}
 
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
       text: __("campaign.list.title"),
       href: "/campaigns"
+    }, {
+      text: data.campaigns[cohort.campaign_uid].type,
+      href: "/campaigns/" + cohort.campaign_uid
     }],
-    text: campaign.type,
-    href: campaign.uri
+    text: __("campaign.cohorts.title"),
+    href: "/campaigns/" + cohort.campaign_uid + "/cohorts"
   }) }}
 {% endblock %}
 
@@ -19,28 +20,15 @@
   {{ super() }}
 
   {{ heading({
-    title: campaign.type
+    title: title
   }) }}
 
-  {% include "campaigns/_secondary-navigation.njk" %}
-
-  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("campaign.cohort.title") }}
-  </h2>
-
-  {{ actionList({
-    items: [{
-      href: campaign.uri + "/cohort/new",
-      text: __("cohort.new.label")
-    }]
-  }) if data.token.role != UserRole.DataConsumer }}
-
-  {% if cohort.length %}
-    {% set cohortRows = [] %}
-    {% for patient in cohort %}
+  {% if patients.length %}
+    {% set patientRows = [] %}
+    {% for patient in patients %}
       {% set outcome = enumKeyAndValue(PatientOutcome, patient.outcome.value) %}
       {% set tagColor = __("outcome." + outcome.key + ".colour") %}
-      {% set cohortRows = cohortRows | push([
+      {% set patientRows = patientRows | push([
         {
           header: __("record.fullName.label"),
           html: patient.link.fullName
@@ -73,8 +61,8 @@
     {% endfor %}
 
     {{ actionTable({
-      id: "cohort",
-      heading: __n("campaign.cohort.count", cohort.length),
+      id: "patients",
+      heading: __n("cohort.patients.count", patients.length),
       panel: true,
       responsive: true,
       head: [
@@ -87,9 +75,9 @@
           attributes: { "no-sort": "no-sort" }
         }
       ],
-      rows: cohortRows
+      rows: patientRows
     }) }}
   {% else %}
-    {{ __n("campaign.cohort.count", cohort.length) | nhsukMarkdown }}
+    {{ __n("cohort.patients.count", patients.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}
