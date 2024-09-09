@@ -6,9 +6,9 @@ import { addDays } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 
 export class CampaignType {
-  static FLU = 'Flu'
+  // static FLU = 'Flu'
   static HPV = 'HPV'
-  static TIO = '3-in-1 teenage booster and MenACWY'
+  // static TIO = '3-in-1 teenage booster and MenACWY'
 }
 
 export class CampaignYear {
@@ -23,9 +23,9 @@ export class CampaignYear {
  * @property {string} [created_user_uid] - User who created campaign
  * @property {CampaignType} [type] - Campaign type
  * @property {CampaignYear} [year] - Campaign year
- * @property {Array[string]} cohort - Cohort
+ * @property {Array[string]} cohorts - Cohort UUIDs
  * @property {Array[string]} vaccines - Vaccines administered
- * @property {Array[string]} pendingCohort - Pending cohort record NHS numbers
+ * @property {Array[string]} pendingRecords - Pending record NHS numbers
  * @property {Array[string]} pendingVaccinations - Pending vaccinations UUIDS
  * @function ns - Namespace
  * @function uri - URL
@@ -37,9 +37,9 @@ export class Campaign {
     this.created_user_uid = options?.created_user_uid
     this.type = options?.type
     this.year = options?.year || CampaignYear.Y2024
-    this.cohort = options?.cohort || []
+    this.cohorts = options?.cohorts || []
     this.vaccines = options?.vaccines || []
-    this.pendingCohort = options?.pendingCohort || []
+    this.pendingRecords = options?.pendingRecords || []
     this.pendingVaccinations = options?.pendingVaccinations || []
   }
 

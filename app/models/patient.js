@@ -62,6 +62,7 @@ export class PatientOutcome {
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
+ * @property {string} [cohort_uuid] - Campaign UUID
  * @property {string} [campaign_uid] - Campaign UID
  * @property {string} [session_id] - Session ID
  * @function consent - Consent outcome
@@ -83,6 +84,7 @@ export class Patient {
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
     this.campaign_uid = options.campaign_uid
+    this.cohort_uuid = options.cohort_uuid
     this.session_id = options.session_id
   }
 
@@ -182,20 +184,21 @@ export class Patient {
   get uri() {
     return this.session_id
       ? `/sessions/${this.session_id}/${this.nhsn}`
-      : `/campaigns/${this.campaign_uid}/cohorts/${this.nhsn}`
+      : `/campaigns/${this.campaign_uid}/cohorts/${this.cohort_uuid}/${this.nhsn}`
   }
 
   set log(event) {
     this.events.push(new Event(event))
   }
 
-  set select(campaign) {
-    this.campaign_uid = campaign.uid
+  set select(cohort) {
+    this.campaign_uid = cohort.campaign_uid
+    this.cohort_uuid = cohort.uuid
     this.log = {
       type: EventType.Select,
-      name: `Selected for ${campaign.type} vaccination programme cohort`,
-      date: campaign.created,
-      user_uid: campaign.created_user_uid
+      name: `Selected for ${cohort.type} vaccination programme cohort`,
+      date: cohort.created,
+      user_uid: cohort.created_user_uid
     }
   }
 

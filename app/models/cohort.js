@@ -1,31 +1,20 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import campaignTypes from '../datasets/campaign-types.js'
+import { Record } from './record.js'
 import { formatDate } from '../utils/date.js'
+import { formatYearGroupRange } from '../utils/string.js'
 
 /**
- * Get NHS Numbers of CHIS records within age range
+ * Get NHS Numbers of CHIS records within year group
  * @param {Array} records - CHIS records
- * @param {number} minAge - Minimum age
- * @param {number} maxAge - Maximum age
+ * @param {Array<number>} yearGroup - Year group
  * @returns {Array} NHS numbers of selected cohort
  */
-function getCohortFromAgeRange(records, minAge, maxAge) {
-  const ages = Array(maxAge - minAge + 1)
-    .fill()
-    .map((_, index) => minAge + index)
-
+export function getCohortFromYearGroups(records, yearGroups) {
   return Object.values(records)
-    .filter((record) => ages.includes(record.age))
+    .map((record) => new Record(record))
+    .filter((record) => yearGroups.includes(record.yearGroup))
     .map((record) => record.nhsn)
-}
-
-export class AcademicYear {
-  static Y2019 = '2019/20'
-  static Y2020 = '2020/21'
-  static Y2021 = '2021/22'
-  static Y2022 = '2022/23'
-  static Y2023 = '2023/24'
-  static Y2024 = '2024/25'
 }
 
 /**
@@ -33,9 +22,9 @@ export class AcademicYear {
  * @property {string} uuid - Cohort upload UUID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created upload
- * @property {AcademicYear} [year] - Academic year
+ * @property {Array<number>} [yearGroups] - School year group(s)
+ * @property {string} [type] - Campaign type
  * @property {string} [campaign_uid] - Campaign UID
- * @property {Array<string>} [records] - Child records
  * @property {Array<string>} [exact] - Exact duplicate records found
  * @property {Array<string>} [inexact] - Inexact duplicate records found
  * @function ns - Namespace
@@ -43,10 +32,11 @@ export class AcademicYear {
  */
 export class Cohort {
   constructor(options) {
-    this.uuid = options?.id || faker.string.uuid()
+    this.uuid = options?.uuid || faker.string.uuid()
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
-    this.year = options?.year
+    this.yearGroups = options?.yearGroups || []
+    this.type = options?.type
     this.campaign_uid = options?.campaign_uid
     this.records = options?.records || []
     this.incomplete = options?.incomplete || []
@@ -54,11 +44,10 @@ export class Cohort {
     this.inexact = options?.inexact || []
   }
 
-  static generate(campaign, records, user) {
+  static generate(campaign, records, user, yearGroups) {
     const created = faker.date.recent()
 
-    const { minAge, maxAge } = campaignTypes[campaign.type]
-    records = getCohortFromAgeRange(records, minAge, maxAge)
+    records = getCohortFromYearGroups(records, yearGroups)
 
     // Ensure cohort only contain unique records
     records = [...new Set(records)]
@@ -66,10 +55,30 @@ export class Cohort {
     return new Cohort({
       created,
       created_user_uid: user?.uid || '000123456789',
-      year: AcademicYear.Y2024,
-      campaign_uid: campaign.uid,
-      records
+      yearGroups,
+      year: campaign.year,
+      type: campaign.type,
+      campaign_uid: campaign.uid
     })
+  }
+
+  static generateAll(campaign, records, user) {
+    const { yearGroups, seasonal } = campaignTypes[campaign.type]
+    let cohorts = []
+
+    if (seasonal) {
+      // All year groups in one cohort
+      const cohort = this.generate(campaign, records, user, yearGroups)
+      cohorts.push(cohort)
+    } else {
+      for (const group of yearGroups) {
+        // One year group per cohort
+        const cohort = this.generate(campaign, records, user, [group])
+        cohorts.push(cohort)
+      }
+    }
+
+    return cohorts
   }
 
   get formatted() {
@@ -78,7 +87,8 @@ export class Cohort {
         dateStyle: 'long',
         timeStyle: 'short',
         hourCycle: 'h12'
-      })
+      }),
+      yearGroups: formatYearGroupRange(this.yearGroups)
     }
   }
 
@@ -87,6 +97,6 @@ export class Cohort {
   }
 
   get uri() {
-    return `/campaigns/${this.campaign_uid}/cohort`
+    return `/campaigns/${this.campaign_uid}/cohorts/${this.uuid}`
   }
 }

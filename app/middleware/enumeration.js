@@ -1,5 +1,4 @@
 import { CampaignType, CampaignYear } from '../models/campaign.js'
-import { AcademicYear } from '../models/cohort.js'
 import { DownloadFormat } from '../models/download.js'
 import { EventType } from '../models/event.js'
 import { GillickCompetent } from '../models/gillick.js'
@@ -35,7 +34,6 @@ import {
 } from '../models/vaccine.js'
 
 export const enumeration = (request, response, next) => {
-  response.locals.AcademicYear = AcademicYear
   response.locals.CampaignType = CampaignType
   response.locals.CampaignYear = CampaignYear
   response.locals.CaptureOutcome = CaptureOutcome

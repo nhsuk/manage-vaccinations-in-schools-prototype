@@ -36,61 +36,21 @@
     }]
   }) if data.token.role != UserRole.DataConsumer }}
 
-  {% if cohort.length %}
-    {% set cohortRows = [] %}
-    {% for patient in cohort %}
-      {% set outcome = enumKeyAndValue(PatientOutcome, patient.outcome.value) %}
-      {% set tagColor = __("outcome." + outcome.key + ".colour") %}
-      {% set cohortRows = cohortRows | push([
-        {
-          header: __("record.fullName.label"),
-          html: patient.link.fullName
-        },
-        {
-          header: __("record.nhsn.label"),
-          html: patient.record.formatted.nhsn or "Not provided"
-        },
-        {
-          header: __("record.dob.label"),
-          html: patient.record.formatted.dob
-        },
-        {
-          header: __("outcome.label"),
-          html: tag({
-            classes: "nhsuk-tag--" + tagColor,
-            text: patient.outcome.value
-          })
-        },
-        {
-          header: __("record.actions.label"),
-          html: actionList({
-            items: [{
-              text: "Remove",
-              href: "#"
-            }]
-          }) if not patient.session_id else " "
-        }
-      ]) %}
+  {% if cohorts.length %}
+  <ul class="nhsuk-grid-row nhsuk-card-group">
+    {% for cohort in cohorts %}
+    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        clickable: true,
+        heading: cohort.formatted.yearGroups,
+        headingClasses: "nhsuk-heading-m",
+        href: cohort.uri,
+        descriptionHtml: __n("cohort.records.count", cohort.records.length)
+      }) }}
+    </li>
     {% endfor %}
-
-    {{ actionTable({
-      id: "cohort",
-      heading: __n("campaign.cohorts.count", cohort.length),
-      panel: true,
-      responsive: true,
-      head: [
-        { text: __("record.fullName.label") },
-        { text: __("record.nhsn.label") },
-        { text: __("record.dob.label") },
-        { text: __("outcome.label") },
-        {
-          text: __("record.actions.label"),
-          attributes: { "no-sort": "no-sort" }
-        }
-      ],
-      rows: cohortRows
-    }) }}
+  </ul>
   {% else %}
-    {{ __n("campaign.cohorts.count", cohort.length) | nhsukMarkdown }}
+    {{ __n("cohort.records.count", cohort.records.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

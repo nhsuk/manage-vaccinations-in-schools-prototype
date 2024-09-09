@@ -165,3 +165,20 @@ export function formatYearGroup(yearGroup) {
       return `Year ${yearGroup}`
   }
 }
+
+/**
+ * Format year group range
+ * @param {Array} yearGroup - Year group
+ * @returns {string} Formatted year group
+ */
+export function formatYearGroupRange(yearGroup) {
+  if (yearGroup.length === 0) {
+    return ''
+  }
+
+  if (yearGroup.length === 1) {
+    return formatYearGroup(yearGroup)
+  } else {
+    return `${formatYearGroup(yearGroup[0])} to ${formatYearGroup(yearGroup.at(-1))}`
+  }
+}

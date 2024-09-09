@@ -1,0 +1,91 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = cohort.formatted.yearGroups %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }, {
+      text: data.campaigns[cohort.campaign_uid].type,
+      href: "/campaigns/" + cohort.campaign_uid
+    }],
+    text: __("campaign.cohorts.title"),
+    href: "/campaigns/" + cohort.campaign_uid + "/cohorts"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: title,
+    summary: data.campaigns[cohort.campaign_uid].year
+  }) }}
+
+  {{ actionList({
+    items: [{
+      href: campaign.uri + "/cohorts/new",
+      text: __("cohort.new.label")
+    }]
+  }) if data.token.role != UserRole.DataConsumer }}
+
+  {% if patients.length %}
+    {% set patientRows = [] %}
+    {% for patient in patients %}
+      {% set outcome = enumKeyAndValue(PatientOutcome, patient.outcome.value) %}
+      {% set tagColor = __("outcome." + outcome.key + ".colour") %}
+      {% set patientRows = patientRows | push([
+        {
+          header: __("record.fullName.label"),
+          html: patient.link.fullName
+        },
+        {
+          header: __("record.nhsn.label"),
+          html: patient.record.formatted.nhsn or "Not provided"
+        },
+        {
+          header: __("record.dob.label"),
+          html: patient.record.formatted.dob
+        },
+        {
+          header: __("outcome.label"),
+          html: tag({
+            classes: "nhsuk-tag--" + tagColor,
+            text: patient.outcome.value
+          })
+        },
+        {
+          header: __("record.actions.label"),
+          html: actionList({
+            items: [{
+              text: "Remove",
+              href: "#"
+            }]
+          }) if not patient.session_id else " "
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "cohort",
+      heading: __n("cohort.records.count", cohort.records.length),
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("record.fullName.label") },
+        { text: __("record.nhsn.label") },
+        { text: __("record.dob.label") },
+        { text: __("outcome.label") },
+        {
+          text: __("record.actions.label"),
+          attributes: { "no-sort": "no-sort" }
+        }
+      ],
+      rows: patientRows
+    }) }}
+  {% else %}
+    {{ __n("cohort.records.count", cohort.records.length) | nhsukMarkdown }}
+  {% endif %}
+{% endblock %}

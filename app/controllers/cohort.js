@@ -11,6 +11,25 @@ export const cohortController = {
     response.redirect(`/campaigns/${uid}/cohorts`)
   },
 
+  read(request, response, next) {
+    const { uuid } = request.params
+    const { data } = request.session
+
+    const cohort = new Cohort(data.cohorts[uuid])
+
+    request.app.locals.cohort = cohort
+    request.app.locals.patients = Object.values(data.patients)
+      .filter((patient) => patient.campaign_uuid === cohort.campaign_uuid)
+      .filter((patient) => patient.cohort_uuid === cohort.uuid)
+      .map((patient) => new Patient(patient))
+
+    next()
+  },
+
+  show(request, response) {
+    response.render('cohort/show')
+  },
+
   new(request, response) {
     const { uid } = request.params
     const { data } = request.session
@@ -85,7 +104,7 @@ export const cohortController = {
 
   readForm(request, response, next) {
     let { cohort } = request.app.locals
-    const { form } = request.params
+    const { form, uuid } = request.params
     const { data } = request.session
 
     cohort = new Cohort({
@@ -95,9 +114,9 @@ export const cohortController = {
 
     const journey = {
       [`/`]: {},
-      [`/${form}/import`]: {},
-      [`/${form}/check-answers`]: {},
-      [`/`]: {}
+      [`/${uuid}/${form}/import`]: {},
+      [`/${uuid}/${form}/check-answers`]: {},
+      [`/${uuid}`]: {}
     }
 
     response.locals.paths = {

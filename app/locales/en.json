@@ -85,10 +85,7 @@
     },
     "cohorts": {
       "title": "Cohorts",
-      "count": {
-        "one": "%s child in this programme’s cohort",
-        "other": "[0] No children in this programme’s cohort|%s children in this programme’s cohort"
-      }
+      "size": "Total cohort size"
     },
     "sessions": {
       "title": "School sessions",
@@ -292,6 +289,12 @@
     },
     "year": {
       "label": "Academic year"
+    },
+    "records": {
+      "count": {
+        "one": "%s child",
+        "other": "[0] No children|%s children"
+      }
     }
   },
   "consent": {
@@ -1084,7 +1087,7 @@
       "add": "[{{patient.fullName}}]({{patient.uri}})’s record created from a consent response from {{consent.parent.fullName}}"
     },
     "cohort": {
-      "label": "Cohort",
+      "label": "Cohort size",
       "count": {
         "one": "%s child in the cohort",
         "other": "[0] No children in the cohort|%s children in the cohort"
