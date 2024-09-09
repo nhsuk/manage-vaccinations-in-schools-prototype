@@ -87,6 +87,6 @@ export class Cohort {
   }
 
   get uri() {
-    return `/campaigns/${this.campaign_uid}/cohort`
+    return `/campaigns/${this.campaign_uid}/cohorts`
   }
 }
