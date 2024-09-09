@@ -126,7 +126,7 @@ export const campaignController = {
 
     data.wizard = { campaign }
 
-    response.redirect(`${campaign.uri}/new/details`)
+    response.redirect(`${campaign.uri}/new/type`)
   },
 
   update(request, response) {
@@ -175,7 +175,8 @@ export const campaignController = {
 
     const journey = {
       [`/`]: {},
-      [`/${uid}/${form}/details`]: {},
+      [`/${uid}/${form}/type`]: {},
+      [`/${uid}/${form}/year`]: {},
       [`/${uid}/${form}/vaccines`]: {},
       [`/${uid}/${form}/check-answers`]: {},
       [`/${uid}`]: {}

@@ -3,11 +3,17 @@ import campaignTypes from '../datasets/campaign-types.js'
 import vaccines from '../datasets/vaccines.js'
 import { Vaccine } from './vaccine.js'
 import { addDays } from '../utils/date.js'
+import { formatLink } from '../utils/string.js'
 
 export class CampaignType {
   static FLU = 'Flu'
   static HPV = 'HPV'
   static TIO = '3-in-1 teenage booster and MenACWY'
+}
+
+export class CampaignYear {
+  static Y2023 = '2023/24'
+  static Y2024 = '2024/25'
 }
 
 /**
@@ -16,6 +22,7 @@ export class CampaignType {
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created campaign
  * @property {CampaignType} [type] - Campaign type
+ * @property {CampaignYear} [year] - Campaign year
  * @property {Array[string]} cohort - Cohort
  * @property {Array[string]} vaccines - Vaccines administered
  * @property {Array[string]} pendingCohort - Pending cohort record NHS numbers
@@ -29,6 +36,7 @@ export class Campaign {
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.type = options?.type
+    this.year = options?.year || CampaignYear.Y2024
     this.cohort = options?.cohort || []
     this.vaccines = options?.vaccines || []
     this.pendingCohort = options?.pendingCohort || []
@@ -41,9 +49,9 @@ export class Campaign {
     const created = addDays(today, faker.number.int({ min: 60, max: 90 }) * -1)
 
     return new Campaign({
-      type,
       created,
       created_user_uid: user.uuid,
+      type,
       vaccines: campaignTypes[type].vaccines
     })
   }
@@ -67,6 +75,15 @@ export class Campaign {
 
     return {
       vaccines: vaccineList.join('<br>')
+    }
+  }
+
+  get link() {
+    return {
+      typeAndYear: `<span class="nhsuk-u-secondary-text-color">
+        ${formatLink(this.uri, this.type)}</br>
+        ${this.year}
+      </span>`
     }
   }
 

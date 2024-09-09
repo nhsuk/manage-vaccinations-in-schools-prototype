@@ -136,8 +136,12 @@
       "title": "Programme details"
     },
     "type": {
-      "label": "Programme type",
+      "label": "Type",
       "title": "What is the programme type?"
+    },
+    "year": {
+      "label": "Year",
+      "title": "In what year does this programme run?"
     },
     "vaccines": {
       "label": "Vaccines",
@@ -149,9 +153,6 @@
         "one": "%s uploaded record needs review",
         "other": "[0] No uploaded records need review|%s uploaded records need review"
       }
-    },
-    "cohort": {
-      "title": "campaign.cohort.title"
     }
   },
   "capture": {

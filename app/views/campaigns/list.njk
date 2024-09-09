@@ -23,7 +23,7 @@
     {% set campaignRows = campaignRows | push([
       {
         header: __("campaign.type.label"),
-        html: link(campaign.uri, campaign.type) or "Not provided"
+        html: campaign.link.typeAndYear
       },
       {
         header: __("campaign.vaccines.label"),

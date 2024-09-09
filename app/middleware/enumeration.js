@@ -1,4 +1,4 @@
-import { CampaignType } from '../models/campaign.js'
+import { CampaignType, CampaignYear } from '../models/campaign.js'
 import { AcademicYear } from '../models/cohort.js'
 import { DownloadFormat } from '../models/download.js'
 import { EventType } from '../models/event.js'
@@ -37,6 +37,7 @@ import {
 export const enumeration = (request, response, next) => {
   response.locals.AcademicYear = AcademicYear
   response.locals.CampaignType = CampaignType
+  response.locals.CampaignYear = CampaignYear
   response.locals.CaptureOutcome = CaptureOutcome
   response.locals.ConsentOutcome = ConsentOutcome
   response.locals.ConsentWindow = ConsentWindow

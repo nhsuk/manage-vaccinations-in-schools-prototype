@@ -18,7 +18,8 @@
   {{ super() }}
 
   {{ heading({
-    title: campaign.type
+    title: campaign.type,
+    summary: campaign.year
   }) }}
 
   {% include "campaigns/_secondary-navigation.njk" %}
