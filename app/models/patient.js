@@ -105,6 +105,15 @@ export class Patient {
     return [this.record.firstName, this.record.lastName].join(' ')
   }
 
+  get summary() {
+    return {
+      dob: `${this.record.formatted.dob}</br>
+      <span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">
+        ${this.record.formatted.yearGroup}
+      </span>`
+    }
+  }
+
   get link() {
     let fullName = `${formatLink(this.uri, this.fullName)}`
     if (this.preferredNames) {

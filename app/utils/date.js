@@ -107,3 +107,41 @@ export function formatDate(string, options) {
 
   return new Intl.DateTimeFormat('en-GB', options).format(new Date(string))
 }
+
+/**
+ * Get age from date
+ * @param {string} date - ISO 8601 date
+ * @returns {number} Age
+ */
+export function getAge(date) {
+  date = new Date(date)
+
+  return Math.floor((new Date() - date.getTime()) / 3.15576e10)
+}
+
+/**
+ * Get school year group
+ * @param {string} date - Date string
+ * @returns {number} School year group
+ */
+export function getYearGroup(date) {
+  date = new Date(date)
+
+  const today = new Date()
+  const currentYear = today.getFullYear()
+
+  const birthYear = date.getFullYear()
+  const birthMonth = date.getMonth()
+  const birthDay = date.getDate()
+
+  // Calculate the age of the child on September 1 of the current year
+  let ageOnStartOfYear = currentYear - birthYear
+
+  if (birthMonth > 8 || (birthMonth === 8 && birthDay > 1)) {
+    // If the birthday is after September 1, subtract 1 from the age
+    ageOnStartOfYear -= 1
+  }
+
+  // Determine the year group
+  return ageOnStartOfYear - 4
+}

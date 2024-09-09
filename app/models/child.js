@@ -3,7 +3,8 @@ import { GPRegistered } from './record.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
-  formatDate
+  formatDate,
+  getAge
 } from '../utils/date.js'
 import { formatNhsNumber } from '../utils/string.js'
 
@@ -77,7 +78,7 @@ export class Child {
   }
 
   get age() {
-    return Math.floor((new Date() - new Date(this.dob).getTime()) / 3.15576e10)
+    return getAge(this.dob)
   }
 
   get dobWithAge() {

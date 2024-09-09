@@ -149,3 +149,19 @@ export function formatOther(other, string) {
 
   return other ? [string, other].join(' – ') : string
 }
+
+/**
+ * Format year group
+ * @param {number} yearGroup - Year group
+ * @returns {string} Formatted year group
+ */
+export function formatYearGroup(yearGroup) {
+  switch (true) {
+    case yearGroup === 0:
+      return 'Reception'
+    case yearGroup < 0:
+      return 'Nursery'
+    default:
+      return `Year ${yearGroup}`
+  }
+}

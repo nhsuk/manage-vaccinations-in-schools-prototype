@@ -792,6 +792,9 @@
     "dobWithAge": {
       "label": "Date of birth"
     },
+    "yearGroup": {
+      "label": "Year group"
+    },
     "sex": {
       "label": "Sex"
     },

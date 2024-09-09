@@ -3,8 +3,8 @@ import firstNames from '../datasets/first-names.js'
 import gpSurgeries from '../datasets/gp-surgeries.js'
 import schools from '../datasets/schools.js'
 import { Parent } from './parent.js'
-import { formatDate } from '../utils/date.js'
-import { formatNhsNumber } from '../utils/string.js'
+import { formatDate, getAge, getYearGroup } from '../utils/date.js'
+import { formatNhsNumber, formatYearGroup } from '../utils/string.js'
 
 const primarySchools = Object.values(schools).filter(
   (school) => school.phase === 'Primary'
@@ -119,11 +119,19 @@ export class Record {
   }
 
   get age() {
-    return Math.floor((new Date() - new Date(this.dob).getTime()) / 3.15576e10)
+    return getAge(this.dob)
+  }
+
+  get yearGroup() {
+    return getYearGroup(this.dob)
   }
 
   get dobWithAge() {
     return `${this.formatted.dob} (aged ${this.age})`
+  }
+
+  get dobWithYearGroup() {
+    return `${this.formatted.dob} (${this.formatted.yearGroup})`
   }
 
   get fullName() {
@@ -140,6 +148,7 @@ export class Record {
       dob: formatDate(this.dob, {
         dateStyle: 'long'
       }),
+      yearGroup: formatYearGroup(this.yearGroup),
       address: Object.values(this.address).join('<br>'),
       gpSurgery:
         this.gpRegistered === GPRegistered.Yes
