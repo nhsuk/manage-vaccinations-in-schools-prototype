@@ -20,7 +20,7 @@ export const campaignController = {
   },
 
   cohort(request, response) {
-    response.render('campaigns/cohort')
+    response.render('campaigns/cohorts')
   },
 
   reviews(request, response) {

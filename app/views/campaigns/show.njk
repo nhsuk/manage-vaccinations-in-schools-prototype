@@ -50,9 +50,9 @@
       {{ card({
         classes: "app-card--data app-card--reversed",
         clickable: true if not isDataConsumer,
-        heading: __("campaign.cohort.title"),
+        heading: __("campaign.cohorts.title"),
         headingClasses: "nhsuk-heading-xs",
-        href: campaign.uri + "/cohort" if not isDataConsumer,
+        href: campaign.uri + "/cohorts" if not isDataConsumer,
         description: campaign.cohort.length or "0"
       }) }}
     </div>

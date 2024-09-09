@@ -2,7 +2,7 @@
 
 {% set title = __("cohort.errors.title") %}
 {% set paths = {
-  back: campaign.uri + "/cohort/new"
+  back: campaign.uri + "/cohorts/new"
 } %}
 
 {% block content %}
@@ -27,7 +27,7 @@
 
 ---
 
-[{{ __("cohort.new.label") }}]({{ campaign.uri + "/cohort/new" }})
+[{{ __("cohort.new.label") }}]({{ campaign.uri + "/cohorts/new" }})
     {% endfilter %}
   </div>
 {% endblock %}

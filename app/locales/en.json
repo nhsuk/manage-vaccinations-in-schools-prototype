@@ -83,8 +83,8 @@
       "description": "Use this area to:\n- create new programmes\n- review consent responses\n- triage health records",
       "active": "Active programmes"
     },
-    "cohort": {
-      "title": "Cohort",
+    "cohorts": {
+      "title": "Cohorts",
       "count": {
         "one": "%s child in this programme’s cohort",
         "other": "[0] No children in this programme’s cohort|%s children in this programme’s cohort"
@@ -149,6 +149,9 @@
         "one": "%s uploaded record needs review",
         "other": "[0] No uploaded records need review|%s uploaded records need review"
       }
+    },
+    "cohort": {
+      "title": "campaign.cohort.title"
     }
   },
   "capture": {

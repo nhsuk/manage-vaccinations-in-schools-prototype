@@ -173,7 +173,7 @@ export class Patient {
   get uri() {
     return this.session_id
       ? `/sessions/${this.session_id}/${this.nhsn}`
-      : `/campaigns/${this.campaign_uid}/cohort/${this.nhsn}`
+      : `/campaigns/${this.campaign_uid}/cohorts/${this.nhsn}`
   }
 
   set log(event) {

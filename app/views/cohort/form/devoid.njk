@@ -2,7 +2,7 @@
 
 {% set title = __("cohort.devoid.title") %}
 {% set paths = {
-  back: campaign.uri + "/cohort/new"
+  back: campaign.uri + "/cohorts/new"
 } %}
 
 {% block content %}
@@ -14,6 +14,6 @@
 
     {{ __("cohort.devoid.description") | nhsukMarkdown }}
 
-    {{ link(campaign.uri + "/cohort/new", __("cohort.new.label")) | nhsukMarkdown }}
+    {{ link(campaign.uri + "/cohorts/new", __("cohort.new.label")) | nhsukMarkdown }}
   </div>
 {% endblock %}

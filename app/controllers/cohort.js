@@ -8,7 +8,7 @@ export const cohortController = {
   redirect(request, response) {
     const { uid } = request.params
 
-    response.redirect(`/campaigns/${uid}/cohort`)
+    response.redirect(`/campaigns/${uid}/cohorts`)
   },
 
   new(request, response) {
