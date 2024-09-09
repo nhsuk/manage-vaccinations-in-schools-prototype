@@ -1,11 +1,30 @@
 // GOV.UK Frontend options
 $govuk-font-family: "Frutiger W01", arial, sans-serif;
-$govuk-brand-colour: #005eb8;
 $govuk-border-colour: #d8dde0;
-$govuk-error-colour: #d5281b;
-$govuk-success-colour: #007f3b;
 $govuk-global-styles: false;
 $govuk-assets-path: "/govuk/assets/";
+$govuk-colours: (
+  "red": #d5281b,
+  "yellow": #ffeb3b,
+  "green": #007f3b,
+  "blue": #005eb8,
+  "dark-blue": #002f5c,
+  "light-blue": #41b6e6,
+  "purple": #330072,
+  "black": #212b32,
+  "dark-grey": #4c6272,
+  "mid-grey": #aeb7bd,
+  "light-grey": #f0f4f5,
+  "white": #ffffff,
+  "light-purple": #6f72af,
+  "bright-purple": #912b88,
+  "pink": #ae2573,
+  "light-pink": #f499be,
+  "orange": #ed8b00,
+  "brown": #b58840,
+  "light-green": #78be20,
+  "turquoise": #00a499
+);
 
 @import "node_modules/nhsuk-frontend/packages/nhsuk";
 
