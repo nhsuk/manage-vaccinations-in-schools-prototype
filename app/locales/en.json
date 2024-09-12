@@ -810,6 +810,9 @@
     "urn": {
       "label": "School"
     },
+    "parent": {
+      "label": "Parent or guardian"
+    },
     "preferredNames": {
       "label": "Known as"
     },

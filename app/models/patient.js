@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { Event, EventType } from './event.js'
 import { Gillick } from './gillick.js'
+import { Parent } from './parent.js'
 import { Record } from './record.js'
 import {
   getConsentHealthAnswers,
@@ -103,6 +104,15 @@ export class Patient {
 
   get fullName() {
     return [this.record.firstName, this.record.lastName].join(' ')
+  }
+
+  get parents() {
+    const replies = Object.values(this.replies)
+    if (replies.length > 0) {
+      return replies.map((reply) => new Parent(reply.parent))
+    } else {
+      return [this.record.parent]
+    }
   }
 
   get summary() {

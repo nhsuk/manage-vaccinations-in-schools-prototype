@@ -91,6 +91,23 @@
       feature: true
     }) if patient.session_id }}
 
+    {% set parentsValueHtml %}
+      {% if patient.parents.length == 1 %}
+        {% set parent = patient.parents[0] %}
+        {{ parent.fullName }} ({{ parent.relationship }})<br>
+        <span class="nhsuk-u-secondary-text-color">{{ parent.tel }}</span>
+      {% else %}
+        <ul class="nhsuk-list">
+        {% for parent in patient.parents %}
+          <li>
+            {{ parent.fullName }} ({{ parent.relationship }})<br>
+            <span class="nhsuk-u-secondary-text-color">{{ parent.tel }}</span>
+          </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endset %}
+
     {{ card({
       heading: __("record.label"),
       headingClasses: "nhsuk-heading-m",
@@ -105,7 +122,10 @@
           dob: { value: patient.record.dobWithYearGroup },
           sex: {},
           address: {},
-          gpSurgery: {}
+          gpSurgery: {},
+          parent: {
+            value: parentsValueHtml
+          }
         })
       })
     }) }}
