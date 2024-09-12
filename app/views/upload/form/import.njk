@@ -11,6 +11,18 @@
     errorList: errorList(errors)
   }) if errors }}
 
+  {% if campaign.type == CampaignType.FLU %}
+    {% set hintText = __("upload.import.hint", {
+      prefix: "These will go to NHS England and GPs. "
+    }) %}
+  {% elif campaign.type == CampaignType.HPV %}
+    {% set hintText = __("upload.import.hint", {
+      prefix: "These will go to NHS England. "
+    }) %}
+  {% else %}
+    {% set hintText = __("upload.import.hint") %}
+  {% endif %}
+
   {{ govukFileUpload({
     id: "import",
     name: "import",
@@ -22,7 +34,7 @@
       })
     },
     hint: {
-      text: __("upload.import.hint", "NHS England and GPs" if campaign.type == CampaignType.FLU else "NHS England")
+      text: hintText
     },
     errorMessage: {
       text: errors.import

@@ -1320,7 +1320,7 @@
     },
     "import": {
       "title": "Upload {{campaign.formatted.type}} vaccination records",
-      "hint": "These will go to %s. Make sure the CSV you upload has the same format as your usual reporting template.",
+      "hint": "{{prefix}}Make sure the CSV you upload has the same format as your usual reporting template.",
       "confirm": "Continue",
       "errors": {
         "invalid": "The selected file must be a CSV"
