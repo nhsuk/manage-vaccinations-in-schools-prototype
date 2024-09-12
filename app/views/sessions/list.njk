@@ -1,58 +1,69 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = __("session.list.title") %}
+{% set title = __("session.list.title") + " – " + __("session.list." + view + ".label") %}
 
 {% block content %}
   {{ super() }}
 
-  {{ heading({
-    size: "xl",
-    title: title
-  }) }}
-
-  {% for type, sessions in sessions | groupby("campaign_uid") %}
-    {% set sessionRows = [] %}
-    {% for session in sessions %}
-      {% set sessionRows = sessionRows | push([
-        {
-          header: __("session.time.label"),
-          html: session.time or "Not provided"
-        },
-        {
-          header: __("session.location.label"),
-          html: session.link.location or "Not provided"
-        },
-        {
-          header: __("session.cohort.label"),
-          html: session.cohort.length or "None",
-          format: "numeric"
-        }
-      ]) %}
-    {% endfor %}
-
-    {{ actionTable({
-      id: "sessions",
-      sort: "date",
-      heading: data.campaigns[sessions[0].campaign_uid].type,
-      panel: true,
-      responsive: true,
-      head: [
-        {
-          text: __("session.time.label"),
-          attributes: {
-            width: "20%"
-          }
-        },
-        { text: __("session.location.label") },
-        {
-          text: __("session.cohort.label"),
-          format: "numeric",
-          attributes: {
-            "no-sort": "no-sort"
-          }
-        }
-      ],
-      rows: sessionRows
+  <div class="app-heading-group">
+    {{ heading({
+      size: "xl",
+      title: __("session.list.title")
     }) }}
+
+    {{ button({
+      classes: "nhsuk-button--secondary",
+      text: __("session.new.title"),
+      href: "/sessions/new"
+    }) }}
+  </div>
+
+  {% include "sessions/_list-navigation.njk" %}
+
+  {% set sessionRows = [] %}
+  {% for session in sessions %}
+    {% set sessionRows = sessionRows | push([
+      {
+        header: __("session.date.label"),
+        html: session.link.date or "Not provided",
+        attributes: {
+          "data-sort": session.date
+        }
+      },
+      {
+        header: __("session.location.label"),
+        html: session.summary.location or "Not provided"
+      },
+      {
+        header: __("session.programmes.label"),
+        html: data.programmes[session.programmes[0]].name or "Not provided"
+      },
+      {
+        header: __("session.cohort.label"),
+        html: session.cohort.length or "None",
+        format: "numeric"
+      }
+    ]) %}
   {% endfor %}
+
+  {{ actionTable({
+    id: "sessions",
+    sort: "date",
+    heading: __n("session.list." + view + ".count", sessions.length),
+    panel: true,
+    responsive: true,
+    head: [
+      { text: __("session.time.label") },
+      { text: __("session.location.label") },
+      { text: __("session.programmes.label") },
+      {
+        text: __("session.cohort.label"),
+        format: "numeric",
+        attributes: {
+          "no-sort": "no-sort"
+        }
+      }
+    ],
+    rows: sessionRows
+  }) }}
 {% endblock %}

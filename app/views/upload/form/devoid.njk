@@ -2,18 +2,18 @@
 
 {% set title = __("upload.devoid.title") %}
 {% set paths = {
-  back: campaign.uri + "/uploads/new"
+  back: programme.uri + "/uploads/new"
 } %}
 
 {% block content %}
   <div class="nhsuk-u-width-three-quarters">
     {{ heading({
-      caption: campaign.type,
+      caption: programme.name,
       title: title
     }) }}
 
     {{ __("upload.devoid.description") | nhsukMarkdown }}
 
-    {{ link(campaign.uri + "/uploads/new", __("upload.new.label")) | nhsukMarkdown }}
+    {{ link(programme.uri + "/uploads/new", __("upload.new.label")) | nhsukMarkdown }}
   </div>
 {% endblock %}

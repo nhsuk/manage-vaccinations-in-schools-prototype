@@ -79,80 +79,28 @@
   },
   "campaign": {
     "list": {
-      "title": "Vaccination programmes",
-      "description": "Use this area to:\n- create new programmes\n- review consent responses\n- triage health records",
-      "active": "Active programmes"
+      "title": "Campaigns",
+      "description": "Use this area to:\n- create new campaigns",
+      "active": "Active campaigns"
     },
     "cohorts": {
       "title": "Cohorts",
       "count": {
-        "one": "%s child in this programme’s cohort",
-        "other": "[0] No children in this programme’s cohort|%s children in this programme’s cohort"
-      }
-    },
-    "sessions": {
-      "title": "School sessions",
-      "count": {
-        "one": "%s school session organised",
-        "other": "[0] No school sessions organised|%s school sessions organised"
+        "one": "%s child in this campaign’s cohort",
+        "other": "[0] No children in this campaign’s cohort|%s children in this campaign’s cohort"
       }
     },
     "show": {
-      "title": "Overview",
-      "download": "Download vaccination report (CSV)"
-    },
-    "uploads": {
-      "title": "Uploads",
-      "count": {
-        "one": "%s upload",
-        "other": "[0] No uploads|%s uploads"
-      }
-    },
-    "vaccinations": {
-      "title": "Vaccinations",
-      "count": {
-        "one": "%s vaccination record",
-        "other": "[0] No vaccination records|%s vaccination records"
-      }
-    },
-    "new": {
-      "title": "Create a new vaccination programme",
-      "check-answers": {
-        "title": "Check and confirm",
-        "confirm": "Save changes",
-        "summary": "New programme details"
-      }
-    },
-    "edit": {
-      "title": "Edit programme",
-      "confirm": "Save changes",
-      "summary": "Programme details"
-    },
-    "success": {
-      "create": "{{campaign.type}} created",
-      "update": "{{campaign.type}} updated"
-    },
-    "details": {
-      "title": "Programme details"
+      "title": "Overview"
     },
     "type": {
-      "label": "Type",
-      "title": "What is the programme type?"
+      "label": "Type"
     },
     "year": {
-      "label": "Year",
-      "title": "In what year does this programme run?"
+      "label": "Year"
     },
     "vaccines": {
-      "label": "Vaccines",
-      "title": "Which vaccine(s) does this programme administer?"
-    },
-    "reviews": {
-      "title": "Upload issues",
-      "count": {
-        "one": "%s uploaded record needs review",
-        "other": "[0] No uploaded records need review|%s uploaded records need review"
-      }
+      "label": "Vaccines"
     }
   },
   "capture": {
@@ -235,7 +183,7 @@
   },
   "cohort": {
     "new": {
-      "label": "Add children to programme cohort",
+      "label": "Add children to cohort",
       "check-answers": {
         "title": "Check and confirm",
         "warning": "Uploaded records will differ from the file",
@@ -366,9 +314,13 @@
         "title": "Give or refuse consent for an HPV vaccination",
         "description": "The HPV vaccine helps to prevent HPV related cancers from developing in boys and girls.\n\nThe number of doses you need depends on your age and how well your immune system works. Young people usually only need 1 dose."
       },
-      "3-in-1 teenage booster and MenACWY": {
-        "title": "Give or refuse consent for the 3-in-1 teenage booster and MenACWY vaccine",
-        "description": "The 3-in-1 teenage booster, also known as the Td/IPV vaccine, boosts protection against 3 diseases: tetanus, diptheria and polio.\n\nThe MenACWY vaccine, which helps to prevent meningitis and septicaemia, is normally given at the same time as the 3-in-1.\n\nBoth vaccines are offered to all young people aged 13 to 15 (in school Years 9 and 10). They’re given as injections into the upper arm."
+      "TdIPV": {
+        "title": "Give or refuse consent for the 3-in-1 teenage booster vaccination",
+        "description": "The 3-in-1 teenage booster, also known as the Td/IPV vaccine, boosts protection against 3 diseases: tetanus, diptheria and polio.\n\nIt is offered to all young people aged 13 to 15 (in school Years 9 and 10) and given as an injection into the upper arm."
+      },
+      "MenACWY": {
+        "title": "Give or refuse consent for the MenACWY vaccine",
+        "description": "The MenACWY vaccine, which helps to prevent meningitis and septicaemia.\n\nIt is offered to all young people aged 13 to 15 (in school Years 9 and 10) and given as an injection into the upper arm."
       },
       "confirm": "Start now",
       "language": {
@@ -493,8 +445,8 @@
       }
     },
     "decision": {
-      "summary": "Consent for the {{campaign.type}} vaccination",
-      "title": "Do you agree to them having a {{campaign.type}} vaccination?",
+      "summary": "Consent for the {{programme.name}} vaccination",
+      "title": "Do you agree to them having a {{programme.name}} vaccination?",
       "label": "Decision",
       "hint": {
         "Flu": "The nasal flu spray contains gelatine which comes from pigs."
@@ -502,8 +454,8 @@
       "yes": {
         "Flu": "Yes, I agree to them having a nasal vaccine",
         "HPV": "Yes, I agree",
-        "3-in-1": "Yes, I agree to them having the 3-in-1 teenage booster",
-        "men-acwy": "Yes, I agree to them having the MenACWY vaccine"
+        "TdIPV": "Yes, I agree to them having the 3-in-1 teenage booster",
+        "MenACWY": "Yes, I agree to them having the MenACWY vaccine"
       },
       "no": "No"
     },
@@ -542,8 +494,8 @@
     },
     "confirmation": {
       "title": {
-        "Given": "{{consent.child.fullName}} is due to get the {{campaign.vaccine.name}} vaccination at school on {{session.formatted.date}}",
-        "Refused": "You’ve told us that you do not want your child to get the {{campaign.vaccine.name}} vaccine at school"
+        "Given": "{{consent.child.fullName}} is due to get the {{programme.vaccine.name}} vaccination at school on {{session.formatted.date}}",
+        "Refused": "You’ve told us that you do not want your child to get the {{programme.vaccine.name}} vaccine at school"
       },
       "description": {
         "Given": "We’ll send a confirmation once the vaccination has been given.\n\nIf the vaccination does not take place due to illness or absence, we’ll contact you about a catch-up session.",
@@ -558,7 +510,7 @@
     "consent": {
       "invite": {
         "label": "Invitation",
-        "name": "{{campaign.type}} vaccination on {{session.formatted.date}}"
+        "name": "{{programme.name}} vaccination on {{session.formatted.date}}"
       },
       "invite-reminder": {
         "label": "Reminder",
@@ -566,7 +518,7 @@
       },
       "consent-given": {
         "label": "Consent given",
-        "name": "{{campaign.type}} vaccination on {{session.formatted.date}}"
+        "name": "{{programme.name}} vaccination on {{session.formatted.date}}"
       },
       "consent-conflicts": {
         "label": "Consent conflicts",
@@ -574,35 +526,35 @@
       },
       "consent-refused": {
         "label": "Consent refused",
-        "name": "{{campaign.type}} vaccination on {{session.formatted.date}}"
+        "name": "{{programme.name}} vaccination on {{session.formatted.date}}"
       },
       "triage-needed": {
         "label": "Triage needed",
-        "name": "{{campaign.type}} vaccination on {{session.formatted.date}}"
+        "name": "{{programme.name}} vaccination on {{session.formatted.date}}"
       },
       "triage-vaccinate": {
         "label": "Vaccinate",
-        "name": "Your child can have the {{campaign.type}} vaccination on {{session.formatted.date}}"
+        "name": "Your child can have the {{programme.name}} vaccination on {{session.formatted.date}}"
       },
       "triage-do-not-vaccinate": {
         "label": "Do not vaccinate",
-        "name": "Your child will not have the {{campaign.type}} vaccination in school"
+        "name": "Your child will not have the {{programme.name}} vaccination in school"
       },
       "session-reminder": {
         "label": "Session reminder",
-        "name": "{{consent.child.fullName}} will get their {{campaign.type}} vaccination on {{session.formatted.date}}"
+        "name": "{{consent.child.fullName}} will get their {{programme.name}} vaccination on {{session.formatted.date}}"
       },
       "session-outcome-vaccinated": {
         "label": "Vaccinated",
-        "name": "Your child had their {{campaign.type}} vaccination today"
+        "name": "Your child had their {{programme.type}} vaccination today"
       },
       "session-outcome-could-not-vaccinate": {
         "label": "Could not vaccinate",
-        "name": "Your child did not have their {{campaign.type}} vaccination today"
+        "name": "Your child did not have their {{programme.type}} vaccination today"
       },
       "information-child": {
         "label": "Information for students",
-        "name": "You can get an {{campaign.type}} vaccination on {{session.formatted.date}}"
+        "name": "You can get an {{programme.type}} vaccination on {{session.formatted.date}}"
       }
     }
   },
@@ -936,8 +888,8 @@
     "decision": {
       "label": "Decision",
       "title": {
-        "Child": "Does the child agree to having the {{campaign.type}} vaccine?",
-        "Parent": "Do they agree to {{patient.firstName}} having the {{campaign.type}} vaccine?"
+        "Child": "Does the child agree to having the {{programme.name}} vaccine?",
+        "Parent": "Do they agree to {{patient.firstName}} having the {{programme.name}} vaccine?"
       }
     },
     "invalid": {
@@ -1048,11 +1000,32 @@
       "title": "Download consent form (PDF)"
     },
     "list": {
-      "title": "Today’s sessions",
-      "description": "Use this area to:\n- register attendance\n- record vaccinations\n- review session outcomes"
+      "title": "School sessions",
+      "description": "Use this area to:\n- register attendance\n- record vaccinations\n- review session outcomes",
+      "active": {
+        "label": "Today",
+        "count": {
+          "one": "%s session today",
+          "other": "[0] No sessions today|%s sessions today"
+        }
+      },
+      "planned": {
+        "label": "Planned",
+        "count": {
+          "one": "%s session planned",
+          "other": "[0] No sessions planned|%s sessions planned"
+        }
+      },
+      "completed": {
+        "label": "Completed",
+        "count": {
+          "one": "%s session completed",
+          "other": "[0] No sessions completed|%s sessions completed"
+        }
+      }
     },
     "new": {
-      "title": "Add a new session",
+      "title": "Create a new session",
       "description": "Create a new session or clinic for a programme.",
       "check-answers": {
         "title": "Check and confirm",
@@ -1067,8 +1040,8 @@
       "format": {
         "title": "What type of session are you adding?"
       },
-      "campaign_uid": {
-        "title": "Which programme is this session part of?"
+      "programmes": {
+        "title": "Which programmes is this session part of?"
       },
       "urn": {
         "title": "Which school is it at?"
@@ -1109,8 +1082,8 @@
     "format": {
       "label": "Type of session"
     },
-    "campaign_uid": {
-      "label": "Programme"
+    "programmes": {
+      "label": "Programmes"
     },
     "open": {
       "label": "Consent requests",
@@ -1169,47 +1142,47 @@
       "invite": {
         "label": "Invitation",
         "name": "Inviting parent to give or refuse consent",
-        "text": "Give or refuse consent for your child’s {{campaign.type}} vaccination by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}). You need to do this by {{session.formatted.close}}.\n\nResponding will take less than 5 minutes."
+        "text": "Give or refuse consent for your child’s {{programme.name}} vaccination by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}). You need to do this by {{session.formatted.close}}.\n\nResponding will take less than 5 minutes."
       },
       "invite-reminder": {
         "label": "Reminder",
         "name": "Reminding parent to give or refuse consent",
-        "text": "We recently asked for your consent to vaccinate your child against {{campaign.type}}.\n\nGo to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}) to submit a response. This will take less than 5 minutes."
+        "text": "We recently asked for your consent to vaccinate your child against {{programme.name}}.\n\nGo to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}) to submit a response. This will take less than 5 minutes."
       },
       "consent-given": {
         "label": "Consent given",
         "name": "Confirmation that consent has been given",
-        "text": "You’ve given consent for {{consent.child.firstName}} to get their {{campaign.type}} vaccination at school on {{session.formatted.date}}. Please let them know what to expect."
+        "text": "You’ve given consent for {{consent.child.firstName}} to get their {{programme.name}} vaccination at school on {{session.formatted.date}}. Please let them know what to expect."
       },
       "consent-given-child": {
         "label": "Consent given",
         "name": "Confirmation that consent has been given",
-        "text": "Your parent or guardian has agreed for you to have the {{campaign.type}} vaccination at school on {{session.formatted.date}}."
+        "text": "Your parent or guardian has agreed for you to have the {{programme.name}} vaccination at school on {{session.formatted.date}}."
       },
       "consent-refused": {
         "label": "Consent refused",
         "name": "Confirmation that consent has been refused",
-        "text": "You’ve refused to give consent for {{consent.child.fullName}} to have their {{campaign.type}} vaccination. Please let them know they will not be vaccinated at school."
+        "text": "You’ve refused to give consent for {{consent.child.fullName}} to have their {{programme.name}} vaccination. Please let them know they will not be vaccinated at school."
       },
       "session-reminder": {
         "label": "Session reminder",
         "name": "Reminder (to go out the day before the vaccination)",
-        "text": "{{consent.child.firstName}} will get their {{campaign.type}} vaccination at school tomorrow ({{session.formatted.date}}). Please make sure they have breakfast and encourage them to wear a short-sleeved shirt."
+        "text": "{{consent.child.firstName}} will get their {{programme.name}} vaccination at school tomorrow ({{session.formatted.date}}). Please make sure they have breakfast and encourage them to wear a short-sleeved shirt."
       },
       "session-reminder-child": {
         "label": "Session reminder",
         "name": "Reminder (to go out the day before the vaccination)",
-        "text": "You’re due to get your {{campaign.type}} vaccination at school tomorrow ({{session.formatted.date}}). Please wear a short-sleeved shirt and make sure you eat something before the session."
+        "text": "You’re due to get your {{programme.name}} vaccination at school tomorrow ({{session.formatted.date}}). Please wear a short-sleeved shirt and make sure you eat something before the session."
       },
       "session-outcome-vaccinated": {
         "label": "Vaccinated",
         "name": "Child has been vaccinated",
-        "text": "{{consent.child.firstName}} had their {{campaign.type}} vaccination at school today. They might have some side effects, including bruising or itching at the injection site, a high temperature, nausea, or pain in the arms, hands, or fingers.\n\nIf you’re concerned, contact your GP in the usual way."
+        "text": "{{consent.child.firstName}} had their {{programme.name}} vaccination at school today. They might have some side effects, including bruising or itching at the injection site, a high temperature, nausea, or pain in the arms, hands, or fingers.\n\nIf you’re concerned, contact your GP in the usual way."
       },
       "session-outcome-could-not-vaccinate": {
         "label": "Could not vaccinate",
         "name": "Child did not get their vaccination despite having consent",
-        "text": "{{consent.child.firstName}} did not have their {{campaign.type}} vaccination at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact the local health team by calling [{{organisation.tel}}](#), or email [{{organisation.email}}](#)."
+        "text": "{{consent.child.firstName}} did not have their {{programme.name}} vaccination at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact the local health team by calling [{{organisation.tel}}](#), or email [{{organisation.email}}](#)."
       }
     }
   },
@@ -1319,7 +1292,7 @@
       }
     },
     "import": {
-      "title": "Upload {{campaign.formatted.type}} vaccination records",
+      "title": "Upload {{programme.formatted.type}} vaccination records",
       "hint": "{{prefix}}Make sure the CSV you upload has the same format as your usual reporting template.",
       "confirm": "Continue",
       "errors": {
@@ -1371,7 +1344,7 @@
     "created_user_uid": {
       "label": "Uploaded by"
     },
-    "campaign_uid": {
+    "programme_pid": {
       "label": "Programme"
     },
     "vaccinations": {
@@ -1615,6 +1588,56 @@
     },
     "vaccinations": {
       "label": "Records"
+    }
+  },
+  "programme": {
+    "list": {
+      "title": "Programmes",
+      "description": "Use this area to:\n- create new sessions\n- review consent responses\n- triage health records",
+      "active": "Active programmes"
+    },
+    "reviews": {
+      "title": "Upload issues",
+      "count": {
+        "one": "%s uploaded record needs review",
+        "other": "[0] No uploaded records need review|%s uploaded records need review"
+      }
+    },
+    "uploads": {
+      "title": "Uploads",
+      "count": {
+        "one": "%s upload",
+        "other": "[0] No uploads|%s uploads"
+      }
+    },
+    "vaccinations": {
+      "title": "Vaccinations",
+      "count": {
+        "one": "%s vaccination record",
+        "other": "[0] No vaccination records|%s vaccination records"
+      }
+    },
+    "type": {
+      "label": "Programme type"
+    },
+    "year": {
+      "label": "Programme year"
+    },
+    "name": {
+      "label": "Programme name"
+    },
+    "vaccines": {
+      "label": "Vaccines administered"
+    },
+    "show": {
+      "title": "Overview"
+    },
+    "sessions": {
+      "title": "School sessions",
+      "count": {
+        "one": "%s school session organised",
+        "other": "[0] No school sessions organised|%s school sessions organised"
+      }
     }
   }
 }

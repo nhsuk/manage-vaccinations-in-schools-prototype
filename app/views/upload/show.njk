@@ -5,14 +5,14 @@
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
+      text: __("programme.list.title"),
+      href: "/programmes"
     }, {
-      text: data.campaigns[upload.campaign_uid].type,
-      href: "/campaigns/" + upload.campaign_uid
+      text: data.programmes[upload.programme_pid].type,
+      href: "/programmes/" + upload.programme_pid
     }],
-    text: __("campaign.uploads.title"),
-    href: "/campaigns/" + upload.campaign_uid + "/uploads"
+    text: __("programme.uploads.title"),
+    href: "/programmes/" + upload.programme_pid + "/uploads"
   }) }}
 {% endblock %}
 
@@ -32,8 +32,8 @@
         created_user_uid: {
           value: users[upload.created_user_uid].fullName
         },
-        campaign_uid: {
-          value: data.campaigns[upload.campaign_uid].type
+        programme_pid: {
+          value: data.programmes[upload.programme_pid].type
         },
         invalid: {
           value: __n("upload.invalid.count", invalid.length)

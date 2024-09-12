@@ -15,6 +15,7 @@ import { gillickRoutes } from './routes/gillick.js'
 import { homeRoutes } from './routes/home.js'
 import { patientRoutes } from './routes/patient.js'
 import { preScreenRoutes } from './routes/pre-screen.js'
+import { programmeRoutes } from './routes/programme.js'
 import { recordRoutes } from './routes/record.js'
 import { registrationRoutes } from './routes/registration.js'
 import { replyRoutes } from './routes/reply.js'
@@ -36,12 +37,13 @@ router.use('/account', accountRoutes)
 router.use('/campaigns', campaignRoutes)
 router.use('/campaigns/:uid/cohorts', cohortRoutes)
 router.use('/campaigns/:uid/cohorts/:nhsn', patientRoutes)
-router.use('/campaigns/:uid/download', downloadRoutes)
-router.use('/campaigns/:uid/uploads', uploadRoutes)
-router.use('/campaigns/:uid/uploads/:id/vaccinations', vaccinationRoutes)
-router.use('/campaigns/:uid/vaccinations', vaccinationRoutes)
-router.use('/campaigns/:uid/vaccinations/:uuid/patient/:nhsn', patientRoutes)
 router.use('/consents', consentRoutes)
+router.use('/programmes', programmeRoutes)
+router.use('/programmes/:pid/download', downloadRoutes)
+router.use('/programmes/:pid/uploads', uploadRoutes)
+router.use('/programmes/:pid/uploads/:id/vaccinations', vaccinationRoutes)
+router.use('/programmes/:pid/vaccinations', vaccinationRoutes)
+router.use('/programmes/:pid/vaccinations/:uuid/patient/:nhsn', patientRoutes)
 router.use('/records', recordRoutes)
 router.use('/sessions', sessionRoutes)
 router.use('/sessions/:id/:nhsn', patientRoutes)

@@ -3,7 +3,7 @@
 {% extends "_layouts/form.njk" %}
 
 {% set confirmButtonText = __("upload.import.confirm") %}
-{% set title = __("upload.import.title", { campaign: campaign }) %}
+{% set title = __("upload.import.title", { programme: programme }) %}
 
 {% block form %}
   {{ errorSummary({
@@ -11,11 +11,11 @@
     errorList: errorList(errors)
   }) if errors }}
 
-  {% if campaign.type == CampaignType.FLU %}
+  {% if programme.type == ProgrammeType.Flu %}
     {% set hintText = __("upload.import.hint", {
       prefix: "These will go to NHS England and GPs. "
     }) %}
-  {% elif campaign.type == CampaignType.HPV %}
+  {% elif programme.type == ProgrammeType.HPV %}
     {% set hintText = __("upload.import.hint", {
       prefix: "These will go to NHS England. "
     }) %}
@@ -29,7 +29,7 @@
     label: {
       classes: "nhsuk-label--m",
       html: heading({
-        caption: campaign.type,
+        caption: programme.name,
         title: title
       })
     },

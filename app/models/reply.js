@@ -75,7 +75,7 @@ export class Reply {
     this.session_id = options?.session_id
   }
 
-  static generate(campaign, session, patient) {
+  static generate(programme, session, patient) {
     const firstReply = Object.entries(patient.replies).length === 0
     const child = Child.generate(patient)
     const parent = firstReply
@@ -91,8 +91,8 @@ export class Reply {
       { value: ReplyMethod.Paper, weight: 1 }
     ])
 
-    const healthAnswers = getHealthAnswers(campaign.vaccine)
-    const refusalReason = getRefusalReason(campaign.type)
+    const healthAnswers = getHealthAnswers(programme.vaccine)
+    const refusalReason = getRefusalReason(programme.type)
 
     const today = new Date()
     const sessionClosedBeforeToday = session.close.valueOf() < today.valueOf()

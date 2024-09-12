@@ -7,7 +7,7 @@ router.get('/', (request, response) => {
   const { data } = request.session
 
   if (data.token?.role === UserRole.DataConsumer) {
-    response.redirect('/campaigns')
+    response.redirect('/programmes')
   } else {
     response.redirect('/dashboard')
   }

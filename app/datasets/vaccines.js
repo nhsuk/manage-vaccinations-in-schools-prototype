@@ -82,8 +82,8 @@ export default {
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/147952/Green-Book-Chapter-15.pdf
   3664798042948: {
     gtin: '3664798042948',
-    type: '3-in-1 teenage booster and MenACWY',
-    name: '3-in-1 teenage booster',
+    type: 'TdIPV',
+    name: 'Td/IPV (3-in-1 teenage booster)',
     brand: 'Revaxis',
     manufacturer: 'Sanofi',
     method: 'Injection',
@@ -106,7 +106,7 @@ export default {
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1076053/Meningococcal-greenbook-chapter-22_17May2022.pdf
   5415062370568: {
     gtin: '5415062370568',
-    type: '3-in-1 teenage booster and MenACWY',
+    type: 'MenACWY',
     name: 'MenACWY',
     brand: 'Nimenrix',
     manufacturer: 'Pfizer Ltd',

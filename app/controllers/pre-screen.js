@@ -1,10 +1,8 @@
-import { Patient } from '../models/patient.js'
-
 export const preScreenController = {
   new(request, response) {
     const { id, nhsn } = request.params
     const { data } = request.session
-    const { campaign } = response.locals
+    const { programme } = response.locals
 
     const patient = Object.values(data.patients).find(
       (patient) => patient.record.nhsn === nhsn
@@ -17,7 +15,7 @@ export const preScreenController = {
     }
 
     response.redirect(
-      `${campaign.uri}/vaccinations/new?patient_uuid=${patient.uuid}&session_id=${id}`
+      `${programme.uri}/vaccinations/new?patient_uuid=${patient.uuid}&session_id=${id}`
     )
   }
 }

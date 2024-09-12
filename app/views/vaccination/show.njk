@@ -5,14 +5,14 @@
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
+      text: __("programme.list.title"),
+      href: "/programmes"
     }, {
-      text: data.campaigns[vaccination.campaign_uid].type,
-      href: "/campaigns/" + vaccination.campaign_uid
+      text: data.programmes[vaccination.programme_pid].type,
+      href: "/programmes/" + vaccination.programme_pid
     }],
-    text: __("campaign.vaccinations.title"),
-    href: "/campaigns/" + vaccination.campaign_uid + "/vaccinations"
+    text: __("programme.vaccinations.title"),
+    href: "/programmes/" + vaccination.programme_pid + "/vaccinations"
   }) }}
 {% endblock %}
 

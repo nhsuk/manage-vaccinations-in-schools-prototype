@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("consent.decision.title", { campaign: campaign }) %}
+{% set title = __("consent.decision.title", { programme: programme }) %}
 
 {% block form %}
   {{ radios({
@@ -12,9 +12,9 @@
         })
       }
     },
-    hint: { text: __("consent.decision.hint.Flu") if campaign.vaccine.type == CampaignType.FLU and campaign.vaccine.method == VaccinationMethod.Nasal },
+    hint: { text: __("consent.decision.hint.Flu") if programme.vaccine.type == ProgrammeType.Flu and programme.vaccine.method == VaccinationMethod.Nasal },
     items: [{
-      text: __("consent.decision.yes." + campaign.vaccine.type),
+      text: __("consent.decision.yes." + programme.vaccine.type),
       value: ReplyDecision.Given
     }, {
       text: __("consent.decision.no"),

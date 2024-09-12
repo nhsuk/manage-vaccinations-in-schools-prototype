@@ -5,11 +5,8 @@
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
-    }, {
-      text: data.campaigns[session.campaign_uid].type,
-      href: "/campaigns/" + session.campaign_uid
+      text: __("session.list.title"),
+      href: "/sessions"
     }]
   }) }}
 {% endblock %}
@@ -37,7 +34,7 @@
       attributes: {
         download: true
       }
-    } if campaign.type == "HPV" and session.status != SessionStatus.Completed]
+    } if programme.type == ProgrammeType.HPV and session.status != SessionStatus.Completed]
   }) }}
 
   {% set consentCardDescriptionHtml %}

@@ -6,13 +6,13 @@
   {{ heading({
     caption: record.fullName,
     title: title
-  }) if campaign.vaccine.method == VaccineMethod.Injection }}
+  }) if programme.vaccine.method == VaccineMethod.Injection }}
 
   {{ input({
     type: "hidden",
     value: "full",
     decorate: "vaccination.dosage"
-  }) if campaign.vaccine.method == VaccineMethod.Injection else radios({
+  }) if programme.vaccine.method == VaccineMethod.Injection else radios({
     fieldset: {
       legend: {
         html: heading({
@@ -36,7 +36,7 @@
     type: "hidden",
     value: VaccinationSequence.P1,
     decorate: "vaccination.sequence"
-  }) if campaign.vaccine.sequenceLimit }}
+  }) if programme.vaccine.sequenceLimit }}
 
   {{ radios({
     fieldset: {
@@ -47,7 +47,7 @@
     },
     items: injectionMethodItems,
     decorate: "vaccination.injectionMethod"
-  }) if campaign.vaccine.method == VaccineMethod.Injection }}
+  }) if programme.vaccine.method == VaccineMethod.Injection }}
 
   {{ radios({
     fieldset: {
@@ -58,5 +58,5 @@
     },
     items: injectionSiteItems,
     decorate: "vaccination.injectionSite"
-  }) if campaign.vaccine.method == VaccineMethod.Injection }}
+  }) if programme.vaccine.method == VaccineMethod.Injection }}
 {% endblock %}

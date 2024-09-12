@@ -2,14 +2,14 @@
 
 {% if consent.decision == ReplyDecision.Given %}
   {% set title = __("consent.confirmation.title.Given", {
-    campaign: campaign,
+    programme: programme,
     consent: consent,
     session: session
   }) %}
   {% set description = __("consent.confirmation.description.Given") %}
 {% else %}
   {% set title = __("consent.confirmation.title.Refused", {
-    campaign: campaign
+    programme: programme
   }) %}
   {% set description = __("consent.confirmation.description.Refused", {
     consent: consent

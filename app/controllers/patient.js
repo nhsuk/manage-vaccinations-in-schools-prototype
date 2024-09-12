@@ -1,4 +1,4 @@
-import { Campaign, CampaignType } from '../models/campaign.js'
+import { Programme, ProgrammeType } from '../models/programme.js'
 import {
   CaptureOutcome,
   ConsentOutcome,
@@ -13,11 +13,9 @@ import { Vaccination } from '../models/vaccination.js'
 
 export const patientController = {
   read(request, response, next) {
-    const { id, nhsn, uid } = request.params
+    const { id, nhsn } = request.params
     const { data } = request.session
 
-    const campaign_uid = uid || id.split('-')[0]
-    const campaign = data.campaigns[campaign_uid]
     let patient = Object.values(data.patients).find(
       (patient) => patient.record.nhsn === nhsn
     )
@@ -27,16 +25,12 @@ export const patientController = {
       const record = Object.values(data.records).find(
         (record) => record.nhsn === nhsn
       )
-      patient = new Patient({
-        campaign_uid,
-        record
-      })
+      patient = new Patient({ record })
     }
 
     const replies = Object.values(patient.replies)
     const vaccinations = Object.keys(patient.vaccinations)
 
-    response.locals.campaign = new Campaign(campaign)
     response.locals.patient = new Patient(patient)
     response.locals.replies = replies.map((reply) => new Reply(reply))
     response.locals.vaccinations = vaccinations.map(
@@ -44,8 +38,16 @@ export const patientController = {
     )
 
     // Patient in session
-    if (id) {
-      response.locals.session = new Session(data.sessions[id])
+    if (request.originalUrl.includes('sessions')) {
+      const session = new Session(data.sessions[id])
+
+      // Select first programme in session to show pre-screening questions
+      // TODO: Make pre-screening questions pull from all session programmes
+      const programme_pid = session.programmes[0]
+      const programme = new Programme(data.programmes[programme_pid])
+
+      response.locals.programme = programme
+      response.locals.session = session
     }
 
     next()
@@ -53,14 +55,15 @@ export const patientController = {
 
   show(request, response) {
     const { activity } = request.app.locals
-    const { campaign, patient, session, preScreenQuestions } = response.locals
+    const { patient, session, preScreenQuestions } = response.locals
 
     const options = {
       editGillick:
         patient.consent?.value !== ConsentOutcome.Given &&
         patient.outcome?.value !== PatientOutcome.Vaccinated,
       showGillick:
-        campaign.type !== CampaignType.FLU &&
+        session &&
+        !session.programmes?.includes(ProgrammeType.Flu) &&
         session?.status === SessionStatus.Active &&
         patient.consent?.value !== ConsentOutcome.Given,
       editReplies:
@@ -144,8 +147,8 @@ export const patientController = {
 
     let redirect
     if (uid && uuid) {
-      // Return to campaign vaccinations list
-      redirect = `/campaigns/${uid}/vaccinations/${uuid}`
+      // Return to programme vaccinations list
+      redirect = `/programmes/${uid}/vaccinations/${uuid}`
     } else {
       redirect = updatedPatient.uri
     }
@@ -155,11 +158,9 @@ export const patientController = {
 
   showInvite(request, response) {
     const { data } = request.session
-    const { campaign } = response.locals
 
     response.locals.sessionIdItems = Object.values(data.sessions)
       .map((session) => new Session(session))
-      .filter((session) => session.campaign_uid === campaign.uid)
       .filter((session) => session.status !== SessionStatus.Completed)
       .sort((a, b) => new Date(a.date) - new Date(b.date))
       .map((session) => ({

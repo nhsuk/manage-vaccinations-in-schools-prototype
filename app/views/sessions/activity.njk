@@ -9,11 +9,8 @@
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
-    }, {
-      text: data.campaigns[session.campaign_uid].type,
-      href: "/campaigns/" + session.campaign_uid
+      text: __("session.list.title"),
+      href: "/sessions"
     }, {
       text: session.location.name,
       href: "/sessions/" + session.id
@@ -48,11 +45,11 @@
     html: __("session.batch_id.text", {
       batch: data.token.batch[session.id][0],
       session: session,
-      vaccine: campaign.vaccine
+      vaccine: programme.vaccine
     }) | nhsukMarkdown
   }) if activity == "capture" and data.token.batch[session.id] }}
 
-  {% include "sessions/_secondary-navigation.njk" %}
+  {% include "sessions/_activity-navigation.njk" %}
 
   {% set patientRows = [] %}
   {% for patient in patients | sort(false, false, "firstName") %}

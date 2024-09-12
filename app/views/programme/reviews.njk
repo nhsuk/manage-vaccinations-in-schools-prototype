@@ -1,16 +1,16 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = campaign.type + " – " + __("campaign.reviews.title") %}
+{% set title = programme.name + " – " + __("programme.reviews.title") %}
 {% set view = "reviews" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
+      text: __("programme.list.title"),
+      href: "/programmes"
     }],
-    text: campaign.type,
-    href: campaign.uri
+    text: programme.name,
+    href: programme.uri
   }) }}
 {% endblock %}
 
@@ -18,14 +18,14 @@
   {{ super() }}
 
   {{ heading({
-    title: campaign.type,
-    summary: campaign.year
+    title: programme.name,
+    summary: programme.year
   }) }}
 
-  {% include "campaigns/_secondary-navigation.njk" %}
+  {% include "programme/_secondary-navigation.njk" %}
 
   <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("campaign.reviews.title") }}
+    {{ __("programme.reviews.title") }}
   </h2>
 
   {% if reviews.length %}
@@ -55,7 +55,7 @@
     {{ actionTable({
       id: "reviews",
       sort: "name",
-      heading: __n("campaign.reviews.count", reviews.length),
+      heading: __n("programme.reviews.count", reviews.length),
       panel: true,
       responsive: true,
       head: [
@@ -75,6 +75,6 @@
       rows: reviewRows
     }) }}
   {% else %}
-    {{ __n("campaign.reviews.count", reviews.length) | nhsukMarkdown }}
+    {{ __n("programme.reviews.count", reviews.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

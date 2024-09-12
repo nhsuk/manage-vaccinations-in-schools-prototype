@@ -1,16 +1,13 @@
-import { CampaignType } from '../models/campaign.js'
-import { SessionStatus } from '../models/session.js'
 import { User, UserRole } from '../models/user.js'
-import { getCampaignSession } from '../utils/session.js'
+import { getProgrammeSession } from '../utils/session.js'
 
 export const navigation = (request, response, next) => {
   const { data } = request.session
   const { __ } = response.locals
-  const { campaigns, sessions } = data
+  const { sessions } = data
 
   const user = new User(data.token)
   const root = request.path.split('/')[1]
-  const id = request.path.split('/')[2]
 
   // Get account navigation
   const account = data.token
@@ -40,27 +37,24 @@ export const navigation = (request, response, next) => {
 
   // Get currently active section
   let current = root
-  if (root === 'sessions' && id) {
-    const status = data.sessions[id]?.status
-    if (status === SessionStatus.Active) {
-      current = 'sessions'
-    } else {
-      current = 'campaigns'
-    }
-  }
 
   const primaryLinks =
     data.token?.role != UserRole.DataConsumer
       ? [
           {
-            url: '/sessions',
-            label: __('session.list.title'),
-            current: current === 'sessions'
+            url: '/programmes',
+            label: __('programme.list.title'),
+            current: current === 'programmes'
           },
           {
             url: '/campaigns',
             label: __('campaign.list.title'),
             current: current === 'campaigns'
+          },
+          {
+            url: '/sessions',
+            label: __('session.list.title'),
+            current: current === 'sessions'
           },
           {
             url: '/vaccines',
@@ -70,9 +64,9 @@ export const navigation = (request, response, next) => {
         ]
       : []
 
-  const fluSession = getCampaignSession(campaigns, sessions, CampaignType.FLU)
-  const hpvSession = getCampaignSession(campaigns, sessions, CampaignType.HPV)
-  const tioSession = getCampaignSession(campaigns, sessions, CampaignType.TIO)
+  const fluSession = getProgrammeSession(sessions, 'flu-2024')
+  const hpvSession = getProgrammeSession(sessions, 'hpv-2024')
+  const tioSession = getProgrammeSession(sessions, 'td-ipv-2024')
 
   response.locals.navigation = {
     account,

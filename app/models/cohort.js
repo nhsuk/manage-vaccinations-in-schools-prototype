@@ -1,5 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import campaignTypes from '../datasets/campaign-types.js'
+import { programmeTypes } from './programme.js'
 import { formatDate } from '../utils/date.js'
 
 /**
@@ -57,7 +57,7 @@ export class Cohort {
   static generate(campaign, records, user) {
     const created = faker.date.recent()
 
-    const { minAge, maxAge } = campaignTypes[campaign.type]
+    const { minAge, maxAge } = programmeTypes[campaign.type]
     records = getCohortFromAgeRange(records, minAge, maxAge)
 
     // Ensure cohort only contain unique records

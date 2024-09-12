@@ -1,6 +1,6 @@
 {% extends "_layouts/emails.njk" %}
 
-{% set caption = __("consent.start." + campaign.type + ".title") %}
+{% set caption = __("consent.start." + programme.type + ".title") %}
 
 {% set placeholders = {
   from: {
@@ -11,7 +11,7 @@
     name: consent.parent.fullName,
     email: consent.parent.email
   },
-  campaign: campaign,
+  programme: programme,
   consent: consent,
   reason: "they were absent from the session",
   refuser: "James Smith",
@@ -40,5 +40,5 @@
   ],
   "Sent to children": [
     "information-child"
-  ] if campaign.type == CampaignType.HPV
+  ] if programme.type == ProgrammeType.HPV
 } %}

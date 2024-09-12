@@ -1,9 +1,9 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("session.edit.campaign_uid.title") %}
+{% set title = __("session.edit.programmes.title") %}
 
 {% block form %}
-  {{ radios({
+  {{ checkboxes({
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--l",
@@ -11,7 +11,7 @@
         text: title
       }
     },
-    items: campaignItems,
-    decorate: "session.campaign_uid"
+    items: enumItems(ProgrammeType),
+    decorate: "session.programmes"
   }) }}
 {% endblock %}

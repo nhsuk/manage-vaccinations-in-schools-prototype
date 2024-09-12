@@ -95,7 +95,7 @@ export const vaccinationController = {
   },
 
   new(request, response) {
-    const { campaign } = request.app.locals
+    const { programme } = request.app.locals
     const { data } = request.session
     const { patient_uuid, session_id } = request.query
 
@@ -117,7 +117,7 @@ export const vaccinationController = {
       location: session.location.name,
       urn: session.urn,
       patient_uuid,
-      campaign_uid: campaign.uid,
+      programme_pid: programme.pid,
       session_id: session.id,
       ...(data.token && { created_user_uid: data.token?.uid })
     })
@@ -128,7 +128,7 @@ export const vaccinationController = {
   },
 
   update(request, response) {
-    const { back, campaign, vaccination } = request.app.locals
+    const { back, programme, vaccination } = request.app.locals
     const { form } = request.params
     const { data } = request.session
     const { __ } = response.locals
@@ -140,7 +140,7 @@ export const vaccinationController = {
       ...vaccination, // Previous values
       ...data?.wizard?.vaccination, // Wizard values (new flow)
       ...request.body.vaccination, // New values (edit flow)
-      vaccine_gtin: campaign.vaccine.gtin,
+      vaccine_gtin: programme.vaccine.gtin,
       batch_expires:
         vaccination.batch_expires ||
         data.batches[vaccination.batch_id]?.expires,
@@ -175,7 +175,7 @@ export const vaccinationController = {
   },
 
   readForm(request, response, next) {
-    const { back, start, campaign, vaccination } = request.app.locals
+    const { back, start, programme, vaccination } = request.app.locals
     const { form, id, uuid } = request.params
     const { referrer } = request.query
     const { data } = request.session
@@ -219,7 +219,7 @@ export const vaccinationController = {
 
     response.locals.batchItems = Object.values(data.batches)
       .map((batch) => new Batch(batch))
-      .filter((batch) => batch.vaccine.type === campaign.type)
+      .filter((batch) => batch.vaccine.type === programme.type)
 
     response.locals.injectionMethodItems = Object.entries(VaccinationMethod)
       .filter(([, value]) => value !== VaccinationMethod.Nasal)
@@ -260,7 +260,7 @@ export const vaccinationController = {
       })
 
     response.locals.vaccineItems = Object.values(data.vaccines)
-      .filter((vaccine) => campaign.type.includes(vaccine.type))
+      .filter((vaccine) => programme.type.includes(vaccine.type))
       .map((vaccine) => (vaccine = new Vaccine(vaccine)))
       .map((vaccine) => ({
         text: vaccine.brandWithName,
@@ -289,7 +289,7 @@ export const vaccinationController = {
   },
 
   updateForm(request, response) {
-    const { campaign, vaccination } = request.app.locals
+    const { programme, vaccination } = request.app.locals
     const { id } = request.params
     const { data } = request.session
     const { paths } = response.locals
@@ -298,8 +298,8 @@ export const vaccinationController = {
     if (request.body.vaccination.dosage) {
       vaccination.dose =
         request.body.vaccination.dosage === 'half'
-          ? campaign.vaccine.dose / 2
-          : campaign.vaccine.dose
+          ? programme.vaccine.dose / 2
+          : programme.vaccine.dose
       vaccination.outcome =
         request.body.vaccination.dosage === 'half'
           ? VaccinationOutcome.PartVaccinated

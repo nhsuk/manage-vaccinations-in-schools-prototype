@@ -1,15 +1,20 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { Batch } from '../models/batch.js'
-import { Campaign } from '../models/campaign.js'
 import { Consent } from '../models/consent.js'
 import { Patient } from '../models/patient.js'
-import { Record } from '../models/record.js'
 import { Reply } from '../models/reply.js'
 import { Session, SessionStatus } from '../models/session.js'
 
 export const sessionController = {
   list(request, response) {
+    const view = request.params.view || 'active'
     const { data } = request.session
+
+    const statuses = {
+      active: SessionStatus.Active,
+      completed: SessionStatus.Completed,
+      planned: SessionStatus.Planned
+    }
 
     response.render('sessions/list', {
       sessions: Object.values(data.sessions)
@@ -20,7 +25,8 @@ export const sessionController = {
           )
           return session
         })
-        .filter((session) => session.status === SessionStatus.Active)
+        .filter((session) => session.status === statuses[view]),
+      view
     })
   },
 
@@ -159,12 +165,12 @@ export const sessionController = {
   },
 
   showBatch(request, response) {
-    const { campaign } = request.app.locals
+    const { programme } = request.app.locals
     const { data } = request.session
 
     response.locals.batchItems = Object.values(data.batches)
       .map((batch) => new Batch(batch))
-      .filter((batch) => batch.vaccine.type === campaign.type)
+      .filter((batch) => batch.vaccine.type === programme.type)
 
     response.render('sessions/batch-id')
   },
@@ -180,11 +186,8 @@ export const sessionController = {
     const { data } = request.session
 
     const session = new Session(data.sessions[id])
-    const campaign =
-      session.campaign_uid && new Campaign(data.campaigns[session.campaign_uid])
 
     request.app.locals.session = session
-    request.app.locals.campaign = campaign
     request.app.locals.patients = Object.values(data.patients)
       .filter((patient) => patient.session_id === id)
       .map((patient) => new Patient(patient))
@@ -205,16 +208,13 @@ export const sessionController = {
   },
 
   new(request, response) {
-    const { campaign_uid } = request.query
     const { data } = request.session
 
     // Delete previous data
     delete data.session
     delete data?.wizard?.session
 
-    const session = new Session({
-      campaign_uid
-    })
+    const session = new Session()
 
     data.wizard = { session }
 
@@ -254,6 +254,7 @@ export const sessionController = {
     const journey = {
       [`/`]: {},
       [`/${id}/${form}/format`]: {},
+      [`/${id}/${form}/programmes`]: {},
       [`/${id}/${form}/urn`]: {},
       [`/${id}/${form}/cohort`]: {},
       [`/${id}/${form}/date`]: {},
@@ -270,36 +271,12 @@ export const sessionController = {
       })
     }
 
-    response.locals.campaignItems = Object.entries(data.campaigns).map(
-      ([uid, campaign]) => ({
-        text: campaign.type,
-        value: uid
-      })
-    )
-
     response.locals.urnItems = Object.entries(data.schools).map(
       ([urn, school]) => ({
         text: school.name,
         value: urn
       })
     )
-
-    if (request.app.locals.session.campaign_uid) {
-      const { campaign_uid } = request.app.locals.session
-      const campaign = new Campaign(data.campaigns[campaign_uid])
-      response.locals.cohortItems = Object.values(data.patients)
-        .map((patient) => new Patient(patient))
-        // Only show records where child is at the selected school
-        .filter((patient) => patient.record.urn === Number(session.urn))
-        // Check records already assigned to session
-        .map((patient) => {
-          const record = new Record(data.records[patient.nhsn])
-
-          record.checked = patient.session_id === id
-
-          return record
-        })
-    }
 
     next()
   },

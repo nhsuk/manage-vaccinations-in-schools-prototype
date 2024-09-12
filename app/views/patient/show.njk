@@ -6,11 +6,8 @@
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
-    }, {
-      text: data.campaigns[campaign.uid].type,
-      href: "/campaigns/" + campaign.uid
+      text: __("session.list.title"),
+      href: "/sessions"
     }, {
       text: session.location.name,
       href: "/sessions/" + session.id
@@ -27,7 +24,7 @@
       text: __("campaign.cohorts.title"),
       href: "/campaigns/" + campaign.uid + "/cohorts"
     }]
-  })  }}
+  }) }}
 {% endblock %}
 
 {% block content %}
@@ -280,7 +277,7 @@
     }) | formCard if options.showTriage }}
 
     {% set preScreenDescriptionHtml %}
-      {% for key in preScreenQuestionKeys(campaign, patient) %}
+      {% for key in preScreenQuestionKeys(programme, patient) %}
         {{ radios({
           classes: "nhsuk-radios--inline",
           fieldset: {

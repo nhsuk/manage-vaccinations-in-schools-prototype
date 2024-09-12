@@ -1,6 +1,6 @@
 import { wizard } from 'nhsuk-prototype-rig'
-import { Campaign } from '../models/campaign.js'
 import { Patient } from '../models/patient.js'
+import { Programme } from '../models/programme.js'
 import { Record } from '../models/record.js'
 import { Upload } from '../models/upload.js'
 import { Vaccination } from '../models/vaccination.js'
@@ -8,9 +8,9 @@ import { getVaccinations } from '../utils/vaccination.js'
 
 export const uploadController = {
   redirect(request, response) {
-    const { uid } = request.params
+    const { pid } = request.params
 
-    response.redirect(`/campaigns/${uid}/uploads`)
+    response.redirect(`/programmes/${pid}/uploads`)
   },
 
   list(request, response) {
@@ -46,11 +46,11 @@ export const uploadController = {
   },
 
   new(request, response) {
-    const { uid } = request.params
+    const { pid } = request.params
     const { data } = request.session
 
-    // Get pending upload from campaign
-    const { pendingVaccinations } = new Campaign(data.campaigns[uid])
+    // Get pending upload from programme
+    const { pendingVaccinations } = new Programme(data.programmes[pid])
 
     // Get UUIDs for all vaccinations that were given
     const givenVaccinations = pendingVaccinations
@@ -91,7 +91,7 @@ export const uploadController = {
     delete data?.wizard?.upload
 
     const upload = new Upload({
-      campaign_uid: uid,
+      programme_pid: pid,
       vaccinations,
       incomplete,
       invalid,

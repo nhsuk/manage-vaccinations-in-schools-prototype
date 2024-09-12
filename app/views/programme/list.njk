@@ -1,0 +1,39 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("programme.list.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    size: "xl",
+    title: title
+  }) }}
+
+  {% set programmeRows = [] %}
+  {% for programme in programmes | sort(false, false, "name") %}
+    {% set programmeRows = programmeRows | push([
+      {
+        header: __("programme.type.label"),
+        html: programme.link.summary
+      },
+      {
+        header: __("programme.vaccines.label"),
+        html: programme.formatted.vaccines or "Not provided"
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ table({
+    id: "programmes",
+    sort: "name",
+    heading: __("programme.list.active"),
+    panel: true,
+    responsive: true,
+    head: [
+      { text: __("programme.type.label") },
+      { text: __("programme.vaccines.label") }
+    ],
+    rows: programmeRows
+  }) }}
+{% endblock %}
