@@ -1,31 +1,31 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import xlsx from 'json-as-xlsx'
-import { Campaign } from '../models/campaign.js'
 import { Download } from '../models/download.js'
+import { Programme } from '../models/programme.js'
 import { UserRole } from '../models/user.js'
 import { getVaccinations } from '../utils/vaccination.js'
 
 export const downloadController = {
   redirect(request, response) {
-    const { uid } = request.params
+    const { pid } = request.params
 
-    response.redirect(`/campaigns/${uid}`)
+    response.redirect(`/programmes/${pid}`)
   },
 
   new(request, response) {
-    const { uid } = request.params
+    const { pid } = request.params
     const { data } = request.session
 
     // Delete previous data
     delete data.download
     delete data?.wizard?.download
 
-    // Get pending upload from campaign
-    const campaign = new Campaign(data.campaigns[uid])
-    const vaccinations = getVaccinations(data, campaign.pendingVaccinations)
+    // Get pending upload from programme
+    const programme = new Programme(data.programmes[pid])
+    const vaccinations = getVaccinations(data, programme.pendingVaccinations)
 
     const download = new Download({
-      campaign_uid: uid,
+      programme_pid: pid,
       vaccinations,
       ...(data.token && { created_user_uid: data.token?.uid })
     })

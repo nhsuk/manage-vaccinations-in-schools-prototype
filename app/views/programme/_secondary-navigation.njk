@@ -1,0 +1,23 @@
+{{ xGovukSecondaryNavigation({
+  items: [{
+    text: __("programme.show.title"),
+    href: programme.uri,
+    current: view == "show"
+  }, {
+    text: __("programme.sessions.title"),
+    href: programme.uri + "/sessions",
+    current: view == "sessions"
+  }, {
+    text: __("programme.vaccinations.title"),
+    href: programme.uri + "/vaccinations",
+    current: view == "vaccinations"
+  }, {
+    text: __("programme.uploads.title"),
+    href: programme.uri + "/uploads",
+    current: view == "uploads"
+  } if data.features.uploads.on, {
+    text: (__("programme.reviews.title") + " " + count(reviews.length)) | safe,
+    href: programme.uri + "/reviews",
+    current: view == "reviews"
+  } if data.features.uploads.on and reviews.length]
+}) }}

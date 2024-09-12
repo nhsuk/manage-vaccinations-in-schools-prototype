@@ -6,17 +6,14 @@
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
-    }, {
-      text: data.campaigns[campaign.uid].type,
-      href: "/campaigns/" + campaign.uid
+      text: __("session.list.title"),
+      href: "/sessions"
     }, {
       text: session.location.name,
       href: "/sessions/" + session.id
     }, {
       text: __("session.activity." + activity + ".title"),
-      href: "/sessions/" + patient.session_id + "/" + activity
+      href: "/sessions/" + session.id + "/" + activity
     }] if patient.session_id else [{
       text: __("campaign.list.title"),
       href: "/campaigns"

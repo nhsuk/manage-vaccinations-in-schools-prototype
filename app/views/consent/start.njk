@@ -1,6 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = __("consent.start." + campaign.type + ".title") %}
+{% set title = __("consent.start." + programme.type + ".title") %}
 
 {% block content %}
   <div class="nhsuk-grid-row">
@@ -10,7 +10,7 @@
         title: title
       }) }}
 
-      {{ __("consent.start." + campaign.type + ".description") | nhsukMarkdown }}
+      {{ __("consent.start." + programme.type + ".description") | nhsukMarkdown }}
 
       {{ button({
         text: __("consent.start.confirm"),

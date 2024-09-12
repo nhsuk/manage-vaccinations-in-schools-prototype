@@ -6,6 +6,7 @@ const batches = JSON.parse(readFileSync('.data/batches.json'))
 const campaigns = JSON.parse(readFileSync('.data/campaigns.json'))
 const organisations = JSON.parse(readFileSync('.data/organisations.json'))
 const patients = JSON.parse(readFileSync('.data/patients.json'))
+const programmes = JSON.parse(readFileSync('.data/programmes.json'))
 const records = JSON.parse(readFileSync('.data/records.json'))
 const sessions = JSON.parse(readFileSync('.data/sessions.json'))
 const users = JSON.parse(readFileSync('.data/users.json'))
@@ -33,6 +34,7 @@ export default {
   organisation: Object.values(organisations)[0],
   organisations,
   patients,
+  programmes,
   records,
   schools,
   sessions,

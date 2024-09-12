@@ -6,7 +6,7 @@ import { formatDate } from '../utils/date.js'
  * @property {string} id - Upload ID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created upload
- * @property {string} [campaign_uid] - Campaign UID
+ * @property {string} [programme_pid] - Programme ID
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
  * @property {Array<string>} [incomplete] - Incomplete records (no NHS number)
  * @property {Array<string>} [invalid] - Invalid records (no vaccination event)
@@ -20,7 +20,7 @@ export class Upload {
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
-    this.campaign_uid = options?.campaign_uid
+    this.programme_pid = options?.programme_pid
     this.vaccinations = options?.vaccinations || []
     this.incomplete = options?.incomplete || []
     this.invalid = options?.invalid || []
@@ -28,13 +28,13 @@ export class Upload {
     this.inexact = options?.inexact || []
   }
 
-  static generate(campaign, user, vaccinations) {
+  static generate(programme, user, vaccinations) {
     const created = faker.date.recent()
 
     return new Upload({
       created,
       created_user_uid: user.uid,
-      campaign_uid: campaign.uid,
+      programme_pid: programme.uid,
       vaccinations
     })
   }
@@ -54,6 +54,6 @@ export class Upload {
   }
 
   get uri() {
-    return `/campaigns/${this.campaign_uid}/uploads/${this.id}`
+    return `/programmes/${this.programme_pid}/uploads/${this.id}`
   }
 }

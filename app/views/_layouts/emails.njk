@@ -47,7 +47,7 @@
 
     <div class="nhsuk-grid-column-three-quarters">
       {{ card({
-        heading: __("emails." + dir + "." + template + ".name", placeholders),
+        heading: __("emails." + dir + "." + template + ".name", placeholders) | safe,
         headingClasses: "nhsuk-heading-s",
         descriptionHtml: cardDescriptionHtml
       }) }}

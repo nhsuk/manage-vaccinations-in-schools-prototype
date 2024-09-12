@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import schools from '../datasets/schools.js'
 import {
   addDays,
@@ -8,6 +9,7 @@ import {
 } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 import { getConsentWindow } from '../utils/session.js'
+import { ProgrammeType } from './programme.js'
 
 export class ConsentWindow {
   static Opening = 'Opening'
@@ -47,7 +49,7 @@ export class SessionStatus {
  * @property {object} [close] - Date consent window closes
  * @property {SessionStatus} [status] - Status (planned, in progress, archived)
  * @property {object} [consents] – (Unmatched) consent replies
- * @property {string} [campaign_uid] - Campaign UID
+ * @property {Array<string>} [programmes] - Programme PIDs
  * @function consentWindow - Consent window (open, opening or closed)
  * @function school - Get school details
  * @function location - Get location details
@@ -56,7 +58,7 @@ export class SessionStatus {
  */
 export class Session {
   constructor(options) {
-    this.id = options?.id || `${options?.campaign_uid}-${this.#id}`
+    this.id = options?.id || faker.helpers.replaceSymbols('###')
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.format = options?.format
@@ -68,7 +70,7 @@ export class Session {
     this.close = options?.close
     this.status = options?.status || SessionStatus.Planned
     this.consents = options?.consents || {}
-    this.campaign_uid = options?.campaign_uid
+    this.programmes = options?.programmes || []
     // dateInput objects
     this.date_ = options?.date_
     this.open_ = options?.open_
@@ -76,9 +78,12 @@ export class Session {
     this.close_ = options?.close_
   }
 
-  static generate(urn, campaign, user, options = {}) {
-    // Create session 7 days after campaign created
-    const created = addDays(campaign.created, 7)
+  static generate(urn, programme, user, options = {}) {
+    // Create session 7 days after programme start date
+    const created =
+      programme.type === ProgrammeType.Flu
+        ? addDays(programme.start, 7)
+        : addDays(programme.start, 60)
 
     // Unless session is today, randomly generate a planned or completed session
     const status = options.isToday
@@ -123,11 +128,9 @@ export class Session {
       reminder: new Date(reminder),
       close: new Date(close),
       status,
-      campaign_uid: campaign.uid
+      programmes: [programme.pid]
     })
   }
-
-  #id = faker.helpers.replaceSymbols('###')
 
   get date_() {
     return convertIsoDateToObject(this.date)
@@ -250,6 +253,7 @@ export class Session {
       close: formatDate(this.date, {
         dateStyle: 'full'
       }),
+      programmes: prototypeFilters.formatList(this.programmes),
       urn: this.location.name,
       consentWindow
     }

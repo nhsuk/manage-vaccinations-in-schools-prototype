@@ -1,11 +1,11 @@
 Dear {{ consent.parent.fullName }},
 
-{{ consent.child.fullAndPreferredNames }} had their {{ campaign.type | replace("Flu", "flu") }} vaccination at {{ session.location.name }} today.{% if data.schools[session.urn].phase == "Primary" %} They were very brave.{% endif %}
+{{ consent.child.fullAndPreferredNames }} had their {{ programme.name | replace("Flu", "flu") }} vaccination at {{ session.location.name }} today.{% if data.schools[session.urn].phase == "Primary" %} They were very brave.{% endif %}
 
 We suggest you record the following details {% if data.schools[session.urn].phase == "Primary" %}in their red book (also known as their personal child health record){% else %}somewhere{% endif %}:
 
-- Vaccination: {{ campaign.vaccine.name }}
-- Vaccine: {{ campaign.vaccine.brand }}
+- Vaccination: {{ programme.vaccine.name }}
+- Vaccine: {{ programme.vaccine.brand }}
 - Date of vaccination: {{ session.formatted.date }}
 - Batch number: AB1234
 
@@ -13,7 +13,7 @@ We suggest you record the following details {% if data.schools[session.urn].phas
 
 Your child might have some of the following side effects:
 
-{% if campaign.vaccine.method == VaccinationMethod.Nasal %}
+{% if programme.vaccine.method == VaccinationMethod.Nasal %}
 - a runny or blocked nose
 - a headache
 - general tiredness

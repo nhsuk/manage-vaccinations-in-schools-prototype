@@ -5,11 +5,8 @@
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
-    }, {
-      text: data.campaigns[session.campaign_uid].type,
-      href: "/campaigns/" + session.campaign_uid
+      text: __("session.list.title"),
+      href: "/sessions"
     }, {
       text: session.location.name,
       href: "/sessions/" + session.id

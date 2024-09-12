@@ -4,7 +4,7 @@
   {%- if params.caption -%}
   <span class="nhsuk-caption-{{ size }}">{{ params.caption }}</span>
   {%- endif -%}
-  {{ params.title }}
+  {{ params.title | safe }}
 </h1>
 {%- if params.summary -%}
 <p class="nhsuk-caption-{{ size }} nhsuk-u-margin-bottom-4">

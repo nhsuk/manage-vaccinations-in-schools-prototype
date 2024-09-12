@@ -18,7 +18,7 @@
           href: vaccination.uri + "/new/decline" if vaccination.outcome != "Vaccinated" and vaccination.outcome != "Partially vaccinated"
         },
         vaccine_gtin: {
-          value: campaign.vaccine.brandWithName
+          value: programme.vaccine.brandWithName
         },
         method: {
           href: vaccination.uri + "/new/administer" if vaccination.vaccine.method == VaccineMethod.Injection

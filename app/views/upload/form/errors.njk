@@ -2,13 +2,13 @@
 
 {% set title = __("upload.errors.title") %}
 {% set paths = {
-  back: campaign.uri + "/uploads/new"
+  back: programme.uri + "/uploads/new"
 } %}
 
 {% block content %}
   <div class="nhsuk-u-width-three-quarters">
     {{ heading({
-      caption: campaign.type,
+      caption: programme.name,
       title: title
     }) }}
 
@@ -27,7 +27,7 @@
 
 ---
 
-[{{ __("upload.new.label") }}]({{ campaign.uri + "/uploads/new" }})
+[{{ __("upload.new.label") }}]({{ programme.uri + "/uploads/new" }})
     {% endfilter %}
   </div>
 {% endblock %}

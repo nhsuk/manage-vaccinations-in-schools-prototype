@@ -1,7 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import vaccines from '../datasets/vaccines.js'
 import { Batch } from './batch.js'
-import { CampaignType } from './campaign.js'
+import { ProgrammeType } from './programme.js'
 import { Vaccine, VaccineMethod } from './vaccine.js'
 import {
   convertIsoDateToObject,
@@ -69,7 +69,7 @@ export class VaccinationProtocol {
  * @property {VaccinationSequence} [sequence] - Dose sequence
  * @property {string} [protocol] - Protocol
  * @property {string} [notes] - Notes
- * @property {string} [campaign_uid] - Campaign UUID
+ * @property {string} [programme_pid] - Programme ID
  * @property {string} [session_id] - Session ID
  * @property {string} [patient_uuid] - Patient UUID
  * @property {string} [batch_id] - Batch ID
@@ -97,7 +97,7 @@ export class Vaccination {
     this.sequence = options?.sequence
     this.protocol = this.given ? VaccinationProtocol.PGD : undefined
     this.notes = options?.notes
-    this.campaign_uid = options?.campaign_uid
+    this.programme_pid = options?.programme_pid
     this.session_id = options?.session_id
     this.patient_uuid = options?.patient_uuid
     this.batch_id = this.given ? options?.batch_id || '' : undefined
@@ -107,31 +107,34 @@ export class Vaccination {
     this.created_ = options?.created_
   }
 
-  static generate(patient, campaign, session, location, users) {
+  static generate(patient, programme, session, location, users) {
     const user = users[faker.number.int({ min: 0, max: 19 })]
 
     let injectionMethod
     let injectionSite
     let sequence
     let vaccine_gtin
-    switch (campaign.type) {
-      case CampaignType.FLU:
+    switch (programme.type) {
+      case ProgrammeType.Flu:
         vaccine_gtin = '05000456078276'
         break
-      case CampaignType.HPV:
+      case ProgrammeType.HPV:
         injectionMethod = VaccinationMethod.Subcutaneous
         injectionSite = VaccinationSite.ArmRightUpper
         sequence = VaccinationSequence.P1
         vaccine_gtin = '00191778001693'
         break
-      case CampaignType.TIO:
+      case ProgrammeType.MenACWY:
+        injectionMethod = VaccinationMethod.Subcutaneous
+        injectionSite = VaccinationSite.ArmRightUpper
+        vaccine_gtin = '5415062370568'
+        break
+      case ProgrammeType.TdIPV:
         injectionMethod = VaccinationMethod.Subcutaneous
         injectionSite = VaccinationSite.ArmRightUpper
         vaccine_gtin = '3664798042948'
         break
     }
-
-    const { dose } = vaccines[vaccine_gtin]
 
     const outcome = faker.helpers.weightedArrayElement([
       { value: VaccinationOutcome.Vaccinated, weight: 7 },
@@ -151,13 +154,13 @@ export class Vaccination {
       created_user_uid: user.uid,
       outcome,
       location,
-      campaign_uid: campaign.uid,
+      programme_pid: programme.pid,
       session_id: session.id,
       patient_uuid: patient.uuid,
       ...(vaccinated && {
         batch_id: batch.id,
         batch_expires: batch.expires,
-        dose,
+        dose: vaccines[vaccine_gtin],
         sequence,
         injectionMethod,
         injectionSite,
@@ -252,6 +255,6 @@ export class Vaccination {
   }
 
   get uri() {
-    return `/campaigns/${this.campaign_uid}/vaccinations/${this.uuid}`
+    return `/programmes/${this.programme_pid}/vaccinations/${this.uuid}`
   }
 }

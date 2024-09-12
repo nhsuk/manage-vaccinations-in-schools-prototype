@@ -1,16 +1,16 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = campaign.type + " – " + __("campaign.sessions.title") %}
+{% set title = programme.name + " – " + __("programme.sessions.title") %}
 {% set view = "sessions" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
+      text: __("programme.list.title"),
+      href: "/programmes"
     }],
-    text: campaign.type,
-    href: campaign.uri
+    text: programme.name,
+    href: programme.uri
   }) }}
 {% endblock %}
 
@@ -18,20 +18,20 @@
   {{ super() }}
 
   {{ heading({
-    title: campaign.type,
-    summary: campaign.year
+    title: programme.name,
+    summary: programme.year
   }) }}
 
-  {% include "campaigns/_secondary-navigation.njk" %}
+  {% include "programme/_secondary-navigation.njk" %}
 
   <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("campaign.sessions.title") }}
+    {{ __("programme.sessions.title") }}
   </h2>
 
   {{ actionList({
     items: [{
       text: __("session.new.title"),
-      href: "/sessions/new?campaign_uid=" + campaign.uid
+      href: "/sessions/new"
     }]
   }) if data.token.role != UserRole.DataConsumer }}
 
@@ -84,6 +84,6 @@
       rows: sessionRows
     }) }}
   {% else %}
-    {{ __n("campaign.sessions.count", sessions.length) | nhsukMarkdown }}
+    {{ __n("programme.sessions.count", sessions.length) | nhsukMarkdown }}
   {% endfor %}
 {% endblock %}

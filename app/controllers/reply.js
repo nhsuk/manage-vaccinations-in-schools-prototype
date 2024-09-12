@@ -353,7 +353,7 @@ export const replyController = {
   updateWithdraw(request, response) {
     const { reply } = request.app.locals
     const { data } = request.session
-    const { campaign, patient, session } = response.locals
+    const { programme, patient, session } = response.locals
     const { __ } = response.locals
 
     const { refusalReason, refusalReasonOther, notes } = data.reply
@@ -377,7 +377,7 @@ export const replyController = {
       patient.capture = new Vaccination({
         outcome: VaccinationOutcome.AlreadyVaccinated,
         patient_uuid: patient.uuid,
-        campaign_uid: campaign.uid,
+        programme_pid: programme.pid,
         session_id: session.id,
         ...(data.reply?.notes && { notes }),
         ...(data.token && { created_user_uid: data.token?.uid })

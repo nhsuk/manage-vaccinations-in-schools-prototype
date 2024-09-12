@@ -1,15 +1,18 @@
 {% extends "_layouts/default.njk" %}
 
-{% set isDataConsumer = data.token.role == UserRole.DataConsumer %}
-{% set paths = { back: "/home" } if isDataConsumer %}
-{% set title = campaign.type + " – " + __("campaign.show.title") %}
-{% set view = "show" %}
+{% set paths = { back: "/home" } if data.token.role == UserRole.DataConsumer %}
+{% set title = campaign.type + " – " + __("campaign.cohorts.title") %}
+{% set view = "cohorts" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
-    text: __("campaign.list.title"),
-    href: "/campaigns"
-  }) if data.token.role != UserRole.DataConsumer }}
+    items: [{
+      text: __("campaign.list.title"),
+      href: "/campaigns"
+    }],
+    text: campaign.type,
+    href: campaign.uri
+  }) }}
 {% endblock %}
 
 {% block content %}
@@ -20,153 +23,68 @@
     summary: campaign.year
   }) }}
 
-  {% if isDataConsumer %}
-    {{ actionList({
-      items: [{
-        href: campaign.uri + "/download/new",
-        text: __("download.new.label")
-      }]
-    }) }}
-  {% else %}
-    {% include "campaigns/_secondary-navigation.njk" %}
+  {{ actionList({
+    items: [{
+      href: campaign.uri + "/cohorts/new",
+      text: __("cohort.new.label")
+    }]
+  }) if data.token.role != UserRole.DataConsumer }}
 
-    <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-      {{ __("campaign.show.title") }}
-    </h2>
-
-    {{ actionList({
-      items: [{
-        href: campaign.uri + "/download/new",
-        text: __("download.new.label")
-      } if vaccinations.length,
-      {
-        text: __("campaign.edit.title"),
-        href: campaign.uri + "/edit"
-      }]
-    }) }}
-  {% endif %}
-
-  <div class="nhsuk-grid-row nhsuk-card-group">
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        classes: "app-card--data app-card--reversed",
-        clickable: true if not isDataConsumer,
-        heading: __("campaign.cohorts.title"),
-        headingClasses: "nhsuk-heading-xs",
-        href: campaign.uri + "/cohorts" if not isDataConsumer,
-        description: campaign.cohort.length or "0"
-      }) }}
-    </div>
-
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        classes: "app-card--data app-card--reversed",
-        clickable: true if not isDataConsumer,
-        heading: "Sessions completed",
-        headingClasses: "nhsuk-heading-xs",
-        href: campaign.uri + "/sessions" if not isDataConsumer,
-        description: sessions | where("status", SessionStatus.Completed) | length or "0"
-      }) }}
-    </div>
-
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        classes: "app-card--data app-card--reversed",
-        clickable: true if not isDataConsumer,
-        heading: __("campaign.vaccinations.title"),
-        headingClasses: "nhsuk-heading-xs",
-        href: campaign.uri + "/vaccinations" if not isDataConsumer,
-        description: vaccinations.length or "0"
-      }) }}
-    </div>
-
-  {% if sessions.length %}
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        classes: "app-card--data",
-        heading: "Consent requests and reminders sent",
-        headingClasses: "nhsuk-heading-xs",
-        description: "1671"
-      }) }}
-    </div>
-
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        classes: "app-card--data",
-        heading: "Consent given (versus refused or no response)",
-        headingClasses: "nhsuk-heading-xs",
-        description: "78%"
-      }) }}
-    </div>
-
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        classes: "app-card--data",
-        heading: "Responses received and triaged",
-        headingClasses: "nhsuk-heading-xs",
-        description: "98%"
-      }) }}
-    </div>
-  {% endif %}
-  </div>
-
-  {% if sessions.length %}
-    {{ table({
-      heading: "Reasons for refusal",
-      panel: true,
-      head: [
-        { text: __("reply.refusalReason.label") },
-        { text: "Frequency", format: "numeric" }
-      ],
-      rows: [
-        [
-          { text: ReplyRefusal.Gelatine },
-          { text: "11.1%", format: "numeric" }
-        ] if campaign.type == CampaignType.FLU,
-        [
-          { text: ReplyRefusal.AlreadyGiven },
-          { text: "2.0%", format: "numeric" }
-        ],
-        [
-          { text: ReplyRefusal.GettingElsewhere },
-          { text: "3.6%", format: "numeric" }
-        ],
-        [
-          { text: ReplyRefusal.Medical },
-          { text: "1.0%", format: "numeric" }
-        ],
-        [
-          { text: ReplyRefusal.Personal },
-          { text: "5.1%", format: "numeric" }
-        ],
-        [
-          { text: ReplyRefusal.Other },
-          { text: "1.1%", format: "numeric" }
-        ]
-      ]
-    }) }}
-
-    {% set questionRows = [] %}
-    {% for healthQuestion in campaign.vaccine.healthQuestions %}
-      {% set questionRows = questionRows | push([
+  {% if cohort.length %}
+    {% set cohortRows = [] %}
+    {% for patient in cohort %}
+      {% set outcome = enumKeyAndValue(PatientOutcome, patient.outcome.value) %}
+      {% set tagColor = __("outcome." + outcome.key + ".colour") %}
+      {% set cohortRows = cohortRows | push([
         {
-          text: healthQuestion
+          header: __("record.fullName.label"),
+          html: patient.link.fullName
         },
         {
-          text: ["0.21","0.57","3.45","1.89"] | random + "%",
-          format: "numeric"
+          header: __("record.nhsn.label"),
+          html: patient.record.formatted.nhsn or "Not provided"
+        },
+        {
+          header: __("record.dob.label"),
+          html: patient.record.formatted.dob
+        },
+        {
+          header: __("outcome.label"),
+          html: tag({
+            classes: "nhsuk-tag--" + tagColor,
+            text: patient.outcome.value
+          })
+        },
+        {
+          header: __("record.actions.label"),
+          html: actionList({
+            items: [{
+              text: "Remove",
+              href: "#"
+            }]
+          }) if not patient.session_id else " "
         }
       ]) %}
     {% endfor %}
 
-    {{ table({
-      heading: "Consent journey",
+    {{ actionTable({
+      id: "cohort",
+      heading: __n("campaign.cohorts.count", cohort.length),
       panel: true,
+      responsive: true,
       head: [
-        { text: "Question" },
-        { html: "Dropout", format: "numeric" }
+        { text: __("record.fullName.label") },
+        { text: __("record.nhsn.label") },
+        { text: __("record.dob.label") },
+        { text: __("outcome.label") },
+        {
+          text: __("record.actions.label"),
+          attributes: { "no-sort": "no-sort" }
+        }
       ],
-      rows: questionRows
+      rows: cohortRows
     }) }}
+  {% else %}
+    {{ __n("campaign.cohorts.count", cohort.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

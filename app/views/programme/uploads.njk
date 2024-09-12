@@ -1,16 +1,16 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = campaign.type + " – " + __("campaign.uploads.title") %}
+{% set title = programme.name + " – " + __("programme.uploads.title") %}
 {% set view = "uploads" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
+      text: __("programme.list.title"),
+      href: "/programmes"
     }],
-    text: campaign.type,
-    href: campaign.uri
+    text: programme.name,
+    href: programme.uri
   }) }}
 {% endblock %}
 
@@ -18,19 +18,19 @@
   {{ super() }}
 
   {{ heading({
-    title: campaign.type,
-    summary: campaign.year
+    title: programme.name,
+    summary: programme.year
   }) }}
 
-  {% include "campaigns/_secondary-navigation.njk" %}
+  {% include "programme/_secondary-navigation.njk" %}
 
   <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("campaign.uploads.title") }}
+    {{ __("programme.uploads.title") }}
   </h2>
 
   {{ actionList({
     items: [{
-      href: campaign.uri + "/uploads/new",
+      href: programme.uri + "/uploads/new",
       text: __("upload.new.label")
     }]
   }) }}
@@ -62,7 +62,7 @@
     {{ actionTable({
       id: "uploads",
       sort: "created",
-      heading: __n("campaign.uploads.count", uploads.length) ,
+      heading: __n("programme.uploads.count", uploads.length) ,
       panel: true,
       responsive: true,
       head: [
@@ -79,6 +79,6 @@
       rows: uploadRows
     }) }}
   {% else %}
-    {{ __n("campaign.uploads.count", uploads.length) | nhsukMarkdown }}
+    {{ __n("programme.uploads.count", uploads.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

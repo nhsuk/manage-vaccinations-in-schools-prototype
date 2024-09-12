@@ -1,4 +1,3 @@
-import { CampaignType, CampaignYear } from '../models/campaign.js'
 import { AcademicYear } from '../models/cohort.js'
 import { DownloadFormat } from '../models/download.js'
 import { EventType } from '../models/event.js'
@@ -12,6 +11,7 @@ import {
   TriageOutcome
 } from '../models/patient.js'
 import { GPRegistered, Sex } from '../models/record.js'
+import { ProgrammeType, ProgrammeYear } from '../models/programme.js'
 import { RegistrationOutcome } from '../models/registration.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import {
@@ -36,8 +36,6 @@ import {
 
 export const enumeration = (request, response, next) => {
   response.locals.AcademicYear = AcademicYear
-  response.locals.CampaignType = CampaignType
-  response.locals.CampaignYear = CampaignYear
   response.locals.CaptureOutcome = CaptureOutcome
   response.locals.ConsentOutcome = ConsentOutcome
   response.locals.ConsentWindow = ConsentWindow
@@ -50,6 +48,8 @@ export const enumeration = (request, response, next) => {
   response.locals.ParentalRelationship = ParentalRelationship
   response.locals.PatientOutcome = PatientOutcome
   response.locals.PreScreenQuestion = PreScreenQuestion
+  response.locals.ProgrammeType = ProgrammeType
+  response.locals.ProgrammeYear = ProgrammeYear
   response.locals.RegistrationOutcome = RegistrationOutcome
   response.locals.ReplyDecision = ReplyDecision
   response.locals.ReplyMethod = ReplyMethod

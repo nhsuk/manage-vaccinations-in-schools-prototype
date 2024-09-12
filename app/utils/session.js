@@ -1,5 +1,5 @@
 import { isAfter, isBefore } from 'date-fns'
-import { CampaignType } from '../models/campaign.js'
+import { ProgrammeType } from '../models/programme.js'
 import { ConsentWindow, Session } from '../models/session.js'
 import { getEnumKeyAndValue } from './enum.js'
 
@@ -26,11 +26,11 @@ export const getConsentWindow = (session) => {
   }
 }
 
-export const getCampaignSession = (campaigns, sessions, type) => {
-  type = type || CampaignType.FLU
+export const getProgrammeSession = (sessions, type) => {
+  type = type || ProgrammeType.Flu
   return Object.values(sessions)
     .map((session) => new Session(session))
-    .filter((session) => campaigns[session.campaign_uid].type === type)
+    .filter((session) => session.programmes.includes(type))
     .filter((session) => session.consentWindow.value === ConsentWindow.Open)
     .at(-1)
 }

@@ -1,8 +1,8 @@
 import { wizard } from 'nhsuk-prototype-rig'
-import { Campaign } from '../models/campaign.js'
 import { Child } from '../models/child.js'
 import { Consent } from '../models/consent.js'
 import { Parent } from '../models/parent.js'
+import { Programme } from '../models/programme.js'
 import { Record } from '../models/record.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { ConsentWindow, Session } from '../models/session.js'
@@ -66,10 +66,9 @@ export const consentController = {
     const { id } = request.params
 
     const session = new Session(data.sessions[id])
-    const campaign =
-      session.campaign_uid && new Campaign(data.campaigns[session.campaign_uid])
+    const programme = new Programme(data.programmes[session.programmes[0]])
 
-    request.app.locals.campaign = campaign
+    request.app.locals.programme = programme
     request.app.locals.session = session
 
     // Transactional service details
@@ -96,7 +95,7 @@ export const consentController = {
   },
 
   readForm(request, response, next) {
-    const { campaign, consent } = request.app.locals
+    const { programme, consent } = request.app.locals
     const { form, id, uuid, view } = request.params
     const { data } = request.session
 
@@ -129,7 +128,7 @@ export const consentController = {
       },
       [`/${id}/${uuid}/${form}/address`]: {},
       [`/${id}/${uuid}/${form}/gp-registered`]: {},
-      ...getHealthQuestionPaths(`/${id}/${uuid}/${form}/`, campaign.vaccine),
+      ...getHealthQuestionPaths(`/${id}/${uuid}/${form}/`, programme.vaccine),
       [`/${id}/${uuid}/${form}/check-answers`]: {},
       [`/${id}/${uuid}/new/confirmation`]: {},
       [`/${id}/${uuid}/${form}/refusal-reason`]: {

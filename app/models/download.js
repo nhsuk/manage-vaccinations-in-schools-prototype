@@ -19,7 +19,7 @@ export class DownloadFormat {
  * @property {string} id - Download ID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created upload
- * @property {string} [campaign_uid] - Campaign UID
+ * @property {string} [programme_pid] - Programme ID
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
  * @property {Array<string>} [providers] - Vaccination UUIDs
  * @property {DownloadFormat} [format] - Downloaded file format
@@ -32,7 +32,7 @@ export class Download {
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
     this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
-    this.campaign_uid = options?.campaign_uid
+    this.programme_pid = options?.programme_pid
     this.vaccinations = options?.vaccinations || []
     this.providers = options?.providers
     this.from = options?.from
@@ -167,6 +167,6 @@ export class Download {
   }
 
   get uri() {
-    return `/campaigns/${this.campaign_uid}/download/${this.id}`
+    return `/programmes/${this.programme_pid}/download/${this.id}`
   }
 }

@@ -117,7 +117,7 @@ export const vaccinationController = {
       location: session.location.name,
       urn: session.urn,
       patient_uuid,
-      campaign_uid: campaign.uid,
+      programme_pid: session.programmes[0],
       session_id: session.id,
       ...(data.token && { created_user_uid: data.token?.uid })
     })

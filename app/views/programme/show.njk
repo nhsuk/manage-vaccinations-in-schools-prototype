@@ -1,0 +1,137 @@
+{% extends "_layouts/default.njk" %}
+
+{% set isDataConsumer = data.token.role == UserRole.DataConsumer %}
+{% set paths = { back: "/home" } if isDataConsumer %}
+{% set title = programme.name + " – " + __("programme.show.title") %}
+{% set view = "show" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    text: __("programme.list.title"),
+    href: "/programmes"
+  }) if data.token.role != UserRole.DataConsumer }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: programme.name,
+    summary: programme.year
+  }) }}
+
+  {% if isDataConsumer %}
+    {{ actionList({
+      items: [{
+        href: programme.uri + "/download/new",
+        text: __("download.new.label")
+      }]
+    }) }}
+  {% else %}
+    {% include "programme/_secondary-navigation.njk" %}
+
+    <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+      {{ __("programme.show.title") }}
+    </h2>
+
+    {{ actionList({
+      items: [{
+        href: programme.uri + "/download/new",
+        text: __("download.new.label")
+      } if vaccinations.length]
+    }) }}
+  {% endif %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("programme.show.title") }}
+  </h2>
+
+{% if sessions.length %}
+  <div class="nhsuk-grid-row nhsuk-card-group">
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data",
+        heading: "Consent requests and reminders sent",
+        headingClasses: "nhsuk-heading-xs",
+        description: "1671"
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data",
+        heading: "Consent given (versus refused or no response)",
+        headingClasses: "nhsuk-heading-xs",
+        description: "78%"
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data",
+        heading: "Responses received and triaged",
+        headingClasses: "nhsuk-heading-xs",
+        description: "98%"
+      }) }}
+    </div>
+  </div>
+
+  {{ table({
+    heading: "Reasons for refusal",
+    panel: true,
+    head: [
+      { text: __("reply.refusalReason.label") },
+      { text: "Frequency", format: "numeric" }
+    ],
+    rows: [
+      [
+        { text: ReplyRefusal.Gelatine },
+        { text: "11.1%", format: "numeric" }
+      ] if programme.type == ProgrammeType.Flu,
+      [
+        { text: ReplyRefusal.AlreadyGiven },
+        { text: "2.0%", format: "numeric" }
+      ],
+      [
+        { text: ReplyRefusal.GettingElsewhere },
+        { text: "3.6%", format: "numeric" }
+      ],
+      [
+        { text: ReplyRefusal.Medical },
+        { text: "1.0%", format: "numeric" }
+      ],
+      [
+        { text: ReplyRefusal.Personal },
+        { text: "5.1%", format: "numeric" }
+      ],
+      [
+        { text: ReplyRefusal.Other },
+        { text: "1.1%", format: "numeric" }
+      ]
+    ]
+  }) }}
+
+  {% set questionRows = [] %}
+  {% for healthQuestion in programme.vaccine.healthQuestions %}
+    {% set questionRows = questionRows | push([
+      {
+        text: healthQuestion
+      },
+      {
+        text: ["0.21","0.57","3.45","1.89"] | random + "%",
+        format: "numeric"
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ table({
+    heading: "Consent journey",
+    panel: true,
+    head: [
+      { text: "Question" },
+      { html: "Dropout", format: "numeric" }
+    ],
+    rows: questionRows
+  }) }}
+{% endif %}
+{% endblock %}

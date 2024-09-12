@@ -1,0 +1,15 @@
+{{ xGovukSecondaryNavigation({
+  items: [{
+    text: __("session.list.active.label"),
+    href: "/sessions",
+    current: view == "active"
+  }, {
+    text: __("session.list.planned.label"),
+    href: "/sessions/planned",
+    current: view == "planned"
+  }, {
+    text: __("session.list.completed.label"),
+    href: "/sessions/completed",
+    current: view == "completed"
+  }]
+}) }}

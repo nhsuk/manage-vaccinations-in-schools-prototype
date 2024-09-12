@@ -1,7 +1,7 @@
 {% macro headerNavigation(params) %}
 <div class="nhsuk-navigation-container">
   <nav class="nhsuk-navigation" id="header-navigation" role="navigation" aria-label="Primary navigation">
-    <ul class="nhsuk-header__navigation-list {%- if params.length < 4 %} nhsuk-header__navigation-list--left-aligned{% endif %}">
+    <ul class="nhsuk-header__navigation-list nhsuk-header__navigation-list--left-aligned">
     {%- for item in params %}
       {% if item %}
       <li class="nhsuk-header__navigation-item {%- if item.classes %} {{ item.classes }}{% endif %}" {%- for attribute, value in item.attributes %} {{ attribute }}="{{ value }}"{% endfor %}>
