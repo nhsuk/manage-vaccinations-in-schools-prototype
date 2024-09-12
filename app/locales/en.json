@@ -257,7 +257,7 @@
     },
     "errors": {
       "title": "Cohort records cannot be uploaded",
-      "description": "It wasn’t possible to upload any records due to the following errors in the CSV file:"
+      "description": "The records cannot be uploaded due to errors in the CSV file. When fixing these errors, note that the header does not count as a row."
     },
     "devoid": {
       "title": "Cohort records already uploaded",
@@ -1328,7 +1328,7 @@
     },
     "errors": {
       "title": "Vaccination records cannot be uploaded",
-      "description": "It wasn’t possible to upload any records due to the following errors in the CSV file:"
+      "description": "The records cannot be uploaded due to errors in the CSV file. When fixing these errors, note that the header does not count as a row."
     },
     "devoid": {
       "title": "Vaccination records already uploaded",
