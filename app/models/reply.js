@@ -78,7 +78,9 @@ export class Reply {
   static generate(campaign, session, patient) {
     const firstReply = Object.entries(patient.replies).length === 0
     const child = Child.generate(patient)
-    const parent = Parent.generate(patient.record.lastName, firstReply)
+    const parent = firstReply
+      ? patient.record.parent
+      : Parent.generate(patient.record.lastName)
     const decision = faker.helpers.weightedArrayElement([
       { value: ReplyDecision.Given, weight: 5 },
       { value: ReplyDecision.Refused, weight: 1 }
