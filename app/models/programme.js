@@ -71,8 +71,6 @@ export class Programme {
     this.name = programmeTypes[this.type].name
     this.yearGroups = programmeTypes[this.type].yearGroups || []
     this.vaccines = programmeTypes[this.type].vaccines || []
-    // TODO: Store upload status in patient model
-    this.pendingVaccinations = options?.pendingVaccinations || []
   }
 
   static generate(type) {

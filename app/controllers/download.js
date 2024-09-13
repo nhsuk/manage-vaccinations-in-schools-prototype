@@ -1,9 +1,9 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import xlsx from 'json-as-xlsx'
 import { Download } from '../models/download.js'
-import { Programme } from '../models/programme.js'
+import { Record } from '../models/record.js'
+import { Vaccination } from '../models/vaccination.js'
 import { UserRole } from '../models/user.js'
-import { getVaccinations } from '../utils/vaccination.js'
 
 export const downloadController = {
   redirect(request, response) {
@@ -20,9 +20,17 @@ export const downloadController = {
     delete data.download
     delete data?.wizard?.download
 
-    // Get pending upload from programme
-    const programme = new Programme(data.programmes[pid])
-    const vaccinations = getVaccinations(data, programme.pendingVaccinations)
+    // Get vaccinations from programme
+    const vaccinations = Object.values(data.vaccinations)
+      .filter((vaccination) => vaccination.programme_pid === pid)
+      .filter((vaccination) => !vaccination._pending)
+      .map((vaccination) => {
+        vaccination = new Vaccination(vaccination)
+        vaccination.record = new Record(
+          data.patients[vaccination.patient_uuid].record
+        )
+        return vaccination
+      })
 
     const download = new Download({
       programme_pid: pid,
