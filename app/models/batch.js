@@ -35,13 +35,7 @@ export class Batch {
     return new Batch({
       created,
       expires,
-      vaccine_gtin: faker.helpers.arrayElement([
-        '05000456078276', // Flu (Nasal)
-        '5000123114115', // Flu (Injection)
-        '00191778001693', // HPV
-        '3664798042948', // 3-in-1
-        '5415062370568' // MenACWY
-      ])
+      vaccine_gtin: faker.helpers.arrayElement(Object.keys(vaccines))
     })
   }
 
