@@ -37,6 +37,7 @@ export class GPRegistered {
  * @property {string} urn - School URN
  * @property {Parent} [parent] - Parent
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
+ * @property {boolean} [_pending] - Pending upload
  * @function age - Age in years
  * @function dobWithAge - Date of birth with age in brackets
  * @function fullName - Get full name
@@ -56,6 +57,8 @@ export class Record {
     this.urn = options.urn
     this.parent = options?.parent && new Parent(options.parent)
     this.vaccinations = options?.vaccinations || []
+    // Upload mocking
+    this._pending = options?._pending || false
   }
 
   static generate() {
@@ -87,6 +90,11 @@ export class Record {
     delete parent.contactPreference
     delete parent.contactPreferenceOther
 
+    // Mark record as pending upload to Mavis
+    const _pending = faker.helpers.maybe(() => true, {
+      probability: 0.25
+    })
+
     return new Record({
       firstName,
       lastName,
@@ -100,7 +108,8 @@ export class Record {
       gpRegistered,
       gpSurgery,
       urn,
-      parent
+      parent,
+      _pending
     })
   }
 

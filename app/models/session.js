@@ -119,7 +119,7 @@ export class Session {
 
     return new Session({
       created,
-      created_user_uid: user.uuid,
+      created_user_uid: user.uid,
       format: faker.helpers.arrayElement(Object.values(SessionFormat)),
       urn,
       date,

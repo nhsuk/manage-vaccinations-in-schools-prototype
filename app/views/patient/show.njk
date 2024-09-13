@@ -14,15 +14,12 @@
     }, {
       text: __("session.activity." + activity + ".title"),
       href: "/sessions/" + session.id + "/" + activity
-    }] if patient.session_id else [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
+    }] if session else [{
+      text: __("cohort.list.title"),
+      href: "/cohorts"
     }, {
-      text: data.campaigns[campaign.uid].type,
-      href: "/campaigns/" + campaign.uid
-    }, {
-      text: __("campaign.cohorts.title"),
-      href: "/campaigns/" + campaign.uid + "/cohorts"
+      text: cohort.formatted.yearGroup,
+      href: "/cohorts/" + cohort.uid
     }]
   }) }}
 {% endblock %}
@@ -207,16 +204,16 @@
       heading: __("consent.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: consentDescriptionHtml
-    }) if patient.session_id }}
+    }) if session }}
 
     {{ card({
       heading: __("healthAnswers.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         classes: "app-summary-list--full-width",
-        rows: healthAnswerRows(patient.consentHealthAnswers)
+        rows: healthAnswerRows(patient.consentHealthAnswers[session.id])
       })
-    }) if patient.consentHealthAnswers }}
+    }) if session and patient.consentHealthAnswers[session.id] }}
 
     {% set triageNotesDescriptionHtml %}
       {% for note in patient.triageNotes | reverse %}

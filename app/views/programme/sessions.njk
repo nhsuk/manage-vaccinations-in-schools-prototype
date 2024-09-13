@@ -84,6 +84,6 @@
       rows: sessionRows
     }) }}
   {% else %}
-    {{ __n("programme.sessions.count", sessions.length) | nhsukMarkdown }}
+    {{ __n("programme.sessions.count", 0) | nhsukMarkdown }}
   {% endfor %}
 {% endblock %}

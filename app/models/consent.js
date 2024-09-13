@@ -48,7 +48,7 @@ export class Consent {
     this.session_id = options.session_id
   }
 
-  static generate(campaign, session, patient) {
+  static generate(programme, session, patient) {
     const child = Child.generate(patient)
     const parent = Parent.generate(patient.record.lastName)
     const decision = faker.helpers.weightedArrayElement([
@@ -61,8 +61,8 @@ export class Consent {
       { value: ReplyMethod.Paper, weight: 1 }
     ])
 
-    const healthAnswers = getHealthAnswers(campaign.vaccine)
-    const refusalReason = getRefusalReason(campaign.type)
+    const healthAnswers = getHealthAnswers(programme.vaccine)
+    const refusalReason = getRefusalReason(programme.type)
 
     return new Consent({
       created: faker.date.between({

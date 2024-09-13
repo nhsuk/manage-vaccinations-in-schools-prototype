@@ -118,9 +118,6 @@ export class Vaccination {
     let sequence
     let vaccine_gtin
     switch (programme.type) {
-      case ProgrammeType.Flu:
-        vaccine_gtin = '05000456078276'
-        break
       case ProgrammeType.HPV:
         injectionMethod = VaccinationMethod.Subcutaneous
         injectionSite = VaccinationSite.ArmRightUpper
@@ -136,6 +133,10 @@ export class Vaccination {
         injectionMethod = VaccinationMethod.Subcutaneous
         injectionSite = VaccinationSite.ArmRightUpper
         vaccine_gtin = '3664798042948'
+        break
+      case ProgrammeType.Flu:
+      default:
+        vaccine_gtin = '05000456078276'
         break
     }
 
@@ -163,7 +164,7 @@ export class Vaccination {
       ...(vaccinated && {
         batch_id: batch.id,
         batch_expires: batch.expires,
-        dose: vaccines[vaccine_gtin],
+        dose: vaccines[vaccine_gtin].dose,
         sequence,
         injectionMethod,
         injectionSite,

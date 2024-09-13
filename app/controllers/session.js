@@ -20,8 +20,8 @@ export const sessionController = {
       sessions: Object.values(data.sessions)
         .map((session) => {
           session = new Session(session)
-          session.cohort = Object.values(data.patients).filter(
-            (patient) => patient.session_id === session.id
+          session.cohort = Object.values(data.patients).filter((patient) =>
+            patient.sessions.includes(session.id)
           )
           return session
         })
@@ -165,12 +165,12 @@ export const sessionController = {
   },
 
   showBatch(request, response) {
-    const { campaign } = request.app.locals
+    const { programme } = request.app.locals
     const { data } = request.session
 
     response.locals.batchItems = Object.values(data.batches)
       .map((batch) => new Batch(batch))
-      .filter((batch) => batch.vaccine.type === campaign.type)
+      .filter((batch) => batch.vaccine.type === programme.type)
 
     response.render('sessions/batch-id')
   },
@@ -189,7 +189,7 @@ export const sessionController = {
 
     request.app.locals.session = session
     request.app.locals.patients = Object.values(data.patients)
-      .filter((patient) => patient.session_id === id)
+      .filter((patient) => patient.sessions.includes(id))
       .map((patient) => new Patient(patient))
 
     next()
@@ -270,13 +270,6 @@ export const sessionController = {
         next: `/sessions/${id}/edit`
       })
     }
-
-    response.locals.campaignItems = Object.entries(data.campaigns).map(
-      ([uid, campaign]) => ({
-        text: campaign.type,
-        value: uid
-      })
-    )
 
     response.locals.urnItems = Object.entries(data.schools).map(
       ([urn, school]) => ({

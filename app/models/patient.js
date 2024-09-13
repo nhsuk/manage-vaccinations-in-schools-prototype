@@ -29,7 +29,7 @@ export class ConsentOutcome {
 export class ScreenOutcome {
   static NeedsTriage = 'Needs triage'
   static DelayVaccination = 'Delay vaccination to a later date'
-  static DoNotVaccinate = 'Do not vaccinate in campaign'
+  static DoNotVaccinate = 'Do not vaccinate'
   static Vaccinate = 'Safe to vaccinate'
 }
 
@@ -62,9 +62,9 @@ export class PatientOutcome {
  * @property {import('./record.js').Record} record - CHIS record
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
+ * @property {Array<string>} [sessions] - Session IDs
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
- * @property {string} [campaign_uid] - Campaign UID
- * @property {string} [session_id] - Session ID
+ * @property {string} [cohort_uid] - Cohort UID
  * @function consent - Consent outcome
  * @function screen - Screening outcome
  * @function registration - Registration status
@@ -82,9 +82,9 @@ export class Patient {
     this.record = options?.record && new Record(options.record)
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
+    this.sessions = options.sessions || []
     this.vaccinations = options?.vaccinations || {}
-    this.campaign_uid = options.campaign_uid
-    this.session_id = options.session_id
+    this.cohort_uid = options.cohort_uid
   }
 
   static generate(record) {
@@ -125,12 +125,25 @@ export class Patient {
   }
 
   get link() {
-    let fullName = `${formatLink(this.uri, this.fullName)}`
-    if (this.preferredNames) {
-      fullName += `<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">Known as: ${this.preferredNames}</span>`
+    const fullNameLink = (uri) => {
+      let fullName = `${formatLink(uri, this.fullName)}`
+      if (this.preferredNames) {
+        fullName += `<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">Known as: ${this.preferredNames}</span>`
+      }
+      return fullName
     }
 
-    return { fullName }
+    let session = {}
+    for (const id of this.sessions) {
+      session[id] = {
+        fullName: fullNameLink(`/sessions/${id}/${this.nhsn}`)
+      }
+    }
+
+    return {
+      fullName: fullNameLink(this.uri),
+      session
+    }
   }
 
   get groupedEvents() {
@@ -144,11 +157,11 @@ export class Patient {
   }
 
   get consentHealthAnswers() {
-    return this.session_id ? getConsentHealthAnswers(this.replies) : false
+    return getConsentHealthAnswers(this.replies, this.sessions)
   }
 
   get consentRefusalReasons() {
-    return this.session_id ? getConsentRefusalReasons(this.replies) : false
+    return getConsentRefusalReasons(this.replies, this.sessions)
   }
 
   get screen() {
@@ -190,27 +203,25 @@ export class Patient {
   }
 
   get uri() {
-    return this.session_id
-      ? `/sessions/${this.session_id}/${this.nhsn}`
-      : `/campaigns/${this.campaign_uid}/cohorts/${this.nhsn}`
+    return `/cohorts/${this.cohort_uid}/${this.nhsn}`
   }
 
   set log(event) {
     this.events.push(new Event(event))
   }
 
-  set select(campaign) {
-    this.campaign_uid = campaign.uid
+  set select(cohort) {
+    this.cohort_uid = cohort.uid
     this.log = {
       type: EventType.Select,
-      name: `Selected for ${campaign.type} vaccination programme cohort`,
-      date: campaign.created,
-      user_uid: campaign.created_user_uid
+      name: `Selected for the ${cohort.name} cohort`,
+      date: cohort.created,
+      user_uid: cohort.created_user_uid
     }
   }
 
   set invite(session) {
-    this.session_id = session.id
+    this.sessions.push(session.id)
     this.log = {
       type: EventType.Invite,
       name: `Invited to session at ${session.location.name}`,

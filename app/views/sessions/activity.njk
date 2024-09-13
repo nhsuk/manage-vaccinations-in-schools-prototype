@@ -78,7 +78,7 @@
     {% set patientRows = patientRows | push([
       {
         header: __("record.fullName.label"),
-        html: patient.link.fullName
+        html: patient.link.session[session.id].fullName
       },
       {
         header: __("record.dob.label"),

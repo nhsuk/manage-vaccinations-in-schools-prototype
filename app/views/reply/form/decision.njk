@@ -1,9 +1,9 @@
 {% extends "_layouts/form.njk" %}
 
 {% if reply.relationship | arrayOrStringIncludes("Child") %}
-  {% set title = __("reply.decision.title.Child", { campaign: campaign }) %}
+  {% set title = __("reply.decision.title.Child", { programme: programme }) %}
 {% else %}
-  {% set title = __("reply.decision.title.Parent", { campaign: campaign, patient: patient }) %}
+  {% set title = __("reply.decision.title.Parent", { programme: programme, patient: patient }) %}
 {% endif %}
 
 {% block form %}

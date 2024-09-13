@@ -224,6 +224,10 @@ export default () => {
    * @returns {Array[string]} Pre-screening question keys
    */
   globals.preScreenQuestionKeys = function (programme, patient) {
+    if (!programme) {
+      return []
+    }
+
     const { preScreenQuestionKeys } = programme.vaccine
     const { sex } = patient.record
 

@@ -38,7 +38,7 @@ export const patientController = {
     )
 
     // Patient in session
-    if (id) {
+    if (request.originalUrl.includes('sessions')) {
       const session = new Session(data.sessions[id])
 
       // Select first programme in session to show pre-screening questions
@@ -55,14 +55,14 @@ export const patientController = {
 
   show(request, response) {
     const { activity } = request.app.locals
-    const { patient, session, preScreenQuestions } = response.locals
+    const { patient, programme, session, preScreenQuestions } = response.locals
 
     const options = {
       editGillick:
         patient.consent?.value !== ConsentOutcome.Given &&
         patient.outcome?.value !== PatientOutcome.Vaccinated,
       showGillick:
-        !session.programmes.includes(ProgrammeType.Flu) &&
+        programme?.type !== ProgrammeType.Flu &&
         session?.status === SessionStatus.Active &&
         patient.consent?.value !== ConsentOutcome.Given,
       editReplies:
@@ -126,7 +126,7 @@ export const patientController = {
 
   updateForm(request, response) {
     const { data } = request.session
-    const { uid, uuid } = request.params
+    const { pid, uuid } = request.params
     const { __, patient } = response.locals
 
     const updatedRecord = new Record(
@@ -145,9 +145,9 @@ export const patientController = {
     request.flash('success', __('patient.success.update'))
 
     let redirect
-    if (uid && uuid) {
-      // Return to campaign vaccinations list
-      redirect = `/campaigns/${uid}/vaccinations/${uuid}`
+    if (pid && uuid) {
+      // Return to programme vaccinations list
+      redirect = `/programmes/${pid}/vaccinations/${uuid}`
     } else {
       redirect = updatedPatient.uri
     }
@@ -176,12 +176,14 @@ export const patientController = {
     const { patient } = response.locals
     const { __ } = response.locals
 
-    const { session_id } = data.patient
+    const { sessions } = data.patient
 
-    const session = new Session(data.sessions[session_id])
+    // Invite patient to session(s)
+    for (const id of sessions) {
+      const session = new Session(data.sessions[id])
 
-    // Invite patient to session
-    patient.invite = session
+      patient.invite = session
+    }
 
     // Update patient record
     data.patients[patient.uuid] = patient

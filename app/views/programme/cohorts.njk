@@ -1,0 +1,44 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = programme.name + " – " + __("programme.cohorts.title") %}
+{% set view = "cohorts" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("programme.list.title"),
+      href: "/programmes"
+    }],
+    text: programme.name,
+    href: programme.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: programme.name,
+    summary: programme.year
+  }) }}
+
+  {% include "programme/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("programme.cohorts.title") }}
+  </h2>
+
+  <ul class="nhsuk-grid-row nhsuk-card-group">
+  {% for cohort in cohorts | sort(false, false, "yearGroup") %}
+    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+      {{ card({
+        clickable: true,
+        heading: cohort.formatted.yearGroup,
+        headingClasses: "nhsuk-heading-m",
+        href: cohort.uri,
+        descriptionHtml: __n("cohort.records.count", cohort.records.length)
+      }) }}
+    </li>
+  {% endfor %}
+  </ul>
+{% endblock %}

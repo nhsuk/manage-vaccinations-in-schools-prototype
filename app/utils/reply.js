@@ -47,38 +47,43 @@ export function getRepliesWithHealthAnswers(replies) {
 /**
  * Get combined answers to health questions
  * @param {Array<import('../models/reply.js').Reply>} replies - Consent replies
+ * @param {Array<string>} sessions - Session IDs
  * @returns {object|boolean} Combined answers to health questions
  */
-export function getConsentHealthAnswers(replies) {
+export function getConsentHealthAnswers(replies, sessions) {
   let answers = {}
 
-  const repliesWithHealthAnswers = Object.values(replies).filter(
-    (reply) => reply.healthAnswers
-  )
+  for (const id of sessions) {
+    const repliesWithHealthAnswers = Object.values(replies)
+      .filter((reply) => reply.session_id === id)
+      .filter((reply) => reply.healthAnswers)
 
-  if (repliesWithHealthAnswers.length === 0) {
-    return false
-  }
+    if (repliesWithHealthAnswers.length === 0) {
+      answers[id] = false
+    } else {
+      answers[id] = {}
+    }
 
-  for (let reply of repliesWithHealthAnswers) {
-    reply = new Reply(reply)
+    for (let reply of repliesWithHealthAnswers) {
+      reply = new Reply(reply)
 
-    for (const [key, value] of Object.entries(reply.healthAnswers)) {
-      if (!answers[key]) {
-        answers[key] = {}
-      }
+      for (const [key, value] of Object.entries(reply.healthAnswers)) {
+        if (!answers[id][key]) {
+          answers[id][key] = {}
+        }
 
-      const hasSingleReply = repliesWithHealthAnswers.length === 1
-      const hasSameAnswers = repliesWithHealthAnswers.every(
-        (reply) => reply.healthAnswers[key] === value
-      )
+        const hasSingleReply = repliesWithHealthAnswers.length === 1
+        const hasSameAnswers = repliesWithHealthAnswers.every(
+          (reply) => reply.healthAnswers[key] === value
+        )
 
-      if (hasSingleReply) {
-        answers[key][reply.relationship] = value
-      } else if (hasSameAnswers) {
-        answers[key].All = value
-      } else {
-        answers[key][reply.relationship] = value
+        if (hasSingleReply) {
+          answers[id][key][reply.relationship] = value
+        } else if (hasSameAnswers) {
+          answers[id][key].All = value
+        } else {
+          answers[id][key][reply.relationship] = value
+        }
       }
     }
   }
@@ -139,20 +144,27 @@ export const getConsentOutcome = (patient) => {
 /**
  * Get combined refusal reasons
  * @param {Array<import('../models/reply.js').Reply>} replies - Consent replies
+ * @param {Array<string>} sessions - Session IDs
  * @returns {object} Refusal reasons
  */
-export const getConsentRefusalReasons = (replies) => {
+export const getConsentRefusalReasons = (replies, sessions) => {
   let reasons = []
 
-  for (const reply of Object.values(replies)) {
-    if (!reply.refusalReason) {
-      continue
+  for (const id of sessions) {
+    reasons[id] = []
+
+    for (const reply of Object.values(replies)) {
+      if (!reply.refusalReason) {
+        continue
+      }
+
+      reasons[id].push(reply.refusalReason)
     }
 
-    reasons.push(reply.refusalReason)
+    reasons[id] = reasons[id] ? [...new Set(reasons[id])] : []
   }
 
-  return reasons ? [...new Set(reasons)] : []
+  return reasons
 }
 
 /**
