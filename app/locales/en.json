@@ -83,15 +83,14 @@
       "description": "Use this area to:\n- create new campaigns",
       "active": "Active campaigns"
     },
-    "cohorts": {
-      "title": "Cohorts",
-      "count": {
-        "one": "%s child in this campaign’s cohort",
-        "other": "[0] No children in this campaign’s cohort|%s children in this campaign’s cohort"
-      }
-    },
     "show": {
       "title": "Overview"
+    },
+    "records": {
+      "count": {
+        "one": "%s child in this campaign",
+        "other": "[0] No children in this campaign|%s children in this campaign"
+      }
     },
     "type": {
       "label": "Type"
@@ -101,6 +100,9 @@
     },
     "vaccines": {
       "label": "Vaccines"
+    },
+    "cohorts": {
+      "title": "campaign.cohorts.title"
     }
   },
   "capture": {
@@ -179,67 +181,6 @@
     },
     "urn": {
       "label": "School"
-    }
-  },
-  "cohort": {
-    "new": {
-      "label": "Add children to cohort",
-      "check-answers": {
-        "title": "Check and confirm",
-        "warning": "Uploaded records will differ from the file",
-        "confirm": "Upload records",
-        "summary": "Details"
-      },
-      "count": {
-        "one": "%s new record",
-        "other": "[0] No new records|%s new records"
-      }
-    },
-    "import": {
-      "title": "Upload cohort records",
-      "hint": "Make sure the CSV you upload has the same format as your standard cohort template.",
-      "confirm": "Continue",
-      "errors": {
-        "invalid": "The selected file must be a CSV"
-      }
-    },
-    "errors": {
-      "title": "Cohort records cannot be uploaded",
-      "description": "The records cannot be uploaded due to errors in the CSV file. When fixing these errors, note that the header does not count as a row."
-    },
-    "devoid": {
-      "title": "Cohort records already uploaded",
-      "description": "All records in this CSV file have been uploaded."
-    },
-    "success": {
-      "create": {
-        "one": "%s child added to this programme’s cohort",
-        "other": "[0] No children added to this programme’s cohort|%s children added to this programme’s cohort"
-      }
-    },
-    "exact": {
-      "label": "Previously uploaded",
-      "count": {
-        "one": "%s previously uploaded record was omitted",
-        "other": "[0] No previously uploaded record were omitted|%s previously uploaded records were omitted"
-      }
-    },
-    "inexact": {
-      "label": "Duplicates",
-      "count": {
-        "one": "%s duplicate record needs review",
-        "other": "[0] No duplicate records need review|%s duplicate records need review"
-      }
-    },
-    "incomplete": {
-      "label": "Incomplete",
-      "count": {
-        "one": "%s record without an NHS number will use information from the Personal Demographics Service (PDS)",
-        "other": "[0] No records without NHS numbers will use information from the Personal Demographics Service (PDS)|%s records without NHS numbers will use information from the Personal Demographics Service (PDS)"
-      }
-    },
-    "year": {
-      "label": "Academic year"
     }
   },
   "consent": {

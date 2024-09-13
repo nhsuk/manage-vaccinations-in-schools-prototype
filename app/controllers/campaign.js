@@ -23,7 +23,7 @@ export const campaignController = {
     const campaign = new Campaign(data.campaigns[uid])
 
     request.app.locals.campaign = campaign
-    request.app.locals.cohort = Object.values(data.patients)
+    request.app.locals.records = Object.values(data.patients)
       .filter((patient) => patient.campaign_uid === uid)
       .map((patient) => new Patient(patient))
 

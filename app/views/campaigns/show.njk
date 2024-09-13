@@ -1,8 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
-{% set paths = { back: "/home" } if data.token.role == UserRole.DataConsumer %}
-{% set title = campaign.type + " – " + __("campaign.cohorts.title") %}
-{% set view = "cohorts" %}
+{% set title = campaign.type %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -10,7 +8,7 @@
       text: __("campaign.list.title"),
       href: "/campaigns"
     }],
-    text: campaign.type,
+    text: title,
     href: campaign.uri
   }) }}
 {% endblock %}
@@ -19,23 +17,16 @@
   {{ super() }}
 
   {{ heading({
-    title: campaign.type,
+    title: title,
     summary: campaign.year
   }) }}
 
-  {{ actionList({
-    items: [{
-      href: campaign.uri + "/cohorts/new",
-      text: __("cohort.new.label")
-    }]
-  }) if data.token.role != UserRole.DataConsumer }}
-
-  {% if cohort.length %}
-    {% set cohortRows = [] %}
-    {% for patient in cohort %}
+  {% if records.length %}
+    {% set recordRows = [] %}
+    {% for patient in records %}
       {% set outcome = enumKeyAndValue(PatientOutcome, patient.outcome.value) %}
       {% set tagColor = __("outcome." + outcome.key + ".colour") %}
-      {% set cohortRows = cohortRows | push([
+      {% set recordRows = recordRows | push([
         {
           header: __("record.fullName.label"),
           html: patient.link.fullName
@@ -69,7 +60,7 @@
 
     {{ actionTable({
       id: "cohort",
-      heading: __n("campaign.cohorts.count", cohort.length),
+      heading: __n("campaign.records.count", records.length),
       panel: true,
       responsive: true,
       head: [
@@ -82,9 +73,9 @@
           attributes: { "no-sort": "no-sort" }
         }
       ],
-      rows: cohortRows
+      rows: recordRows
     }) }}
   {% else %}
-    {{ __n("campaign.cohorts.count", cohort.length) | nhsukMarkdown }}
+    {{ __n("campaign.records.count", records.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}
