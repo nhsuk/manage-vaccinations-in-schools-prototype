@@ -30,12 +30,12 @@ export const patientController = {
 
     const replies = Object.values(patient.replies)
     const vaccinations = Object.keys(patient.vaccinations)
+      .map((uuid) => new Vaccination(data.vaccinations[uuid]))
+      .filter((vaccination) => vaccination.session_id === id)
 
     response.locals.patient = new Patient(patient)
     response.locals.replies = replies.map((reply) => new Reply(reply))
-    response.locals.vaccinations = vaccinations.map(
-      (uuid) => new Vaccination(data.vaccinations[uuid])
-    )
+    response.locals.vaccinations = vaccinations
 
     // Patient in session
     if (request.originalUrl.includes('sessions')) {
