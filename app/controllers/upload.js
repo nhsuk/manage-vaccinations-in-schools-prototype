@@ -49,8 +49,12 @@ export const uploadController = {
     const { pid } = request.params
     const { data } = request.session
 
-    // Get pending upload from programme
-    const { pendingVaccinations } = new Programme(data.programmes[pid])
+    // Get pending upload for this programme
+    const pendingVaccinations = Object.values(data.vaccinations)
+      .map((vaccination) => new Vaccination(vaccination))
+      .filter((vaccination) => vaccination.programme_pid === pid)
+      .filter((vaccination) => vaccination._pending)
+      .map((vaccination) => vaccination.uuid)
 
     // Get UUIDs for all vaccinations that were given
     const givenVaccinations = pendingVaccinations
@@ -119,6 +123,11 @@ export const uploadController = {
     data.uploads[upload.id] = updatedUpload
 
     delete data?.wizard?.upload
+
+    // Mark vaccination records as no longer pending
+    for (const uuid of upload.vaccinations) {
+      data.vaccinations[uuid]._pending = false
+    }
 
     // Update CHIS records
     for (const uuid of upload.vaccinations) {
