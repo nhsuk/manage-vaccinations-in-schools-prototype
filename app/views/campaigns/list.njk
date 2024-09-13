@@ -16,10 +16,6 @@
       {
         header: __("campaign.type.label"),
         html: campaign.link.typeAndYear
-      },
-      {
-        header: __("campaign.vaccines.label"),
-        html: campaign.formatted.vaccines or "Not provided"
       }
     ]) %}
   {% endfor %}
@@ -31,8 +27,7 @@
     panel: true,
     responsive: true,
     head: [
-      { text: __("campaign.type.label") },
-      { text: __("campaign.vaccines.label") }
+      { text: __("campaign.type.label") }
     ],
     rows: campaignRows
   }) }}

@@ -1,8 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import vaccines from '../datasets/vaccines.js'
-import { programmeTypes, ProgrammeYear } from './programme.js'
+import { ProgrammeYear } from './programme.js'
 import { Record } from './record.js'
-import { Vaccine } from './vaccine.js'
 import { addDays } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 
@@ -41,7 +39,6 @@ export class Campaign {
     this.type = options?.type
     this.year = options?.year || ProgrammeYear.Y2024
     this.records = options?.records || []
-    this.vaccines = options?.vaccines || []
   }
 
   static generate(programme, records, user) {
@@ -56,32 +53,11 @@ export class Campaign {
       created_user_uid: user.uuid,
       programme_pid: programme.pid,
       type: programme.type,
-      records,
-      vaccines: programmeTypes[programme.type].vaccines
+      records
     })
   }
 
   #uid = faker.helpers.replaceSymbols('???')
-
-  /**
-   * @todo A campaign can use multiple vaccines, and one used for a patient will
-   * depend on answers to screening questions in consent flow. For now however,
-   * we’ll assume each campaign administers one vaccine.
-   * @returns {import('./vaccine.js').Vaccine} Vaccine
-   */
-  get vaccine() {
-    return new Vaccine(vaccines[this.vaccines[0]])
-  }
-
-  get formatted() {
-    const vaccineList = Array.isArray(this.vaccines)
-      ? this.vaccines.map((gtin) => new Vaccine(vaccines[gtin]).brandWithName)
-      : []
-
-    return {
-      vaccines: vaccineList.join('<br>')
-    }
-  }
 
   get link() {
     return {

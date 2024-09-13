@@ -98,9 +98,6 @@
     "year": {
       "label": "Year"
     },
-    "vaccines": {
-      "label": "Vaccines"
-    },
     "cohorts": {
       "title": "campaign.cohorts.title"
     }
