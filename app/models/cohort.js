@@ -10,7 +10,7 @@ import { formatLink } from '../utils/string.js'
  * @param {Array<number>} yearGroup - Year group
  * @returns {Array} NHS numbers of selected cohort
  */
-export function getCohortFromYearGroups(records, yearGroups) {
+export function getRecordsFromYearGroup(records, yearGroups) {
   return Object.values(records)
     .map((record) => new Record(record))
     .filter((record) => yearGroups.includes(record.yearGroup))
@@ -18,19 +18,19 @@ export function getCohortFromYearGroups(records, yearGroups) {
 }
 
 /**
- * @class Campaign
+ * @class Cohort
  * @property {string} uid - UID
  * @property {string} created - Created date
- * @property {string} [created_user_uid] - User who created campaign
+ * @property {string} [created_user_uid] - User who created cohort
  * @property {string} [programme_pid] - Programme ID
- * @property {import('./programme.js').ProgrammeType} [type] - Campaign type
- * @property {ProgrammeYear} [year] - Campaign year
+ * @property {import('./programme.js').ProgrammeType} [type] - Cohort type
+ * @property {ProgrammeYear} [year] - Cohort year
  * @property {Array[string]} records - Patient records
  * @property {Array[string]} vaccines - Vaccines administered
  * @function ns - Namespace
  * @function uri - URL
  */
-export class Campaign {
+export class Cohort {
   constructor(options) {
     this.uid = options?.uid || this.#uid
     this.created = options?.created || new Date().toISOString()
@@ -46,9 +46,9 @@ export class Campaign {
     const today = new Date()
     const created = addDays(today, faker.number.int({ min: 60, max: 90 }) * -1)
 
-    records = getCohortFromYearGroups(records, programme.yearGroups)
+    records = getRecordsFromYearGroup(records, programme.yearGroups)
 
-    return new Campaign({
+    return new Cohort({
       created,
       created_user_uid: user.uuid,
       programme_pid: programme.pid,
@@ -69,10 +69,10 @@ export class Campaign {
   }
 
   get ns() {
-    return 'campaign'
+    return 'cohort'
   }
 
   get uri() {
-    return `/campaigns/${this.uid}`
+    return `/cohorts/${this.uid}`
   }
 }

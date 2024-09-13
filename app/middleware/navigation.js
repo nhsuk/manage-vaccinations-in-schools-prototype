@@ -47,9 +47,9 @@ export const navigation = (request, response, next) => {
             current: current === 'programmes'
           },
           {
-            url: '/campaigns',
-            label: __('campaign.list.title'),
-            current: current === 'campaigns'
+            url: '/cohorts',
+            label: __('cohort.list.title'),
+            current: current === 'cohorts'
           },
           {
             url: '/sessions',

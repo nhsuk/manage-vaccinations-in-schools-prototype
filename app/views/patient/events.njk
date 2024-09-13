@@ -15,11 +15,11 @@
       text: __("session.activity." + activity + ".title"),
       href: "/sessions/" + session.id + "/" + activity
     }] if patient.session_id else [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
+      text: __("cohort.list.title"),
+      href: "/cohorts"
     }, {
-      text: data.campaigns[campaign.uid].type,
-      href: "/campaigns/" + campaign.uid
+      text: data.cohorts[cohort.uid].type,
+      href: "/cohorts/" + cohort.uid
     }]
   }) }}
 {% endblock %}

@@ -1,15 +1,15 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = campaign.type %}
+{% set title = cohort.type %}
 
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("campaign.list.title"),
-      href: "/campaigns"
+      text: __("cohort.list.title"),
+      href: "/cohorts"
     }],
     text: title,
-    href: campaign.uri
+    href: cohort.uri
   }) }}
 {% endblock %}
 
@@ -18,7 +18,7 @@
 
   {{ heading({
     title: title,
-    summary: campaign.year
+    summary: cohort.year
   }) }}
 
   {% if records.length %}
@@ -60,7 +60,7 @@
 
     {{ actionTable({
       id: "cohort",
-      heading: __n("campaign.records.count", records.length),
+      heading: __n("cohort.records.count", records.length),
       panel: true,
       responsive: true,
       head: [
@@ -76,6 +76,6 @@
       rows: recordRows
     }) }}
   {% else %}
-    {{ __n("campaign.records.count", records.length) | nhsukMarkdown }}
+    {{ __n("cohort.records.count", records.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

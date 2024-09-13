@@ -77,19 +77,19 @@
       "label": "Actions"
     }
   },
-  "campaign": {
+  "cohort": {
     "list": {
-      "title": "Campaigns",
-      "description": "Use this area to:\n- create new campaigns",
-      "active": "Active campaigns"
+      "title": "Cohorts",
+      "description": "Use this area to:\n- create new cohorts",
+      "active": "Active cohorts"
     },
     "show": {
       "title": "Overview"
     },
     "records": {
       "count": {
-        "one": "%s child in this campaign",
-        "other": "[0] No children in this campaign|%s children in this campaign"
+        "one": "%s child in this cohort",
+        "other": "[0] No children in this cohort|%s children in this cohort"
       }
     },
     "type": {
@@ -97,9 +97,6 @@
     },
     "year": {
       "label": "Year"
-    },
-    "cohorts": {
-      "title": "campaign.cohorts.title"
     }
   },
   "capture": {

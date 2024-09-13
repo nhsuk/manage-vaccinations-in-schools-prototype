@@ -29,7 +29,7 @@ export class ConsentOutcome {
 export class ScreenOutcome {
   static NeedsTriage = 'Needs triage'
   static DelayVaccination = 'Delay vaccination to a later date'
-  static DoNotVaccinate = 'Do not vaccinate in campaign'
+  static DoNotVaccinate = 'Do not vaccinate'
   static Vaccinate = 'Safe to vaccinate'
 }
 
@@ -63,7 +63,7 @@ export class PatientOutcome {
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
- * @property {string} [campaign_uid] - Campaign UID
+ * @property {string} [cohort_uid] - Cohort UID
  * @property {string} [session_id] - Session ID
  * @function consent - Consent outcome
  * @function screen - Screening outcome
@@ -83,7 +83,7 @@ export class Patient {
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
-    this.campaign_uid = options.campaign_uid
+    this.cohort_uid = options.cohort_uid
     this.session_id = options.session_id
   }
 
@@ -192,20 +192,20 @@ export class Patient {
   get uri() {
     return this.session_id
       ? `/sessions/${this.session_id}/${this.nhsn}`
-      : `/campaigns/${this.campaign_uid}/${this.nhsn}`
+      : `/cohorts/${this.cohort_uid}/${this.nhsn}`
   }
 
   set log(event) {
     this.events.push(new Event(event))
   }
 
-  set select(campaign) {
-    this.campaign_uid = campaign.uid
+  set select(cohort) {
+    this.cohort_uid = cohort.uid
     this.log = {
       type: EventType.Select,
-      name: `Selected for ${campaign.type} vaccination programme cohort`,
-      date: campaign.created,
-      user_uid: campaign.created_user_uid
+      name: `Selected for ${cohort.type} vaccination programme cohort`,
+      date: cohort.created,
+      user_uid: cohort.created_user_uid
     }
   }
 

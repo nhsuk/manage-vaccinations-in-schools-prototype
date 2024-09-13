@@ -1,0 +1,34 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("cohort.list.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    size: "xl",
+    title: title
+  }) }}
+
+  {% set cohortRows = [] %}
+  {% for cohort in cohorts | sort(false, false, "name") %}
+    {% set cohortRows = cohortRows | push([
+      {
+        header: __("cohort.type.label"),
+        html: cohort.link.typeAndYear
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    id: "cohorts",
+    sort: "name",
+    heading: __("cohort.list.active"),
+    panel: true,
+    responsive: true,
+    head: [
+      { text: __("cohort.type.label") }
+    ],
+    rows: cohortRows
+  }) }}
+{% endblock %}
