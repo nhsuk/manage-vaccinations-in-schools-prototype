@@ -38,14 +38,7 @@ export const programmeTypes = {
   }
 }
 
-export class ProgrammeType {
-  static Flu = 'Flu'
-  static HPV = 'HPV'
-  static TdIPV = 'Td/IPV (3-in-1 teenage booster)'
-  static MenACWY = 'MenACWY'
-}
-
-export class ProgrammeYear {
+export class ProgrammeCycle {
   static Y2020 = '2020/21'
   static Y2021 = '2021/22'
   static Y2022 = '2022/23'
@@ -53,10 +46,17 @@ export class ProgrammeYear {
   static Y2024 = '2024/25'
 }
 
+export class ProgrammeType {
+  static Flu = 'Flu'
+  static HPV = 'HPV'
+  static TdIPV = 'Td/IPV (3-in-1 teenage booster)'
+  static MenACWY = 'MenACWY'
+}
+
 /**
  * @class Programme
+ * @property {ProgrammeCycle} cycle - Programme cycle
  * @property {ProgrammeType} type - Programme type
- * @property {ProgrammeYear} year - Programme year
  * @property {string} name - Name
  * @property {Array[number]} yearGroups - Year groups available to
  * @property {Array[string]} vaccines - Vaccines administered
@@ -67,7 +67,7 @@ export class ProgrammeYear {
 export class Programme {
   constructor(options) {
     this.type = options?.type
-    this.year = options?.year || ProgrammeYear.Y2024
+    this.cycle = options?.cycle || ProgrammeCycle.Y2024
     this.name = programmeTypes[this.type].name
     this.yearGroups = programmeTypes[this.type].yearGroups || []
     this.vaccines = programmeTypes[this.type].vaccines || []
@@ -78,15 +78,17 @@ export class Programme {
   }
 
   get start() {
-    const year = this.year.split('/')[0]
-    return `${year}-09-01`
+    return `${this.year}-09-01`
+  }
+
+  get year() {
+    return this.cycle.split('/')[0]
   }
 
   get pid() {
     const { slug } = programmeTypes[this.type]
-    const year = this.year.split('/')[0]
 
-    return `${slug}-${year}`
+    return `${slug}-${this.year}`
   }
 
   /**

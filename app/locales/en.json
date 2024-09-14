@@ -79,24 +79,19 @@
   },
   "cohort": {
     "list": {
-      "title": "Cohorts",
-      "description": "Use this area to:\n- create new cohorts",
-      "active": "Active cohorts"
-    },
-    "show": {
-      "title": "Overview"
+      "title": "Cohorts"
     },
     "records": {
       "count": {
-        "one": "%s child in this cohort",
-        "other": "[0] No children in this cohort|%s children in this cohort"
+        "one": "%s child",
+        "other": "[0] No children|%s children"
       }
     },
-    "type": {
-      "label": "Type"
+    "cycle": {
+      "label": "Programme year"
     },
-    "year": {
-      "label": "Year"
+    "yearGroup": {
+      "label": "Year group"
     }
   },
   "capture": {
@@ -1531,6 +1526,19 @@
       "description": "Use this area to:\n- create new sessions\n- review consent responses\n- triage health records",
       "active": "Active programmes"
     },
+    "show": {
+      "title": "Overview"
+    },
+    "cohorts": {
+      "title": "Cohorts"
+    },
+    "sessions": {
+      "title": "School sessions",
+      "count": {
+        "one": "%s school session organised",
+        "other": "[0] No school sessions organised|%s school sessions organised"
+      }
+    },
     "reviews": {
       "title": "Upload issues",
       "count": {
@@ -1555,7 +1563,7 @@
     "type": {
       "label": "Programme type"
     },
-    "year": {
+    "cycle": {
       "label": "Programme year"
     },
     "name": {
@@ -1563,16 +1571,6 @@
     },
     "vaccines": {
       "label": "Vaccines administered"
-    },
-    "show": {
-      "title": "Overview"
-    },
-    "sessions": {
-      "title": "School sessions",
-      "count": {
-        "one": "%s school session organised",
-        "other": "[0] No school sessions organised|%s school sessions organised"
-      }
     }
   }
 }

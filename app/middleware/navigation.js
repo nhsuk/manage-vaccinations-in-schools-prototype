@@ -47,11 +47,6 @@ export const navigation = (request, response, next) => {
             current: current === 'programmes'
           },
           {
-            url: '/cohorts',
-            label: __('cohort.list.title'),
-            current: current === 'cohorts'
-          },
-          {
             url: '/sessions',
             label: __('session.list.title'),
             current: current === 'sessions'

@@ -1,14 +1,32 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = __("cohort.list.title") %}
+{% set title = programme.name + " – " + __("programme.cohorts.title") %}
+{% set view = "cohorts" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("programme.list.title"),
+      href: "/programmes"
+    }],
+    text: programme.name,
+    href: programme.uri
+  }) }}
+{% endblock %}
 
 {% block content %}
   {{ super() }}
 
   {{ heading({
-    size: "xl",
-    title: title
+    title: programme.name,
+    summary: programme.cycle
   }) }}
+
+  {% include "programme/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("programme.cohorts.title") }}
+  </h2>
 
   <ul class="nhsuk-grid-row nhsuk-card-group">
   {% for cohort in cohorts | sort(false, false, "yearGroup") %}

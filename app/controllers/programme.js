@@ -1,3 +1,4 @@
+import { Cohort } from '../models/cohort.js'
 import { Programme } from '../models/programme.js'
 import { Session } from '../models/session.js'
 import { Upload } from '../models/upload.js'
@@ -16,16 +17,20 @@ export const programmeController = {
     response.render('programme/list')
   },
 
-  sessions(request, response) {
-    response.render('programme/sessions')
-  },
-
   show(request, response) {
     response.render('programme/show')
   },
 
+  cohorts(request, response) {
+    response.render('programme/cohorts')
+  },
+
   reviews(request, response) {
     response.render('programme/reviews')
+  },
+
+  sessions(request, response) {
+    response.render('programme/sessions')
   },
 
   uploads(request, response) {
@@ -50,6 +55,10 @@ export const programmeController = {
     const programme = new Programme(data.programmes[pid])
 
     response.locals.programme = programme
+    response.locals.cohorts = Object.values(data.cohorts)
+      .filter((cohort) => programme.cycle === cohort.cycle)
+      .filter((cohort) => programme.yearGroups.includes(cohort.yearGroup))
+      .map((cohort) => new Cohort(cohort))
     response.locals.sessions = Object.values(data.sessions)
       .filter((session) => session.programmes.includes(programme.pid))
       .map((session) => {

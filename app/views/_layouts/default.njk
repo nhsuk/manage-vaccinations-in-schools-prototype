@@ -56,32 +56,28 @@
 {% block footer %}
   {{ footer({
     copyright: "© NHS England",
-    links: [
-      {
-        label: 'Homepage',
-        URL: '/'
-      },
-      {
-        label: 'CHIS records',
-        URL: '/records'
-      },
-      {
-        label: 'CIS2 users',
-        URL: '/users'
-      },
-      {
-        label: "Clear session data",
-        URL: "/clear-session-data"
-      } if useAutoStoreData,
-      {
-        label: "Feature flags",
-        URL: "/feature-flags"
-      },
-      {
-        label: "Design history",
-        URL: "https://childhood-vaccinations.designhistory.app"
-      }
-    ],
+    links: [{
+      label: "Homepage",
+      URL: "/"
+    }, {
+      label: "Cohorts",
+      URL: "/cohorts"
+    }, {
+      label: "CHIS records",
+      URL: "/records"
+    }, {
+      label: "CIS2 users",
+      URL: "/users"
+    }, {
+      label: "Clear session data",
+      URL: "/clear-session-data"
+    } if useAutoStoreData, {
+      label: "Feature flags",
+      URL: "/feature-flags"
+    }, {
+      label: "Design history",
+      URL: "https://childhood-vaccinations.designhistory.app"
+    }],
     linksColumn2: navigation.footerLinks[0],
     linksColumn3: navigation.footerLinks[1],
     metaLinks: navigation.footerLinks[2]

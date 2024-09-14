@@ -1,19 +1,17 @@
-import { fakerEN_GB as faker } from '@faker-js/faker'
-import { ProgrammeYear } from './programme.js'
+import { ProgrammeCycle } from './programme.js'
 import { Record } from './record.js'
-import { addDays } from '../utils/date.js'
-import { formatLink } from '../utils/string.js'
+import { formatYearGroup } from '../utils/string.js'
 
 /**
  * Get NHS Numbers of CHIS records within year group
  * @param {Array} records - CHIS records
- * @param {Array<number>} yearGroup - Year group
+ * @param {number} yearGroup - Year group
  * @returns {Array} NHS numbers of selected cohort
  */
-export function getRecordsFromYearGroup(records, yearGroups) {
+export function getRecordsFromYearGroup(records, yearGroup) {
   return Object.values(records)
     .map((record) => new Record(record))
-    .filter((record) => yearGroups.includes(record.yearGroup))
+    .filter((record) => record.yearGroup === yearGroup)
     .map((record) => record.nhsn)
 }
 
@@ -22,49 +20,51 @@ export function getRecordsFromYearGroup(records, yearGroups) {
  * @property {string} uid - UID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created cohort
- * @property {string} [programme_pid] - Programme ID
- * @property {import('./programme.js').ProgrammeType} [type] - Cohort type
- * @property {ProgrammeYear} [year] - Cohort year
- * @property {Array[string]} records - Patient records
- * @property {Array[string]} vaccines - Vaccines administered
+ * @property {ProgrammeCycle} cycle - Programme cycle
+ * @property {number} yearGroup - Year group
+ * @property {Array[string]} records - Records
  * @function ns - Namespace
  * @function uri - URL
  */
 export class Cohort {
   constructor(options) {
-    this.uid = options?.uid || this.#uid
-    this.created = options?.created || new Date().toISOString()
     this.created_user_uid = options?.created_user_uid
-    this.programme_pid = options?.programme_pid
-    this.type = options?.type
-    this.year = options?.year || ProgrammeYear.Y2024
+    this.cycle = options?.cycle || ProgrammeCycle.Y2024
+    this.yearGroup = options?.yearGroup
     this.records = options?.records || []
   }
 
-  static generate(programme, records, user) {
-    // Create session 60-90 days ago
-    const today = new Date()
-    const created = addDays(today, faker.number.int({ min: 60, max: 90 }) * -1)
-
-    records = getRecordsFromYearGroup(records, programme.yearGroups)
+  static generate(records, yearGroup, user) {
+    records = getRecordsFromYearGroup(records, yearGroup)
 
     return new Cohort({
-      created,
       created_user_uid: user.uuid,
-      programme_pid: programme.pid,
-      type: programme.type,
+      yearGroup,
       records
     })
   }
 
-  #uid = faker.helpers.replaceSymbols('???')
+  get uid() {
+    const yearGroup = String(this.yearGroup).padStart(2, '0')
 
-  get link() {
+    return `${this.year}-${yearGroup}`
+  }
+
+  get created() {
+    return `01-09-${this.year}`
+  }
+
+  get name() {
+    return `${this.formatted.yearGroup} (${this.cycle})`
+  }
+
+  get year() {
+    return this.cycle.split('/')[0]
+  }
+
+  get formatted() {
     return {
-      typeAndYear: `<span class="nhsuk-u-secondary-text-color">
-        ${formatLink(this.uri, this.type)}</br>
-        ${this.year}
-      </span>`
+      yearGroup: formatYearGroup(this.yearGroup)
     }
   }
 

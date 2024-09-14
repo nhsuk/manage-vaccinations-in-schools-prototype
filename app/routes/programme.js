@@ -8,6 +8,7 @@ router.get('/', programmeController.list)
 router.all('/:pid*', programmeController.read)
 
 router.get('/:pid', programmeController.show)
+router.get('/:pid/cohorts', programmeController.cohorts)
 router.get('/:pid/reviews', programmeController.reviews)
 router.get('/:pid/sessions', programmeController.sessions)
 router.get('/:pid/uploads', programmeController.uploads)

@@ -1,15 +1,13 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = cohort.type %}
+{% set title = cohort.formatted.yearGroup %}
 
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
       text: __("cohort.list.title"),
       href: "/cohorts"
-    }],
-    text: title,
-    href: cohort.uri
+    }]
   }) }}
 {% endblock %}
 
@@ -18,7 +16,7 @@
 
   {{ heading({
     title: title,
-    summary: cohort.year
+    summary: cohort.cycle
   }) }}
 
   {% if records.length %}

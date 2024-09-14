@@ -10,7 +10,7 @@ import {
   TriageOutcome
 } from '../models/patient.js'
 import { GPRegistered, Sex } from '../models/record.js'
-import { ProgrammeType, ProgrammeYear } from '../models/programme.js'
+import { ProgrammeCycle, ProgrammeType } from '../models/programme.js'
 import { RegistrationOutcome } from '../models/registration.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import {
@@ -46,8 +46,8 @@ export const enumeration = (request, response, next) => {
   response.locals.ParentalRelationship = ParentalRelationship
   response.locals.PatientOutcome = PatientOutcome
   response.locals.PreScreenQuestion = PreScreenQuestion
+  response.locals.ProgrammeCycle = ProgrammeCycle
   response.locals.ProgrammeType = ProgrammeType
-  response.locals.ProgrammeYear = ProgrammeYear
   response.locals.RegistrationOutcome = RegistrationOutcome
   response.locals.ReplyDecision = ReplyDecision
   response.locals.ReplyMethod = ReplyMethod
