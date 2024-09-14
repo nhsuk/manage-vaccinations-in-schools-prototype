@@ -98,6 +98,33 @@ export function addDays(date, days) {
 }
 
 /**
+ * Remove days from a date
+ * @param {string} date - ISO 8601 date
+ * @param {number} days - Number of days to remove
+ * @returns {Date} Date with days removed
+ */
+export function removeDays(date, days) {
+  date = new Date(date)
+  date.setDate(date.getDate() - days)
+
+  return date
+}
+
+/**
+ * Check if date lies between two other dates
+ * @param {string} date - ISO 8601 date to check
+ * @param {string} from - ISO 8601 start date
+ * @param {string} end - ISO 8601 end date
+ * @returns {boolean} Date with days added
+ */
+export function isBetweenDates(date, start, end) {
+  return (
+    (isAfter(date, start) || isEqual(date, start)) &&
+    (isBefore(date, end) || isEqual(date, end))
+  )
+}
+
+/**
  * Format a data
  * @param {string} string - Date string
  * @param {object} [options] - DateTimeFormat options

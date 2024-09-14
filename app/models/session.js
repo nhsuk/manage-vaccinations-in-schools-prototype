@@ -3,6 +3,7 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import schools from '../datasets/schools.js'
 import {
   addDays,
+  removeDays,
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
@@ -10,7 +11,7 @@ import {
 } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 import { getConsentWindow } from '../utils/session.js'
-import { programmeSchedule } from './programme.js'
+import { programmeSchedule, ProgrammeStatus } from './programme.js'
 
 export class ConsentWindow {
   static Opening = 'Opening'
@@ -48,7 +49,7 @@ export class SessionStatus {
  * @property {object} [open] - Date consent window opens
  * @property {number} [reminder] - Date to send reminders
  * @property {object} [close] - Date consent window closes
- * @property {SessionStatus} [status] - Status (planned, in progress, archived)
+ * @property {SessionStatus} [status] - Status
  * @property {object} [consents] – (Unmatched) consent replies
  * @property {Array<string>} [programmes] - Programme PIDs
  * @function consentWindow - Consent window (open, opening or closed)
@@ -80,13 +81,25 @@ export class Session {
   }
 
   static generate(urn, programme, user, options = {}) {
-    // Unless session is today, randomly generate a planned or completed session
-    const status = options.isToday
-      ? SessionStatus.Active
-      : faker.helpers.arrayElement([
-          SessionStatus.Planned,
-          SessionStatus.Completed
-        ])
+    const consentWindowDuration = 28
+
+    let status
+    if (programme.status === ProgrammeStatus.Current) {
+      status = SessionStatus.Completed
+    }
+    if (programme.status === ProgrammeStatus.Completed) {
+      status = SessionStatus.Completed
+    } else if (programme.status === ProgrammeStatus.Planned) {
+      status = SessionStatus.Planned
+    } else {
+      // Current programme, so session either active today, planned or completed
+      status = options.isToday
+        ? SessionStatus.Active
+        : faker.helpers.arrayElement([
+            SessionStatus.Planned,
+            SessionStatus.Completed
+          ])
+    }
 
     let date
     switch (status) {
@@ -96,7 +109,9 @@ export class Session {
         break
       case SessionStatus.Planned:
         // Session will take place according programme schedule
-        const { from, to } = programmeSchedule[programme.cycle][programme.type]
+        let { from, to } = programmeSchedule[programme.cycle][programme.type]
+        // Sessions start after first content window closes
+        from = addDays(from, consentWindowDuration)
         date = faker.date.between({ from, to })
         break
       default:
@@ -105,16 +120,16 @@ export class Session {
     }
 
     // Open consent request window 28 days before session
-    const open = addDays(date, -28)
+    const open = removeDays(date, consentWindowDuration)
 
     // Send reminders 7 days after consent opens
     const reminder = addDays(open, 7)
 
     // Close consent request window 3 days before session
-    const close = addDays(date, -3)
+    const close = removeDays(date, 3)
 
     // Session created 2 weeks before consent window opens
-    const created = addDays(open, -14)
+    const created = removeDays(open, 14)
 
     return new Session({
       created,

@@ -1,5 +1,7 @@
+import { isAfter } from 'date-fns'
 import vaccines from '../datasets/vaccines.js'
 import { Vaccine } from './vaccine.js'
+import { isBetweenDates, getToday } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 
 export class ProgrammeCycle {
@@ -8,6 +10,12 @@ export class ProgrammeCycle {
   static Y2022 = '2022/23'
   static Y2023 = '2023/24'
   static Y2024 = '2024/25'
+}
+
+export class ProgrammeStatus {
+  static Planned = 'Planned'
+  static Current = 'Current'
+  static Completed = 'Completed'
 }
 
 export class ProgrammeType {
@@ -20,9 +28,6 @@ export class ProgrammeType {
 export const programmeTypes = {
   [ProgrammeType.Flu]: {
     name: 'Flu',
-    deadline: '2024-12-13',
-    minAge: 4,
-    maxAge: 16,
     seasonal: true,
     slug: 'flu',
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -30,27 +35,18 @@ export const programmeTypes = {
   },
   [ProgrammeType.HPV]: {
     name: 'HPV',
-    deadline: '2025-06-22',
-    minAge: 12,
-    maxAge: 16,
     slug: 'hpv',
     yearGroups: [8, 9, 10, 11],
     vaccines: ['00191778001693']
   },
   [ProgrammeType.TdIPV]: {
     name: 'Td/IPV (3-in-1 teenage booster)',
-    deadline: '2025-06-22',
-    minAge: 13,
-    maxAge: 16,
     slug: 'td-ipv',
     yearGroups: [9, 10, 11],
     vaccines: ['3664798042948']
   },
   [ProgrammeType.MenACWY]: {
     name: 'MenACWY',
-    deadline: '2025-06-22',
-    minAge: 13,
-    maxAge: 16,
     slug: 'menacwy',
     yearGroups: [9, 10, 11],
     vaccines: ['5415062370568']
@@ -59,10 +55,10 @@ export const programmeTypes = {
 
 export const programmeSchedule = {
   [ProgrammeCycle.Y2024]: {
-    [ProgrammeType.Flu]: { from: '2024-10-01', to: '2024-12-13' },
-    [ProgrammeType.HPV]: { from: '2025-01-27', to: '2025-03-25' },
-    [ProgrammeType.TdIPV]: { from: '2025-04-07', to: '2025-06-20' },
-    [ProgrammeType.MenACWY]: { from: '2025-04-07', to: '2025-06-20' }
+    [ProgrammeType.Flu]: { from: '2024-09-03', to: '2024-12-13' }, // Autumn
+    [ProgrammeType.HPV]: { from: '2025-01-06', to: '2025-04-11' }, // Spring
+    [ProgrammeType.TdIPV]: { from: '2025-04-28', to: '2025-07-21' }, // Summer
+    [ProgrammeType.MenACWY]: { from: '2025-04-28', to: '2025-07-21' } // Summer
   }
 }
 
@@ -71,6 +67,7 @@ export const programmeSchedule = {
  * @property {Array[string]} cohorts - Programme cohorts
  * @property {ProgrammeCycle} cycle - Programme cycle
  * @property {string} name - Name
+ * @property {ProgrammeStatus} status - Status
  * @property {ProgrammeType} type - Programme type
  * @property {Array[number]} yearGroups - Year groups available to
  * @property {Array[string]} vaccines - Vaccines administered
@@ -90,6 +87,18 @@ export class Programme {
 
   static generate(type) {
     return new Programme({ type })
+  }
+
+  get status() {
+    const { from, to } = programmeSchedule[this.cycle][this.type]
+
+    if (isBetweenDates(getToday(), from, to)) {
+      return ProgrammeStatus.Current
+    } else if (isAfter(getToday(), to)) {
+      return ProgrammeStatus.Completed
+    } else {
+      return ProgrammeStatus.Planned
+    }
   }
 
   get start() {
