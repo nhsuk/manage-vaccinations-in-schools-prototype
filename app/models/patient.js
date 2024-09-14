@@ -244,6 +244,8 @@ export class Patient {
     if (invalid) {
       name = `${decision} by ${fullName} (${relationship}) marked as invalid`
     } else if (created) {
+      name = `${decision} in response from ${fullName} (${relationship})`
+    } else {
       name = `${decision} in updated response from ${fullName} (${relationship})`
     }
 
