@@ -9,7 +9,7 @@ import {
 } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 import { getConsentWindow } from '../utils/session.js'
-import { ProgrammeType } from './programme.js'
+import { programmeSchedule } from './programme.js'
 
 export class ConsentWindow {
   static Opening = 'Opening'
@@ -79,12 +79,6 @@ export class Session {
   }
 
   static generate(urn, programme, user, options = {}) {
-    // Create session 7 days after programme start date
-    const created =
-      programme.type === ProgrammeType.Flu
-        ? addDays(programme.start, 7)
-        : addDays(programme.start, 60)
-
     // Unless session is today, randomly generate a planned or completed session
     const status = options.isToday
       ? SessionStatus.Active
@@ -100,22 +94,26 @@ export class Session {
         date = new Date()
         break
       case SessionStatus.Planned:
-        // Session takes places around 90 days from creation date
-        date = addDays(created, faker.number.int({ min: 70, max: 100 }))
+        // Session will take place according programme schedule
+        const { from, to } = programmeSchedule[programme.cycle][programme.type]
+        date = faker.date.between({ from, to })
         break
       default:
         // Session took place about 7 days ago
         date = faker.date.recent({ days: 7 })
     }
 
-    // Open consent request window 60 days before session
-    const open = addDays(date, -60)
+    // Open consent request window 28 days before session
+    const open = addDays(date, -28)
 
     // Send reminders 7 days after consent opens
     const reminder = addDays(open, 7)
 
     // Close consent request window 3 days before session
     const close = addDays(date, -3)
+
+    // Session created 2 weeks before consent window opens
+    const created = addDays(open, -14)
 
     return new Session({
       created,

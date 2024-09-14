@@ -51,7 +51,7 @@ export class Cohort {
   }
 
   get created() {
-    return `01-09-${this.year}`
+    return `${this.year}-08-01`
   }
 
   get name() {
