@@ -63,7 +63,7 @@ export class Session {
     this.id = options?.id || faker.helpers.replaceSymbols('###')
     this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
-    this.format = options?.format
+    this.format = options?.format || SessionFormat.Routine
     this.urn = options?.urn
     this.date = options?.date
     this.time = options?.time
@@ -134,7 +134,6 @@ export class Session {
     return new Session({
       created,
       created_user_uid: user.uuid,
-      format: faker.helpers.arrayElement(Object.values(SessionFormat)),
       urn,
       date,
       time: faker.helpers.arrayElement(Object.values(SessionTime)),
