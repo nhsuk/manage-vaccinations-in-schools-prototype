@@ -5,9 +5,14 @@
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("cohort.list.title"),
-      href: "/cohorts"
-    }]
+      text: __("programme.list.title"),
+      href: "/programmes"
+    }, {
+      text: data.programmes[cohort.programme_pid].type,
+      href: "/programmes/" + cohort.programme_pid
+    }],
+    text: __("programme.cohorts.title"),
+    href: "/programmes/" + cohort.programme_pid + "/cohorts"
   }) }}
 {% endblock %}
 

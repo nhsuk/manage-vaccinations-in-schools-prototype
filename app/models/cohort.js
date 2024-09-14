@@ -76,6 +76,6 @@ export class Cohort {
   }
 
   get uri() {
-    return `/cohorts/${this.uid}`
+    return `/programmes/${this.programme_pid}/cohorts/${this.uid}`
   }
 }

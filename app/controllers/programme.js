@@ -54,8 +54,7 @@ export const programmeController = {
 
     const programme = new Programme(data.programmes[pid])
     const cohorts = Object.values(data.cohorts)
-      .filter((cohort) => programme.cycle === cohort.cycle)
-      .filter((cohort) => programme.yearGroups.includes(cohort.yearGroup))
+      .filter((cohort) => cohort.programme_pid === pid)
       .map((cohort) => new Cohort(cohort))
 
     let totalCohort = 0

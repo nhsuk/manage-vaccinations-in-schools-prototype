@@ -10,17 +10,21 @@
     title: title
   }) }}
 
-  <ul class="nhsuk-grid-row nhsuk-card-group">
-  {% for cohort in cohorts | sort(false, false, "yearGroup") %}
-    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
-      {{ card({
-        clickable: true,
-        heading: cohort.formatted.yearGroup,
-        headingClasses: "nhsuk-heading-m",
-        href: cohort.uri,
-        descriptionHtml: __n("cohort.records.count", cohort.records.length)
-      }) }}
-    </li>
+  {% set cohorts = cohorts | sort(false, false, "programme_pid") %}
+  {% for pid, cohorts in cohorts | groupby("programme_pid") %}
+    <h2>{{ data.programmes[pid].name }}</h2>
+    <ul class="nhsuk-grid-row nhsuk-card-group">
+    {% for cohort in cohorts | sort(false, false, "yearGroup") %}
+      <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+        {{ card({
+          clickable: true,
+          heading: cohort.formatted.yearGroup,
+          headingClasses: "nhsuk-heading-m",
+          href: cohort.uri,
+          descriptionHtml: __n("cohort.records.count", cohort.records.length)
+        }) }}
+      </li>
+    {% endfor %}
+    </ul>
   {% endfor %}
-  </ul>
 {% endblock %}
