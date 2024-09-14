@@ -53,12 +53,19 @@ export const programmeController = {
     const { data } = request.session
 
     const programme = new Programme(data.programmes[pid])
-
-    response.locals.programme = programme
-    response.locals.cohorts = Object.values(data.cohorts)
+    const cohorts = Object.values(data.cohorts)
       .filter((cohort) => programme.cycle === cohort.cycle)
       .filter((cohort) => programme.yearGroups.includes(cohort.yearGroup))
       .map((cohort) => new Cohort(cohort))
+
+    let totalCohort = 0
+    for (const cohort of cohorts) {
+      totalCohort = totalCohort + cohort.records.length
+    }
+
+    response.locals.programme = programme
+    response.locals.cohorts = cohorts
+    response.locals.totalCohort = totalCohort
     response.locals.sessions = Object.values(data.sessions)
       .filter((session) => session.programmes.includes(programme.pid))
       .map((session) => {

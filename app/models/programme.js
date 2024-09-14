@@ -68,7 +68,7 @@ export class Programme {
   constructor(options) {
     this.type = options?.type
     this.cycle = options?.cycle || ProgrammeCycle.Y2024
-    this.name = programmeTypes[this.type].name
+    this.name = programmeTypes[this.type]?.name
     this.yearGroups = programmeTypes[this.type].yearGroups || []
     this.vaccines = programmeTypes[this.type].vaccines || []
   }
