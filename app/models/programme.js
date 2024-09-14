@@ -68,9 +68,10 @@ export const programmeSchedule = {
 
 /**
  * @class Programme
+ * @property {Array[string]} cohorts - Programme cohorts
  * @property {ProgrammeCycle} cycle - Programme cycle
- * @property {ProgrammeType} type - Programme type
  * @property {string} name - Name
+ * @property {ProgrammeType} type - Programme type
  * @property {Array[number]} yearGroups - Year groups available to
  * @property {Array[string]} vaccines - Vaccines administered
  * @property {string} pid - Programme ID
@@ -79,9 +80,10 @@ export const programmeSchedule = {
  */
 export class Programme {
   constructor(options) {
-    this.type = options?.type
+    this.cohorts = options?.cohorts || []
     this.cycle = options?.cycle || ProgrammeCycle.Y2024
     this.name = options?.type && programmeTypes[options.type]?.name
+    this.type = options?.type
     this.yearGroups = options?.type && programmeTypes[options.type]?.yearGroups
     this.vaccines = options?.type && programmeTypes[options.type]?.vaccines
   }
