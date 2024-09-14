@@ -1,5 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import { formatDate } from '../utils/date.js'
+import { formatDate, getToday } from '../utils/date.js'
 import { formatMarkdown, formatOther } from '../utils/string.js'
 import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
 import { Child } from './child.js'
@@ -28,7 +28,7 @@ import { ReplyDecision, ReplyMethod, ReplyRefusal } from './reply.js'
 export class Consent {
   constructor(options) {
     this.uuid = options?.uuid || faker.string.uuid()
-    this.created = options?.created || new Date().toISOString()
+    this.created = options?.created || getToday().toISOString()
     this.child = options?.child && new Child(options.child)
     this.parent = options?.parent && new Parent(options.parent)
     this.decision = options?.decision || ''

@@ -5,7 +5,8 @@ import {
   addDays,
   convertIsoDateToObject,
   convertObjectToIsoDate,
-  formatDate
+  formatDate,
+  getToday
 } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 import { getConsentWindow } from '../utils/session.js'
@@ -59,7 +60,7 @@ export class SessionStatus {
 export class Session {
   constructor(options) {
     this.id = options?.id || faker.helpers.replaceSymbols('###')
-    this.created = options?.created || new Date().toISOString()
+    this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.format = options?.format
     this.urn = options?.urn
@@ -91,7 +92,7 @@ export class Session {
     switch (status) {
       case SessionStatus.Active:
         // Session is taking place today
-        date = new Date()
+        date = getToday()
         break
       case SessionStatus.Planned:
         // Session will take place according programme schedule

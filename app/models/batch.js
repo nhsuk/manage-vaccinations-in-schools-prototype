@@ -4,7 +4,8 @@ import {
   addDays,
   convertIsoDateToObject,
   convertObjectToIsoDate,
-  formatDate
+  formatDate,
+  getToday
 } from '../utils/date.js'
 import { formatMonospace } from '../utils/string.js'
 
@@ -21,7 +22,7 @@ import { formatMonospace } from '../utils/string.js'
 export class Batch {
   constructor(options) {
     this.id = options?.id || faker.helpers.replaceSymbols('??####')
-    this.created = options.created || new Date().toISOString()
+    this.created = options.created || getToday().toISOString()
     this.expires = options.expires
     this.vaccine_gtin = options.vaccine_gtin
     // dateInput objects

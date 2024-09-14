@@ -1,4 +1,5 @@
 import { wizard } from 'nhsuk-prototype-rig'
+import { getToday } from '../utils/date.js'
 import { GillickCompetent } from '../models/gillick.js'
 import { Patient } from '../models/patient.js'
 import {
@@ -365,7 +366,7 @@ export const replyController = {
     patient.respond = new Reply({
       ...reply,
       uuid: false,
-      created: new Date().toISOString(),
+      created: getToday().toISOString(),
       decision: ReplyDecision.Refused,
       refusalReason,
       ...(refusalReason === ReplyRefusal.Other && { refusalReasonOther }),

@@ -1,3 +1,5 @@
+import { getToday } from '../utils/date.js'
+
 export class RegistrationOutcome {
   static Pending = 'Not registered yet'
   static Present = 'Attending session'
@@ -15,7 +17,7 @@ export class RegistrationOutcome {
  */
 export class Registration {
   constructor(options) {
-    this.created = options?.created || new Date().toISOString()
+    this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.name = options?.name
     this.registered = options?.registered

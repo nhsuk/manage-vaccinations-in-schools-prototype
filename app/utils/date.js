@@ -1,4 +1,5 @@
-import { formatISO } from 'date-fns'
+import process from 'node:process'
+import { formatISO, isAfter, isBefore, isEqual } from 'date-fns'
 
 const ALLOWED_VALUES_FOR_MONTHS = [
   ['1', '01', 'jan', 'january'],
@@ -116,7 +117,15 @@ export function formatDate(string, options) {
 export function getAge(date) {
   date = new Date(date)
 
-  return Math.floor((new Date() - date.getTime()) / 3.15576e10)
+  return Math.floor((getToday() - date.getTime()) / 3.15576e10)
+}
+
+/**
+ * Get’s today’s date, as set by environment
+ * @returns {Date} ‘Today’s’ date
+ */
+export function getToday() {
+  return process.env.TODAY ? new Date(process.env.TODAY) : new Date()
 }
 
 /**
@@ -127,7 +136,7 @@ export function getAge(date) {
 export function getYearGroup(date) {
   date = new Date(date)
 
-  const today = new Date()
+  const today = getToday()
   const currentYear = today.getFullYear()
 
   const birthYear = date.getFullYear()

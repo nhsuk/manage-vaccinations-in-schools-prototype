@@ -3,7 +3,8 @@ import { VaccinationSequence } from '../models/vaccination.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
-  formatDate
+  formatDate,
+  getToday
 } from '../utils/date.js'
 import { getEnumKeyAndValue } from '../utils/enum.js'
 import { formatList } from '../utils/string.js'
@@ -30,7 +31,7 @@ export class DownloadFormat {
 export class Download {
   constructor(options) {
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
-    this.created = options?.created || new Date().toISOString()
+    this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.programme_pid = options?.programme_pid
     this.vaccinations = options?.vaccinations || []

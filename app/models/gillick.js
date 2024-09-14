@@ -1,4 +1,5 @@
 import { getEnumKeyAndValue } from '../utils/enum.js'
+import { getToday } from '../utils/date.js'
 import { stringToBoolean } from '../utils/string.js'
 
 export class GillickCompetent {
@@ -21,7 +22,7 @@ export class GillickCompetent {
  */
 export class Gillick {
   constructor(options) {
-    this.created = options?.created || new Date().toISOString()
+    this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.q1 = stringToBoolean(options?.q1)
     this.q2 = stringToBoolean(options?.q2)

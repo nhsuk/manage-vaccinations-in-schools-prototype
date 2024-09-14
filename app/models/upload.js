@@ -1,5 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import { formatDate } from '../utils/date.js'
+import { formatDate, getToday } from '../utils/date.js'
 
 /**
  * @class National Immunisation and Vaccination System (NIVS) upload
@@ -18,7 +18,7 @@ import { formatDate } from '../utils/date.js'
 export class Upload {
   constructor(options) {
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
-    this.created = options?.created || new Date().toISOString()
+    this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.programme_pid = options?.programme_pid
     this.vaccinations = options?.vaccinations || []

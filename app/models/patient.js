@@ -14,6 +14,7 @@ import {
   getRegistrationOutcome,
   getPatientOutcome
 } from '../utils/capture.js'
+import { getToday } from '../utils/date.js'
 import { formatLink, stringToBoolean } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 import { Vaccination } from './vaccination.js'
@@ -227,7 +228,7 @@ export class Patient {
       type: EventType.Consent,
       name: `${created ? 'Completed' : 'Updated'} Gillick assessment`,
       note: gillick.notes,
-      date: created ? gillick.created : new Date().toISOString(),
+      date: created ? gillick.created : getToday().toISOString(),
       user_uid: gillick.created_user_uid
     }
   }
@@ -253,7 +254,7 @@ export class Patient {
     this.log = {
       type: EventType.Consent,
       name,
-      date: created ? reply.created : new Date().toISOString(),
+      date: created ? reply.created : getToday().toISOString(),
       user_uid: reply.created_user_uid
     }
   }
@@ -268,7 +269,7 @@ export class Patient {
       type: EventType.Screen,
       name: `Triaged decision: ${outcome}`,
       note: triage.notes,
-      date: new Date().toISOString(),
+      date: getToday().toISOString(),
       user_uid: triage.created_user_uid,
       info_: triage
     }
@@ -279,7 +280,7 @@ export class Patient {
     this.log = {
       type: EventType.Capture,
       name: registration.name,
-      date: new Date().toISOString(),
+      date: getToday().toISOString(),
       user_uid: registration.created_user_uid
     }
   }
@@ -289,7 +290,7 @@ export class Patient {
       type: EventType.Screen,
       name: 'Completed pre-screening checks',
       note: interview.notes,
-      date: new Date().toISOString(),
+      date: getToday().toISOString(),
       user_uid: interview.user_uid
     }
   }

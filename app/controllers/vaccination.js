@@ -1,4 +1,5 @@
 import { wizard } from 'nhsuk-prototype-rig'
+import { getToday } from '../utils/date.js'
 import { Batch } from '../models/batch.js'
 import { Patient } from '../models/patient.js'
 import { Record } from '../models/record.js'
@@ -149,7 +150,7 @@ export const vaccinationController = {
 
     // Check if new vaccination record or updating an existing one
     if (Object.keys(data.vaccinations).includes(updatedVaccination.uuid)) {
-      updatedVaccination.updated = new Date().toISOString()
+      updatedVaccination.updated = getToday().toISOString()
     }
 
     // Add vaccination

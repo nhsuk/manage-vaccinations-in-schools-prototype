@@ -1,5 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import { formatDate } from '../utils/date.js'
+import { formatDate, getToday } from '../utils/date.js'
 
 export class EventType {
   static Select = 'Select'
@@ -24,7 +24,7 @@ export class EventType {
 export class Event {
   constructor(options) {
     this.uuid = options.uuid || faker.string.uuid()
-    this.date = options.date || new Date().toISOString()
+    this.date = options.date || getToday().toISOString()
     this.type = options.type
     this.name = options.name
     this.note = options.note

@@ -7,7 +7,8 @@ import { Vaccine, VaccineMethod } from './vaccine.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
-  formatDate
+  formatDate,
+  getToday
 } from '../utils/date.js'
 import {
   formatMillilitres,
@@ -83,7 +84,7 @@ export class VaccinationProtocol {
 export class Vaccination {
   constructor(options) {
     this.uuid = options?.uuid || faker.string.uuid()
-    this.created = options?.created || new Date().toISOString()
+    this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.updated = options?.updated
     this.location = options?.location

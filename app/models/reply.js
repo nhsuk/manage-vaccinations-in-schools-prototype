@@ -2,7 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
 import { Child } from './child.js'
 import { Parent } from './parent.js'
-import { formatDate } from '../utils/date.js'
+import { formatDate, getToday } from '../utils/date.js'
 import {
   formatMarkdown,
   formatOther,
@@ -58,7 +58,7 @@ export class ReplyRefusal {
 export class Reply {
   constructor(options) {
     this.uuid = options?.uuid || faker.string.uuid()
-    this.created = options?.created || new Date().toISOString()
+    this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.child = options?.child && new Child(options.child)
     this.parent = options?.parent && new Parent(options.parent)
@@ -94,7 +94,7 @@ export class Reply {
     const healthAnswers = getHealthAnswers(programme.vaccine)
     const refusalReason = getRefusalReason(programme.type)
 
-    const today = new Date()
+    const today = getToday()
     const sessionClosedBeforeToday = session.close.valueOf() < today.valueOf()
     const sessionOpensAfterToday = session.open.valueOf() > today.valueOf()
 

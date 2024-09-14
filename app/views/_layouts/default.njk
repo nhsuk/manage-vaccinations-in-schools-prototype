@@ -53,9 +53,16 @@
   {{ govukNotificationBanner(message) if message }}
 {% endblock %}
 
+{% set copyright %}
+  © NHS England
+  <span class="nhsuk-u-secondary-text-color nhsuk-u-margin-left-2">
+    Today is {{ today -}}
+  </span>
+{% endset %}
+
 {% block footer %}
   {{ footer({
-    copyright: "© NHS England",
+    copyright: copyright | safe,
     links: [{
       label: "Homepage",
       URL: "/"

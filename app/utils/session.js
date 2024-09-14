@@ -1,4 +1,5 @@
 import { isAfter, isBefore } from 'date-fns'
+import { getToday } from '../utils/date.js'
 import { ProgrammeType } from '../models/programme.js'
 import { ConsentWindow, Session } from '../models/session.js'
 import { getEnumKeyAndValue } from './enum.js'
@@ -9,7 +10,7 @@ import { getEnumKeyAndValue } from './enum.js'
  * @returns {object} Consent window key and value
  */
 export const getConsentWindow = (session) => {
-  const today = new Date()
+  const today = getToday()
 
   switch (true) {
     // Opening (open date is after today)
