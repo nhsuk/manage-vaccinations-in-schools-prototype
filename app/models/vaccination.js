@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import vaccines from '../datasets/vaccines.js'
 import { Batch } from './batch.js'
+import { ConsentOutcome } from './patient.js'
 import { ProgrammeType } from './programme.js'
 import { Vaccine, VaccineMethod } from './vaccine.js'
 import {
@@ -140,12 +141,16 @@ export class Vaccination {
         break
     }
 
-    const outcome = faker.helpers.weightedArrayElement([
-      { value: VaccinationOutcome.Vaccinated, weight: 7 },
-      { value: VaccinationOutcome.PartVaccinated, weight: 1 },
-      { value: VaccinationOutcome.NoConsent, weight: 1 },
-      { value: VaccinationOutcome.Refused, weight: 1 }
-    ])
+    let outcome
+    if (patient.consent.value === ConsentOutcome.Given) {
+      outcome = faker.helpers.weightedArrayElement([
+        { value: VaccinationOutcome.Vaccinated, weight: 7 },
+        { value: VaccinationOutcome.PartVaccinated, weight: 1 },
+        { value: VaccinationOutcome.Refused, weight: 1 }
+      ])
+    } else {
+      outcome = VaccinationOutcome.NoConsent
+    }
 
     const vaccinated =
       outcome === VaccinationOutcome.Vaccinated ||
