@@ -4,7 +4,6 @@ export default {
   '05000456078276': {
     gtin: '05000456078276',
     type: 'Flu',
-    name: 'Flu',
     brand: 'Fluenz Tetra',
     manufacturer: 'AstraZeneca UK Ltd',
     method: 'Nasal spray',
@@ -32,7 +31,6 @@ export default {
   5000123114115: {
     gtin: '5000123114115',
     type: 'Flu',
-    name: 'Flu',
     brand: 'Fluarix Tetra',
     manufacturer: 'GlaxoSmithKline UK Ltd',
     method: 'Injection',
@@ -57,7 +55,6 @@ export default {
   '00191778001693': {
     gtin: '00191778001693',
     type: 'HPV',
-    name: 'HPV',
     brand: 'Gardasil 9',
     manufacturer: 'Merck Sharp & Dohme (UK) Ltd',
     method: 'Injection',
@@ -82,8 +79,7 @@ export default {
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/147952/Green-Book-Chapter-15.pdf
   3664798042948: {
     gtin: '3664798042948',
-    type: 'TdIPV',
-    name: 'Td/IPV (3-in-1 teenage booster)',
+    type: 'Td/IPV (3-in-1 teenage booster)',
     brand: 'Revaxis',
     manufacturer: 'Sanofi',
     method: 'Injection',
@@ -107,7 +103,6 @@ export default {
   5415062370568: {
     gtin: '5415062370568',
     type: 'MenACWY',
-    name: 'MenACWY',
     brand: 'Nimenrix',
     manufacturer: 'Pfizer Ltd',
     method: 'Injection',

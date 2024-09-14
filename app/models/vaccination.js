@@ -223,7 +223,7 @@ export class Vaccination {
         dateStyle: 'long'
       }),
       dose: formatMillilitres(this.dose),
-      vaccine_gtin: this.vaccine?.brandWithName,
+      vaccine_gtin: this.vaccine?.brandWithType,
       notes: formatMarkdown(this.notes)
     }
   }

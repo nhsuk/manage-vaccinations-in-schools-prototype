@@ -56,7 +56,6 @@ export class VaccineMethod {
  * @class Vaccine
  * @property {string} gtin - GTIN
  * @property {string} type - Type
- * @property {string} name - Name
  * @property {string} brand - Brand
  * @property {string} manufacturer - Manufacturer
  * @property {number} dose - Dosage
@@ -64,7 +63,7 @@ export class VaccineMethod {
  * @property {VaccineMethod} method - Method
  * @property {Array[string]} healthQuestionKeys - Health question keys
  * @property {Array[string]} preScreenQuestionKeys - Pre-screening question keys
- * @function brandWithName - Get brand with vaccine type
+ * @function brandWithType - Get brand with vaccine type
  * @function healthQuestions - Health questions
  * @function preScreenQuestions - Pre-screening questions
  * @function ns - Namespace
@@ -74,7 +73,6 @@ export class Vaccine {
   constructor(options) {
     this.gtin = options?.gtin || faker.string.numeric(14)
     this.type = options.type
-    this.name = options.name
     this.brand = options.brand
     this.manufacturer = options.manufacturer
     this.dose = options.dose
@@ -84,8 +82,8 @@ export class Vaccine {
     this.preScreenQuestionKeys = options.preScreenQuestionKeys
   }
 
-  get brandWithName() {
-    return `${this.brand} (${this.name})`
+  get brandWithType() {
+    return `${this.brand} (${this.type})`
   }
 
   get healthQuestions() {

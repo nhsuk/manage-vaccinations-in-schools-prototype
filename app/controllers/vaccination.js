@@ -263,7 +263,7 @@ export const vaccinationController = {
       .filter((vaccine) => programme.type.includes(vaccine.type))
       .map((vaccine) => (vaccine = new Vaccine(vaccine)))
       .map((vaccine) => ({
-        text: vaccine.brandWithName,
+        text: vaccine.brandWithType,
         value: vaccine.gtin
       }))
 
