@@ -990,11 +990,11 @@
       "link": "Consent response from {{consent.parent.fullName}} linked to [{{patient.fullName}}]({{patient.uri}})’s record",
       "add": "[{{patient.fullName}}]({{patient.uri}})’s record created from a consent response from {{consent.parent.fullName}}"
     },
-    "cohort": {
-      "label": "Cohort",
+    "patients": {
+      "label": "Children",
       "count": {
-        "one": "%s child in the cohort",
-        "other": "[0] No children in the cohort|%s children in the cohort"
+        "one": "%s child in this session",
+        "other": "[0] No children in this session|%s children in this session"
       }
     },
     "date": {
@@ -1528,12 +1528,23 @@
       "active": "Active programmes"
     },
     "show": {
+      "label": "Overview",
       "title": "Overview"
     },
     "cohorts": {
+      "label": "Cohorts",
       "title": "Cohorts"
     },
+    "patients": {
+      "label": "Children",
+      "title": "Children",
+      "count": {
+        "one": "%s child",
+        "other": "[0] No children|%s children"
+      }
+    },
     "sessions": {
+      "label": "Sessions",
       "title": "School sessions",
       "count": {
         "one": "%s school session organised",
@@ -1541,6 +1552,7 @@
       }
     },
     "reviews": {
+      "label": "Upload issues",
       "title": "Upload issues",
       "count": {
         "one": "%s uploaded record needs review",
@@ -1548,6 +1560,7 @@
       }
     },
     "uploads": {
+      "label": "Uploads",
       "title": "Uploads",
       "count": {
         "one": "%s upload",
@@ -1555,20 +1568,21 @@
       }
     },
     "vaccinations": {
+      "label": "Vaccinations",
       "title": "Vaccinations",
       "count": {
         "one": "%s vaccination record",
         "other": "[0] No vaccination records|%s vaccination records"
       }
     },
-    "type": {
-      "label": "Programme type"
-    },
     "cycle": {
       "label": "Programme year"
     },
     "name": {
-      "label": "Programme name"
+      "label": "Programme"
+    },
+    "type": {
+      "label": "Programme type"
     },
     "vaccines": {
       "label": "Vaccines administered"

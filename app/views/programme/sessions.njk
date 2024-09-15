@@ -34,7 +34,7 @@
     href: "/sessions/new"
   }) if data.token.role != UserRole.DataConsumer }}
 
-  {% set sessions = sessions | sort(true, false, "status") %}
+  {% set sessions = programme.sessions | sort(true, false, "status") %}
   {% for status, sessions in sessions | groupby("status") %}
     {% set sessionRows = [] %}
     {% for session in sessions | sort(false, false, "date") %}
@@ -55,8 +55,8 @@
           text: session.formatted.consentWindow
         },
         {
-          header: __("session.cohort.label"),
-          text: session.cohort.length or "None",
+          header: __("session.patients.label"),
+          text: session.patients.length or "None",
           format: "numeric"
         }
       ]) %}
@@ -73,7 +73,7 @@
         { text: __("session.location.label") },
         { text: __("session.consentWindow.label") },
         {
-          text: __("session.cohort.label"),
+          text: __("session.patients.label"),
           format: "numeric",
           attributes: {
             "no-sort": "no-sort"

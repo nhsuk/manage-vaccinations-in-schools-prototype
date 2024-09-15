@@ -20,7 +20,7 @@ export const sessionController = {
       sessions: Object.values(data.sessions)
         .map((session) => {
           session = new Session(session)
-          session.cohort = Object.values(data.patients).filter(
+          session.patients = Object.values(data.patients).filter(
             (patient) => patient.session_id === session.id
           )
           return session

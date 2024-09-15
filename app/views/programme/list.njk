@@ -10,30 +10,42 @@
     title: title
   }) }}
 
-  {% set programmeRows = [] %}
-  {% for programme in programmes | sort(false, false, "name") %}
-    {% set programmeRows = programmeRows | push([
-      {
-        header: __("programme.type.label"),
-        html: programme.link.summary
-      },
-      {
-        header: __("programme.vaccines.label"),
-        html: programme.formatted.vaccines or "Not provided"
-      }
-    ]) %}
-  {% endfor %}
+  {% for cycle, programmes in programmes | groupby("cycle") %}
+    {% set programmeRows = [] %}
+    {% for programme in programmes | sort(false, false, "name") %}
+      {% set programmeRows = programmeRows | push([
+        {
+          header: __("programme.name.label"),
+          html: programme.link.name
+        },
+        {
+          header: __("programme.vaccines.label"),
+          html: programme.formatted.vaccines or "Not provided"
+        },
+        {
+          header: __("programme.patients.label"),
+          html: programme.patients.length or "None"
+        },
+        {
+          header: __("programme.vaccinations.label"),
+          html: programme.vaccinations.length or "None"
+        }
+      ]) %}
+    {% endfor %}
 
-  {{ table({
-    id: "programmes",
-    sort: "name",
-    heading: __("programme.list.active"),
-    panel: true,
-    responsive: true,
-    head: [
-      { text: __("programme.type.label") },
-      { text: __("programme.vaccines.label") }
-    ],
-    rows: programmeRows
-  }) }}
+    {{ table({
+      id: "programmes",
+      sort: "name",
+      heading: cycle,
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("programme.name.label") },
+        { text: __("programme.vaccines.label") },
+        { text: __("programme.patients.label") },
+        { text: __("programme.vaccinations.label") }
+      ],
+      rows: programmeRows
+    }) }}
+  {% endfor %}
 {% endblock %}

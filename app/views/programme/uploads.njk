@@ -34,9 +34,9 @@
     href: programme.uri + "/uploads/new"
   }) }}
 
-  {% if uploads.length %}
+  {% if programme.uploads.length %}
     {% set uploadRows = [] %}
-    {% for upload in uploads | sort(false, false, "created") %}
+    {% for upload in programme.uploads | sort(false, false, "created") %}
       {% set uploadRows = uploadRows | push([
         {
           header: __("upload.created.label"),
@@ -61,7 +61,7 @@
     {{ actionTable({
       id: "uploads",
       sort: "created",
-      heading: __n("programme.uploads.count", uploads.length) ,
+      heading: __n("programme.uploads.count", programme.uploads.length) ,
       panel: true,
       responsive: true,
       head: [
@@ -78,6 +78,6 @@
       rows: uploadRows
     }) }}
   {% else %}
-    {{ __n("programme.uploads.count", uploads.length) | nhsukMarkdown }}
+    {{ __n("programme.uploads.count", programme.uploads.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

@@ -38,7 +38,7 @@
       classes: "app-button--secondary",
       text: __("download.new.label"),
       href: programme.uri + "/download/new"
-    }) if vaccinations.length }}
+    }) if programme.vaccinations.length }}
   {% endif %}
 
   <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
@@ -50,10 +50,10 @@
       {{ card({
         classes: "app-card--data app-card--reversed",
         clickable: true if not isDataConsumer,
-        heading: "Total cohort",
+        heading: __("programme.patients.label"),
         headingClasses: "nhsuk-heading-xs",
         href: programme.uri + "/cohorts" if not isDataConsumer,
-        description: totalCohort or "0"
+        description: programme.patients.length or "0"
       }) }}
     </div>
 
@@ -61,10 +61,10 @@
       {{ card({
         classes: "app-card--data app-card--reversed",
         clickable: true if not isDataConsumer,
-        heading: "Sessions completed",
+        heading: __("programme.sessions.label"),
         headingClasses: "nhsuk-heading-xs",
         href: programme.uri + "/sessions" if not isDataConsumer,
-        description: sessions | where("status", SessionStatus.Completed) | length or "0"
+        description: programme.sessions.length or "0"
       }) }}
     </div>
 
@@ -72,14 +72,14 @@
       {{ card({
         classes: "app-card--data app-card--reversed",
         clickable: true if not isDataConsumer,
-        heading: __("programme.vaccinations.title"),
+        heading: __("programme.vaccinations.label"),
         headingClasses: "nhsuk-heading-xs",
         href: programme.uri + "/vaccinations" if not isDataConsumer,
-        description: vaccinations.length or "0"
+        description: programme.vaccinations.length or "0"
       }) }}
     </div>
 
-{% if sessions.length %}
+{% if programme.sessions.length %}
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         classes: "app-card--data",
@@ -109,7 +109,7 @@
 {% endif %}
   </div>
 
-{% if sessions.length %}
+{% if programme.sessions.length %}
   {{ table({
     heading: "Reasons for refusal",
     panel: true,

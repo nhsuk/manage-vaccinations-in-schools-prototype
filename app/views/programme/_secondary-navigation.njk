@@ -1,27 +1,27 @@
 {{ xGovukSecondaryNavigation({
   items: [{
-    text: __("programme.show.title"),
+    text: __("programme.show.label"),
     href: programme.uri,
     current: view == "show"
   }, {
-    text: __("programme.cohorts.title"),
+    text: __("programme.cohorts.label"),
     href: programme.uri + "/cohorts",
     current: view == "cohorts"
   }, {
-    text: __("programme.sessions.title"),
+    text: __("programme.sessions.label"),
     href: programme.uri + "/sessions",
     current: view == "sessions"
   }, {
-    text: __("programme.vaccinations.title"),
+    text: __("programme.vaccinations.label"),
     href: programme.uri + "/vaccinations",
     current: view == "vaccinations"
   }, {
-    text: __("programme.uploads.title"),
+    text: __("programme.uploads.label"),
     href: programme.uri + "/uploads",
     current: view == "uploads"
   } if data.features.uploads.on, {
-    text: (__("programme.reviews.title") + " " + count(reviews.length)) | safe,
+    text: (__("programme.reviews.label") + " " + count(programme.reviews.length)) | safe,
     href: programme.uri + "/reviews",
     current: view == "reviews"
-  } if data.features.uploads.on and reviews.length]
+  } if programme.reviews.length]
 }) }}

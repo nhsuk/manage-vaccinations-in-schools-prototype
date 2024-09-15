@@ -39,8 +39,8 @@
           html: data.programmes[session.programmes[0]].name or "Not provided"
         },
         {
-          header: __("session.cohort.label"),
-          html: session.cohort.length or "None",
+          header: __("session.patients.label"),
+          html: session.patients.length or "None",
           format: "numeric"
         }
       ]) %}
@@ -57,7 +57,7 @@
         { text: __("session.location.label") },
         { text: __("session.programmes.label") },
         {
-          text: __("session.cohort.label"),
+          text: __("session.patients.label"),
           format: "numeric",
           attributes: {
             "no-sort": "no-sort"

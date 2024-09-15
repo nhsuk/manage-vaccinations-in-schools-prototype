@@ -28,14 +28,16 @@
     {{ __("programme.vaccinations.title") }}
   </h2>
 
+  {% set missingNhsNumber = programme.vaccinations | where("record.missingNhsNumber", true) %}
+
   {{ insetText({
     classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4",
     html: __n("record.missingNhsNumber.count", missingNhsNumber | length) | nhsukMarkdown
   }) if missingNhsNumber.length }}
 
-  {% if vaccinations.length %}
+  {% if programme.vaccinations.length %}
     {% set vaccinationRows = [] %}
-    {% for vaccination in vaccinations %}
+    {% for vaccination in programme.vaccinations %}
       {% set vaccinationRows = vaccinationRows | push([
         {
           header: __("record.fullName.label"),
@@ -63,7 +65,7 @@
     {{ actionTable({
       id: "vaccinations",
       sort: "name",
-      heading: __n("programme.vaccinations.count", vaccinations.length),
+      heading: __n("programme.vaccinations.count", programme.vaccinations.length),
       panel: true,
       responsive: true,
       head: [
@@ -76,6 +78,6 @@
       rows: vaccinationRows
     }) }}
   {% else %}
-    {{ __n("programme.vaccinations.count", vaccinations.length) | nhsukMarkdown }}
+    {{ __n("programme.vaccinations.count", 0) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

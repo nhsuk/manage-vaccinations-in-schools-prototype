@@ -137,10 +137,7 @@ export class Programme {
 
   get link() {
     return {
-      summary: `<span class="nhsuk-u-secondary-text-color">
-        ${formatLink(this.uri, this.name)}</br>
-        ${this.year}
-      </span>`
+      name: formatLink(this.uri, this.name)
     }
   }
 

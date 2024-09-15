@@ -28,9 +28,9 @@
     {{ __("programme.reviews.title") }}
   </h2>
 
-  {% if reviews.length %}
+  {% if programme.reviews.length %}
     {% set reviewRows = [] %}
-    {% for vaccination in reviews %}
+    {% for vaccination in programme.reviews %}
       {% set reviewRows = reviewRows | push([
         {
           header: __("record.fullName.label"),
@@ -55,7 +55,7 @@
     {{ actionTable({
       id: "reviews",
       sort: "name",
-      heading: __n("programme.reviews.count", reviews.length),
+      heading: __n("programme.reviews.count", programme.reviews.length),
       panel: true,
       responsive: true,
       head: [
@@ -75,6 +75,6 @@
       rows: reviewRows
     }) }}
   {% else %}
-    {{ __n("programme.reviews.count", reviews.length) | nhsukMarkdown }}
+    {{ __n("programme.reviews.count", 0) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

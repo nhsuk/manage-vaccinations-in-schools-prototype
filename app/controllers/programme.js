@@ -1,110 +1,91 @@
 import { Cohort } from '../models/cohort.js'
 import { Programme } from '../models/programme.js'
+import { Record } from '../models/record.js'
 import { Session } from '../models/session.js'
 import { Upload } from '../models/upload.js'
-import { getVaccinations } from '../utils/vaccination.js'
+import { Vaccination } from '../models/vaccination.js'
 
 export const programmeController = {
-  list(request, response) {
+  readAll(request, response, next) {
     const { data } = request.session
 
-    const programmes = Object.values(data.programmes).map(
-      (programme) => new Programme(programme)
-    )
+    const programmes = Object.values(data.programmes).map((programme) => {
+      programme = new Programme(programme)
+
+      // Cohorts in programme
+      programme.cohorts = Object.values(data.cohorts)
+        .filter((cohort) => cohort.programme_pid === programme.pid)
+        .map((cohort) => new Cohort(cohort))
+
+      // Patients in programme
+      programme.patients = []
+      for (const cohort of programme.cohorts) {
+        programme.patients = [...programme.patients, ...cohort.records]
+      }
+
+      // Sessions in programme
+      programme.sessions = Object.values(data.sessions)
+        .filter((session) => session.programmes.includes(programme.pid))
+        .map((session) => {
+          session = new Session(session)
+
+          // Add patients to session
+          session.patients = Object.values(data.patients).filter(
+            (patient) => patient.session_id === session.id
+          )
+
+          return session
+        })
+
+      // Recorded vaccinations in programme
+      programme.vaccinations = Object.values(data.vaccinations)
+        .filter((vaccination) => vaccination.programme_pid === programme.pid)
+        .filter((vaccination) => !vaccination._pending)
+        .map((vaccination) => {
+          vaccination = new Vaccination(vaccination)
+
+          // Add record to vaccination
+          vaccination.record = new Record(
+            data.patients[vaccination.patient_uuid].record
+          )
+
+          return vaccination
+        })
+
+      // Vaccination records uploaded to programme
+      if (data.features.uploads.on) {
+        programme.uploads = Object.values(data.uploads)
+          .filter((upload) => upload.programme_pid === programme.pid)
+          .map((upload) => new Upload(upload))
+
+        programme.reviews = programme.vaccinations.slice(0, 3)
+      }
+
+      return programme
+    })
 
     response.locals.programmes = programmes
 
+    next()
+  },
+
+  showAll(request, response) {
     response.render('programme/list')
-  },
-
-  show(request, response) {
-    response.render('programme/show')
-  },
-
-  cohorts(request, response) {
-    response.render('programme/cohorts')
-  },
-
-  reviews(request, response) {
-    response.render('programme/reviews')
-  },
-
-  sessions(request, response) {
-    response.render('programme/sessions')
-  },
-
-  uploads(request, response) {
-    const { pid } = request.params
-    const { data } = request.session
-
-    response.locals.uploads = Object.values(data.uploads)
-      .filter((upload) => upload.programme_pid === pid)
-      .map((upload) => new Upload(upload))
-
-    response.render('programme/uploads')
-  },
-
-  vaccinations(request, response) {
-    response.render('programme/vaccinations')
   },
 
   read(request, response, next) {
     const { pid } = request.params
-    const { data } = request.session
+    const { programmes } = response.locals
 
-    const programme = new Programme(data.programmes[pid])
-    const cohorts = Object.values(data.cohorts)
-      .filter((cohort) => cohort.programme_pid === pid)
-      .map((cohort) => new Cohort(cohort))
-
-    let totalCohort = 0
-    for (const cohort of cohorts) {
-      totalCohort = totalCohort + cohort.records.length
-    }
-
+    const programme = programmes.find((programme) => programme.pid === pid)
     response.locals.programme = programme
-    response.locals.cohorts = cohorts
-    response.locals.totalCohort = totalCohort
-    response.locals.sessions = Object.values(data.sessions)
-      .filter((session) => session.programmes.includes(programme.pid))
-      .map((session) => {
-        session = new Session(session)
-        session.cohort = Object.values(data.patients).filter(
-          (patient) => patient.session_id === session.id
-        )
-        return session
-      })
-
-    const uuids = []
-    if (data.features.uploads.on) {
-      const uploads = Object.values(data.uploads).filter(
-        (upload) => upload.programme_pid === pid
-      )
-
-      for (const upload of uploads) {
-        for (const uuid of upload.vaccinations) {
-          uuids.push(uuid)
-        }
-      }
-
-      // If upload has occurred, fake issues with 3 uploaded records
-      request.app.locals.reviews = getVaccinations(data, uuids.slice(0, 3))
-    } else {
-      Object.values(data.vaccinations)
-        .filter((vaccination) => vaccination.programme_pid === pid)
-        .forEach((vaccination) => uuids.push(vaccination.uuid))
-    }
-
-    const vaccinations = getVaccinations(data, uuids)
-
-    request.app.locals.vaccinations = vaccinations
-    request.app.locals.missingNhsNumber = vaccinations.filter(
-      (vaccination) => vaccination.record.missingNhsNumber
-    )
-
-    // Remove any back state that have been stored
-    delete request.app.locals.back
 
     next()
+  },
+
+  show(request, response) {
+    const view = request.params.view || 'show'
+
+    response.render(`programme/${view}`)
   }
 }

@@ -29,7 +29,7 @@
   </h2>
 
   <ul class="nhsuk-grid-row nhsuk-card-group">
-  {% for cohort in cohorts | sort(false, false, "yearGroup") %}
+  {% for cohort in programme.cohorts | sort(false, false, "yearGroup") %}
     <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
       {{ card({
         clickable: true,
