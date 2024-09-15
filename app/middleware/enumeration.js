@@ -13,6 +13,7 @@ import { GPRegistered, Sex } from '../models/record.js'
 import { ProgrammeCycle, ProgrammeType } from '../models/programme.js'
 import { RegistrationOutcome } from '../models/registration.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
+import { SchoolPhase } from '../models/school.js'
 import {
   ConsentWindow,
   SessionFormat,
@@ -52,6 +53,7 @@ export const enumeration = (request, response, next) => {
   response.locals.ReplyDecision = ReplyDecision
   response.locals.ReplyMethod = ReplyMethod
   response.locals.ReplyRefusal = ReplyRefusal
+  response.locals.SchoolPhase = SchoolPhase
   response.locals.ScreenOutcome = ScreenOutcome
   response.locals.SessionFormat = SessionFormat
   response.locals.SessionTime = SessionTime

@@ -878,6 +878,49 @@
       "label": "Confirm consent refusal?"
     }
   },
+  "school": {
+    "list": {
+      "title": "Schools",
+      "caption": "Local authority"
+    },
+    "show": {
+      "summary": "School details"
+    },
+    "name": {
+      "label": "Name"
+    },
+    "phase": {
+      "label": "Phase"
+    },
+    "urn": {
+      "label": "URN"
+    },
+    "location": {
+      "label": "Location"
+    },
+    "count": {
+      "one": "%s school",
+      "other": "[0] No schools|%s schools"
+    },
+    "primary": {
+      "count": {
+        "one": "%s primary school",
+        "other": "[0] No primary schools|%s primary schools"
+      }
+    },
+    "secondary": {
+      "count": {
+        "one": "%s secondary school",
+        "other": "[0] No secondary schools|%s secondary schools"
+      }
+    },
+    "records": {
+      "count": {
+        "one": "%s child",
+        "other": "[0] No children|%s children"
+      }
+    }
+  },
   "screen": {
     "label": "Triage",
     "NeedsTriage": {

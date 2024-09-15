@@ -1,6 +1,5 @@
 import { readFileSync } from 'node:fs'
 import process from 'node:process'
-import schools from './datasets/schools.js'
 import vaccines from './datasets/vaccines.js'
 const batches = JSON.parse(readFileSync('.data/batches.json'))
 const cohorts = JSON.parse(readFileSync('.data/cohorts.json'))
@@ -8,6 +7,7 @@ const organisations = JSON.parse(readFileSync('.data/organisations.json'))
 const patients = JSON.parse(readFileSync('.data/patients.json'))
 const programmes = JSON.parse(readFileSync('.data/programmes.json'))
 const records = JSON.parse(readFileSync('.data/records.json'))
+const schools = JSON.parse(readFileSync('.data/schools.json'))
 const sessions = JSON.parse(readFileSync('.data/sessions.json'))
 const users = JSON.parse(readFileSync('.data/users.json'))
 const vaccinations = JSON.parse(readFileSync('.data/vaccinations.json'))

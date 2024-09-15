@@ -18,6 +18,7 @@ import { programmeRoutes } from './routes/programme.js'
 import { recordRoutes } from './routes/record.js'
 import { registrationRoutes } from './routes/registration.js'
 import { replyRoutes } from './routes/reply.js'
+import { schoolRoutes } from './routes/school.js'
 import { sessionRoutes } from './routes/session.js'
 import { triageRoutes } from './routes/triage.js'
 import { uploadRoutes } from './routes/upload.js'
@@ -44,6 +45,7 @@ router.use('/programmes/:pid/uploads/:id/vaccinations', vaccinationRoutes)
 router.use('/programmes/:pid/vaccinations', vaccinationRoutes)
 router.use('/programmes/:pid/vaccinations/:uuid/patient/:nhsn', patientRoutes)
 router.use('/records', recordRoutes)
+router.use('/schools', schoolRoutes)
 router.use('/sessions', sessionRoutes)
 router.use('/sessions/:id/:nhsn', patientRoutes)
 router.use('/sessions/:id/:nhsn/gillick', gillickRoutes)

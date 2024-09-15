@@ -1,0 +1,55 @@
+{% extends "_layouts/unbranded.njk" %}
+
+{% set title = __("school.list.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    caption: __("school.list.caption"),
+    size: "xl",
+    title: title
+  }) }}
+
+  {% for phase, schools in schools | groupby("phase") %}
+    {% set schoolRows = [] %}
+    {% for school in schools | sort(false, false, "name") %}
+      {% set schoolRows = schoolRows | push([
+        {
+          header: __("school.name.label"),
+          html: school.link.name or "Not provided",
+          attributes: {
+            "data-sort": school.name
+          }
+        },
+        {
+          header: __("school.urn.label"),
+          html: school.formatted.urn or "Not provided"
+        },
+        {
+          header: __("school.location.label"),
+          html: school.formatted.location or "Not provided"
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      classes: "nhsuk-u-margin-bottom-6",
+      id: "schools",
+      sort: "name",
+      caption: __n("school." + phase | lower + ".count", schools.length),
+      responsive: true,
+      head: [
+        {
+          text: __("school.name.label"),
+          attributes: {
+            style: "width: 40%"
+          }
+        },
+        { text: __("school.urn.label") },
+        { text: __("school.location.label") }
+      ],
+      rows: schoolRows
+    }) }}
+  {% endfor %}
+{% endblock %}
