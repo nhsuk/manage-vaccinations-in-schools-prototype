@@ -72,10 +72,10 @@ export class Record {
 
     let dob, urn
     if (phase === 'Primary') {
-      dob = faker.date.birthdate({ min: 2013, max: 2019 })
+      dob = faker.date.birthdate({ min: 4, max: 11, mode: 'age' })
       urn = faker.helpers.arrayElement(primarySchools).urn
     } else {
-      dob = faker.date.birthdate({ min: 2009, max: 2012 })
+      dob = faker.date.birthdate({ min: 11, max: 16, mode: 'age' })
       urn = faker.helpers.arrayElement(secondarySchools).urn
     }
 
