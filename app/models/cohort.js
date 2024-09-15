@@ -4,15 +4,20 @@ import { formatYearGroup } from '../utils/string.js'
 
 /**
  * Get NHS Numbers of CHIS records within year group
- * @param {Array} records - CHIS records
+ * @param {Map<Record>} records - CHIS records
  * @param {number} yearGroup - Year group
  * @returns {Array} NHS numbers of selected cohort
  */
 export function getRecordsFromYearGroup(records, yearGroup) {
-  return Object.values(records)
-    .map((record) => new Record(record))
-    .filter((record) => record.yearGroup === yearGroup)
-    .map((record) => record.nhsn)
+  let yearGroupRecords = new Set()
+
+  records.forEach((record) => {
+    if (record.yearGroup === yearGroup) {
+      yearGroupRecords.add(record.nhsn)
+    }
+  })
+
+  return [...yearGroupRecords]
 }
 
 /**
@@ -22,7 +27,7 @@ export function getRecordsFromYearGroup(records, yearGroup) {
  * @property {string} [created_user_uid] - User who created cohort
  * @property {ProgrammeCycle} cycle - Programme cycle
  * @property {number} yearGroup - Year group
- * @property {Array[string]} records - Records
+ * @property {Map<Record>} records - Records
  * @property {string} [programme_pid] - Programme ID
  * @function ns - Namespace
  * @function uri - URL

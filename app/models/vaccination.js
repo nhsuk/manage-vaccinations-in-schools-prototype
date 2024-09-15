@@ -113,7 +113,7 @@ export class Vaccination {
   }
 
   static generate(patient, programme, session, location, users) {
-    const user = users[faker.number.int({ min: 0, max: 19 })]
+    const user = faker.helpers.arrayElement(users)
 
     let injectionMethod
     let injectionSite
