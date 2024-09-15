@@ -1,3 +1,4 @@
+import { getResults, getPagination } from '../utils/pagination.js'
 import { Cohort } from '../models/cohort.js'
 import { Programme } from '../models/programme.js'
 import { Record } from '../models/record.js'
@@ -103,6 +104,18 @@ export const programmeController = {
 
   show(request, response) {
     const view = request.params.view || 'show'
+    let { page, limit } = request.query
+    const { programme } = response.locals
+    const { vaccinations } = programme
+
+    // Paginate
+    if (view === 'vaccinations') {
+      page = parseInt(page) || 1
+      limit = parseInt(limit) || 100
+
+      response.locals.results = getResults(vaccinations, page, limit)
+      response.locals.pages = getPagination(vaccinations, page, limit)
+    }
 
     response.render(`programme/${view}`)
   }

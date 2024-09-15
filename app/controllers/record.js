@@ -1,11 +1,14 @@
+import _ from 'lodash'
+import { getResults, getPagination } from '../utils/pagination.js'
 import { Record } from '../models/record.js'
 import { Vaccination } from '../models/vaccination.js'
 
 export const recordController = {
   readAll(request, response, next) {
+    let { page, limit } = request.query
     const { data } = request.session
 
-    const records = Object.values(data.records).map((record) => {
+    let records = Object.values(data.records).map((record) => {
       record = new Record(record)
 
       // Add complete vaccination record
@@ -16,7 +19,16 @@ export const recordController = {
       return record
     })
 
+    // Sort
+    records = _.sortBy(records, 'lastName')
+
+    // Paginate
+    page = parseInt(page) || 1
+    limit = parseInt(limit) || 200
+
     response.locals.records = records
+    response.locals.results = getResults(records, page, limit)
+    response.locals.pages = getPagination(records, page, limit)
 
     next()
   },

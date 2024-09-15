@@ -36,9 +36,9 @@
   }) if missingNhsNumber.length }}
 
   {% if programme.vaccinations.length %}
-    {% set vaccinationRows = [] %}
-    {% for vaccination in programme.vaccinations %}
-      {% set vaccinationRows = vaccinationRows | push([
+    {% set resultRows = [] %}
+    {% for vaccination in results.page %}
+      {% set resultRows = resultRows | push([
         {
           header: __("record.fullName.label"),
           html: link(vaccination.uri, vaccination.record.fullName)
@@ -63,9 +63,10 @@
     {% endfor %}
 
     {{ actionTable({
+      classes: "nhsuk-u-margin-bottom-6",
       id: "vaccinations",
       sort: "name",
-      heading: __n("programme.vaccinations.count", programme.vaccinations.length),
+      heading: __n("vaccination.count", programme.vaccinations.length),
       panel: true,
       responsive: true,
       head: [
@@ -75,9 +76,13 @@
         { text: __("record.postalCode.label") },
         { text: __("vaccination.created.label") }
       ],
-      rows: vaccinationRows
+      rows: resultRows
     }) }}
+
+    {{ govukPagination(pages) }}
+
+    {{ __("vaccination.results", { results: results }) | nhsukMarkdown }}
   {% else %}
-    {{ __n("programme.vaccinations.count", 0) | nhsukMarkdown }}
+    {{ __n("vaccination.count", 0) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

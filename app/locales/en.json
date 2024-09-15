@@ -658,6 +658,7 @@
     "show": {
       "summary": "Child’s details"
     },
+    "results": "Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> records",
     "count": {
       "one": "%s record",
       "other": "%s records"
@@ -1323,17 +1324,18 @@
       "label": "Programme"
     },
     "vaccinations": {
-      "label": "Vaccination records",
-      "count": {
-        "one": "%s vaccination record",
-        "other": "[0] No vaccination records|%s vaccination records"
-      }
+      "label": "Vaccination records"
     }
   },
   "vaccination": {
     "label": "Vaccination record",
     "show": {
       "summary": "Vaccination details"
+    },
+    "results": "Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> vaccinations",
+    "count": {
+      "one": "%s vaccination record",
+      "other": "[0] No vaccination records|%s vaccination records"
     },
     "administer": {
       "title": "Tell us how the vaccination was given"
