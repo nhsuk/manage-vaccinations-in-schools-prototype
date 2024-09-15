@@ -51,6 +51,7 @@
   },
   "batch": {
     "new": {
+      "label": "Add a new batch",
       "title": "Add batch",
       "confirm": "Add batch"
     },

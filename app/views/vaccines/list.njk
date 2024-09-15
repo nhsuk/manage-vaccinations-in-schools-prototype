@@ -16,7 +16,11 @@
         {{ vaccine.manufacturer }}, GTIN: <span class="app-u-monospace">{{ vaccine.gtin }}</span>
       </p>
 
-      {{ link(vaccine.uri + "/new", "Add a batch") | nhsukMarkdown}}
+      {{ button({
+        classes: "app-button--secondary",
+        text: __("batch.new.label"),
+        href: vaccine.uri + "/new"
+      }) }}
 
       {% set batchRows = [] %}
       {% for batch in vaccine.batches | sort(false, false, "id") %}

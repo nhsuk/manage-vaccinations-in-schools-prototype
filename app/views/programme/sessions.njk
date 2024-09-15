@@ -28,11 +28,10 @@
     {{ __("programme.sessions.title") }}
   </h2>
 
-  {{ actionList({
-    items: [{
-      text: __("session.new.title"),
-      href: "/sessions/new"
-    }]
+  {{ button({
+    classes: "app-button--secondary nhsuk-u-margin-bottom-0",
+    text: __("session.new.title"),
+    href: "/sessions/new"
   }) if data.token.role != UserRole.DataConsumer }}
 
   {% set sessions = sessions | sort(true, false, "status") %}

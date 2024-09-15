@@ -56,7 +56,7 @@
     {% set registerButtonHtml %}
       <form class="app-button-group app-button-group--table" action="{{ patient.uri }}/registration/edit?tab={{tab}}" method="post">
         {{ button({
-          classes: "nhsuk-button--secondary app-button--small",
+          classes: "app-button--secondary app-button--small",
           text: __("registration.update.true.confirm"),
           decorate: "patient.registered",
           value: "true",
@@ -65,7 +65,7 @@
           }
         }) }}
         {{ button({
-          classes: "nhsuk-button--warning app-button--small",
+          classes: "app-button--secondary-warning app-button--small",
           text: __("registration.update.false.confirm"),
           decorate: "patient.registered",
           value: "false",

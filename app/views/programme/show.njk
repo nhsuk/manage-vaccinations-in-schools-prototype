@@ -34,12 +34,11 @@
       {{ __("programme.show.title") }}
     </h2>
 
-    {{ actionList({
-      items: [{
-        href: programme.uri + "/download/new",
-        text: __("download.new.label")
-      } if vaccinations.length]
-    }) }}
+    {{ button({
+      classes: "app-button--secondary",
+      text: __("download.new.label"),
+      href: programme.uri + "/download/new"
+    }) if vaccinations.length }}
   {% endif %}
 
   <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">

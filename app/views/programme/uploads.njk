@@ -28,11 +28,10 @@
     {{ __("programme.uploads.title") }}
   </h2>
 
-  {{ actionList({
-    items: [{
-      href: programme.uri + "/uploads/new",
-      text: __("upload.new.label")
-    }]
+  {{ button({
+    classes: "app-button--secondary",
+    text: __("upload.new.label"),
+    href: programme.uri + "/uploads/new"
   }) }}
 
   {% if uploads.length %}
