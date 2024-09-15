@@ -1,6 +1,7 @@
 import { Cohort } from '../models/cohort.js'
 import { Programme } from '../models/programme.js'
 import { Record } from '../models/record.js'
+import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
 import { Upload } from '../models/upload.js'
 import { Vaccination } from '../models/vaccination.js'
@@ -18,10 +19,26 @@ export const programmeController = {
         .map((cohort) => new Cohort(cohort))
 
       // Patients in programme
-      programme.patients = []
+      let records = []
       for (const cohort of programme.cohorts) {
-        programme.patients = [...programme.patients, ...cohort.records]
+        records = [...records, ...cohort.records]
       }
+      programme.records = records.map((nhsn) => new Record(data.records[nhsn]))
+
+      // Schools in programme
+      const urns = [...new Set(programme.records.map((record) => record.urn))]
+      programme.schools = Object.values(data.schools)
+        .filter((school) => urns.includes(school.urn))
+        .map((school) => {
+          school = new School(school)
+
+          // Add patients to school
+          school.patients = Object.values(data.patients).filter(
+            (patient) => patient.record.urn === school.urn
+          )
+
+          return school
+        })
 
       // Sessions in programme
       programme.sessions = Object.values(data.sessions)
@@ -78,6 +95,7 @@ export const programmeController = {
     const { programmes } = response.locals
 
     const programme = programmes.find((programme) => programme.pid === pid)
+
     response.locals.programme = programme
 
     next()

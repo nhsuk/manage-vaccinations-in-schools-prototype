@@ -1,0 +1,61 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = programme.name + " – " + __("programme.schools.title") %}
+{% set view = "schools" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("programme.list.title"),
+      href: "/programmes"
+    }],
+    text: programme.name,
+    href: programme.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: programme.name,
+    summary: programme.cycle
+  }) }}
+
+  {% include "programme/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("programme.schools.title") }}
+  </h2>
+
+  {% set schoolRows = [] %}
+  {% for school in programme.schools | sort(false, false, "name") %}
+    {% set schoolRows = schoolRows | push([
+      {
+        header: __("school.name.label"),
+        html: school.name or "Not provided",
+        attributes: {
+          "data-sort": school.name
+        }
+      },
+      {
+        header: __("school.records.label"),
+        html: school.patients.length
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    classes: "nhsuk-u-margin-bottom-6",
+    id: "schools",
+    sort: "name",
+    heading: __n("programme.schools.count", programme.schools.length),
+    panel: true,
+    responsive: true,
+    head: [
+      { text: __("school.name.label") },
+      { text: __("school.records.label") }
+    ],
+    rows: schoolRows
+  }) }}
+{% endblock %}
