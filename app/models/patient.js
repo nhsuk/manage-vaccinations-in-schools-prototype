@@ -64,7 +64,7 @@ export class PatientOutcome {
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
- * @property {string} [cohort_uid] - Cohort UID
+ * @property {Array<string>} [cohorts] - Cohort UIDs
  * @property {string} [session_id] - Session ID
  * @function consent - Consent outcome
  * @function screen - Screening outcome
@@ -84,7 +84,7 @@ export class Patient {
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
-    this.cohort_uid = options.cohort_uid
+    this.cohorts = options.cohorts || []
     this.session_id = options.session_id
   }
 
@@ -191,9 +191,7 @@ export class Patient {
   }
 
   get uri() {
-    return this.session_id
-      ? `/sessions/${this.session_id}/${this.nhsn}`
-      : `/cohorts/${this.cohort_uid}/${this.nhsn}`
+    return `/sessions/${this.session_id}/${this.nhsn}`
   }
 
   set log(event) {
@@ -201,7 +199,7 @@ export class Patient {
   }
 
   set select(cohort) {
-    this.cohort_uid = cohort.uid
+    this.cohorts.push(cohort.uid)
     this.log = {
       type: EventType.Select,
       name: `Selected for the ${cohort.name} cohort`,

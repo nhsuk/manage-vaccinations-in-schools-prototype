@@ -22,7 +22,7 @@ export const cohortController = {
 
     request.app.locals.cohort = cohort
     request.app.locals.records = Object.values(data.patients)
-      .filter((patient) => patient.cohort_uid === uid)
+      .filter((patient) => patient.cohorts.includes(uid))
       .map((patient) => new Patient(patient))
 
     next()
