@@ -4,6 +4,7 @@
 {% set showCouldNotVaccinateReason = tab == "CouldNotVaccinate" %}
 {% set showRegistration = tab == "Register" %}
 {% set showStatus = activity == "capture" or tab == "NoOutcomeYet" %}
+{% set showYearGroup = true %}
 {% set title = __("session.activity." + activity + ".title") %}
 
 {% block beforeContent %}
@@ -81,11 +82,11 @@
         html: patient.link.fullName
       },
       {
-        header: __("record.dob.label"),
-        html: patient.summary.dob or "Not provided",
+        header: __("record.yearGroup.label"),
+        html: patient.record.formatted.yearGroup or "Not provided",
         attributes: {
-          "data-filter": patient.record.dob | date({ dateStyle: "short" }),
-          "data-sort": patient.record.dob
+          "data-filter": patient.record.yearGroup,
+          "data-sort": patient.record.yearGroup
         }
       },
       {
@@ -124,9 +125,9 @@
           }
         },
         {
-          text: __("record.dob.label"),
+          text: __("record.yearGroup.label"),
           attributes: {
-            "data-col": "dob"
+            "data-col": "yearGroup"
           }
         },
         {

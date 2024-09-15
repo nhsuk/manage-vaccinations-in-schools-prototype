@@ -1,6 +1,11 @@
 import _ from 'lodash'
 import { formatDate } from './utils/date.js'
-import { formatHighlight, formatList, formatMarkdown } from './utils/string.js'
+import {
+  formatHighlight,
+  formatList,
+  formatMarkdown,
+  formatYearGroup
+} from './utils/string.js'
 
 /**
  * Prototype specific filters for use in Nunjucks templates.
@@ -84,6 +89,15 @@ export default (env) => {
    */
   filters.nhsukList = function (array) {
     return env.filters.safe(formatList(array))
+  }
+
+  /**
+   * Format year group
+   * @param {number} number - Year group
+   * @returns {string} Formatted year group
+   */
+  filters.yearGroup = function (number) {
+    return env.filters.safe(formatYearGroup(number))
   }
 
   /**

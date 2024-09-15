@@ -8,34 +8,53 @@
     id: "name",
     name: "name",
     type: "search",
-    label: { text: "By name" }
+    label: { text: "Name" }
   }) }}
 
   {{ input({
     id: "dob",
     name: "dob",
     type: "search",
-    label: { text: "By date of birth" },
+    label: { text: "Date of birth" },
     hint: {
       classes: "nhsuk-u-font-size-16",
       text: "e.g. 2005 or 01/03/2014"
     }
-  }) }}
+  }) if showDateOfBirth }}
 
   {{ input({
     id: "postalCode",
     name: "postalCode",
     type: "search",
-    label: { text: "By postcode" }
+    label: { text: "Postcode" }
   }) if showPostalCode }}
+
+  {{ checkboxes({
+    name: "yearGroup",
+    fieldset: {
+      legend: { text: "Year group" }
+    },
+    items: [
+      { value: "0", text: 0 | yearGroup },
+      { value: "1", text: 1 | yearGroup },
+      { value: "2", text: 2 | yearGroup },
+      { value: "3", text: 3 | yearGroup },
+      { value: "4", text: 4 | yearGroup },
+      { value: "5", text: 5 | yearGroup },
+      { value: "6", text: 6 | yearGroup }
+    ] if session.school.phase == "Primary" else [
+      { value: "7", text: 7 | yearGroup },
+      { value: "8", text: 8 | yearGroup },
+      { value: "9", text: 9 | yearGroup },
+      { value: "10", text: 10 | yearGroup },
+      { value: "11", text: 11 | yearGroup }
+    ]
+  }) if showYearGroup }}
 
   {{ checkboxes({
     name: "status",
     fieldset: {
-      legend: {
-        classes: "govuk-fieldset__legend--s",
-        text: "Status"
-      }
+      legend: { text: "Status" }
     },
     items: [
       { value: "Safe to vaccinate", text: "Safe to vaccinate" },
