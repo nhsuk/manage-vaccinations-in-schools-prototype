@@ -24,61 +24,43 @@
     summary: cohort.cycle
   }) }}
 
-  {% if records.length %}
+  {% if cohort.records.length %}
     {% set recordRows = [] %}
-    {% for patient in records %}
-      {% set outcome = enumKeyAndValue(PatientOutcome, patient.outcome.value) %}
-      {% set tagColor = __("outcome." + outcome.key + ".colour") %}
+    {% for record in cohort.records %}
       {% set recordRows = recordRows | push([
         {
           header: __("record.fullName.label"),
-          html: patient.link.fullName
+          html: record.fullName
         },
         {
           header: __("record.nhsn.label"),
-          html: patient.record.formatted.nhsn or "Not provided"
+          html: record.formatted.nhsn or "Not provided"
         },
         {
           header: __("record.dob.label"),
-          html: patient.record.formatted.dob
+          text: record.formatted.dob
         },
         {
-          header: __("outcome.label"),
-          html: tag({
-            classes: "nhsuk-tag--" + tagColor,
-            text: patient.outcome.value
-          })
-        },
-        {
-          header: __("record.actions.label"),
-          html: actionList({
-            items: [{
-              text: "Remove",
-              href: "#"
-            }]
-          }) if not patient.session_id else " "
+          header: __("record.postalCode.label"),
+          text: record.postalCode
         }
       ]) %}
     {% endfor %}
 
     {{ actionTable({
       id: "cohort",
-      heading: __n("cohort.records.count", records.length),
+      heading: __n("cohort.records.count", cohort.records.length),
       panel: true,
       responsive: true,
       head: [
         { text: __("record.fullName.label") },
         { text: __("record.nhsn.label") },
         { text: __("record.dob.label") },
-        { text: __("outcome.label") },
-        {
-          text: __("record.actions.label"),
-          attributes: { "no-sort": "no-sort" }
-        }
+        { text: __("record.postalCode.label") }
       ],
       rows: recordRows
     }) }}
   {% else %}
-    {{ __n("cohort.records.count", records.length) | nhsukMarkdown }}
+    {{ __n("cohort.records.count", cohort.records.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}
