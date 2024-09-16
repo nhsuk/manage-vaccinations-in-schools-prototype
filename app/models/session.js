@@ -115,8 +115,8 @@ export class Session {
         date = faker.date.between({ from, to })
         break
       default:
-        // Session took place about 7 days ago
-        date = faker.date.recent({ days: 7 })
+        // Session took place about 7 days before today
+        date = faker.date.recent({ days: 7, refDate: getToday() })
     }
 
     // Open consent request window 28 days before session
