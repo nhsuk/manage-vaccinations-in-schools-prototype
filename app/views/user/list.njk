@@ -16,12 +16,12 @@
     {% for user in users | sort(false, false, "fullName") %}
       {% set userRows = userRows | push([
         {
-          header: __("user.uid.label"),
-          html: link(user.uri, user.uid) or "Not provided"
+          header: __("user.fullName.label"),
+          html: user.link.fullName or "Not provided"
         },
         {
-          header: __("user.fullName.label"),
-          html: user.fullName or "Not provided"
+          header: __("user.uid.label"),
+          html: user.formatted.uid or "Not provided"
         },
         {
           header: __("user.email.label"),
@@ -38,8 +38,8 @@
       captionClasses: "nhsuk-u-font-size-32",
       responsive: true,
       head: [
-        { text: __("user.uid.label") },
         { text: __("user.fullName.label") },
+        { text: __("user.uid.label") },
         { text: __("user.email.label") }
       ],
       rows: userRows

@@ -1,3 +1,4 @@
+import { formatLink, formatMonospace } from '../utils/string.js'
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 export class UserRole {
@@ -48,6 +49,18 @@ export class User {
 
   get fullName() {
     return [this.firstName, this.lastName].join(' ')
+  }
+
+  get formatted() {
+    return {
+      uid: formatMonospace(this.uid)
+    }
+  }
+
+  get link() {
+    return {
+      fullName: formatLink(this.uri, this.fullName)
+    }
   }
 
   get ns() {
