@@ -50,7 +50,7 @@
     }) | nhsukMarkdown
   }) if activity == "capture" and data.token.batch[session.id] }}
 
-  {% include "sessions/_activity-navigation.njk" %}
+  {% include "session/_activity-navigation.njk" %}
 
   {% set patientRows = [] %}
   {% for patient in patients | sort(false, false, "firstName") %}
@@ -155,7 +155,7 @@
       rows: patientRows
     }) %}
       <action-table-filters class="app-patients__filters">
-        {% include "sessions/_filters.njk" %}
+        {% include "session/_filters.njk" %}
       </action-table-filters>
     {% endcall %}
   {% else %}

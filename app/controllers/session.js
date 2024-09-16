@@ -16,7 +16,7 @@ export const sessionController = {
       planned: SessionStatus.Planned
     }
 
-    response.render('sessions/list', {
+    response.render('session/list', {
       sessions: Object.values(data.sessions)
         .map((session) => {
           session = new Session(session)
@@ -31,7 +31,7 @@ export const sessionController = {
   },
 
   show(request, response) {
-    response.render('sessions/show')
+    response.render('session/show')
   },
 
   activity(request, response) {
@@ -76,7 +76,7 @@ export const sessionController = {
 
     request.app.locals.activity = activity
 
-    response.render('sessions/activity', {
+    response.render('session/activity', {
       activity,
       navigationItems,
       patients: patients.filter((patient) => patient[activity]?.key === tab),
@@ -92,7 +92,7 @@ export const sessionController = {
       (consent) => new Consent(consent)
     )
 
-    response.render('sessions/consents')
+    response.render('session/consents')
   },
 
   showConsentMatch(request, response) {
@@ -101,7 +101,7 @@ export const sessionController = {
 
     request.app.locals.consent = new Consent(session.consents[uuid])
 
-    response.render('sessions/consent-match')
+    response.render('session/consent-match')
   },
 
   showConsentLink(request, response) {
@@ -112,7 +112,7 @@ export const sessionController = {
       patients.find((patient) => patient.nhsn === nhsn)
     )
 
-    response.render('sessions/consent-link')
+    response.render('session/consent-link')
   },
 
   updateConsentLink(request, response) {
@@ -142,7 +142,7 @@ export const sessionController = {
 
     request.app.locals.consent = new Reply(session.consents[uuid])
 
-    response.render('sessions/consent-add')
+    response.render('session/consent-add')
   },
 
   updateConsentAdd(request, response) {
@@ -172,7 +172,7 @@ export const sessionController = {
       .map((batch) => new Batch(batch))
       .filter((batch) => batch.vaccine.type === programme.type)
 
-    response.render('sessions/batch-id')
+    response.render('session/batch-id')
   },
 
   updateBatch(request, response) {
@@ -204,7 +204,7 @@ export const sessionController = {
       ...data?.wizard?.session // Wizard values
     })
 
-    response.render('sessions/edit')
+    response.render('session/edit')
   },
 
   new(request, response) {
@@ -284,7 +284,7 @@ export const sessionController = {
   showForm(request, response) {
     const { view } = request.params
 
-    response.render(`sessions/form/${view}`)
+    response.render(`session/form/${view}`)
   },
 
   updateForm(request, response) {
