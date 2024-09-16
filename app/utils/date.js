@@ -113,7 +113,7 @@ export function removeDays(date, days) {
 /**
  * Check if date lies between two other dates
  * @param {string} date - ISO 8601 date to check
- * @param {string} from - ISO 8601 start date
+ * @param {string} start - ISO 8601 start date
  * @param {string} end - ISO 8601 end date
  * @returns {boolean} Date with days added
  */

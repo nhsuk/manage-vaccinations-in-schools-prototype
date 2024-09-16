@@ -221,7 +221,7 @@ export default () => {
    * Show relevant pre-screening questions based on sex of the patient
    * @param {import('./models/programme.js').Programme} programme - Programme
    * @param {import('./models/patient.js').Patient} patient - Patient
-   * @returns {Array[string]} Pre-screening question keys
+   * @returns {Array<string>|undefined} Pre-screening question keys
    */
   globals.preScreenQuestionKeys = function (programme, patient) {
     if (!programme) {
