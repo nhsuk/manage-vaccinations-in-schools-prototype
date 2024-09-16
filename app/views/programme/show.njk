@@ -21,11 +21,10 @@
   }) }}
 
   {% if isDataConsumer %}
-    {{ actionList({
-      items: [{
-        href: programme.uri + "/download/new",
-        text: __("download.new.label")
-      }]
+    {{ button({
+      classes: "app-button--secondary",
+      text: __("download.new.label"),
+      href: programme.uri + "/download/new"
     }) }}
   {% else %}
     {% include "programme/_secondary-navigation.njk" %}
