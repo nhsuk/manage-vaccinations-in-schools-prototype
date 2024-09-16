@@ -34,7 +34,7 @@ export const recordController = {
   },
 
   showAll(request, response) {
-    response.render('records/list')
+    response.render('record/list')
   },
 
   read(request, response, next) {
@@ -49,6 +49,6 @@ export const recordController = {
   },
 
   show(request, response) {
-    response.render('records/show')
+    response.render('record/show')
   }
 }
