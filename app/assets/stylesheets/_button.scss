@@ -67,8 +67,8 @@ $button-shadow-size: 4px;
 
   &:active {
     background-color: rgba($button-color, 15%);
-    border-color: $button-color;
     border-bottom: 2px solid; // Reintroduce 2px bottom border
+    border-color: $button-color;
     color: $button-color;
     // Revert padding to account for reintroduction of 2px bottom border
     padding-bottom: 12px;
