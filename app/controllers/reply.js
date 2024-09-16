@@ -203,14 +203,12 @@ export const replyController = {
         value: uuid
       }))
     } else {
-      const { parent } = patient.record
-      response.locals.uuidItems = [
-        {
-          text: `${parent.fullName} (${parent.relationship})`,
-          hint: { text: parent.tel },
-          value: 'record'
-        }
-      ]
+      const { record } = new Patient(patient)
+      response.locals.uuidItems = record.parents.map((parent, index) => ({
+        text: `${parent.fullName} (${parent.relationship})`,
+        hint: { text: parent.tel },
+        value: `parent-${index + 1}`
+      }))
     }
 
     if (isSelfConsent) {
@@ -241,11 +239,14 @@ export const replyController = {
         case 'new': // Consent response is from a new contact
           reply.parent = {}
           break
-        case 'record': // Consent response is from CHIS record
-          reply.parent = patient.record.parent
-          break
         case 'self':
           reply.parent = false
+          break
+        case 'parent-1': // Consent response is from CHIS record
+          reply.parent = patient.record.parents[0]
+          break
+        case 'parent-2': // Consent response is from CHIS record
+          reply.parent = patient.record.parents[1]
           break
         default: // Consent response is an existing respondent
           // Store reply that needs marked as invalid

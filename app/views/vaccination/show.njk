@@ -24,12 +24,6 @@
       title: title
     }) }}
 
-    {% set parentValueHtml %}
-      {% set parent = record.parent %}
-      {{ record.parent.fullName }} ({{ record.parent.relationship }})<br>
-      <span class="nhsuk-u-secondary-text-color">{{ record.parent.tel }}</span>
-    {% endset %}
-
     {{ card({
       heading: __("record.label"),
       headingClasses: "nhsuk-heading-m",
@@ -44,9 +38,7 @@
           sex: {},
           postalCode: {},
           urn: {},
-          parent: {
-            value: parentValueHtml
-          }
+          parents: {}
         })
       })
     }) }}

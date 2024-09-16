@@ -59,13 +59,11 @@ export class Parent {
         : undefined
   }
 
-  static generate(childLastName, parentsOnly) {
-    const relationship = parentsOnly
-      ? faker.helpers.weightedArrayElement([
-          { value: ParentalRelationship.Mum, weight: 5 },
-          { value: ParentalRelationship.Dad, weight: 2 }
-        ])
+  static generate(childLastName, isMum) {
+    const relationship = isMum
+      ? ParentalRelationship.Mum
       : faker.helpers.weightedArrayElement([
+          { value: ParentalRelationship.Dad, weight: 3 },
           { value: ParentalRelationship.StepParent, weight: 3 },
           { value: ParentalRelationship.Grandparent, weight: 2 },
           { value: ParentalRelationship.Guardian, weight: 1 },

@@ -30,6 +30,17 @@ export function stringToBoolean(value) {
 }
 
 /**
+ * Format highlight
+ * @param {string|number} string - String
+ * @returns {string|undefined} Formatted HTML
+ */
+export function formatHighlight(string) {
+  if (!string) return
+
+  return `<mark class="app-highlight">${string}</mark>`
+}
+
+/**
  * Format link
  * @param {string} href - Hyperlink reference
  * @param {string} text - Hyperlink text
@@ -61,6 +72,11 @@ export function formatList(array) {
     return array
   }
 
+  // Only use list if more than one item in array
+  if (array.length === 1) {
+    return array[0]
+  }
+
   const list = array.map((item) => `- ${item}`)
   return formatMarkdown(list.join('\n'))
 }
@@ -90,17 +106,6 @@ export function formatMillilitres(string) {
   if (!string) return
 
   return `${string} ml`
-}
-
-/**
- * Format highlight
- * @param {string|number} string - String
- * @returns {string|undefined} Formatted HTML
- */
-export function formatHighlight(string) {
-  if (!string) return
-
-  return `<mark class="app-highlight">${string}</mark>`
 }
 
 /**
@@ -136,6 +141,22 @@ export function formatNhsNumber(string) {
   }
 
   return null
+}
+
+/**
+ * Format parent with optional display of telephone number
+ * @param {import('../models/reply.js').Parent} parent - Patent
+ * @returns {string|undefined} Formatted parent HTML
+ */
+export function formatParent(parent) {
+  if (!parent) return
+
+  let string = `${parent.fullName} (${parent.relationship})`
+  if (parent.tel) {
+    string += `<br><span class="nhsuk-u-secondary-text-color">${parent.tel}</span>`
+  }
+
+  return string
 }
 
 /**

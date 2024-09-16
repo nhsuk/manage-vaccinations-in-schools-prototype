@@ -4,7 +4,12 @@ import gpSurgeries from '../datasets/gp-surgeries.js'
 import schools from '../datasets/schools.js'
 import { Parent } from './parent.js'
 import { formatDate, getAge, getYearGroup } from '../utils/date.js'
-import { formatNhsNumber, formatYearGroup } from '../utils/string.js'
+import {
+  formatList,
+  formatNhsNumber,
+  formatParent,
+  formatYearGroup
+} from '../utils/string.js'
 
 const primarySchools = Object.values(schools).filter(
   (school) => school.phase === 'Primary'
@@ -54,7 +59,8 @@ export class Record {
     this.gpRegistered = options.gpRegistered
     this.gpSurgery = options.gpSurgery
     this.urn = options.urn
-    this.parent = options?.parent && new Parent(options.parent)
+    this.parent1 = options?.parent1 && new Parent(options.parent1)
+    this.parent2 = options?.parent2 && new Parent(options.parent2)
     this.vaccinations = options?.vaccinations || []
   }
 
@@ -79,13 +85,19 @@ export class Record {
       urn = faker.helpers.arrayElement(secondarySchools).urn
     }
 
-    const parent = Parent.generate(lastName, true)
+    const parent1 = Parent.generate(lastName, true)
+
+    let parent2
+    const addSecondParent = faker.datatype.boolean(0.5)
+    if (addSecondParent) {
+      parent2 = Parent.generate(lastName)
+    }
 
     // CHIS records provide only a subset of parent data
-    delete parent.email
-    delete parent.sms
-    delete parent.contactPreference
-    delete parent.contactPreferenceOther
+    delete parent1.email
+    delete parent1.sms
+    delete parent1.contactPreference
+    delete parent1.contactPreferenceOther
 
     return new Record({
       firstName,
@@ -100,7 +112,8 @@ export class Record {
       gpRegistered,
       gpSurgery,
       urn,
-      parent
+      parent1,
+      parent2
     })
   }
 
@@ -116,6 +129,10 @@ export class Record {
 
   get missingNhsNumber() {
     return !this.nhsn.match(/^\d{10}$/)
+  }
+
+  get fullName() {
+    return [this.firstName, this.lastName].join(' ')
   }
 
   get age() {
@@ -134,15 +151,21 @@ export class Record {
     return `${this.formatted.dob} (${this.formatted.yearGroup})`
   }
 
-  get fullName() {
-    return [this.firstName, this.lastName].join(' ')
-  }
-
   get postalCode() {
     return this.address.postalCode
   }
 
+  get parents() {
+    if (this.parent1 && this.parent2) {
+      return [this.parent1, this.parent2]
+    }
+
+    return [this.parent1]
+  }
+
   get formatted() {
+    const formattedParents = this.parents.map((parent) => formatParent(parent))
+
     return {
       nhsn: formatNhsNumber(this.nhsn),
       dob: formatDate(this.dob, {
@@ -154,7 +177,10 @@ export class Record {
         this.gpRegistered === GPRegistered.Yes
           ? this.gpSurgery
           : this.gpRegistered,
-      urn: schools[this.urn].name
+      urn: schools[this.urn].name,
+      parent1: formatParent(this.parent1),
+      parent2: formatParent(this.parent2),
+      parents: formatList(formattedParents)
     }
   }
 

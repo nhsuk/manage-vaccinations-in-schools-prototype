@@ -717,6 +717,15 @@
     },
     "actions": {
       "label": "Actions"
+    },
+    "parents": {
+      "label": "Parents or guardians"
+    },
+    "parent1": {
+      "label": "First parent or guardian"
+    },
+    "parent2": {
+      "label": "Second parent or guardian"
     }
   },
   "registration": {
