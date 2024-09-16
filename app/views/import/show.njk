@@ -1,0 +1,138 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("import.show.title", { import: import }) %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("programme.list.title"),
+      href: "/programmes"
+    }, {
+      text: data.programmes[import.programme_pid].type,
+      href: "/programmes/" + import.programme_pid
+    }],
+    text: __("programme.imports.title"),
+    href: "/programmes/" + import.programme_pid + "/imports"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("import.show.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(import, {
+        created: {},
+        created_user_uid: {
+          value: users[import.created_user_uid].fullName
+        },
+        programme_pid: {
+          value: data.programmes[import.programme_pid].type
+        },
+        type: {},
+        invalid: {
+          value: __n("import.invalid.count", import.invalid)
+        } if import.type == ImportType.Report,
+        devoid: {
+          value: __n("import.devoid.count", import.devoid)
+        },
+        duplicate: {
+          value: __n("import.duplicate.count", import.duplicate)
+        }
+      })
+    })
+  }) }}
+
+  {% set duplicateRecordRows = [] %}
+  {% for record in duplicates %}
+    {% set duplicateRecordRows = duplicateRecordRows | push([
+      {
+        header: __("record.fullName.label"),
+        html: record.fullName
+      },
+      {
+        header: __("import.issue.label"),
+        html: __("import.issue.text")
+      },
+      {
+        header: __("import.actions.label"),
+        html: actionList({
+          items: [{
+            text: "Review",
+            href: import.uri + "/review/" + record.nhsn
+          }]
+        })
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    id: "duplicate-records",
+    sort: "name",
+    panel: true,
+    heading: __n("import.duplicate.count", import.duplicate),
+    responsive: true,
+    head: [
+      {
+        text: __("record.label"),
+        attributes: { "no-sort": "no-sort" }
+      },
+      {
+        text: __("import.issue.label"),
+        attributes: { "no-sort": "no-sort" }
+      },
+      {
+        text: __("import.actions.label"),
+        attributes: { "no-sort": "no-sort" }
+      }
+    ],
+    rows: duplicateRecordRows
+  }) if duplicates.length }}
+
+  {% set recordRows = [] %}
+  {% for record in import.records %}
+    {% set recordRows = recordRows | push([
+      {
+        header: __("record.fullName.label"),
+        html: link(record.vaccination.uri, record.fullName) if record.vaccination else record.fullName
+      },
+      {
+        header: __("record.nhsn.label"),
+        html: record.formatted.nhsn or "Not provided"
+      },
+      {
+        header: __("record.dob.label"),
+        html: record.formatted.dob
+      },
+      {
+        header: __("record.postalCode.label"),
+        text: record.postalCode
+      } if import.type == ImportType.Cohort, {
+        header: __("vaccination.created.label"),
+        text: record.vaccination.formatted.created_date
+      } if import.type == ImportType.Report
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    id: "vaccinations",
+    sort: "name",
+    panel: true,
+    heading: __n("import.records.count", import.records.length),
+    responsive: true,
+    head: [
+      { text: __("record.fullName.label") },
+      { text: __("record.nhsn.label") },
+      { text: __("record.dob.label") },
+      { text: __("record.postalCode.label") } if import.type == ImportType.Cohort,
+      { text: __("vaccination.created.label") } if import.type == ImportType.Report
+    ],
+    rows: recordRows
+  }) }}
+{% endblock %}

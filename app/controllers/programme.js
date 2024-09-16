@@ -1,10 +1,10 @@
 import { getResults, getPagination } from '../utils/pagination.js'
 import { Cohort } from '../models/cohort.js'
+import { Import } from '../models/import.js'
 import { Programme } from '../models/programme.js'
 import { Record } from '../models/record.js'
 import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
-import { Upload } from '../models/upload.js'
 import { Vaccination } from '../models/vaccination.js'
 
 export const programmeController = {
@@ -70,13 +70,15 @@ export const programmeController = {
           return vaccination
         })
 
-      // Vaccination records uploaded to programme
-      if (data.features.uploads.on) {
-        programme.uploads = Object.values(data.uploads)
-          .filter((upload) => upload.programme_pid === programme.pid)
-          .map((upload) => new Upload(upload))
+      programme.imports = Object.values(data.imports)
+        .filter((_import) => _import.programme_pid === programme.pid)
+        .map((_import) => new Import(_import))
 
-        programme.reviews = programme.vaccinations.slice(0, 3)
+      // Only mock issues with imported records if there are imports
+      if (programme.imports.length) {
+        programme.reviews = programme.imports[0].records
+          .slice(0, 3)
+          .map((record) => new Record(record))
       }
 
       return programme
@@ -97,15 +99,15 @@ export const programmeController = {
 
     const programme = programmes.find((programme) => programme.pid === pid)
 
-    response.locals.programme = programme
+    request.app.locals.programme = programme
 
     next()
   },
 
   show(request, response) {
+    const { programme } = request.app.locals
     const view = request.params.view || 'show'
     let { page, limit } = request.query
-    const { programme } = response.locals
     const { vaccinations } = programme
 
     // Paginate

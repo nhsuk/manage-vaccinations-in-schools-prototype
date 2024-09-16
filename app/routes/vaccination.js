@@ -19,8 +19,4 @@ router.all('/:uuid/?:form(new|edit)/:view', vaccinationController.readForm)
 router.get('/:uuid/?:form(new|edit)/:view', vaccinationController.showForm)
 router.post('/:uuid/?:form(new|edit)/:view', vaccinationController.updateForm)
 
-router.use('/:uuid/review', vaccinationController.readReview)
-router.get('/:uuid/review', vaccinationController.showReview)
-router.post('/:uuid/review', vaccinationController.updateReview)
-
 export const vaccinationRoutes = router

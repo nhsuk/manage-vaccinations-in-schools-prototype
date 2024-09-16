@@ -192,40 +192,5 @@ export const patientController = {
 
     request.flash('success', __(`patient.success.invite`, { session }))
     response.redirect(patient.uri)
-  },
-
-  readReview(request, response, next) {
-    const { back } = request.app.locals
-    const { patient } = response.locals
-    const { referrer } = request.query
-
-    request.app.locals.back = referrer || back || patient.uri
-
-    // Fake issue with date of birth field
-    const duplicateRecord = new Record(patient.record)
-    const dob = new Date(duplicateRecord.dob)
-    dob.setFullYear(dob.getFullYear() - 2)
-    duplicateRecord.dob = dob
-
-    response.locals.duplicateRecord = duplicateRecord
-
-    next()
-  },
-
-  showReview(request, response) {
-    response.render('patient/review')
-  },
-
-  updateReview(request, response) {
-    const { back } = request.app.locals
-    const { decision } = request.body
-    const { __ } = response.locals
-
-    // Doesn’t change any values, but shows a confirmation message
-    if (decision === 'duplicate') {
-      request.flash('success', __('patient.success.update'))
-    }
-
-    response.redirect(back)
   }
 }

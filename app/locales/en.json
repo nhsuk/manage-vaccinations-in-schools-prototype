@@ -82,6 +82,9 @@
     "list": {
       "title": "All cohorts"
     },
+    "import": {
+      "label": "Import child records"
+    },
     "records": {
       "count": {
         "one": "%s child",
@@ -538,6 +541,144 @@
   "healthAnswers": {
     "label": "All answers to health questions"
   },
+  "import": {
+    "label": "Record import",
+    "success": {
+      "create": "%s records imported",
+      "update": "Record updated with values from duplicate record"
+    },
+    "show": {
+      "title": "Import ({{import.formatted.created}})",
+      "summary": "Details"
+    },
+    "new": {
+      "label": "Import records",
+      "check-answers": {
+        "title": "Check and confirm",
+        "confirm": "Import records",
+        "summary": "Details",
+        "issues": "Imported records will differ from the file"
+      },
+      "count": {
+        "one": "%s new record",
+        "other": "[0] No new records|%s new records"
+      }
+    },
+    "review": {
+      "title": "Review duplicate child record",
+      "duplicate": {
+        "label": "Duplicate record",
+        "record": "Duplicate child record",
+        "vaccination": "Duplicate vaccination record"
+      },
+      "original": {
+        "label": "Existing record",
+        "record": "Existing child record",
+        "vaccination": "Existing vaccination record"
+      },
+      "decision": {
+        "label": "Which record do you want to keep?",
+        "duplicate": {
+          "label": "Use duplicate record",
+          "hint": "The duplicate record will replace the existing child record."
+        },
+        "original": {
+          "label": "Keep previously imported record",
+          "hint": "The existing record will be kept and the duplicate record will be discarded."
+        }
+      },
+      "confirm": "Resolve duplicate",
+      "issue": {
+        "label": "Issue to review",
+        "title": "This record needs reviewing",
+        "text": "A field in a duplicate record does not match an existing child record"
+      },
+      "actions": {
+        "label": "Actions"
+      }
+    },
+    "file": {
+      "title": "Import {{type}}",
+      "hint": "{{prefix}}Make sure the CSV you import has the same format as your usual template for {{type}}.",
+      "format": "How to format your cohort import",
+      "confirm": "Continue",
+      "errors": {
+        "invalid": "The selected file must be a CSV"
+      }
+    },
+    "errors": {
+      "title": "Records cannot be imported",
+      "description": "The records cannot be imported due to errors in the CSV file. When fixing these errors, note that the header does not count as a row."
+    },
+    "devoid": {
+      "label": "Previously imported",
+      "title": "Records already imported",
+      "description": "All records in this CSV file have been imported.",
+      "count": {
+        "one": "%s previously imported record was omitted",
+        "other": "[0] No previously imported record were omitted|%s previously imported records were omitted"
+      }
+    },
+    "duplicate": {
+      "label": "Duplicates",
+      "count": {
+        "one": "%s duplicate record needs review",
+        "other": "[0] No duplicate records need review|%s duplicate records need review"
+      }
+    },
+    "invalid": {
+      "label": "Missing vaccination",
+      "count": {
+        "one": "%s record for a child who was not vaccinated were omitted",
+        "other": "[0] No records for children who were not vaccinated were omitted|%s records for children who were not vaccinated were omitted"
+      }
+    },
+    "incomplete": {
+      "label": "Incomplete",
+      "count": {
+        "one": "%s record without an NHS number will use information from the Personal Demographics Service (PDS)",
+        "other": "[0] No records without NHS numbers will use information from the Personal Demographics Service (PDS)|%s records without NHS numbers will use information from the Personal Demographics Service (PDS)"
+      }
+    },
+    "id": {
+      "label": "ID"
+    },
+    "created": {
+      "label": "Imported on"
+    },
+    "created_user_uid": {
+      "label": "Imported by"
+    },
+    "programme_pid": {
+      "label": "Programme"
+    },
+    "type": {
+      "label": "Import type",
+      "title": "What type of records are you importing?",
+      "hint": {
+        "Cohort": "Records of children from a CHIS, local authority or school, used to create cohorts",
+        "Report": "Records of previous vaccinations to be reported to GPs and/or NHS England"
+      }
+    },
+    "vaccinations": {
+      "label": "Vaccination records"
+    },
+    "records": {
+      "label": "Records",
+      "count": {
+        "one": "%s record",
+        "other": "[0] No records|%s records"
+      }
+    },
+    "actions": {
+      "label": "Actions"
+    },
+    "issue": {
+      "label": "Issue to review",
+      "title": "This record needs reviewing",
+      "text": "A field in a duplicate record does not match that in a previously imported record"
+    }
+  },
   "outcome": {
     "label": "Outcome",
     "NoOutcomeYet": {
@@ -616,37 +757,6 @@
     "invite": {
       "title": "Invite to session",
       "confirm": "Invite"
-    },
-    "review": {
-      "title": "Review duplicate child record",
-      "duplicate": {
-        "label": "Duplicate record",
-        "record": "Duplicate child record"
-      },
-      "original": {
-        "label": "Existing record",
-        "record": "Existing child record"
-      },
-      "decision": {
-        "label": "Which record do you want to keep?",
-        "duplicate": {
-          "label": "Use duplicate record",
-          "hint": "The duplicate record will replace the existing child record."
-        },
-        "original": {
-          "label": "Keep previously uploaded record",
-          "hint": "The existing record will be kept and the duplicate record will be discarded."
-        }
-      },
-      "confirm": "Resolve duplicate",
-      "issue": {
-        "label": "Issue to review",
-        "title": "This record needs reviewing",
-        "text": "A field in a duplicate record does not match an existing child record"
-      },
-      "actions": {
-        "label": "Actions"
-      }
     }
   },
   "record": {
@@ -1254,88 +1364,6 @@
       "label": "Pre-screening notes"
     }
   },
-  "upload": {
-    "label": "Vaccination record upload",
-    "success": {
-      "create": "%s vaccination records uploaded"
-    },
-    "show": {
-      "title": "Upload ({{upload.formatted.created}})",
-      "summary": "Details"
-    },
-    "new": {
-      "label": "Upload new vaccination records",
-      "check-answers": {
-        "title": "Check and confirm",
-        "warning": "Uploaded records will differ from the file",
-        "confirm": "Upload records",
-        "summary": "Details"
-      },
-      "count": {
-        "one": "%s new vaccination record",
-        "other": "[0] No new vaccination records|%s new vaccination records"
-      }
-    },
-    "import": {
-      "title": "Upload {{programme.formatted.type}} vaccination records",
-      "hint": "{{prefix}}Make sure the CSV you upload has the same format as your usual reporting template.",
-      "confirm": "Continue",
-      "errors": {
-        "invalid": "The selected file must be a CSV"
-      }
-    },
-    "errors": {
-      "title": "Vaccination records cannot be uploaded",
-      "description": "The records cannot be uploaded due to errors in the CSV file. When fixing these errors, note that the header does not count as a row."
-    },
-    "devoid": {
-      "title": "Vaccination records already uploaded",
-      "description": "All records in this CSV file have been uploaded."
-    },
-    "exact": {
-      "label": "Previously uploaded",
-      "count": {
-        "one": "%s previously uploaded record was omitted",
-        "other": "[0] No previously uploaded record were omitted|%s previously uploaded records were omitted"
-      }
-    },
-    "inexact": {
-      "label": "Duplicates",
-      "count": {
-        "one": "%s duplicate record needs review",
-        "other": "[0] No duplicate records need review|%s duplicate records need review"
-      }
-    },
-    "invalid": {
-      "label": "Missing vaccination",
-      "count": {
-        "one": "%s record for a child who was not vaccinated were omitted",
-        "other": "[0] No records for children who were not vaccinated were omitted|%s records for children who were not vaccinated were omitted"
-      }
-    },
-    "incomplete": {
-      "label": "Incomplete",
-      "count": {
-        "one": "%s record without an NHS number will use information from the Personal Demographics Service (PDS)",
-        "other": "[0] No records without NHS numbers will use information from the Personal Demographics Service (PDS)|%s records without NHS numbers will use information from the Personal Demographics Service (PDS)"
-      }
-    },
-    "id": {
-      "label": "ID"
-    },
-    "created": {
-      "label": "Uploaded on"
-    },
-    "created_user_uid": {
-      "label": "Uploaded by"
-    },
-    "programme_pid": {
-      "label": "Programme"
-    },
-    "vaccinations": {
-      "label": "Vaccination records"
-    }
-  },
   "vaccination": {
     "label": "Vaccination record",
     "show": {
@@ -1351,6 +1379,9 @@
     },
     "decline": {
       "title": "Why was the {{vaccine.name}} vaccine not given?"
+    },
+    "import": {
+      "label": "Import vaccination records"
     },
     "new": {
       "check-answers": {
@@ -1460,30 +1491,22 @@
         "vaccination": "Duplicate vaccination record"
       },
       "original": {
-        "label": "Previously uploaded record",
-        "record": "Previously uploaded child record",
-        "vaccination": "Previously uploaded vaccination record"
+        "label": "Previously imported record",
+        "record": "Previously imported child record",
+        "vaccination": "Previously imported vaccination record"
       },
       "decision": {
         "label": "Which record do you want to keep?",
         "duplicate": {
           "label": "Use duplicate record",
-          "hint": "The duplicate record will replace the previously uploaded record."
+          "hint": "The duplicate record will replace the previously imported record."
         },
         "original": {
-          "label": "Keep previously uploaded record",
-          "hint": "The previously uploaded record will be kept and the duplicate record will be discarded."
+          "label": "Keep previously imported record",
+          "hint": "The previously imported record will be kept and the duplicate record will be discarded."
         }
       },
-      "confirm": "Resolve duplicate",
-      "issue": {
-        "label": "Issue to review",
-        "title": "This record needs reviewing",
-        "text": "A field in a duplicate record does not match that in a previously uploaded record"
-      },
-      "actions": {
-        "label": "Actions"
-      }
+      "confirm": "Resolve duplicate"
     }
   },
   "vaccine": {
@@ -1615,19 +1638,19 @@
       }
     },
     "reviews": {
-      "label": "Upload issues",
-      "title": "Upload issues",
+      "label": "Import issues",
+      "title": "Import issues",
       "count": {
-        "one": "%s uploaded record needs review",
-        "other": "[0] No uploaded records need review|%s uploaded records need review"
+        "one": "%s imported record needs review",
+        "other": "[0] No imported records need review|%s imported records need review"
       }
     },
-    "uploads": {
-      "label": "Uploads",
-      "title": "Uploads",
+    "imports": {
+      "label": "Imports",
+      "title": "Imports",
       "count": {
-        "one": "%s upload",
-        "other": "[0] No uploads|%s uploads"
+        "one": "%s import",
+        "other": "[0] No imports|%s imports"
       }
     },
     "vaccinations": {
@@ -1649,6 +1672,20 @@
     },
     "vaccines": {
       "label": "Vaccines administered"
+    }
+  },
+  "undefined": {
+    "nhsn": {
+      "label": "undefined.nhsn.label"
+    },
+    "dob": {
+      "label": "undefined.dob.label"
+    },
+    "sex": {
+      "label": "undefined.sex.label"
+    },
+    "urn": {
+      "label": "undefined.urn.label"
     }
   }
 }

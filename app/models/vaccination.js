@@ -77,7 +77,7 @@ export class VaccinationProtocol {
  * @property {string} [batch_id] - Batch ID
  * @property {string} [batch_expires] - Batch expiry date
  * @property {string} [vaccine_gtin] - Vaccine GTIN
- * @property {boolean} [_pending] - Pending upload
+ * @property {boolean} [_pending] - Pending import
  * @function ns - Namespace
  * @function uri - URL
  */
@@ -106,7 +106,7 @@ export class Vaccination {
     this.batch_id = this.given ? options?.batch_id || '' : undefined
     this.batch_expires = this.given ? options?.batch_expires || '' : undefined
     this.vaccine_gtin = this.given ? options?.vaccine_gtin || '' : undefined
-    // Upload mocking
+    // Import mocking
     this._pending = options?._pending || false
     // dateInput objects
     this.created_ = options?.created_

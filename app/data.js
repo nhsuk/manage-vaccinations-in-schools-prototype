@@ -3,6 +3,7 @@ import process from 'node:process'
 import vaccines from './datasets/vaccines.js'
 const batches = JSON.parse(readFileSync('.data/batches.json'))
 const cohorts = JSON.parse(readFileSync('.data/cohorts.json'))
+const imports = JSON.parse(readFileSync('.data/imports.json'))
 const organisations = JSON.parse(readFileSync('.data/organisations.json'))
 const patients = JSON.parse(readFileSync('.data/patients.json'))
 const programmes = JSON.parse(readFileSync('.data/programmes.json'))
@@ -24,13 +25,14 @@ export default {
   batches,
   cohorts,
   features: {
-    uploads: {
-      on: process.env.FEATURE_UPLOADS === 'true',
-      name: 'Uploads',
+    imports: {
+      on: process.env.FEATURE_PENDING_VACCINATIONS === 'true',
+      name: 'Import vaccinations',
       description:
-        'Require vaccinations to be uploaded before appearing on CHIS records.'
+        'Require vaccinations to be imported before appearing on CHIS records.'
     }
   },
+  imports,
   organisation: Object.values(organisations)[0],
   organisations,
   patients,
@@ -38,7 +40,6 @@ export default {
   records,
   schools,
   sessions,
-  uploads: {},
   users,
   vaccinations,
   vaccines,

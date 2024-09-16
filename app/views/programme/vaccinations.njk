@@ -28,10 +28,16 @@
     {{ __("programme.vaccinations.title") }}
   </h2>
 
+  {{ button({
+    classes: "app-button--secondary nhsuk-u-margin-bottom-0",
+    text: __("vaccination.import.label"),
+    href: programme.uri + "/imports/new?type=" + ImportType.Report
+  }) }}
+
   {% set missingNhsNumber = programme.vaccinations | where("record.missingNhsNumber", true) %}
 
   {{ insetText({
-    classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4",
+    classes: "nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-4",
     html: __n("record.missingNhsNumber.count", missingNhsNumber | length) | nhsukMarkdown
   }) if missingNhsNumber.length }}
 
@@ -82,7 +88,5 @@
     {{ govukPagination(pages) }}
 
     {{ __("vaccination.results", { results: results }) | nhsukMarkdown }}
-  {% else %}
-    {{ __n("vaccination.count", 0) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

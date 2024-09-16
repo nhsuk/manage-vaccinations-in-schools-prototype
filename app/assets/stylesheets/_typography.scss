@@ -17,7 +17,6 @@ li code,
 p code,
 td code {
   background-color: $color_nhsuk-white;
-  color: #dd1144;
+  color: $color_nhsuk-red;
   padding: 2px nhsuk-spacing(2);
-  word-break: break-word;
 }

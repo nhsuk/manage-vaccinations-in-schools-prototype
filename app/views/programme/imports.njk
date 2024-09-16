@@ -1,0 +1,86 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = programme.name + " – " + __("programme.imports.title") %}
+{% set view = "imports" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("programme.list.title"),
+      href: "/programmes"
+    }],
+    text: programme.name,
+    href: programme.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: programme.name,
+    summary: programme.cycle
+  }) }}
+
+  {% include "programme/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("programme.imports.title") }}
+  </h2>
+
+  {{ button({
+    classes: "app-button--secondary nhsuk-u-margin-bottom-0",
+    text: __("import.new.label"),
+    href: programme.uri + "/imports/new"
+  }) }}
+
+  {% if programme.imports.length %}
+    {% set importRows = [] %}
+    {% for import in programme.imports | sort(false, false, "created") %}
+      {% set importRows = importRows | push([
+        {
+          header: __("import.created.label"),
+          html: link(import.uri, import.formatted.created),
+          attributes: {
+            "data-col": "created",
+            "data-sort": import.created
+          }
+        },
+        {
+          header: __("import.created_user_uid.label"),
+          html: users[import.created_user_uid].fullName or "Not provided"
+        },
+        {
+          header: __("import.type.label"),
+          html: import.type or "None"
+        },
+        {
+          header: __("import.records.label"),
+          html: import.records.length or "None",
+          format: "numeric"
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "imports",
+      sort: "created",
+      heading: __n("programme.imports.count", programme.imports.length) ,
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("import.created.label") },
+        { text: __("import.created_user_uid.label") },
+        { text: __("import.type.label") },
+        {
+          text: __("import.records.label"),
+          format: "numeric",
+          attributes: {
+            "no-sort": "no-sort"
+          }
+        }
+      ],
+      rows: importRows
+    }) }}
+  {% endif %}
+{% endblock %}

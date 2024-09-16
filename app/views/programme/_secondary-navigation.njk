@@ -20,10 +20,10 @@
     href: programme.uri + "/vaccinations",
     current: view == "vaccinations"
   }, {
-    text: __("programme.uploads.label"),
-    href: programme.uri + "/uploads",
-    current: view == "uploads"
-  } if data.features.uploads.on, {
+    text: __("programme.imports.label"),
+    href: programme.uri + "/imports",
+    current: view == "imports"
+  }, {
     text: (__("programme.reviews.label") + " " + count(programme.reviews.length)) | safe,
     href: programme.uri + "/reviews",
     current: view == "reviews"

@@ -19,7 +19,7 @@ export class DownloadFormat {
  * @class Vaccination report download
  * @property {string} id - Download ID
  * @property {string} created - Created date
- * @property {string} [created_user_uid] - User who created upload
+ * @property {string} [created_user_uid] - User who created download
  * @property {string} [programme_pid] - Programme ID
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
  * @property {Array<string>} [providers] - Vaccination UUIDs

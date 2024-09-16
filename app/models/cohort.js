@@ -27,7 +27,7 @@ export function getRecordsFromYearGroup(records, yearGroup) {
  * @property {string} [created_user_uid] - User who created cohort
  * @property {ProgrammeCycle} cycle - Programme cycle
  * @property {number} yearGroup - Year group
- * @property {Map<Record>} records - Records
+ * @property {Array<string>} records - Records NHS numbers
  * @property {string} [programme_pid] - Programme ID
  * @property {ProgrammeType} [programme_type] - Programme type
  * @function ns - Namespace

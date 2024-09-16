@@ -1,0 +1,141 @@
+{% extends "_layouts/form.njk" %}
+
+{% set gridColumns = "full" %}
+{% set title = __("import.review.title") %}
+{% set confirmButtonText = __("import.review.confirm") %}
+
+{% block form %}
+  {{ super() }}
+
+  {{ heading({
+    caption: record.fullName,
+    title: title
+  }) }}
+
+  {{ warningCallout({
+    heading: __("import.issue.title"),
+    HTML: __("import.issue.text") | nhsukMarkdown
+  }) }}
+
+  <div class="nhsuk-grid-row nhsuk-card-group">
+    <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+      {% set descriptionHtml %}
+        <h3 class="nhsuk-heading-s">{{ __("import.review.duplicate.record") }}</h3>
+
+        {{ summaryList({
+          rows: summaryRows(duplicateRecord, {
+            nhsn: {},
+            fullName: {},
+            dob: {
+              value: duplicateRecord.formatted.dob | highlightDifference(record.formatted.dob)
+            },
+            sex: {},
+            postalCode: {},
+            urn: {}
+          })
+        }) }}
+
+        {% if duplicateRecord.vaccination %}
+          <h3 class="nhsuk-heading-s">{{ __("import.review.duplicate.vaccination") }}</h3>
+          {{ summaryList({
+            rows: summaryRows(duplicateRecord.vaccination, {
+              outcome: {},
+              vaccine_gtin: {},
+              method: {},
+              site: {},
+              dose: {},
+              sequence: {},
+              batch_id: {},
+              batch_expires: {},
+              location: {},
+              created: {},
+              created: {
+                value: duplicateVaccination.formatted.created | highlightDifference(vaccination.formatted.created)
+              },
+              updated: {},
+              created_user_uid: {
+                value: users[vaccination.created_user_uid].fullName
+              },
+              protocol: {}
+            })
+          }) }}
+        {% endif %}
+      {% endset %}
+
+      {{ card({
+        feature: true,
+        heading: __("import.review.duplicate.label"),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: descriptionHtml
+      }) }}
+    </div>
+    <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+      {% set descriptionHtml %}
+        <h3 class="nhsuk-heading-s">{{ __("import.review.original.record") }}</h3>
+
+        {{ summaryList({
+          rows: summaryRows(record, {
+            nhsn: {},
+            fullName: {},
+            dob: {},
+            sex: {},
+            postalCode: {},
+            urn: {}
+          })
+        }) }}
+
+        {% if record.vaccination %}
+          <h3 class="nhsuk-heading-s">{{ __("import.review.original.vaccination") }}</h3>
+          {{ summaryList({
+            rows: summaryRows(vaccination, {
+              outcome: {},
+              vaccine_gtin: {},
+              method: {},
+              site: {},
+              dose: {},
+              sequence: {},
+              batch_id: {},
+              batch_expires: {},
+              location: {},
+              created: {},
+              updated: {},
+              created_user_uid: {
+                value: users[vaccination.created_user_uid].fullName
+              },
+              protocol: {}
+            })
+          }) }}
+        {% endif %}
+      {% endset %}
+
+      {{ card({
+        feature: true,
+        heading: __("import.review.original.label"),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: descriptionHtml
+      }) }}
+    </div>
+  </div>
+
+  {{ radios({
+    formGroup: {
+      classes: "nhsuk-u-width-one-half"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("import.review.decision.label")
+      }
+    },
+    items: [{
+      text: __("import.review.decision.duplicate.label"),
+      hint: { text: __("import.review.decision.duplicate.hint") },
+      value: "duplicate"
+    }, {
+      text: __("import.review.decision.original.label"),
+      hint: { text: __("import.review.decision.original.hint") },
+      value: "original"
+    }],
+    decorate: "decision"
+  }) }}
+{% endblock %}

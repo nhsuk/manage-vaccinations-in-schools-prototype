@@ -30,22 +30,22 @@
 
   {% if programme.reviews.length %}
     {% set reviewRows = [] %}
-    {% for vaccination in programme.reviews %}
+    {% for record in programme.reviews %}
       {% set reviewRows = reviewRows | push([
         {
           header: __("record.fullName.label"),
-          html: vaccination.record.fullName
+          html: record.fullName
         },
         {
-          header: __("vaccination.review.issue.label"),
-          html: __("vaccination.review.issue.text")
+          header: __("import.issue.label"),
+          html: __("import.issue.text")
         },
         {
-          header: __("vaccination.review.actions.label"),
+          header: __("import.actions.label"),
           html: actionList({
             items: [{
               text: "Review",
-              href: vaccination.uri + "/review"
+              href: "#"
             }]
           })
         }
@@ -64,11 +64,11 @@
           attributes: { "no-sort": "no-sort" }
         },
         {
-          text: __("vaccination.review.issue.label"),
+          text: __("import.issue.label"),
           attributes: { "no-sort": "no-sort" }
         },
         {
-          text: __("vaccination.review.actions.label"),
+          text: __("import.actions.label"),
           attributes: { "no-sort": "no-sort" }
         }
       ],

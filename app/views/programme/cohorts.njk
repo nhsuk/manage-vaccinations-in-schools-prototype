@@ -28,6 +28,12 @@
     {{ __("programme.cohorts.title") }}
   </h2>
 
+  {{ button({
+    classes: "app-button--secondary",
+    text: __("cohort.import.label"),
+    href: programme.uri + "/imports/new?type=" + ImportType.Cohort
+  }) }}
+
   <ul class="nhsuk-grid-row nhsuk-card-group">
   {% for cohort in programme.cohorts | sort(false, false, "yearGroup") %}
     <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">

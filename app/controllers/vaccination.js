@@ -33,47 +33,6 @@ export const vaccinationController = {
     response.render('vaccination/show')
   },
 
-  readReview(request, response, next) {
-    const { back, record, vaccination } = request.app.locals
-    const { referrer } = request.query
-
-    request.app.locals.back = referrer || back || vaccination.uri
-
-    // Fake issue with date of birth field
-    const duplicateRecord = new Record(record)
-    const dob = new Date(duplicateRecord.dob)
-    dob.setFullYear(dob.getFullYear() - 2)
-    duplicateRecord.dob = dob
-
-    // Fake issue with date of vaccination field
-    const duplicateVaccination = new Vaccination(vaccination)
-    const created = new Date(duplicateVaccination.created)
-    created.setMonth(dob.getMonth() - 1)
-    duplicateVaccination.created = created
-
-    response.locals.duplicateRecord = duplicateRecord
-    response.locals.duplicateVaccination = duplicateVaccination
-
-    next()
-  },
-
-  showReview(request, response) {
-    response.render('vaccination/review')
-  },
-
-  updateReview(request, response) {
-    const { back } = request.app.locals
-    const { decision } = request.body
-    const { __ } = response.locals
-
-    // Doesn’t change any values, but shows a confirmation message
-    if (decision === 'duplicate') {
-      request.flash('success', __('vaccination.success.update'))
-    }
-
-    response.redirect(back)
-  },
-
   redirect(request, response) {
     const { id, nhsn } = request.params
 
@@ -160,7 +119,7 @@ export const vaccinationController = {
     patient.capture = updatedVaccination
 
     // Add vaccination directly to CHIS record
-    if (!data.features.uploads.on && !updatedVaccination.updated) {
+    if (!data.features.imports.on && !updatedVaccination.updated) {
       data.records[patient.nhsn].vaccinations.push(updatedVaccination.uuid)
     }
 

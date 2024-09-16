@@ -20,6 +20,7 @@ import {
   SessionTime,
   SessionStatus
 } from '../models/session.js'
+import { ImportType } from '../models/import.js'
 import { UserRole } from '../models/user.js'
 import {
   VaccinationMethod,
@@ -44,6 +45,7 @@ export const enumeration = (request, response, next) => {
   response.locals.GillickCompetent = GillickCompetent
   response.locals.GPRegistered = GPRegistered
   response.locals.HealthQuestion = HealthQuestion
+  response.locals.ImportType = ImportType
   response.locals.ParentalRelationship = ParentalRelationship
   response.locals.PatientOutcome = PatientOutcome
   response.locals.PreScreenQuestion = PreScreenQuestion
