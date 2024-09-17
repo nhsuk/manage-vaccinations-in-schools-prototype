@@ -1,6 +1,10 @@
-import { ProgrammeCycle, ProgrammeType } from './programme.js'
+import { ProgrammeType } from './programme.js'
 import { Record } from './record.js'
 import { formatYearGroup } from '../utils/string.js'
+
+export class AcademicYear {
+  static Y2024 = '2024/25'
+}
 
 /**
  * Get NHS Numbers of CHIS records within year group
@@ -25,7 +29,7 @@ export function getRecordsFromYearGroup(records, yearGroup) {
  * @property {string} uid - UID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created cohort
- * @property {ProgrammeCycle} cycle - Programme cycle
+ * @property {AcademicYear} year - Academic year
  * @property {number} yearGroup - Year group
  * @property {Array<string>} records - Records NHS numbers
  * @property {string} [programme_pid] - Programme ID
@@ -36,7 +40,7 @@ export function getRecordsFromYearGroup(records, yearGroup) {
 export class Cohort {
   constructor(options) {
     this.created_user_uid = options?.created_user_uid
-    this.cycle = options?.cycle || ProgrammeCycle.Y2024
+    this.year = options?.year || AcademicYear.Y2024
     this.yearGroup = options?.yearGroup
     this.records = options?.records || []
     this.programme_pid = options?.programme_pid
@@ -62,17 +66,15 @@ export class Cohort {
   }
 
   get created() {
-    return `${this.year}-08-01`
+    const year = this.year.split('/')[0]
+
+    return `${year}-08-01`
   }
 
   get name() {
     const type = ProgrammeType[this.programme_type]
 
-    return `${type} ${this.cycle} (${this.formatted.yearGroup})`
-  }
-
-  get year() {
-    return this.cycle.split('/')[0]
+    return `${type} ${this.formatted.yearGroup} (${this.year})`
   }
 
   get formatted() {

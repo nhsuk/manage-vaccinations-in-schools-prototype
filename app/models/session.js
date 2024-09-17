@@ -11,7 +11,7 @@ import {
 } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 import { getConsentWindow } from '../utils/session.js'
-import { programmeSchedule, ProgrammeStatus } from './programme.js'
+import { ProgrammeStatus, programmeTypes } from './programme.js'
 
 export class ConsentWindow {
   static Opening = 'Opening'
@@ -109,7 +109,7 @@ export class Session {
         break
       case SessionStatus.Planned:
         // Session will take place according programme schedule
-        let { from, to } = programmeSchedule[programme.cycle][programme.type]
+        let { from, to } = programmeTypes[programme.type].schedule
         // Sessions start after first content window closes
         from = addDays(from, consentWindowDuration)
         date = faker.date.between({ from, to })

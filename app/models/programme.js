@@ -4,14 +4,6 @@ import { Vaccine } from './vaccine.js'
 import { isBetweenDates, getToday } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 
-export class ProgrammeCycle {
-  static Y2020 = '2020/21'
-  static Y2021 = '2021/22'
-  static Y2022 = '2022/23'
-  static Y2023 = '2023/24'
-  static Y2024 = '2024/25'
-}
-
 export class ProgrammeStatus {
   static Planned = 'Planned'
   static Current = 'Current'
@@ -28,6 +20,7 @@ export class ProgrammeType {
 export const programmeTypes = {
   [ProgrammeType.Flu]: {
     name: 'Flu',
+    schedule: { from: '2024-09-03', to: '2024-12-13' }, // Autumn 2024
     seasonal: true,
     slug: 'flu',
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -35,38 +28,32 @@ export const programmeTypes = {
   },
   [ProgrammeType.HPV]: {
     name: 'HPV',
+    schedule: { from: '2025-01-06', to: '2025-04-11' }, // Spring 2025
     slug: 'hpv',
     yearGroups: [8, 9, 10, 11],
     vaccines: ['00191778001693']
   },
   [ProgrammeType.TdIPV]: {
     name: 'Td/IPV (3-in-1 teenage booster)',
+    schedule: { from: '2025-04-28', to: '2025-07-21' }, // Summer 2025
     slug: 'td-ipv',
     yearGroups: [9, 10, 11],
     vaccines: ['3664798042948']
   },
   [ProgrammeType.MenACWY]: {
     name: 'MenACWY',
+    schedule: { from: '2025-04-28', to: '2025-07-21' }, // Summer 2025
     slug: 'menacwy',
     yearGroups: [9, 10, 11],
     vaccines: ['5415062370568']
   }
 }
 
-export const programmeSchedule = {
-  [ProgrammeCycle.Y2024]: {
-    [ProgrammeType.Flu]: { from: '2024-09-03', to: '2024-12-13' }, // Autumn
-    [ProgrammeType.HPV]: { from: '2025-01-06', to: '2025-04-11' }, // Spring
-    [ProgrammeType.TdIPV]: { from: '2025-04-28', to: '2025-07-21' }, // Summer
-    [ProgrammeType.MenACWY]: { from: '2025-04-28', to: '2025-07-21' } // Summer
-  }
-}
-
 /**
  * @class Programme
  * @property {Array[string]} cohorts - Programme cohorts
- * @property {ProgrammeCycle} cycle - Programme cycle
  * @property {string} name - Name
+ * @property {boolean} seasonal - Seasonal programme
  * @property {ProgrammeStatus} status - Status
  * @property {ProgrammeType} type - Programme type
  * @property {Array[number]} yearGroups - Year groups available to
@@ -78,8 +65,8 @@ export const programmeSchedule = {
 export class Programme {
   constructor(options) {
     this.cohorts = options?.cohorts || []
-    this.cycle = options?.cycle || ProgrammeCycle.Y2024
     this.name = options?.type && programmeTypes[options.type]?.name
+    this.seasonal = options?.type && programmeTypes[options.type]?.seasonal
     this.type = options?.type
     this.yearGroups = options?.type && programmeTypes[options.type]?.yearGroups
     this.vaccines = options?.type && programmeTypes[options.type]?.vaccines
@@ -90,7 +77,7 @@ export class Programme {
   }
 
   get status() {
-    const { from, to } = programmeSchedule[this.cycle][this.type]
+    const { from, to } = programmeTypes[this.type].schedule
 
     if (isBetweenDates(getToday(), from, to)) {
       return ProgrammeStatus.Current
@@ -105,14 +92,8 @@ export class Programme {
     return `${this.year}-09-01`
   }
 
-  get year() {
-    return this.cycle.split('/')[0]
-  }
-
   get pid() {
-    const { slug } = programmeTypes[this.type]
-
-    return `${slug}-${this.year}`
+    return programmeTypes[this.type].slug
   }
 
   /**

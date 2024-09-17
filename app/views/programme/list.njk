@@ -10,7 +10,7 @@
     title: title
   }) }}
 
-  {% for cycle, programmes in programmes | groupby("cycle") %}
+  {% for seasonal, programmes in programmes | groupby("seasonal") %}
     {% set programmeRows = [] %}
     {% for programme in programmes | sort(false, false, "name") %}
       {% set programmeRows = programmeRows | push([
@@ -33,14 +33,19 @@
       ]) %}
     {% endfor %}
 
-    {{ table({
+    {{ actionTable({
       id: "programmes",
       sort: "name",
-      heading: cycle,
+      heading: __("programme.list.seasonal") if seasonal == "true" else __("programme.list.adolescent"),
       panel: true,
       responsive: true,
       head: [
-        { text: __("programme.name.label") },
+        {
+          text: __("programme.name.label"),
+          attributes: {
+            style: "width: 40%"
+          }
+        },
         { text: __("programme.vaccines.label") },
         { text: __("programme.records.label") },
         { text: __("programme.vaccinations.label") }

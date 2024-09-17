@@ -91,9 +91,6 @@
         "other": "[0] No children|%s children"
       }
     },
-    "cycle": {
-      "label": "Programme year"
-    },
     "yearGroup": {
       "label": "Year group"
     }
@@ -1608,7 +1605,8 @@
     "list": {
       "title": "Programmes",
       "description": "Use this area to:\n- import child records\n- organise school sessions\n- report vaccinations",
-      "active": "Active programmes"
+      "adolescent": "Adolescent",
+      "seasonal": "Seasonal"
     },
     "show": {
       "label": "Overview",
@@ -1665,9 +1663,6 @@
         "one": "%s vaccination record",
         "other": "[0] No vaccination records|%s vaccination records"
       }
-    },
-    "cycle": {
-      "label": "Programme year"
     },
     "name": {
       "label": "Programme"
