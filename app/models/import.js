@@ -35,10 +35,13 @@ export class Import {
       this.type === ImportType.Report ? options?.invalid || 0 : undefined
   }
 
-  static generate(programme_pid, records, user) {
+  static generate(programme, records, user) {
+    const created = faker.date.recent({ days: 14, refDate: programme.start })
+
     return new Import({
+      created,
       created_user_uid: user.uid,
-      programme_pid,
+      programme_pid: programme.pid,
       records
     })
   }
