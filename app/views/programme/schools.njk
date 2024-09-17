@@ -36,7 +36,7 @@
     {% set schoolRows = schoolRows | push([
       {
         header: __("school.name.label"),
-        html: school.name or "Not provided",
+        html: school.summary.location or "Not provided",
         attributes: {
           "data-sort": school.name
         }
