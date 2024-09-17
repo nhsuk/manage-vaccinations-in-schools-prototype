@@ -108,7 +108,7 @@ export class Record {
     // Add a pending change
     let _pendingChanges = {}
     if (_pending) {
-      const hasPendingChanges = faker.datatype.boolean(0.1)
+      const hasPendingChanges = faker.datatype.boolean(0.02)
 
       if (hasPendingChanges) {
         const newDob = new Date(dob)
