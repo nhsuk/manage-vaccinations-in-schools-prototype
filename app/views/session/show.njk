@@ -5,9 +5,11 @@
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
-      text: __("session.list.title"),
-      href: "/sessions"
-    }]
+      text: __("home.show.title"),
+      href: "/"
+    }],
+    text: __("session.list.title"),
+    href: "/sessions"
   }) }}
 {% endblock %}
 

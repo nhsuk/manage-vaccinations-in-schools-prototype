@@ -541,6 +541,11 @@
   "healthAnswers": {
     "label": "All answers to health questions"
   },
+  "home": {
+    "show": {
+      "title": "Home"
+    }
+  },
   "import": {
     "label": "Record import",
     "success": {
