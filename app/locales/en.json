@@ -1096,7 +1096,7 @@
     },
     "list": {
       "title": "School sessions",
-      "description": "Use this area to:\n- register attendance\n- record vaccinations\n- review session outcomes",
+      "description": "Use this area to:\n- review consent responses\n- triage health records\n- record vaccinations\n- review session outcomes",
       "active": {
         "label": "Today",
         "count": {
@@ -1602,7 +1602,7 @@
   "programme": {
     "list": {
       "title": "Programmes",
-      "description": "Use this area to:\n- create new sessions\n- review consent responses\n- triage health records",
+      "description": "Use this area to:\n- import child records\n- organise school sessions\n- report vaccinations",
       "active": "Active programmes"
     },
     "show": {
