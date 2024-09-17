@@ -84,7 +84,16 @@ export class Record {
       dob = faker.date.birthdate({ min: 4, max: 11, mode: 'age' })
       urn = faker.helpers.arrayElement(primarySchools).urn
     } else {
-      dob = faker.date.birthdate({ min: 11, max: 16, mode: 'age' })
+      // Children generally receive adolescent vaccinations when younger
+      // Note: This means flu cohorts will skew more towards younger children
+      const max = faker.helpers.weightedArrayElement([
+        { value: 12, weight: 12 },
+        { value: 13, weight: 8 },
+        { value: 14, weight: 4 },
+        { value: 15, weight: 2 },
+        { value: 16, weight: 1 }
+      ])
+      dob = faker.date.birthdate({ min: 11, max, mode: 'age' })
       urn = faker.helpers.arrayElement(secondarySchools).urn
     }
 
