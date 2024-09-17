@@ -60,12 +60,12 @@ export const vaccinationController = {
     const { patient_uuid, session_id } = request.query
 
     const patient = new Patient(data.patients[patient_uuid])
+    const startPath =
+      data.preScreen.continue === 'true' ? 'administer' : 'decline'
 
     request.app.locals.patient = patient
     request.app.locals.back = patient.uri
-
-    request.app.locals.start =
-      data.preScreen.continue === 'true' ? 'administer' : 'decline'
+    request.app.locals.startPath = startPath
 
     delete data.preScreen
     delete data.vaccination
@@ -84,7 +84,7 @@ export const vaccinationController = {
 
     data.wizard = { vaccination }
 
-    response.redirect(`${vaccination.uri}/new/${request.app.locals.start}`)
+    response.redirect(`${vaccination.uri}/new/${startPath}`)
   },
 
   update(request, response) {
@@ -135,7 +135,7 @@ export const vaccinationController = {
   },
 
   readForm(request, response, next) {
-    const { back, start, programme, vaccination } = request.app.locals
+    const { back, programme, startPath, vaccination } = request.app.locals
     const { form, id, uuid } = request.params
     const { referrer } = request.query
     const { data } = request.session
@@ -150,7 +150,7 @@ export const vaccinationController = {
 
     const journey = {
       [`/`]: {},
-      ...(start === 'administer'
+      ...(startPath === 'administer'
         ? {
             [`/${uuid}/${form}/administer`]: {
               [`/${uuid}/${form}/check-answers`]: () => {
