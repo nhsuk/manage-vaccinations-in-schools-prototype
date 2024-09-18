@@ -5,3 +5,11 @@
 .autocomplete__option {
   margin-bottom: 0;
 }
+
+.autocomplete__option-hint {
+  color: $nhsuk-secondary-text-color;
+
+  .autocomplete__option:hover & {
+    color: $color_nhsuk-grey-5;
+  }
+}
