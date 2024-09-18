@@ -1,4 +1,8 @@
-import { Programme, ProgrammeType } from '../models/programme.js'
+import {
+  Programme,
+  ProgrammeType,
+  programmeTypes
+} from '../models/programme.js'
 import {
   CaptureOutcome,
   ConsentOutcome,
@@ -55,15 +59,16 @@ export const patientController = {
 
   show(request, response) {
     const { activity } = request.app.locals
-    const { patient, session, preScreenQuestions } = response.locals
+    const view = request.params.view || 'show'
+    const { patient, session } = response.locals
+    const fluPid = programmeTypes[ProgrammeType.Flu].pid
 
-    const options = {
+    response.locals.options = {
       editGillick:
         patient.consent?.value !== ConsentOutcome.Given &&
         patient.outcome?.value !== PatientOutcome.Vaccinated,
       showGillick:
-        session &&
-        !session.programmes?.includes(ProgrammeType.Flu) &&
+        !session.programmes?.includes(fluPid) &&
         session?.status === SessionStatus.Active &&
         patient.consent?.value !== ConsentOutcome.Given,
       editReplies:
@@ -86,26 +91,12 @@ export const patientController = {
         patient.outcome?.value !== PatientOutcome.CouldNotVaccinate
     }
 
-    response.render('patient/show', {
-      activity:
-        activity || session?.status !== SessionStatus.Active
-          ? 'consent'
-          : 'capture',
-      options,
-      preScreenQuestions
-    })
-  },
+    response.locals.activity =
+      activity || session?.status !== SessionStatus.Active
+        ? 'consent'
+        : 'capture'
 
-  events(request, response) {
-    const { activity } = request.app.locals
-    const { session } = response.locals
-
-    response.render('patient/events', {
-      activity:
-        activity || session?.status !== SessionStatus.Active
-          ? 'consent'
-          : 'capture'
-    })
+    response.render(`patient/${view}`)
   },
 
   readForm(request, response, next) {
@@ -154,43 +145,5 @@ export const patientController = {
     }
 
     response.redirect(redirect)
-  },
-
-  showInvite(request, response) {
-    const { data } = request.session
-
-    response.locals.sessionIdItems = Object.values(data.sessions)
-      .map((session) => new Session(session))
-      .filter((session) => session.status !== SessionStatus.Completed)
-      .sort((a, b) => new Date(a.date) - new Date(b.date))
-      .map((session) => ({
-        text: session.location.name,
-        hint: { text: `${session.formatted.date} (${session.time})` },
-        value: session.id
-      }))
-
-    response.render('patient/invite')
-  },
-
-  updateInvite(request, response) {
-    const { data } = request.session
-    const { patient } = response.locals
-    const { __ } = response.locals
-
-    const { session_id } = data.patient
-
-    const session = new Session(data.sessions[session_id])
-
-    // Invite patient to session
-    patient.invite = session
-
-    // Update patient record
-    data.patients[patient.uuid] = patient
-
-    // Delete patient session data
-    delete data.patient
-
-    request.flash('success', __(`patient.success.invite`, { session }))
-    response.redirect(patient.uri)
   }
 }

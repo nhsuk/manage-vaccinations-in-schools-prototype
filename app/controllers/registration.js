@@ -1,15 +1,10 @@
-import { Patient, PatientOutcome } from '../models/patient.js'
+import { PatientOutcome } from '../models/patient.js'
 import { Registration } from '../models/registration.js'
 import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
 
 export const registrationController = {
-  edit(request, response) {
-    const { nhsn } = request.params
-    const { data } = request.session
-
-    const patient = Object.values(data.patients).find(
-      (patient) => patient.record.nhsn === nhsn
-    )
+  read(request, response, next) {
+    const { patient } = response.locals
 
     // Convert string to boolean
     switch (true) {
@@ -23,14 +18,24 @@ export const registrationController = {
         response.locals.patient.registered = undefined
     }
 
-    response.render('registration/edit')
+    response.locals.paths = {
+      back: patient.uri,
+      next: patient.uri
+    }
+
+    next()
+  },
+
+  show(request, response) {
+    const view = request.params.view || 'show'
+
+    response.render(`registration/${view}`)
   },
 
   update(request, response) {
-    const { id } = request.params
     const { tab } = request.query
     const { data } = request.session
-    const { __, patient, session } = response.locals
+    const { __, paths, patient, session } = response.locals
 
     // Convert boolean to string
     let registered
@@ -72,6 +77,7 @@ export const registrationController = {
       })
     }
 
+    // Update patient record
     data.patients[patient.uuid] = patient
 
     request.flash(
@@ -80,9 +86,9 @@ export const registrationController = {
     )
 
     if (tab) {
-      response.redirect(`/sessions/${id}/capture?tab=${tab}`)
+      response.redirect(`${session.uri}/capture?tab=${tab}`)
     } else {
-      response.redirect(patient.uri)
+      response.redirect(paths.next)
     }
   }
 }

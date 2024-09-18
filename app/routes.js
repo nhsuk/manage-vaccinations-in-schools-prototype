@@ -13,6 +13,7 @@ import { downloadRoutes } from './routes/download.js'
 import { gillickRoutes } from './routes/gillick.js'
 import { homeRoutes } from './routes/home.js'
 import { importRoutes } from './routes/import.js'
+import { inviteRoutes } from './routes/invite.js'
 import { patientRoutes } from './routes/patient.js'
 import { preScreenRoutes } from './routes/pre-screen.js'
 import { programmeRoutes } from './routes/programme.js'
@@ -35,7 +36,6 @@ router.use(flash(), navigation, notification, users)
 router.use('/home', homeRoutes)
 router.use('/account', accountRoutes)
 router.use('/cohorts', cohortRoutes)
-router.use('/cohorts/:uid/:nhsn', patientRoutes)
 router.use('/consents', consentRoutes)
 router.use('/programmes', programmeRoutes)
 router.use('/programmes/:pid/cohorts', cohortRoutes)
@@ -47,8 +47,9 @@ router.use('/programmes/:pid/vaccinations', vaccinationRoutes)
 router.use('/records', recordRoutes)
 router.use('/schools', schoolRoutes)
 router.use('/sessions', sessionRoutes)
-router.use('/sessions/:id/:nhsn', patientRoutes)
+router.use('/sessions/:id', patientRoutes)
 router.use('/sessions/:id/:nhsn/gillick', gillickRoutes)
+router.use('/sessions/:id/:nhsn/invite', inviteRoutes)
 router.use('/sessions/:id/:nhsn/pre-screen', preScreenRoutes)
 router.use('/sessions/:id/:nhsn/registration', registrationRoutes)
 router.use('/sessions/:id/:nhsn/replies', replyRoutes)

@@ -9,8 +9,8 @@
     text: __("registration.edit.title"),
     href: patient.uri + "/registration/edit"
   } if patient.session_id and session.status == SessionStatus.Active and patient.registration.value != RegistrationOutcome.Complete, {
-    text: __("patient.invite.title"),
-    href: patient.uri + "/invite"
+    text: __("invite.edit.title"),
+    href: patient.uri + "/invite/edit"
   } if not patient.session_id]
 }) }}
 

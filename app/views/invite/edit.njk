@@ -1,8 +1,7 @@
 {% extends "_layouts/form.njk" %}
 
-{% set confirmButtonText = __("patient.invite.confirm") %}
-{% set paths = { back: reply.uri } %}
-{% set title = __("patient.invite.title") %}
+{% set confirmButtonText = __("invite.edit.confirm") %}
+{% set title = __("invite.edit.title") %}
 
 {% block form %}
   {{ radios({

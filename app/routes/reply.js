@@ -10,7 +10,6 @@ router.post('/:uuid/?:form(new)/check-answers', replyController.update)
 router.post('/:uuid/?:form(edit)/:view', replyController.update)
 
 router.all('/:uuid*', replyController.read)
-
 router.get('/:uuid', replyController.show)
 
 router.all('/:uuid/?:form(new|edit)/:view', replyController.readForm)

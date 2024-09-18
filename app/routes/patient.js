@@ -3,17 +3,11 @@ import { patientController } from '../controllers/patient.js'
 
 const router = express.Router({ strict: true, mergeParams: true })
 
-router.all('/*', patientController.read)
+router.all('/:nhsn*', patientController.read)
+router.get('/:nhsn/:view?', patientController.show)
 
-router.get('/', patientController.show)
-
-router.get('/events', patientController.events)
-
-router.all('/?:form(edit)/:view', patientController.readForm)
-router.get('/?:form(edit)/:view', patientController.showForm)
-router.post('/?:form(edit)/:view', patientController.updateForm)
-
-router.get('/invite', patientController.showInvite)
-router.post('/invite', patientController.updateInvite)
+router.all('/:nhsn/?:form(edit)/:view', patientController.readForm)
+router.get('/:nhsn/?:form(edit)/:view', patientController.showForm)
+router.post('/:nhsn/?:form(edit)/:view', patientController.updateForm)
 
 export const patientRoutes = router

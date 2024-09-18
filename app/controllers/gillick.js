@@ -13,7 +13,7 @@ export const gillickController = {
   show(request, response) {
     const { form } = request.params
 
-    response.render(`patient/gillick`, { form })
+    response.render('gillick/form', { form })
   },
 
   update(request, response) {
