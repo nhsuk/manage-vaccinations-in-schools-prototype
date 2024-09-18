@@ -27,6 +27,8 @@
     })
   }) }}
 
+  {{ session.urn }}
+
   {{ card({
     heading: __("consent.child.summary"),
     headingClasses: "nhsuk-heading-m",
@@ -49,8 +51,8 @@
           href: consent.uri + "/edit/gp-registered"
         } if consent.given,
         urn: {
-          value: session.location.name,
-          href: consent.uri + "/edit/school"
+          value: consent.child.formatted.urn or session.location.name,
+          href: consent.uri + "/edit/urn"
         }
       })
     })

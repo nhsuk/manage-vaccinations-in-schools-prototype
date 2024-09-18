@@ -5,6 +5,7 @@ import { Parent } from '../models/parent.js'
 import { Programme } from '../models/programme.js'
 import { Record } from '../models/record.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
+import { School } from '../models/school.js'
 import { ConsentWindow, Session } from '../models/session.js'
 import {
   getHealthQuestionKey,
@@ -108,12 +109,12 @@ export const consentController = {
       [`/${id}`]: {},
       [`/${id}/${uuid}/${form}/child`]: {},
       [`/${id}/${uuid}/${form}/dob`]: {},
-      [`/${id}/${uuid}/${form}/school`]: {
-        [`/${id}/unavailable`]: {
-          data: 'consent.child.school',
-          value: 'no'
-        }
-      },
+      [`/${id}/${uuid}/${form}/school`]: {},
+      ...(data.consent?.child?.school !== 'yes'
+        ? {
+            [`/${id}/${uuid}/${form}/urn`]: {}
+          }
+        : {}),
       [`/${id}/${uuid}/${form}/parent`]: {},
       ...(data.consent?.parent?.tel !== ''
         ? {
@@ -156,6 +157,16 @@ export const consentController = {
           next: `/consents/${id}/${uuid}/${form}/check-answers`
         })
     }
+
+    response.locals.urnItems = Object.values(data.schools)
+      .map((school) => new School(school))
+      .map((school) => ({
+        text: school.name,
+        value: school.urn,
+        attributes: {
+          'data-hint': school.formatted.address
+        }
+      }))
 
     next()
   },

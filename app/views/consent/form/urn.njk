@@ -1,0 +1,21 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("consent.child.urn.title") %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ xGovukAutocomplete({
+    id: "urn",
+    name: "[consent][child][urn]",
+    value: consent.child.urn,
+    allowEmpty: false,
+    label: {
+      isPageHeading: true,
+      text: __("consent.child.urn.label")
+    },
+    items: urnItems
+  }) | replace("govuk-", "nhsuk-") }}
+{% endblock %}

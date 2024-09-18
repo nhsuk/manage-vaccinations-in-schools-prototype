@@ -261,11 +261,7 @@
     },
     "closed": {
       "title": "You can no longer use this service",
-      "description": "The deadline for responding has passed. This means you can no longer take part in the pilot.\n\nIf you have any questions, you can contact {{organisation.email}}."
-    },
-    "unavailable": {
-      "title": "You cannot give or refuse consent through this service",
-      "description": "This service is being piloted with a small number of schools. It’s only for parents whose children attend participating schools.\n\nIf you have any questions, please contact the local health team by calling 01234 321456, or email <england.manage-childrens-vaccinations@nhs.net>."
+      "description": "The deadline for responding has passed.\n\nIf you have any questions, you can contact {{organisation.email}}."
     },
     "new": {
       "check-answers": {
@@ -320,6 +316,10 @@
         "label": "Is this their school?",
         "yes": "Yes, they go to this school",
         "no": "No, they go to a different school"
+      },
+      "urn": {
+        "title": "What school does your child go to?",
+        "label": "Select a school"
       },
       "address": {
         "title": "Home address",
