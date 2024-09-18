@@ -260,8 +260,8 @@
       }
     },
     "closed": {
-      "title": "You can no longer use this service",
-      "description": "The deadline for responding has passed.\n\nIf you have any questions, you can contact {{organisation.email}}."
+      "title": "You can no longer submit a consent response",
+      "description": "The deadline for responding has passed.\n\n## You can still book a clinic appointment\n\nContact {{organisation.email}} to book a clinic appointment."
     },
     "new": {
       "check-answers": {
