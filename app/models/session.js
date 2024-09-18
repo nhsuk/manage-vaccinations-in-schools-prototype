@@ -247,10 +247,9 @@ export class Session {
         consentWindow = `Open until ${formatDate(this.close, consentDateStyle)}`
     }
 
-    // Programme IDs use slugs defined in global programme types
     const formattedProgrammes = this.programmes.map((programme) => {
       const { name } = Object.values(programmeTypes).find(
-        (type) => type.slug === programme
+        (type) => type.pid === programme
       )
       return name
     })

@@ -20,30 +20,30 @@ export class ProgrammeType {
 export const programmeTypes = {
   [ProgrammeType.Flu]: {
     name: 'Flu',
+    pid: 'flu',
     schedule: { from: '2024-09-03', to: '2024-12-13' }, // Autumn 2024
     seasonal: true,
-    slug: 'flu',
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
     vaccines: ['05000456078276', '5000123114115']
   },
   [ProgrammeType.HPV]: {
     name: 'HPV',
+    pid: 'hpv',
     schedule: { from: '2025-01-06', to: '2025-04-11' }, // Spring 2025
-    slug: 'hpv',
     yearGroups: [8, 9, 10, 11],
     vaccines: ['00191778001693']
   },
   [ProgrammeType.TdIPV]: {
     name: 'Td/IPV (3-in-1 teenage booster)',
+    pid: 'td-ipv',
     schedule: { from: '2025-04-28', to: '2025-07-21' }, // Summer 2025
-    slug: 'td-ipv',
     yearGroups: [9, 10, 11],
     vaccines: ['3664798042948']
   },
   [ProgrammeType.MenACWY]: {
     name: 'MenACWY',
+    pid: 'menacwy',
     schedule: { from: '2025-04-28', to: '2025-07-21' }, // Summer 2025
-    slug: 'menacwy',
     yearGroups: [9, 10, 11],
     vaccines: ['5415062370568']
   }
@@ -93,7 +93,7 @@ export class Programme {
   }
 
   get pid() {
-    return programmeTypes[this.type].slug
+    return programmeTypes[this.type].pid
   }
 
   /**

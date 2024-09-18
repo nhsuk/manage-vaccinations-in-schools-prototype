@@ -1,6 +1,6 @@
 import { isAfter, isBefore } from 'date-fns'
 import { getToday } from '../utils/date.js'
-import { ProgrammeType } from '../models/programme.js'
+import { ProgrammeType, programmeTypes } from '../models/programme.js'
 import { ConsentWindow, Session } from '../models/session.js'
 import { getEnumKeyAndValue } from './enum.js'
 
@@ -29,9 +29,11 @@ export const getConsentWindow = (session) => {
 
 export const getProgrammeSession = (sessions, type) => {
   type = type || ProgrammeType.Flu
+  const { pid } = programmeTypes[type]
+
   return Object.values(sessions)
     .map((session) => new Session(session))
-    .filter((session) => session.programmes.includes(type))
+    .filter((session) => session.programmes.includes(pid))
     .filter((session) => session.consentWindow.value === ConsentWindow.Open)
     .at(-1)
 }

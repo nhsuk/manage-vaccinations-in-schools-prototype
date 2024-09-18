@@ -1,3 +1,4 @@
+import { ProgrammeType } from '../models/programme.js'
 import { User, UserRole } from '../models/user.js'
 import { formatDate, getToday } from '../utils/date.js'
 import { getProgrammeSession } from '../utils/session.js'
@@ -60,9 +61,9 @@ export const navigation = (request, response, next) => {
         ]
       : []
 
-  const fluSession = getProgrammeSession(sessions, 'flu-2024')
-  const hpvSession = getProgrammeSession(sessions, 'hpv-2024')
-  const tioSession = getProgrammeSession(sessions, 'td-ipv-2024')
+  const fluSession = getProgrammeSession(sessions, ProgrammeType.Flu)
+  const hpvSession = getProgrammeSession(sessions, ProgrammeType.HPV)
+  const tioSession = getProgrammeSession(sessions, ProgrammeType.TdIPV)
 
   response.locals.navigation = {
     account,
