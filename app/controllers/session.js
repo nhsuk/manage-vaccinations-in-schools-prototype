@@ -3,6 +3,7 @@ import { Batch } from '../models/batch.js'
 import { Consent } from '../models/consent.js'
 import { Patient } from '../models/patient.js'
 import { Reply } from '../models/reply.js'
+import { School } from '../models/school.js'
 import { Session, SessionStatus } from '../models/session.js'
 
 export const sessionController = {
@@ -271,12 +272,15 @@ export const sessionController = {
       })
     }
 
-    response.locals.urnItems = Object.entries(data.schools).map(
-      ([urn, school]) => ({
+    response.locals.urnItems = Object.values(data.schools)
+      .map((school) => new School(school))
+      .map((school) => ({
         text: school.name,
-        value: urn
-      })
-    )
+        value: school.urn,
+        attributes: {
+          'data-hint': school.formatted.address
+        }
+      }))
 
     next()
   },

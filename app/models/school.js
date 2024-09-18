@@ -1,3 +1,4 @@
+import { fakerEN_GB as faker } from '@faker-js/faker'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 export class SchoolPhase {
@@ -40,7 +41,7 @@ export class School {
 
   get formatted() {
     return {
-      location: `${this.addressLine1}, ${this.addressLevel1}. ${this.postalCode}`,
+      address: `${this.addressLine1}, ${this.addressLevel1}. ${this.postalCode}`,
       urn: formatMonospace(this.urn)
     }
   }
@@ -48,11 +49,7 @@ export class School {
   get summary() {
     return {
       location: `${this.location.name}</br>
-      <span class="nhsuk-u-secondary-text-color">
-        ${this.location.addressLine1},
-        ${this.location.addressLevel1},
-        ${this.location.postalCode}
-      </span>`
+      <span class="nhsuk-u-secondary-text-color">${this.formatted.address}</span>`
     }
   }
 
