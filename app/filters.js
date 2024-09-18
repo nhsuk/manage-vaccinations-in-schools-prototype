@@ -34,7 +34,7 @@ export default (env) => {
     const { filters } = this.ctx.settings.nunjucksEnv
     const html = string
       .replace(
-        /^\n\n<div class="nhsuk-card/,
+        /^\n\n\n\n<div class="nhsuk-card/,
         '<form method="post" class="nhsuk-card'
       )
       .replace(/<\/div>\n$/, '</form>')
@@ -51,7 +51,7 @@ export default (env) => {
     const { filters } = this.ctx.settings.nunjucksEnv
     const html = string
       .replace(
-        /^\n\n<div class="nhsuk-card/,
+        /^\n\n\n\n<div class="nhsuk-card/,
         '<button class="nhsuk-card nhsuk-card--button'
       )
       .replace(/<\/div>\n$/, '</button>')

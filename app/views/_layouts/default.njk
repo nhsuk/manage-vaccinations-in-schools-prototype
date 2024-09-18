@@ -37,15 +37,8 @@
   }) }}
 {% endblock %}
 
-{% block outerContent %}
-  {{ backLink({
-    classes: "nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-0",
-    href: paths.back or back
-  }) if paths.back or back }}
-{% endblock %}
-
 {% block beforeContent %}
-  {% block pageNavigation %}{% endblock %}
+  {{ backLink({  href: paths.back or back }) if paths.back or back }}
 {% endblock %}
 
 {% block content %}

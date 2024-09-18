@@ -1,5 +1,5 @@
-{%- from "tables/macro.njk" import table -%}
-{%- from "./attributes.njk" import attributes -%}
+{%- from "components/tables/macro.njk" import table -%}
+{%- from "macros/attributes.njk" import nhsukAttributes -%}
 {% macro actionTable(params) -%}
 <action-table sort="{{ params.sort }}" store="{{ params.id }}"
   {%- if params.classes %} class="{{ params.classes }}"{% endif %}>
@@ -13,7 +13,7 @@
 {%- endif %}
   <table class="nhsuk-table{%- if params.responsive %}-responsive{% endif %}
     {%- if params.tableClasses %} {{ params.tableClasses }}{% endif %}"
-    {{- attributes(params.attributes) }}>
+    {{- nhsukAttributes(params.attributes) }}>
 {% if params.caption %}
     <caption class="nhsuk-table__caption
       {%- if params.captionClasses %} {{ params.captionClasses }}{% endif %}">
@@ -30,7 +30,7 @@
           {%- if item.classes %} {{ item.classes }}{% endif %}"
           {%- if item.colspan %} colspan="{{ item.colspan }}"{% endif %}
           {%- if item.rowspan %} rowspan="{{ item.rowspan }}"{% endif %}
-          {{- attributes(item.attributes) }}>
+          {{- nhsukAttributes(item.attributes) }}>
           {{- item.html | safe if item.html else item.text -}}
         </th>
         {% endif %}
@@ -48,7 +48,7 @@
           <td role="cell" class="nhsuk-table__cell
             {%- if cell.format %} nhsuk-table__cell--{{ cell.format }}{% endif %}
             {%- if cell.classes %} {{ cell.classes }}{% endif %}"
-            {{- attributes(cell.attributes) }}>
+            {{- nhsukAttributes(cell.attributes) }}>
             <span class="nhsuk-table-responsive__heading">{{cell.header}} </span>{{ cell.html | safe if cell.html else cell.text }}
           </td>
           {% endif %}
@@ -58,7 +58,7 @@
           {% set commonAttributes %}
             {%- if cell.colspan %} colspan="{{ cell.colspan }}"{% endif %}
             {%- if cell.rowspan %} rowspan="{{ cell.rowspan }}"{% endif %}
-            {{- attributes(cell.attributes) -}}
+            {{- nhsukAttributes(cell.attributes) -}}
           {% endset %}
           {% if loop.first and params.firstCellIsHeader %}
           <th scope="row" class="nhsuk-table__header

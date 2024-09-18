@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // GOV.UK Frontend options
 $govuk-font-family: "Frutiger W01", arial, sans-serif;
 $govuk-border-colour: #d8dde0;
@@ -37,7 +39,7 @@ $govuk-colours: (
 // App options
 $app-page-width: 1160px;
 // stylelint-disable-next-line scss/dollar-variable-pattern
-$color_app-dark-orange: darken(mix($color_nhsuk-red, $color_nhsuk-warm-yellow, 55%), 10%);
+$color_app-dark-orange: color.scale(color.mix($color_nhsuk-red, $color_nhsuk-warm-yellow, 55%), $lightness: -10%);
 
 // Import app helpers
 @import "helpers/link";
@@ -62,7 +64,7 @@ $color_app-dark-orange: darken(mix($color_nhsuk-red, $color_nhsuk-warm-yellow, 5
 @import "sub-navigation";
 @import "status";
 @import "summary-list";
-@import "table";
+@import "tables";
 @import "tabs";
 @import "typography";
 @import "unbranded";

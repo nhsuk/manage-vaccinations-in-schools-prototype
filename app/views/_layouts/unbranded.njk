@@ -20,9 +20,6 @@
   {{- title if title -}}
 {% endblock %}
 
-{% block outerContent %}
-  {{ backLink({
-    classes: "nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-0",
-    href: paths.back
-  }) if paths.back }}
+{% block beforeContent %}
+  {{ backLink({ href: paths.back }) if paths.back }}
 {% endblock %}
