@@ -81,12 +81,7 @@ export class Session {
   }
 
   static generate(urn, programme, user, options = {}) {
-    const consentWindowDuration = 28
-
     let status
-    if (programme.status === ProgrammeStatus.Current) {
-      status = SessionStatus.Completed
-    }
     if (programme.status === ProgrammeStatus.Completed) {
       status = SessionStatus.Completed
     } else if (programme.status === ProgrammeStatus.Planned) {
@@ -109,10 +104,9 @@ export class Session {
         break
       case SessionStatus.Planned:
         // Session will take place according programme schedule
-        let { from, to } = programmeTypes[programme.type].schedule
+        let { to } = programmeTypes[programme.type].schedule
         // Sessions start after first content window closes
-        from = addDays(from, consentWindowDuration)
-        date = faker.date.between({ from, to })
+        date = faker.date.between({ from: getToday(), to })
         break
       default:
         // Session took place about 7 days before today
@@ -120,7 +114,7 @@ export class Session {
     }
 
     // Open consent request window 28 days before session
-    const open = removeDays(date, consentWindowDuration)
+    const open = removeDays(date, 28)
 
     // Send reminders 7 days after consent opens
     const reminder = addDays(open, 7)
