@@ -60,6 +60,24 @@ export default (env) => {
   }
 
   /**
+   * Convert govuk-summary-card to nhsuk-card containing a summary list
+   * @param {string} string - HTML
+   * @returns {string} Formatted HTML
+   */
+  filters.summaryCard = function (string) {
+    const { filters } = this.ctx.settings.nunjucksEnv
+    const html = string
+      .replaceAll(/govuk-summary-card/g, 'nhsuk-card')
+      .replaceAll('nhsuk-card__title', 'app-card__title')
+      .replaceAll('nhsuk-card__actions', 'app-action-list')
+      .replaceAll('nhsuk-card__action', 'app-action-list__item')
+      .replaceAll('govuk-summary-list', 'nhsuk-summary-list')
+      .replaceAll('govuk-link', 'nhsuk-link')
+
+    return filters.safe(html)
+  }
+
+  /**
    * Highlight difference
    * @param {string} a - Value in consent response
    * @param {string} b - Value in patient record

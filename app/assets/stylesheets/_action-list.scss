@@ -15,7 +15,8 @@
 }
 
 .app-action-list__item {
-  display: inline;
+  align-self: center;
+  display: inline-flex;
   margin: 0;
   margin-right: nhsuk-spacing(3);
   padding-right: nhsuk-spacing(3);
