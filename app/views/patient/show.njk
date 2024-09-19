@@ -69,18 +69,24 @@
           })
         }) }}
 
-        {{ button({
-          classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("vaccination.edit.title"),
-          href: vaccination.uri + "/edit?referrer=" + patient.uri
-        }) }}
+        <p class="nhsuk-body">
+          {{ button({
+            classes: "app-button--secondary nhsuk-u-margin-0",
+            text: __("vaccination.edit.title"),
+            href: vaccination.uri + "/edit?referrer=" + patient.uri
+          }) }}
+        </p>
       {% endfor %}
 
-      {{ button({
-        classes: "app-button--secondary nhsuk-u-margin-0",
-        text: __("triage.edit.title"),
-        href: patient.uri + "/triage/edit/outcome"
-      }) if options.editTriage }}
+      {% if options.editTriage %}
+        <p class="nhsuk-body">
+          {{ button({
+            classes: "app-button--secondary nhsuk-u-margin-0",
+            text: __("triage.edit.title"),
+            href: patient.uri + "/triage/edit/outcome"
+          }) }}
+        </p>
+      {% endif %}
     {% endset %}
 
     {{ card({
@@ -118,17 +124,23 @@
           __("gillick.competent." + patient.gillick.competent.key + ".icon"),
           __("gillick.competent." + patient.gillick.competent.key + ".colour")
         ) }}
-        {{ button({
-          classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("gillick.edit.title"),
-          href: patient.uri + "/gillick/edit"
-        }) if options.editGillick }}
-      {% else %}
-        {{ button({
-          classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("gillick.new.title"),
-          href: patient.uri + "/gillick/new"
-        }) if options.editGillick }}
+        {% if options.editGillick %}
+          <p class="nhsuk-body">
+            {{ button({
+              classes: "app-button--secondary nhsuk-u-margin-0",
+              text: __("gillick.edit.title"),
+              href: patient.uri + "/gillick/edit"
+            }) }}
+          </p>
+        {% endif %}
+      {% elif options.editGillick %}
+        <p class="nhsuk-body">
+          {{ button({
+            classes: "app-button--secondary nhsuk-u-margin-0",
+            text: __("gillick.new.title"),
+            href: patient.uri + "/gillick/new"
+          }) }}
+        </p>
       {% endif %}
     {% endset %}
 
@@ -187,11 +199,13 @@
         {{ __("consent.NoResponse.description") | nhsukMarkdown }}
       {% endif %}
       {% if options.editReplies %}
-        {{ button({
-          classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("reply.new.title"),
-          href: patient.uri + "/replies/new"
-        }) }}
+        <p class="nhsuk-body">
+          {{ button({
+            classes: "app-button--secondary nhsuk-u-margin-0",
+            text: __("reply.new.title"),
+            href: patient.uri + "/replies/new"
+          }) }}
+        </p>
       {% endif %}
     {% endset %}
 
