@@ -8,6 +8,7 @@ import {
   getToday
 } from '../utils/date.js'
 import { formatMonospace } from '../utils/string.js'
+import { Vaccine } from './vaccine.js'
 
 /**
  * @class Batch
@@ -51,7 +52,7 @@ export class Batch {
   }
 
   get vaccine() {
-    return vaccines[this.vaccine_gtin]
+    return new Vaccine(vaccines[this.vaccine_gtin])
   }
 
   get formatted() {

@@ -437,6 +437,16 @@
       "label": "Actions"
     }
   },
+  "default-batch": {
+    "edit": {
+      "label": "Change default batch<span class=\"nhsuk-u-visually-hidden\"> for {{vaccine.brand}}</span> ",
+      "title": "Select a default batch for this session"
+    },
+    "count": {
+      "one": "Default batch",
+      "other": "Default batches"
+    }
+  },
   "emails": {
     "consent": {
       "invite": {
@@ -1131,11 +1141,6 @@
         "title": "Review session outcomes",
         "description": "See how many vaccinations have been given."
       }
-    },
-    "batch_id": {
-      "title": "Select a default batch for this session",
-      "text": "You are currently using {{vaccine.brand}} batch <span class=\"app-u-monospace\">{{batch}}</span>. [Change]({{session.uri}}/default-batch)",
-      "label": "Batch"
     },
     "download-consent-form": {
       "title": "Download consent form (PDF)"

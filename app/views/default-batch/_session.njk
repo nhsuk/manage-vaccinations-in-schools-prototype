@@ -1,0 +1,24 @@
+{%- macro defaultBatch(batch, session) %}
+{{ batch.vaccine.brandWithType }}:
+<span class="app-u-monospace">{{ batch.id }}</span>
+<a class="nhsuk-link nhsuk-u-margin-left-2" href="{{ session.uri }}/default-batch/{{ batch.vaccine_gtin }}">
+  {{- __("default-batch.edit.label", {
+    vaccine: batch.vaccine
+  }) | safe -}}
+</a>
+{%- endmacro %}
+<h2 class="nhsuk-heading-s nhsuk-u-margin-bottom-2">
+  {{ __n("default-batch.count", defaultBatches.length) }}
+</h2>
+{{ inspect(defaultBatches) }}
+{% if defaultBatches.length == 1 %}
+  <p class="nhsuk-body">
+    {{ defaultBatch(defaultBatches[0], session) }}
+  </p>
+{% else %}
+  <ul class="nhsuk-list nhsuk-list--bullet">
+  {% for batch in defaultBatches %}
+    <li>{{ defaultBatch(batch, session) }}</li>
+  {% endfor %}
+  </ul>
+{% endif %}

@@ -165,23 +165,6 @@ export const sessionController = {
     response.redirect(`${session.uri}/consents`)
   },
 
-  showBatch(request, response) {
-    const { programme } = request.app.locals
-    const { data } = request.session
-
-    response.locals.batchItems = Object.values(data.batches)
-      .map((batch) => new Batch(batch))
-      .filter((batch) => batch.vaccine.type === programme.type)
-
-    response.render('session/batch-id')
-  },
-
-  updateBatch(request, response) {
-    const { session } = request.app.locals
-
-    response.redirect(`${session.uri}/outcome`)
-  },
-
   read(request, response, next) {
     const { id } = request.params
     const { data } = request.session
@@ -192,6 +175,21 @@ export const sessionController = {
     request.app.locals.patients = Object.values(data.patients)
       .filter((patient) => patient.session_id === id)
       .map((patient) => new Patient(patient))
+
+    // Get default batches selected for vaccines in this session
+    const defaultBatches = []
+    if (data.token?.batch[id]) {
+      const sessionBatches = Object.entries(data.token.batch[id])
+      if (sessionBatches.length > 0) {
+        for (let [_gtin, batch_id] of sessionBatches) {
+          // Default batch ID may be saved in FormData as an array
+          batch_id = Array.isArray(batch_id) ? batch_id.at(-1) : batch_id
+          defaultBatches.push(new Batch(data.batches[batch_id]))
+        }
+      }
+    }
+
+    response.locals.defaultBatches = defaultBatches
 
     next()
   },

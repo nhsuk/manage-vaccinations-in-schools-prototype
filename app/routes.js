@@ -9,6 +9,7 @@ import { accountRoutes } from './routes/account.js'
 import { batchRoutes } from './routes/batch.js'
 import { cohortRoutes } from './routes/cohort.js'
 import { consentRoutes } from './routes/consent.js'
+import { defaultBatchRoutes } from './routes/default-batch.js'
 import { downloadRoutes } from './routes/download.js'
 import { gillickRoutes } from './routes/gillick.js'
 import { homeRoutes } from './routes/home.js'
@@ -48,6 +49,7 @@ router.use('/programmes/:pid/vaccinations/:uuid/patients', patientRoutes)
 router.use('/records', recordRoutes)
 router.use('/schools', schoolRoutes)
 router.use('/sessions', sessionRoutes)
+router.use('/sessions/:id/default-batch', defaultBatchRoutes)
 router.use('/sessions/:id', patientRoutes)
 router.use('/sessions/:id/:nhsn/gillick', gillickRoutes)
 router.use('/sessions/:id/:nhsn/invite', inviteRoutes)

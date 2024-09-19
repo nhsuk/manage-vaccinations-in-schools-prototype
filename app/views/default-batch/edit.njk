@@ -1,8 +1,13 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("session.batch_id.title") %}
+{% set title = __("default-batch.edit.title") %}
 
 {% block form %}
+  {{ heading({
+    caption: session.location.name,
+    title: title
+  }) }}
+
   {% set batches = [] %}
   {% for batch in batchItems %}
     {% set batches = batches | push({
@@ -14,14 +19,11 @@
   {{ radios({
     fieldset: {
       legend: {
-        html: heading({
-          classes: "nhsuk-fieldset__legend--l",
-          caption: session.location.name,
-          title: title
-        })
+        classes: "nhsuk-fieldset__legend--m",
+        text: vaccine.brandWithType
       }
     },
     items: batches,
-    decorate: "data.token.batch." + session.id
+    decorate: "data.token.batch." + session.id + "." + vaccine.gtin
   }) }}
 {% endblock %}

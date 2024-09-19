@@ -22,9 +22,6 @@ router.post('/:id/consents/:uuid/link', sessionController.updateConsentLink)
 router.get('/:id/consents/:uuid/add', sessionController.showConsentAdd)
 router.post('/:id/consents/:uuid/add', sessionController.updateConsentAdd)
 
-router.get('/:id/default-batch', sessionController.showBatch)
-router.post('/:id/default-batch', sessionController.updateBatch)
-
 router.get('/:id/?:form(edit)', sessionController.edit)
 router.post('/:id/?:form(edit)', sessionController.update)
 
