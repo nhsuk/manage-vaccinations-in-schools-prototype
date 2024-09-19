@@ -1,0 +1,41 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("record.address.title") %}
+
+{% block form %}
+  {% call fieldset({
+    legend: {
+      html: heading({
+        classes: "nhsuk-fieldset__legend--l",
+        caption: patient.fullName,
+        title: title
+      })
+    }
+  }) %}
+    {{ input({
+      label: { text: __("record.address.line1") },
+      autocomplete: "address-line1",
+      decorate: "record.address.addressLine1"
+    }) }}
+
+    {{ input({
+      label: { text: __("record.address.line2") },
+      autocomplete: "address-line2",
+      decorate: "record.address.addressLine2"
+    }) }}
+
+    {{ input({
+      classes: "nhsuk-u-width-two-thirds",
+      label: { text: __("record.address.level2") },
+      autocomplete: "address-level2",
+      decorate: "record.address.addressLevel2"
+    }) }}
+
+    {{ input({
+      classes: "nhsuk-input--width-10",
+      label: { text: __("record.address.postalCode") },
+      autocomplete: "postal-code",
+      decorate: "record.address.postalCode"
+    }) }}
+  {% endcall %}
+{% endblock %}

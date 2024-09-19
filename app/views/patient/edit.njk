@@ -1,0 +1,47 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("record.edit.confirm") %}
+{% set title = __("record.edit.title") %}
+
+{% block form %}
+  {{ super() }}
+
+  {{ heading({
+    caption: record.fullName,
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("record.edit.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(record, {
+        nhsn: {
+          changeLabel: "the child’s NHS number",
+          href: "edit/nhsn"
+        },
+        fullName: {
+          href: "edit/name"
+        },
+        dob: {
+          href: "edit/dob"
+        },
+        sex: {
+          href: "edit/sex"
+        },
+        address: {
+          href: "edit/address"
+        },
+        gpSurgery: {
+          href: "edit/gp-surgery"
+        },
+        parent1: {
+          href: "edit/parent-1"
+        },
+        parent2: {
+          href: "edit/parent-2"
+        }
+      })
+    })
+  }) }}
+{% endblock %}

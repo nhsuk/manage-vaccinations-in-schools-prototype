@@ -17,6 +17,7 @@ import { Vaccination } from '../models/vaccination.js'
 
 export const patientController = {
   read(request, response, next) {
+    const { activity } = request.app.locals
     const { id, nhsn } = request.params
     const { data } = request.session
 
@@ -24,20 +25,23 @@ export const patientController = {
       (patient) => patient.record.nhsn === nhsn
     )
 
-    // If no patient found, locate record (patient not added to a cohort yet)
+    // If no patient found, use CHIS record (patient not imported yet)
     if (!patient) {
       const record = Object.values(data.records).find(
         (record) => record.nhsn === nhsn
       )
-      patient = new Patient({ record })
+      patient = { record }
     }
+
+    patient = new Patient(patient)
 
     const replies = Object.values(patient.replies)
     const vaccinations = Object.keys(patient.vaccinations)
       .map((uuid) => new Vaccination(data.vaccinations[uuid]))
       .filter((vaccination) => vaccination.session_id === id)
 
-    response.locals.patient = new Patient(patient)
+    request.app.locals.record = patient.record
+    response.locals.patient = patient
     response.locals.replies = replies.map((reply) => new Reply(reply))
     response.locals.vaccinations = vaccinations
 
@@ -49,7 +53,40 @@ export const patientController = {
       // TODO: Make pre-screening questions pull from all session programmes
       const programme_pid = session.programmes[0]
       const programme = new Programme(data.programmes[programme_pid])
+      const fluPid = programmeTypes[ProgrammeType.Flu].pid
 
+      response.locals.options = {
+        editGillick:
+          patient.consent?.value !== ConsentOutcome.Given &&
+          patient.outcome?.value !== PatientOutcome.Vaccinated,
+        showGillick:
+          !session.programmes?.includes(fluPid) &&
+          session?.status === SessionStatus.Active &&
+          patient.consent?.value !== ConsentOutcome.Given,
+        editReplies:
+          patient.consent?.value !== ConsentOutcome.Given &&
+          patient.outcome?.value !== PatientOutcome.Vaccinated,
+        editTriage:
+          patient.triage?.value === TriageOutcome.Completed &&
+          patient.outcome?.value !== PatientOutcome.Vaccinated,
+        showTriage:
+          patient.consentHealthAnswers &&
+          patient.triage?.value === TriageOutcome.Needed &&
+          patient.outcome?.value === PatientOutcome.NoOutcomeYet,
+        editRegistration:
+          patient.consent?.value === ConsentOutcome.Given &&
+          patient.triage?.value !== TriageOutcome.Needed &&
+          patient.outcome?.value !== PatientOutcome.Vaccinated,
+        showPreScreen:
+          patient.capture?.value === CaptureOutcome.Vaccinate &&
+          patient.outcome?.value !== PatientOutcome.Vaccinated &&
+          patient.outcome?.value !== PatientOutcome.CouldNotVaccinate
+      }
+
+      response.locals.activity =
+        activity || session?.status !== SessionStatus.Active
+          ? 'consent'
+          : 'capture'
       response.locals.programme = programme
       response.locals.session = session
     }
@@ -58,73 +95,36 @@ export const patientController = {
   },
 
   show(request, response) {
-    const { activity } = request.app.locals
     const view = request.params.view || 'show'
-    const { patient, session } = response.locals
-    const fluPid = programmeTypes[ProgrammeType.Flu].pid
-
-    response.locals.options = {
-      editGillick:
-        patient.consent?.value !== ConsentOutcome.Given &&
-        patient.outcome?.value !== PatientOutcome.Vaccinated,
-      showGillick:
-        !session.programmes?.includes(fluPid) &&
-        session?.status === SessionStatus.Active &&
-        patient.consent?.value !== ConsentOutcome.Given,
-      editReplies:
-        patient.consent?.value !== ConsentOutcome.Given &&
-        patient.outcome?.value !== PatientOutcome.Vaccinated,
-      editTriage:
-        patient.triage?.value === TriageOutcome.Completed &&
-        patient.outcome?.value !== PatientOutcome.Vaccinated,
-      showTriage:
-        patient.consentHealthAnswers &&
-        patient.triage?.value === TriageOutcome.Needed &&
-        patient.outcome?.value === PatientOutcome.NoOutcomeYet,
-      editRegistration:
-        patient.consent?.value === ConsentOutcome.Given &&
-        patient.triage?.value !== TriageOutcome.Needed &&
-        patient.outcome?.value !== PatientOutcome.Vaccinated,
-      showPreScreen:
-        patient.capture?.value === CaptureOutcome.Vaccinate &&
-        patient.outcome?.value !== PatientOutcome.Vaccinated &&
-        patient.outcome?.value !== PatientOutcome.CouldNotVaccinate
-    }
-
-    response.locals.activity =
-      activity || session?.status !== SessionStatus.Active
-        ? 'consent'
-        : 'capture'
 
     response.render(`patient/${view}`)
   },
 
-  readForm(request, response, next) {
+  edit(request, response) {
+    const { back, record } = request.app.locals
+    const { referrer } = request.query
+    const { data } = request.session
     const { patient } = response.locals
 
-    response.locals.paths = {
-      back: patient.uri,
-      next: patient.uri
-    }
+    request.app.locals.back = referrer || back || patient.uri
+    request.app.locals.record = new Record({
+      ...record, // Previous values
+      ...data?.wizard?.record // Wizard values
+    })
 
-    next()
+    response.render('patient/edit')
   },
 
-  showForm(request, response) {
-    const { form, view } = request.params
-
-    response.render(`patient/form/${view}`, { form })
-  },
-
-  updateForm(request, response) {
+  update(request, response) {
+    const { back, record } = request.app.locals
     const { data } = request.session
-    const { uid, uuid } = request.params
     const { __, patient } = response.locals
 
     const updatedRecord = new Record(
       Object.assign(
-        patient.record, // Previous record values
-        request.body.patient.record // New record values
+        record, // Previous values
+        data?.wizard?.record, // Wizard values
+        request.body.record // New values
       )
     )
 
@@ -134,16 +134,65 @@ export const patientController = {
 
     data.patients[updatedPatient.uuid] = updatedPatient
 
+    // Clean up
+    delete data?.wizard?.record
+    delete request.app.locals.back
+    delete request.app.locals.record
+
     request.flash('success', __('patient.success.update'))
 
-    let redirect
-    if (uid && uuid) {
-      // Return to programme vaccinations list
-      redirect = `/programmes/${uid}/vaccinations/${uuid}`
-    } else {
-      redirect = updatedPatient.uri
+    const redirect = back || updatedPatient.uri
+    response.redirect(redirect)
+  },
+
+  readForm(request, response, next) {
+    const { back, record } = request.app.locals
+    const { form } = request.params
+    const { referrer } = request.query
+    const { data } = request.session
+    const { patient } = response.locals
+
+    request.app.locals.referrer = referrer || back
+    request.app.locals.record = new Record({
+      ...record,
+      ...(form === 'edit' && record), // Previous values
+      ...data?.wizard?.record // Wizard values,
+    })
+
+    response.locals.paths = {
+      ...(form === 'edit' && {
+        back: `${patient.uri}/edit`,
+        next: `${patient.uri}/edit`
+      })
     }
 
-    response.redirect(redirect)
+    next()
+  },
+
+  showForm(request, response) {
+    let { form, view } = request.params
+
+    // Edit each parent using the same view
+    if (view.includes('parent')) {
+      response.locals.parentId = view.split('-')[1]
+      view = 'parent'
+    }
+
+    response.render(`patient/form/${view}`, { form })
+  },
+
+  updateForm(request, response) {
+    const { record } = request.app.locals
+    const { data } = request.session
+    const { paths } = response.locals
+
+    data.wizard.record = new Record(
+      Object.assign(
+        record, // Previous values
+        request.body.record // New value
+      )
+    )
+
+    response.redirect(paths.next)
   }
 }

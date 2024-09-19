@@ -45,7 +45,6 @@ export const vaccinationController = {
     const { data } = request.session
 
     request.app.locals.back = referrer || back || vaccination.uri
-
     request.app.locals.vaccination = new Vaccination({
       ...vaccination, // Previous values
       ...data?.wizard?.vaccination // Wizard values,
@@ -123,6 +122,7 @@ export const vaccinationController = {
       data.records[patient.nhsn].vaccinations.push(updatedVaccination.uuid)
     }
 
+    // Clean up
     delete data?.wizard?.vaccination
     delete request.app.locals.back
     delete request.app.locals.vaccination
@@ -142,7 +142,6 @@ export const vaccinationController = {
     const { __ } = response.locals
 
     request.app.locals.referrer = referrer || back
-
     request.app.locals.vaccination = new Vaccination({
       ...(form === 'edit' && vaccination), // Previous values
       ...data?.wizard?.vaccination // Wizard values,

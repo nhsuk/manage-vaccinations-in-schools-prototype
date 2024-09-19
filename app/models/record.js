@@ -3,7 +3,13 @@ import firstNames from '../datasets/first-names.js'
 import gpSurgeries from '../datasets/gp-surgeries.js'
 import schools from '../datasets/schools.js'
 import { Parent } from './parent.js'
-import { formatDate, getAge, getYearGroup } from '../utils/date.js'
+import {
+  convertIsoDateToObject,
+  convertObjectToIsoDate,
+  formatDate,
+  getAge,
+  getYearGroup
+} from '../utils/date.js'
 import {
   formatList,
   formatNhsNumber,
@@ -60,11 +66,13 @@ export class Record {
     this.gpSurgery = options.gpSurgery
     this.urn = options.urn
     this.parent1 = options?.parent1 && new Parent(options.parent1)
-    this.parent2 = options?.parent2 && new Parent(options.parent2)
+    this.parent2 = (options?.parent2 && new Parent(options.parent2)) || ''
     this.vaccinations = options?.vaccinations || []
     // Import mocking
     this._pending = options?._pending || false
     this._pendingChanges = options?._pendingChanges || {}
+    // dateInput objects
+    this.dob_ = options?.dob_
   }
 
   static generate() {
@@ -133,7 +141,7 @@ export class Record {
       sex,
       address: {
         addressLine1: faker.location.streetAddress(),
-        addressLevel1: faker.location.city(),
+        addressLevel2: faker.location.city(),
         postalCode: faker.location.zipCode()
       },
       gpRegistered,
@@ -166,6 +174,16 @@ export class Record {
 
   get fullName() {
     return [this.firstName, this.lastName].join(' ')
+  }
+
+  get dob_() {
+    return convertIsoDateToObject(this.dob)
+  }
+
+  set dob_(object) {
+    if (object) {
+      this.dob = convertObjectToIsoDate(object)
+    }
   }
 
   get age() {

@@ -13,7 +13,7 @@ export class SchoolPhase {
  * @property {SchoolPhase} phase - Phase
  * @property {string} addressLine1 - Address line 1
  * @property {string} addressLine2 - Address line 2
- * @property {string} addressLevel1 - Address level 1
+ * @property {string} addressLevel2 - Address level 2
  * @property {string} postalCode - Postcode
  * @function ns - Namespace
  * @function uri - URL

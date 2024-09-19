@@ -1,0 +1,19 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("record.dob.title") %}
+
+{% block form %}
+  {{ dateInput({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--l",
+        html: heading({
+          caption: patient.fullName,
+          title: title
+        })
+      }
+    },
+    hint: { text: __("record.dob.hint") },
+    decorate: "record.dob_"
+  }) }}
+{% endblock %}

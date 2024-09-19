@@ -97,10 +97,8 @@
       feature: true
     }) if patient.session_id }}
 
-    {{ card({
-      heading: __("record.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
+    {% set recordDescriptionHtml %}
+      {{ summaryList({
         rows: summaryRows(patient.record, {
           nhsn: {
             changeLabel: "the child’s NHS number",
@@ -114,7 +112,21 @@
           gpSurgery: {},
           parents: {}
         })
-      })
+      }) }}
+
+      <p class="nhsuk-body">
+        {{ button({
+          classes: "app-button--secondary nhsuk-u-margin-0",
+          text: __("record.edit.title"),
+          href: patient.uri + "/edit"
+        }) }}
+      </p>
+    {% endset %}
+
+    {{ card({
+      heading: __("record.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: recordDescriptionHtml
     }) }}
 
     {% set gillickDescriptionHtml %}

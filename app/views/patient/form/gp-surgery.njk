@@ -1,17 +1,15 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("record.nhsn.title") %}
+{% set title = __("record.gpSurgery.title") %}
 
 {% block form %}
   {{ input ({
-    classes: "nhsuk-input--width-10 app-u-monospace",
     label: {
       html: heading({
         caption: patient.fullName,
         title: title
       })
     },
-    value: "" if record.missingNhsNumber else record.nhsn,
-    decorate: "record.nhsn"
+    decorate: "record.gpSurgery"
   }) }}
 {% endblock %}

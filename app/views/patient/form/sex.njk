@@ -1,0 +1,19 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("record.sex.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--l",
+        html: heading({
+          caption: patient.fullName,
+          title: title
+        })
+      }
+    },
+    items: enumItems(Sex),
+    decorate: "record.sex"
+  }) }}
+{% endblock %}

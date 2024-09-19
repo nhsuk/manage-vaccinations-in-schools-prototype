@@ -1,0 +1,20 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("record.fullName.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.fullName,
+    title: title
+  }) }}
+
+  {{ input ({
+    label: { text: __("record.firstName.label") },
+    decorate: "record.firstName"
+  }) }}
+
+  {{ input ({
+    label: { text: __("record.lastName.label") },
+    decorate: "record.lastName"
+  }) }}
+{% endblock %}

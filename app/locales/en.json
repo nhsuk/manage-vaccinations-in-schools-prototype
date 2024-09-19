@@ -772,6 +772,11 @@
     "show": {
       "summary": "Child’s details"
     },
+    "edit": {
+      "title": "Edit child record",
+      "confirm": "Save changes",
+      "summary": "Record details"
+    },
     "results": "Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> records",
     "count": {
       "one": "%s record",
@@ -779,13 +784,22 @@
     },
     "nhsn": {
       "label": "NHS number",
-      "title": "Add the child’s NHS number"
+      "title": "What is the child’s NHS number?"
     },
     "fullName": {
-      "label": "Full name"
+      "label": "Full name",
+      "title": "What is the child’s name?"
+    },
+    "firstName": {
+      "label": "First name"
+    },
+    "lastName": {
+      "label": "Last name"
     },
     "dob": {
-      "label": "Date of birth"
+      "label": "Date of birth",
+      "title": "What is the child’s date of birth?",
+      "hint": "For example, 27 3 2017"
     },
     "dobWithAge": {
       "label": "Date of birth"
@@ -794,22 +808,48 @@
       "label": "Year group"
     },
     "sex": {
-      "label": "Sex"
+      "label": "Sex",
+      "title": "What is the child’s sex?"
     },
     "address": {
-      "label": "Address"
+      "label": "Address",
+      "title": "What is the child’s address",
+      "line1": "Address line 1",
+      "line2": "Address line 2",
+      "level2": "Town or city",
+      "postalCode": "Postcode"
     },
     "postalCode": {
       "label": "Postcode"
     },
     "gpSurgery": {
-      "label": "GP surgery"
+      "label": "GP surgery",
+      "title": "Who is the child’s GP?"
     },
     "urn": {
       "label": "School"
     },
     "parent": {
-      "label": "Parent or guardian"
+      "label": "Parent or guardian",
+      "fullName": {
+        "label": "Name"
+      },
+      "relationship": {
+        "label": "Relationship to child"
+      },
+      "notify": {
+        "label": "Send notifications"
+      },
+      "email": {
+        "label": "Email address"
+      },
+      "tel": {
+        "label": "Phone number"
+      },
+      "relationshipOther": {
+        "label": "Relationship to the child",
+        "hint": "For example, carer"
+      }
     },
     "preferredNames": {
       "label": "Known as"
@@ -836,10 +876,12 @@
       "label": "Parents or guardians"
     },
     "parent1": {
-      "label": "First parent or guardian"
+      "label": "First parent or guardian",
+      "title": "Details for first parent or guardian"
     },
     "parent2": {
-      "label": "Second parent or guardian"
+      "label": "Second parent or guardian",
+      "title": "Details for second parent or guardian"
     }
   },
   "registration": {
@@ -1674,20 +1716,6 @@
     },
     "vaccines": {
       "label": "Vaccines administered"
-    }
-  },
-  "undefined": {
-    "nhsn": {
-      "label": "undefined.nhsn.label"
-    },
-    "dob": {
-      "label": "undefined.dob.label"
-    },
-    "sex": {
-      "label": "undefined.sex.label"
-    },
-    "urn": {
-      "label": "undefined.urn.label"
     }
   }
 }

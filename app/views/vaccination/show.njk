@@ -27,14 +27,12 @@
       title: title
     }) }}
 
-    {{ card({
-      heading: __("record.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
+    {% set recordDescriptionHtml %}
+      {{ summaryList({
         rows: summaryRows(record, {
           nhsn: {
             changeLabel: "the child’s NHS number",
-            href: vaccination.uri + "/patient/" + record.nhsn + "/edit/nhsn" if record.missingNhsNumber
+            href: vaccination.uri + "/patients/" + record.nhsn + "/edit/nhsn" if record.missingNhsNumber
           },
           fullName: {},
           dobWithAge: {},
@@ -43,13 +41,24 @@
           urn: {},
           parents: {}
         })
-      })
-    }) }}
+      }) }}
+      <p class="nhsuk-body">
+        {{ button({
+          classes: "app-button--secondary nhsuk-u-margin-0",
+          text: __("record.edit.title"),
+          href: vaccination.uri + "/patients/" + record.nhsn + "/edit?referrer=" +  vaccination.uri
+        }) }}
+      </p>
+    {% endset %}
 
     {{ card({
-      heading: __("vaccination.show.summary"),
+      heading: __("record.label"),
       headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
+      descriptionHtml: recordDescriptionHtml
+    }) }}
+
+    {% set vaccinationDescriptionHtml %}
+      {{ summaryList({
         rows: summaryRows(vaccination, {
           outcome: {},
           vaccine_gtin: {},
@@ -67,11 +76,20 @@
           },
           protocol: {}
         })
-      }) + button({
-        classes: "app-button--secondary nhsuk-u-margin-0",
-        text: __("vaccination.edit.title"),
-        href: vaccination.uri + "/edit"
-      })
+      }) }}
+      <p class="nhsuk-body">
+        {{ button({
+          classes: "app-button--secondary nhsuk-u-margin-0",
+          text: __("vaccination.edit.title"),
+          href: vaccination.uri + "/edit"
+        }) }}
+      </p>
+    {% endset %}
+
+    {{ card({
+      heading: __("vaccination.show.summary"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: vaccinationDescriptionHtml
     }) }}
   </div>
 {% endblock %}
