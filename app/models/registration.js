@@ -1,4 +1,5 @@
 import { getToday } from '../utils/date.js'
+import { stringToBoolean } from '../utils/string.js'
 
 export class RegistrationOutcome {
   static Pending = 'Not registered yet'
@@ -20,7 +21,7 @@ export class Registration {
     this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.name = options?.name
-    this.registered = options?.registered
+    this.registered = stringToBoolean(options?.registered)
   }
 
   get ns() {
