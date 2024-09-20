@@ -17,7 +17,6 @@ import { Vaccination } from '../models/vaccination.js'
 
 export const patientController = {
   read(request, response, next) {
-    const { activity } = request.app.locals
     const { id, nhsn } = request.params
     const { data } = request.session
 
@@ -83,10 +82,6 @@ export const patientController = {
           patient.outcome?.value !== PatientOutcome.CouldNotVaccinate
       }
 
-      response.locals.activity =
-        activity || session?.status !== SessionStatus.Active
-          ? 'consent'
-          : 'capture'
       response.locals.programme = programme
       response.locals.session = session
     }

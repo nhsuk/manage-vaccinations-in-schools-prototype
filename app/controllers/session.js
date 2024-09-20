@@ -67,7 +67,9 @@ export const sessionController = {
         break
     }
 
-    const navigationItems = tabs.map((key) => ({
+    request.app.locals.activity = activity
+
+    response.locals.navigationItems = tabs.map((key) => ({
       text: __(`${activity}.${key}.label`),
       count: patients.filter((patient) => patient[activity]?.key === key)
         .length,
@@ -75,11 +77,7 @@ export const sessionController = {
       current: key === tab
     }))
 
-    request.app.locals.activity = activity
-
     response.render('session/activity', {
-      activity,
-      navigationItems,
       patients: patients.filter((patient) => patient[activity]?.key === tab),
       allPatients: patients,
       tab

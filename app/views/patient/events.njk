@@ -17,7 +17,7 @@
     }, {
       text: __("session.activity." + activity + ".title"),
       href: "/sessions/" + session.id + "/" + activity
-    }] if patient.session_id else [{
+    } if activity] if patient.session_id else [{
       text: __("cohort.list.title"),
       href: "/cohorts"
     }, {
