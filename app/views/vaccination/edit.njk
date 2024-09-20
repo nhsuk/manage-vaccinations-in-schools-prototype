@@ -16,11 +16,11 @@
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(vaccination, {
-        outcome: {
-          href: "edit/outcome"
-        },
         vaccine_gtin: {
           href: "edit/vaccine"
+        },
+        outcome: {
+          href: "edit/outcome"
         },
         method: {
           href: "edit/injection" if vaccination.vaccine.method == VaccineMethod.Injection

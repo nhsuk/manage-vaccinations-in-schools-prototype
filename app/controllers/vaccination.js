@@ -78,6 +78,7 @@ export const vaccinationController = {
       patient_uuid,
       programme_pid: programme.pid,
       session_id: session.id,
+      vaccine_gtin: programme.vaccine.gtin,
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
@@ -205,7 +206,7 @@ export const vaccinationController = {
       }))
 
     response.locals.locationItems = Object.entries(data.schools).map(
-      ([urn, school]) => ({
+      ([, school]) => ({
         text: school.name,
         value: school.name
       })

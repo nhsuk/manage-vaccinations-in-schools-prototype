@@ -105,7 +105,7 @@ export class Vaccination {
     this.patient_uuid = options?.patient_uuid
     this.batch_id = this.given ? options?.batch_id || '' : undefined
     this.batch_expires = this.given ? options?.batch_expires || '' : undefined
-    this.vaccine_gtin = this.given ? options?.vaccine_gtin || '' : undefined
+    this.vaccine_gtin = options?.vaccine_gtin
     // Import mocking
     this._pending = options?._pending || false
     // dateInput objects
@@ -167,14 +167,14 @@ export class Vaccination {
       programme_pid: programme.pid,
       session_id: session.id,
       patient_uuid: patient.uuid,
+      vaccine_gtin,
       ...(vaccinated && {
         batch_id: batch.id,
         batch_expires: batch.expires,
         dose: vaccines[vaccine_gtin].dose,
         sequence,
         injectionMethod,
-        injectionSite,
-        vaccine_gtin
+        injectionSite
       })
     })
   }
@@ -235,7 +235,7 @@ export class Vaccination {
   }
 
   get vaccine() {
-    if (!this.vaccine_gtin || !this.given) return
+    if (!this.vaccine_gtin) return
 
     return new Vaccine(vaccines[this.vaccine_gtin])
   }
