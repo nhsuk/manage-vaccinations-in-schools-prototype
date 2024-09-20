@@ -1673,16 +1673,8 @@
         "other": "[0] No children|%s children"
       }
     },
-    "schools": {
-      "label": "Schools",
-      "title": "Schools",
-      "count": {
-        "one": "%s school",
-        "other": "[0] No schools|%s schools"
-      }
-    },
     "sessions": {
-      "label": "Sessions",
+      "label": "School sessions",
       "title": "School sessions",
       "count": {
         "one": "%s school session organised",
