@@ -9,7 +9,7 @@ import {
   formatDate,
   getToday
 } from '../utils/date.js'
-import { formatLink } from '../utils/string.js'
+import { formatLink, formatList } from '../utils/string.js'
 import { getConsentWindow } from '../utils/session.js'
 import { ProgrammeStatus, programmeTypes } from './programme.js'
 
@@ -38,7 +38,7 @@ export class SessionStatus {
  * @property {string} [created_user_uid] - User who created session
  * @property {SessionFormat} [format] - Format
  * @property {string} [urn] - School
- * @property {object} [date] - Date
+ * @property {Array<string>} [dates] - Date
  * @property {object} [open] - Date consent window opens
  * @property {number} [reminder] - Date to send reminders
  * @property {object} [close] - Date consent window closes
@@ -58,7 +58,7 @@ export class Session {
     this.created_user_uid = options?.created_user_uid
     this.format = options?.format || SessionFormat.Routine
     this.urn = options?.urn
-    this.date = options?.date
+    this.dates = options?.dates || []
     this.open = options?.open
     this.reminder = options?.reminder
     this.close = options?.close
@@ -66,7 +66,6 @@ export class Session {
     this.consents = options?.consents || {}
     this.programmes = options?.programmes || []
     // dateInput objects
-    this.date_ = options?.date_
     this.open_ = options?.open_
     this.reminder_ = options?.reminder_
     this.close_ = options?.close_
@@ -88,31 +87,42 @@ export class Session {
           ])
     }
 
-    let date
+    let firstSessionDate
     switch (status) {
       case SessionStatus.Active:
         // Session is taking place today
-        date = getToday()
+        firstSessionDate = getToday()
         break
       case SessionStatus.Planned:
         // Session will take place according programme schedule
         let { to } = programmeTypes[programme.type].schedule
         // Sessions start after first content window closes
-        date = faker.date.between({ from: getToday(), to })
+        firstSessionDate = faker.date.between({ from: getToday(), to })
         break
       default:
         // Session took place about 7 days before today
-        date = faker.date.recent({ days: 7, refDate: getToday() })
+        firstSessionDate = faker.date.recent({ days: 7, refDate: getToday() })
     }
 
-    // Open consent request window 28 days before session
-    const open = removeDays(date, 28)
+    const dates = [firstSessionDate]
+
+    // TODO: Create 1-4 dates for a session
+    const hasSecondDate = faker.datatype.boolean(0.5)
+    if (hasSecondDate) {
+      const secondSessionDate = addDays(firstSessionDate, 1)
+      dates.push(secondSessionDate)
+    }
+
+    const lastSessionDate = dates.at(-1)
+
+    // Open consent request window 28 days before first session
+    const open = removeDays(firstSessionDate, 28)
 
     // Send reminders 7 days after consent opens
     const reminder = addDays(open, 7)
 
-    // Close consent request window 3 days before session
-    const close = removeDays(date, 3)
+    // Close consent request window 3 days before last session
+    const close = removeDays(lastSessionDate, 3)
 
     // Session created 2 weeks before consent window opens
     const created = removeDays(open, 14)
@@ -121,7 +131,7 @@ export class Session {
       created,
       created_user_uid: user.uuid,
       urn,
-      date,
+      dates,
       open: new Date(open),
       reminder: new Date(reminder),
       close: new Date(close),
@@ -130,14 +140,12 @@ export class Session {
     })
   }
 
-  get date_() {
-    return convertIsoDateToObject(this.date)
+  get firstDate() {
+    return this.dates[0]
   }
 
-  set date_(object) {
-    if (object) {
-      this.date = convertObjectToIsoDate(object)
-    }
+  get lastDate() {
+    return this.dates.at(-1)
   }
 
   get open_() {
@@ -212,12 +220,13 @@ export class Session {
   get link() {
     return {
       date: formatLink(this.uri, this.formatted.date),
-      location: `${formatLink(this.uri, this.location.name)}</br>
+      location: `<span>${formatLink(this.uri, this.location.name)}</br>
         <span class="nhsuk-u-secondary-text-color">
           ${this.location.addressLine1},
           ${this.location.addressLevel1},
           ${this.location.postalCode}
-        </span>`
+        </span>
+      </span>`
     }
   }
 
@@ -235,6 +244,10 @@ export class Session {
         consentWindow = `Open until ${formatDate(this.close, consentDateStyle)}`
     }
 
+    let formattedDates = this.dates.map((date) =>
+      formatDate(date, { dateStyle: 'full' })
+    )
+
     const formattedProgrammes = this.programmes.map((programme) => {
       const { name } = Object.values(programmeTypes).find(
         (type) => type.pid === programme
@@ -243,9 +256,10 @@ export class Session {
     })
 
     return {
-      date: formatDate(this.date, {
-        dateStyle: 'full'
-      }),
+      dates: formatList(formattedDates).replace(
+        'nhsuk-list--bullet',
+        'app-list--sessions'
+      ),
       open: formatDate(this.open, {
         dateStyle: 'full'
       }),

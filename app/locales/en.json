@@ -1216,6 +1216,9 @@
       "label": "Date",
       "hint": "For example, 27 3 2024"
     },
+    "dates": {
+      "label": "Dates"
+    },
     "urn": {
       "label": "School"
     },

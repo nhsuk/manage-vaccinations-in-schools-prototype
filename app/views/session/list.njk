@@ -28,10 +28,10 @@
           html: session.link.location or "Not provided"
         },
         {
-          header: __("session.date.label"),
-          text: session.formatted.date or "Not provided",
+          header: __("session.dates.label"),
+          html: session.formatted.dates or "Not provided",
           attributes: {
-            "data-sort": session.date
+            "data-sort": session.firstDate
           }
         },
         {
@@ -54,7 +54,7 @@
       responsive: true,
       head: [
         { text: __("session.location.label") },
-        { text: __("session.date.label") },
+        { text: __("session.dates.label") },
         { text: __("session.programmes.label") },
         {
           text: __("session.patients.label"),

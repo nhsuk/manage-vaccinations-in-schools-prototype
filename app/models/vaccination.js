@@ -160,7 +160,7 @@ export class Vaccination {
     const batch = Batch.generate({ vaccine_gtin })
 
     return new Vaccination({
-      created: session.date,
+      created: session.firstDate,
       created_user_uid: user.uid,
       outcome,
       location,
