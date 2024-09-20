@@ -60,7 +60,7 @@ export const replyController = {
   },
 
   update(request, response) {
-    const { activity, invalidUuid, reply, triage, vaccination } =
+    const { activity, invalidUuid, isSelfConsent, reply, triage, vaccination } =
       request.app.locals
     const { form, id } = request.params
     const { data } = request.session
@@ -80,16 +80,20 @@ export const replyController = {
     }
 
     // Add new reply
-    patient.respond = new Reply({
+    const updatedReply = new Reply({
       ...reply, // Previous values
       ...data?.wizard?.reply, // Wizard values
       ...request.body.reply, // New value
-      parent: {
-        ...reply?.parent, // Previous parent values
-        ...request.body.reply?.parent // New parent value
-      },
       ...(data.token && { created_user_uid: data.token?.uid })
     })
+
+    // Remove any parent details in reply if self consent
+    if (isSelfConsent) {
+      delete updatedReply.parent
+      delete request.app.locals.isSelfConsent
+    }
+
+    patient.respond = updatedReply
 
     if (triage.outcome) {
       patient.triage = {
@@ -99,19 +103,24 @@ export const replyController = {
       }
     }
 
+    // Clean up
     delete data.reply
     delete data.triage
     delete data?.wizard?.reply
     delete data?.wizard?.triage
-
     delete request.app.locals.reply
     delete request.app.locals.triage
 
     const action = form === 'edit' ? 'update' : 'create'
-    request.flash('success', __(`reply.success.${action}`, { reply, patient }))
+    request.flash(
+      'success',
+      __(`reply.success.${action}`, { reply: updatedReply, patient })
+    )
 
     const next =
-      form === 'edit' ? reply.uri : `/sessions/${id}/${activity || 'consent'}`
+      form === 'edit'
+        ? updatedReply.uri
+        : `/sessions/${id}/${activity || 'consent'}`
 
     response.redirect(next)
   },
