@@ -25,12 +25,6 @@ export class SessionFormat {
   static Clinic = 'A clinic'
 }
 
-export class SessionTime {
-  static Morning = 'Morning'
-  static Afternoon = 'Afternoon'
-  static AllDay = 'All day'
-}
-
 export class SessionStatus {
   static Planned = 'Planned'
   static Active = 'In progress'
@@ -45,7 +39,6 @@ export class SessionStatus {
  * @property {SessionFormat} [format] - Format
  * @property {string} [urn] - School
  * @property {object} [date] - Date
- * @property {SessionTime} [time] - Time of day
  * @property {object} [open] - Date consent window opens
  * @property {number} [reminder] - Date to send reminders
  * @property {object} [close] - Date consent window closes
@@ -66,7 +59,6 @@ export class Session {
     this.format = options?.format || SessionFormat.Routine
     this.urn = options?.urn
     this.date = options?.date
-    this.time = options?.time
     this.open = options?.open
     this.reminder = options?.reminder
     this.close = options?.close
@@ -130,7 +122,6 @@ export class Session {
       created_user_uid: user.uuid,
       urn,
       date,
-      time: faker.helpers.arrayElement(Object.values(SessionTime)),
       open: new Date(open),
       reminder: new Date(reminder),
       close: new Date(close),
@@ -203,7 +194,7 @@ export class Session {
 
   get name() {
     if (this.location) {
-      return `${this.time} session at ${this.location.name} on ${this.formatted.date}`
+      return `Session at ${this.location.name} on ${this.formatted.date}`
     }
   }
 
@@ -220,10 +211,7 @@ export class Session {
 
   get link() {
     return {
-      date: `<span class="nhsuk-u-secondary-text-color">
-        ${formatLink(this.uri, this.formatted.date)}</br>
-        ${this.time}
-      </span>`,
+      date: formatLink(this.uri, this.formatted.date),
       location: `${formatLink(this.uri, this.location.name)}</br>
         <span class="nhsuk-u-secondary-text-color">
           ${this.location.addressLine1},

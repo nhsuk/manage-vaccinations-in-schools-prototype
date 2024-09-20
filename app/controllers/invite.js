@@ -16,7 +16,7 @@ export const inviteController = {
       .sort((a, b) => new Date(a.date) - new Date(b.date))
       .map((session) => ({
         text: session.location.name,
-        hint: { text: `${session.formatted.date} (${session.time})` },
+        hint: { text: session.formatted.date },
         value: session.id
       }))
 

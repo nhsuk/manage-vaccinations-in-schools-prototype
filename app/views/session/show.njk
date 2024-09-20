@@ -18,7 +18,7 @@
 
   {{ heading({
     title: title,
-    summary: session.formatted.date + " (" + session.time + ") · " + __n("session.patients.count", patients.length)
+    summary: session.formatted.date + " · " + __n("session.patients.count", patients.length)
   }) }}
 
   {{ actionList({

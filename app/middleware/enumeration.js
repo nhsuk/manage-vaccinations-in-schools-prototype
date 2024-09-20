@@ -18,7 +18,6 @@ import { SchoolPhase } from '../models/school.js'
 import {
   ConsentWindow,
   SessionFormat,
-  SessionTime,
   SessionStatus
 } from '../models/session.js'
 import { ImportType } from '../models/import.js'
@@ -59,7 +58,6 @@ export const enumeration = (request, response, next) => {
   response.locals.SchoolPhase = SchoolPhase
   response.locals.ScreenOutcome = ScreenOutcome
   response.locals.SessionFormat = SessionFormat
-  response.locals.SessionTime = SessionTime
   response.locals.SessionStatus = SessionStatus
   response.locals.Sex = Sex
   response.locals.TriageOutcome = TriageOutcome
