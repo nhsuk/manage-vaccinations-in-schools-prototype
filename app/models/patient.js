@@ -63,7 +63,7 @@ export class PatientOutcome {
  * @property {import('./record.js').Record} record - CHIS record
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
- * @property {Array<string>} [vaccinations] - Vaccination UUIDs
+ * @property {object} [vaccinations] - Vaccination UUIDs with given boolean
  * @property {Array<string>} [cohorts] - Cohort UIDs
  * @property {string} [session_id] - Session ID
  * @function consent - Consent outcome
