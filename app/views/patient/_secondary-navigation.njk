@@ -1,8 +1,12 @@
-{% set tagColor = "red" if patient.registration.value == RegistrationOutcome.Absent else "blue" %}
+{% if patient.registration.value == RegistrationOutcome.Pending %}
+  {% set tagColor = "blue" %}
+{% elif patient.registration.value == RegistrationOutcome.Complete %}
+  {% set tagColor = "white" %}
+{% endif %}
 {{ actionList({
   items: [{
     tag: {
-      classes: "nhsuk-tag--" + tagColor,
+      classes: "nhsuk-tag--" + tagColor if tagColor,
       text: patient.registration.value
     }
   } if patient.session_id and session.status == SessionStatus.Active, {

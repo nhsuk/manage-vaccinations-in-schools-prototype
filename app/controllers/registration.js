@@ -72,18 +72,17 @@ export const registrationController = {
 
       // Add vaccination outcome to patient
       patient.capture = absentVaccination
+    } else {
+      delete patient.registered
     }
 
-    // Don’t change any values if they have not been registered yet
-    if (registered !== undefined) {
-      // Update patient record
-      data.patients[patient.uuid] = patient
+    // Update patient record
+    data.patients[patient.uuid] = patient
 
-      request.flash(
-        'message',
-        __(`registration.update.success.${patient.capture.key}`, { patient })
-      )
-    }
+    request.flash(
+      'message',
+      __(`registration.update.success.${patient.capture.key}`, { patient })
+    )
 
     if (tab) {
       response.redirect(`${session.uri}/capture?tab=${tab}`)
