@@ -132,6 +132,7 @@ export default () => {
    */
   globals.patientStatus = function (patient) {
     const { __, data } = this.ctx
+    const { consent, screen, outcome } = patient
 
     // Get logged in user, else use placeholder
     const user = new User(data.token ? data.token : exampleUsers[0])
@@ -151,48 +152,48 @@ export default () => {
       relationships.push(reply.relationship)
     }
 
-    if (patient.outcome.value === PatientOutcome.NoOutcomeYet) {
+    if (outcome.value === PatientOutcome.NoOutcomeYet) {
       // If no outcome, use status colour and title for consent/triage outcome
 
-      if (patient.screen.value === ScreenOutcome.NeedsTriage) {
+      if (screen.value === ScreenOutcome.NeedsTriage) {
         // Patient needs triage
-        colour = __(`screen.${patient.screen.key}.colour`)
-        description = __(`screen.${patient.screen.key}.description`, {
+        colour = __(`screen.${screen.key}.colour`)
+        description = __(`screen.${screen.key}.description`, {
           patient,
           user
         })
-        title = __(`screen.${patient.screen.key}.title`)
+        title = __(`screen.${screen.key}.title`)
       } else {
         // Patient requires consent
-        colour = __(`consent.${patient.consent.key}.colour`)
-        description = __(`consent.${patient.consent.key}.description`, {
+        colour = __(`consent.${consent.key}.colour`)
+        description = __(`consent.${consent.key}.description`, {
           patient,
           relationships: prototypeFilters.formatList(relationships)
         })
-        title = __(`consent.${patient.consent.key}.title`)
+        title = __(`consent.${consent.key}.title`)
       }
     } else {
       // If outcome, use status colour and title for that outcome
-      colour = __(`outcome.${patient.outcome.key}.colour`)
-      title = __(`outcome.${patient.outcome.key}.title`)
+      colour = __(`outcome.${outcome.key}.colour`)
+      title = __(`outcome.${outcome.key}.title`)
 
       // If could not vaccinate, provide a description for why
-      if (patient.outcome.value === PatientOutcome.CouldNotVaccinate) {
+      if (outcome.value === PatientOutcome.CouldNotVaccinate) {
         if (
-          patient.screen.value === ScreenOutcome.DelayVaccination ||
-          patient.screen.value === ScreenOutcome.DoNotVaccinate
+          screen.value === ScreenOutcome.DelayVaccination ||
+          screen.value === ScreenOutcome.DoNotVaccinate
         ) {
           // Patient had a triage outcome that prevented vaccination
-          description = __(`screen.${patient.screen.key}.description`, {
+          description = __(`screen.${screen.key}.description`, {
             patient,
             user
           })
         } else if (
           // Patient wasn’t able to get consent for vaccination
-          patient.consent.value === ConsentOutcome.Inconsistent ||
-          patient.consent.value === ConsentOutcome.Refused
+          consent.value === ConsentOutcome.Inconsistent ||
+          consent.value === ConsentOutcome.Refused
         ) {
-          description = __(`consent.${patient.consent.key}.description`, {
+          description = __(`consent.${consent.key}.description`, {
             patient,
             relationships: prototypeFilters.formatList(relationships)
           })
