@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import { isAfter, isBefore } from 'date-fns'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import schools from '../datasets/schools.js'
 import {
@@ -7,7 +8,8 @@ import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
-  getToday
+  getToday,
+  isBetweenDates
 } from '../utils/date.js'
 import { formatLink, formatList } from '../utils/string.js'
 import { getConsentWindow } from '../utils/session.js'
@@ -41,11 +43,11 @@ export class SessionStatus {
  * @property {Array<string>} [dates] - Date
  * @property {object} [open] - Date consent window opens
  * @property {number} [reminder] - Date to send reminders
- * @property {SessionStatus} [status] - Status
  * @property {object} [consents] – (Unmatched) consent replies
  * @property {Array<string>} [programmes] - Programme PIDs
  * @function close - Date consent window closes
  * @function consentWindow - Consent window (open, opening or closed)
+ * @function status - Status
  * @function school - Get school details
  * @function location - Get location details
  * @function ns - Namespace
@@ -61,7 +63,6 @@ export class Session {
     this.dates = options?.dates || []
     this.open = options?.open
     this.reminder = options?.reminder
-    this.status = options?.status || SessionStatus.Planned
     this.consents = options?.consents || {}
     this.programmes = options?.programmes || []
     // dateInput objects
@@ -138,7 +139,6 @@ export class Session {
       dates,
       open,
       reminder,
-      status,
       programmes: [programme.pid]
     })
   }
@@ -192,6 +192,21 @@ export class Session {
 
   get consentWindow() {
     return getConsentWindow(this)
+  }
+
+  get status() {
+    const today = getToday()
+
+    switch (true) {
+      case isBetweenDates(today, this.firstDate, this.lastDate):
+        return SessionStatus.Active
+      case isBefore(today, this.firstDate):
+        return SessionStatus.Planned
+      case isAfter(today, this.lastDate):
+        return SessionStatus.Completed
+      default:
+        return SessionStatus.Unplanned
+    }
   }
 
   get school() {
