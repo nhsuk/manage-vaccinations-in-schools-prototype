@@ -2,26 +2,41 @@
 
 {% set title = __("session.edit.dates.title") %}
 
+{% macro dateFieldset(index) %}
+  {{ dateInput({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: "Session date"
+      }
+    },
+    hint: { text: __("session.date.hint") },
+    values: session.dates_[index],
+    id: "session-dates-" + index,
+    namePrefix: "[session][dates_][" + index + "]"
+  }) }}
+{% endmacro %}
+
 {% block form %}
   {{ heading({
     title: title
   }) }}
 
-  {% for date in session.dates_ %}
-    {{ dateInput({
-      formGroup: {
-        classes: "nhsuk-u-margin-bottom-6"
-      },
-      fieldset: {
-        legend: {
-          classes: "nhsuk-fieldset__legend--m",
-          text: (loop.index | ordinal | title) + " session"
-        }
-      },
-      hint: { text: __("session.date.hint") },
-      values: date,
-      id: "session-dates-" + loop.index0,
-      namePrefix: "[session][dates_][" + loop.index0 + "]"
-    }) }}
-  {% endfor %}
+  {% call addAnother({
+    id: "session-dates",
+    name: "date",
+    fieldset: { legend: "Things" }
+  }) %}
+    <ol class="nhsuk-list app-add-another__list" role="list">
+    {% for date in session.dates_ %}
+      <li class="app-add-another__list-item">
+        {{ dateFieldset(loop.index0) }}
+      </li>
+    {% else %}
+      <li class="app-add-another__list-item">
+        {{ dateFieldset(0) }}
+      </li>
+    {% endfor %}
+    </ol>
+  {% endcall %}
 {% endblock %}
