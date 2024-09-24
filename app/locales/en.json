@@ -319,7 +319,8 @@
       },
       "urn": {
         "title": "What school does your child go to?",
-        "label": "Select a school"
+        "label": "Select a school",
+        "description": "You can only use this service if your child’s school is listed here. If it’s not, contact {{organisation.email}}. If you’ve moved recently, it’s important to mention this."
       },
       "address": {
         "title": "Home address",

@@ -7,6 +7,10 @@
     title: title
   }) }}
 
+  {{ __("consent.child.urn.description", {
+    organisation: data.organisation
+  }) | nhsukMarkdown }}
+
   {{ xGovukAutocomplete({
     id: "urn",
     name: "[consent][child][urn]",
