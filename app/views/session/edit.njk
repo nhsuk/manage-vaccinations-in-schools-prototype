@@ -8,6 +8,7 @@
   {{ super() }}
 
   {{ heading({
+    caption: session.location.name,
     title: title
   }) }}
 
@@ -21,9 +22,6 @@
         },
         programmes: {
           href: session.uri + "/edit/programmes"
-        },
-        urn: {
-          href: session.uri + "/edit/urn"
         },
         date: {
           href: session.uri + "/edit/date"

@@ -1190,9 +1190,6 @@
       "programmes": {
         "title": "Which programmes is this session part of?"
       },
-      "urn": {
-        "title": "Which school is it at?"
-      },
       "date": {
         "title": "When is the session?"
       }

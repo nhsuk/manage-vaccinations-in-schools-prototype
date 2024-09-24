@@ -5,6 +5,7 @@
 
 {% block form %}
   {{ heading({
+    caption: session.location.name,
     title: title
   }) }}
 
@@ -18,10 +19,6 @@
         },
         programmes: {
           href: session.uri + "/new/programmes"
-        },
-        urn: {
-          value: session.location.name,
-          href: session.uri + "/new/urn"
         },
         date: {
           href: session.uri + "/new/date"

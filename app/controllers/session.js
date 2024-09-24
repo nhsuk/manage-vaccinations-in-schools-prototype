@@ -252,7 +252,6 @@ export const sessionController = {
       [`/`]: {},
       [`/${id}/${form}/format`]: {},
       [`/${id}/${form}/programmes`]: {},
-      [`/${id}/${form}/urn`]: {},
       [`/${id}/${form}/date`]: {},
       [`/${id}/${form}/schedule`]: {},
       [`/${id}/${form}/check-answers`]: {},
@@ -266,16 +265,6 @@ export const sessionController = {
         next: `/sessions/${id}/edit`
       })
     }
-
-    response.locals.urnItems = Object.values(data.schools)
-      .map((school) => new School(school))
-      .map((school) => ({
-        text: school.name,
-        value: school.urn,
-        attributes: {
-          'data-hint': school.formatted.address
-        }
-      }))
 
     next()
   },
