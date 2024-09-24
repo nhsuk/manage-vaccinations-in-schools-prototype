@@ -1227,7 +1227,7 @@
     },
     "new": {
       "title": "Setup sessions",
-      "description": "Schedule sessions and plan consent requests.",
+      "description": "Schedule sessions for this school.",
       "check-answers": {
         "title": "Check and confirm",
         "confirm": "Save changes",
@@ -1276,18 +1276,6 @@
     },
     "programmes": {
       "label": "Programmes"
-    },
-    "open": {
-      "label": "Consent requests",
-      "hint": "When should parents get a request for consent?"
-    },
-    "reminder": {
-      "label": "Reminders",
-      "hint": "When should parents who haven’t responded get a reminder?"
-    },
-    "close": {
-      "label": "Response deadline",
-      "hint": "What’s the latest date a consent response will be accepted?"
     },
     "status": {
       "label": "Status"

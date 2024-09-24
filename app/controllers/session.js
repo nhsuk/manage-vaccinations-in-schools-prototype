@@ -253,7 +253,6 @@ export const sessionController = {
       [`/`]: {},
       [`/${id}/${form}/programmes`]: {},
       [`/${id}/${form}/dates`]: {},
-      [`/${id}/${form}/schedule`]: {},
       [`/${id}/${form}/check-answers`]: {},
       [`/${id}`]: {}
     }
