@@ -698,6 +698,31 @@
       "confirm": "Invite"
     }
   },
+  "organisation": {
+    "edit": {
+      "title": "Team settings",
+      "confirm": "Save changes",
+      "summary": "Organisation details"
+    },
+    "name": {
+      "label": "Name"
+    },
+    "code": {
+      "label": "ODC code"
+    },
+    "tel": {
+      "label": "Phone number"
+    },
+    "email": {
+      "label": "Email address"
+    },
+    "success": {
+      "update": "Team settings updated"
+    },
+    "contact": {
+      "title": "Contact details"
+    }
+  },
   "outcome": {
     "label": "Outcome",
     "NoOutcomeYet": {

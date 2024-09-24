@@ -1,3 +1,4 @@
+import { Organisation } from '../models/organisation.js'
 import { ProgrammeType } from '../models/programme.js'
 import { User, UserRole } from '../models/user.js'
 import { formatDate, getToday } from '../utils/date.js'
@@ -8,6 +9,7 @@ export const navigation = (request, response, next) => {
   const { __ } = response.locals
   const { sessions } = data
 
+  const organisation = new Organisation(data.organisation)
   const user = new User(data.token)
   const root = request.path.split('/')[1]
 
@@ -57,6 +59,11 @@ export const navigation = (request, response, next) => {
             url: '/vaccines',
             label: __('vaccine.list.title'),
             current: current === 'vaccines'
+          },
+          {
+            url: `${organisation.uri}/edit`,
+            label: __('organisation.edit.title'),
+            current: current === 'organisations'
           }
         ]
       : []

@@ -1,0 +1,20 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("organisation.contact.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: organisation.name,
+    title: title
+  }) }}
+
+  {{ input({
+    label: { text: __("organisation.email.label") },
+    decorate: "organisation.email"
+  }) }}
+
+  {{ input({
+    label: { text: __("organisation.tel.label") },
+    decorate: "organisation.tel"
+  }) }}
+{% endblock %}

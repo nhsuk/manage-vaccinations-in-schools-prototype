@@ -40,6 +40,6 @@ export class Organisation {
   }
 
   get uri() {
-    return `/organisation/${this.code}`
+    return `/organisations/${this.code}`
   }
 }
