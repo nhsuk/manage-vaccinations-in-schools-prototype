@@ -266,7 +266,7 @@ export class Session {
       reminder: formatDate(this.reminder, {
         dateStyle: 'full'
       }),
-      close: formatDate(this.date, {
+      close: formatDate(this.close, {
         dateStyle: 'full'
       }),
       programmes: prototypeFilters.formatList(formattedProgrammes),
