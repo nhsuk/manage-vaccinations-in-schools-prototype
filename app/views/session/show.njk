@@ -24,6 +24,8 @@
     {% set tagColor = "blue" %}
   {% elif session.status == SessionStatus.Completed %}
     {% set tagColor = "green" %}
+  {% elif session.status == SessionStatus.Unplanned %}
+    {% set tagColor = "purple" %}
   {% endif %}
 
   {{ actionList({
@@ -64,6 +66,17 @@
             }) }}
           </li>
         {% endif %}
+        {% if session.status == SessionStatus.Planned or session.status == SessionStatus.Active %}
+          <li class="nhsuk-grid-column-full nhsuk-card-group__item">
+            {{ card({
+              clickable: true,
+              heading: __("session.consents.title"),
+              headingClasses: "nhsuk-heading-m",
+              href:  session.uri + "/consents",
+              description: __n("session.consents.count", session.consents | length)
+            }) }}
+          </li>
+        {% endif %}
         {% if session.status == SessionStatus.Active %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {{ card({
@@ -87,15 +100,6 @@
           </li>
         {% endif %}
         {% if session.status == SessionStatus.Planned %}
-          <li class="nhsuk-grid-column-full nhsuk-card-group__item">
-            {{ card({
-              clickable: true,
-              heading: __("session.consents.title"),
-              headingClasses: "nhsuk-heading-m",
-              href:  session.uri + "/consents",
-              description: __n("session.consents.count", session.consents | length)
-            }) }}
-          </li>
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {{ card({
               clickable: true,
