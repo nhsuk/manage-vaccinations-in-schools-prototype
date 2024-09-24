@@ -81,13 +81,13 @@ $button-shadow-size: 4px;
   }
 
   &::before {
-    top: #{$nhsuk-border-width-form-element * -1};
     bottom: #{$button-shadow-size * -1};
+    top: #{$nhsuk-border-width-form-element * -1};
   }
 
   &:active::before {
-    top: #{($nhsuk-border-width-form-element + $button-shadow-size) * -1};
     bottom: #{($nhsuk-border-width-form-element + $button-shadow-size) * -1};
+    top: #{($nhsuk-border-width-form-element + $button-shadow-size) * -1};
   }
 }
 
@@ -110,10 +110,10 @@ $button-shadow-size: 4px;
     padding-top: #{nhsuk-spacing(1) + 1px};
 
     &:active {
+      margin-bottom: -1px;
       // Revert padding to account for reintroduction of 2px bottom border
       padding-bottom: nhsuk-spacing(1);
       padding-top: nhsuk-spacing(1);
-      margin-bottom: -1px;
     }
   }
 }
