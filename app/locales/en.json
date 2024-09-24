@@ -1193,9 +1193,6 @@
       "urn": {
         "title": "Which school is it at?"
       },
-      "cohort": {
-        "title": "Choose cohort for this session"
-      },
       "date": {
         "title": "When is the session?"
       }

@@ -253,7 +253,6 @@ export const sessionController = {
       [`/${id}/${form}/format`]: {},
       [`/${id}/${form}/programmes`]: {},
       [`/${id}/${form}/urn`]: {},
-      [`/${id}/${form}/cohort`]: {},
       [`/${id}/${form}/date`]: {},
       [`/${id}/${form}/schedule`]: {},
       [`/${id}/${form}/check-answers`]: {},
