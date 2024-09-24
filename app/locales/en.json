@@ -1187,8 +1187,8 @@
       "programmes": {
         "title": "Which programmes is this session part of?"
       },
-      "date": {
-        "title": "When is the session?"
+      "dates": {
+        "title": "When will sessions be held?"
       }
     },
     "success": {

@@ -251,7 +251,7 @@ export const sessionController = {
     const journey = {
       [`/`]: {},
       [`/${id}/${form}/programmes`]: {},
-      [`/${id}/${form}/date`]: {},
+      [`/${id}/${form}/dates`]: {},
       [`/${id}/${form}/schedule`]: {},
       [`/${id}/${form}/check-answers`]: {},
       [`/${id}`]: {}

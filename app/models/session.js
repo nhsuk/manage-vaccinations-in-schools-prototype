@@ -65,6 +65,7 @@ export class Session {
     this.consents = options?.consents || {}
     this.programmes = options?.programmes || []
     // dateInput objects
+    this.dates_ = options?.dates_
     this.open_ = options?.open_
     this.reminder_ = options?.reminder_
     this.close_ = options?.close_
@@ -145,6 +146,18 @@ export class Session {
 
   get lastDate() {
     return this.dates.at(-1)
+  }
+
+  get dates_() {
+    return this.dates.map((date) => convertIsoDateToObject(date))
+  }
+
+  set dates_(object) {
+    if (object) {
+      this.dates = Object.values(object).map((obj) =>
+        convertObjectToIsoDate(obj)
+      )
+    }
   }
 
   get open_() {
