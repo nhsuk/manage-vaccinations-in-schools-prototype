@@ -20,8 +20,7 @@ export class ConsentWindow {
 }
 
 export class SessionFormat {
-  static Routine = 'A routine session in school'
-  static Catchup = 'A catch-up session in school'
+  static School = 'A routine session in school'
   static Clinic = 'A clinic'
 }
 
@@ -56,7 +55,7 @@ export class Session {
     this.id = options?.id || faker.helpers.replaceSymbols('###')
     this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
-    this.format = options?.format || SessionFormat.Routine
+    this.format = options?.format || SessionFormat.School
     this.urn = options?.urn
     this.dates = options?.dates || []
     this.open = options?.open
