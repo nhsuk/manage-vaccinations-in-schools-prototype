@@ -151,7 +151,7 @@ export const patientController = {
     request.app.locals.record = new Record({
       ...record,
       ...(form === 'edit' && record), // Previous values
-      ...data?.wizard?.record // Wizard values,
+      ...data?.wizard?.record // Wizard values
     })
 
     response.locals.paths = {
