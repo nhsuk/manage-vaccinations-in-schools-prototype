@@ -47,6 +47,7 @@ $color_app-dark-orange: color.scale(color.mix($color_nhsuk-red, $color_nhsuk-war
 // Import app components
 @import "action-list";
 @import "action-table";
+@import "add-another";
 @import "autocomplete";
 @import "button";
 @import "button-group";

@@ -1,0 +1,33 @@
+{%- from "components/button/macro.njk" import button -%}
+{%- from "components/fieldset/macro.njk" import fieldset -%}
+{% macro addAnother(params) -%}
+{%- set id = params.id or params.name -%}
+{#- `fieldset` is false by default -#}
+{%- set hasFieldset = true if params.fieldset else false %}
+{#- Capture the HTML so we can optionally nest it within a fieldset -#}
+{%- set innerHtml %}{{ caller() if caller }}{% endset %}
+<add-another class="app-add-another__field" id="{{ id }}">
+  {% if params.fieldset %}
+    {% call fieldset({
+      describedBy: describedBy,
+      classes: params.fieldset.classes,
+      attributes: params.fieldset.attributes,
+      legend: params.fieldset.legend
+    }) %}{{ innerHtml | trim | safe }}{% endcall %}
+  {% else %}
+    {{ innerHtml | trim | safe }}
+  {% endif %}
+  <template id="add-button">
+    {{ button({
+      classes: "app-add-another__add app-button--secondary",
+      text: "Add another " + params.name
+    }) | indent(4) }}
+  </template>
+  <template id="delete-button">
+    {{ button({
+      classes: "app-add-another__delete app-button--secondary-warning app-button--small",
+      text: "Delete"
+    }) | indent(4) }}
+  </template>
+</add-another>
+{% endmacro %}

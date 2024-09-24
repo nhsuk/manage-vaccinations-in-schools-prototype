@@ -7,6 +7,12 @@ import { initAll as GOVUKFrontend } from 'govuk-frontend'
 // Import edge detection from GOV.UK Prototype Rig
 import { Edge } from '@x-govuk/govuk-prototype-components'
 
+// Import custom elements
+import { AddAnotherComponent } from './custom-elements/add-another.js'
+
+// Register custom elements
+customElements.define('add-another', AddAnotherComponent)
+
 // Initiate edge detection
 const $edges = document.querySelectorAll('[data-module="edge"]')
 $edges.forEach(($edge) => {
