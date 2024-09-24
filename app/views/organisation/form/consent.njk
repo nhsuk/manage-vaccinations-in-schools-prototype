@@ -1,0 +1,17 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("organisation.consentDelay.title") %}
+
+{% block form %}
+  {{ input({
+    classes: "nhsuk-input--width-2",
+    label: {
+      html: heading({
+        caption: organisation.name,
+        title: title
+      })
+    },
+    suffix: "weeks",
+    decorate: "organisation.consentDelay"
+  }) }}
+{% endblock %}

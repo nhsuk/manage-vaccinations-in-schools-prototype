@@ -1,0 +1,30 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("organisation.reminders.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: organisation.name,
+    title: title
+  }) }}
+
+  {{ input({
+    classes: "nhsuk-input--width-2",
+    label: { text: __("organisation.reminderDelay.title") },
+    suffix: "days",
+    decorate: "organisation.reminderDelay"
+  }) }}
+
+  {{ input({
+    classes: "nhsuk-input--width-2",
+    label: { text: __("organisation.reminderInterval.title") },
+    suffix: "days",
+    decorate: "organisation.reminderInterval"
+  }) }}
+
+  {{ input({
+    classes: "nhsuk-input--width-2",
+    label: { text: __("organisation.reminderMax.title") },
+    decorate: "organisation.reminderMax"
+  }) }}
+{% endblock %}

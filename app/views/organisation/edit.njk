@@ -27,4 +27,25 @@
       })
     })
   }) }}
+
+  {{ card({
+    heading: __("organisation.consent.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(organisation, {
+        consentDelay: {
+          href: organisation.uri + "/edit/consent"
+        },
+        reminderDelay: {
+          href: organisation.uri + "/edit/reminders"
+        },
+        reminderInterval: {
+          href: organisation.uri + "/edit/reminders"
+        },
+        reminderMax: {
+          href: organisation.uri + "/edit/reminders"
+        }
+      })
+    })
+  }) }}
 {% endblock %}

@@ -704,6 +704,9 @@
       "confirm": "Save changes",
       "summary": "Organisation details"
     },
+    "consent": {
+      "summary": "Consent requests and reminders"
+    },
     "name": {
       "label": "Name"
     },
@@ -716,11 +719,30 @@
     "email": {
       "label": "Email address"
     },
+    "consentDelay": {
+      "title": "When should parents receive a request for consent?",
+      "label": "Consent request"
+    },
+    "reminderDelay": {
+      "title": "When should parents who haven’t responded get a reminder?",
+      "label": "Days before first reminder"
+    },
+    "reminderInterval": {
+      "title": "Days between each reminders",
+      "label": "Days between each reminder"
+    },
+    "reminderMax": {
+      "title": "Maximum number of reminders",
+      "label": "Maximum number of reminders"
+    },
     "success": {
       "update": "Team settings updated"
     },
     "contact": {
       "title": "Contact details"
+    },
+    "reminders": {
+      "title": "Consent reminders"
     }
   },
   "outcome": {
