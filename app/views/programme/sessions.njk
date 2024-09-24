@@ -30,12 +30,6 @@
     {{ __("programme.sessions.title") }}
   </h2>
 
-  {{ button({
-    classes: "app-button--secondary nhsuk-u-margin-bottom-0",
-    text: __("session.new.title"),
-    href: "/sessions/new"
-  }) if data.token.role != UserRole.DataConsumer }}
-
   {% set sessions = programme.sessions | sort(true, false, "status") %}
   {% for status, sessions in sessions | groupby("status") %}
     {% set sessionRows = [] %}
@@ -68,7 +62,7 @@
       id: "sessions",
       sort: "date",
       panel: true,
-      heading: status + " sessions",
+      heading: status,
       responsive: true,
       head: [
         { text: __("session.location.label") },

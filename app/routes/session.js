@@ -3,7 +3,10 @@ import { sessionController } from '../controllers/session.js'
 
 const router = express.Router({ strict: true })
 
-router.get(['/', '/:view(active|planned|completed)'], sessionController.list)
+router.get(
+  ['/', '/:view(active|completed|planned|unplanned)'],
+  sessionController.list
+)
 
 router.get('/new', sessionController.new)
 router.post('/:id/?:form(new)/check-answers', sessionController.update)

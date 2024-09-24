@@ -25,9 +25,10 @@ export class SessionFormat {
 }
 
 export class SessionStatus {
-  static Planned = 'Planned'
-  static Active = 'In progress'
-  static Completed = 'Completed'
+  static Unplanned = 'No sessions planned'
+  static Planned = 'Sessions planned'
+  static Active = 'Sessions in progress'
+  static Completed = 'Sessions completed'
 }
 
 /**
@@ -82,11 +83,17 @@ export class Session {
       status = options.isToday
         ? SessionStatus.Active
         : faker.helpers.arrayElement([
+            SessionStatus.Completed,
             SessionStatus.Planned,
-            SessionStatus.Completed
+            SessionStatus.Unplanned
           ])
     }
 
+    let dates = []
+    let reminder
+    let open
+    let close
+    let created
     let firstSessionDate
     switch (status) {
       case SessionStatus.Active:
@@ -99,42 +106,47 @@ export class Session {
         // Sessions start after first content window closes
         firstSessionDate = faker.date.between({ from: getToday(), to })
         break
+      case SessionStatus.Unplanned:
+        firstSessionDate = false
+        break
       default:
         // Session took place about 7 days before today
         firstSessionDate = faker.date.recent({ days: 7, refDate: getToday() })
     }
 
-    const dates = [firstSessionDate]
+    if (firstSessionDate) {
+      dates.push(firstSessionDate)
 
-    // TODO: Create 1-4 dates for a session
-    const hasSecondDate = faker.datatype.boolean(0.5)
-    if (hasSecondDate) {
-      const secondSessionDate = addDays(firstSessionDate, 1)
-      dates.push(secondSessionDate)
+      // TODO: Create 1-4 dates for a session
+      const hasSecondDate = faker.datatype.boolean(0.5)
+      if (hasSecondDate) {
+        const secondSessionDate = addDays(firstSessionDate, 1)
+        dates.push(secondSessionDate)
+      }
+
+      const lastSessionDate = dates.at(-1)
+
+      // Open consent request window 28 days before first session
+      open = new Date(removeDays(firstSessionDate, 28))
+
+      // Send reminders 7 days after consent opens
+      reminder = new Date(addDays(open, 7))
+
+      // Close consent request window 3 days before last session
+      close = new Date(removeDays(lastSessionDate, 3))
+
+      // Session created 2 weeks before consent window opens
+      created = new Date(removeDays(open, 14))
     }
-
-    const lastSessionDate = dates.at(-1)
-
-    // Open consent request window 28 days before first session
-    const open = removeDays(firstSessionDate, 28)
-
-    // Send reminders 7 days after consent opens
-    const reminder = addDays(open, 7)
-
-    // Close consent request window 3 days before last session
-    const close = removeDays(lastSessionDate, 3)
-
-    // Session created 2 weeks before consent window opens
-    const created = removeDays(open, 14)
 
     return new Session({
       created,
       created_user_uid: user.uuid,
       urn,
       dates,
-      open: new Date(open),
-      reminder: new Date(reminder),
-      close: new Date(close),
+      open,
+      reminder,
+      close,
       status,
       programmes: [programme.pid]
     })
@@ -231,7 +243,6 @@ export class Session {
 
   get link() {
     return {
-      date: formatLink(this.uri, this.formatted.date),
       location: `<span>${formatLink(this.uri, this.location.name)}</br>
         <span class="nhsuk-u-secondary-text-color">
           ${this.location.addressLine1},
@@ -256,9 +267,10 @@ export class Session {
         consentWindow = `Open until ${formatDate(this.close, consentDateStyle)}`
     }
 
-    let formattedDates = this.dates.map((date) =>
-      formatDate(date, { dateStyle: 'full' })
-    )
+    let formattedDates =
+      this.dates.length > 0
+        ? this.dates.map((date) => formatDate(date, { dateStyle: 'full' }))
+        : ''
 
     const formattedProgrammes = this.programmes.map((programme) => {
       const { name } = Object.values(programmeTypes).find(

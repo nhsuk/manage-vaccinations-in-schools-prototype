@@ -14,7 +14,8 @@ export const sessionController = {
     const statuses = {
       active: SessionStatus.Active,
       completed: SessionStatus.Completed,
-      planned: SessionStatus.Planned
+      planned: SessionStatus.Planned,
+      unplanned: SessionStatus.Unplanned
     }
 
     response.render('session/list', {

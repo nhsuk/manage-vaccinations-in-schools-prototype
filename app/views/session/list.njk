@@ -5,17 +5,10 @@
 {% block content %}
   {{ super() }}
 
-  <div class="app-heading-group">
-    {{ heading({
-      size: "xl",
-      title: __("session.list.title")
-    }) }}
-
-    {{ button({
-      text: __("session.new.title"),
-      href: "/sessions/new"
-    }) }}
-  </div>
+  {{ heading({
+    size: "xl",
+    title: __("session.list.title")
+  }) }}
 
   {% include "session/_list-navigation.njk" %}
 
@@ -29,9 +22,9 @@
         },
         {
           header: __("session.dates.label"),
-          html: session.formatted.dates or "Not provided",
+          html: session.formatted.dates or "None scheduled",
           attributes: {
-            "data-sort": session.firstDate
+            "data-sort": "session.firstDate"
           }
         },
         {

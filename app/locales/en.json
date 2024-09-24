@@ -1156,6 +1156,13 @@
           "other": "[0] No sessions today|%s sessions today"
         }
       },
+      "completed": {
+        "label": "Completed",
+        "count": {
+          "one": "%s session completed",
+          "other": "[0] No sessions completed|%s sessions completed"
+        }
+      },
       "planned": {
         "label": "Planned",
         "count": {
@@ -1163,21 +1170,21 @@
           "other": "[0] No sessions planned|%s sessions planned"
         }
       },
-      "completed": {
-        "label": "Completed",
+      "unplanned": {
+        "label": "Not planned",
         "count": {
-          "one": "%s session completed",
-          "other": "[0] No sessions completed|%s sessions completed"
+          "one": "%s schools without session dates",
+          "other": "[0] No schools without session dates|%s schools without session dates"
         }
       }
     },
     "new": {
-      "title": "Create a new session",
-      "description": "Create a new session or clinic for a programme.",
+      "title": "Setup sessions",
+      "description": "Schedule sessions and plan consent requests.",
       "check-answers": {
         "title": "Check and confirm",
         "confirm": "Save changes",
-        "summary": "New session details"
+        "summary": "Session details"
       }
     },
     "edit": {
@@ -1205,11 +1212,11 @@
       }
     },
     "date": {
-      "label": "Date",
+      "label": "Session date",
       "hint": "For example, 27 3 2024"
     },
     "dates": {
-      "label": "Dates"
+      "label": "Session dates"
     },
     "urn": {
       "label": "School"
