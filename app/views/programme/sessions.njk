@@ -30,8 +30,7 @@
     {{ __("programme.sessions.title") }}
   </h2>
 
-  {% set sessions = programme.sessions | sort(true, false, "status") %}
-  {% for status, sessions in sessions | groupby("status") %}
+  {% for status, sessions in programme.sessions %}
     {% set sessionRows = [] %}
     {% for session in sessions | sort(false, false, "date") %}
       {% set sessionRows = sessionRows | push([
