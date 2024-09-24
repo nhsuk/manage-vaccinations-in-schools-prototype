@@ -41,10 +41,10 @@ export class SessionStatus {
  * @property {Array<string>} [dates] - Date
  * @property {object} [open] - Date consent window opens
  * @property {number} [reminder] - Date to send reminders
- * @property {object} [close] - Date consent window closes
  * @property {SessionStatus} [status] - Status
  * @property {object} [consents] – (Unmatched) consent replies
  * @property {Array<string>} [programmes] - Programme PIDs
+ * @function close - Date consent window closes
  * @function consentWindow - Consent window (open, opening or closed)
  * @function school - Get school details
  * @function location - Get location details
@@ -61,7 +61,6 @@ export class Session {
     this.dates = options?.dates || []
     this.open = options?.open
     this.reminder = options?.reminder
-    this.close = options?.close
     this.status = options?.status || SessionStatus.Planned
     this.consents = options?.consents || {}
     this.programmes = options?.programmes || []
@@ -69,7 +68,6 @@ export class Session {
     this.dates_ = options?.dates_
     this.open_ = options?.open_
     this.reminder_ = options?.reminder_
-    this.close_ = options?.close_
   }
 
   static generate(urn, programme, user, options = {}) {
@@ -92,7 +90,6 @@ export class Session {
     let dates = []
     let reminder
     let open
-    let close
     let created
     let firstSessionDate
     switch (status) {
@@ -124,16 +121,11 @@ export class Session {
         dates.push(secondSessionDate)
       }
 
-      const lastSessionDate = dates.at(-1)
-
       // Open consent request window 28 days before first session
       open = new Date(removeDays(firstSessionDate, 28))
 
       // Send reminders 7 days after consent opens
       reminder = new Date(addDays(open, 7))
-
-      // Close consent request window 3 days before last session
-      close = new Date(removeDays(lastSessionDate, 3))
 
       // Session created 2 weeks before consent window opens
       created = new Date(removeDays(open, 14))
@@ -146,7 +138,6 @@ export class Session {
       dates,
       open,
       reminder,
-      close,
       status,
       programmes: [programme.pid]
     })
@@ -192,13 +183,10 @@ export class Session {
     }
   }
 
-  get close_() {
-    return convertIsoDateToObject(this.close)
-  }
-
-  set close_(object) {
-    if (object) {
-      this.close = convertObjectToIsoDate(object)
+  get close() {
+    // Always close consent for school sessions one day before final session
+    if (this.lastDate) {
+      return removeDays(this.lastDate, 1)
     }
   }
 
