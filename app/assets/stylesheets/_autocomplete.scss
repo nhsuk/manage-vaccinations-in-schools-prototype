@@ -9,7 +9,8 @@
 .autocomplete__option-hint {
   color: $nhsuk-secondary-text-color;
 
-  .autocomplete__option:hover & {
+  .autocomplete__option:hover &,
+  .autocomplete__option:focus & {
     color: $color_nhsuk-grey-5;
   }
 }
