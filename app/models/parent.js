@@ -11,10 +11,7 @@ export class ContactPreference {
 export class ParentalRelationship {
   static Mum = 'Mum'
   static Dad = 'Dad'
-  static StepParent = 'Step-parent'
-  static Grandparent = 'Grandparent'
   static Guardian = 'Guardian'
-  static Carer = 'Carer'
   static Other = 'Other'
 }
 
