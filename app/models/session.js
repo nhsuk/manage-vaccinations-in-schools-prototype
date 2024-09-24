@@ -272,6 +272,9 @@ export class Session {
         'nhsuk-list--bullet',
         'app-list--sessions'
       ),
+      firstDate: formatDate(this.firstDate, {
+        dateStyle: 'full'
+      }),
       open: formatDate(this.open, {
         dateStyle: 'full'
       }),

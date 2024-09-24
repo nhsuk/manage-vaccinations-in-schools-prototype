@@ -456,7 +456,7 @@
       },
       "invite-reminder": {
         "label": "Reminder",
-        "name": "Please respond to our request for consent by {{session.formatted.close}}"
+        "name": "Please respond to our request for consent by {{session.formatted.firstDate}}"
       },
       "consent-given": {
         "label": "Consent given",
@@ -1287,7 +1287,7 @@
       "invite": {
         "label": "Invitation",
         "name": "Inviting parent to give or refuse consent",
-        "text": "Give or refuse consent for your child’s {{programme.name}} vaccination by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}). You need to do this by {{session.formatted.close}}.\n\nResponding will take less than 5 minutes."
+        "text": "Give or refuse consent for your child’s {{programme.name}} vaccination by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}). You need to do this by {{session.formatted.open}}.\n\nResponding will take less than 5 minutes."
       },
       "invite-reminder": {
         "label": "Reminder",
