@@ -1184,9 +1184,6 @@
       "title": "Edit session",
       "confirm": "Save changes",
       "summary": "Session details",
-      "format": {
-        "title": "What type of session are you adding?"
-      },
       "programmes": {
         "title": "Which programmes is this session part of?"
       },

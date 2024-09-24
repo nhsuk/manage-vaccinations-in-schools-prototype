@@ -215,7 +215,7 @@ export const sessionController = {
 
     data.wizard = { session }
 
-    response.redirect(`/sessions/${session.id}/new/format`)
+    response.redirect(`/sessions/${session.id}/new/programmes`)
   },
 
   update(request, response) {
@@ -250,7 +250,6 @@ export const sessionController = {
 
     const journey = {
       [`/`]: {},
-      [`/${id}/${form}/format`]: {},
       [`/${id}/${form}/programmes`]: {},
       [`/${id}/${form}/date`]: {},
       [`/${id}/${form}/schedule`]: {},
