@@ -229,7 +229,7 @@ export class Session {
 
   get name() {
     if (this.location) {
-      return `Session at ${this.location.name} on ${this.formatted.date}`
+      return `Session at ${this.location.name}`
     }
   }
 

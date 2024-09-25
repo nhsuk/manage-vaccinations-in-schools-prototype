@@ -1226,8 +1226,8 @@
       }
     },
     "new": {
-      "title": "Setup sessions",
-      "description": "Schedule sessions for this school.",
+      "title": "Schedule sessions",
+      "description": "Add dates for this school.",
       "check-answers": {
         "title": "Check and confirm",
         "confirm": "Save changes",
