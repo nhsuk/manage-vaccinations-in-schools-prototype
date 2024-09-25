@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("organisation.consentDelay.title") %}
+{% set title = __("organisation.sessionOpenDelay.title") %}
 
 {% block form %}
   {{ input({
@@ -11,7 +11,8 @@
         title: title
       })
     },
+    hint: { text: __("organisation.sessionOpenDelay.hint") },
     suffix: "weeks",
-    decorate: "organisation.consentDelay"
+    decorate: "organisation.sessionOpenDelay"
   }) }}
 {% endblock %}

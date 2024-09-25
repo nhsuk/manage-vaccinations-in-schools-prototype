@@ -13,12 +13,14 @@ import {
 } from '../utils/date.js'
 import { formatLink, formatList } from '../utils/string.js'
 import { getConsentWindow } from '../utils/session.js'
+import { OrganisationDefaults } from './organisation.js'
 import { ProgrammeStatus, programmeTypes } from './programme.js'
 
 export class ConsentWindow {
   static Opening = 'Opening'
   static Open = 'Open'
   static Closed = 'Closed'
+  static None = 'Session not scheduled'
 }
 
 export class SessionFormat {
@@ -27,10 +29,10 @@ export class SessionFormat {
 }
 
 export class SessionStatus {
-  static Unplanned = 'No sessions planned'
-  static Planned = 'Sessions planned'
-  static Active = 'Sessions in progress'
-  static Completed = 'Sessions completed'
+  static Unplanned = 'No sessions scheduled'
+  static Planned = 'Sessions scheduled'
+  static Active = 'Session in progress'
+  static Completed = 'All sessions completed'
 }
 
 /**
@@ -41,7 +43,7 @@ export class SessionStatus {
  * @property {SessionFormat} [format] - Format
  * @property {string} [urn] - School
  * @property {Array<string>} [dates] - Date
- * @property {object} [open] - Date consent window opens
+ * @property {string} [open] - Date consent window opens
  * @property {number} [reminder] - Date to send reminders
  * @property {object} [consents] – (Unmatched) consent replies
  * @property {Array<string>} [programmes] - Programme PIDs
@@ -62,7 +64,25 @@ export class Session {
     this.urn = options?.urn
     this.dates = options?.dates || []
     this.open = options?.open
+      ? options.open
+      : this.firstDate
+        ? removeDays(this.firstDate, OrganisationDefaults.SessionOpenDelay * 7)
+        : undefined
     this.reminder = options?.reminder
+      ? options.reminder
+      : this.open
+        ? addDays(this.open, OrganisationDefaults.SessionReminderDelay)
+        : undefined
+    this.reminderInt = options?.reminderInt
+      ? options.reminderInt
+      : this.reminder
+        ? OrganisationDefaults.SessionReminderInt
+        : undefined
+    this.reminderMax = options?.reminderMax
+      ? options.reminderMax
+      : this.reminder
+        ? OrganisationDefaults.SessionReminderMax
+        : undefined
     this.consents = options?.consents || {}
     this.programmes = options?.programmes || []
     // dateInput objects
@@ -89,9 +109,6 @@ export class Session {
     }
 
     let dates = []
-    let reminder
-    let open
-    let created
     let firstSessionDate
     switch (status) {
       case SessionStatus.Active:
@@ -127,24 +144,15 @@ export class Session {
         const subsequentDate = addDays(previousDate, 7)
         dates.push(subsequentDate)
       }
-
-      // Open consent request window 28 days before first session
-      open = new Date(removeDays(firstSessionDate, 28))
-
-      // Send reminders 7 days after consent opens
-      reminder = new Date(addDays(open, 7))
-
-      // Session created 2 weeks before consent window opens
-      created = new Date(removeDays(open, 14))
     }
+
+    const created = new Date(removeDays(getToday(), 70))
 
     return new Session({
       created,
       created_user_uid: user.uuid,
       urn,
       dates,
-      open,
-      reminder,
       programmes: [programme.pid]
     })
   }
@@ -272,8 +280,11 @@ export class Session {
       case ConsentWindow.Closed:
         consentWindow = `Closed ${formatDate(this.close, consentDateStyle)}`
         break
-      default:
+      case ConsentWindow.Open:
         consentWindow = `Open until ${formatDate(this.close, consentDateStyle)}`
+        break
+      default:
+        consentWindow = ''
     }
 
     let formattedDates =
@@ -305,6 +316,7 @@ export class Session {
       close: formatDate(this.close, {
         dateStyle: 'full'
       }),
+      reminderInt: `${this.reminderInt} days`,
       programmes: prototypeFilters.formatList(formattedProgrammes),
       urn: this.location.name,
       consentWindow

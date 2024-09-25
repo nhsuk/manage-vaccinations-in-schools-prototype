@@ -1,4 +1,12 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import { stringToBoolean } from '../utils/string.js'
+
+export class OrganisationDefaults {
+  static SessionOpenDelay = 3
+  static SessionReminderDelay = 7
+  static SessionReminderInt = 7
+  static SessionReminderMax = 4
+}
 
 /**
  * @class Organisation
@@ -6,10 +14,11 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
  * @property {string} [name] - Full name
  * @property {string} [email] - Email address
  * @property {string} [tel] - Phone number
- * @property {number} [consentDelay] - Weeks before session to request consent
- * @property {number} [reminderDelay] - Days before sending first reminder
- * @property {number} [reminderInterval] - Days between reminders
- * @property {number} [reminderMax] - Max number of reminders
+ * @property {number} [sessionOpenDelay] - Weeks before session to request consent
+ * @property {number} [sessionReminderDelay] - Days before sending first reminder
+ * @property {number} [sessionReminderInt] - Days between reminders
+ * @property {number} [sessionReminderMax] - Max number of reminders
+ * @property {boolean} [sessionReminderMethod] - Preferred reminder method
  * @function ns - Namespace
  * @function uri - URL
  */
@@ -19,10 +28,16 @@ export class Organisation {
     this.name = options?.name
     this.email = options?.email
     this.tel = options?.tel
-    this.consentDelay = options?.consentDelay || 3
-    this.reminderDelay = options?.reminderDelay || 7
-    this.reminderInterval = options?.reminderInterval || 7
-    this.reminderMax = options?.reminderMax || 4
+    this.sessionOpenDelay =
+      options?.sessionOpenDelay || OrganisationDefaults.SessionOpenDelay
+    this.sessionReminderDelay =
+      options?.sessionReminderDelay || OrganisationDefaults.SessionReminderDelay
+    this.sessionReminderInt =
+      options?.sessionReminderInt || OrganisationDefaults.SessionReminderInt
+    this.sessionReminderMax =
+      options?.sessionReminderMax || OrganisationDefaults.SessionReminderMax
+    this.sessionReminderMethod =
+      stringToBoolean(options?.sessionReminderMethod) || false
   }
 
   static generate() {
@@ -45,9 +60,9 @@ export class Organisation {
 
   get formatted() {
     return {
-      consentDelay: `${this.consentDelay} weeks before first session`,
-      reminderDelay: `${this.reminderDelay} days`,
-      reminderInterval: `${this.reminderInterval} days`
+      sessionOpenDelay: `${this.sessionOpenDelay} weeks before first session`,
+      sessionReminderDelay: `${this.sessionReminderDelay} days after first consent request`,
+      sessionReminderInt: `${this.sessionReminderInt} days`
     }
   }
 

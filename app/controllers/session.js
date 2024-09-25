@@ -3,8 +3,8 @@ import { Batch } from '../models/batch.js'
 import { Consent } from '../models/consent.js'
 import { Patient } from '../models/patient.js'
 import { Reply } from '../models/reply.js'
-import { School } from '../models/school.js'
 import { Session, SessionStatus } from '../models/session.js'
+import { programmeTypes } from '../models/programme.js'
 
 export const sessionController = {
   list(request, response) {
@@ -264,6 +264,13 @@ export const sessionController = {
         next: `/sessions/${id}/edit`
       })
     }
+
+    response.locals.programmeItems = Object.values(programmeTypes).map(
+      (type) => ({
+        text: type.name,
+        value: type.pid
+      })
+    )
 
     next()
   },

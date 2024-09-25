@@ -1,9 +1,9 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("session.edit.programmes.title") %}
+{% set title = __("session.open.title") %}
 
 {% block form %}
-  {{ checkboxes({
+  {{ dateInput({
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--l",
@@ -12,7 +12,7 @@
         })
       }
     },
-    items: programmeItems,
-    decorate: "session.programmes"
+    hint: { text: __("session.open.hint") },
+    decorate: "session.open_"
   }) }}
 {% endblock %}

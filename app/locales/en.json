@@ -702,10 +702,13 @@
     "edit": {
       "title": "Team settings",
       "confirm": "Save changes",
-      "summary": "Organisation details"
+      "summary": "Team details"
     },
     "consent": {
-      "summary": "Consent requests and reminders"
+      "summary": "Session defaults"
+    },
+    "success": {
+      "update": "Team settings updated"
     },
     "name": {
       "label": "Name"
@@ -719,24 +722,30 @@
     "email": {
       "label": "Email address"
     },
-    "consentDelay": {
+    "sessionOpenDelay": {
       "title": "When should parents receive a request for consent?",
-      "label": "Consent request"
+      "label": "Send consent requests",
+      "hint": "Enter the number of weeks before a first session takes place. You can change this value when scheduling new sessions."
     },
-    "reminderDelay": {
-      "title": "When should parents who haven’t responded get a reminder?",
-      "label": "Days before first reminder"
+    "sessionReminderDelay": {
+      "title": "When should parents get their first reminder?",
+      "label": "Days before first reminder",
+      "hint": "You can change this value when scheduling new sessions."
     },
-    "reminderInterval": {
-      "title": "Days between each reminders",
-      "label": "Days between each reminder"
+    "sessionReminderInt": {
+      "title": "Days between each reminder",
+      "label": "Days between each reminder",
+      "hint": "You can change this value when scheduling new sessions."
     },
-    "reminderMax": {
+    "sessionReminderMax": {
       "title": "Maximum number of reminders",
-      "label": "Maximum number of reminders"
+      "label": "Maximum number of reminders",
+      "hint": "You can change this value when scheduling new sessions."
     },
-    "success": {
-      "update": "Team settings updated"
+    "sessionReminderMethod": {
+      "title": "Send reminders as text messages?",
+      "label": "Prefer text messages for reminders",
+      "hint": "Parent’s who have not opted into text messages, or not provided a phone number, will always get reminders via email."
     },
     "contact": {
       "title": "Contact details"
@@ -1197,31 +1206,31 @@
       "title": "School sessions",
       "description": "Use this area to:\n- review consent responses\n- triage health records\n- record vaccinations\n- review session outcomes",
       "active": {
-        "label": "Active",
+        "label": "Today",
         "count": {
-          "one": "%s active session",
-          "other": "[0] No active sessions|%s active sessions"
+          "one": "%s session today",
+          "other": "[0] No sessions today|%s sessions today"
         }
       },
       "completed": {
         "label": "Completed",
         "count": {
-          "one": "%s session completed",
-          "other": "[0] No sessions completed|%s sessions completed"
+          "one": "%s school with all sessions completed",
+          "other": "[0] No schools with all sessions completed|%s schools with all sessions completed"
         }
       },
       "planned": {
-        "label": "Planned",
+        "label": "Scheduled",
         "count": {
-          "one": "%s session planned",
-          "other": "[0] No sessions planned|%s sessions planned"
+          "one": "%s school with sessions scheduled",
+          "other": "[0] No schools with sessions scheduled|%s schools with sessions scheduled"
         }
       },
       "unplanned": {
-        "label": "Not planned",
+        "label": "Unscheduled",
         "count": {
-          "one": "%s schools without session dates",
-          "other": "[0] No schools without session dates|%s schools without session dates"
+          "one": "%s school with no sessions scheduled",
+          "other": "[0] No schools with no sessions scheduled|%s schools with no sessions scheduled"
         }
       }
     },
@@ -1315,6 +1324,27 @@
       "label": "Create a new record",
       "caption": "Consent response from {{parent.fullName}}",
       "confirm": "Create a new record from response"
+    },
+    "open": {
+      "title": "When should parents receive a request for consent?",
+      "label": "Consent requests",
+      "hint": "For example, 27 3 2025"
+    },
+    "reminder": {
+      "title": "When should parents receive a request for consent?",
+      "label": "First reminder",
+      "hint": "For example, 27 3 2025"
+    },
+    "reminderInt": {
+      "title": "Days between each reminder",
+      "label": "Days between each reminder"
+    },
+    "reminderMax": {
+      "title": "Maximum number of reminders",
+      "label": "Maximum number of reminders"
+    },
+    "reminders": {
+      "title": "Reminders"
     }
   },
   "texts": {

@@ -9,22 +9,56 @@
   }) }}
 
   {{ input({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-6"
+    },
     classes: "nhsuk-input--width-2",
-    label: { text: __("organisation.reminderDelay.title") },
+    label: {
+      classes: "nhsuk-label--m",
+      text: __("organisation.sessionReminderDelay.title")
+    },
+    hint: { text: __("organisation.sessionReminderDelay.hint") },
     suffix: "days",
-    decorate: "organisation.reminderDelay"
+    decorate: "organisation.sessionReminderDelay"
   }) }}
 
   {{ input({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-6"
+    },
     classes: "nhsuk-input--width-2",
-    label: { text: __("organisation.reminderInterval.title") },
+    label: {
+      classes: "nhsuk-label--m",
+      text: __("organisation.sessionReminderInt.title")
+    },
+    hint: { text: __("organisation.sessionReminderInt.hint") },
     suffix: "days",
-    decorate: "organisation.reminderInterval"
+    decorate: "organisation.sessionReminderInt"
   }) }}
 
   {{ input({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-6"
+    },
     classes: "nhsuk-input--width-2",
-    label: { text: __("organisation.reminderMax.title") },
-    decorate: "organisation.reminderMax"
+    label: {
+      classes: "nhsuk-label--m",
+      text: __("organisation.sessionReminderMax.title")
+    },
+    hint: { text: __("organisation.sessionReminderMax.hint") },
+    decorate: "organisation.sessionReminderMax"
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("organisation.sessionReminderMethod.title")
+      }
+    },
+    hint: { text: __("organisation.sessionReminderMethod.hint") },
+    items: booleanItems,
+    decorate: "organisation.sessionReminderMethod"
   }) }}
 {% endblock %}

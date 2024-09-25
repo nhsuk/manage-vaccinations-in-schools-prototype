@@ -16,8 +16,6 @@
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(organisation, {
-        name: {},
-        code: {},
         email: {
           href: organisation.uri + "/edit/contact"
         },
@@ -33,16 +31,19 @@
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(organisation, {
-        consentDelay: {
+        sessionOpenDelay: {
           href: organisation.uri + "/edit/consent"
         },
-        reminderDelay: {
+        sessionReminderDelay: {
           href: organisation.uri + "/edit/reminders"
         },
-        reminderInterval: {
+        sessionReminderInt: {
           href: organisation.uri + "/edit/reminders"
         },
-        reminderMax: {
+        sessionReminderMax: {
+          href: organisation.uri + "/edit/reminders"
+        },
+        sessionReminderMethod: {
           href: organisation.uri + "/edit/reminders"
         }
       })
