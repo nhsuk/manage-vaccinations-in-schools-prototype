@@ -166,6 +166,13 @@ export class Session {
     return this.dates.at(-1)
   }
 
+  get remainingDates() {
+    let remainingDates = [...this.dates]
+    remainingDates.shift()
+
+    return remainingDates
+  }
+
   get active() {
     const today = setMidday(getToday())
     return includesDate(this.dates, today)
@@ -251,7 +258,34 @@ export class Session {
   }
 
   get summary() {
+    let dates =
+      this.dates.length > 0
+        ? this.dates.map((date) =>
+            formatDate(date, { weekday: 'long', month: 'long', day: 'numeric' })
+          )
+        : ''
+
+    let firstDate =
+      this.dates.length > 0
+        ? formatDate(this.firstDate, {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric'
+          })
+        : ''
+
+    let remainingDates =
+      this.remainingDates && this.remainingDates.length > 0
+        ? this.remainingDates.map((date) =>
+            formatDate(date, { weekday: 'long', month: 'long', day: 'numeric' })
+          )
+        : ''
+
     return {
+      dates: prototypeFilters.formatList(dates),
+      datesDisjunction: prototypeFilters.formatList(dates, 'disjunction'),
+      firstDate,
+      remainingDates: prototypeFilters.formatList(remainingDates),
       location: `${this.location.name}</br>
       <span class="nhsuk-u-secondary-text-color">
         ${this.location.addressLine1},

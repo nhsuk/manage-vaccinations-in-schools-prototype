@@ -452,7 +452,7 @@
     "consent": {
       "invite": {
         "label": "Invitation",
-        "name": "{{programme.name}} vaccination on {{session.formatted.date}}"
+        "name": "{{programme.name}} vaccination on {{session.summary.dates}}"
       },
       "invite-reminder": {
         "label": "Reminder",
@@ -460,23 +460,23 @@
       },
       "consent-given": {
         "label": "Consent given",
-        "name": "{{programme.name}} vaccination on {{session.formatted.date}}"
+        "name": "{{programme.name}} vaccination on {{session.summary.dates}}"
       },
       "consent-conflicts": {
         "label": "Consent conflicts",
-        "name": "Your child will not have their flu vaccination"
+        "name": "Your child will not have their {{programme.name}} vaccination"
       },
       "consent-refused": {
         "label": "Consent refused",
-        "name": "{{programme.name}} vaccination on {{session.formatted.date}}"
+        "name": "{{programme.name}} vaccination on {{session.summary.dates}}"
       },
       "triage-needed": {
         "label": "Triage needed",
-        "name": "{{programme.name}} vaccination on {{session.formatted.date}}"
+        "name": "{{programme.name}} vaccination on {{session.summary.dates}}"
       },
       "triage-vaccinate": {
         "label": "Vaccinate",
-        "name": "Your child can have the {{programme.name}} vaccination on {{session.formatted.date}}"
+        "name": "Your child can have the {{programme.name}} vaccination on {{session.summary.dates}}"
       },
       "triage-do-not-vaccinate": {
         "label": "Do not vaccinate",
@@ -484,7 +484,7 @@
       },
       "session-reminder": {
         "label": "Session reminder",
-        "name": "{{consent.child.fullName}} will get their {{programme.name}} vaccination on {{session.formatted.date}}"
+        "name": "{{consent.child.fullName}} will get their {{programme.name}} vaccination on {{session.summary.dates}}"
       },
       "session-outcome-vaccinated": {
         "label": "Vaccinated",
@@ -496,7 +496,7 @@
       },
       "information-child": {
         "label": "Information for students",
-        "name": "You can get an {{programme.type}} vaccination on {{session.formatted.date}}"
+        "name": "You can get an {{programme.type}} vaccination on {{session.summary.dates}}"
       }
     }
   },

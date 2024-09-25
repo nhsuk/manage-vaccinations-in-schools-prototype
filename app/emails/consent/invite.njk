@@ -1,5 +1,4 @@
-Your local health team are coming to {{ session.location.name }} on {{ session.formatted.date }} to give {% if programme.type == ProgrammeType.Flu %}
-this year’s flu vaccine{% elif programme.type == ProgrammeType.HPV %}the human papillomavirus (HPV) vaccine to pupils in Year 8{% elif programme.type == ProgrammeType.TdIPV %}the Td/IPV (3-in-1 teenage booster) vaccines{% endif %}.
+Your local health team are coming to {{ session.location.name }} on {{ session.summary.dates }} to give {% if programme.type == ProgrammeType.Flu %} this year’s flu vaccine{% elif programme.type == ProgrammeType.HPV %}the human papillomavirus (HPV) vaccine to pupils in Year 8{% elif programme.type == ProgrammeType.TdIPV %}the Td/IPV (3-in-1 teenage booster) vaccines{% endif %}.
 
 ## What the vaccine is for
 
