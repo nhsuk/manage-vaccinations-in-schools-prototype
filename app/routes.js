@@ -21,6 +21,7 @@ import { preScreenRoutes } from './routes/pre-screen.js'
 import { programmeRoutes } from './routes/programme.js'
 import { recordRoutes } from './routes/record.js'
 import { registrationRoutes } from './routes/registration.js'
+import { remindRoutes } from './routes/remind.js'
 import { replyRoutes } from './routes/reply.js'
 import { schoolRoutes } from './routes/school.js'
 import { sessionRoutes } from './routes/session.js'
@@ -57,6 +58,7 @@ router.use('/sessions/:id/:nhsn/gillick', gillickRoutes)
 router.use('/sessions/:id/:nhsn/invite', inviteRoutes)
 router.use('/sessions/:id/:nhsn/pre-screen', preScreenRoutes)
 router.use('/sessions/:id/:nhsn/registration', registrationRoutes)
+router.use('/sessions/:id/:nhsn/remind', remindRoutes)
 router.use('/sessions/:id/:nhsn/replies', replyRoutes)
 router.use('/sessions/:id/:nhsn/triage', triageRoutes)
 router.use('/users', userRoutes)

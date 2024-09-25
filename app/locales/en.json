@@ -828,6 +828,10 @@
     "success": {
       "invite": "Child invited to {{session.name}}",
       "update": "Child record updated"
+    },
+    "lastReminderDate": {
+      "label": "Last reminder sent",
+      "title": "Last reminder sent %s"
     }
   },
   "record": {
@@ -1001,6 +1005,11 @@
         "one": "%s child still to register",
         "other": "[0] No children still to register|%s children still to register"
       }
+    }
+  },
+  "remind": {
+    "new": {
+      "title": "Send reminder"
     }
   },
   "reply": {

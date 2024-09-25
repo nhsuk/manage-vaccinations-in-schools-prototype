@@ -87,6 +87,20 @@
           }) }}
         </p>
       {% endif %}
+
+      {% if options.showReminder %}
+        <form class="app-button-group" action="{{ patient.uri }}/remind" method="post">
+          {{ button({
+            classes: "app-button--secondary nhsuk-u-margin-0",
+            text: __("remind.new.title")
+          }) }}
+          {% if patient.lastReminderDate %}
+            <p class="nhsuk-u-secondary-text-color nhsuk-u-margin-0">
+              {{ __("patient.lastReminderDate.title", patient.lastReminderDate) }}
+            </p>
+          {% endif %}
+        </form>
+      {% endif %}
     {% endset %}
 
     {{ card({

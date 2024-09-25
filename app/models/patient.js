@@ -166,6 +166,19 @@ export class Patient {
       .filter((event) => event.type === EventType.Screen)
   }
 
+  get reminders() {
+    return this.events
+      .map((event) => new Event(event))
+      .filter((event) => event.type === EventType.Remind)
+  }
+
+  get lastReminderDate() {
+    const lastReminder = this.reminders.at(-1)
+    if (lastReminder) {
+      return lastReminder.formatted.date
+    }
+  }
+
   get registration() {
     return getRegistrationOutcome(this)
   }
@@ -215,6 +228,15 @@ export class Patient {
       name: `Invited to session at ${session.location.name}`,
       date: session.created,
       user_uid: session.created_user_uid
+    }
+  }
+
+  set remind(target) {
+    this.log = {
+      type: EventType.Remind,
+      name: `Reminder to give consent sent to ${target.fullName}`,
+      date: getToday().toISOString(),
+      user_uid: target.created_user_uid
     }
   }
 

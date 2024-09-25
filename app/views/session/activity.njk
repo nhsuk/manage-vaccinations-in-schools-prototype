@@ -1,5 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
+{% set showLastReminderDate = tab == "NoResponse" %}
 {% set showRefusalReasons = tab == "Refused" or tab == "Inconsistent" %}
 {% set showCouldNotVaccinateReason = tab == "CouldNotVaccinate" %}
 {% set showRegistration = tab == "Register" %}
@@ -93,6 +94,10 @@
         }
       },
       {
+        header: __("patient.lastReminderDate.label"),
+        html: patient.lastReminderDate or "No reminders sent"
+      } if showLastReminderDate,
+      {
         header: __("reply.refusalReason.label"),
         html: patient.consentRefusalReasons | join("<br>")
       } if showRefusalReasons,
@@ -133,6 +138,9 @@
             "data-col": "yearGroup"
           }
         },
+        {
+          text: __("patient.lastReminderDate.label")
+        } if showLastReminderDate,
         {
           text: __("reply.refusalReason.label"),
           attributes: {

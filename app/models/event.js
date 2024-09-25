@@ -4,6 +4,7 @@ import { formatDate, getToday } from '../utils/date.js'
 export class EventType {
   static Select = 'Select'
   static Invite = 'Invite'
+  static Remind = 'Remind'
   static Consent = 'Consent'
   static Screen = 'Screen'
   static Capture = 'Capture'
