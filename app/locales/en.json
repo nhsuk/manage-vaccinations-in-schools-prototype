@@ -701,11 +701,17 @@
   "organisation": {
     "edit": {
       "title": "Team settings",
-      "confirm": "Save changes",
-      "summary": "Team details"
+      "confirm": "Save changes"
+    },
+    "contact": {
+      "title": "Contact details",
+      "summary": "Contact details"
     },
     "consent": {
       "summary": "Session defaults"
+    },
+    "reminders": {
+      "title": "Consent reminders"
     },
     "success": {
       "update": "Team settings updated"
@@ -746,12 +752,6 @@
       "title": "Send reminders as text messages?",
       "label": "Prefer text messages for reminders",
       "hint": "Parent’s who have not opted into text messages, or not provided a phone number, will always get reminders via email."
-    },
-    "contact": {
-      "title": "Contact details"
-    },
-    "reminders": {
-      "title": "Consent reminders"
     }
   },
   "outcome": {
