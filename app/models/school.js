@@ -46,13 +46,6 @@ export class School {
     }
   }
 
-  get summary() {
-    return {
-      location: `${this.location.name}</br>
-      <span class="nhsuk-u-secondary-text-color">${this.formatted.address}</span>`
-    }
-  }
-
   get link() {
     return {
       name: formatLink(this.uri, this.name)

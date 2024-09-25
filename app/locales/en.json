@@ -1119,8 +1119,8 @@
     "urn": {
       "label": "URN"
     },
-    "location": {
-      "label": "Location"
+    "address": {
+      "label": "Address"
     },
     "count": {
       "one": "%s school",
