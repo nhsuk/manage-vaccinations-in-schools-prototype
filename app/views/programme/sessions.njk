@@ -40,14 +40,14 @@
         },
         {
           header: __("session.dates.label"),
-          html: session.formatted.dates or "Not provided",
+          html: session.formatted.dates or "None scheduled",
           attributes: {
             "data-sort": session.firstDate
           }
         },
         {
           header: __("session.consentWindow.label"),
-          text: session.formatted.consentWindow
+          text: session.formatted.consentWindow or "–"
         },
         {
           header: __("session.patients.label"),
@@ -64,7 +64,10 @@
       heading: status,
       responsive: true,
       head: [
-        { text: __("session.location.label") },
+        {
+          text: __("session.location.label"),
+          attributes: { style: "width: 40%" }
+        },
         { text: __("session.dates.label") },
         { text: __("session.consentWindow.label") },
         {

@@ -12,24 +12,26 @@ export const sessionController = {
     const { data } = request.session
 
     const statuses = {
-      active: SessionStatus.Active,
       completed: SessionStatus.Completed,
       planned: SessionStatus.Planned,
       unplanned: SessionStatus.Unplanned
     }
 
-    response.render('session/list', {
-      sessions: Object.values(data.sessions)
-        .map((session) => {
-          session = new Session(session)
-          session.patients = Object.values(data.patients).filter(
-            (patient) => patient.session_id === session.id
-          )
-          return session
-        })
-        .filter((session) => session.status === statuses[view]),
-      view
+    let sessions = Object.values(data.sessions).map((session) => {
+      session = new Session(session)
+      session.patients = Object.values(data.patients).filter(
+        (patient) => patient.session_id === session.id
+      )
+      return session
     })
+
+    if (view === 'active') {
+      sessions = sessions.filter((session) => session.active)
+    } else {
+      sessions = sessions.filter((session) => session.status === statuses[view])
+    }
+
+    response.render('session/list', { sessions, view })
   },
 
   show(request, response) {

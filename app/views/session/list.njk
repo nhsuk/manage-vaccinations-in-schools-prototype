@@ -1,6 +1,7 @@
 {% extends "_layouts/default.njk" %}
 
 {% set title = __("session.list.title") + " – " + __("session.list." + view + ".label") %}
+{% set showDates = view == "planned" or view == "completed" %}
 
 {% block content %}
   {{ super() }}
@@ -26,7 +27,7 @@
           attributes: {
             "data-sort": "session.firstDate"
           }
-        },
+        } if showDates,
         {
           header: __("session.programmes.label"),
           html: data.programmes[session.programmes[0]].name or "Not provided"
@@ -46,8 +47,11 @@
       panel: true,
       responsive: true,
       head: [
-        { text: __("session.location.label") },
-        { text: __("session.dates.label") },
+        {
+          text: __("session.location.label"),
+          attributes: { style: "width: 50%" }
+        },
+        { text: __("session.dates.label") } if showDates,
         { text: __("session.programmes.label") },
         {
           text: __("session.patients.label"),

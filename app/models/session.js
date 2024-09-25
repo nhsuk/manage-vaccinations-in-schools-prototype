@@ -1,5 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import { isAfter, isBefore } from 'date-fns'
+import { isAfter } from 'date-fns'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import schools from '../datasets/schools.js'
 import {
@@ -9,7 +9,8 @@ import {
   convertObjectToIsoDate,
   formatDate,
   getToday,
-  isBetweenDates
+  includesDate,
+  setMidday
 } from '../utils/date.js'
 import { formatLink, formatList } from '../utils/string.js'
 import { getConsentWindow } from '../utils/session.js'
@@ -31,7 +32,6 @@ export class SessionFormat {
 export class SessionStatus {
   static Unplanned = 'No sessions scheduled'
   static Planned = 'Sessions scheduled'
-  static Active = 'Session in progress'
   static Completed = 'All sessions completed'
 }
 
@@ -47,6 +47,7 @@ export class SessionStatus {
  * @property {number} [reminder] - Date to send reminders
  * @property {object} [consents] – (Unmatched) consent replies
  * @property {Array<string>} [programmes] - Programme PIDs
+ * @function active - One of the session dates is today, therefore in progress
  * @function close - Date consent window closes
  * @function consentWindow - Consent window (open, opening or closed)
  * @function status - Status
@@ -98,23 +99,16 @@ export class Session {
     } else if (programme.status === ProgrammeStatus.Planned) {
       status = SessionStatus.Planned
     } else {
-      // Current programme, so session either active today, planned or completed
-      status = options.isToday
-        ? SessionStatus.Active
-        : faker.helpers.arrayElement([
-            SessionStatus.Completed,
-            SessionStatus.Planned,
-            SessionStatus.Unplanned
-          ])
+      status = faker.helpers.arrayElement([
+        SessionStatus.Completed,
+        SessionStatus.Planned,
+        SessionStatus.Unplanned
+      ])
     }
 
     let dates = []
     let firstSessionDate
     switch (status) {
-      case SessionStatus.Active:
-        // Session is taking place today
-        firstSessionDate = getToday()
-        break
       case SessionStatus.Planned:
         // Session will take place according programme schedule
         let { to } = programmeTypes[programme.type].schedule
@@ -126,10 +120,17 @@ export class Session {
         break
       default:
         // Session took place about 7 days before today
-        firstSessionDate = faker.date.recent({ days: 7, refDate: getToday() })
+        firstSessionDate = faker.date.recent({ days: 28, refDate: getToday() })
+    }
+
+    // Set first session as taking place today
+    if (options.isToday) {
+      firstSessionDate = getToday()
     }
 
     if (firstSessionDate) {
+      firstSessionDate = setMidday(firstSessionDate)
+
       // Don’t create sessions during weekends
       if ([0, 6].includes(firstSessionDate.getDay())) {
         firstSessionDate = removeDays(firstSessionDate, 2)
@@ -141,7 +142,7 @@ export class Session {
       for (const _index in [1, 2]) {
         if (_index === 0) continue
         const previousDate = dates.at(_index)
-        const subsequentDate = addDays(previousDate, 7)
+        const subsequentDate = setMidday(addDays(previousDate, 7))
         dates.push(subsequentDate)
       }
     }
@@ -163,6 +164,11 @@ export class Session {
 
   get lastDate() {
     return this.dates.at(-1)
+  }
+
+  get active() {
+    const today = setMidday(getToday())
+    return includesDate(this.dates, today)
   }
 
   get dates_() {
@@ -209,17 +215,14 @@ export class Session {
   }
 
   get status() {
-    const today = getToday()
-
+    const today = setMidday(getToday())
     switch (true) {
-      case isBetweenDates(today, this.firstDate, this.lastDate):
-        return SessionStatus.Active
-      case isBefore(today, this.firstDate):
-        return SessionStatus.Planned
+      case this.dates.length === 0:
+        return SessionStatus.Unplanned
       case isAfter(today, this.lastDate):
         return SessionStatus.Completed
       default:
-        return SessionStatus.Unplanned
+        return SessionStatus.Planned
     }
   }
 

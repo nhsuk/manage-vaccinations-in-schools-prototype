@@ -1289,6 +1289,9 @@
     "status": {
       "label": "Status"
     },
+    "active": {
+      "label": "Session in progress"
+    },
     "consentWindow": {
       "label": "Consent period",
       "Opening": {

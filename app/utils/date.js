@@ -148,6 +148,25 @@ export function getAge(date) {
 }
 
 /**
+ * Set time to midday
+ * @param {Date} date - Date
+ * @returns {Date} Date with time set to midday
+ */
+export function setMidday(date) {
+  date.setUTCHours(12, 0, 0, 0)
+  return date
+}
+
+/**
+ * @param {Array} dates - Dates
+ * @param {Date} date - Date
+ * @returns {boolean} Dates includes date
+ */
+export function includesDate(dates, date) {
+  return dates.filter((item) => isEqual(item, date)).length > 0
+}
+
+/**
  * Get’s today’s date, as set by environment
  * @returns {Date} ‘Today’s’ date
  */

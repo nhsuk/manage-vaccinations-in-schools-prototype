@@ -20,19 +20,21 @@
     title: title
   }) }}
 
-  {% if session.status == SessionStatus.Planned %}
-    {% set tagColor = "blue" %}
-  {% elif session.status == SessionStatus.Completed %}
-    {% set tagColor = "green" %}
-  {% elif session.status == SessionStatus.Unplanned %}
-    {% set tagColor = "purple" %}
+  {% if not session.active %}
+    {% if session.status == SessionStatus.Planned %}
+      {% set tagColor = "blue" %}
+    {% elif session.status == SessionStatus.Completed %}
+      {% set tagColor = "green" %}
+    {% elif session.status == SessionStatus.Unplanned %}
+      {% set tagColor = "purple" %}
+    {% endif %}
   {% endif %}
 
   {{ actionList({
     items: [{
       tag: {
         classes: "nhsuk-tag--" + tagColor if tagColor,
-        text: session.status
+        text: __("session.active.label") if session.active else session.status
       }
     }, {
       text: __("session.download-consent-form.title"),
@@ -66,7 +68,7 @@
             }) }}
           </li>
         {% endif %}
-        {% if session.status == SessionStatus.Planned or session.status == SessionStatus.Active %}
+        {% if session.consents.length %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {{ card({
               clickable: true,
@@ -77,7 +79,7 @@
             }) }}
           </li>
         {% endif %}
-        {% if session.status == SessionStatus.Active %}
+        {% if session.active %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {{ card({
               clickable: true,
@@ -88,7 +90,7 @@
             }) }}
           </li>
         {% endif %}
-        {% if session.status != SessionStatus.Planned and session.status != SessionStatus.Unplanned %}
+        {% if session.active or session.status == SessionStatus.Completed %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {{ card({
               clickable: true,
@@ -99,7 +101,7 @@
             }) }}
           </li>
         {% endif %}
-        {% if session.status == SessionStatus.Planned %}
+        {% if session.status == SessionStatus.Planned and not session.active %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {{ card({
               clickable: true,

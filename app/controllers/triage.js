@@ -19,7 +19,7 @@ export const triageController = {
     const action = form === 'edit' ? 'update' : 'create'
     request.flash('success', __(`triage.success.${action}`, { patient }))
 
-    if (session.status === SessionStatus.Active) {
+    if (session.active) {
       response.redirect(patient.uri)
     } else {
       response.redirect(`/sessions/${id}/${activity || 'triage'}`)
