@@ -1197,10 +1197,10 @@
       "title": "School sessions",
       "description": "Use this area to:\n- review consent responses\n- triage health records\n- record vaccinations\n- review session outcomes",
       "active": {
-        "label": "Today",
+        "label": "Active",
         "count": {
-          "one": "%s session today",
-          "other": "[0] No sessions today|%s sessions today"
+          "one": "%s active session",
+          "other": "[0] No active sessions|%s active sessions"
         }
       },
       "completed": {
