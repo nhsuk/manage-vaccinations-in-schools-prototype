@@ -13,6 +13,9 @@ const sessions = JSON.parse(readFileSync('.data/sessions.json'))
 const users = JSON.parse(readFileSync('.data/users.json'))
 const vaccinations = JSON.parse(readFileSync('.data/vaccinations.json'))
 
+// Use Coventry and Warwickshire as organisation
+const organisation = organisations.RYG
+
 /**
  * Default values for user session data
  *
@@ -33,7 +36,7 @@ export default {
     }
   },
   imports,
-  organisation: Object.values(organisations)[0],
+  organisation,
   organisations,
   patients,
   programmes,

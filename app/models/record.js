@@ -142,7 +142,7 @@ export class Record {
       address: {
         addressLine1: faker.location.streetAddress(),
         addressLevel2: faker.location.city(),
-        postalCode: faker.location.zipCode()
+        postalCode: faker.location.zipCode({ format: 'CV## #??' })
       },
       gpRegistered,
       gpSurgery,

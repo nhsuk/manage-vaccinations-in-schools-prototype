@@ -219,10 +219,10 @@ export class Session {
     if (this.school) {
       return {
         name: this.school.name,
-        addressLine1: this.school.address_line1,
-        addressLine2: this.school.address_line2,
-        addressLevel1: this.school.address_level1,
-        postalCode: this.school.postal_code
+        addressLine1: this.school.addressLine1,
+        addressLine2: this.school.addressLine2,
+        addressLevel1: this.school.addressLevel1,
+        postalCode: this.school.postalCode
       }
     }
   }
