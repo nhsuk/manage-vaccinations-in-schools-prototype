@@ -115,11 +115,12 @@ export class Session {
     if (firstSessionDate) {
       dates.push(firstSessionDate)
 
-      // TODO: Create 1-4 dates for a session
-      const hasSecondDate = faker.datatype.boolean(0.5)
-      if (hasSecondDate) {
-        const secondSessionDate = addDays(firstSessionDate, 1)
-        dates.push(secondSessionDate)
+      // Add additional session dates
+      for (const _index in [1, 2]) {
+        if (_index === 0) continue
+        const previousDate = dates.at(_index)
+        const subsequentDate = addDays(previousDate, 7)
+        dates.push(subsequentDate)
       }
 
       // Open consent request window 28 days before first session
