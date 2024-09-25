@@ -113,6 +113,11 @@ export class Session {
     }
 
     if (firstSessionDate) {
+      // Don’t create sessions during weekends
+      if ([0, 6].includes(firstSessionDate.getDay())) {
+        firstSessionDate = removeDays(firstSessionDate, 2)
+      }
+
       dates.push(firstSessionDate)
 
       // Add additional session dates
