@@ -138,7 +138,7 @@
         classes: "app-button--secondary",
         text: __("session.edit.title"),
         href: session.uri + "/edit"
-      }) if session.status == SessionStatus.Planned }}
+      }) if session.status != SessionStatus.Unplanned }}
     </div>
   </div>
 {% endblock %}
