@@ -30,7 +30,7 @@
     {{ __("programme.sessions.title") }}
   </h2>
 
-  {% for status, sessions in programme.sessions %}
+  {% for status, sessions in programme.sessionsByStatus %}
     {% set sessionRows = [] %}
     {% for session in sessions | sort(false, false, "date") %}
       {% set sessionRows = sessionRows | push([

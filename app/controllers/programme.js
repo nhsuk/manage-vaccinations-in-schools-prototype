@@ -42,19 +42,22 @@ export const programmeController = {
         })
 
       // Sessions in programme
-      programme.sessions = Object.groupBy(
-        Object.values(data.sessions)
-          .filter((session) => session.programmes.includes(programme.pid))
-          .map((session) => {
-            session = new Session(session)
+      programme.sessions = Object.values(data.sessions)
+        .filter((session) => session.programmes.includes(programme.pid))
+        .map((session) => {
+          session = new Session(session)
 
-            // Add patients to session
-            session.patients = Object.values(data.patients).filter(
-              (patient) => patient.session_id === session.id
-            )
+          // Add patients to session
+          session.patients = Object.values(data.patients).filter(
+            (patient) => patient.session_id === session.id
+          )
 
-            return session
-          }),
+          return session
+        })
+
+      // Sessions in programme (grouped by status)
+      programme.sessionsByStatus = Object.groupBy(
+        programme.sessions,
         ({ status }) => status
       )
 
