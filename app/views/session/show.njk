@@ -20,22 +20,9 @@
     title: title
   }) }}
 
-  {% if not session.active %}
-    {% if session.status == SessionStatus.Planned %}
-      {% set tagColor = "blue" %}
-    {% elif session.status == SessionStatus.Completed %}
-      {% set tagColor = "green" %}
-    {% elif session.status == SessionStatus.Unplanned %}
-      {% set tagColor = "purple" %}
-    {% endif %}
-  {% endif %}
-
   {{ actionList({
     items: [{
-      tag: {
-        classes: "nhsuk-tag--" + tagColor if tagColor,
-        text: __("session.active.label") if session.active else session.status
-      }
+      tag: session.statusTag
     }, {
       text: __("session.download-consent-form.title"),
       href: "/public/downloads/hpv-consent-form.pdf",

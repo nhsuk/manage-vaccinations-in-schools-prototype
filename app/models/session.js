@@ -360,6 +360,29 @@ export class Session {
     }
   }
 
+  get statusTag() {
+    let colour
+    switch (this.status) {
+      case SessionStatus.Completed:
+        colour = 'green'
+        break
+      case SessionStatus.Unplanned:
+        colour = 'purple'
+        break
+      default:
+        colour = 'blue'
+    }
+
+    return this.active
+      ? {
+          text: 'Session in progress'
+        }
+      : {
+          classes: `nhsuk-tag--${colour}`,
+          text: this.status
+        }
+  }
+
   get ns() {
     return 'session'
   }
