@@ -353,7 +353,7 @@ export class Session {
       close: formatDate(this.close, {
         dateStyle: 'full'
       }),
-      reminderInt: `${this.reminderInt} days`,
+      reminderInt: this.reminderInt && `${this.reminderInt} days`,
       programmes: prototypeFilters.formatList(formattedProgrammes),
       urn: this.location.name,
       consentWindow
