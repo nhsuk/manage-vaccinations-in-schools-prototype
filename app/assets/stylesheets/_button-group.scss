@@ -53,5 +53,6 @@
 
   @include mq($from: desktop) {
     flex-wrap: nowrap;
+    justify-content: start;
   }
 }
