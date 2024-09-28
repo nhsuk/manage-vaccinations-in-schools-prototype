@@ -6,6 +6,17 @@ import { Reply } from '../models/reply.js'
 import { Session, SessionStatus } from '../models/session.js'
 import { programmeTypes } from '../models/programme.js'
 
+const getPatientsForKey = (patients, activity, tab) => {
+  return patients.filter((patient) => {
+    // Show FinalRefusal outcome in Refusal tab
+    if (tab === 'Refused') {
+      return ['Refused', 'FinalRefusal'].includes(patient[activity]?.key)
+    }
+
+    return patient[activity]?.key === tab
+  })
+}
+
 export const sessionController = {
   list(request, response) {
     const view = request.params.view || 'active'
@@ -72,16 +83,15 @@ export const sessionController = {
 
     request.app.locals.activity = activity
 
+    response.locals.patients = getPatientsForKey(patients, activity, tab)
     response.locals.navigationItems = tabs.map((key) => ({
       text: __(`${activity}.${key}.label`),
-      count: patients.filter((patient) => patient[activity]?.key === key)
-        .length,
+      count: getPatientsForKey(patients, activity, key).length,
       href: `?tab=${key}`,
       current: key === tab
     }))
 
     response.render('session/activity', {
-      patients: patients.filter((patient) => patient[activity]?.key === tab),
       allPatients: patients,
       tab
     })
