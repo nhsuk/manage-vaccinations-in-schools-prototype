@@ -960,12 +960,12 @@
     }
   },
   "registration": {
-    "label": "Attendance",
+    "label": "Today’s attendance",
     "edit": {
       "title": "Update attendance",
-      "label": "Is {{patient.fullName}} attending this session?",
-      "true": "Yes, they are attending this session",
-      "false": "No, they are absent from this session",
+      "label": "Is {{patient.fullName}} attending today’s session?",
+      "true": "Yes, they are attending today’s session",
+      "false": "No, they are absent from today’s session",
       "undefined": "They have not been registered yet",
       "confirm": "Save changes"
     },
@@ -979,29 +979,29 @@
         "label": "Register {{patient.fullName}} as absent"
       },
       "success": {
-        "GetConsent": "[{{patient.fullName}}]({{patient.uri}}) is attending the session. They still need consent to vaccinate.",
+        "GetConsent": "[{{patient.fullName}}]({{patient.uri}}) is attending today’s session. They still need consent to vaccinate.",
         "CheckRefusal": "[{{patient.fullName}}]({{patient.uri}}) needs to leave the session because their parent or guardian refused to give consent.",
-        "NeedsTriage": "[{{patient.fullName}}]({{patient.uri}}) is attending the session. A nurse needs to triage their record.",
-        "Vaccinate": "[{{patient.fullName}}]({{patient.uri}}) is attending the session. They are safe to vaccinate.",
-        "Register": "[{{patient.fullName}}]({{patient.uri}}) is absent from the session.",
-        "Absent": "[{{patient.fullName}}]({{patient.uri}}) is absent from the session."
+        "NeedsTriage": "[{{patient.fullName}}]({{patient.uri}}) is attending today’s session. A nurse needs to triage their record.",
+        "Vaccinate": "[{{patient.fullName}}]({{patient.uri}}) is attending today’s session. They are safe to vaccinate.",
+        "Register": "[{{patient.fullName}}]({{patient.uri}}) is absent from today’s session.",
+        "Absent": "[{{patient.fullName}}]({{patient.uri}}) is absent from today’s session."
       }
     },
     "Present": {
-      "label": "Attending",
+      "label": "Attending today",
       "count": {
-        "one": "%s child attending this session",
-        "other": "[0] No children attending this session|%s children attending this session"
+        "one": "%s child attending today’s session",
+        "other": "[0] No children attending today’s session|%s children attending today’s session"
       },
-      "name": "Registered as attending the session at {{location.name}}"
+      "name": "Registered as attending today’s session at {{location.name}}"
     },
     "Absent": {
       "label": "Absent",
       "count": {
-        "one": "%s child absent from this session",
-        "other": "[0] No children absent from this session|%s children absent from this session"
+        "one": "%s child absent from today’s session",
+        "other": "[0] No children absent from today’s session|%s children absent from today’s session"
       },
-      "name": "Registered as absent from the session at {{location.name}}"
+      "name": "Registered as absent from today’s session at {{location.name}}"
     },
     "Pending": {
       "label": "Not registered yet",

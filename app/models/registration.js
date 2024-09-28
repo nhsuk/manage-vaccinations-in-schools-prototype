@@ -3,9 +3,9 @@ import { stringToBoolean } from '../utils/string.js'
 
 export class RegistrationOutcome {
   static Pending = 'Not registered yet'
-  static Present = 'Attending session'
-  static Absent = 'Absent from session'
-  static Complete = 'Completed session'
+  static Present = 'Attending today’s session'
+  static Absent = 'Absent from today’s session'
+  static Complete = 'Completed today’s session'
 }
 
 /**
