@@ -139,7 +139,7 @@ export const getConsentOutcome = (patient) => {
 /**
  * Get combined refusal reasons
  * @param {Array<import('../models/reply.js').Reply>} replies - Consent replies
- * @returns {object} Refusal reasons
+ * @returns {Array} Refusal reasons
  */
 export const getConsentRefusalReasons = (replies) => {
   let reasons = []
@@ -149,7 +149,17 @@ export const getConsentRefusalReasons = (replies) => {
       continue
     }
 
-    reasons.push(reply.refusalReason)
+    // Ignore invalid replies
+    if (reply.invalid) {
+      continue
+    }
+
+    // Indicate confirmed refusal reason
+    const refusalReason = reply.confirmed
+      ? `${reply.refusalReason}<br><b>Confirmed</b>`
+      : reply.refusalReason
+
+    reasons.push(refusalReason)
   }
 
   return reasons ? [...new Set(reasons)] : []
