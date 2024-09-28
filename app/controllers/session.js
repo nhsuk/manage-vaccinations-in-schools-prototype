@@ -22,7 +22,7 @@ export const sessionController = {
       session.patients = Object.values(data.patients).filter(
         (patient) => patient.session_id === session.id
       )
-      return session
+      return session.patients.length > 0 ? session : []
     })
 
     if (view === 'active') {

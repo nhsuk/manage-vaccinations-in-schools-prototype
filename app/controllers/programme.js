@@ -26,33 +26,15 @@ export const programmeController = {
       }
       programme.records = records.map((nhsn) => new Record(data.records[nhsn]))
 
-      // Schools in programme
-      const urns = [...new Set(programme.records.map((record) => record.urn))]
-      programme.schools = Object.values(data.schools)
-        .filter((school) => urns.includes(school.urn))
-        .map((school) => {
-          school = new School(school)
-
-          // Add patients to school
-          school.patients = Object.values(data.patients).filter(
-            (patient) => patient.record.urn === school.urn
-          )
-
-          return school
-        })
-
       // Sessions in programme
       programme.sessions = Object.values(data.sessions)
         .filter((session) => session.programmes.includes(programme.pid))
         .map((session) => {
           session = new Session(session)
-
-          // Add patients to session
           session.patients = Object.values(data.patients).filter(
             (patient) => patient.session_id === session.id
           )
-
-          return session
+          return session.patients.length > 0 ? session : []
         })
 
       // Sessions in programme (grouped by status)
