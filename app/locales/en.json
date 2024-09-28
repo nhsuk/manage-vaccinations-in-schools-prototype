@@ -670,12 +670,15 @@
       "label": "Programme"
     },
     "type": {
-      "label": "Import type",
+      "label": "Type",
       "title": "What type of records are you importing?",
       "hint": {
         "Cohort": "Records of children from a CHIS, local authority or school, used to create cohorts",
         "Report": "Records of previous vaccinations to be reported to GPs and/or NHS England"
       }
+    },
+    "status": {
+      "label": "Status"
     },
     "vaccinations": {
       "label": "Vaccination records"

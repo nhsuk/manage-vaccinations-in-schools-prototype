@@ -57,6 +57,10 @@
           html: import.type or "None"
         },
         {
+          header: __("import.status.label"),
+          html: tag(import.statusTag) or "None"
+        },
+        {
           header: __("import.records.label"),
           html: import.records.length or "None",
           format: "numeric"
@@ -74,6 +78,7 @@
         { text: __("import.created.label") },
         { text: __("import.created_user_uid.label") },
         { text: __("import.type.label") },
+        { text: __("import.status.label") },
         {
           text: __("import.records.label"),
           format: "numeric",
