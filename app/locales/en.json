@@ -454,6 +454,10 @@
         "label": "Invitation",
         "name": "{{programme.name}} vaccination on {{session.summary.dates}}"
       },
+      "invite-clinic": {
+        "label": "Invitation to clinic",
+        "name": "Booking a clinic appointment for your child’s {{programme.name}} vaccination"
+      },
       "invite-reminder": {
         "label": "Reminder",
         "name": "Please respond to our request for consent by {{session.formatted.firstDate}}"
