@@ -1207,6 +1207,9 @@
     "download-consent-form": {
       "title": "Download consent form (PDF)"
     },
+    "import-class-list": {
+      "title": "Import class list"
+    },
     "list": {
       "title": "School sessions",
       "description": "Use this area to:\n- review consent responses\n- triage health records\n- record vaccinations\n- review session outcomes",

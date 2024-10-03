@@ -29,7 +29,10 @@
       attributes: {
         download: true
       }
-    } if programme.type == ProgrammeType.HPV and session.status != SessionStatus.Completed]
+    } if programme.type == ProgrammeType.HPV and session.status != SessionStatus.Completed, {
+      text: __("session.import-class-list.title"),
+      href: "#"
+    }]
   }) }}
 
   <div class="nhsuk-grid-row">
