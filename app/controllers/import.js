@@ -1,6 +1,5 @@
 import { wizard } from 'nhsuk-prototype-rig'
-import { Import, ImportType } from '../models/import.js'
-import { Patient } from '../models/patient.js'
+import { Import, ImportStatus, ImportType } from '../models/import.js'
 import { Record } from '../models/record.js'
 import { Vaccination } from '../models/vaccination.js'
 import { formatList } from '../utils/string.js'
@@ -22,10 +21,8 @@ export const importController = {
 
     const records = _import.records.map((record) => {
       record = new Record(record)
-      record.vaccination =
-        record.vaccinations.length && _import.type === ImportType.Report
-          ? new Vaccination(record.vaccinations[0])
-          : false
+      // TODO: Review multiple vaccination programmes in a single import
+      record.vaccination = new Vaccination(record.vaccinations[0])
       return record
     })
 
@@ -48,7 +45,9 @@ export const importController = {
       }
     }
 
-    request.app.locals.import = _import
+    response.locals.import = _import
+
+    request.app.locals._import = _import
     request.app.locals.duplicates = duplicates
     request.app.locals.issues = formatList(issues)
 
@@ -75,69 +74,12 @@ export const importController = {
     const _import = new Import({
       programme_pid: pid,
       type,
-      devoid: 4, // Mock 4 devoid records being excluded
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
     data.wizard = { _import }
 
     response.redirect(`${_import.uri}/new/${startPath}`)
-  },
-
-  update(request, response) {
-    const { _import, programme } = request.app.locals
-    const { data } = request.session
-    const { __ } = response.locals
-
-    const updatedImport = new Import({
-      ..._import, // Previous values
-      ...data?.wizard?._import // Wizard values
-    })
-
-    // Add import
-    data.imports[_import.id] = updatedImport
-
-    // Process imported records
-    for (let record of _import.records) {
-      record = new Record(record)
-
-      if (_import.type === ImportType.Cohort) {
-        // Mark child record as no longer pending
-        data.records[record.nhsn]._pending = false
-
-        // Select patient for cohort
-        const patient = new Patient({ record })
-        const cohort = programme.cohorts.find((cohort) => {
-          return cohort.yearGroup === record.yearGroup
-        })
-        patient.select = cohort
-
-        // Add patient to programme cohort
-        cohort.records.push(record.nhsn)
-
-        // Add patient to system
-        data.patients[patient.uuid] = patient
-      }
-
-      if (_import.type === ImportType.Report) {
-        // Mark vaccination record as no longer pending
-        const vaccination = record.vaccinations[0]
-        data.vaccinations[vaccination.uuid]._pending = false
-
-        // Update CHIS record
-        data.records[record.nhsn].vaccinations.push(vaccination.uuid)
-      }
-    }
-
-    // Clean up
-    delete data?.wizard?._import
-
-    request.flash(
-      'success',
-      __('import.success.create', updatedImport.records.length)
-    )
-
-    response.redirect(updatedImport.uri)
   },
 
   readForm(request, response, next) {
@@ -156,12 +98,10 @@ export const importController = {
       ...(startPath === 'type'
         ? {
             [`/${id}/${form}/type`]: {},
-            [`/${id}/${form}/file`]: {},
-            [`/${id}/${form}/check-answers`]: {}
+            [`/${id}/${form}/file`]: {}
           }
         : {
-            [`/${id}/${form}/file`]: {},
-            [`/${id}/${form}/check-answers`]: {}
+            [`/${id}/${form}/file`]: {}
           }),
       [`/${id}`]: {}
     }
@@ -182,6 +122,8 @@ export const importController = {
       })
     )
 
+    response.locals.import = request.app.locals._import
+
     next()
   },
 
@@ -192,74 +134,33 @@ export const importController = {
   },
 
   updateForm(request, response) {
-    const { _import, programme } = request.app.locals
-    const { scenario } = request.body
+    const { _import } = request.app.locals
+    const { view } = request.params
     const { data } = request.session
-    const { __, paths } = response.locals
+    const { paths } = response.locals
+    const { __ } = response.locals
 
-    // Get pending records for this programme
-    const nhsns = programme.records.map((record) => record.nhsn)
-    const pendingRecords = Object.values(data.records)
-      .filter((record) => nhsns.includes(record.nhsn))
-      .filter((record) => record._pending)
-
-    // Get pending vaccinations for this programme
-    const pendingVaccinations = Object.values(data.vaccinations)
-      .filter((vaccination) => vaccination.programme_pid === programme.pid)
-      .filter((vaccination) => vaccination._pending)
-
-    // Only upload vaccinations that have been given
-    const pendingGivenVaccinations = pendingVaccinations
-      .filter((vaccination) => !vaccination.given)
-      .map((vaccination) => {
-        // Convert vaccination record into a child record
-        let { record } = data.patients[vaccination.patient_uuid]
-        record.vaccinations = [vaccination]
-
-        return record
-      })
-
-    // Count invalid records (records for vaccinations that were not given)
-    _import.invalid =
-      pendingVaccinations.length - pendingGivenVaccinations.length
-
-    switch (_import.type) {
-      case ImportType.Cohort:
-        _import.records = pendingRecords
-        break
-      case ImportType.Report:
-        _import.records = pendingGivenVaccinations
-        break
-      default:
-        _import.records = []
-    }
-
-    let next
-    switch (scenario) {
-      case 'invalid':
-        return response.render(`import/form/file`, {
-          errors: {
-            import: __('import.file.errors.invalid')
-          }
-        })
-      case 'errors':
-        next = `${_import.uri}/new/errors`
-        break
-      default:
-        next = paths.next
-    }
-
-    // No new records to upload
-    if (_import.records.length === 0) {
-      next = `${_import.uri}/new/devoid`
-    }
-
-    data.wizard._import = new Import({
+    const updatedImport = new Import({
       ..._import, // Previous values
       ...request.body._import // New value
     })
 
-    response.redirect(next)
+    data.wizard._import = updatedImport
+
+    // No check answers screen; perform update on last page of wizard flow
+    if (view === 'file') {
+      // Add import
+      data.imports[_import.id] = updatedImport
+
+      // Clean up
+      delete data?.wizard?._import
+
+      request.flash('success', __('import.success.create'))
+
+      response.redirect(updatedImport.uri)
+    } else {
+      response.redirect(paths.next)
+    }
   },
 
   readReview(request, response, next) {

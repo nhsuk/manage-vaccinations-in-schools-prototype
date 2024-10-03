@@ -561,7 +561,7 @@
   "import": {
     "label": "Record import",
     "success": {
-      "create": "%s records imported",
+      "create": "Records imported for processing",
       "update": "Record updated with values from duplicate record"
     },
     "show": {
@@ -569,17 +569,7 @@
       "summary": "Details"
     },
     "new": {
-      "label": "Import records",
-      "check-answers": {
-        "title": "Check and confirm",
-        "confirm": "Import records",
-        "summary": "Details",
-        "issues": "Imported records will differ from the file"
-      },
-      "count": {
-        "one": "%s new record",
-        "other": "[0] No new records|%s new records"
-      }
+      "label": "Import records"
     },
     "review": {
       "title": "Review duplicate child record",
@@ -624,16 +614,15 @@
       }
     },
     "errors": {
-      "title": "Records cannot be imported",
-      "description": "The records cannot be imported due to errors in the CSV file. When fixing these errors, note that the header does not count as a row."
+      "title": "Records could not be imported",
+      "description": "The records could not be imported due to errors in the CSV file. When fixing these errors, note that the header does not count as a row."
     },
     "devoid": {
       "label": "Previously imported",
-      "title": "Records already imported",
-      "description": "All records in this CSV file have been imported.",
+      "description": "All records in this CSV file had already been imported.",
       "count": {
         "one": "%s previously imported record was omitted",
-        "other": "[0] No previously imported record were omitted|%s previously imported records were omitted"
+        "other": "[0] No previously imported records were omitted|%s previously imported records were omitted"
       }
     },
     "duplicate": {
@@ -686,8 +675,8 @@
     "records": {
       "label": "Records",
       "count": {
-        "one": "%s record",
-        "other": "[0] No records|%s records"
+        "one": "%s record imported",
+        "other": "[0] No records imported|%s records imported"
       }
     },
     "actions": {

@@ -23,7 +23,6 @@ export const downloadController = {
     // Get vaccinations from programme
     const vaccinations = Object.values(data.vaccinations)
       .filter((vaccination) => vaccination.programme_pid === pid)
-      .filter((vaccination) => !vaccination._pending)
       .map((vaccination) => {
         vaccination = new Vaccination(vaccination)
         vaccination.record = new Record(

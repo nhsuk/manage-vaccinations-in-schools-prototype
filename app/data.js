@@ -27,14 +27,7 @@ const organisation = organisations.RYG
 export default {
   batches,
   cohorts,
-  features: {
-    imports: {
-      on: process.env.FEATURE_PENDING_VACCINATIONS === 'true',
-      name: 'Import vaccinations',
-      description:
-        'Require vaccinations to be imported before appearing on CHIS records.'
-    }
-  },
+  features: {},
   imports,
   organisation,
   organisations,

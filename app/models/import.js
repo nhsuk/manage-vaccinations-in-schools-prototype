@@ -7,7 +7,7 @@ export class ImportType {
 }
 
 export class ImportStatus {
-  static Pending = 'Pending'
+  static Processing = 'Processing'
   static Complete = 'Completed'
   static Invalid = 'Invalid'
 }
@@ -15,8 +15,8 @@ export class ImportStatus {
 /**
  * @class National Immunisation and Vaccination System (NIVS) import
  * @property {string} id - Import ID
- * @property {ImportType} - Import type
  * @property {ImportStatus} - Import status
+ * @property {ImportType} -  Import type
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created import
  * @property {string} [programme_pid] - Programme ID
@@ -25,17 +25,19 @@ export class ImportStatus {
  * @property {number} [duplicate] - Inexact duplicate records found
  * @property {number} [incomplete] - Incomplete records (no NHS number)
  * @property {number} [invalid] - Invalid records (no vaccination event)
+ * @function type - Import type
  * @function ns - Namespace
  * @function uri - URL
  */
 export class Import {
   constructor(options) {
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
+    this.status = options?.status || ImportStatus.Processing
     this.type = options?.type || ImportType.Cohort
-    this.status = options?.status || ImportStatus.Complete
     this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
     this.programme_pid = options?.programme_pid
+    this.validations = options?.validations || []
     this.records = options?.records || []
     this.devoid = options?.devoid || 0
     this.duplicate = options?.duplicate || 0
@@ -44,14 +46,43 @@ export class Import {
       this.type === ImportType.Report ? options?.invalid || 0 : undefined
   }
 
-  static generate(programme, records, user) {
+  static generate(programme, records, user, type) {
     const created = faker.date.recent({ days: 14, refDate: programme.start })
+
+    let devoid
+    let validations
+    let status = ImportStatus.Complete
+
+    if (records === false) {
+      // Simulate invalid file
+      status = ImportStatus.Invalid
+      validations = {
+        3: {
+          CHILD_FIRST_NAME: 'is required but missing',
+          CHILD_POSTCODE:
+            '‘24 High Street’ should be a postcode, like SW1A 1AA',
+          CHILD_NHS_NUMBER:
+            '‘QQ 12 34 56 A’ should be a valid NHS number, like 485 777 3456'
+        },
+        8: {
+          CHILD_DOB: '‘Simon’ should be formatted as YYYY-MM-DD'
+        }
+      }
+    } else if (records === undefined) {
+      // Simulate file with no new records
+      devoid = 101
+    }
 
     return new Import({
       created,
       created_user_uid: user.uid,
       programme_pid: programme.pid,
-      records
+      status,
+      type,
+      validations,
+      records,
+      devoid: 99,
+      invalid: type === ImportType.Report && 99
     })
   }
 

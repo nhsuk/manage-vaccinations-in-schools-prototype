@@ -46,7 +46,6 @@ export const programmeController = {
       // Recorded vaccinations in programme
       programme.vaccinations = Object.values(data.vaccinations)
         .filter((vaccination) => vaccination.programme_pid === programme.pid)
-        .filter((vaccination) => !vaccination._pending)
         .map((vaccination) => {
           vaccination = new Vaccination(vaccination)
 

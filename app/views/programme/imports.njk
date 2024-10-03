@@ -58,11 +58,11 @@
         },
         {
           header: __("import.status.label"),
-          html: tag(import.statusTag) or "None"
+          html: tag(import.statusTag) + ("<br><span class=\"nhsuk-u-secondary-text-color nhsuk-u-font-size-16\">5 hours 13 minutes remaining</span>" if import.status == ImportStatus.Processing)
         },
         {
           header: __("import.records.label"),
-          html: import.records.length or "None",
+          html: "…" if import.status == ImportStatus.Processing else import.records.length | string,
           format: "numeric"
         }
       ]) %}

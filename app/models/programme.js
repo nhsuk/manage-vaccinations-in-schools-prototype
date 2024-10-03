@@ -89,7 +89,9 @@ export class Programme {
   }
 
   get start() {
-    return `${this.year}-09-01`
+    const thisYear = new Date().getFullYear()
+
+    return `${thisYear}-09-01`
   }
 
   get pid() {

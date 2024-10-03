@@ -69,7 +69,6 @@ export class Record {
     this.parent2 = (options?.parent2 && new Parent(options.parent2)) || ''
     this.vaccinations = options?.vaccinations || []
     // Import mocking
-    this._pending = options?._pending || false
     this._pendingChanges = options?._pendingChanges || {}
     // dateInput objects
     this.dob_ = options?.dob_
@@ -119,19 +118,14 @@ export class Record {
     delete parent1.contactPreference
     delete parent1.contactPreferenceOther
 
-    // Only import 50% of records
-    const _pending = faker.datatype.boolean(0.5)
-
     // Add a pending change
     let _pendingChanges = {}
-    if (_pending) {
-      const hasPendingChanges = faker.datatype.boolean(0.02)
+    const hasPendingChanges = faker.datatype.boolean(0.02)
 
-      if (hasPendingChanges) {
-        const newDob = new Date(dob)
-        newDob.setFullYear(newDob.getFullYear() - 2)
-        _pendingChanges.dob = newDob
-      }
+    if (hasPendingChanges) {
+      const newDob = new Date(dob)
+      newDob.setFullYear(newDob.getFullYear() - 2)
+      _pendingChanges.dob = newDob
     }
 
     return new Record({
@@ -149,7 +143,6 @@ export class Record {
       urn,
       parent1,
       parent2,
-      _pending,
       _pendingChanges
     })
   }

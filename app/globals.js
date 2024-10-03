@@ -283,7 +283,7 @@ export default () => {
       let value = rows[key]?.value || formattedValue
 
       // Don’t show row for conditional answer
-      if (typeof value === 'undefined') {
+      if (typeof value === 'undefined' || value === 0) {
         continue
       }
 

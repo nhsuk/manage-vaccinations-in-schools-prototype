@@ -3,10 +3,10 @@
 {% extends "_layouts/form.njk" %}
 
 {% set confirmButtonText = __("import.file.confirm") %}
-{% set title = __("import.file.title", { type: _import.type | lower }) %}
+{% set title = __("import.file.title", { type: import.type | lower }) %}
 
 {% set templateFormat %}
-  {% include "import/form/_template-format.njk" %}
+  {% include "import/_template-format.njk" %}
 {% endset %}
 
 {% block form %}
@@ -58,28 +58,5 @@
   {{ details({
     text: __("import.file.format"),
     HTML: templateFormat
-  }) if _import.type == ImportType.Cohort }}
-
-  {{ radios({
-    formGroup: {
-      classes: "app-prototype"
-    },
-    fieldset: {
-      legend: {
-        classes: "nhsuk-fieldset__legend--m",
-        text: "Select an import scenario"
-      }
-    },
-    items: [{
-      text: "File not in the correct format",
-      value: "invalid"
-    }, {
-      text: "File contains records with validation errors",
-      value: "errors"
-    }, {
-      text: __("import.new.check-answers.issues"),
-      value: "happy"
-    }],
-    decorate: "scenario"
-  }) }}
+  }) if import.type == ImportType.Cohort }}
 {% endblock %}
