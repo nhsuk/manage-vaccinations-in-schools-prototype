@@ -10,7 +10,6 @@
 <h2 class="nhsuk-heading-s nhsuk-u-margin-bottom-2">
   {{ __n("default-batch.count", defaultBatches.length) }}
 </h2>
-{{ inspect(defaultBatches) }}
 {% if defaultBatches.length == 1 %}
   <p class="nhsuk-body">
     {{ defaultBatch(defaultBatches[0], session) }}
