@@ -755,7 +755,7 @@
     "sessionReminderMethod": {
       "title": "Send reminders as text messages?",
       "label": "Prefer text messages for reminders",
-      "hint": "Parent’s who have not opted into text messages, or not provided a phone number, will always get reminders via email."
+      "hint": "Parents who have not opted into text messages, or not provided a phone number, will always get reminders via email."
     }
   },
   "outcome": {
