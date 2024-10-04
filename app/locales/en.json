@@ -607,7 +607,7 @@
     "file": {
       "title": "Import {{type}}",
       "hint": "{{prefix}}Make sure the CSV you import has the same format as your usual template for {{type}}.",
-      "format": "How to format your cohort import",
+      "format": "How to format your CSV for {{type}}",
       "confirm": "Continue",
       "errors": {
         "invalid": "The selected file must be a CSV"

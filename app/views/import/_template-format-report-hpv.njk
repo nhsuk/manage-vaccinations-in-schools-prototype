@@ -1,0 +1,29 @@
+{%- set markdown -%}
+{%- filter nhsukMarkdown -%}
+Make sure the CSV you upload uses the following columns:
+
+| Column name | Notes |
+| ----------- | ----- |
+| `ORGANISATION_CODE` | **Required**, must be a valid [ODS code](https://odsportal.digital.nhs.uk/) |
+| `SCHOOL_URN` | **Required**, must be 6 digits and numeric. Use <i>888888</i> for school unknown and <i>999999</i> for homeschooled. |
+| `SCHOOL_NAME` | Required if `SCHOOL_URN` is <i>888888</i> |
+| `NHS_NUMBER` | Optional, must be 10 digits and numeric |
+| `PERSON_FORENAME` | **Required** |
+| `PERSON_SURNAME` | **Required** |
+| `PERSON_DOB` | **Required**, must use <i>YYYYMMDD</i> format |
+| `PERSON_GENDER_CODE` | **Required**, must be <i>Not Known</i>, <i>Male</i>, <i>Female</i> or <i>Not Specified</i> |
+| `PERSON_POSTCODE` | **Required**, must be formatted as a valid postcode |
+| `DATE_OF_VACCINATION` | **Required**, must use <i>YYYYMMDD</i> format |
+| `VACCINE_GIVEN` | **Required**, must be <i>Gardasil9</i>, <i>Gardasil</i> or <i>Cervarix</i> |
+| `BATCH_NUMBER` | **Required** |
+| `BATCH_EXPIRY_DATE` | **Required**, must use <i>YYYYMMDD</i> format |
+| `ANATOMICAL_SITE` | **Required**, must be <i>Left Buttock</i>, <i>Right Buttock</i>, <i>Left Thigh</i>, <i>Right Thigh</i>, <i>Left Upper Arm</i>, <i>Right Upper Arm</i> or <i>Nasal</i> |
+| `DOSE_SEQUENCE` | **Required**, must be <i>1</i>, <i>2</i> or <i>3</i> |
+| `VACCINATED` | Optional, must be <i>Y</i> or <i>N</i>. If omitted, <i>Y</i> is assumed. |
+| `CARE_SETTING` | Required if `VACCINATED` is <i>Y</i>. Must be <i>1 – School</i> or <i>2 – Community Setting</i>. |
+| `PERFORMING_PROFESSIONAL_FORENAME` | Required if `VACCINATED` is <i>Y</i> |
+| `PERFORMING_PROFESSIONAL_SURNAME` | Required if `VACCINATED` is <i>Y</i> |
+{%- endfilter -%}
+{%- endset -%}
+
+{{- markdown | replace("nhsuk-table", "nhsuk-table app-table--csv") | safe }}

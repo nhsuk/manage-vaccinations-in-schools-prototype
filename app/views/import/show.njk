@@ -1,9 +1,18 @@
 {% extends "_layouts/default.njk" %}
 
+{% set programme = data.programmes[import.programme_pid] %}
 {% set title = __("import.show.title", { import: import }) %}
 
 {% set templateFormat %}
-  {% include "import/_template-format.njk" %}
+  {% if import.type == ImportType.Cohort %}
+    {% include "import/_template-format-cohort.njk" %}
+  {% elif import.type == ImportType.Report %}
+    {% if programme.type == ProgrammeType.HPV %}
+      {% include "import/_template-format-report-hpv.njk" %}
+    {% elif programme.type == ProgrammeType.Flu %}
+      {% include "import/_template-format-report-flu.njk" %}
+    {% endif %}
+  {% endif %}
 {% endset %}
 
 {% block beforeContent %}
@@ -15,7 +24,7 @@
       text: __("programme.list.title"),
       href: "/programmes"
     }, {
-      text: data.programmes[import.programme_pid].type,
+      text: programme.type,
       href: "/programmes/" + import.programme_pid
     }],
     text: __("programme.imports.title"),
@@ -48,7 +57,7 @@
           value: users[import.created_user_uid].fullName
         },
         programme_pid: {
-          value: data.programmes[import.programme_pid].type
+          value: programme.type
         },
         type: {},
         invalid: {
@@ -165,9 +174,9 @@
       </p>
 
       {{ details({
-        text: __("import.file.format"),
+        text: __("import.file.format", { type: import.type | lower }),
         HTML: templateFormat
-      }) if import.type == ImportType.Cohort }}
+      }) }}
 
       {% for row, validations in import.validations %}
         <h3 class="nhsuk-heading-s">Row {{ row }}</h3>
