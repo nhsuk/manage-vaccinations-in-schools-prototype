@@ -66,14 +66,6 @@ export class PatientOutcome {
  * @property {object} [vaccinations] - Vaccination UUIDs with given boolean
  * @property {Array<string>} [cohorts] - Cohort UIDs
  * @property {string} [session_id] - Session ID
- * @function consent - Consent outcome
- * @function screen - Screening outcome
- * @function registration - Registration status
- * @function capture - Capture outcome
- * @function outcome - Overall outcome
- * @function preferredNames - Preferred name(s)
- * @function ns - Namespace
- * @function uri - URL
  */
 export class Patient {
   constructor(options) {
@@ -88,6 +80,12 @@ export class Patient {
     this.session_id = options.session_id
   }
 
+  /**
+   * Generate fake patient
+   * @param {Record} record - Record
+   * @returns {Patient} Patient
+   * @static
+   */
   static generate(record) {
     return new Patient({
       nhsn: record.nhsn,
@@ -95,18 +93,42 @@ export class Patient {
     })
   }
 
+  /**
+   * Get NHS number
+   * @returns {string} - NHS Number
+   */
   get nhsn() {
     return this.record.nhsn
   }
 
+  /**
+   * Get first name
+   * @returns {string} - First name
+   */
   get firstName() {
     return this.record.firstName
   }
 
+  /**
+   * Get full name
+   * @returns {string} - Full name
+   */
   get fullName() {
     return [this.record.firstName, this.record.lastName].join(' ')
   }
 
+  /**
+   * Get preferred names (from replies)
+   * @returns {string|boolean} - Full name
+   */
+  get preferredNames() {
+    return getPreferredNames(this.replies)
+  }
+
+  /**
+   * Get parents (from record and replies)
+   * @returns {Array<Parent>} - Parents
+   */
   get parents() {
     const replies = Object.values(this.replies)
     if (replies.length > 0) {
@@ -116,24 +138,10 @@ export class Patient {
     }
   }
 
-  get summary() {
-    return {
-      dob: `${this.record.formatted.dob}</br>
-      <span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">
-        ${this.record.formatted.yearGroup}
-      </span>`
-    }
-  }
-
-  get link() {
-    let fullName = `${formatLink(this.uri, this.fullName)}`
-    if (this.preferredNames) {
-      fullName += `<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">Known as: ${this.preferredNames}</span>`
-    }
-
-    return { fullName }
-  }
-
+  /**
+   * Get events grouped by date
+   * @returns {object} - Events grouped by date
+   */
   get groupedEvents() {
     const events = this.events.sort(
       (a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf()
@@ -144,34 +152,30 @@ export class Patient {
     })
   }
 
-  get consentHealthAnswers() {
-    return this.session_id ? getConsentHealthAnswers(this.replies) : false
-  }
-
-  get consentRefusalReasons() {
-    return this.session_id ? getConsentRefusalReasons(this.replies) : false
-  }
-
-  get screen() {
-    return getScreenOutcome(this)
-  }
-
-  get triage() {
-    return getTriageOutcome(this)
-  }
-
+  /**
+   * Get triage notes
+   * @returns {Array} - Triage notes
+   */
   get triageNotes() {
     return this.events
       .map((event) => new Event(event))
       .filter((event) => event.type === EventType.Screen)
   }
 
+  /**
+   * Get reminders sent
+   * @returns {Array} - Reminders sent
+   */
   get reminders() {
     return this.events
       .map((event) => new Event(event))
       .filter((event) => event.type === EventType.Remind)
   }
 
+  /**
+   * Get date last reminders sent
+   * @returns {string|undefined} - Date last reminders sent
+   */
   get lastReminderDate() {
     const lastReminder = this.reminders.at(-1)
     if (lastReminder) {
@@ -179,38 +183,82 @@ export class Patient {
     }
   }
 
-  get registration() {
-    return getRegistrationOutcome(this)
-  }
-
-  get capture() {
-    return getCaptureOutcome(this)
-  }
-
-  get outcome() {
-    return getPatientOutcome(this)
-  }
-
-  get preferredNames() {
-    return getPreferredNames(this.replies)
-  }
-
+  /**
+   * Get consent outcome
+   * @returns {object} - Consent outcome
+   */
   get consent() {
     return getConsentOutcome(this)
   }
 
-  get ns() {
-    return 'patient'
+  /**
+   * Get consent health answers (from replies)
+   * @returns {object|boolean} - Consent health answers
+   */
+  get consentHealthAnswers() {
+    return this.session_id ? getConsentHealthAnswers(this.replies) : false
   }
 
-  get uri() {
-    return `/sessions/${this.session_id}/${this.nhsn}`
+  /**
+   * Get consent refusal reasons (from replies)
+   * @returns {object|boolean} - Consent refusal reasons
+   */
+  get consentRefusalReasons() {
+    return this.session_id ? getConsentRefusalReasons(this.replies) : false
   }
 
+  /**
+   * Get screening outcome
+   * @returns {object} - Screening outcome
+   */
+  get screen() {
+    return getScreenOutcome(this)
+  }
+
+  /**
+   * Get triage outcome
+   * @returns {object} - Triage outcome
+   */
+  get triage() {
+    return getTriageOutcome(this)
+  }
+
+  /**
+   * Get registration outcome
+   * @returns {object} - Registration outcome
+   */
+  get registration() {
+    return getRegistrationOutcome(this)
+  }
+
+  /**
+   * Get capture outcome
+   * @returns {object} - Capture outcome
+   */
+  get capture() {
+    return getCaptureOutcome(this)
+  }
+
+  /**
+   * Get overall patient outcome
+   * @returns {object} - Overall patient outcome
+   */
+  get outcome() {
+    return getPatientOutcome(this)
+  }
+
+  /**
+   * Add event to activity log
+   * @param {object} event - Event
+   */
   set log(event) {
     this.events.push(new Event(event))
   }
 
+  /**
+   * Select patient for cohort
+   * @param {import('./cohort.js').Cohort} cohort - Cohort
+   */
   set select(cohort) {
     this.cohorts.push(cohort.uid)
     this.log = {
@@ -221,6 +269,10 @@ export class Patient {
     }
   }
 
+  /**
+   * Invite patient to session
+   * @param {import('./session.js').Session} session - Session
+   */
   set invite(session) {
     this.session_id = session.id
     this.log = {
@@ -231,6 +283,10 @@ export class Patient {
     }
   }
 
+  /**
+   * Record sent reminder
+   * @param {object} target - Target of reminder
+   */
   set remind(target) {
     this.log = {
       type: EventType.Remind,
@@ -240,6 +296,10 @@ export class Patient {
     }
   }
 
+  /**
+   * Assess Gillick competence
+   * @param {import('./gillick.js').Gillick} gillick - Gillick
+   */
   set assess(gillick) {
     const created = this.gillick && !Object.entries(this.gillick).length
 
@@ -247,12 +307,16 @@ export class Patient {
     this.log = {
       type: EventType.Consent,
       name: `${created ? 'Completed' : 'Updated'} Gillick assessment`,
-      note: gillick.notes,
+      note: gillick.note,
       date: created ? gillick.created : getToday().toISOString(),
       user_uid: gillick.created_user_uid
     }
   }
 
+  /**
+   * Record reply
+   * @param {import('./reply.js').Reply} reply - Reply
+   */
   set respond(reply) {
     if (!reply) {
       return
@@ -279,6 +343,10 @@ export class Patient {
     }
   }
 
+  /**
+   * Record triage
+   * @param {object} triage - Triage
+   */
   set triage(triage) {
     const outcome =
       triage.outcome === ScreenOutcome.NeedsTriage
@@ -288,13 +356,17 @@ export class Patient {
     this.log = {
       type: EventType.Screen,
       name: `Triaged decision: ${outcome}`,
-      note: triage.notes,
+      note: triage.note,
       date: getToday().toISOString(),
       user_uid: triage.created_user_uid,
       info_: triage
     }
   }
 
+  /**
+   * Register attendance
+   * @param {import('./registration.js').Registration} registration - Registration
+   */
   set register(registration) {
     this.registered = registration.registered
     this.log = {
@@ -305,16 +377,24 @@ export class Patient {
     }
   }
 
+  /**
+   * Record pre-screening interview
+   * @param {Event} interview - Interview
+   */
   set preScreen(interview) {
     this.log = {
       type: EventType.Screen,
       name: 'Completed pre-screening checks',
-      note: interview.notes,
+      note: interview.note,
       date: getToday().toISOString(),
       user_uid: interview.user_uid
     }
   }
 
+  /**
+   * Capture vaccination
+   * @param {import('./vaccination.js').Vaccination} vaccination - Vaccination
+   */
   set capture(vaccination) {
     vaccination = new Vaccination(vaccination)
 
@@ -333,9 +413,51 @@ export class Patient {
     this.log = {
       type: EventType.Capture,
       name,
-      note: vaccination.notes,
+      note: vaccination.note,
       date: vaccination.updated || vaccination.created,
-      user_uid: vaccination.user_uid
+      user_uid: vaccination.created_user_uid
     }
+  }
+
+  /**
+   * Get formatted links
+   * @returns {object} - Formatted links
+   */
+  get link() {
+    let fullName = `${formatLink(this.uri, this.fullName)}`
+    if (this.preferredNames) {
+      fullName += `<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">Known as: ${this.preferredNames}</span>`
+    }
+
+    return { fullName }
+  }
+
+  /**
+   * Get formatted summary
+   * @returns {object} - Formatted summaries
+   */
+  get summary() {
+    return {
+      dob: `${this.record.formatted.dob}</br>
+            <span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">
+              ${this.record.formatted.yearGroup}
+            </span>`
+    }
+  }
+
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
+  get ns() {
+    return 'patient'
+  }
+
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
+  get uri() {
+    return `/sessions/${this.session_id}/${this.nhsn}`
   }
 }

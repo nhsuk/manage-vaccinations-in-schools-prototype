@@ -61,13 +61,8 @@ export class VaccineMethod {
  * @property {number} dose - Dosage
  * @property {number} sequenceLimit - Maximum doses in sequence
  * @property {VaccineMethod} method - Method
- * @property {Array[string]} healthQuestionKeys - Health question keys
- * @property {Array[string]} preScreenQuestionKeys - Pre-screening question keys
- * @function brandWithType - Get brand with vaccine type
- * @function healthQuestions - Health questions
- * @function preScreenQuestions - Pre-screening questions
- * @function ns - Namespace
- * @function uri - URL
+ * @property {Array<string>} healthQuestionKeys - Health question keys
+ * @property {Array<string>} preScreenQuestionKeys - Pre-screening question keys
  */
 export class Vaccine {
   constructor(options) {
@@ -82,22 +77,38 @@ export class Vaccine {
     this.preScreenQuestionKeys = options.preScreenQuestionKeys
   }
 
+  /**
+   * Get brand with vaccine type
+   * @returns {string} - Brand with vaccine type
+   */
   get brandWithType() {
     return `${this.brand} (${this.type})`
   }
 
+  /**
+   * Get health questions
+   * @returns {Array} - Health questions
+   */
   get healthQuestions() {
     return vaccines[this.gtin].healthQuestionKeys.map(
       (key) => HealthQuestion[key]
     )
   }
 
+  /**
+   * Get pre-screening questions
+   * @returns {Array} - Pre-screening questions
+   */
   get preScreenQuestions() {
     return vaccines[this.gtin].preScreenQuestionKeys.map(
       (key) => PreScreenQuestion[key]
     )
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     return {
       gtin: formatMonospace(this.gtin),
@@ -107,10 +118,18 @@ export class Vaccine {
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'vaccine'
   }
 
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
   get uri() {
     return `/vaccines/${this.gtin}`
   }

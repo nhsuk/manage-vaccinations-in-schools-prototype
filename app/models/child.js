@@ -16,13 +16,11 @@ import { formatNhsNumber } from '../utils/string.js'
  * @property {string} [preferredFirstName] - Preferred first name
  * @property {string} [preferredLastName] - Preferred last name
  * @property {string} dob - Date of birth
+ * @property {object} [dob_] - Date of birth (from `dateInput`)
  * @property {object} address - Address
  * @property {GPRegistered} [gpRegistered] - Registered with a GP
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} [urn] - School
- * @function fullName - Get full name
- * @function ns - Namespace
- * @function uri - URL
  */
 export class Child {
   constructor(options) {
@@ -32,14 +30,19 @@ export class Child {
     this.preferredFirstName = options?.preferredFirstName
     this.preferredLastName = options?.preferredLastName
     this.dob = options.dob || ''
+    this.dob_ = options?.dob_
     this.address = options?.address
     this.gpRegistered = options?.gpRegistered
     this.gpSurgery = options?.gpSurgery
     this.urn = options?.urn
-    // dateInput objects
-    this.dob_ = options?.dob_
   }
 
+  /**
+   * Generate fake child
+   * @param {import('./patient.js').Patient} patient - Patient
+   * @returns {Child} - Child
+   * @static
+   */
   static generate(patient) {
     let preferredFirstName
     if (patient.record.firstName.startsWith('Al')) {
@@ -65,32 +68,54 @@ export class Child {
     })
   }
 
+  /**
+   * Get date of birth for `dateInput`
+   * @returns {object|undefined} - `dateInput` object
+   */
   get dob_() {
-    if (this.dob) {
-      return convertIsoDateToObject(this.dob)
-    }
+    return convertIsoDateToObject(this.dob)
   }
 
+  /**
+   * Set date of birth from `dateInput`
+   * @param {object} object - dateInput object
+   */
   set dob_(object) {
     if (object) {
       this.dob = convertObjectToIsoDate(object)
     }
   }
 
+  /**
+   * Get age
+   * @returns {number} - Age in years
+   */
   get age() {
     return getAge(this.dob)
   }
 
+  /**
+   * Get formatted date of birth and age
+   * @returns {string} - Date of birth and age in years
+   */
   get dobWithAge() {
     return `${this.formatted.dob} (aged ${this.age})`
   }
 
+  /**
+   * Get full name
+   * @returns {string} - Full name
+   */
   get fullName() {
     if (!this.firstName || !this.lastName) return ''
 
     return [this.firstName, this.lastName].join(' ')
   }
 
+  /**
+   * Get preferred name
+   * @returns {string|undefined} - Preferred name
+   */
   get preferredName() {
     const firstName = this.preferredFirstName || this.firstName
     const lastName = this.preferredLastName || this.lastName
@@ -102,12 +127,20 @@ export class Child {
     }
   }
 
+  /**
+   * Get full and preferred names
+   * @returns {string} - Full and preferred names
+   */
   get fullAndPreferredNames() {
     return this.preferredName
       ? `${this.fullName} (known as ${this.preferredName})`
       : this.fullName
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     const address =
       this.address && Object.values(this.address).every((value) => value !== '')
@@ -128,11 +161,11 @@ export class Child {
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'child'
-  }
-
-  get uri() {
-    return `/children/${this.uuid}`
   }
 }

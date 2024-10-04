@@ -60,7 +60,7 @@ export const patientController = {
           patient.outcome?.value !== PatientOutcome.Vaccinated,
         showGillick:
           !session.programmes?.includes(fluPid) &&
-          session.active &&
+          session.isActive &&
           patient.consent?.value !== ConsentOutcome.Given,
         showReminder: patient.consent?.value === ConsentOutcome.NoResponse,
         editReplies:

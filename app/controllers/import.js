@@ -34,7 +34,7 @@ export const importController = {
 
     // Count incomplete records (those missing an NHS number)
     _import.incomplete = records.filter(
-      (record) => record.missingNhsNumber
+      (record) => record.hasMissingNhsNumber
     ).length
 
     // Issues to show in warning callout
@@ -174,7 +174,7 @@ export const importController = {
     response.locals.record = new Record(record)
     response.locals.duplicateRecord = new Record({
       ...record,
-      ...record._pendingChanges
+      ...record.pendingChanges
     })
 
     next()

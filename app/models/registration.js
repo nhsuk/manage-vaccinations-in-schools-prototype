@@ -13,8 +13,7 @@ export class RegistrationOutcome {
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who registered patient
  * @property {string} [name] - Event name
- * @property {string} [registered] - Registration status
- * @function ns - Namespace
+ * @property {boolean} [registered] - Registration status
  */
 export class Registration {
   constructor(options) {
@@ -24,6 +23,10 @@ export class Registration {
     this.registered = stringToBoolean(options?.registered)
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'registration'
   }

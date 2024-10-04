@@ -37,7 +37,7 @@ export const sessionController = {
     })
 
     if (view === 'active') {
-      sessions = sessions.filter((session) => session.active)
+      sessions = sessions.filter((session) => session.isActive)
     } else {
       sessions = sessions.filter((session) => session.status === statuses[view])
     }

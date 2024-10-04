@@ -534,7 +534,7 @@
     "q5": {
       "label": "The child knows which side effects they might experience"
     },
-    "notes": {
+    "note": {
       "label": "Assessment notes"
     },
     "competent": {
@@ -931,7 +931,7 @@
     "vaccinations": {
       "label": "Vaccinations"
     },
-    "missingNhsNumber": {
+    "hasMissingNhsNumber": {
       "label": "Missing NHS number",
       "count": {
         "one": "%s record is without an NHS number",
@@ -1091,7 +1091,7 @@
         "Medical": "What medical reasons prevent the child from being vaccinated?"
       }
     },
-    "notes": {
+    "note": {
       "title": "Notes",
       "label": "Notes"
     },
@@ -1422,7 +1422,7 @@
       "create": "Triage outcome updated for [{{patient.fullName}}]({{patient.uri}})",
       "update": "Triage outcome updated for [{{patient.fullName}}]({{patient.uri}})"
     },
-    "notes": {
+    "note": {
       "label": "Triage notes"
     },
     "outcome": {
@@ -1490,7 +1490,7 @@
       "label": "Is {{patient.firstName}} ready to vaccinate in this session?"
     },
     "confirm": "Continue",
-    "notes": {
+    "note": {
       "label": "Pre-screening notes"
     }
   },
@@ -1588,7 +1588,7 @@
     "batch_expires": {
       "label": "Batch expiry date"
     },
-    "notes": {
+    "note": {
       "label": "Notes",
       "hint": "For example, if the child had a reaction to the vaccine",
       "title": "Notes"

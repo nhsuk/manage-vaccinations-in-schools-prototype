@@ -23,10 +23,12 @@ export class DownloadFormat {
  * @property {string} [programme_pid] - Programme ID
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
  * @property {Array<string>} [providers] - Vaccination UUIDs
+ * @property {string} from - Date from
+ * @property {object} [from_] - Date from (from `dateInput`)
+ * @property {string} until - Date until
+ * @property {object} [until_] - Date until (from `dateInput`)
  * @property {DownloadFormat} [format] - Downloaded file format
  * @property {string} [fileName] - Downloaded file name
- * @function ns - Namespace
- * @function uri - URL
  */
 export class Download {
   constructor(options) {
@@ -37,34 +39,53 @@ export class Download {
     this.vaccinations = options?.vaccinations || []
     this.providers = options?.providers
     this.from = options?.from
+    this.from_ = options?.from_
     this.until = options?.until
+    this.until_ = options?.until_
     this.format = options?.format || DownloadFormat.CSV
     this.fileName = options?.fileName || 'download'
-    // dateInput objects
-    this.from_ = options?.from_
-    this.until_ = options?.until_
   }
 
+  /**
+   * Get date from for `dateInput`
+   * @returns {object|undefined} - `dateInput` object
+   */
   get from_() {
     return convertIsoDateToObject(this.from)
   }
 
+  /**
+   * Set date from from `dateInput`
+   * @param {object} object - dateInput object
+   */
   set from_(object) {
     if (object) {
       this.from = convertObjectToIsoDate(object)
     }
   }
 
+  /**
+   * Get date until for `dateInput`
+   * @returns {object|undefined} - `dateInput` object
+   */
   get until_() {
     return convertIsoDateToObject(this.until)
   }
 
+  /**
+   * Set date until from `dateInput`
+   * @param {object} object - dateInput object
+   */
   set until_(object) {
     if (object) {
       this.until = convertObjectToIsoDate(object)
     }
   }
 
+  /**
+   * Get CarePlus XSL definition
+   * @returns {Array} - XSL definition
+   */
   get carePlus() {
     return [
       {
@@ -150,6 +171,10 @@ export class Download {
     ]
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     return {
       from: this.from
@@ -163,10 +188,18 @@ export class Download {
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'download'
   }
 
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
   get uri() {
     return `/programmes/${this.programme_pid}/download/${this.id}`
   }

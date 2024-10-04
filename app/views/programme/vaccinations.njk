@@ -36,12 +36,12 @@
     href: programme.uri + "/imports/new?type=" + ImportType.Report
   }) }}
 
-  {% set missingNhsNumber = programme.vaccinations | where("record.missingNhsNumber", true) %}
+  {% set hasMissingNhsNumber = programme.vaccinations | where("record.hasMissingNhsNumber", true) %}
 
   {{ insetText({
     classes: "nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-4",
-    html: __n("record.missingNhsNumber.count", missingNhsNumber | length) | nhsukMarkdown
-  }) if missingNhsNumber.length }}
+    html: __n("record.hasMissingNhsNumber.count", hasMissingNhsNumber | length) | nhsukMarkdown
+  }) if hasMissingNhsNumber.length }}
 
   {% if programme.vaccinations.length %}
     {% set resultRows = [] %}

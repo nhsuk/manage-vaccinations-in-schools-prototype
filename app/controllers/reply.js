@@ -272,7 +272,7 @@ export const replyController = {
         outcome: VaccinationOutcome.AlreadyVaccinated,
         patient_uuid: patient.uuid,
         session_id: session.id,
-        ...(data.reply?.notes && { notes: data.reply.notes }),
+        ...(data.reply?.note && { note: data.reply.note }),
         ...(data.token && { created_user_uid: data.token?.uid })
       }
     }
@@ -346,7 +346,7 @@ export const replyController = {
 
     patient.respond = new Reply({
       ...reply,
-      ...(data.reply?.notes && { notes: data.reply.notes }),
+      ...(data.reply?.note && { note: data.reply.note }),
       ...(data.token && { created_user_uid: data.token?.uid }),
       invalid: true
     })
@@ -367,7 +367,7 @@ export const replyController = {
     const { programme, patient, session } = response.locals
     const { __ } = response.locals
 
-    const { refusalReason, refusalReasonOther, notes } = data.reply
+    const { refusalReason, refusalReasonOther, note } = data.reply
 
     // Invalidate existing reply
     patient.replies[reply.uuid].invalid = true
@@ -380,7 +380,7 @@ export const replyController = {
       decision: ReplyDecision.Refused,
       refusalReason,
       ...(refusalReason === ReplyRefusal.Other && { refusalReasonOther }),
-      ...(data.reply?.notes && { notes }),
+      ...(data.reply?.note && { note }),
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
@@ -390,7 +390,7 @@ export const replyController = {
         patient_uuid: patient.uuid,
         programme_pid: programme.pid,
         session_id: session.id,
-        ...(data.reply?.notes && { notes }),
+        ...(data.reply?.note && { note }),
         ...(data.token && { created_user_uid: data.token?.uid })
       })
     }

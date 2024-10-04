@@ -9,7 +9,6 @@ export class GillickCompetent {
 
 /**
  * @class Gillick assessment
- * @property {string} uuid - UUID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created session
  * @property {boolean} [q1] - Question 1
@@ -17,8 +16,7 @@ export class GillickCompetent {
  * @property {boolean} [q3] - Question 3
  * @property {boolean} [q4] - Question 4
  * @property {boolean} [q5] - Question 5
- * @property {string} [details] - Assessment details
- * @function ns - Namespace
+ * @property {string} [note] - Assessment note
  */
 export class Gillick {
   constructor(options) {
@@ -29,9 +27,13 @@ export class Gillick {
     this.q3 = stringToBoolean(options?.q3)
     this.q4 = stringToBoolean(options?.q4)
     this.q5 = stringToBoolean(options?.q5)
-    this.notes = options?.notes
+    this.note = options?.note
   }
 
+  /**
+   * Get Gillick competency outcome
+   * @returns {object|undefined} - Gillick competency outcome
+   */
   get competent() {
     const questions = [this.q1, this.q2, this.q3, this.q4, this.q5]
     if (questions.includes(false)) {
@@ -41,6 +43,10 @@ export class Gillick {
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'gillick'
   }

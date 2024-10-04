@@ -36,19 +36,14 @@ export class SessionStatus {
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created session
  * @property {string} [urn] - School
- * @property {Array<string>} [dates] - Date
+ * @property {Array<string>} [dates] - Dates
+ * @property {Array<object>} [dates_] - Dates (from `dateInput`s)
  * @property {string} [open] - Date consent window opens
+ * @property {object} [open_] - Date consent window opens (from `dateInput`)
  * @property {number} [reminder] - Date to send reminders
+ * @property {object} [reminder_] - Date to send reminders (from `dateInput`)
  * @property {object} [consents] – (Unmatched) consent replies
  * @property {Array<string>} [programmes] - Programme PIDs
- * @function active - One of the session dates is today, therefore in progress
- * @function close - Date consent window closes
- * @function consentWindow - Consent window (open, opening or closed)
- * @function status - Status
- * @function school - Get school details
- * @function location - Get location details
- * @function ns - Namespace
- * @function uri - URL
  */
 export class Session {
   constructor(options) {
@@ -85,6 +80,15 @@ export class Session {
     this.reminder_ = options?.reminder_
   }
 
+  /**
+   * Generate fake session
+   * @param {string} urn - School URN
+   * @param {import('./programme.js').Programme} programme - Programme
+   * @param {import('./user.js').User} user - User
+   * @param {object} [options] - Options
+   * @returns {Session} - Session
+   * @static
+   */
   static generate(urn, programme, user, options = {}) {
     let status
     if (programme.status === ProgrammeStatus.Completed) {
@@ -144,21 +148,89 @@ export class Session {
 
     return new Session({
       created,
-      created_user_uid: user.uuid,
+      created_user_uid: user.uid,
       urn,
       dates,
       programmes: [programme.pid]
     })
   }
 
+  /**
+   * Get session dates for `dateInput`s
+   * @returns {Array<object|undefined>} - `dateInput` objects
+   */
+  get dates_() {
+    return this.dates.map((date) => convertIsoDateToObject(date))
+  }
+
+  /**
+   * Set session dates from `dateInput`s
+   * @param {object} object - dateInput object
+   */
+  set dates_(object) {
+    if (object) {
+      this.dates = Object.values(object).map((date) =>
+        convertObjectToIsoDate(date)
+      )
+    }
+  }
+
+  /**
+   * Get date consent window opens for `dateInput`
+   * @returns {object|undefined} - `dateInput` object
+   */
+  get open_() {
+    return convertIsoDateToObject(this.open)
+  }
+
+  /**
+   * Set date consent window opens from `dateInput`
+   * @param {object} object - dateInput object
+   */
+  set open_(object) {
+    if (object) {
+      this.open = convertObjectToIsoDate(object)
+    }
+  }
+
+  /**
+   * Get date to send reminders for `dateInput`
+   * @returns {object|undefined} - `dateInput` object
+   */
+  get reminder_() {
+    return convertIsoDateToObject(this.reminder)
+  }
+
+  /**
+   * Set date to send reminders from `dateInput`
+   * @param {object} object - dateInput object
+   */
+  set reminder_(object) {
+    if (object) {
+      this.reminder = convertObjectToIsoDate(object)
+    }
+  }
+
+  /**
+   * Get first session date
+   * @returns {string} - First session date
+   */
   get firstDate() {
     return this.dates[0]
   }
 
+  /**
+   * Get last session date
+   * @returns {string} - Last session date
+   */
   get lastDate() {
     return this.dates.at(-1)
   }
 
+  /**
+   * Get remaining session dates
+   * @returns {Array<string>} - Remaining session dates
+   */
   get remainingDates() {
     let remainingDates = [...this.dates]
     remainingDates.shift()
@@ -166,43 +238,10 @@ export class Session {
     return remainingDates
   }
 
-  get active() {
-    const today = setMidday(getToday())
-    return includesDate(this.dates, today)
-  }
-
-  get dates_() {
-    return this.dates.map((date) => convertIsoDateToObject(date))
-  }
-
-  set dates_(object) {
-    if (object) {
-      this.dates = Object.values(object).map((obj) =>
-        convertObjectToIsoDate(obj)
-      )
-    }
-  }
-
-  get open_() {
-    return convertIsoDateToObject(this.open)
-  }
-
-  set open_(object) {
-    if (object) {
-      this.open = convertObjectToIsoDate(object)
-    }
-  }
-
-  get reminder_() {
-    return convertIsoDateToObject(this.reminder)
-  }
-
-  set reminder_(object) {
-    if (object) {
-      this.reminder = convertObjectToIsoDate(object)
-    }
-  }
-
+  /**
+   * Get consent close date
+   * @returns {Date|undefined} - Consent close date
+   */
   get close() {
     // Always close consent for school sessions one day before final session
     if (this.lastDate) {
@@ -210,10 +249,27 @@ export class Session {
     }
   }
 
+  /**
+   * Get consent window
+   * @returns {object} - Consent window
+   */
   get consentWindow() {
     return getConsentWindow(this)
   }
 
+  /**
+   * Is active session
+   * @returns {boolean} - Is active session
+   */
+  get isActive() {
+    const today = setMidday(getToday())
+    return includesDate(this.dates, today)
+  }
+
+  /**
+   * Get status
+   * @returns {string} - Status
+   */
   get status() {
     const today = setMidday(getToday())
     switch (true) {
@@ -226,30 +282,107 @@ export class Session {
     }
   }
 
+  /**
+   * Get school
+   * @returns {object} - School
+   */
   get school() {
-    if (this.urn) {
-      return schools[this.urn]
-    }
+    return schools[this.urn]
   }
 
+  /**
+   * Get location
+   * @returns {object} - Location
+   */
   get location() {
-    if (this.school) {
-      return {
-        name: this.school.name,
-        addressLine1: this.school.addressLine1,
-        addressLine2: this.school.addressLine2,
-        addressLevel1: this.school.addressLevel1,
-        postalCode: this.school.postalCode
-      }
+    return {
+      name: this.school.name,
+      addressLine1: this.school.addressLine1,
+      addressLine2: this.school.addressLine2,
+      addressLevel1: this.school.addressLevel1,
+      postalCode: this.school.postalCode
     }
   }
 
+  /**
+   * Get name
+   * @returns {string|undefined} - Name
+   */
   get name() {
     if (this.location) {
       return `Session at ${this.location.name}`
     }
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
+  get formatted() {
+    let consentWindow
+    const consentDateStyle = { day: 'numeric', month: 'long' }
+    switch (this.consentWindow.value) {
+      case ConsentWindow.Opening:
+        consentWindow = `Opens ${formatDate(this.open, consentDateStyle)}`
+        break
+      case ConsentWindow.Closed:
+        consentWindow = `Closed ${formatDate(this.close, consentDateStyle)}`
+        break
+      case ConsentWindow.Open:
+        consentWindow = `Open until ${formatDate(this.close, consentDateStyle)}`
+        break
+      default:
+        consentWindow = ''
+    }
+
+    let formattedDates =
+      this.dates.length > 0
+        ? this.dates.map((date) => formatDate(date, { dateStyle: 'full' }))
+        : ''
+
+    const formattedProgrammes = this.programmes.map((programme) => {
+      const { name } = Object.values(programmeTypes).find(
+        (type) => type.pid === programme
+      )
+      return name
+    })
+
+    return {
+      dates: formatList(formattedDates).replace(
+        'nhsuk-list--bullet',
+        'app-list--sessions'
+      ),
+      firstDate: formatDate(this.firstDate, { dateStyle: 'full' }),
+      open: formatDate(this.open, { dateStyle: 'full' }),
+      reminder: formatDate(this.reminder, { dateStyle: 'full' }),
+      close: formatDate(this.close, { dateStyle: 'full' }),
+      reminderInt: this.reminderInt && `${this.reminderInt} days`,
+      programmes: prototypeFilters.formatList(formattedProgrammes),
+      urn: this.location.name,
+      consentWindow
+    }
+  }
+
+  /**
+   * Get formatted links
+   * @returns {object} - Formatted links
+   */
+  get link() {
+    return {
+      location: `<span>${formatLink(this.uri, this.location.name)}</br>
+        <span class="nhsuk-u-secondary-text-color">
+          ${this.location.addressLine1},
+          ${this.location.addressLevel1},
+          ${this.location.postalCode}
+        </span>
+      </span>`
+    }
+  }
+
+  /**
+   * Get formatted summary
+   * @returns {object} - Formatted summaries
+   */
   get summary() {
     let dates =
       this.dates.length > 0
@@ -288,71 +421,10 @@ export class Session {
     }
   }
 
-  get link() {
-    return {
-      location: `<span>${formatLink(this.uri, this.location.name)}</br>
-        <span class="nhsuk-u-secondary-text-color">
-          ${this.location.addressLine1},
-          ${this.location.addressLevel1},
-          ${this.location.postalCode}
-        </span>
-      </span>`
-    }
-  }
-
-  get formatted() {
-    let consentWindow
-    const consentDateStyle = { day: 'numeric', month: 'long' }
-    switch (this.consentWindow.value) {
-      case ConsentWindow.Opening:
-        consentWindow = `Opens ${formatDate(this.open, consentDateStyle)}`
-        break
-      case ConsentWindow.Closed:
-        consentWindow = `Closed ${formatDate(this.close, consentDateStyle)}`
-        break
-      case ConsentWindow.Open:
-        consentWindow = `Open until ${formatDate(this.close, consentDateStyle)}`
-        break
-      default:
-        consentWindow = ''
-    }
-
-    let formattedDates =
-      this.dates.length > 0
-        ? this.dates.map((date) => formatDate(date, { dateStyle: 'full' }))
-        : ''
-
-    const formattedProgrammes = this.programmes.map((programme) => {
-      const { name } = Object.values(programmeTypes).find(
-        (type) => type.pid === programme
-      )
-      return name
-    })
-
-    return {
-      dates: formatList(formattedDates).replace(
-        'nhsuk-list--bullet',
-        'app-list--sessions'
-      ),
-      firstDate: formatDate(this.firstDate, {
-        dateStyle: 'full'
-      }),
-      open: formatDate(this.open, {
-        dateStyle: 'full'
-      }),
-      reminder: formatDate(this.reminder, {
-        dateStyle: 'full'
-      }),
-      close: formatDate(this.close, {
-        dateStyle: 'full'
-      }),
-      reminderInt: this.reminderInt && `${this.reminderInt} days`,
-      programmes: prototypeFilters.formatList(formattedProgrammes),
-      urn: this.location.name,
-      consentWindow
-    }
-  }
-
+  /**
+   * Get status for `tag`
+   * @returns {object} - `tag` object
+   */
   get statusTag() {
     let colour
     switch (this.status) {
@@ -366,7 +438,7 @@ export class Session {
         colour = 'blue'
     }
 
-    return this.active
+    return this.isActive
       ? {
           text: 'Session in progress'
         }
@@ -376,10 +448,18 @@ export class Session {
         }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'session'
   }
 
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
   get uri() {
     return `/sessions/${this.id}`
   }

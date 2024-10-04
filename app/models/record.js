@@ -41,6 +41,7 @@ export class GPRegistered {
  * @property {string} firstName - First/given name
  * @property {string} lastName - Last/family name
  * @property {string} dob - Date of birth
+ * @property {object} [dob_] - Date of birth (from `dateInput`)
  * @property {Sex} sex - Sex
  * @property {object} address - Address
  * @property {GPRegistered} gpRegistered - Registered with a GP
@@ -49,11 +50,7 @@ export class GPRegistered {
  * @property {Parent} [parent1] - Parent 1
  * @property {Parent} [parent2] - Parent 2
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
- * @function age - Age in years
- * @function dobWithAge - Date of birth with age in brackets
- * @function fullName - Get full name
- * @function ns - Namespace
- * @function uri - URL
+ * @property {Record} [pendingChanges] - Pending changes to record values
  */
 export class Record {
   constructor(options) {
@@ -61,6 +58,7 @@ export class Record {
     this.firstName = options.firstName
     this.lastName = options.lastName
     this.dob = options.dob
+    this.dob_ = options?.dob_
     this.sex = options.sex
     this.address = options.address
     this.gpRegistered = options.gpRegistered
@@ -69,12 +67,14 @@ export class Record {
     this.parent1 = options?.parent1 && new Parent(options.parent1)
     this.parent2 = options?.parent2 && new Parent(options.parent2)
     this.vaccinations = options?.vaccinations || []
-    // Import mocking
-    this._pendingChanges = options?._pendingChanges || {}
-    // dateInput objects
-    this.dob_ = options?.dob_
+    this.pendingChanges = options?.pendingChanges || {}
   }
 
+  /**
+   * Generate fake record
+   * @returns {Record} - Record
+   * @static
+   */
   static generate() {
     const sex = faker.helpers.arrayElement(Object.keys(Sex))
     const firstName = faker.helpers.arrayElement(firstNames[sex.toLowerCase()])
@@ -120,13 +120,13 @@ export class Record {
     delete parent1.contactPreferenceOther
 
     // Add a pending change
-    let _pendingChanges = {}
+    let pendingChanges = {}
     const hasPendingChanges = faker.datatype.boolean(0.02)
 
     if (hasPendingChanges) {
       const newDob = new Date(dob)
       newDob.setFullYear(newDob.getFullYear() - 2)
-      _pendingChanges.dob = newDob
+      pendingChanges.dob = newDob
     }
 
     return new Record({
@@ -144,62 +144,104 @@ export class Record {
       urn,
       parent1,
       parent2,
-      _pendingChanges
+      pendingChanges
     })
   }
 
-  #nhsn = '999#######'.replace(/#+/g, (m) => faker.string.numeric(m.length))
-  #temporaryNhsn = faker.string.alpha(10)
-
-  // 5% of records don’t have an NHS number
+  /**
+   * Get NHS number
+   * @returns {string} - NHS Number
+   */
   get nhsNumber() {
+    const nhsn = '999#######'.replace(/#+/g, (m) =>
+      faker.string.numeric(m.length)
+    )
+    const temporaryNhsn = faker.string.alpha(10)
+
+    // 5% of records don’t have an NHS number
     const hasNhsNumber = faker.helpers.maybe(() => true, { probability: 0.95 })
 
-    return hasNhsNumber ? this.#nhsn : this.#temporaryNhsn
+    return hasNhsNumber ? nhsn : temporaryNhsn
   }
 
-  get missingNhsNumber() {
+  /**
+   * Has missing NHS number
+   * @returns {boolean} - Has missing NHS number
+   */
+  get hasMissingNhsNumber() {
     return !this.nhsn.match(/^\d{10}$/)
   }
 
-  get hasPendingChanges() {
-    return Object.keys(this._pendingChanges).length > 0
-  }
-
+  /**
+   * Get full name
+   * @returns {string} - Full name
+   */
   get fullName() {
     return [this.firstName, this.lastName].join(' ')
   }
 
+  /**
+   * Get date of birth for `dateInput`
+   * @returns {object|undefined} - `dateInput` object
+   */
   get dob_() {
     return convertIsoDateToObject(this.dob)
   }
 
+  /**
+   * Set date of birth from `dateInput`
+   * @param {object} object - dateInput object
+   */
   set dob_(object) {
     if (object) {
       this.dob = convertObjectToIsoDate(object)
     }
   }
 
+  /**
+   * Get age
+   * @returns {number} - Age in years
+   */
   get age() {
     return getAge(this.dob)
   }
 
+  /**
+   * Get year group
+   * @returns {number} - Year group
+   */
   get yearGroup() {
     return getYearGroup(this.dob)
   }
 
+  /**
+   * Get date of birth with age
+   * @returns {string} - Date of birth with age
+   */
   get dobWithAge() {
     return `${this.formatted.dob} (aged ${this.age})`
   }
 
+  /**
+   * Get date of birth with year group
+   * @returns {string} - Date of birth with year group
+   */
   get dobWithYearGroup() {
     return `${this.formatted.dob} (${this.formatted.yearGroup})`
   }
 
+  /**
+   * Get post code
+   * @returns {string} - Post code
+   */
   get postalCode() {
     return this.address.postalCode
   }
 
+  /**
+   * Get parents
+   * @returns {Array<Parent>} - Parents
+   */
   get parents() {
     if (this.parent1 && this.parent2) {
       return [this.parent1, this.parent2]
@@ -208,6 +250,18 @@ export class Record {
     return [this.parent1]
   }
 
+  /**
+   * Has pending changes
+   * @returns {boolean} - Has pending changes
+   */
+  get hasPendingChanges() {
+    return Object.keys(this.pendingChanges).length > 0
+  }
+
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     const formattedParents = this.parents.map((parent) => formatParent(parent))
 
@@ -229,10 +283,18 @@ export class Record {
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'record'
   }
 
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
   get uri() {
     return `/records/${this.nhsn}`
   }

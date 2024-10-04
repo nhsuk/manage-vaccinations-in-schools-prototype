@@ -112,9 +112,9 @@ export function removeDays(isoDate, days) {
 
 /**
  * Check if date lies between two other dates
- * @param {string} isoDate - ISO 8601 date to check
- * @param {string} isoStartDate - ISO 8601 start date
- * @param {string} isoEndDate - ISO 8601 end date
+ * @param {Date|string} isoDate - ISO 8601 date to check
+ * @param {Date|string} isoStartDate - ISO 8601 start date
+ * @param {Date|string} isoEndDate - ISO 8601 end date
  * @returns {boolean} Date with days added
  */
 export function isBetweenDates(isoDate, isoStartDate, isoEndDate) {

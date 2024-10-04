@@ -47,13 +47,9 @@ export class ReplyRefusal {
  * @property {ReplyRefusal} [refusalReason] - Refusal reason
  * @property {string} [refusalReasonOther] - Other refusal reason
  * @property {string} [refusalReasonDetails] - Refusal reason details
- * @property {string} [notes] - Notes about this response
+ * @property {string} [note] - Note about this response
  * @property {string} patient_uuid - Patient UUID
  * @property {string} session_id - Session ID
- * @function fullName - Full name of respondent
- * @function relationship - Relation of respondent to child
- * @function ns - Namespace
- * @function uri - URL
  */
 export class Reply {
   constructor(options) {
@@ -70,11 +66,19 @@ export class Reply {
     this.refusalReason = options?.refusalReason
     this.refusalReasonOther = options?.refusalReasonOther
     this.refusalReasonDetails = options?.refusalReasonDetails
-    this.notes = options?.notes || ''
+    this.note = options?.note || ''
     this.patient_uuid = options?.patient_uuid
     this.session_id = options?.session_id
   }
 
+  /**
+   * Generate fake reply
+   * @param {import('./programme.js').Programme} programme - Programme
+   * @param {import('./session.js').Session} session - Session
+   * @param {import('./patient.js').Patient} patient - Patient
+   * @returns {Reply|undefined} - Reply
+   * @static
+   */
   static generate(programme, session, patient) {
     const firstReply = Object.entries(patient.replies).length === 0
     const child = Child.generate(patient)
@@ -136,6 +140,10 @@ export class Reply {
     })
   }
 
+  /**
+   * Get respondent’s full name
+   * @returns {string|undefined} - Full name
+   */
   get fullName() {
     if (this.parent) {
       return this.parent.fullName
@@ -144,6 +152,10 @@ export class Reply {
     }
   }
 
+  /**
+   * Get respondent’s relationship to child
+   * @returns {string|undefined} - Relationship to child
+   */
   get relationship() {
     if (this.parent?.relationship) {
       return this.parent.relationship
@@ -152,6 +164,10 @@ export class Reply {
     }
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     const decision = () => {
       if (this.invalid) {
@@ -172,14 +188,22 @@ export class Reply {
       decision: decision(),
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
       refusalReasonDetails: formatMarkdown(this.refusalReasonDetails),
-      notes: formatMarkdown(this.notes)
+      note: formatMarkdown(this.note)
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'reply'
   }
 
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
   get uri() {
     return `/sessions/${this.session_id}/${this.child.nhsn}/replies/${this.uuid}`
   }

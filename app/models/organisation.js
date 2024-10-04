@@ -22,8 +22,6 @@ export class OrganisationDefaults {
  * @property {number} [sessionReminderInt] - Days between reminders
  * @property {number} [sessionReminderMax] - Max number of reminders
  * @property {boolean} [sessionReminderMethod] - Preferred reminder method
- * @function ns - Namespace
- * @function uri - URL
  */
 export class Organisation {
   constructor(options) {
@@ -44,6 +42,11 @@ export class Organisation {
       stringToBoolean(options?.sessionReminderMethod) || false
   }
 
+  /**
+   * Generate fake organisation
+   * @returns {Organisation} - Organisation
+   * @static
+   */
   static generate() {
     const code = faker.helpers.replaceSymbols('???')
     const name = `${faker.location.county()} Child Immunisation Service`
@@ -62,10 +65,18 @@ export class Organisation {
     })
   }
 
+  /**
+   * Get schools
+   * @returns {Array} - Schools
+   */
   get schools() {
     return this.urns.map((urn) => new School(schoolsData[urn]))
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     return {
       sessionOpenDelay: `${this.sessionOpenDelay} weeks before first session`,
@@ -74,10 +85,18 @@ export class Organisation {
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'organisation'
   }
 
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
   get uri() {
     return `/organisations/${this.code}`
   }

@@ -5,7 +5,7 @@ export const preScreenController = {
 
     // Pre-screen interview
     patient.preScreen = {
-      notes: data.preScreen.notes,
+      note: data.preScreen.note,
       ...(data.token && { user_uid: data.token?.uid })
     }
 

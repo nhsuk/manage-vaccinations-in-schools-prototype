@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("vaccination.notes.title") %}
+{% set title = __("vaccination.note.title") %}
 
 {% block form %}
   {{ textarea({
@@ -10,7 +10,7 @@
       isPageHeading: true,
       text: title
     },
-    hint: { text: __("vaccination.notes.hint") },
-    decorate: "vaccination.notes"
+    hint: { text: __("vaccination.note.hint") },
+    decorate: "vaccination.note"
   }) }}
 {% endblock %}

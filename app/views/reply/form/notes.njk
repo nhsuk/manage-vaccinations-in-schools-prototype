@@ -1,7 +1,7 @@
 {% extends "_layouts/form.njk" %}
 
 {% set confirmButtonText = "Save changes" %}
-{% set title = __("reply.notes.title") %}
+{% set title = __("reply.note.title") %}
 
 {% block form %}
   {{ textarea({
@@ -12,6 +12,6 @@
         title: title
       })
     },
-    decorate: "reply.notes"
+    decorate: "reply.note"
   }) }}
 {% endblock %}

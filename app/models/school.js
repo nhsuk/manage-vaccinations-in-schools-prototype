@@ -15,8 +15,6 @@ export class SchoolPhase {
  * @property {string} addressLine2 - Address line 2
  * @property {string} addressLevel2 - Address level 2
  * @property {string} postalCode - Postcode
- * @function ns - Namespace
- * @function uri - URL
  */
 export class School {
   constructor(options) {
@@ -29,6 +27,10 @@ export class School {
     this.postalCode = options.postalCode
   }
 
+  /**
+   * Get location
+   * @returns {object} - Location
+   */
   get location() {
     return {
       name: this.name,
@@ -39,6 +41,10 @@ export class School {
     }
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     return {
       address: `${this.addressLine1}, ${this.addressLevel1}. ${this.postalCode}`,
@@ -53,6 +59,10 @@ export class School {
     }
   }
 
+  /**
+   * Get formatted links
+   * @returns {object} - Formatted links
+   */
   get link() {
     return {
       name: formatLink(this.uri, this.name),
@@ -66,10 +76,18 @@ export class School {
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'school'
   }
 
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
   get uri() {
     return `/schools/${this.urn}`
   }

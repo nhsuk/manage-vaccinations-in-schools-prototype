@@ -47,8 +47,17 @@ export class Cohort {
     this.programme_type = options?.programme_type
   }
 
-  static generate(programme, records, yearGroup, user) {
-    records = getRecordsFromYearGroup(records, yearGroup)
+  /**
+   * Generate fake cohort
+   * @param {import('./programme.js').Programme} programme - Programme
+   * @param {Map<Record>} recordsMap - Records
+   * @param {number} yearGroup - Year group
+   * @param {import('./user.js').User} user - User
+   * @returns {Cohort} - Cohort
+   * @static
+   */
+  static generate(programme, recordsMap, yearGroup, user) {
+    const records = getRecordsFromYearGroup(recordsMap, yearGroup)
 
     return new Cohort({
       created_user_uid: user.uid,
@@ -59,34 +68,58 @@ export class Cohort {
     })
   }
 
+  /**
+   * Get UID
+   * @returns {string} - UID
+   */
   get uid() {
     const yearGroup = String(this.yearGroup).padStart(2, '0')
 
     return `${this.programme_pid}-${yearGroup}`
   }
 
+  /**
+   * Get created date
+   * @returns {string} - Created date
+   */
   get created() {
     const year = this.year.split('/')[0]
 
     return `${year}-08-01`
   }
 
+  /**
+   * Get name
+   * @returns {string} - Name
+   */
   get name() {
     const type = ProgrammeType[this.programme_type]
 
     return `${type} ${this.formatted.yearGroup} (${this.year})`
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     return {
       yearGroup: formatYearGroup(this.yearGroup)
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'cohort'
   }
 
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
   get uri() {
     return `/programmes/${this.programme_pid}/cohorts/${this.uid}`
   }

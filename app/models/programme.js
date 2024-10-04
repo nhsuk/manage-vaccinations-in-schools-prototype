@@ -72,10 +72,20 @@ export class Programme {
     this.vaccines = options?.type && programmeTypes[options.type]?.vaccines
   }
 
+  /**
+   * Generate fake programme
+   * @param {string} type - Type
+   * @returns {Programme} - Programme
+   * @static
+   */
   static generate(type) {
     return new Programme({ type })
   }
 
+  /**
+   * Get status
+   * @returns {string} - Status
+   */
   get status() {
     const { from, to } = programmeTypes[this.type].schedule
 
@@ -88,17 +98,26 @@ export class Programme {
     }
   }
 
+  /**
+   * Get start date
+   * @returns {string} - Start date
+   */
   get start() {
     const thisYear = new Date().getFullYear()
 
     return `${thisYear}-09-01`
   }
 
+  /**
+   * Get programme ID
+   * @returns {string} - Programme ID
+   */
   get pid() {
     return programmeTypes[this.type].pid
   }
 
   /**
+   * Get vaccine used by this programme
    * @todo A programme can use multiple vaccines, and one used for a patient
    * will depend on answers to screening questions in consent flow. For now,
    * however we’ll assume each programme administers one vaccine.
@@ -108,6 +127,10 @@ export class Programme {
     return new Vaccine(vaccines[this.vaccines[0]])
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     const vaccineList = Array.isArray(this.vaccines)
       ? this.vaccines.map((gtin) => new Vaccine(vaccines[gtin]).brand)
@@ -118,16 +141,28 @@ export class Programme {
     }
   }
 
+  /**
+   * Get formatted links
+   * @returns {object} - Formatted links
+   */
   get link() {
     return {
       name: formatLink(this.uri, this.name)
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'programme'
   }
 
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
   get uri() {
     return `/programmes/${this.pid}`
   }

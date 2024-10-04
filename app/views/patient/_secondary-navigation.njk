@@ -9,10 +9,10 @@
       classes: "nhsuk-tag--" + tagColor if tagColor,
       text: patient.registration.value
     }
-  } if patient.session_id and session.active, {
+  } if patient.session_id and session.isActive, {
     text: __("registration.edit.title"),
     href: patient.uri + "/registration/edit"
-  } if patient.session_id and session.active and patient.registration.value != RegistrationOutcome.Complete, {
+  } if patient.session_id and session.isActive and patient.registration.value != RegistrationOutcome.Complete, {
     text: __("invite.edit.title"),
     href: patient.uri + "/invite/edit"
   } if not patient.session_id]

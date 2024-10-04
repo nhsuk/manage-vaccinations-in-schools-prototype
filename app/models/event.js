@@ -17,10 +17,9 @@ export class EventType {
  * @property {string} date - Creation date
  * @property {EventType} type - Activity type
  * @property {string} name - Name
- * @property {string} [note] - Notes
+ * @property {string} [note] - Note
  * @property {string} [user_uid] - User UUID
- * @function ns - Namespace
- * @function uri - URL
+ * @property {object} [info_] - Temporary information storage object
  */
 export class Event {
   constructor(options) {
@@ -30,10 +29,13 @@ export class Event {
     this.name = options.name
     this.note = options.note
     this.user_uid = options?.user_uid
-    // Information storage object
-    this.info_ = options.info_
+    this.info_ = options?.info_
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     return {
       date: formatDate(this.date, {
@@ -42,11 +44,11 @@ export class Event {
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'event'
-  }
-
-  get uri() {
-    return `/events/${this.uuid}`
   }
 }

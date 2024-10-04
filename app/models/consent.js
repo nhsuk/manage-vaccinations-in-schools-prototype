@@ -13,6 +13,7 @@ import { ReplyDecision, ReplyMethod, ReplyRefusal } from './reply.js'
  * @property {import('./child.js').Child} child - Child
  * @property {import('./parent.js').Parent} parent - Parent or guardian
  * @property {ReplyDecision} decision - Consent decision
+ * @property {boolean} given - Consent given
  * @property {ReplyMethod} [method] - Reply method
  * @property {object} [healthAnswers] - Answers to health questions
  * @property {ReplyRefusal} [refusalReason] - Refusal reason
@@ -20,10 +21,6 @@ import { ReplyDecision, ReplyMethod, ReplyRefusal } from './reply.js'
  * @property {string} [refusalReasonDetails] - Refusal reason details
  * @property {string} [patient_uuid] - Patient UUID
  * @property {string} session_id - Session ID
- * @function fullName - Full name of respondent
- * @function relationship - Relation of respondent to child
- * @function ns - Namespace
- * @function uri - URL
  */
 export class Consent {
   constructor(options) {
@@ -48,6 +45,14 @@ export class Consent {
     this.session_id = options.session_id
   }
 
+  /**
+   * Generate fake consent
+   * @param {import('./programme.js').Programme} programme - Programme
+   * @param {import('./session.js').Session} session - Session
+   * @param {import('./patient.js').Patient} patient - Patient
+   * @returns {Consent} - Consent
+   * @static
+   */
   static generate(programme, session, patient) {
     const child = Child.generate(patient)
     const parent = Parent.generate(patient.record.lastName)
@@ -96,6 +101,10 @@ export class Consent {
     })
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     return {
       created: formatDate(this.created, {
@@ -108,10 +117,18 @@ export class Consent {
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'consent'
   }
 
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
   get uri() {
     return `/consents/${this.session_id}/${this.uuid}`
   }

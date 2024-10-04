@@ -15,9 +15,6 @@ export class UserRole {
  * @property {string} [email] - Email address
  * @property {UserRole} [role] - User role
  * @property {object} [batch] - Default batches
- * @function fullName - Get full name
- * @function ns - Namespace
- * @function uri - URL
  */
 export class User {
   constructor(options) {
@@ -29,6 +26,11 @@ export class User {
     this.batch = options?.batch || {}
   }
 
+  /**
+   * Generate fake user
+   * @returns {User} - User
+   * @static
+   */
   static generate() {
     const firstName = faker.person.firstName()
     const lastName = faker.person.lastName()
@@ -47,26 +49,46 @@ export class User {
     })
   }
 
+  /**
+   * Get full name
+   * @returns {string} - Full name
+   */
   get fullName() {
     return [this.firstName, this.lastName].join(' ')
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     return {
       uid: formatMonospace(this.uid)
     }
   }
 
+  /**
+   * Get formatted links
+   * @returns {object} - Formatted links
+   */
   get link() {
     return {
       fullName: formatLink(this.uri, this.fullName)
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'user'
   }
 
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
   get uri() {
     return `/users/${this.uid}`
   }

@@ -32,7 +32,7 @@
         rows: summaryRows(record, {
           nhsn: {
             changeLabel: "the child’s NHS number",
-            href: vaccination.uri + "/patients/" + record.nhsn + "/edit/nhsn" if record.missingNhsNumber
+            href: vaccination.uri + "/patients/" + record.nhsn + "/edit/nhsn" if record.hasMissingNhsNumber
           },
           fullName: {},
           dobWithAge: {},

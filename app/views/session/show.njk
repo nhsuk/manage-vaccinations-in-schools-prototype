@@ -69,7 +69,7 @@
             }) }}
           </li>
         {% endif %}
-        {% if session.active %}
+        {% if session.isActive %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {{ card({
               clickable: true,
@@ -80,7 +80,7 @@
             }) }}
           </li>
         {% endif %}
-        {% if session.active or session.status == SessionStatus.Completed %}
+        {% if session.isActive or session.status == SessionStatus.Completed %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {{ card({
               clickable: true,
@@ -91,7 +91,7 @@
             }) }}
           </li>
         {% endif %}
-        {% if session.status == SessionStatus.Planned and not session.active %}
+        {% if session.status == SessionStatus.Planned and not session.isActive %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {{ card({
               clickable: true,

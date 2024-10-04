@@ -28,9 +28,6 @@ export class ParentalRelationship {
  * @property {boolean} sms - Update via SMS
  * @property {ContactPreference} [contactPreference] - Preferred contact method
  * @property {string} [contactPreferenceOther] - Other contact method
- * @function nameAndRelationship - Parent name and relationship
- * @function ns - Namespace
- * @function uri - URL
  */
 export class Parent {
   constructor(options) {
@@ -56,15 +53,19 @@ export class Parent {
         : undefined
   }
 
+  /**
+   * Generate fake parent
+   * @param {string} childLastName - Child’s last name
+   * @param {boolean} [isMum] - Parent is child’s mother
+   * @returns {Parent} - Parent
+   * @static
+   */
   static generate(childLastName, isMum) {
     const relationship = isMum
       ? ParentalRelationship.Mum
       : faker.helpers.weightedArrayElement([
           { value: ParentalRelationship.Dad, weight: 3 },
-          { value: ParentalRelationship.StepParent, weight: 3 },
-          { value: ParentalRelationship.Grandparent, weight: 2 },
           { value: ParentalRelationship.Guardian, weight: 1 },
-          { value: ParentalRelationship.Carer, weight: 1 },
           { value: ParentalRelationship.Other, weight: 1 }
         ])
     const phoneNumber = '07### ######'.replace(/#+/g, (m) =>
@@ -111,6 +112,10 @@ export class Parent {
     })
   }
 
+  /**
+   * Get name and relationship
+   * @returns {string} - Name and relationship
+   */
   get nameAndRelationship() {
     const relationship = this.relationshipOther
       ? `${this.relationship} – ${this.relationshipOther}`
@@ -119,6 +124,10 @@ export class Parent {
     return `${this.fullName} (${relationship})`
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     return {
       contactPreference: formatOther(
@@ -129,11 +138,11 @@ export class Parent {
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'parent'
-  }
-
-  get uri() {
-    return `/parents/${this.uuid}`
   }
 }

@@ -65,7 +65,7 @@
             } if vaccination.created_user_uid,
             location: {},
             protocol: {},
-            notes: {}
+            note: {}
           })
         }) }}
 
@@ -116,7 +116,7 @@
         rows: summaryRows(patient.record, {
           nhsn: {
             changeLabel: "the child’s NHS number",
-            href: patient.uri + "/edit/nhsn" if patient.record.missingNhsNumber
+            href: patient.uri + "/edit/nhsn" if patient.record.hasMissingNhsNumber
           },
           fullName: {},
           preferredNames: { value: patient.preferredNames },
@@ -261,7 +261,7 @@
     {% endset %}
 
     {{ card({
-      heading: __("triage.notes.label"),
+      heading: __("triage.note.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: triageNotesDescriptionHtml
     }) if patient.triageNotes.length }}
@@ -288,10 +288,10 @@
 
       {{ textarea({
         label: {
-          text: __("triage.notes.label") + " (optional)"
+          text: __("triage.note.label") + " (optional)"
         },
         rows: 5,
-        decorate: "triage.notes"
+        decorate: "triage.note"
       }) }}
 
       {{ button({
@@ -321,9 +321,9 @@
       {% endfor %}
 
       {{ textarea({
-        label: { text: __("preScreen.notes.label") + " (Optional)" },
+        label: { text: __("preScreen.note.label") + " (Optional)" },
         rows: 3,
-        decorate: "preScreen.notes"
+        decorate: "preScreen.note"
       }) }}
 
       <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">

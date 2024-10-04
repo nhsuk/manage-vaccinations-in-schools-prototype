@@ -13,10 +13,10 @@ export class ImportStatus {
 }
 
 /**
- * @class National Immunisation and Vaccination System (NIVS) import
+ * @class Import
  * @property {string} id - Import ID
- * @property {ImportStatus} - Import status
- * @property {ImportType} -  Import type
+ * @property {ImportStatus} status - Import status
+ * @property {ImportType} type -  Import type
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created import
  * @property {string} [programme_pid] - Programme ID
@@ -24,10 +24,7 @@ export class ImportStatus {
  * @property {number} [devoid] - Exact duplicate records found
  * @property {number} [duplicate] - Inexact duplicate records found
  * @property {number} [incomplete] - Incomplete records (no NHS number)
- * @property {number} [invalid] - Invalid records (no vaccination event)
- * @function type - Import type
- * @function ns - Namespace
- * @function uri - URL
+ * @property {number|undefined} [invalid] - Invalid records (no vaccination)
  */
 export class Import {
   constructor(options) {
@@ -46,6 +43,15 @@ export class Import {
       this.type === ImportType.Report ? options?.invalid || 0 : undefined
   }
 
+  /**
+   * Generate fake import
+   * @param {import('./programme.js').Programme} programme - Programme
+   * @param {Array|boolean|undefined} records - Records
+   * @param {import('./user.js').User} user - User
+   * @param {ImportType} [type] - Import type
+   * @returns {Import} - Import
+   * @static
+   */
   static generate(programme, records, user, type) {
     const created = faker.date.recent({ days: 14, refDate: programme.start })
 
@@ -86,6 +92,10 @@ export class Import {
     })
   }
 
+  /**
+   * Get formatted values
+   * @returns {object} - Formatted values
+   */
   get formatted() {
     return {
       created: formatDate(this.created, {
@@ -96,6 +106,10 @@ export class Import {
     }
   }
 
+  /**
+   * Get status for `tag`
+   * @returns {object} - `tag` object
+   */
   get statusTag() {
     let colour
     switch (this.status) {
@@ -115,10 +129,18 @@ export class Import {
     }
   }
 
+  /**
+   * Get namespace
+   * @returns {string} - Namespace
+   */
   get ns() {
     return 'import'
   }
 
+  /**
+   * Get URI
+   * @returns {string} - URI
+   */
   get uri() {
     return `/programmes/${this.programme_pid}/imports/${this.id}`
   }
