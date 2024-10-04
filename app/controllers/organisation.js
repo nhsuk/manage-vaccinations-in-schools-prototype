@@ -1,73 +1,73 @@
+import { School } from '../models/school.js'
 import { Organisation } from '../models/organisation.js'
 
 export const organisationController = {
-  read(request, response, next) {
+  redirect(request, response, next) {
     const { code } = request.params
-    const { data } = request.session
 
-    request.app.locals.organisation = new Organisation(data.organisations[code])
+    response.redirect(`${code}/contact`)
+  },
+
+  read(request, response, next) {
+    const { code, view } = request.params
+    const { data } = request.session
+    const { __ } = response.locals
+
+    const organisation = new Organisation(data.organisations[code])
+    organisation.schools = organisation.urns.map(
+      (urn) => new School(data.schools[urn])
+    )
+
+    request.app.locals.organisation = organisation
+
+    response.locals.navigationItems = [
+      {
+        text: __('organisation.contact.title'),
+        href: `${organisation.uri}/contact`,
+        current: view.includes('contact')
+      },
+      {
+        text: __('organisation.sessions.title'),
+        href: `${organisation.uri}/sessions`,
+        current: view.includes('sessions')
+      }
+    ]
 
     next()
   },
 
-  edit(request, response) {
-    const { organisation } = request.app.locals
-    const { data } = request.session
+  show(request, response) {
+    const view = request.params.view || 'show'
 
-    request.app.locals.organisation = new Organisation({
-      ...organisation, // Previous values
-      ...data?.wizard?.organisation // Wizard values
-    })
-
-    response.render('organisation/edit')
-  },
-
-  update(request, response) {
-    const { organisation } = request.app.locals
-    const { data } = request.session
-    const { __ } = response.locals
-
-    const updatedOrganisation = new Organisation(
-      Object.assign(
-        organisation, // Previous values
-        data?.wizard?.organisation, // Wizard values
-        request.body.organisation // New values
-      )
-    )
-
-    data.organisations[updatedOrganisation.code] = updatedOrganisation
-
-    // Clean up
-    delete data?.wizard?.organisation
-
-    request.flash('success', __(`organisation.success.update`))
-
-    response.redirect(`${updatedOrganisation.uri}/edit`)
+    response.render(`organisation/${view}`)
   },
 
   readForm(request, response, next) {
     const { organisation } = request.app.locals
-    const { form } = request.params
+    const { view } = request.params
     const { data } = request.session
+
+    const referrers = {
+      consent: `${organisation.uri}/sessions`,
+      contact: `${organisation.uri}/contact`,
+      reminders: `${organisation.uri}/sessions`
+    }
 
     request.app.locals.organisation = new Organisation({
       ...organisation,
-      ...(form === 'edit' && organisation), // Previous values
       ...data?.wizard?.organisation // Wizard values
     })
 
     response.locals.paths = {
-      ...(form === 'edit' && {
-        back: `${organisation.uri}/edit`,
-        next: `${organisation.uri}/edit`
-      })
+      back: referrers[view],
+      next: referrers[view]
     }
 
     next()
   },
 
   showForm(request, response) {
-    let { view } = request.params
+    const view = request.params.view || 'contact'
 
     response.render(`organisation/form/${view}`)
   },
@@ -75,14 +75,18 @@ export const organisationController = {
   updateForm(request, response) {
     const { organisation } = request.app.locals
     const { data } = request.session
-    const { paths } = response.locals
+    const { __, paths } = response.locals
 
-    data.wizard.organisation = new Organisation(
+    const updatedOrganisation = new Organisation(
       Object.assign(
         organisation, // Previous values
-        request.body.organisation // New value
+        request.body.organisation // New values
       )
     )
+
+    data.organisations[updatedOrganisation.code] = updatedOrganisation
+
+    request.flash('success', __(`organisation.success.update`))
 
     response.redirect(paths.next)
   }

@@ -695,22 +695,22 @@
     }
   },
   "organisation": {
-    "edit": {
-      "title": "Team settings",
-      "confirm": "Save changes"
+    "show": {
+      "title": "Your organisation"
     },
     "contact": {
       "title": "Contact details",
       "summary": "Contact details"
     },
-    "consent": {
+    "sessions": {
+      "title": "Session defaults",
       "summary": "Session defaults"
     },
     "reminders": {
       "title": "Consent reminders"
     },
     "success": {
-      "update": "Team settings updated"
+      "update": "Organisation settings updated"
     },
     "name": {
       "label": "Name"

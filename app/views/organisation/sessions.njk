@@ -1,0 +1,46 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("organisation.show.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    caption: organisation.name,
+    title: title
+  }) }}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-one-quarter">
+      {{ xGovukSubNavigation({
+        items: navigationItems
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-three-quarters">
+      {{ card({
+        heading: __("organisation.sessions.summary"),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: summaryList({
+          rows: summaryRows(organisation, {
+            sessionOpenDelay: {
+              href: organisation.uri + "/edit/consent"
+            },
+            sessionReminderDelay: {
+              href: organisation.uri + "/edit/reminders"
+            },
+            sessionReminderInt: {
+              href: organisation.uri + "/edit/reminders"
+            },
+            sessionReminderMax: {
+              href: organisation.uri + "/edit/reminders"
+            },
+            sessionReminderMethod: {
+              href: organisation.uri + "/edit/reminders"
+            }
+          })
+        })
+      }) }}
+    <div>
+  </div>
+{% endblock %}

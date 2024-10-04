@@ -61,8 +61,8 @@ export const navigation = (request, response, next) => {
             current: current === 'vaccines'
           },
           {
-            url: `${organisation.uri}/edit`,
-            label: __('organisation.edit.title'),
+            url: organisation.uri,
+            label: __('organisation.show.title'),
             current: current === 'organisations'
           }
         ]

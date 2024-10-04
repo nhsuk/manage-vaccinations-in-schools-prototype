@@ -3,10 +3,10 @@ import { organisationController } from '../controllers/organisation.js'
 
 const router = express.Router({ strict: true })
 
-router.all('/:code*', organisationController.read)
+router.all('/:code', organisationController.redirect)
 
-router.get('/:code/?:form(edit)', organisationController.edit)
-router.post('/:code/?:form(edit)', organisationController.update)
+router.all('/:code/:view?', organisationController.read)
+router.get('/:code/:view?', organisationController.show)
 
 router.all('/:code/?:form(edit)/:view', organisationController.readForm)
 router.get('/:code/?:form(edit)/:view', organisationController.showForm)
