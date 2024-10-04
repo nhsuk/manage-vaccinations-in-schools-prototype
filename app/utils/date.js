@@ -86,12 +86,12 @@ export function convertIsoDateToObject(isoDate) {
 
 /**
  * Add days to a date
- * @param {string} date - ISO 8601 date
+ * @param {Date|string} isoDate - ISO 8601 date
  * @param {number} days - Number of days to add
  * @returns {Date} Date with days added
  */
-export function addDays(date, days) {
-  date = new Date(date)
+export function addDays(isoDate, days) {
+  const date = new Date(isoDate)
   date.setDate(date.getDate() + days)
 
   return date
@@ -99,12 +99,12 @@ export function addDays(date, days) {
 
 /**
  * Remove days from a date
- * @param {string} date - ISO 8601 date
+ * @param {Date|string} isoDate - ISO 8601 date
  * @param {number} days - Number of days to remove
  * @returns {Date} Date with days removed
  */
-export function removeDays(date, days) {
-  date = new Date(date)
+export function removeDays(isoDate, days) {
+  const date = new Date(isoDate)
   date.setDate(date.getDate() - days)
 
   return date
@@ -112,39 +112,41 @@ export function removeDays(date, days) {
 
 /**
  * Check if date lies between two other dates
- * @param {string} date - ISO 8601 date to check
- * @param {string} start - ISO 8601 start date
- * @param {string} end - ISO 8601 end date
+ * @param {string} isoDate - ISO 8601 date to check
+ * @param {string} isoStartDate - ISO 8601 start date
+ * @param {string} isoEndDate - ISO 8601 end date
  * @returns {boolean} Date with days added
  */
-export function isBetweenDates(date, start, end) {
+export function isBetweenDates(isoDate, isoStartDate, isoEndDate) {
   return (
-    (isAfter(date, start) || isEqual(date, start)) &&
-    (isBefore(date, end) || isEqual(date, end))
+    (isAfter(isoDate, isoStartDate) || isEqual(isoDate, isoStartDate)) &&
+    (isBefore(isoDate, isoEndDate) || isEqual(isoDate, isoEndDate))
   )
 }
 
 /**
  * Format a data
- * @param {string} string - Date string
+ * @param {Date|string} date - Date string
  * @param {object} [options] - DateTimeFormat options
  * @returns {string|undefined} Formatted date
  */
-export function formatDate(string, options) {
-  if (!string) return
+export function formatDate(date, options) {
+  if (!date) return
 
-  return new Intl.DateTimeFormat('en-GB', options).format(new Date(string))
+  date = new Date(date)
+
+  return new Intl.DateTimeFormat('en-GB', options).format(date)
 }
 
 /**
  * Get age from date
- * @param {string} date - ISO 8601 date
+ * @param {string} isoDate - ISO 8601 date
  * @returns {number} Age
  */
-export function getAge(date) {
-  date = new Date(date)
+export function getAge(isoDate) {
+  const date = new Date(isoDate)
 
-  return Math.floor((getToday() - date.getTime()) / 3.15576e10)
+  return Math.floor((getToday().valueOf() - date.getTime()) / 3.15576e10)
 }
 
 /**
@@ -176,11 +178,11 @@ export function getToday() {
 
 /**
  * Get school year group
- * @param {string} date - Date string
+ * @param {string} isoDate - Date string
  * @returns {number} School year group
  */
-export function getYearGroup(date) {
-  date = new Date(date)
+export function getYearGroup(isoDate) {
+  const date = new Date(isoDate)
 
   const today = getToday()
   const currentYear = today.getFullYear()

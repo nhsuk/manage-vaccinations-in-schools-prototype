@@ -112,7 +112,7 @@ export class Patient {
     if (replies.length > 0) {
       return replies.map((reply) => new Parent(reply.parent))
     } else {
-      return [this.record.parent]
+      return [this.record.parent1]
     }
   }
 
@@ -136,7 +136,7 @@ export class Patient {
 
   get groupedEvents() {
     const events = this.events.sort(
-      (a, b) => new Date(b.date) - new Date(a.date)
+      (a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf()
     )
 
     return Object.groupBy(events, (event) => {

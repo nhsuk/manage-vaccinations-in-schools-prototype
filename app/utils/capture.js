@@ -6,13 +6,12 @@ import {
   TriageOutcome
 } from '../models/patient.js'
 import { RegistrationOutcome } from '../models/registration.js'
-import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
 import { getEnumKeyAndValue } from './enum.js'
 
 /**
  * Get patient outcome
  * @param {import('../models/patient.js').Patient} patient - Patient
- * @returns {string} Patient outcome
+ * @returns {object} Patient outcome
  */
 export const getPatientOutcome = (patient) => {
   // Vaccination outcome

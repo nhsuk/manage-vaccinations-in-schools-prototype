@@ -32,7 +32,7 @@ export default () => {
 
   /**
    * Get form field items for a given Enum
-   * @param {Enum} Enum - Enumerable name
+   * @param {object} Enum - Enumerable name
    * @returns {object} Form field items
    */
   globals.enumItems = function (Enum) {
@@ -88,7 +88,7 @@ export default () => {
         // Answer in reply
         // Only show the answer
         html += value
-          ? `<p>Yes:</p>\n<blockquote>${prototypeFilters.govukMarkdown(value).replaceAll('govuk-', 'nhsuk-')}</blockquote>`
+          ? `<p>Yes:</p>\n<blockquote>${String(prototypeFilters.govukMarkdown(value)).replaceAll('govuk-', 'nhsuk-')}</blockquote>`
           : `<p>No<p>`
       }
 

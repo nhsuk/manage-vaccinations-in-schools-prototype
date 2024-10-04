@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "module": "nodenext",
+    "resolveJsonModule": true,
+    "target": "esnext"
+  },
+  "exclude": ["node_modules"],
+  "typeRoots": ["./node_modules/@types"]
+}

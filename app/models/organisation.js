@@ -1,5 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import schoolsData from '../datasets/schools.js'
 import { stringToBoolean } from '../utils/string.js'
+import { School } from './school.js'
 
 export class OrganisationDefaults {
   static SessionOpenDelay = 3
@@ -58,6 +60,10 @@ export class Organisation {
         .toLowerCase(),
       tel: '01### ######'.replace(/#+/g, (m) => faker.string.numeric(m.length))
     })
+  }
+
+  get schools() {
+    return this.urns.map((urn) => new School(schoolsData[urn]))
   }
 
   get formatted() {

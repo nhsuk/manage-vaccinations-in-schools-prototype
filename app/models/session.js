@@ -109,7 +109,7 @@ export class Session {
         firstSessionDate = faker.date.between({ from: getToday(), to })
         break
       case SessionStatus.Unplanned:
-        firstSessionDate = false
+        firstSessionDate = undefined
         break
       default:
         // Session took place about 7 days before today
@@ -132,9 +132,9 @@ export class Session {
       dates.push(firstSessionDate)
 
       // Add additional session dates
-      for (const _index in [1, 2]) {
+      for (const _index of [1, 2]) {
         if (_index === 0) continue
-        const previousDate = dates.at(_index)
+        const previousDate = dates[_index - 1]
         const subsequentDate = setMidday(addDays(previousDate, 7))
         dates.push(subsequentDate)
       }
@@ -272,7 +272,7 @@ export class Session {
         ? this.remainingDates.map((date) =>
             formatDate(date, { weekday: 'long', month: 'long', day: 'numeric' })
           )
-        : ''
+        : []
 
     return {
       dates: prototypeFilters.formatList(dates),

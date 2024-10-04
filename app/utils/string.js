@@ -57,9 +57,8 @@ export function formatLink(href, text, attributes = {}) {
       attrs.push(`${key}="${value}"`)
     }
   }
-  attrs = attrs.join(' ')
 
-  return `<a class="nhsuk-link" href="${href}"${attrs}>${text}</a>`
+  return `<a class="nhsuk-link" href="${href}"${attrs.join(' ')}>${text}</a>`
 }
 
 /**
@@ -92,7 +91,7 @@ export function formatMarkdown(string) {
   const markdown = prototypeFilters.govukMarkdown(string, {
     headingsStartWith: 'l'
   })
-  const nhsukMarkdown = markdown.replaceAll('govuk-', 'nhsuk-')
+  const nhsukMarkdown = String(markdown).replaceAll('govuk-', 'nhsuk-')
 
   return nhsukMarkdown
 }
@@ -123,7 +122,7 @@ export function formatMonospace(string) {
  * Format NHS number
  * Replace each space in number with a non-breaking space and zero-width word
  * joiner to prevent telephone format detection
- * @param {string|number} string - String
+ * @param {string} string - String
  * @returns {string|undefined} Formatted HTML
  */
 export function formatNhsNumber(string) {
@@ -145,7 +144,7 @@ export function formatNhsNumber(string) {
 
 /**
  * Format parent with optional display of telephone number
- * @param {import('../models/reply.js').Parent} parent - Patent
+ * @param {import('../models/parent.js').Parent} parent - Patent
  * @returns {string|undefined} Formatted parent HTML
  */
 export function formatParent(parent) {

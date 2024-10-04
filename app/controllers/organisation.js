@@ -14,9 +14,6 @@ export const organisationController = {
     const { __ } = response.locals
 
     const organisation = new Organisation(data.organisations[code])
-    organisation.schools = organisation.urns.map(
-      (urn) => new School(data.schools[urn])
-    )
 
     request.app.locals.organisation = organisation
 

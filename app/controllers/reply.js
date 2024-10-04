@@ -272,7 +272,7 @@ export const replyController = {
         outcome: VaccinationOutcome.AlreadyVaccinated,
         patient_uuid: patient.uuid,
         session_id: session.id,
-        ...(data.reply?.notes && { notes }),
+        ...(data.reply?.notes && { notes: data.reply.notes }),
         ...(data.token && { created_user_uid: data.token?.uid })
       }
     }

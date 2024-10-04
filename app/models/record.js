@@ -46,7 +46,8 @@ export class GPRegistered {
  * @property {GPRegistered} gpRegistered - Registered with a GP
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} urn - School URN
- * @property {Parent} [parent] - Parent
+ * @property {Parent} [parent1] - Parent 1
+ * @property {Parent} [parent2] - Parent 2
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
  * @function age - Age in years
  * @function dobWithAge - Date of birth with age in brackets
@@ -66,7 +67,7 @@ export class Record {
     this.gpSurgery = options.gpSurgery
     this.urn = options.urn
     this.parent1 = options?.parent1 && new Parent(options.parent1)
-    this.parent2 = (options?.parent2 && new Parent(options.parent2)) || ''
+    this.parent2 = options?.parent2 && new Parent(options.parent2)
     this.vaccinations = options?.vaccinations || []
     // Import mocking
     this._pendingChanges = options?._pendingChanges || {}
