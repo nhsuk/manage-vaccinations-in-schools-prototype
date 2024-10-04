@@ -14,6 +14,7 @@ export class OrganisationDefaults {
  * @property {string} [name] - Full name
  * @property {string} [email] - Email address
  * @property {string} [tel] - Phone number
+ * @property {Array<string>} [urns] - School URNs
  * @property {number} [sessionOpenDelay] - Weeks before session to request consent
  * @property {number} [sessionReminderDelay] - Days before sending first reminder
  * @property {number} [sessionReminderInt] - Days between reminders
@@ -28,6 +29,7 @@ export class Organisation {
     this.name = options?.name
     this.email = options?.email
     this.tel = options?.tel
+    this.urns = options?.urns || []
     this.sessionOpenDelay =
       options?.sessionOpenDelay || OrganisationDefaults.SessionOpenDelay
     this.sessionReminderDelay =
