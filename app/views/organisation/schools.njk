@@ -1,0 +1,65 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("organisation.show.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    caption: organisation.name,
+    title: title
+  }) }}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-one-quarter">
+      {{ xGovukSubNavigation({
+        items: navigationItems
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-three-quarters">
+      {% set cardDescriptionHtml %}
+        {% set schoolRows = [] %}
+        {% for school in organisation.schools | sort(false, false, "name") %}
+          {% set schoolRows = schoolRows | push([
+            {
+              header: __("school.name.label"),
+              html: school.formatted.location or "Not provided",
+              attributes: {
+                "data-sort": school.name
+              }
+            },
+            {
+              header: __("school.urn.label"),
+              html: school.formatted.urn or "Not provided"
+            },
+            {
+              header: __("school.phase.label"),
+              html: school.phase or "Not provided"
+            }
+          ]) %}
+        {% endfor %}
+
+        {{ link("#", __("organisation.schools.new.title")) | nhsukMarkdown }}
+
+        {{ actionTable({
+          id: "schools",
+          sort: "name",
+          responsive: true,
+          head: [
+            { text: __("school.name.label") },
+            { text: __("school.urn.label") },
+            { text: __("school.phase.label") }
+          ],
+          rows: schoolRows
+        }) }}
+      {% endset %}
+
+      {{ card({
+        heading: __("organisation.schools.summary"),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: cardDescriptionHtml
+      }) }}
+    <div>
+  </div>
+{% endblock %}

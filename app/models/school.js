@@ -42,13 +42,27 @@ export class School {
   get formatted() {
     return {
       address: `${this.addressLine1}, ${this.addressLevel1}. ${this.postalCode}`,
+      location: `<span>${this.name}</br>
+        <span class="nhsuk-u-secondary-text-color">
+          ${this.addressLine1},
+          ${this.addressLevel1},
+          ${this.postalCode}
+        </span>
+      </span>`,
       urn: formatMonospace(this.urn)
     }
   }
 
   get link() {
     return {
-      name: formatLink(this.uri, this.name)
+      name: formatLink(this.uri, this.name),
+      location: `<span>${formatLink(this.uri, this.name)}</br>
+        <span class="nhsuk-u-secondary-text-color">
+          ${this.addressLine1},
+          ${this.addressLevel1},
+          ${this.postalCode}
+        </span>
+      </span>`
     }
   }
 

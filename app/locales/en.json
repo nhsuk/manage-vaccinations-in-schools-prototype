@@ -702,6 +702,13 @@
       "title": "Contact details",
       "summary": "Contact details"
     },
+    "schools": {
+      "title": "Schools",
+      "summary": "Schools",
+      "new": {
+        "title": "Add a new school"
+      }
+    },
     "sessions": {
       "title": "Session defaults",
       "summary": "Session defaults"
