@@ -24,11 +24,6 @@ export class ConsentWindow {
   static None = 'Session not scheduled'
 }
 
-export class SessionFormat {
-  static School = 'A routine session in school'
-  static Clinic = 'A clinic'
-}
-
 export class SessionStatus {
   static Unplanned = 'No sessions scheduled'
   static Planned = 'Sessions scheduled'
@@ -40,7 +35,6 @@ export class SessionStatus {
  * @property {string} id - ID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created session
- * @property {SessionFormat} [format] - Format
  * @property {string} [urn] - School
  * @property {Array<string>} [dates] - Date
  * @property {string} [open] - Date consent window opens
@@ -61,7 +55,6 @@ export class Session {
     this.id = options?.id || faker.helpers.replaceSymbols('###')
     this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
-    this.format = options?.format || SessionFormat.School
     this.urn = options?.urn
     this.dates = options?.dates || []
     this.open = options?.open

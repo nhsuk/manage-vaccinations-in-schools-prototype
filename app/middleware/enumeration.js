@@ -15,11 +15,7 @@ import { ProgrammeType } from '../models/programme.js'
 import { RegistrationOutcome } from '../models/registration.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { SchoolPhase } from '../models/school.js'
-import {
-  ConsentWindow,
-  SessionFormat,
-  SessionStatus
-} from '../models/session.js'
+import { ConsentWindow, SessionStatus } from '../models/session.js'
 import { ImportStatus, ImportType } from '../models/import.js'
 import { UserRole } from '../models/user.js'
 import {
@@ -58,7 +54,6 @@ export const enumeration = (request, response, next) => {
   response.locals.ReplyRefusal = ReplyRefusal
   response.locals.SchoolPhase = SchoolPhase
   response.locals.ScreenOutcome = ScreenOutcome
-  response.locals.SessionFormat = SessionFormat
   response.locals.SessionStatus = SessionStatus
   response.locals.Sex = Sex
   response.locals.TriageOutcome = TriageOutcome
