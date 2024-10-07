@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { isAfter } from 'date-fns'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
+import clinics from '../datasets/clinics.js'
 import schools from '../datasets/schools.js'
 import {
   addDays,
@@ -287,6 +288,14 @@ export class Session {
       default:
         return SessionStatus.Planned
     }
+  }
+
+  /**
+   * Get clinic
+   * @returns {object} - School
+   */
+  get clinic() {
+    return clinics[this.clinic_id]
   }
 
   /**

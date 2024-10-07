@@ -34,8 +34,9 @@ export const programmeController = {
           session.patients = Object.values(data.patients).filter(
             (patient) => patient.session_id === session.id
           )
-          return session.patients.length > 0 ? session : []
+          return session
         })
+        .filter((session) => session.patients.length > 0)
 
       // Sessions in programme (grouped by status)
       programme.sessionsByStatus = Object.groupBy(

@@ -1230,7 +1230,7 @@
       "title": "Import class list"
     },
     "list": {
-      "title": "School sessions",
+      "title": "Sessions",
       "description": "Use this area to:\n- review consent responses\n- triage health records\n- record vaccinations\n- review session outcomes",
       "active": {
         "label": "Today",
@@ -1242,22 +1242,22 @@
       "completed": {
         "label": "Completed",
         "count": {
-          "one": "%s school with all sessions completed",
-          "other": "[0] No schools with all sessions completed|%s schools with all sessions completed"
+          "one": "%s location with all sessions completed",
+          "other": "[0] No locations with all sessions completed|%s locations with all sessions completed"
         }
       },
       "planned": {
         "label": "Scheduled",
         "count": {
-          "one": "%s school with sessions scheduled",
-          "other": "[0] No schools with sessions scheduled|%s schools with sessions scheduled"
+          "one": "%s location with sessions scheduled",
+          "other": "[0] No locations with sessions scheduled|%s locations with sessions scheduled"
         }
       },
       "unplanned": {
         "label": "Unscheduled",
         "count": {
-          "one": "%s school with no sessions scheduled",
-          "other": "[0] No schools with no sessions scheduled|%s schools with no sessions scheduled"
+          "one": "%s location with no sessions scheduled",
+          "other": "[0] No locations with no sessions scheduled|%s locations with no sessions scheduled"
         }
       }
     },
@@ -1299,16 +1299,13 @@
       "hint": "For example, 27 3 2024"
     },
     "dates": {
-      "label": "Dates"
+      "label": "Session dates"
     },
     "urn": {
       "label": "School"
     },
     "location": {
       "label": "Location"
-    },
-    "format": {
-      "label": "Type of session"
     },
     "programmes": {
       "label": "Programmes"
@@ -1747,7 +1744,7 @@
   "programme": {
     "list": {
       "title": "Programmes",
-      "description": "Use this area to:\n- import child records\n- organise school sessions\n- report vaccinations",
+      "description": "Use this area to:\n- import child records\n- organise vaccination sessions\n- report vaccinations",
       "adolescent": "Adolescent",
       "seasonal": "Seasonal"
     },
@@ -1768,11 +1765,11 @@
       }
     },
     "sessions": {
-      "label": "School sessions",
-      "title": "School sessions",
+      "label": "Sessions",
+      "title": "Sessions",
       "count": {
-        "one": "%s school session organised",
-        "other": "[0] No school sessions organised|%s school sessions organised"
+        "one": "%s session organised",
+        "other": "[0] No sessions organised|%s sessions organised"
       }
     },
     "reviews": {
