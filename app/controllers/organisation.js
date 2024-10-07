@@ -24,6 +24,11 @@ export const organisationController = {
         current: view.includes('contact')
       },
       {
+        text: __('organisation.clinics.title'),
+        href: `${organisation.uri}/clinics`,
+        current: view.includes('clinics')
+      },
+      {
         text: __('organisation.schools.title'),
         href: `${organisation.uri}/schools`,
         current: view.includes('schools')

@@ -1,6 +1,8 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import clinicsData from '../datasets/clinics.js'
 import schoolsData from '../datasets/schools.js'
 import { stringToBoolean } from '../utils/string.js'
+import { Clinic } from './clinic.js'
 import { School } from './school.js'
 
 export class OrganisationDefaults {
@@ -16,6 +18,7 @@ export class OrganisationDefaults {
  * @property {string} [name] - Full name
  * @property {string} [email] - Email address
  * @property {string} [tel] - Phone number
+ * @property {Array<string>} [ids] - Clinic organisation IDs
  * @property {Array<string>} [urns] - School URNs
  * @property {number} [sessionOpenDelay] - Weeks before session to request consent
  * @property {number} [sessionReminderDelay] - Days before sending first reminder
@@ -29,6 +32,7 @@ export class Organisation {
     this.name = options?.name
     this.email = options?.email
     this.tel = options?.tel
+    this.ids = options?.ids || []
     this.urns = options?.urns || []
     this.sessionOpenDelay =
       options?.sessionOpenDelay || OrganisationDefaults.SessionOpenDelay
@@ -63,6 +67,14 @@ export class Organisation {
         .toLowerCase(),
       tel: '01### ######'.replace(/#+/g, (m) => faker.string.numeric(m.length))
     })
+  }
+
+  /**
+   * Get clinics
+   * @returns {Array} - Clinics
+   */
+  get clinics() {
+    return this.ids.map((id) => new Clinic(clinicsData[id]))
   }
 
   /**

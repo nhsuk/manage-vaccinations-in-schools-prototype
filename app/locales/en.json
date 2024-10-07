@@ -78,6 +78,11 @@
       "label": "Actions"
     }
   },
+  "clinic": {
+    "name": {
+      "label": "Name"
+    }
+  },
   "cohort": {
     "list": {
       "title": "All cohorts"
@@ -701,6 +706,13 @@
     "contact": {
       "title": "Contact details",
       "summary": "Contact details"
+    },
+    "clinics": {
+      "title": "Clinics",
+      "summary": "Clinics",
+      "new": {
+        "title": "Add a new clinic"
+      }
     },
     "schools": {
       "title": "Schools",

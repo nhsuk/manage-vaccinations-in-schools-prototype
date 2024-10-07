@@ -19,48 +19,38 @@
 
     <div class="nhsuk-grid-column-three-quarters">
       {% set cardDescriptionHtml %}
-        {% set schoolRows = [] %}
-        {% for school in organisation.schools | sort(false, false, "name") %}
-          {% set schoolRows = schoolRows | push([
+        {% set clinicRows = [] %}
+        {% for clinic in organisation.clinics | sort(false, false, "name") %}
+          {% set clinicRows = clinicRows | push([
             {
-              header: __("school.name.label"),
-              html: school.formatted.location or "Not provided",
+              header: __("clinic.name.label"),
+              html: clinic.formatted.location or "Not provided",
               attributes: {
-                "data-sort": school.name
+                "data-sort": clinic.name
               }
-            },
-            {
-              header: __("school.urn.label"),
-              html: school.formatted.urn or "Not provided"
-            },
-            {
-              header: __("school.phase.label"),
-              html: school.phase or "Not provided"
             }
           ]) %}
         {% endfor %}
 
         {{ button({
           classes: "app-button--secondary",
-          text: __("organisation.schools.new.title"),
+          text: __("organisation.clinics.new.title"),
           href: "#"
         }) }}
 
         {{ actionTable({
-          id: "schools",
+          id: "clinics",
           sort: "name",
           responsive: true,
           head: [
-            { text: __("school.name.label") },
-            { text: __("school.urn.label") },
-            { text: __("school.phase.label") }
+            { text: __("clinic.name.label") }
           ],
-          rows: schoolRows
+          rows: clinicRows
         }) }}
       {% endset %}
 
       {{ card({
-        heading: __("organisation.schools.summary"),
+        heading: __("organisation.clinics.summary"),
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: cardDescriptionHtml
       }) }}
