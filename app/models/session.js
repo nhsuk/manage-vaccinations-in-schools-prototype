@@ -30,12 +30,18 @@ export class SessionStatus {
   static Completed = 'All sessions completed'
 }
 
+export class SessionType {
+  static School = 'School session'
+  static Clinic = 'Community clinic'
+}
+
 /**
  * @class Session
  * @property {string} id - ID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created session
- * @property {string} [urn] - School
+ * @property {string} [clinic_id] - Clinic ID
+ * @property {string} [school_urn] - School URN
  * @property {Array<string>} [dates] - Dates
  * @property {Array<object>} [dates_] - Dates (from `dateInput`s)
  * @property {string} [open] - Date consent window opens
@@ -50,7 +56,8 @@ export class Session {
     this.id = options?.id || faker.helpers.replaceSymbols('###')
     this.created = options?.created || getToday().toISOString()
     this.created_user_uid = options?.created_user_uid
-    this.urn = options?.urn
+    this.clinic_id = options?.clinic_id
+    this.school_urn = options?.school_urn
     this.dates = options?.dates || []
     this.open = options?.open
       ? options.open
@@ -149,7 +156,7 @@ export class Session {
     return new Session({
       created,
       created_user_uid: user.uid,
-      urn,
+      school_urn: urn,
       dates,
       programmes: [programme.pid]
     })
@@ -287,7 +294,15 @@ export class Session {
    * @returns {object} - School
    */
   get school() {
-    return schools[this.urn]
+    return schools[this.school_urn]
+  }
+
+  /**
+   * Get type
+   * @returns {string} - Status
+   */
+  get type() {
+    return this.school_urn ? SessionType.School : SessionType.Clinic
   }
 
   /**
@@ -295,12 +310,14 @@ export class Session {
    * @returns {object} - Location
    */
   get location() {
+    const type = this.type === SessionType.School ? 'school' : 'clinic'
+
     return {
-      name: this.school.name,
-      addressLine1: this.school.addressLine1,
-      addressLine2: this.school.addressLine2,
-      addressLevel1: this.school.addressLevel1,
-      postalCode: this.school.postalCode
+      name: this[type].name,
+      addressLine1: this[type].addressLine1,
+      addressLine2: this[type].addressLine2,
+      addressLevel1: this[type].addressLevel1,
+      postalCode: this[type].postalCode
     }
   }
 
@@ -310,7 +327,7 @@ export class Session {
    */
   get name() {
     if (this.location) {
-      return `Session at ${this.location.name}`
+      return `${this.type} at ${this.location.name}`
     }
   }
 
@@ -358,7 +375,6 @@ export class Session {
       close: formatDate(this.close, { dateStyle: 'full' }),
       reminderInt: this.reminderInt && `${this.reminderInt} days`,
       programmes: prototypeFilters.formatList(formattedProgrammes),
-      urn: this.location.name,
       consentWindow
     }
   }

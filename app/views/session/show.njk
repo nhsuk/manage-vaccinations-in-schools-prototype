@@ -32,7 +32,7 @@
     } if programme.type == ProgrammeType.HPV and session.status != SessionStatus.Completed, {
       text: __("session.import-class-list.title"),
       href: "#"
-    }]
+    } if session.type == SessionType.School]
   }) }}
 
   <div class="nhsuk-grid-row">
@@ -118,6 +118,7 @@
       {{ summaryList({
         classes: "app-summary-list--full-width nhsuk-u-margin-bottom-4",
         rows: summaryRows(session, {
+          type: {},
           programmes: {},
           dates: {},
           consentWindow: {},

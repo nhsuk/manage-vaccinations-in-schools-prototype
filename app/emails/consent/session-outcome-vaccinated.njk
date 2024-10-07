@@ -1,8 +1,8 @@
 Dear {{ consent.parent.fullName }},
 
-{{ consent.child.fullAndPreferredNames }} had their {{ programme.name | replace("Flu", "flu") }} vaccination at {{ session.location.name }} today.{% if data.schools[session.urn].phase == "Primary" %} They were very brave.{% endif %}
+{{ consent.child.fullAndPreferredNames }} had their {{ programme.name | replace("Flu", "flu") }} vaccination at {{ session.location.name }} today.{% if data.schools[session.school_urn].phase == "Primary" %} They were very brave.{% endif %}
 
-We suggest you record the following details {% if data.schools[session.urn].phase == "Primary" %}in their red book (also known as their personal child health record){% else %}somewhere{% endif %}:
+We suggest you record the following details {% if data.schools[session.school_urn].phase == "Primary" %}in their red book (also known as their personal child health record){% else %}somewhere{% endif %}:
 
 - Vaccination: {{ programme.vaccine.name }}
 - Vaccine: {{ programme.vaccine.brand }}

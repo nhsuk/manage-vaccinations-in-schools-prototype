@@ -1299,7 +1299,7 @@
       "hint": "For example, 27 3 2024"
     },
     "dates": {
-      "label": "Session dates"
+      "label": "Dates"
     },
     "urn": {
       "label": "School"
@@ -1315,6 +1315,9 @@
     },
     "status": {
       "label": "Status"
+    },
+    "type": {
+      "label": "Type"
     },
     "consentWindow": {
       "label": "Consent period",
