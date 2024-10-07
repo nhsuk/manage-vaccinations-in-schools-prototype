@@ -1,17 +1,15 @@
-import { readFileSync } from 'node:fs'
-import process from 'node:process'
 import vaccines from './datasets/vaccines.js'
-const batches = JSON.parse(readFileSync('.data/batches.json'))
-const cohorts = JSON.parse(readFileSync('.data/cohorts.json'))
-const imports = JSON.parse(readFileSync('.data/imports.json'))
-const organisations = JSON.parse(readFileSync('.data/organisations.json'))
-const patients = JSON.parse(readFileSync('.data/patients.json'))
-const programmes = JSON.parse(readFileSync('.data/programmes.json'))
-const records = JSON.parse(readFileSync('.data/records.json'))
-const schools = JSON.parse(readFileSync('.data/schools.json'))
-const sessions = JSON.parse(readFileSync('.data/sessions.json'))
-const users = JSON.parse(readFileSync('.data/users.json'))
-const vaccinations = JSON.parse(readFileSync('.data/vaccinations.json'))
+import batches from '../.data/batches.json' with { type: 'json' }
+import cohorts from '../.data/cohorts.json' with { type: 'json' }
+import imports from '../.data/imports.json' with { type: 'json' }
+import organisations from '../.data/organisations.json' with { type: 'json' }
+import patients from '../.data/patients.json' with { type: 'json' }
+import programmes from '../.data/programmes.json' with { type: 'json' }
+import records from '../.data/records.json' with { type: 'json' }
+import schools from '../.data/schools.json' with { type: 'json' }
+import sessions from '../.data/sessions.json' with { type: 'json' }
+import users from '../.data/users.json' with { type: 'json' }
+import vaccinations from '../.data/vaccinations.json' with { type: 'json' }
 
 // Use Coventry and Warwickshire as organisation
 const organisation = organisations.RYG
