@@ -69,8 +69,11 @@ export const navigation = (request, response, next) => {
       : []
 
   const fluSession = getProgrammeSession(sessions, ProgrammeType.Flu)
+  const fluClinic = getProgrammeSession(sessions, ProgrammeType.Flu, false)
   const hpvSession = getProgrammeSession(sessions, ProgrammeType.HPV)
+  const hpvClinic = getProgrammeSession(sessions, ProgrammeType.HPV, false)
   const tioSession = getProgrammeSession(sessions, ProgrammeType.TdIPV)
+  const tioClinic = getProgrammeSession(sessions, ProgrammeType.TdIPV, false)
 
   response.locals.navigation = {
     account,
@@ -82,6 +85,10 @@ export const navigation = (request, response, next) => {
               {
                 URL: `/consents/${fluSession.id}`,
                 label: 'Flu consent journey'
+              },
+              {
+                URL: `/consents/${fluClinic.id}`,
+                label: 'Flu consent journey (clinic)'
               },
               {
                 URL: `/consents/${fluSession.id}/emails`,
@@ -102,6 +109,10 @@ export const navigation = (request, response, next) => {
                 label: 'HPV consent journey'
               },
               {
+                URL: `/consents/${hpvClinic.id}`,
+                label: 'HPV consent journey (clinic)'
+              },
+              {
                 URL: `/consents/${hpvSession.id}/emails`,
                 label: 'HPV consent emails'
               },
@@ -118,6 +129,10 @@ export const navigation = (request, response, next) => {
               {
                 URL: `/consents/${tioSession.id}`,
                 label: '3-in-1 consent journey'
+              },
+              {
+                URL: `/consents/${tioClinic.id}`,
+                label: '3-in-1 consent journey (clinic)'
               },
               {
                 URL: `/consents/${tioSession.id}/emails`,

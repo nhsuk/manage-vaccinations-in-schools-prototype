@@ -6,7 +6,7 @@ import { Programme } from '../models/programme.js'
 import { Record } from '../models/record.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { School } from '../models/school.js'
-import { ConsentWindow, Session } from '../models/session.js'
+import { ConsentWindow, Session, SessionType } from '../models/session.js'
 import {
   getHealthQuestionKey,
   getHealthQuestionPaths
@@ -101,6 +101,9 @@ export const consentController = {
     const { form, id, uuid, view } = request.params
     const { data } = request.session
 
+    const session = new Session(data.sessions[id])
+
+    request.app.locals.session = session
     request.app.locals.consent = new Consent({
       ...(form === 'edit' && consent), // Previous values
       ...data?.wizard?.consent // Wizard values,
@@ -110,8 +113,11 @@ export const consentController = {
       [`/${id}`]: {},
       [`/${id}/${uuid}/${form}/child`]: {},
       [`/${id}/${uuid}/${form}/dob`]: {},
-      [`/${id}/${uuid}/${form}/school`]: {},
-      ...(data.consent?.child?.school !== 'yes'
+      ...(session.type === SessionType.School
+        ? { [`/${id}/${uuid}/${form}/school`]: {} }
+        : {}),
+      ...(session.type === SessionType.School &&
+      data.consent?.child?.school !== 'yes'
         ? {
             [`/${id}/${uuid}/${form}/urn`]: {}
           }

@@ -51,7 +51,7 @@
         urn: {
           value: consent.child.formatted.urn or session.location.name,
           href: consent.uri + "/edit/urn"
-        }
+        } if session.type === SessionType.School
       })
     })
   }) }}
