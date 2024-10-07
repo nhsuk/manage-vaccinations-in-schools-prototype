@@ -39,32 +39,32 @@ export class Child {
 
   /**
    * Generate fake child
-   * @param {import('./patient.js').Patient} patient - Patient
+   * @param {import('./record.js').Record} record - Record
    * @returns {Child} - Child
    * @static
    */
-  static generate(patient) {
+  static generate(record) {
     let preferredFirstName
-    if (patient.record.firstName.startsWith('Al')) {
+    if (record.firstName.startsWith('Al')) {
       preferredFirstName = 'Ali'
     }
-    if (patient.record.firstName.startsWith('Em')) {
+    if (record.firstName.startsWith('Em')) {
       preferredFirstName = 'Em'
     }
-    if (patient.record.firstName.startsWith('Isa')) {
+    if (record.firstName.startsWith('Isa')) {
       preferredFirstName = 'Izzy'
     }
 
     return new Child({
-      nhsn: patient.record.nhsn,
-      firstName: patient.record.firstName,
+      nhsn: record.nhsn,
+      firstName: record.firstName,
       preferredFirstName,
-      lastName: patient.record.lastName,
-      dob: patient.record.dob,
-      address: patient.record.address,
-      gpRegistered: patient.record.gpRegistered,
-      gpSurgery: patient.record.gpSurgery,
-      urn: patient.record.urn
+      lastName: record.lastName,
+      dob: record.dob,
+      address: record.address,
+      gpRegistered: record.gpRegistered,
+      gpSurgery: record.gpSurgery,
+      urn: record.urn
     })
   }
 

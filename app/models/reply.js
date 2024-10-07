@@ -81,7 +81,7 @@ export class Reply {
    */
   static generate(programme, session, patient) {
     const firstReply = Object.entries(patient.replies).length === 0
-    const child = Child.generate(patient)
+    const child = Child.generate(patient.record)
     const parent = firstReply
       ? patient.record.parent1
       : Parent.generate(patient.record.lastName)

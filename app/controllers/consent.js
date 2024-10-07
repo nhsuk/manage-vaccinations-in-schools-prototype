@@ -49,7 +49,8 @@ export const consentController = {
 
     // Text and email messages
     if (view === 'emails' || view === 'texts') {
-      const child = Child.generate({ record: Record.generate() })
+      const record = Record.generate()
+      const child = Child.generate(record)
       const parent = Parent.generate(child.lastName)
 
       response.locals.consent = new Consent({
