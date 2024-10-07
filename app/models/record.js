@@ -1,6 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import firstNames from '../datasets/first-names.js'
-import gpSurgeries from '../datasets/gp-surgeries.js'
+import gpSurgeries from '../datasets/clinics.js'
 import schools from '../datasets/schools.js'
 import { Parent } from './parent.js'
 import {
@@ -83,8 +83,11 @@ export class Record {
     const gpRegistered = faker.helpers.arrayElement(Object.values(GPRegistered))
 
     let gpSurgery
+    const gpSurgeryNames = Object.values(gpSurgeries).map(
+      (surgery) => surgery.name
+    )
     if (gpRegistered === GPRegistered.Yes) {
-      gpSurgery = faker.helpers.arrayElement(gpSurgeries)
+      gpSurgery = faker.helpers.arrayElement(gpSurgeryNames)
     }
 
     let dob, urn
