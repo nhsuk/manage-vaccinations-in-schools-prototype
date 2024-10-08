@@ -762,11 +762,6 @@
       "title": "Maximum number of reminders",
       "label": "Maximum number of reminders",
       "hint": "You can change this value when scheduling new sessions."
-    },
-    "sessionReminderMethod": {
-      "title": "Send reminders as text messages?",
-      "label": "Prefer text messages for reminders",
-      "hint": "Parents who have not opted into text messages, or not provided a phone number, will always get reminders via email."
     }
   },
   "outcome": {

@@ -48,17 +48,4 @@
     hint: { text: __("organisation.sessionReminderMax.hint") },
     decorate: "organisation.sessionReminderMax"
   }) }}
-
-  {{ radios({
-    classes: "nhsuk-radios--inline",
-    fieldset: {
-      legend: {
-        classes: "nhsuk-fieldset__legend--m",
-        text: __("organisation.sessionReminderMethod.title")
-      }
-    },
-    hint: { text: __("organisation.sessionReminderMethod.hint") },
-    items: booleanItems,
-    decorate: "organisation.sessionReminderMethod"
-  }) }}
 {% endblock %}

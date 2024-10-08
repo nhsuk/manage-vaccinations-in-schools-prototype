@@ -1,7 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import clinicsData from '../datasets/clinics.js'
 import schoolsData from '../datasets/schools.js'
-import { stringToBoolean } from '../utils/string.js'
 import { Clinic } from './clinic.js'
 import { School } from './school.js'
 
@@ -24,7 +23,6 @@ export class OrganisationDefaults {
  * @property {number} [sessionReminderDelay] - Days before sending first reminder
  * @property {number} [sessionReminderInt] - Days between reminders
  * @property {number} [sessionReminderMax] - Max number of reminders
- * @property {boolean} [sessionReminderMethod] - Preferred reminder method
  */
 export class Organisation {
   constructor(options) {
@@ -42,8 +40,6 @@ export class Organisation {
       options?.sessionReminderInt || OrganisationDefaults.SessionReminderInt
     this.sessionReminderMax =
       options?.sessionReminderMax || OrganisationDefaults.SessionReminderMax
-    this.sessionReminderMethod =
-      stringToBoolean(options?.sessionReminderMethod) || false
   }
 
   /**
