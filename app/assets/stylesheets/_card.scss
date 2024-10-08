@@ -70,13 +70,6 @@
   }
 }
 
-// Adjust spacing around details content within a card
-.nhsuk-card .nhsuk-details__text {
-  border-left-width: $nhsuk-border-width-inset-text;
-  margin-left: #{nhsuk-spacing(5) * -1};
-  padding-right: 0;
-}
-
 // Card title and actions (borrowed from GOV.UK Summary Card component)
 .app-card__title-wrapper {
   @include nhsuk-responsive-padding(5);
