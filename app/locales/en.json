@@ -463,9 +463,17 @@
         "label": "Invitation to clinic",
         "name": "Booking a clinic appointment for your child’s {{programme.name}} vaccination"
       },
+      "invite-clinic-reminder": {
+        "label": "Invitation to clinic reminder",
+        "name": "Your child can still get their {{programme.name}} vaccination at a clinic"
+      },
       "invite-reminder": {
         "label": "Reminder",
         "name": "Please respond to our request for consent by {{session.formatted.firstDate}}"
+      },
+      "invite-subsequent-reminder": {
+        "label": "Subsequent reminder",
+        "name": "There’s still time for your child to be vaccinated against {{programme.name}}"
       },
       "consent-given": {
         "label": "Consent given",

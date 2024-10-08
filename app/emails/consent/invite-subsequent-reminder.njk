@@ -1,0 +1,50 @@
+Our team are coming back to {{ session.location.name }} on {{ session.summary.dates }} to give the HPV vaccine.
+
+If you want your child to be vaccinated in school, you need to give your consent.
+
+{% if programme.type == ProgrammeType.Flu %}
+## About the flu vaccine
+
+The vaccination is a quick and painless spray up the nose. Even if your child had the vaccine last year, the type of flu can vary each winter, so we recommend they have it again this year.
+
+The nasal spray contains gelatine. If your child does not use gelatine products, they could have an injection instead.
+
+[Find out more about the flu vaccine on NHS.UK](https://www.nhs.uk/conditions/vaccinations/child-flu-vaccine/)
+
+{% elif programme.type == ProgrammeType.HPV %}
+## What the vaccine is for
+
+The HPV vaccine helps protect against cancers caused by HPV, including:
+
+- cervical cancer
+- some mouth and throat (head and neck) cancers
+- some cancers of the anal and genital areas
+
+It also helps protect against genital warts.
+
+The HPV vaccine works best if it’s given before young people become sexually active.
+
+[Find out more about the HPV vaccine on NHS.UK](https://www.nhs.uk/conditions/vaccinations/hpv-human-papillomavirus-vaccine/)
+
+{% endif %}
+
+## Please give or refuse consent
+
+[Give or refuse consent for the {{ programme.name | replace("Flu", "flu") }} vaccination](/consents/{{ session.id }})
+
+Responding will take less than 5 minutes.
+
+{% if programme.type != ProgrammeType.Flu %}
+## Talk to your child about what they want
+
+We suggest you talk to your child about the vaccine before you respond to us.
+
+{% endif %}
+
+## If you have trouble using the online form
+
+If you have any trouble using the online form, you can respond over the phone using the contact details below.
+
+## Contact the local health team
+
+Speak to a member of the local health team by calling {{ data.organisation.tel }}, or email {{ data.organisation.email }}.
