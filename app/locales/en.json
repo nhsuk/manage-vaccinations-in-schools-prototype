@@ -207,11 +207,11 @@
     },
     "Given": {
       "colour": "aqua-green",
-      "description": "{{patient.fullName}} is safe to vaccinate.",
+      "description": "{{patient.fullName}} is ready for the nurse.",
       "icon": "tick",
       "label": "Consent given",
       "status": "Consent given",
-      "title": "Safe to vaccinate",
+      "title": "Ready for nurse",
       "count": {
         "one": "%s child with consent given",
         "other": "[0] No children with consent given|%s children with consent given"
@@ -987,7 +987,7 @@
         "GetConsent": "[{{patient.fullName}}]({{patient.uri}}) is attending today’s session. They still need consent to vaccinate.",
         "CheckRefusal": "[{{patient.fullName}}]({{patient.uri}}) needs to leave the session because their parent or guardian refused to give consent.",
         "NeedsTriage": "[{{patient.fullName}}]({{patient.uri}}) is attending today’s session. A nurse needs to triage their record.",
-        "Vaccinate": "[{{patient.fullName}}]({{patient.uri}}) is attending today’s session. They are safe to vaccinate.",
+        "Vaccinate": "[{{patient.fullName}}]({{patient.uri}}) is attending today’s session. They are ready for the nurse.",
         "Register": "[{{patient.fullName}}]({{patient.uri}}) is absent from today’s session.",
         "Absent": "[{{patient.fullName}}]({{patient.uri}}) is absent from today’s session."
       }
@@ -1197,7 +1197,7 @@
       "colour": "aqua-green",
       "description": "{{user.fullName}} decided that {{patient.fullName}} is safe to vaccinate.",
       "status": "Safe to vaccinate",
-      "title": "Safe to vaccinate"
+      "title": "Ready for nurse"
     }
   },
   "session": {
