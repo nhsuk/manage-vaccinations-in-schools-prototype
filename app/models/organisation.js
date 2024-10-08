@@ -7,7 +7,6 @@ import { School } from './school.js'
 export class OrganisationDefaults {
   static SessionOpenDelay = 3
   static SessionReminderDelay = 7
-  static SessionReminderInt = 7
 }
 
 /**
@@ -20,7 +19,6 @@ export class OrganisationDefaults {
  * @property {Array<string>} [urns] - School URNs
  * @property {number} [sessionOpenDelay] - Weeks before session to request consent
  * @property {number} [sessionReminderDelay] - Days before sending first reminder
- * @property {number} [sessionReminderInt] - Days between reminders
  */
 export class Organisation {
   constructor(options) {
@@ -34,8 +32,6 @@ export class Organisation {
       options?.sessionOpenDelay || OrganisationDefaults.SessionOpenDelay
     this.sessionReminderDelay =
       options?.sessionReminderDelay || OrganisationDefaults.SessionReminderDelay
-    this.sessionReminderInt =
-      options?.sessionReminderInt || OrganisationDefaults.SessionReminderInt
   }
 
   /**
@@ -84,8 +80,7 @@ export class Organisation {
   get formatted() {
     return {
       sessionOpenDelay: `${this.sessionOpenDelay} weeks before first session`,
-      sessionReminderDelay: `${this.sessionReminderDelay} days after first consent request`,
-      sessionReminderInt: `${this.sessionReminderInt} days`
+      sessionReminderDelay: `${this.sessionReminderDelay} days after first consent request`
     }
   }
 

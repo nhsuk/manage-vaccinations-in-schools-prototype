@@ -70,11 +70,6 @@ export class Session {
       : this.open
         ? addDays(this.open, OrganisationDefaults.SessionReminderDelay)
         : undefined
-    this.reminderInt = options?.reminderInt
-      ? options.reminderInt
-      : this.reminder
-        ? OrganisationDefaults.SessionReminderInt
-        : undefined
     this.consents = options?.consents || {}
     this.programmes = options?.programmes || []
     // dateInput objects
@@ -377,7 +372,6 @@ export class Session {
       open: formatDate(this.open, { dateStyle: 'full' }),
       reminder: formatDate(this.reminder, { dateStyle: 'full' }),
       close: formatDate(this.close, { dateStyle: 'full' }),
-      reminderInt: this.reminderInt && `${this.reminderInt} days`,
       programmes: prototypeFilters.formatList(formattedProgrammes),
       consentWindow
     }

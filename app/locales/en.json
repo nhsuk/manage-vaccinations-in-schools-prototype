@@ -752,11 +752,6 @@
       "title": "When should parents get their first reminder?",
       "label": "Days before first reminder",
       "hint": "You can change this value when scheduling new sessions."
-    },
-    "sessionReminderInt": {
-      "title": "Days between each reminder",
-      "label": "Days between each reminder",
-      "hint": "You can change this value when scheduling new sessions."
     }
   },
   "outcome": {
@@ -1351,10 +1346,6 @@
       "title": "When should parents receive a request for consent?",
       "label": "First reminder",
       "hint": "For example, 27 3 2025"
-    },
-    "reminderInt": {
-      "title": "Days between each reminder",
-      "label": "Days between each reminder"
     },
     "reminders": {
       "title": "Reminders"
