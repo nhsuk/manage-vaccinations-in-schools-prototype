@@ -20,11 +20,6 @@ export const getPatientOutcome = (patient) => {
   if (vaccinations.length === 1) {
     if (vaccinations[0] === true) {
       return getEnumKeyAndValue(PatientOutcome, PatientOutcome.Vaccinated)
-    } else {
-      return getEnumKeyAndValue(
-        PatientOutcome,
-        PatientOutcome.CouldNotVaccinate
-      )
     }
   }
 

@@ -12,7 +12,7 @@ import {
 } from '../models/patient.js'
 import { Record } from '../models/record.js'
 import { Reply } from '../models/reply.js'
-import { Session, SessionStatus } from '../models/session.js'
+import { Session } from '../models/session.js'
 import { Vaccination } from '../models/vaccination.js'
 
 export const patientController = {
