@@ -757,11 +757,6 @@
       "title": "Days between each reminder",
       "label": "Days between each reminder",
       "hint": "You can change this value when scheduling new sessions."
-    },
-    "sessionReminderMax": {
-      "title": "Maximum number of reminders",
-      "label": "Maximum number of reminders",
-      "hint": "You can change this value when scheduling new sessions."
     }
   },
   "outcome": {
@@ -1360,10 +1355,6 @@
     "reminderInt": {
       "title": "Days between each reminder",
       "label": "Days between each reminder"
-    },
-    "reminderMax": {
-      "title": "Maximum number of reminders",
-      "label": "Maximum number of reminders"
     },
     "reminders": {
       "title": "Reminders"

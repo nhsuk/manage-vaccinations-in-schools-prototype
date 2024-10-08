@@ -8,7 +8,6 @@ export class OrganisationDefaults {
   static SessionOpenDelay = 3
   static SessionReminderDelay = 7
   static SessionReminderInt = 7
-  static SessionReminderMax = 4
 }
 
 /**
@@ -22,7 +21,6 @@ export class OrganisationDefaults {
  * @property {number} [sessionOpenDelay] - Weeks before session to request consent
  * @property {number} [sessionReminderDelay] - Days before sending first reminder
  * @property {number} [sessionReminderInt] - Days between reminders
- * @property {number} [sessionReminderMax] - Max number of reminders
  */
 export class Organisation {
   constructor(options) {
@@ -38,8 +36,6 @@ export class Organisation {
       options?.sessionReminderDelay || OrganisationDefaults.SessionReminderDelay
     this.sessionReminderInt =
       options?.sessionReminderInt || OrganisationDefaults.SessionReminderInt
-    this.sessionReminderMax =
-      options?.sessionReminderMax || OrganisationDefaults.SessionReminderMax
   }
 
   /**

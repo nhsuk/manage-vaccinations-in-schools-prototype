@@ -75,11 +75,6 @@ export class Session {
       : this.reminder
         ? OrganisationDefaults.SessionReminderInt
         : undefined
-    this.reminderMax = options?.reminderMax
-      ? options.reminderMax
-      : this.reminder
-        ? OrganisationDefaults.SessionReminderMax
-        : undefined
     this.consents = options?.consents || {}
     this.programmes = options?.programmes || []
     // dateInput objects

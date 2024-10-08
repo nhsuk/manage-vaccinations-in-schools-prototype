@@ -35,17 +35,4 @@
     suffix: "days",
     decorate: "organisation.sessionReminderInt"
   }) }}
-
-  {{ input({
-    formGroup: {
-      classes: "nhsuk-u-margin-bottom-6"
-    },
-    classes: "nhsuk-input--width-2",
-    label: {
-      classes: "nhsuk-label--m",
-      text: __("organisation.sessionReminderMax.title")
-    },
-    hint: { text: __("organisation.sessionReminderMax.hint") },
-    decorate: "organisation.sessionReminderMax"
-  }) }}
 {% endblock %}
