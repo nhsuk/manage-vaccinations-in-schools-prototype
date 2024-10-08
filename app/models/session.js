@@ -47,8 +47,7 @@ export class SessionType {
  * @property {Array<object>} [dates_] - Dates (from `dateInput`s)
  * @property {string} [open] - Date consent window opens
  * @property {object} [open_] - Date consent window opens (from `dateInput`)
- * @property {number} [reminder] - Date to send reminders
- * @property {object} [reminder_] - Date to send reminders (from `dateInput`)
+ * @property {number} [reminderWeeks] - Weeks before session to send reminders
  * @property {object} [consents] – (Unmatched) consent replies
  * @property {Array<string>} [programmes] - Programme PIDs
  */
@@ -63,13 +62,10 @@ export class Session {
     this.open = options?.open
       ? options.open
       : this.firstDate
-        ? removeDays(this.firstDate, OrganisationDefaults.SessionOpenDelay * 7)
+        ? removeDays(this.firstDate, OrganisationDefaults.SessionOpenWeeks * 7)
         : undefined
-    this.reminder = options?.reminder
-      ? options.reminder
-      : this.open
-        ? addDays(this.open, OrganisationDefaults.SessionReminderDelay)
-        : undefined
+    this.reminderWeeks =
+      options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
     this.consents = options?.consents || {}
     this.programmes = options?.programmes || []
     // dateInput objects
@@ -192,24 +188,6 @@ export class Session {
   }
 
   /**
-   * Get date to send reminders for `dateInput`
-   * @returns {object|undefined} - `dateInput` object
-   */
-  get reminder_() {
-    return convertIsoDateToObject(this.reminder)
-  }
-
-  /**
-   * Set date to send reminders from `dateInput`
-   * @param {object} object - dateInput object
-   */
-  set reminder_(object) {
-    if (object) {
-      this.reminder = convertObjectToIsoDate(object)
-    }
-  }
-
-  /**
    * Get first session date
    * @returns {string} - First session date
    */
@@ -234,6 +212,16 @@ export class Session {
     remainingDates.shift()
 
     return remainingDates
+  }
+
+  /**
+   * Get date next automated reminder will be sent
+   * @returns {Date|undefined} - Next reminder date
+   */
+  get nextReminderDate() {
+    if (this.dates.length > 0) {
+      return removeDays(this.dates[0], this.reminderWeeks * 7)
+    }
   }
 
   /**
@@ -363,6 +351,12 @@ export class Session {
       return name
     })
 
+    const formattedNextReminderDate = formatDate(this.nextReminderDate, {
+      dateStyle: 'full'
+    })
+
+    const reminderWeeks = prototypeFilters.plural(this.reminderWeeks, 'week')
+
     return {
       dates: formatList(formattedDates).replace(
         'nhsuk-list--bullet',
@@ -370,7 +364,8 @@ export class Session {
       ),
       firstDate: formatDate(this.firstDate, { dateStyle: 'full' }),
       open: formatDate(this.open, { dateStyle: 'full' }),
-      reminder: formatDate(this.reminder, { dateStyle: 'full' }),
+      reminderWeeks: `Send ${reminderWeeks} before each session</br>
+      <span class="nhsuk-u-secondary-text-color">First: ${formattedNextReminderDate}</span>`,
       close: formatDate(this.close, { dateStyle: 'full' }),
       programmes: prototypeFilters.formatList(formattedProgrammes),
       consentWindow

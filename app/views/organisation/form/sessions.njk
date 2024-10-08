@@ -1,0 +1,39 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("organisation.sessions.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: organisation.name,
+    title: title
+  }) }}
+
+  {{ insetText({
+    html: __("organisation.sessions.text") | nhsukMarkdown
+  }) }}
+
+  {{ input({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-6"
+    },
+    classes: "nhsuk-input--width-2",
+    label: {
+      classes: "nhsuk-label--m",
+      text: __("organisation.sessionOpenWeeks.title")
+    },
+    hint: { text: __("organisation.sessionOpenWeeks.hint") },
+    suffix: "weeks",
+    decorate: "organisation.sessionOpenWeeks"
+  }) }}
+
+  {{ input({
+    classes: "nhsuk-input--width-2",
+    label: {
+      classes: "nhsuk-label--m",
+      text: __("organisation.sessionReminderWeeks.title")
+    },
+    hint: { text: __("organisation.sessionReminderWeeks.hint") },
+    suffix: "weeks",
+    decorate: "organisation.sessionReminderWeeks"
+  }) }}
+{% endblock %}

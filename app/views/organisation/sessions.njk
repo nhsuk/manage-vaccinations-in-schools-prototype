@@ -23,11 +23,11 @@
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: summaryList({
           rows: summaryRows(organisation, {
-            sessionOpenDelay: {
-              href: organisation.uri + "/edit/consent"
+            sessionOpenWeeks: {
+              href: organisation.uri + "/edit/sessions"
             },
-            sessionReminderDelay: {
-              href: organisation.uri + "/edit/reminders"
+            sessionReminderWeeks: {
+              href: organisation.uri + "/edit/sessions"
             }
           })
         })

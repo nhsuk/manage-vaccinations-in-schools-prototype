@@ -1,17 +1,19 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("session.reminders.title") %}
+{% set title = __("session.reminderWeeks.title") %}
 
 {% block form %}
-  {{ heading({
-    title: title
-  }) }}
-
-  {{ dateInput({
-    fieldset: {
-      legend: { text: __("session.reminder.title") }
+  {{ input({
+    classes: "nhsuk-input--width-2",
+    label: {
+      classes: "nhsuk-label--l",
+      html: heading({
+        caption: session.location.name,
+        title: title
+      })
     },
-    hint: { text: __("session.reminder.hint") },
-    decorate: "session.reminder_"
+    hint: { text: __("session.reminderWeeks.hint") },
+    suffix: "weeks",
+    decorate: "session.reminderWeeks"
   }) }}
 {% endblock %}

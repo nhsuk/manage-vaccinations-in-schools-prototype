@@ -1,12 +1,13 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import clinicsData from '../datasets/clinics.js'
 import schoolsData from '../datasets/schools.js'
 import { Clinic } from './clinic.js'
 import { School } from './school.js'
 
 export class OrganisationDefaults {
-  static SessionOpenDelay = 3
-  static SessionReminderDelay = 7
+  static SessionOpenWeeks = 3
+  static SessionReminderWeeks = 1
 }
 
 /**
@@ -17,8 +18,8 @@ export class OrganisationDefaults {
  * @property {string} [tel] - Phone number
  * @property {Array<string>} [ids] - Clinic organisation IDs
  * @property {Array<string>} [urns] - School URNs
- * @property {number} [sessionOpenDelay] - Weeks before session to request consent
- * @property {number} [sessionReminderDelay] - Days before sending first reminder
+ * @property {number} [sessionOpenWeeks] - Weeks before session to request consent
+ * @property {number} [SessionReminderWeeks] - Days before sending first reminder
  */
 export class Organisation {
   constructor(options) {
@@ -28,10 +29,10 @@ export class Organisation {
     this.tel = options?.tel
     this.ids = options?.ids || []
     this.urns = options?.urns || []
-    this.sessionOpenDelay =
-      options?.sessionOpenDelay || OrganisationDefaults.SessionOpenDelay
-    this.sessionReminderDelay =
-      options?.sessionReminderDelay || OrganisationDefaults.SessionReminderDelay
+    this.sessionOpenWeeks =
+      options?.sessionOpenWeeks || OrganisationDefaults.SessionOpenWeeks
+    this.sessionReminderWeeks =
+      options?.sessionReminderWeeks || OrganisationDefaults.SessionReminderWeeks
   }
 
   /**
@@ -78,9 +79,18 @@ export class Organisation {
    * @returns {object} - Formatted values
    */
   get formatted() {
+    const sessionOpenWeeks = prototypeFilters.plural(
+      this.sessionOpenWeeks,
+      'week'
+    )
+    const sessionReminderWeeks = prototypeFilters.plural(
+      this.sessionReminderWeeks,
+      'week'
+    )
+
     return {
-      sessionOpenDelay: `${this.sessionOpenDelay} weeks before first session`,
-      sessionReminderDelay: `${this.sessionReminderDelay} days after first consent request`
+      sessionOpenWeeks: `Send ${sessionOpenWeeks} before first session`,
+      sessionReminderWeeks: `Send ${sessionReminderWeeks} before each session`
     }
   }
 

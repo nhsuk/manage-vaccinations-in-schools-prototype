@@ -55,9 +55,8 @@ export const organisationController = {
     const { data } = request.session
 
     const referrers = {
-      consent: `${organisation.uri}/sessions`,
       contact: `${organisation.uri}/contact`,
-      reminders: `${organisation.uri}/sessions`
+      sessions: `${organisation.uri}/sessions`
     }
 
     request.app.locals.organisation = new Organisation({
