@@ -15,9 +15,6 @@
     descriptionHtml: summaryList({
       rows: summaryRows(vaccination, {
         vaccine_gtin: {},
-        outcome: {
-          href: vaccination.uri + "/new/decline" if vaccination.outcome != "Vaccinated" and vaccination.outcome != "Partially vaccinated"
-        },
         method: {
           href: vaccination.uri + "/new/administer" if vaccination.vaccine.method == VaccineMethod.Injection
         },
@@ -41,6 +38,20 @@
         } if vaccination.created_user_uid,
         location: {},
         protocol: {}
+      })
+    })
+  }) if vaccination.outcome == "Vaccinated" or vaccination.outcome == "Partially vaccinated" else warningCallout({
+    heading: __("vaccination.new.check-answers.callout"),
+    HTML: summaryList({
+      rows: summaryRows(vaccination, {
+        vaccine_gtin: {},
+        outcome: {
+          href: vaccination.uri + "/new/decline"
+        },
+        created: {
+          href: vaccination.uri + "/new/created"
+        },
+        location: {}
       })
     })
   }) }}

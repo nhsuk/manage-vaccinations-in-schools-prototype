@@ -1512,7 +1512,8 @@
       "check-answers": {
         "title": "Check and confirm",
         "confirm": "Save changes",
-        "summary": "Details"
+        "summary": "Vaccination details",
+        "callout": "Vaccination was not given"
       }
     },
     "edit": {
