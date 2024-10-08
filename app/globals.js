@@ -163,6 +163,14 @@ export default () => {
           user
         })
         title = __(`screen.${screen.key}.title`)
+      } else if (screen.value === ScreenOutcome.Vaccinate) {
+        // Patient needs triage
+        colour = __(`screen.${screen.key}.colour`)
+        description = __(`screen.${screen.key}.description`, {
+          patient,
+          user
+        })
+        title = __(`screen.${screen.key}.title`)
       } else {
         // Patient requires consent
         colour = __(`consent.${consent.key}.colour`)
