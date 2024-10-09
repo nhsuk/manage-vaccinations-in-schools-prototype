@@ -45,11 +45,16 @@
         {
           header: __("record.postalCode.label"),
           text: record.postalCode
+        },
+        {
+          header: __("record.urn.label"),
+          text: record.formatted.urn
         }
       ]) %}
     {% endfor %}
 
     {{ actionTable({
+      tableClasses: "app-table--small",
       id: "cohort",
       heading: __n("cohort.records.count", cohort.records.length),
       panel: true,
@@ -58,7 +63,8 @@
         { text: __("record.fullName.label") },
         { text: __("record.nhsn.label") },
         { text: __("record.dob.label") },
-        { text: __("record.postalCode.label") }
+        { text: __("record.postalCode.label") },
+        { text: __("record.urn.label") }
       ],
       rows: recordRows
     }) }}
