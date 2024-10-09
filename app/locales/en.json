@@ -829,6 +829,10 @@
     }
   },
   "patient": {
+    "list": {
+      "title": "Children",
+      "description": "Use this area to:\n- view child records\n- view child vaccinations"
+    },
     "show": {
       "title": "Child record"
     },
@@ -842,6 +846,11 @@
     "lastReminderDate": {
       "label": "Last reminder sent",
       "title": "Last reminder sent %s"
+    },
+    "results": "Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> records",
+    "count": {
+      "one": "%s child",
+      "other": "%s children"
     }
   },
   "record": {

@@ -3,7 +3,6 @@ import { Cohort } from '../models/cohort.js'
 import { Import } from '../models/import.js'
 import { Programme } from '../models/programme.js'
 import { Record } from '../models/record.js'
-import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
 import { Vaccination } from '../models/vaccination.js'
 

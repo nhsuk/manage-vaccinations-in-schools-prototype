@@ -424,12 +424,16 @@ export class Patient {
    * @returns {object} - Formatted links
    */
   get link() {
-    let fullName = `${formatLink(this.uri, this.fullName)}`
+    let sessionUri = `/sessions/${this.session_id}/${this.nhsn}`
+    let fullNameInSession = `${formatLink(sessionUri, this.fullName)}`
     if (this.preferredNames) {
-      fullName += `<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">Known as: ${this.preferredNames}</span>`
+      fullNameInSession += `<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">Known as: ${this.preferredNames}</span>`
     }
 
-    return { fullName }
+    return {
+      fullName: formatLink(this.uri, this.fullName),
+      fullNameInSession
+    }
   }
 
   /**
@@ -458,6 +462,14 @@ export class Patient {
    * @returns {string} - URI
    */
   get uri() {
+    return `/patients/${this.nhsn}`
+  }
+
+  /**
+   * Get in session URI
+   * @returns {string} - URI
+   */
+  get uriInSession() {
     return `/sessions/${this.session_id}/${this.nhsn}`
   }
 }

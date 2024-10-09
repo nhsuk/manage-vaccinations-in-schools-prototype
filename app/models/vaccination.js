@@ -11,6 +11,7 @@ import {
   getToday
 } from '../utils/date.js'
 import {
+  formatLink,
   formatMillilitres,
   formatMarkdown,
   formatMonospace
@@ -285,6 +286,16 @@ export class Vaccination {
       dose: formatMillilitres(this.dose),
       vaccine_gtin: this.vaccine?.brandWithType,
       note: formatMarkdown(this.note)
+    }
+  }
+
+  /**
+   * Get formatted links
+   * @returns {object} - Formatted links
+   */
+  get link() {
+    return {
+      vaccine_gtin: formatLink(this.uri, this.formatted.vaccine_gtin)
     }
   }
 

@@ -8,6 +8,6 @@ export const remindController = {
       ...(data.token && { user_uid: data.token?.uid })
     }
 
-    response.redirect(patient.uri)
+    response.redirect(patient.uriInSession)
   }
 }

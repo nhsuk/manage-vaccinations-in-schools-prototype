@@ -20,7 +20,7 @@ export const triageController = {
     request.flash('success', __(`triage.success.${action}`, { patient }))
 
     if (session.isActive) {
-      response.redirect(patient.uri)
+      response.redirect(patient.uriInSession)
     } else {
       response.redirect(`/sessions/${id}/${activity || 'triage'}`)
     }
@@ -30,8 +30,8 @@ export const triageController = {
     const { patient } = response.locals
 
     response.locals.paths = {
-      back: `${patient.uri}`,
-      next: `${patient.uri}/triage/new`
+      back: `${patient.uriInSession}`,
+      next: `${patient.uriInSession}/triage/new`
     }
 
     next()

@@ -1,7 +1,7 @@
 {% extends "_layouts/default.njk" %}
 
 {% set title = __("reply.show.title", reply.fullName) %}
-{% set paths = { back: patient.uri } %}
+{% set paths = { back: patient.uriInSession } %}
 
 {% block content %}
   <div class="nhsuk-u-width-three-quarters">

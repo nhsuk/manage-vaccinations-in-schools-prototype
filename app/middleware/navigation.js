@@ -56,6 +56,11 @@ export const navigation = (request, response, next) => {
             current: current === 'sessions'
           },
           {
+            url: '/patients',
+            label: __('patient.list.title'),
+            current: current === 'patients'
+          },
+          {
             url: '/vaccines',
             label: __('vaccine.list.title'),
             current: current === 'vaccines'

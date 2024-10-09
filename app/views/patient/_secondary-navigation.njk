@@ -1,31 +1,34 @@
-{% if patient.registration.value == RegistrationOutcome.Pending %}
-  {% set tagColor = "blue" %}
-{% elif patient.registration.value == RegistrationOutcome.Complete %}
-  {% set tagColor = "white" %}
+{% if inSession %}
+  {% if patient.registration.value == RegistrationOutcome.Pending %}
+    {% set tagColor = "blue" %}
+  {% elif patient.registration.value == RegistrationOutcome.Complete %}
+    {% set tagColor = "white" %}
+  {% endif %}
+  {{ actionList({
+    items: [{
+      tag: {
+        classes: "nhsuk-tag--" + tagColor if tagColor,
+        text: patient.registration.value
+      }
+    } if patient.session_id and session.isActive, {
+      text: __("registration.edit.title"),
+      href: patient.uriInSession + "/registration/edit"
+    } if patient.session_id and session.isActive and patient.registration.value != RegistrationOutcome.Complete, {
+      text: __("invite.edit.title"),
+      href: patient.uriInSession + "/invite/edit"
+    } if not patient.session_id]
+  }) }}
 {% endif %}
-{{ actionList({
-  items: [{
-    tag: {
-      classes: "nhsuk-tag--" + tagColor if tagColor,
-      text: patient.registration.value
-    }
-  } if patient.session_id and session.isActive, {
-    text: __("registration.edit.title"),
-    href: patient.uri + "/registration/edit"
-  } if patient.session_id and session.isActive and patient.registration.value != RegistrationOutcome.Complete, {
-    text: __("invite.edit.title"),
-    href: patient.uri + "/invite/edit"
-  } if not patient.session_id]
-}) }}
 
+{% set uri = patient.uriInSession if inSession else patient.uri %}
 {{ xGovukSecondaryNavigation({
   items: [{
     text: __("patient.show.title"),
-    href: patient.uri,
+    href: uri,
     current: view == "show"
   }, {
     text: __("patient.events.title"),
-    href: patient.uri + "/events",
+    href: uri + "/events",
     current: view == "events"
   }]
 }) }}

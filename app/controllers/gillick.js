@@ -32,6 +32,6 @@ export const gillickController = {
     const action = form === 'edit' ? 'update' : 'create'
     request.flash('success', __(`gillick.success.${action}`))
 
-    response.redirect(patient.uri)
+    response.redirect(patient.uriInSession)
   }
 }

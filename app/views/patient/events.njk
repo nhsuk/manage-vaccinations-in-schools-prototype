@@ -24,6 +24,14 @@
       text: data.cohorts[cohort.uid].type,
       href: "/cohorts/" + cohort.uid
     }]
+  }) if inSession else breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("patient.list.title"),
+      href: "/sessions"
+    }]
   }) }}
 {% endblock %}
 
@@ -32,7 +40,7 @@
     {{ super() }}
 
     {{ heading({
-      caption: session.location.name if patient.session_id,
+      caption: session.location.name if inSession,
       title: patient.record.fullName
     }) }}
 

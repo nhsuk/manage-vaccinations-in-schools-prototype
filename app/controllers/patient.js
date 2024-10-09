@@ -1,3 +1,5 @@
+import _ from 'lodash'
+import { getResults, getPagination } from '../utils/pagination.js'
 import {
   Programme,
   ProgrammeType,
@@ -16,13 +18,38 @@ import { Session } from '../models/session.js'
 import { Vaccination } from '../models/vaccination.js'
 
 export const patientController = {
+  readAll(request, response, next) {
+    let { page, limit } = request.query
+    const { data } = request.session
+
+    let patients = Object.values(data.patients).map(
+      (patient) => new Patient(patient)
+    )
+
+    // Sort
+    patients = _.sortBy(patients, 'lastName')
+
+    // Paginate
+    page = parseInt(page) || 1
+    limit = parseInt(limit) || 200
+
+    response.locals.patients = patients
+    response.locals.results = getResults(patients, page, limit)
+    response.locals.pages = getPagination(patients, page, limit)
+
+    next()
+  },
+
+  showAll(request, response) {
+    response.render('patient/list')
+  },
+
   read(request, response, next) {
     const { id, nhsn } = request.params
     const { data } = request.session
+    const { patients } = response.locals
 
-    let patient = Object.values(data.patients).find(
-      (patient) => patient.record.nhsn === nhsn
-    )
+    let patient = patients.find((patient) => patient.record.nhsn === nhsn)
 
     // If no patient found, use CHIS record (patient not imported yet)
     if (!patient) {
@@ -34,18 +61,17 @@ export const patientController = {
 
     patient = new Patient(patient)
 
-    const replies = Object.values(patient.replies)
-    const vaccinations = Object.keys(patient.vaccinations)
-      .map((uuid) => new Vaccination(data.vaccinations[uuid]))
-      .filter((vaccination) => vaccination.session_id === id)
+    let vaccinations = Object.keys(patient.vaccinations).map(
+      (uuid) => new Vaccination(data.vaccinations[uuid])
+    )
 
-    request.app.locals.record = patient.record
-    response.locals.patient = patient
-    response.locals.replies = replies.map((reply) => new Reply(reply))
-    response.locals.vaccinations = vaccinations
+    const inSession = request.originalUrl.includes('sessions')
+    const replies = Object.values(patient.replies).map(
+      (reply) => new Reply(reply)
+    )
 
     // Patient in session
-    if (request.originalUrl.includes('sessions')) {
+    if (inSession) {
       const session = new Session(data.sessions[id])
 
       // Select first programme in session to show pre-screening questions
@@ -83,15 +109,31 @@ export const patientController = {
           patient.outcome?.value !== PatientOutcome.CouldNotVaccinate
       }
 
+      vaccinations = vaccinations.filter(
+        (vaccination) => vaccination.session_id === id
+      )
+
       response.locals.programme = programme
       response.locals.session = session
     }
+
+    response.locals.inSession = inSession
+    response.locals.patient = patient
+    response.locals.replies = replies
+    response.locals.vaccinations = vaccinations
+
+    request.app.locals.record = patient.record
 
     next()
   },
 
   show(request, response) {
-    const view = request.params.view || 'show'
+    let { view } = request.params
+    let { inSession } = response.locals
+
+    if (!view) {
+      view = inSession ? 'session' : 'show'
+    }
 
     response.render(`patient/${view}`)
   },

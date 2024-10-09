@@ -3,6 +3,9 @@ import { patientController } from '../controllers/patient.js'
 
 const router = express.Router({ strict: true, mergeParams: true })
 
+router.all('/*', patientController.readAll)
+router.get('/', patientController.showAll)
+
 router.all('/:nhsn*', patientController.read)
 router.get(['/:nhsn', '/:nhsn/?:view(events)'], patientController.show)
 

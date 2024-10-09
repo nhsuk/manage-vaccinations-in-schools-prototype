@@ -195,8 +195,8 @@ export const replyController = {
     response.locals.paths = {
       ...wizard(journey, request),
       ...(form === 'edit' && {
-        back: `${patient.uri}/replies/${uuid}/edit`,
-        next: `${patient.uri}/replies/${uuid}/edit`
+        back: `${patient.uriInSession}/replies/${uuid}/edit`,
+        next: `${patient.uriInSession}/replies/${uuid}/edit`
       }),
       ...(referrer && { back: referrer })
     }
@@ -299,7 +299,7 @@ export const replyController = {
     }
 
     response.redirect(
-      paths.next || `${patient.uri}/replies/${uuid}/new/check-answers`
+      paths.next || `${patient.uriInSession}/replies/${uuid}/new/check-answers`
     )
   },
 
@@ -354,7 +354,7 @@ export const replyController = {
     delete data.reply
 
     request.flash('success', __(`reply.success.invalidate`, { reply }))
-    response.redirect(patient.uri)
+    response.redirect(patient.uriInSession)
   },
 
   showWithdraw(request, response) {
@@ -398,6 +398,6 @@ export const replyController = {
     delete data.reply
 
     request.flash('success', __(`reply.success.withdraw`, { reply }))
-    response.redirect(patient.uri)
+    response.redirect(patient.uriInSession)
   }
 }

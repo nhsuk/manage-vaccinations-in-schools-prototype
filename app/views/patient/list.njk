@@ -1,0 +1,57 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("patient.list.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    size: "xl",
+    title: title
+  }) }}
+
+  {% set patientRows = [] %}
+  {% for patient in patients | sort(false, false, "record.lastName") %}
+    {% set patientRows = patientRows | push([
+      {
+        header: __("record.fullName.label"),
+        html: patient.link.fullName
+      },
+      {
+        header: __("record.urn.label"),
+        html: patient.record.formatted.urn
+      },
+      {
+        header: __("record.yearGroup.label"),
+        html: patient.record.formatted.yearGroup or "Not provided",
+        attributes: {
+          "data-filter": patient.record.yearGroup,
+          "data-sort": patient.record.yearGroup
+        }
+      }
+    ]) %}
+  {% endfor %}
+
+  {% if patients.length %}
+    {{ table({
+      id: "patients",
+      heading: __n("patient.count", patients.length),
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("record.fullName.label") },
+        { text: __("record.urn.label") },
+        { text: __("record.yearGroup.label") }
+      ],
+      rows: patientRows
+    }) }}
+
+    {{ govukPagination(pages) }}
+
+    {{ __("patient.results", { results: results }) | nhsukMarkdown }}
+  {% else %}
+    <div class="app-patients">
+      <p class="app-patients__no-results nhsuk-caption-m">{{ __n("patient.count", patients.length) }}</p>
+    </div>
+  {% endif %}
+{% endblock %}

@@ -8,8 +8,8 @@ export const registrationController = {
     const { patient } = response.locals
 
     response.locals.paths = {
-      back: patient.uri,
-      next: patient.uri
+      back: patient.uriInSession,
+      next: patient.uriInSession
     }
 
     next()

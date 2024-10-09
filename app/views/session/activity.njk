@@ -59,7 +59,7 @@
   {% set patientRows = [] %}
   {% for patient in patients | sort(false, false, "firstName") %}
     {% set registerButtonHtml %}
-      <form class="app-button-group app-button-group--table" action="{{ patient.uri }}/registration/edit?tab={{tab}}" method="post">
+      <form class="app-button-group app-button-group--table" action="{{ patient.uriInSession }}/registration/edit?tab={{tab}}" method="post">
         {{ button({
           classes: "app-button--secondary app-button--small",
           text: __("registration.update.true.confirm"),
@@ -83,7 +83,7 @@
     {% set patientRows = patientRows | push([
       {
         header: __("record.fullName.label"),
-        html: patient.link.fullName
+        html: patient.link.fullNameInSession
       },
       {
         header: __("record.yearGroup.label"),
