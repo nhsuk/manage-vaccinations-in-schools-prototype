@@ -3,6 +3,7 @@ import { formatDate, getToday } from '../utils/date.js'
 
 export class ImportType {
   static Cohort = 'Child records'
+  static School = 'Class list'
   static Report = 'Vaccination records'
 }
 
@@ -88,7 +89,7 @@ export class Import {
       validations,
       records,
       devoid: 99,
-      invalid: type === ImportType.Report && 99
+      invalid: 99
     })
   }
 

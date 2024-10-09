@@ -270,9 +270,7 @@ export class Record {
 
     return {
       nhsn: formatNhsNumber(this.nhsn),
-      dob: formatDate(this.dob, {
-        dateStyle: 'long'
-      }),
+      dob: formatDate(this.dob, { dateStyle: 'short' }),
       yearGroup: formatYearGroup(this.yearGroup),
       address: Object.values(this.address).join('<br>'),
       gpSurgery:

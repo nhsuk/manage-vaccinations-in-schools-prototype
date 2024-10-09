@@ -631,7 +631,7 @@
       "description": "The records could not be imported due to errors in the CSV file. When fixing these errors, note that the header does not count as a row."
     },
     "devoid": {
-      "label": "Previously imported",
+      "label": "Omitted records",
       "description": "All records in this CSV file had already been imported.",
       "count": {
         "one": "%s previously imported record was omitted",
@@ -639,7 +639,7 @@
       }
     },
     "duplicate": {
-      "label": "Duplicates",
+      "label": "Duplicate records",
       "count": {
         "one": "%s duplicate record needs review",
         "other": "[0] No duplicate records need review|%s duplicate records need review"
@@ -676,7 +676,8 @@
       "title": "What type of records are you importing?",
       "hint": {
         "Cohort": "Records of children from a CHIS, local authority or school, used to create cohorts",
-        "Report": "Records of previous vaccinations to be reported to GPs and/or NHS England"
+        "Report": "Records of previous vaccinations to be reported to GPs and/or NHS England",
+        "School": "Records of children from a school, used to update cohorts"
       }
     },
     "status": {

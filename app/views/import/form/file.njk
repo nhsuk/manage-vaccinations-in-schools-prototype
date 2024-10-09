@@ -9,6 +9,8 @@
 {% set templateFormat %}
   {% if import.type == ImportType.Cohort %}
     {% include "import/_template-format-cohort.njk" %}
+  {% elif import.type == ImportType.School %}
+    {% include "import/_template-format-school.njk" %}
   {% elif import.type == ImportType.Report %}
     {% if programme.type == ProgrammeType.HPV %}
       {% include "import/_template-format-report-hpv.njk" %}

@@ -6,6 +6,8 @@
 {% set templateFormat %}
   {% if import.type == ImportType.Cohort %}
     {% include "import/_template-format-cohort.njk" %}
+  {% elif import.type == ImportType.School %}
+    {% include "import/_template-format-school.njk" %}
   {% elif import.type == ImportType.Report %}
     {% if programme.type == ProgrammeType.HPV %}
       {% include "import/_template-format-report-hpv.njk" %}
@@ -124,7 +126,7 @@
     {% set recordRows = recordRows | push([
       {
         header: __("record.fullName.label"),
-        html: link(record.vaccination.uri, record.fullName) if record.vaccination else record.fullName
+        html: link(record.vaccination.uri, record.fullName) if import.type == ImportType.Report else record.fullName
       },
       {
         header: __("record.nhsn.label"),
@@ -138,6 +140,9 @@
         header: __("record.postalCode.label"),
         text: record.postalCode
       }, {
+        header: __("record.urn.label"),
+        text: record.formatted.urn
+      } if import.type == ImportType.School, {
         header: __("vaccination.created.label"),
         text: record.vaccination.formatted.created_date
       } if import.type == ImportType.Report
@@ -145,6 +150,7 @@
   {% endfor %}
 
   {{ actionTable({
+    tableClasses: "app-table--small",
     id: "vaccinations",
     sort: "name",
     panel: true,
@@ -155,6 +161,7 @@
       { text: __("record.nhsn.label") },
       { text: __("record.dob.label") },
       { text: __("record.postalCode.label") },
+      { text: __("record.urn.label") } if import.type == ImportType.School,
       { text: __("vaccination.created.label") } if import.type == ImportType.Report
     ],
     rows: recordRows
