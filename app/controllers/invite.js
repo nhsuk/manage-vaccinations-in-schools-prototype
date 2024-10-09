@@ -13,7 +13,10 @@ export const inviteController = {
     response.locals.sessionIdItems = Object.values(data.sessions)
       .map((session) => new Session(session))
       .filter((session) => session.status !== SessionStatus.Completed)
-      .sort((a, b) => new Date(a.date) - new Date(b.date))
+      .sort(
+        (a, b) =>
+          new Date(a.dates[0]).valueOf() - new Date(b.dates[0]).valueOf()
+      )
       .map((session) => ({
         text: session.location.name,
         hint: { text: session.formatted.date },
