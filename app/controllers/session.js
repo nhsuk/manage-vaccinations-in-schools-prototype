@@ -2,6 +2,7 @@ import { wizard } from 'nhsuk-prototype-rig'
 import { Batch } from '../models/batch.js'
 import { Consent } from '../models/consent.js'
 import { Patient } from '../models/patient.js'
+import { Programme } from '../models/programme.js'
 import { Reply } from '../models/reply.js'
 import { Session, SessionStatus } from '../models/session.js'
 import { programmeTypes } from '../models/programme.js'
@@ -186,6 +187,9 @@ export const sessionController = {
     request.app.locals.patients = Object.values(data.patients)
       .filter((patient) => patient.session_id === id)
       .map((patient) => new Patient(patient))
+    request.app.locals.programme = new Programme(
+      data.programmes[session.programmes[0]]
+    )
 
     // Get default batches selected for vaccines in this session
     const defaultBatches = []
