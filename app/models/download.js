@@ -148,7 +148,7 @@ export class Download {
           firstName: vaccination.record.firstName,
           dob: vaccination.record.dob,
           address_line1: vaccination.record.address.addressLine1,
-          parent: vaccination.record.parent.fullName,
+          parent: vaccination.record.parent1.fullName,
           ethnicity: '',
           date: vaccination.created,
           time: vaccination.created,
