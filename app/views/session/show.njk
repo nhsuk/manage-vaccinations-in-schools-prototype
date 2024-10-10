@@ -58,7 +58,7 @@
             }) }}
           </li>
         {% endif %}
-        {% if session.consents.length %}
+        {% if session.consents | length %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {{ card({
               clickable: true,
