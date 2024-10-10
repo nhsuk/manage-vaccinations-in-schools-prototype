@@ -1,8 +1,7 @@
 {% extends "_layouts/form.njk" %}
 
-{% set confirmButtonText = __("batch.edit.confirm") %}
-{% set paths = { back: "/vaccines" } %}
-{% set title = __("batch.edit.title", { batch: batch }) %}
+{% set confirmButtonText = __("batch." + form + ".confirm") %}
+{% set title = __("batch." + form + ".title", { batch: batch }) %}
 
 {% block form %}
   {{ heading({

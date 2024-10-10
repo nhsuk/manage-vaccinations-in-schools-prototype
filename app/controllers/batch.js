@@ -1,12 +1,10 @@
 import { Batch } from '../models/batch.js'
 
 export const batchController = {
-  edit(request, response) {
-    response.render('batch/edit')
-  },
+  show(request, response) {
+    const { form } = request.params
 
-  new(request, response) {
-    response.render('batch/new')
+    response.render('batch/form', { form })
   },
 
   create(request, response) {
@@ -18,9 +16,11 @@ export const batchController = {
       vaccine_gtin: gtin
     })
 
+    // Add to session data
     request.session.data.batches[batch.id] = batch
 
     request.flash('success', __(`batch.success.create`, { batch }))
+
     response.redirect('/vaccines')
   },
 
@@ -30,21 +30,36 @@ export const batchController = {
 
     response.locals.batch = new Batch(data.batches[id])
 
+    response.locals.paths = {
+      back: `/vaccines`,
+      next: `/vaccines`
+    }
+
     next()
   },
 
   update(request, response) {
+    const { id } = request.params
     const { data } = request.session
-    const { __ } = response.locals
+    const { __, batch, paths } = response.locals
 
-    const batch = new Batch({
-      ...response.locals.batch,
+    const updatedBatch = new Batch({
+      ...batch,
       ...request.body.batch
     })
 
-    data.batches[batch.id] = batch
+    // Update session data
+    delete data.batches[id]
+    data.batches[updatedBatch.id] = updatedBatch
 
-    request.flash('success', __(`batch.success.update`, { batch }))
-    response.redirect(`/vaccines`)
+    // Clean up session data
+    delete data.batch
+
+    request.flash(
+      'success',
+      __(`batch.success.update`, { batch: updatedBatch })
+    )
+
+    response.redirect(paths.next)
   }
 }
