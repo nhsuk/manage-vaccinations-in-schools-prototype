@@ -20,7 +20,7 @@
     <div class="nhsuk-grid-column-three-quarters">
       {% set cardDescriptionHtml %}
         {% set clinicRows = [] %}
-        {% for clinic in organisation.clinics | sort(false, false, "name") %}
+        {% for clinic in clinics | sort(false, false, "name") %}
           {% set clinicRows = clinicRows | push([
             {
               header: __("clinic.name.label"),
@@ -28,6 +28,17 @@
               attributes: {
                 "data-sort": clinic.name
               }
+            }, {
+              header: __("clinic.actions.label"),
+              html: actionList({
+                items: [{
+                  text: __("clinic.edit.label"),
+                  href: organisation.uri + "/clinics/" + clinic.id + "/edit"
+                }, {
+                  text: __("clinic.delete.label"),
+                  href: organisation.uri + "/clinics/" + clinic.id + "/delete"
+                }]
+              })
             }
           ]) %}
         {% endfor %}
@@ -35,18 +46,23 @@
         {{ button({
           classes: "app-button--secondary",
           text: __("organisation.clinics.new.title"),
-          href: "#"
+          href: organisation.uri + "/clinics/new"
         }) }}
 
-        {{ actionTable({
-          id: "clinics",
-          sort: "name",
-          responsive: true,
-          head: [
-            { text: __("clinic.name.label") }
-          ],
-          rows: clinicRows
-        }) }}
+        {% if clinics.length %}
+          {{ actionTable({
+            id: "clinics",
+            sort: "name",
+            responsive: true,
+            head: [
+              { text: __("clinic.name.label") },
+              { text: __("clinic.actions.label") }
+            ],
+            rows: clinicRows
+          }) }}
+        {% else %}
+          {{ __n("clinic.count", 0) | nhsukMarkdown }}
+        {% endif %}
       {% endset %}
 
       {{ card({

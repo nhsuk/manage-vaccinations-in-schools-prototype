@@ -59,14 +59,6 @@ export class Organisation {
   }
 
   /**
-   * Get clinics
-   * @returns {Array} - Clinics
-   */
-  get clinics() {
-    return this.ids.map((id) => new Clinic(clinicsData[id]))
-  }
-
-  /**
    * Get schools
    * @returns {Array} - Schools
    */

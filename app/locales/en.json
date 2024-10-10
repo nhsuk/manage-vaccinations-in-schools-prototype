@@ -81,6 +81,48 @@
   "clinic": {
     "name": {
       "label": "Name"
+    },
+    "new": {
+      "title": "Add a new clinic",
+      "confirm": "Add clinic"
+    },
+    "edit": {
+      "label": "Edit",
+      "title": "Edit clinic",
+      "confirm": "Save changes"
+    },
+    "delete": {
+      "label": "Delete"
+    },
+    "action": {
+      "title": "Are you sure you want to %s this clinic?",
+      "description": "This operation cannot be undone.",
+      "confirm": "Yes, %s this clinic",
+      "cancel": "No, return to clinics"
+    },
+    "success": {
+      "create": "{{clinic.name}} created",
+      "update": "{{clinic.name}} updated",
+      "delete": "Clinic deleted"
+    },
+    "addressLine1": {
+      "label": "Address line 1"
+    },
+    "addressLine2": {
+      "label": "Address line 2"
+    },
+    "addressLevel1": {
+      "label": "Town or city"
+    },
+    "postalCode": {
+      "label": "Postcode"
+    },
+    "actions": {
+      "label": "Actions"
+    },
+    "count": {
+      "one": "%s clinic",
+      "other": "[0] No clinics|%s clinics"
     }
   },
   "cohort": {

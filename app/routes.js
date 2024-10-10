@@ -7,6 +7,7 @@ import { notification } from './middleware/notification.js'
 import { users } from './middleware/users.js'
 import { accountRoutes } from './routes/account.js'
 import { batchRoutes } from './routes/batch.js'
+import { clinicRoutes } from './routes/clinic.js'
 import { cohortRoutes } from './routes/cohort.js'
 import { consentRoutes } from './routes/consent.js'
 import { defaultBatchRoutes } from './routes/default-batch.js'
@@ -41,6 +42,7 @@ router.use('/account', accountRoutes)
 router.use('/cohorts', cohortRoutes)
 router.use('/consents', consentRoutes)
 router.use('/organisations', organisationRoutes)
+router.use('/organisations/:code/clinics', clinicRoutes)
 router.use('/patients', patientRoutes)
 router.use('/programmes', programmeRoutes)
 router.use('/programmes/:pid/cohorts', cohortRoutes)

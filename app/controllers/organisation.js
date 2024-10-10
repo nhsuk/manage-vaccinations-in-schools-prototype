@@ -1,4 +1,4 @@
-import { School } from '../models/school.js'
+import { Clinic } from '../models/clinic.js'
 import { Organisation } from '../models/organisation.js'
 
 export const organisationController = {
@@ -14,8 +14,10 @@ export const organisationController = {
     const { __ } = response.locals
 
     const organisation = new Organisation(data.organisations[code])
+    const clinics = organisation.ids.map((id) => new Clinic(data.clinics[id]))
 
     request.app.locals.organisation = organisation
+    request.app.locals.clinics = clinics
 
     response.locals.navigationItems = [
       {

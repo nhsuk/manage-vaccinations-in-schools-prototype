@@ -1,0 +1,25 @@
+{% extends "_layouts/form.njk" %}
+
+{% block form %}
+  {{ heading({
+    caption: clinic.name,
+    title: __("clinic.action.title", type)
+  }) }}
+
+  {{ __("clinic.action.description") | nhsukMarkdown }}
+{% endblock %}
+
+{% block afterForm %}
+  <div class="app-button-group">
+    {{ button({
+      classes: "nhsuk-button--warning",
+      text: __("clinic.action.confirm", type),
+      attributes: {
+        formAction: organisation.uri + "/clinics/" + clinic.id + "/" + type
+      }
+    }) }}
+    <a class="nhsuk-link" href="{{ paths.back }}">
+      {{ __("clinic.action.cancel") }}
+    </a>
+  </div>
+{% endblock %}
