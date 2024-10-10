@@ -10,6 +10,28 @@
     title: title
   }) }}
 
+  <form class="app-search" role="search">
+    {{ input({
+      formGroup: { classes: "app-search__form-group" },
+      classes: "app-search__input",
+      label: { text: __("patient.search.label") },
+      type: "search",
+      name: "q",
+      value: data.q
+    }) }}
+
+    {{ button({
+      classes: "app-search__button",
+      text: __("patient.search.confirm")
+    }) }}
+
+    {{ button({
+      classes: "app-search__button nhsuk-button--secondary",
+      text: __("patient.search.clear"),
+      href: "/patients"
+    }) if data.q }}
+  </form>
+
   {% set patientRows = [] %}
   {% for patient in patients | sort(false, false, "record.lastName") %}
     {% set patientRows = patientRows | push([
@@ -18,30 +40,37 @@
         html: patient.link.fullName
       },
       {
+        header: __("record.postalCode.label"),
+        html: patient.record.postalCode
+      },
+      {
         header: __("record.urn.label"),
         html: patient.record.formatted.urn
       },
       {
-        header: __("record.yearGroup.label"),
-        html: patient.record.formatted.yearGroup or "Not provided",
-        attributes: {
-          "data-filter": patient.record.yearGroup,
-          "data-sort": patient.record.yearGroup
-        }
+        header: __("record.dob.label"),
+        html: patient.record.formatted.dob or "Not provided"
       }
     ]) %}
   {% endfor %}
 
   {% if patients.length %}
+    {% if data.q %}
+      {% set heading = __n("patient.count", patients.length) + " matching ‘" + data.q + "’" %}
+    {% else %}
+      {% set heading = __n("patient.count", patients.length) %}
+    {% endif %}
+
     {{ table({
       id: "patients",
-      heading: __n("patient.count", patients.length),
+      heading: heading,
       panel: true,
       responsive: true,
       head: [
         { text: __("record.fullName.label") },
+        { text: __("record.postalCode.label") },
         { text: __("record.urn.label") },
-        { text: __("record.yearGroup.label") }
+        { text: __("record.dob.label") }
       ],
       rows: patientRows
     }) }}

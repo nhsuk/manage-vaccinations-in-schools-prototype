@@ -65,8 +65,9 @@ $color_app-dark-orange: color.scale(color.mix($color_nhsuk-red, $color_nhsuk-war
 @import "patients";
 @import "prototype";
 @import "secondary-navigation";
-@import "sub-navigation";
+@import "search";
 @import "status";
+@import "sub-navigation";
 @import "summary-list";
 @import "tables";
 @import "tabs";

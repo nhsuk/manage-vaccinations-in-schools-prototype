@@ -19,7 +19,7 @@ import { Vaccination } from '../models/vaccination.js'
 
 export const patientController = {
   readAll(request, response, next) {
-    let { page, limit } = request.query
+    let { page, limit, q } = request.query
     const { data } = request.session
 
     let patients = Object.values(data.patients).map(
@@ -32,6 +32,18 @@ export const patientController = {
     // Paginate
     page = parseInt(page) || 1
     limit = parseInt(limit) || 200
+
+    // Query
+    if (q) {
+      patients = patients.filter((patient) => {
+        const fullName = String(patient.fullName).toLowerCase()
+        const query = q.toLowerCase()
+
+        return fullName.includes(query)
+      })
+    }
+
+    delete data.q
 
     response.locals.patients = patients
     response.locals.results = getResults(patients, page, limit)

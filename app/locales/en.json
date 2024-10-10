@@ -873,7 +873,7 @@
   "patient": {
     "list": {
       "title": "Children",
-      "description": "Use this area to:\n- view child records\n- view child vaccinations"
+      "description": "Use this area to:\n- find child records\n- view child vaccinations"
     },
     "show": {
       "title": "Child record"
@@ -889,10 +889,15 @@
       "label": "Last reminder sent",
       "title": "Last reminder sent %s"
     },
-    "results": "Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> records",
+    "results": "Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> children",
     "count": {
       "one": "%s child",
       "other": "%s children"
+    },
+    "search": {
+      "label": "Search children by name",
+      "confirm": "Search",
+      "clear": "Clear search"
     }
   },
   "record": {
