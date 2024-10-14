@@ -96,8 +96,8 @@ export default (env) => {
    * @param {string} string - Markdown
    * @returns {string} HTML decorated with nhsuk-* typography classes
    */
-  filters.nhsukMarkdown = (string) => {
-    return env.filters.safe(formatMarkdown(string))
+  filters.nhsukMarkdown = (string, headingsStartWith) => {
+    return env.filters.safe(formatMarkdown(string, headingsStartWith))
   }
 
   /**

@@ -85,11 +85,11 @@ export function formatList(array) {
  * @param {string} string - Markdown
  * @returns {string|undefined} HTML decorated with nhsuk-* classes
  */
-export function formatMarkdown(string) {
+export function formatMarkdown(string, headingsStartWith = 'l') {
   if (!string) return
 
   const markdown = prototypeFilters.govukMarkdown(string, {
-    headingsStartWith: 'l'
+    headingsStartWith
   })
   const nhsukMarkdown = String(markdown).replaceAll('govuk-', 'nhsuk-')
 
