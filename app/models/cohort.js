@@ -1,6 +1,6 @@
 import { ProgrammeType } from './programme.js'
 import { Record } from './record.js'
-import { formatYearGroup } from '../utils/string.js'
+import { formatLink, formatYearGroup } from '../utils/string.js'
 
 export class AcademicYear {
   static Y2024 = '2024/25'
@@ -98,6 +98,16 @@ export class Cohort {
   get formatted() {
     return {
       yearGroup: formatYearGroup(this.yearGroup)
+    }
+  }
+
+  /**
+   * Get formatted links
+   * @returns {object} - Formatted links
+   */
+  get link() {
+    return {
+      name: formatLink(this.uri, this.name)
     }
   }
 

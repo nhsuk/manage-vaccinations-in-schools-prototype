@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { getResults, getPagination } from '../utils/pagination.js'
+import { Cohort } from '../models/cohort.js'
 import {
   Programme,
   ProgrammeType,
@@ -74,6 +75,10 @@ export const patientController = {
 
     patient = new Patient(patient)
 
+    const cohorts = Object.values(patient.cohorts).map(
+      (uid) => new Cohort(data.cohorts[uid])
+    )
+
     let vaccinations = Object.keys(patient.vaccinations).map(
       (uuid) => new Vaccination(data.vaccinations[uuid])
     )
@@ -134,6 +139,7 @@ export const patientController = {
     response.locals.inSession = inSession
     response.locals.patient = patient
     response.locals.replies = replies
+    response.locals.cohorts = cohorts
     response.locals.vaccinations = vaccinations
 
     request.app.locals.record = patient.record

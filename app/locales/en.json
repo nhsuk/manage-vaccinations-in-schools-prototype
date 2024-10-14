@@ -126,11 +126,16 @@
     }
   },
   "cohort": {
+    "label": "Cohorts",
     "list": {
       "title": "All cohorts"
     },
     "import": {
       "label": "Import child records"
+    },
+    "unselect": {
+      "confirm": "Remove from cohort",
+      "success": "{{patient.fullName}} removed from {{cohort.name}} cohort"
     },
     "records": {
       "count": {
@@ -140,6 +145,16 @@
     },
     "yearGroup": {
       "label": "Year group"
+    },
+    "count": {
+      "one": "%s cohort",
+      "other": "[0] No cohorts|%s cohorts"
+    },
+    "name": {
+      "label": "Name"
+    },
+    "action": {
+      "label": "Actions"
     }
   },
   "capture": {
