@@ -1,0 +1,20 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("record.urn.title") %}
+
+{% block form %}
+  {{ xGovukAutocomplete({
+    id: "urn",
+    name: "[record][urn]",
+    value: consent.child.urn,
+    allowEmpty: false,
+    label: {
+      classes: "nhsuk-label--l",
+      html: heading({
+        caption: patient.fullName,
+        title: title
+      })
+    },
+    items: urnItems
+  }) | replace("govuk-", "nhsuk-") }}
+{% endblock %}

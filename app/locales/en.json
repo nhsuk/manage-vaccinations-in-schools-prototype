@@ -964,7 +964,8 @@
       "title": "Who is the child’s GP?"
     },
     "urn": {
-      "label": "School"
+      "label": "School",
+      "title": "What school does the child go to?"
     },
     "parent": {
       "label": "Parent or guardian",

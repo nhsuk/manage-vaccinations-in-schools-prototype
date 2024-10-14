@@ -14,6 +14,7 @@ import {
 } from '../models/patient.js'
 import { Record } from '../models/record.js'
 import { Reply } from '../models/reply.js'
+import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
 import { Vaccination } from '../models/vaccination.js'
 
@@ -215,6 +216,16 @@ export const patientController = {
         next: `${patient.uri}/edit`
       })
     }
+
+    response.locals.urnItems = Object.values(data.schools)
+      .map((school) => new School(school))
+      .map((school) => ({
+        text: school.name,
+        value: school.urn,
+        attributes: {
+          'data-hint': school.formatted.address
+        }
+      }))
 
     next()
   },
