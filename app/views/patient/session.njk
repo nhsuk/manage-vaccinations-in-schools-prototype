@@ -109,7 +109,7 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: statusDescriptionHtml,
       feature: true
-    }) if patient.session_id }}
+    }) if session.consentWindow.value != ConsentWindow.Opening }}
 
     {% set recordDescriptionHtml %}
       {{ summaryList({
@@ -222,6 +222,13 @@
           ],
           rows: replyRows
         }) }}
+      {% elif session.consentWindow.value == ConsentWindow.Opening %}
+        {{ __("session.consentWindow." + session.consentWindow.key + ".text", {
+          open: session.open | date({
+            day: "numeric",
+            month: "long"
+          })
+        }) | nhsukMarkdown }}
       {% else %}
         {{ __("consent.NoResponse.description") | nhsukMarkdown }}
       {% endif %}
