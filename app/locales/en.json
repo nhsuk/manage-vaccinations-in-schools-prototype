@@ -753,7 +753,8 @@
   "notice": {
     "label": "Notice",
     "list": {
-      "title": "Important notices"
+      "title": "Important notices",
+      "description": "View notices about important updates to patient records"
     },
     "count": {
       "one": "%s notice",
@@ -768,7 +769,8 @@
   },
   "organisation": {
     "show": {
-      "title": "Your organisation"
+      "title": "Your organisation",
+      "description": "Manage your organisation’s settings"
     },
     "contact": {
       "title": "Contact details",
@@ -1719,7 +1721,7 @@
   "vaccine": {
     "list": {
       "title": "Vaccines",
-      "description": "Use this area to:\n- add new vaccine batches\n- edit details for existing batches"
+      "description": "Add and edit vaccine batches"
     },
     "show": {
       "summary": "Vaccine details",
