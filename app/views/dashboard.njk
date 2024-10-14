@@ -71,5 +71,15 @@
         descriptionHtml: __("organisation.show.description") | nhsukMarkdown
       }) }}
     </li>
+    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+      {{ card({
+        clickable: true,
+        secondary: true,
+        heading: __("manual.show.title"),
+        headingClasses: "nhsuk-heading-s",
+        href: "/manual",
+        descriptionHtml: __("manual.show.description") | nhsukMarkdown
+      }) }}
+    </li>
   </ul>
 {% endblock %}

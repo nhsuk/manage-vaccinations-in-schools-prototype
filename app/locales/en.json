@@ -750,6 +750,24 @@
       "confirm": "Invite"
     }
   },
+  "manual": {
+    "show": {
+      "title": "User guide",
+      "description": "Guidance on how to use this service"
+    },
+    "index": {
+      "label": "Overview"
+    },
+    "accounts": {
+      "label": "Managing users"
+    },
+    "consent": {
+      "label": "Getting consent"
+    },
+    "capture": {
+      "label": "Recording a vaccination"
+    }
+  },
   "notice": {
     "label": "Notice",
     "list": {
