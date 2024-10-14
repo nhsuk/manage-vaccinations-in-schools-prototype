@@ -66,6 +66,11 @@ export const navigation = (request, response, next) => {
             current: current === 'vaccines'
           },
           {
+            url: '/notices',
+            label: __('notice.list.title'),
+            current: current === 'notices'
+          },
+          {
             url: organisation.uri,
             label: __('organisation.show.title'),
             current: current === 'organisations'

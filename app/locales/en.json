@@ -750,6 +750,22 @@
       "confirm": "Invite"
     }
   },
+  "notice": {
+    "label": "Notice",
+    "list": {
+      "title": "Important notices"
+    },
+    "count": {
+      "one": "%s notice",
+      "other": "[0] No notices|%s notices"
+    },
+    "created": {
+      "label": "Date"
+    },
+    "name": {
+      "label": "Notice"
+    }
+  },
   "organisation": {
     "show": {
       "title": "Your organisation"
@@ -871,6 +887,7 @@
     }
   },
   "patient": {
+    "label": "Child",
     "list": {
       "title": "Children",
       "description": "Use this area to:\n- find child records\n- view child vaccinations"
@@ -940,6 +957,9 @@
     },
     "dobWithAge": {
       "label": "Date of birth"
+    },
+    "dod": {
+      "label": "Date of death"
     },
     "yearGroup": {
       "label": "Year group"

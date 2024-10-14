@@ -39,8 +39,11 @@ export function getRecordsFromYearGroup(records, yearGroup) {
  */
 export class Cohort {
   constructor(options) {
+    const year = options?.year || AcademicYear.Y2024
+
+    this.created = options?.created || `${year.split('/')[0]}-08-01`
     this.created_user_uid = options?.created_user_uid
-    this.year = options?.year || AcademicYear.Y2024
+    this.year = year
     this.yearGroup = options?.yearGroup
     this.records = options?.records || []
     this.programme_pid = options?.programme_pid
@@ -76,16 +79,6 @@ export class Cohort {
     const yearGroup = String(this.yearGroup).padStart(2, '0')
 
     return `${this.programme_pid}-${yearGroup}`
-  }
-
-  /**
-   * Get created date
-   * @returns {string} - Created date
-   */
-  get created() {
-    const year = this.year.split('/')[0]
-
-    return `${year}-08-01`
   }
 
   /**

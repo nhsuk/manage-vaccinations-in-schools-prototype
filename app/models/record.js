@@ -14,7 +14,8 @@ import {
   formatList,
   formatNhsNumber,
   formatParent,
-  formatYearGroup
+  formatYearGroup,
+  stringToBoolean
 } from '../utils/string.js'
 
 const primarySchools = Object.values(schools).filter(
@@ -44,6 +45,7 @@ export class GPRegistered {
  * @property {string} lastName - Last/family name
  * @property {string} dob - Date of birth
  * @property {object} [dob_] - Date of birth (from `dateInput`)
+ * @property {string} dod - Date of death
  * @property {Gender} gender - Gender
  * @property {object} address - Address
  * @property {GPRegistered} gpRegistered - Registered with a GP
@@ -53,23 +55,30 @@ export class GPRegistered {
  * @property {Parent} [parent2] - Parent 2
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
  * @property {Record} [pendingChanges] - Pending changes to record values
+ * @property {boolean} sensitive - Flagged as sensitive
  */
 export class Record {
   constructor(options) {
+    const sensitive = stringToBoolean(options?.sensitive)
+
     this.nhsn = options?.nhsn || this.nhsNumber
     this.firstName = options.firstName
     this.lastName = options.lastName
     this.dob = options.dob
     this.dob_ = options?.dob_
+    this.dod = options?.dod
     this.gender = options.gender
-    this.address = options.address
+    this.address = !sensitive ? options.address : undefined
     this.gpRegistered = options.gpRegistered
     this.gpSurgery = options.gpSurgery
     this.urn = options.urn
-    this.parent1 = options?.parent1 && new Parent(options.parent1)
-    this.parent2 = options?.parent2 && new Parent(options.parent2)
+    this.parent1 =
+      !sensitive && options?.parent1 ? new Parent(options.parent1) : undefined
+    this.parent2 =
+      !sensitive && options?.parent2 ? new Parent(options.parent2) : undefined
     this.vaccinations = options?.vaccinations || []
     this.pendingChanges = options?.pendingChanges || {}
+    this.sensitive = sensitive
   }
 
   /**
@@ -245,7 +254,9 @@ export class Record {
    * @returns {string} - Post code
    */
   get postalCode() {
-    return this.address.postalCode
+    if (this.address) {
+      return this.address.postalCode
+    }
   }
 
   /**
@@ -255,9 +266,9 @@ export class Record {
   get parents() {
     if (this.parent1 && this.parent2) {
       return [this.parent1, this.parent2]
+    } else if (this.parent1) {
+      return [this.parent1]
     }
-
-    return [this.parent1]
   }
 
   /**
@@ -273,20 +284,22 @@ export class Record {
    * @returns {object} - Formatted values
    */
   get formatted() {
-    const formattedParents = this.parents.map((parent) => formatParent(parent))
+    const formattedParents =
+      this.parents && this.parents.map((parent) => formatParent(parent))
 
     return {
       nhsn: formatNhsNumber(this.nhsn),
-      dob: formatDate(this.dob, { dateStyle: 'short' }),
+      dob: formatDate(this.dob, { dateStyle: 'long' }),
+      dod: formatDate(this.dod, { dateStyle: 'long' }),
       yearGroup: formatYearGroup(this.yearGroup),
-      address: Object.values(this.address).join('<br>'),
+      address: this.address && Object.values(this.address).join('<br>'),
       gpSurgery:
         this.gpRegistered === GPRegistered.Yes
           ? this.gpSurgery
           : this.gpRegistered,
       urn: schools[this.urn].name,
-      parent1: formatParent(this.parent1),
-      parent2: formatParent(this.parent2),
+      parent1: this.parent1 && formatParent(this.parent1),
+      parent2: this.parent2 && formatParent(this.parent2),
       parents: formatList(formattedParents)
     }
   }

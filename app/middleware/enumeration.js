@@ -2,6 +2,7 @@ import { AcademicYear } from '../models/cohort.js'
 import { DownloadFormat } from '../models/download.js'
 import { EventType } from '../models/event.js'
 import { GillickCompetent } from '../models/gillick.js'
+import { NoticeType } from '../models/notice.js'
 import { ContactPreference, ParentalRelationship } from '../models/parent.js'
 import {
   CaptureOutcome,
@@ -45,6 +46,7 @@ export const enumeration = (request, response, next) => {
   response.locals.HealthQuestion = HealthQuestion
   response.locals.ImportStatus = ImportStatus
   response.locals.ImportType = ImportType
+  response.locals.NoticeType = NoticeType
   response.locals.ParentalRelationship = ParentalRelationship
   response.locals.PatientOutcome = PatientOutcome
   response.locals.PreScreenQuestion = PreScreenQuestion

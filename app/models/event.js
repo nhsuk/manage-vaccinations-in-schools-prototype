@@ -9,6 +9,7 @@ export class EventType {
   static Screen = 'Screen'
   static Capture = 'Capture'
   static Record = 'Record'
+  static Notice = 'Notice'
 }
 
 /**

@@ -3,6 +3,7 @@ import batches from '../.data/batches.json' with { type: 'json' }
 import clinics from '../.data/clinics.json' with { type: 'json' }
 import cohorts from '../.data/cohorts.json' with { type: 'json' }
 import imports from '../.data/imports.json' with { type: 'json' }
+import notices from '../.data/notices.json' with { type: 'json' }
 import organisations from '../.data/organisations.json' with { type: 'json' }
 import patients from '../.data/patients.json' with { type: 'json' }
 import programmes from '../.data/programmes.json' with { type: 'json' }
@@ -29,6 +30,7 @@ export default {
   cohorts,
   features: {},
   imports,
+  notices,
   organisation,
   organisations,
   patients,

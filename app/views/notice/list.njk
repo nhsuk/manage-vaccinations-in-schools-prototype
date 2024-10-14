@@ -1,0 +1,51 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("notice.list.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    size: "xl",
+    title: title
+  }) }}
+
+  {% if notices.length %}
+    {% set noticeRows = [] %}
+    {% for notice in notices | sort(false, false, "created") %}
+      {% set noticeRows = noticeRows | push([
+        {
+          header: __("notice.created.label"),
+          html: notice.formatted.created,
+          attributes: {
+            "data-sort": notice.created
+          }
+        },
+        {
+          header: __("patient.label"),
+          html: notice.patient.link.fullName
+        },
+        {
+          header: __("notice.name.label"),
+          html: notice.name or "Not provided"
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "notices",
+      sort: "date",
+      heading: __n("notice.count", notices.length),
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("notice.created.label") },
+        { text: __("patient.label") },
+        { text: __("notice.name.label") }
+      ],
+      rows: noticeRows
+    }) }}
+  {% else %}
+    {{ __n("notice.count", 0) | nhsukMarkdown }}
+  {% endif %}
+{% endblock %}

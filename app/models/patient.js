@@ -14,10 +14,11 @@ import {
   getRegistrationOutcome,
   getPatientOutcome
 } from '../utils/capture.js'
-import { getToday } from '../utils/date.js'
+import { getToday, removeDays } from '../utils/date.js'
 import { formatLink, stringToBoolean } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 import { Vaccination } from './vaccination.js'
+import { NoticeType } from './notice.js'
 
 export class ConsentOutcome {
   static NoResponse = 'No response'
@@ -173,6 +174,16 @@ export class Patient {
   }
 
   /**
+   * Get notices
+   * @returns {Array} - Reminders sent
+   */
+  get notices() {
+    return this.events
+      .map((event) => new Event(event))
+      .filter((event) => event.type === EventType.Notice)
+  }
+
+  /**
    * Get date last reminders sent
    * @returns {string|undefined} - Date last reminders sent
    */
@@ -270,6 +281,20 @@ export class Patient {
   }
 
   /**
+   * Remove patient from cohort
+   * @param {import('./cohort.js').Cohort} cohort - Cohort
+   */
+  set unselect(cohort) {
+    this.cohorts = this.cohorts.filter((uid) => uid !== cohort.uid)
+    this.log = {
+      type: EventType.Select,
+      name: `Removed from the ${cohort.name} cohort`,
+      date: cohort.created,
+      user_uid: cohort.created_user_uid
+    }
+  }
+
+  /**
    * Invite patient to session
    * @param {import('./session.js').Session} session - Session
    */
@@ -278,6 +303,20 @@ export class Patient {
     this.log = {
       type: EventType.Invite,
       name: `Invited to session at ${session.location.name}`,
+      date: session.created,
+      user_uid: session.created_user_uid
+    }
+  }
+
+  /**
+   * Remove patient from session
+   * @param {import('./session.js').Session} session - Session
+   */
+  set disinvite(session) {
+    this.session_id = false
+    this.log = {
+      type: EventType.Select,
+      name: `Removed from the ${session.name} cohort`,
       date: session.created,
       user_uid: session.created_user_uid
     }
@@ -416,6 +455,38 @@ export class Patient {
       note: vaccination.note,
       date: vaccination.updated || vaccination.created,
       user_uid: vaccination.created_user_uid
+    }
+  }
+
+  /**
+   * Flag with notice
+   * @param {import('./notice.js').Notice} notice - Notice
+   */
+  set flag(notice) {
+    let name
+    switch (notice.type) {
+      case NoticeType.Deceased:
+        // Update patient record with date of death
+        this.record.dod = removeDays(getToday(), 5)
+        name = `Record updated with child’s date of death`
+        break
+      case NoticeType.Invalid:
+        // Update patient record with temporary NHS number
+        this.record.nhsn = faker.string.alpha(10)
+        name = `Record flagged as invalid`
+        break
+      case NoticeType.Sensitive:
+        // Flag record as sensitive
+        this.record.sensitive = true
+        name = `Record flagged as sensitive`
+        break
+      default:
+    }
+
+    this.log = {
+      type: EventType.Notice,
+      name,
+      date: notice.created
     }
   }
 
