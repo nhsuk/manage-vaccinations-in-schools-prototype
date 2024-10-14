@@ -238,6 +238,7 @@ export const vaccinationController = {
     response.locals.declineItems = Object.entries(VaccinationOutcome)
       .filter(
         ([, value]) =>
+          value === VaccinationOutcome.AlreadyVaccinated ||
           value === VaccinationOutcome.Contraindications ||
           value === VaccinationOutcome.Refused ||
           value === VaccinationOutcome.Unwell
