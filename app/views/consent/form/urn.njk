@@ -16,10 +16,7 @@
     name: "[consent][child][urn]",
     value: consent.child.urn,
     allowEmpty: false,
-    label: {
-      isPageHeading: true,
-      text: __("consent.child.urn.label")
-    },
+    label: { text: __("consent.child.urn.label") },
     items: urnItems
   }) | replace("govuk-", "nhsuk-") }}
 {% endblock %}
