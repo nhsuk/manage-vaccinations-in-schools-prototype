@@ -537,6 +537,10 @@
         "label": "Vaccinate",
         "name": "Your child can have the {{programme.name}} vaccination on {{session.summary.dates}}"
       },
+      "triage-delay-vaccination": {
+        "label": "Delay vaccination",
+        "name": "Please book a clinic appointment for your child’s {{programme.name}} vaccination"
+      },
       "triage-do-not-vaccinate": {
         "label": "Do not vaccinate",
         "name": "Your child will not have the {{programme.name}} vaccination in school"
@@ -1525,7 +1529,7 @@
       "label": "Outcome",
       "Vaccinate": "Yes, it’s safe to vaccinate",
       "DoNotVaccinate": "No, do not vaccinate",
-      "DelayVaccination": "No, delay vaccination to a later date",
+      "DelayVaccination": "No, delay vaccination (and invite to clinic)",
       "NeedsTriage": "No, keep in triage"
     },
     "Needed": {

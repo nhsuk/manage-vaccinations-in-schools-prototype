@@ -30,7 +30,7 @@ export class ConsentOutcome {
 
 export class ScreenOutcome {
   static NeedsTriage = 'Needs triage'
-  static DelayVaccination = 'Delay vaccination to a later date'
+  static DelayVaccination = 'Delay vaccination'
   static DoNotVaccinate = 'Do not vaccinate'
   static Vaccinate = 'Safe to vaccinate'
 }
