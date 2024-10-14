@@ -10,21 +10,21 @@ export class SchoolPhase {
  * @class School
  * @property {string} urn - URN
  * @property {string} name - Name
- * @property {SchoolPhase} phase - Phase
- * @property {string} addressLine1 - Address line 1
- * @property {string} addressLine2 - Address line 2
- * @property {string} addressLevel2 - Address level 2
- * @property {string} postalCode - Postcode
+ * @property {SchoolPhase} [phase] - Phase
+ * @property {string} [addressLine1] - Address line 1
+ * @property {string} [addressLine2] - Address line 2
+ * @property {string} [addressLevel2] - Address level 2
+ * @property {string} [postalCode] - Postcode
  */
 export class School {
   constructor(options) {
     this.urn = (options.urn && Number(options.urn)) || faker.string.numeric(6)
     this.name = options?.name
     this.phase = options?.phase
-    this.addressLine1 = options.addressLine1
-    this.addressLine2 = options.addressLine2
-    this.addressLevel1 = options.addressLevel1
-    this.postalCode = options.postalCode
+    this.addressLine1 = options?.addressLine1
+    this.addressLine2 = options?.addressLine2
+    this.addressLevel1 = options?.addressLevel1
+    this.postalCode = options?.postalCode
   }
 
   /**
@@ -32,6 +32,10 @@ export class School {
    * @returns {object} - Location
    */
   get location() {
+    if (!this.postalCode) {
+      return
+    }
+
     return {
       name: this.name,
       addressLine1: this.addressLine1,

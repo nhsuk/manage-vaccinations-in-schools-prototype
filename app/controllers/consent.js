@@ -170,9 +170,11 @@ export const consentController = {
       .map((school) => ({
         text: school.name,
         value: school.urn,
-        attributes: {
-          'data-hint': school.formatted.address
-        }
+        ...(school.location && {
+          attributes: {
+            'data-hint': school.formatted.address
+          }
+        })
       }))
 
     next()

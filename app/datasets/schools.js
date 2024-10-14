@@ -1,4 +1,12 @@
 export default {
+  888888: {
+    urn: 888888,
+    name: 'Unknown school'
+  },
+  999999: {
+    urn: 888888,
+    name: 'Home-schooled'
+  },
   135335: {
     urn: 135335,
     name: 'Grace Academy Coventry',
