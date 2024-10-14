@@ -170,10 +170,28 @@ export function includesDate(dates, date) {
 
 /**
  * Get’s today’s date, as set by environment
+ * @param {number} [secondsToAdd] - Seconds to add
  * @returns {Date} ‘Today’s’ date
  */
-export function getToday() {
-  return process.env.TODAY ? new Date(process.env.TODAY) : new Date()
+export function getToday(secondsToAdd) {
+  const now = new Date()
+
+  if (process.env.TODAY) {
+    const date = new Date(process.env.TODAY)
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const day = date.getDate()
+
+    now.setFullYear(year)
+    now.setMonth(month)
+    now.setDate(day)
+  }
+
+  if (secondsToAdd) {
+    now.setSeconds(now.getSeconds() + secondsToAdd)
+  }
+
+  return now
 }
 
 /**
