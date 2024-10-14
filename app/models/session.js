@@ -13,7 +13,7 @@ import {
   includesDate,
   setMidday
 } from '../utils/date.js'
-import { formatLink, formatList } from '../utils/string.js'
+import { formatLink, formatList, formatMonospace } from '../utils/string.js'
 import { getConsentWindow } from '../utils/session.js'
 import { OrganisationDefaults } from './organisation.js'
 import { ProgrammeStatus, programmeTypes } from './programme.js'
@@ -368,7 +368,8 @@ export class Session {
       <span class="nhsuk-u-secondary-text-color">First: ${formattedNextReminderDate}</span>`,
       close: formatDate(this.close, { dateStyle: 'full' }),
       programmes: prototypeFilters.formatList(formattedProgrammes),
-      consentWindow
+      consentWindow,
+      school_urn: formatMonospace(this.school_urn)
     }
   }
 
