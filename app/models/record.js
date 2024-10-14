@@ -24,9 +24,11 @@ const secondarySchools = Object.values(schools).filter(
   (school) => school.phase === 'Secondary'
 )
 
-export class Sex {
+export class Gender {
   static Female = 'Female'
   static Male = 'Male'
+  static NotKnown = 'Not known'
+  static NotSpecified = 'Not specified'
 }
 
 export class GPRegistered {
@@ -42,7 +44,7 @@ export class GPRegistered {
  * @property {string} lastName - Last/family name
  * @property {string} dob - Date of birth
  * @property {object} [dob_] - Date of birth (from `dateInput`)
- * @property {Sex} sex - Sex
+ * @property {Gender} gender - Gender
  * @property {object} address - Address
  * @property {GPRegistered} gpRegistered - Registered with a GP
  * @property {string} [gpSurgery] - GP surgery
@@ -59,7 +61,7 @@ export class Record {
     this.lastName = options.lastName
     this.dob = options.dob
     this.dob_ = options?.dob_
-    this.sex = options.sex
+    this.gender = options.gender
     this.address = options.address
     this.gpRegistered = options.gpRegistered
     this.gpSurgery = options.gpSurgery
@@ -76,8 +78,13 @@ export class Record {
    * @static
    */
   static generate() {
-    const sex = faker.helpers.arrayElement(Object.keys(Sex))
-    const firstName = faker.helpers.arrayElement(firstNames[sex.toLowerCase()])
+    const gender = faker.helpers.weightedArrayElement([
+      { value: Gender.Male, weight: 50 },
+      { value: Gender.Female, weight: 50 },
+      { value: Gender.NotKnown, weight: 1 },
+      { value: Gender.NotSpecified, weight: 1 }
+    ])
+    const firstName = faker.helpers.arrayElement(firstNames[gender])
     const lastName = faker.person.lastName().replace(`'`, '’')
     const phase = faker.helpers.arrayElement(['Primary', 'Secondary'])
     const gpRegistered = faker.helpers.arrayElement(Object.values(GPRegistered))
@@ -136,7 +143,7 @@ export class Record {
       firstName,
       lastName,
       dob,
-      sex,
+      gender,
       address: {
         addressLine1: faker.location.streetAddress(),
         addressLevel2: faker.location.city(),

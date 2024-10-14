@@ -10,7 +10,7 @@ import {
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient.js'
-import { GPRegistered, Sex } from '../models/record.js'
+import { Gender, GPRegistered } from '../models/record.js'
 import { ProgrammeType } from '../models/programme.js'
 import { RegistrationOutcome } from '../models/registration.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
@@ -39,6 +39,7 @@ export const enumeration = (request, response, next) => {
   response.locals.ContactPreference = ContactPreference
   response.locals.DownloadFormat = DownloadFormat
   response.locals.EventType = EventType
+  response.locals.Gender = Gender
   response.locals.GillickCompetent = GillickCompetent
   response.locals.GPRegistered = GPRegistered
   response.locals.HealthQuestion = HealthQuestion
@@ -56,7 +57,6 @@ export const enumeration = (request, response, next) => {
   response.locals.ScreenOutcome = ScreenOutcome
   response.locals.SessionStatus = SessionStatus
   response.locals.SessionType = SessionType
-  response.locals.Sex = Sex
   response.locals.TriageOutcome = TriageOutcome
   response.locals.UserRole = UserRole
   response.locals.VaccinationMethod = VaccinationMethod

@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("record.sex.title") %}
+{% set title = __("record.gender.title") %}
 
 {% block form %}
   {{ radios({
@@ -13,7 +13,7 @@
         })
       }
     },
-    items: enumItems(Sex),
-    decorate: "record.sex"
+    items: enumItems(Gender),
+    decorate: "record.gender"
   }) }}
 {% endblock %}

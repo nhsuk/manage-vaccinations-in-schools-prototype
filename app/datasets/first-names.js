@@ -1,10 +1,9 @@
 export default {
-  female: [
+  Female: [
     'Aaliyah',
     'Aayat',
     'Abigail',
     'Ada',
-    'Addison',
     'Adelaide',
     'Adeline',
     'Agnes',
@@ -501,7 +500,7 @@ export default {
     'Zuri',
     'Zuzanna'
   ],
-  male: [
+  Male: [
     'Aaron',
     'Abdul',
     'Abdullah',
@@ -834,7 +833,8 @@ export default {
     'Zayaan',
     'Zayan',
     'Zayd',
-    'Zayn',
-    'Zion'
-  ]
+    'Zayn'
+  ],
+  'Not known': ['Addison'],
+  'Not specified': ['Zion']
 }

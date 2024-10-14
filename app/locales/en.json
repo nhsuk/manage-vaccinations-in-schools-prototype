@@ -944,9 +944,9 @@
     "yearGroup": {
       "label": "Year group"
     },
-    "sex": {
-      "label": "Sex",
-      "title": "What is the child’s sex?"
+    "gender": {
+      "label": "Gender",
+      "title": "What is the child’s gender?"
     },
     "address": {
       "label": "Address",

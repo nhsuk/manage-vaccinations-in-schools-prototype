@@ -33,8 +33,8 @@
         }
       },
       {
-        header: __("record.sex.label"),
-        html: record.sex or "Not provided"
+        header: __("record.gender.label"),
+        html: record.gender or "Not provided"
       }
     ]) %}
   {% endfor %}
@@ -49,7 +49,7 @@
       { text: __("record.fullName.label") },
       { text: __("record.nhsn.label") },
       { text: __("record.dob.label") },
-      { text: __("record.sex.label") }
+      { text: __("record.gender.label") }
     ],
     rows: resultRows
   }) }}
