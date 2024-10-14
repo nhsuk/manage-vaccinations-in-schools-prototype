@@ -225,6 +225,14 @@
       {% else %}
         {{ __("consent.NoResponse.description") | nhsukMarkdown }}
       {% endif %}
+      {% if options.getReply %}
+        <form action="{{ patient.uriInSession }}/replies/send" method="post">
+          {{ button({
+            classes: "app-button--secondary nhsuk-u-margin-bottom-4",
+            text: __("reply.send.title")
+          }) }}
+        </form>
+      {% endif %}
       {% if options.editReplies %}
         <p class="nhsuk-body">
           {{ button({

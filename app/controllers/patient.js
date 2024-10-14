@@ -102,6 +102,7 @@ export const patientController = {
           session.isActive &&
           patient.consent?.value !== ConsentOutcome.Given,
         showReminder: patient.consent?.value === ConsentOutcome.NoResponse,
+        getReply: Object.values(patient.replies).length === 0,
         editReplies:
           patient.consent?.value !== ConsentOutcome.Given &&
           patient.outcome?.value !== PatientOutcome.Vaccinated,

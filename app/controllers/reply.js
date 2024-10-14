@@ -2,6 +2,7 @@ import { wizard } from 'nhsuk-prototype-rig'
 import { getToday } from '../utils/date.js'
 import { GillickCompetent } from '../models/gillick.js'
 import { Patient } from '../models/patient.js'
+import { Session } from '../models/session.js'
 import {
   Reply,
   ReplyDecision,
@@ -332,6 +333,23 @@ export const replyController = {
 
       response.redirect(`${newReply.uri}/new/decision?referrer=${reply.uri}`)
     }
+  },
+
+  updateSend(request, response) {
+    const { data } = request.session
+    const { __, patient } = response.locals
+
+    const parent = patient.record.parent1
+
+    const session = new Session({
+      ...response.locals.session,
+      ...(data.token && { created_user_uid: data.token?.uid })
+    })
+
+    patient.invite = session
+
+    request.flash('success', __('reply.send.success', { parent }))
+    response.redirect(patient.uriInSession)
   },
 
   showInvalidate(request, response) {

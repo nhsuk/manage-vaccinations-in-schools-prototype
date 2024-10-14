@@ -5,6 +5,8 @@ const router = express.Router({ strict: true, mergeParams: true })
 
 router.get('/', replyController.redirect)
 
+router.post('/send', replyController.updateSend)
+
 router.get('/new', replyController.new)
 router.post('/:uuid/?:form(new)/check-answers', replyController.update)
 router.post('/:uuid/?:form(edit)/:view', replyController.update)
