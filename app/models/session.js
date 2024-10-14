@@ -236,6 +236,16 @@ export class Session {
   }
 
   /**
+   * Get consent URL
+   * @returns {object} - Consent window
+   */
+  get consentUrl() {
+    if (this.firstDate && this.consentWindow.value !== ConsentWindow.Closed) {
+      return `/consents/${this.id}`
+    }
+  }
+
+  /**
    * Get consent window
    * @returns {object} - Consent window
    */
@@ -368,6 +378,15 @@ export class Session {
       <span class="nhsuk-u-secondary-text-color">First: ${formattedNextReminderDate}</span>`,
       close: formatDate(this.close, { dateStyle: 'full' }),
       programmes: prototypeFilters.formatList(formattedProgrammes),
+      consentUrl:
+        this.consentUrl &&
+        formatLink(
+          this.consentUrl,
+          'View parental consent form (opens in a new tab)',
+          {
+            target: '_blank'
+          }
+        ),
       consentWindow,
       school_urn: formatMonospace(this.school_urn)
     }

@@ -1368,6 +1368,9 @@
     "type": {
       "label": "Type"
     },
+    "consentUrl": {
+      "label": "Consent form"
+    },
     "consentWindow": {
       "label": "Consent period",
       "Opening": {
