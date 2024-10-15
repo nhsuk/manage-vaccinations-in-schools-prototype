@@ -4,7 +4,7 @@ export default {
     name: 'Unknown school'
   },
   999999: {
-    urn: 888888,
+    urn: 999999,
     name: 'Home-schooled'
   },
   135335: {
