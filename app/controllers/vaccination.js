@@ -63,7 +63,7 @@ export const vaccinationController = {
       data.preScreen.continue === 'true' ? 'administer' : 'decline'
 
     request.app.locals.patient = patient
-    request.app.locals.back = patient.uri
+    request.app.locals.back = patient.uriInSession
     request.app.locals.startPath = startPath
 
     delete data.preScreen
@@ -74,7 +74,7 @@ export const vaccinationController = {
 
     const vaccination = new Vaccination({
       location: session.location.name,
-      urn: session.urn,
+      urn: session.uri,
       patient_uuid,
       programme_pid: programme.pid,
       session_id: session.id,
