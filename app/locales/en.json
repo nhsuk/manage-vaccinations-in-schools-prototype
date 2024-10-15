@@ -1108,12 +1108,12 @@
         "label": "Register {{patient.fullName}} as absent"
       },
       "success": {
-        "GetConsent": "[{{patient.fullName}}]({{patient.uri}}) is attending today’s session. They still need consent to vaccinate.",
-        "CheckRefusal": "[{{patient.fullName}}]({{patient.uri}}) needs to leave the session because their parent or guardian refused to give consent.",
-        "NeedsTriage": "[{{patient.fullName}}]({{patient.uri}}) is attending today’s session. A nurse needs to triage their record.",
-        "Vaccinate": "[{{patient.fullName}}]({{patient.uri}}) is attending today’s session. They are ready for the nurse.",
-        "Register": "[{{patient.fullName}}]({{patient.uri}}) is absent from today’s session.",
-        "Absent": "[{{patient.fullName}}]({{patient.uri}}) is absent from today’s session."
+        "GetConsent": "[{{patient.fullName}}]({{patient.uriInSession}}) is attending today’s session. They still need consent to vaccinate.",
+        "CheckRefusal": "[{{patient.fullName}}]({{patient.uriInSession}}) needs to leave the session because their parent or guardian refused to give consent.",
+        "NeedsTriage": "[{{patient.fullName}}]({{patient.uriInSession}}) is attending today’s session. A nurse needs to triage their record.",
+        "Vaccinate": "[{{patient.fullName}}]({{patient.uriInSession}}) is attending today’s session. They are ready for the nurse.",
+        "Register": "[{{patient.fullName}}]({{patient.uriInSession}}) is absent from today’s session.",
+        "Absent": "[{{patient.fullName}}]({{patient.uriInSession}}) is absent from today’s session."
       }
     },
     "Present": {
@@ -1164,8 +1164,8 @@
       }
     },
     "success": {
-      "create": "Consent response from {{reply.fullName}} added to [{{patient.fullName}}]({{patient.uri}})’s record",
-      "update": "Consent response from {{reply.fullName}} updated on [{{patient.fullName}}]({{patient.uri}})’s record",
+      "create": "Consent response from {{reply.fullName}} added to [{{patient.fullName}}]({{patient.uriInSession}})’s record",
+      "update": "Consent response from {{reply.fullName}} updated on [{{patient.fullName}}]({{patient.uriInSession}})’s record",
       "invalidate": "Consent response from {{reply.fullName}} marked as invalid",
       "withdraw": "Consent response from {{reply.fullName}} withdrawn"
     },
@@ -1406,8 +1406,8 @@
     "success": {
       "create": "{{session.name}} created",
       "update": "{{session.name}} updated",
-      "link": "Consent response from {{consent.parent.fullName}} linked to [{{patient.fullName}}]({{patient.uri}})’s record",
-      "add": "[{{patient.fullName}}]({{patient.uri}})’s record created from a consent response from {{consent.parent.fullName}}"
+      "link": "Consent response from {{consent.parent.fullName}} linked to [{{patient.fullName}}]({{patient.uriInSession}})’s record",
+      "add": "[{{patient.fullName}}]({{patient.uriInSession}})’s record created from a consent response from {{consent.parent.fullName}}"
     },
     "patients": {
       "label": "Children",
@@ -1545,8 +1545,8 @@
       "title": "Update triage outcome"
     },
     "success": {
-      "create": "Triage outcome updated for [{{patient.fullName}}]({{patient.uri}})",
-      "update": "Triage outcome updated for [{{patient.fullName}}]({{patient.uri}})"
+      "create": "Triage outcome updated for [{{patient.fullName}}]({{patient.uriInSession}})",
+      "update": "Triage outcome updated for [{{patient.fullName}}]({{patient.uriInSession}})"
     },
     "note": {
       "label": "Triage notes"

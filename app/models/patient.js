@@ -495,8 +495,7 @@ export class Patient {
    * @returns {object} - Formatted links
    */
   get link() {
-    let sessionUri = `/sessions/${this.session_id}/${this.nhsn}`
-    let fullNameInSession = `${formatLink(sessionUri, this.fullName)}`
+    let fullNameInSession = `${formatLink(this.uriInSession, this.fullName)}`
     if (this.preferredNames) {
       fullNameInSession += `<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">Known as: ${this.preferredNames}</span>`
     }
