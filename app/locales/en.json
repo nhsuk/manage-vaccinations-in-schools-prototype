@@ -76,6 +76,12 @@
     },
     "actions": {
       "label": "Actions"
+    },
+    "action": {
+      "title": "Are you sure you want to %s this batch?",
+      "description": "This operation cannot be undone.",
+      "confirm": "Yes, %s this batch",
+      "cancel": "No, return to vaccines"
     }
   },
   "clinic": {

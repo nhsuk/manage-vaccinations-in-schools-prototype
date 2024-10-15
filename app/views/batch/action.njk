@@ -1,0 +1,27 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("batch.action.title", type) %}
+
+{% block form %}
+  {{ heading({
+    caption: vaccine.brand + ", " + batch.id,
+    title: title
+  }) }}
+
+  {{ __("batch.action.description") | nhsukMarkdown }}
+{% endblock %}
+
+{% block afterForm %}
+  <div class="app-button-group">
+    {{ button({
+      classes: "nhsuk-button--warning",
+      text: __("batch.action.confirm", type),
+      attributes: {
+        formAction: batch.uri + "/" + type
+      }
+    }) }}
+    <a class="nhsuk-link" href="{{ batch.uri }}">
+      {{ __("batch.action.cancel") }}
+    </a>
+  </div>
+{% endblock %}

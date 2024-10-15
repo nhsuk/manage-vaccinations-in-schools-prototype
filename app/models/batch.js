@@ -13,7 +13,7 @@ import { Vaccine } from './vaccine.js'
 /**
  * @class Batch
  * @property {string} id - Batch ID
- * @property {string} created - Created date
+ * @property {string} [created] - Created date
  * @property {string} expires - Expiry date
  * @property {object} [expires_] - Expiry date (from `dateInput`)
  * @property {string} vaccine_gtin - Vaccine GTIN
@@ -21,7 +21,7 @@ import { Vaccine } from './vaccine.js'
 export class Batch {
   constructor(options) {
     this.id = options?.id || faker.helpers.replaceSymbols('??####')
-    this.created = options.created || getToday().toISOString()
+    this.created = options?.created || getToday().toISOString()
     this.expires = options.expires
     this.expires_ = options?.expires_
     this.vaccine_gtin = options.vaccine_gtin

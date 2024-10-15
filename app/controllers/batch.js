@@ -61,5 +61,36 @@ export const batchController = {
     )
 
     response.redirect(paths.next)
+  },
+
+  action(type) {
+    return (request, response) => {
+      response.render('batch/action', { type })
+    }
+  },
+
+  delete(request, response) {
+    const { id } = request.params
+    const { data } = request.session
+    const { __, batch } = response.locals
+
+    // Remove from default batches
+    if (data.token?.batch) {
+      for (const [session_id, gtins] of Object.entries(data.token.batch)) {
+        for (const [gtin, batches] of Object.entries(gtins)) {
+          if (batches.includes(batch.id)) {
+            data.token.batch[session_id][gtin] = data.token.batch[session_id][
+              gtin
+            ].filter((batch) => batch !== id)
+          }
+        }
+      }
+    }
+
+    // Remove from session data
+    delete data.batches[id]
+
+    request.flash('success', __(`batch.success.delete`))
+    response.redirect('/vaccines')
   }
 }

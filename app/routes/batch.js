@@ -11,4 +11,7 @@ router.all('/:id*', batchController.read)
 router.get('/:id/:form(edit)', batchController.show)
 router.post('/:id/:form(edit)', batchController.update)
 
+router.get('/:id/archive', batchController.action('archive'))
+router.post('/:id/archive', batchController.delete)
+
 export const batchRoutes = router
