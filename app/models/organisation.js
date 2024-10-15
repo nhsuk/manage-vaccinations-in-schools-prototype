@@ -1,8 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
-import clinicsData from '../datasets/clinics.js'
 import schoolsData from '../datasets/schools.js'
-import { Clinic } from './clinic.js'
 import { School } from './school.js'
 
 export class OrganisationDefaults {
@@ -20,6 +18,7 @@ export class OrganisationDefaults {
  * @property {Array<string>} [urns] - School URNs
  * @property {number} [sessionOpenWeeks] - Weeks before session to request consent
  * @property {number} [SessionReminderWeeks] - Days before sending first reminder
+ * @property {string} [password] - Shared password
  */
 export class Organisation {
   constructor(options) {
@@ -33,6 +32,12 @@ export class Organisation {
       options?.sessionOpenWeeks || OrganisationDefaults.SessionOpenWeeks
     this.sessionReminderWeeks =
       options?.sessionReminderWeeks || OrganisationDefaults.SessionReminderWeeks
+    this.password =
+      options?.password ||
+      faker.internet.password({
+        memorable: true,
+        length: 16
+      })
   }
 
   /**

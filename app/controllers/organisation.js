@@ -58,7 +58,8 @@ export const organisationController = {
 
     const referrers = {
       contact: `${organisation.uri}/contact`,
-      sessions: `${organisation.uri}/sessions`
+      sessions: `${organisation.uri}/sessions`,
+      password: `${organisation.uri}/sessions`
     }
 
     request.app.locals.organisation = new Organisation({

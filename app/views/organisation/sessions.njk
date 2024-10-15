@@ -19,7 +19,7 @@
 
     <div class="nhsuk-grid-column-three-quarters">
       {{ card({
-        heading: __("organisation.sessions.summary"),
+        heading: __("organisation.sessions.defaults"),
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: summaryList({
           rows: summaryRows(organisation, {
@@ -28,6 +28,18 @@
             },
             sessionReminderWeeks: {
               href: organisation.uri + "/edit/sessions"
+            }
+          })
+        })
+      }) }}
+
+      {{ card({
+        heading: __("organisation.sessions.password"),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: summaryList({
+          rows: summaryRows(organisation, {
+            password: {
+              href: organisation.uri + "/edit/password"
             }
           })
         })

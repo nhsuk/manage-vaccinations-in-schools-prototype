@@ -835,8 +835,9 @@
       }
     },
     "sessions": {
-      "title": "Session defaults",
-      "summary": "Session defaults",
+      "title": "Sessions",
+      "defaults": "Session defaults",
+      "password": "Shared password",
       "text": "You can change these values when scheduling new sessions."
     },
     "reminders": {
@@ -866,6 +867,11 @@
       "title": "When should parents get a reminder to give consent?",
       "label": "Consent reminders",
       "hint": "Enter the number of weeks before a session takes place"
+    },
+    "password": {
+      "label": "Shared password",
+      "title": "Shared password",
+      "hint": "Use this password to unlock offline vaccination spreadsheets. Don’t share it with anyone outside your team."
     }
   },
   "outcome": {
