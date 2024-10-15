@@ -41,15 +41,6 @@
 
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
-      {% set consentCardDescriptionHtml %}
-        <p>
-          {{ __n("consent.NoResponse.count", patients | where("consent.value", ConsentOutcome.NoResponse) | length) }}<br>
-          {{ __n("consent.Given.count", patients | where("consent.value", ConsentOutcome.Given) | length) }}<br>
-          {{ __n("consent.Refused.count", patients | where("consent.value", ConsentOutcome.Refused) | length) }}<br>
-          {{ __n("consent.Inconsistent.count", patients | where("consent.value", ConsentOutcome.Inconsistent) | length) }}
-        </p>
-      {% endset %}
-
       <ul class="nhsuk-grid-row nhsuk-card-group">
         {% if session.status == SessionStatus.Unplanned %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
@@ -75,28 +66,52 @@
         {% endif %}
         {% if session.isActive %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
+            {% set captureCardDescriptionHtml %}
+              <p>
+                {{ __n("capture.Register.count", patients | where("capture.value", CaptureOutcome.Register) | length) }}<br>
+                {{ __n("capture.GetConsent.count", patients | where("capture.value", CaptureOutcome.Given) | length) }}<br>
+                {{ __n("capture.CheckRefusal.count", patients | where("capture.value", CaptureOutcome.CheckRefusal) | length) }}<br>
+                {{ __n("capture.NeedsTriage.count", patients | where("capture.value", CaptureOutcome.NeedsTriage) | length) }}<br>
+                {{ __n("capture.Vaccinate.count", patients | where("capture.value", CaptureOutcome.Vaccinate) | length) }}
+              </p>
+            {% endset %}
             {{ card({
               clickable: true,
               heading: __("session.activity.capture.title"),
               headingClasses: "nhsuk-heading-m",
               href: session.uri + "/capture",
-              description: __("session.activity.capture.description")
+              descriptionHtml: captureCardDescriptionHtml
             }) }}
           </li>
         {% endif %}
         {% if session.isActive or session.status == SessionStatus.Completed %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
+            {% set outcomeCardDescriptionHtml %}
+              <p>
+                {{ __n("outcome.Vaccinated.count", patients | where("outcome.value", PatientOutcome.Vaccinated) | length) }}<br>
+                {{ __n("outcome.CouldNotVaccinate.count", patients | where("outcome.value", PatientOutcome.CouldNotVaccinate) | length) }}<br>
+                {{ __n("outcome.NoOutcomeYet.count", patients | where("outcome.value", PatientOutcome.NoOutcomeYet) | length) }}
+              </p>
+            {% endset %}
             {{ card({
               clickable: true,
               heading: __("session.activity.outcome.title"),
               headingClasses: "nhsuk-heading-m",
               href: session.uri + "/outcome",
-              description: __("session.activity.outcome.description")
+              descriptionHtml: outcomeCardDescriptionHtml
             }) }}
           </li>
         {% endif %}
         {% if session.status == SessionStatus.Planned and not session.isActive %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
+            {% set consentCardDescriptionHtml %}
+              <p>
+                {{ __n("consent.NoResponse.count", patients | where("consent.value", ConsentOutcome.NoResponse) | length) }}<br>
+                {{ __n("consent.Given.count", patients | where("consent.value", ConsentOutcome.Given) | length) }}<br>
+                {{ __n("consent.Refused.count", patients | where("consent.value", ConsentOutcome.Refused) | length) }}<br>
+                {{ __n("consent.Inconsistent.count", patients | where("consent.value", ConsentOutcome.Inconsistent) | length) }}
+              </p>
+            {% endset %}
             {{ card({
               clickable: true,
               heading: __("session.activity.consent.title"),

@@ -1343,12 +1343,10 @@
         "title": "Triage health questions"
       },
       "capture": {
-        "title": "Record session outcomes",
-        "description": "Register attendance and record vaccinations given."
+        "title": "Record session outcomes"
       },
       "outcome": {
-        "title": "Review session outcomes",
-        "description": "See how many vaccinations have been given."
+        "title": "Review session outcomes"
       }
     },
     "download-consent-form": {
