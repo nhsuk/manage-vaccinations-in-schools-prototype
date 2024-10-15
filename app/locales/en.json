@@ -516,6 +516,10 @@
         "label": "Invitation",
         "name": "{{programme.name}} vaccination on {{session.summary.dates}}"
       },
+      "invite-catch-up": {
+        "label": "Invitation (catch-up)",
+        "name": "Please book a clinic appointment for your child’s {{programme.type}} vaccination"
+      },
       "invite-clinic": {
         "label": "Invitation to clinic",
         "name": "Booking a clinic appointment for your child’s {{programme.name}} vaccination"
@@ -575,6 +579,9 @@
       "information-child": {
         "label": "Information for students",
         "name": "You can get an {{programme.type}} vaccination on {{session.summary.dates}}"
+      },
+      "invite-catchup": {
+        "name": "emails.consent.invite-catchup.name"
       }
     }
   },

@@ -23,6 +23,7 @@
 {% set templates = {
   "Get consent": [
     "invite",
+    "invite-catch-up" if programme.type == ProgrammeType.HPV,
     "invite-reminder",
     "invite-subsequent-reminder",
     "invite-clinic",
