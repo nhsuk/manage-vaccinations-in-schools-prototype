@@ -308,5 +308,26 @@ export const sessionController = {
     })
 
     response.redirect(paths.next)
+  },
+
+  readOffline(request, response, next) {
+    const { session } = request.app.locals
+
+    response.locals.paths = {
+      back: session.uri,
+      next: session.uri
+    }
+
+    next()
+  },
+
+  showOffline(request, response) {
+    response.render('session/offline')
+  },
+
+  updateOffline(request, response) {
+    const { paths } = response.locals
+
+    response.redirect(paths.next)
   }
 }

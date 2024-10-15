@@ -25,6 +25,10 @@ router.post('/:id/consents/:uuid/link', sessionController.updateConsentLink)
 router.get('/:id/consents/:uuid/add', sessionController.showConsentAdd)
 router.post('/:id/consents/:uuid/add', sessionController.updateConsentAdd)
 
+router.all('/:id/offline', sessionController.readOffline)
+router.get('/:id/offline', sessionController.showOffline)
+router.post('/:id/offline', sessionController.updateOffline)
+
 router.get('/:id/?:form(edit)', sessionController.edit)
 router.post('/:id/?:form(edit)', sessionController.update)
 

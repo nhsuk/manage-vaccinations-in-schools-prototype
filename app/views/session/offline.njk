@@ -1,0 +1,36 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("session.offline.title") %}
+{% set confirmButtonText = __("session.offline.confirm") %}
+
+{% block form %}
+  {{ heading({
+    caption: session.location.name,
+    title: title
+  }) }}
+
+  {{ __("session.offline.description") | nhsukMarkdown }}
+
+  {% call fieldset({
+    legend: {
+      html: heading({
+        classes: "nhsuk-fieldset__legend--m",
+        title: __("session.offline.vaccinator.label")
+      })
+    }
+  }) %}
+    {{ input({
+      classes: "nhsuk-input--width-20",
+      label: { text: __("session.offline.vaccinator.firstName") },
+      decorate: "firstName",
+      value: data.token.firstName
+    }) }}
+
+    {{ input({
+      classes: "nhsuk-input--width-20",
+      label: { text: __("session.offline.vaccinator.lastName") },
+      decorate: "lastName",
+      value: data.token.lastName
+    }) }}
+  {% endcall %}
+{% endblock %}

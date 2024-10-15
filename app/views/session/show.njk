@@ -31,6 +31,9 @@
         download: true
       }
     } if programme.type == ProgrammeType.HPV and session.status != SessionStatus.Completed, {
+      text: __("session.offline.title"),
+      href: session.uri + "/offline"
+    } if session.status == SessionStatus.Planned, {
       text: __("session.import-class-list.title"),
       href: programme.uri + "/imports/new?type=" + ImportType.School
     } if session.type == SessionType.School]

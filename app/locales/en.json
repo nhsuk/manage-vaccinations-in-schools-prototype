@@ -1492,6 +1492,16 @@
       "title": "When should parents get a reminder to give consent?",
       "label": "Consent reminders",
       "hint": "Enter the number of weeks before a session takes place"
+    },
+    "offline": {
+      "title": "Record offline",
+      "description": "If the internet connection at the vaccination session is unreliable, you can record offline using a spreadsheet.\n\nYou need to download the blank spreadsheet ahead of the session while you still have internet access.\n\nTo upload a completed spreadsheet, go to the ‘Vaccinations’ area. You also need an internet connection to upload the spreadsheet.",
+      "confirm": "Download spreadsheet",
+      "vaccinator": {
+        "label": "Administering nurse",
+        "firstName": "First name",
+        "lastName": "Last name"
+      }
     }
   },
   "texts": {
