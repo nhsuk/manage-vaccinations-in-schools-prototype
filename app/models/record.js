@@ -106,10 +106,11 @@ export class Record {
       gpSurgery = faker.helpers.arrayElement(gpSurgeryNames)
     }
 
-    let dob, urn
+    let dob, urn, newUrn
     if (phase === 'Primary') {
       dob = faker.date.birthdate({ min: 4, max: 11, mode: 'age' })
       urn = faker.helpers.arrayElement(primarySchools).urn
+      newUrn = faker.helpers.arrayElement(primarySchools).urn
     } else {
       // Children generally receive adolescent vaccinations when younger
       // Note: This means flu cohorts will skew more towards younger children
@@ -122,6 +123,7 @@ export class Record {
       ])
       dob = faker.date.birthdate({ min: 11, max, mode: 'age' })
       urn = faker.helpers.arrayElement(secondarySchools).urn
+      newUrn = faker.helpers.arrayElement(secondarySchools).urn
     }
 
     const parent1 = Parent.generate(lastName, true)
@@ -140,12 +142,13 @@ export class Record {
 
     // Add a pending change
     let pendingChanges = {}
-    const hasPendingChanges = faker.datatype.boolean(0.02)
+    const hasPendingChanges = faker.datatype.boolean(0.1)
 
     if (hasPendingChanges) {
       const newDob = new Date(dob)
       newDob.setFullYear(newDob.getFullYear() - 2)
       pendingChanges.dob = newDob
+      pendingChanges.urn = newUrn
     }
 
     return new Record({
@@ -298,6 +301,7 @@ export class Record {
           ? this.gpSurgery
           : this.gpRegistered,
       urn: schools[this.urn].name,
+      newUrn: this.pendingChanges?.urn && schools[this.pendingChanges.urn].name,
       parent1: this.parent1 && formatParent(this.parent1),
       parent2: this.parent2 && formatParent(this.parent2),
       parents: formatList(formattedParents)

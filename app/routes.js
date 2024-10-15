@@ -17,6 +17,7 @@ import { homeRoutes } from './routes/home.js'
 import { importRoutes } from './routes/import.js'
 import { inviteRoutes } from './routes/invite.js'
 import { manualRoutes } from './routes/manual.js'
+import { moveRoutes } from './routes/move.js'
 import { noticeRoutes } from './routes/notice.js'
 import { organisationRoutes } from './routes/organisation.js'
 import { patientRoutes } from './routes/patient.js'
@@ -49,6 +50,7 @@ router.use('/notices', noticeRoutes)
 router.use('/organisations', organisationRoutes)
 router.use('/organisations/:code/clinics', clinicRoutes)
 router.use('/patients', patientRoutes)
+router.use('/patients/:nhsn/move', moveRoutes)
 router.use('/patients/:nhsn/unselect', unselectRoutes)
 router.use('/programmes', programmeRoutes)
 router.use('/programmes/:pid/cohorts', cohortRoutes)

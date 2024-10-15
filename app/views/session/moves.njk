@@ -1,0 +1,89 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("session.moves.title") %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("session.list.title"),
+      href: "/sessions"
+    }, {
+      text: session.location.name,
+      href: "/sessions/" + session.id
+    }]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: title
+  }) }}
+
+  {% include "session/_activity-navigation.njk" %}
+
+  {% set patientRows = [] %}
+  {% for patient in patients | sort(false, false, "firstName") %}
+    {% set confirmButtonHtml %}
+      <form class="app-button-group app-button-group--table" action="{{ patient.uri }}/move?referrer={{session.uri}}/moves?tab={{tab}}" method="post">
+        {{ button({
+          classes: "app-button--secondary app-button--small",
+          text: __("move.confirm.true"),
+          decorate: "patient.moved",
+          value: tab
+        }) }}
+        {{ button({
+          classes: "app-button--secondary-warning app-button--small",
+          text: __("move.confirm.false"),
+          decorate: "patient.moved",
+          value: "false"
+        }) }}
+      </form>
+    {% endset %}
+    {% set patientRows = patientRows | push([
+      {
+        header: __("record.fullName.label"),
+        html: patient.link.fullName
+      },
+      {
+        header: __("move.from.label"),
+        text: patient.record.formatted.urn
+      } if tab === 'In',
+      {
+        header: __("move.to.label"),
+        text: patient.record.formatted.newUrn
+      } if tab === 'Out',
+      {
+        header: __("move.actions.label"),
+        html: confirmButtonHtml
+      }
+    ]) %}
+  {% endfor %}
+
+  {% if patients.length %}
+    {{ actionTable({
+      id: "patients",
+      classes: "app-patients",
+      tableClasses: "app-patients__table",
+      sort: "name",
+      caption: __n("move." + tab + ".count", patients.length),
+      captionClasses: "nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal nhsuk-u-font-size-19",
+      responsive: true,
+      head: [
+        { text: __("record.fullName.label") },
+        { text: __("move.from.label") } if tab === 'In',
+        { text: __("move.to.label") } if tab === 'Out',
+        { text: __("move.actions.label") }
+      ],
+      rows: patientRows
+    }) }}
+  {% else %}
+    <div class="app-patients">
+      <p class="app-patients__no-results nhsuk-caption-m">{{ __n("move." + tab + ".count", patients.length) }}</p>
+    </div>
+  {% endif %}
+{% endblock %}

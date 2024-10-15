@@ -18,6 +18,8 @@ router.get(
   '/:id/:activity(consent|triage|capture|outcome)',
   sessionController.activity
 )
+router.get('/:id/moves', sessionController.moves)
+
 router.get('/:id/consents', sessionController.showConsents)
 router.get('/:id/consents/:uuid/match', sessionController.showConsentMatch)
 router.get('/:id/consents/:uuid/link', sessionController.showConsentLink)

@@ -56,6 +56,11 @@ export class PatientOutcome {
   static CouldNotVaccinate = 'Could not vaccinate'
 }
 
+export class PatientMovement {
+  static In = 'Moved in'
+  static Out = 'Moved out'
+}
+
 /**
  * @class Patient in-session record
  * @property {string} uuid - UUID
@@ -78,7 +83,12 @@ export class Patient {
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
     this.cohorts = options.cohorts || []
-    this.session_id = options.session_id
+    this.session_id = !this.record.pendingChanges?.urn
+      ? options.session_id
+      : undefined
+    this.pendingSession_id = this.record.pendingChanges?.urn
+      ? options.session_id
+      : undefined
   }
 
   /**
@@ -487,6 +497,23 @@ export class Patient {
       type: EventType.Notice,
       name,
       date: notice.created
+    }
+  }
+
+  /**
+   * Move between schools
+   * @param {object} movement - Movement
+   */
+  set move(movement) {
+    const name = `Moved from ${this.record.formatted.urn} to ${this.record.formatted.newUrn}`
+    this.record.urn = this.record.pendingChanges.urn
+    delete this.record.pendingChanges.urn
+
+    this.log = {
+      type: EventType.Invite,
+      name,
+      date: movement.created || getToday().toISOString(),
+      user_uid: movement.created_user_uid
     }
   }
 

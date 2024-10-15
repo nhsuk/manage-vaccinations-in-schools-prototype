@@ -794,6 +794,43 @@
       "label": "Recording a vaccination"
     }
   },
+  "move": {
+    "In": {
+      "label": "Moved in",
+      "count": {
+        "one": "%s child joined this school",
+        "other": "[0] No children joined this school|%s children joined this school"
+      }
+    },
+    "Out": {
+      "label": "Moved out",
+      "count": {
+        "one": "%s child left this school",
+        "other": "[0] No children left this school|%s children left this school"
+      }
+    },
+    "from": {
+      "label": "School joined from"
+    },
+    "to": {
+      "label": "School moved to"
+    },
+    "actions": {
+      "label": "Actions"
+    },
+    "confirm": {
+      "true": "Confirm move",
+      "false": "Ignore move"
+    },
+    "success": {
+      "In": "{{patient.fullName}} moved in",
+      "Out": "{{patient.fullName}} moved out",
+      "ignore": "{{patient.fullName}} move ignored"
+    },
+    "false": {
+      "count": "move.false.count"
+    }
+  },
   "notice": {
     "label": "Notice",
     "list": {
@@ -1456,6 +1493,9 @@
       "Closed": {
         "text": "Consent period closed on {{close}}"
       }
+    },
+    "moves": {
+      "title": "Review children who have changed schools"
     },
     "consents": {
       "title": "Review unmatched consent responses",

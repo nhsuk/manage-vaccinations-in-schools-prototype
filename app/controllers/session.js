@@ -4,7 +4,7 @@ import { Consent } from '../models/consent.js'
 import { Patient } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
 import { Reply } from '../models/reply.js'
-import { Session, SessionStatus } from '../models/session.js'
+import { Session, SessionStatus, SessionType } from '../models/session.js'
 import { programmeTypes } from '../models/programme.js'
 
 const getPatientsForKey = (patients, activity, tab) => {
@@ -16,6 +16,19 @@ const getPatientsForKey = (patients, activity, tab) => {
 
     return patient[activity]?.key === tab
   })
+}
+
+const getPatientsMoved = (patients, session, moved) => {
+  if (moved === 'In') {
+    return Object.values(patients)
+      .filter(({ record }) => record.pendingChanges?.urn === session.school_urn)
+      .map((patient) => new Patient(patient))
+  } else if (moved === 'Out') {
+    return Object.values(patients)
+      .filter(({ session_id }) => session_id === session.id)
+      .filter(({ record }) => record.pendingChanges?.urn)
+      .map((patient) => new Patient(patient))
+  }
 }
 
 export const sessionController = {
@@ -31,9 +44,11 @@ export const sessionController = {
 
     let sessions = Object.values(data.sessions).map((session) => {
       session = new Session(session)
-      session.patients = Object.values(data.patients).filter(
-        (patient) => patient.session_id === session.id
-      )
+      session.patients = Object.values(data.patients)
+        .filter(({ session_id }) => session_id === session.id)
+        .filter(({ record }) => !record.pendingChanges?.urn)
+        .map((patient) => new Patient(patient))
+
       return session
     })
 
@@ -96,6 +111,25 @@ export const sessionController = {
       allPatients: patients,
       tab
     })
+  },
+
+  moves(request, response) {
+    const { session } = request.app.locals
+    const { data } = request.session
+    let tab = request.query.tab || 'In'
+    const { __ } = response.locals
+
+    let tabs = ['In', 'Out']
+
+    response.locals.patients = getPatientsMoved(data.patients, session, tab)
+    response.locals.navigationItems = tabs.map((key) => ({
+      text: __(`move.${key}.label`),
+      count: getPatientsMoved(data.patients, session, key).length,
+      href: `?tab=${key}`,
+      current: key === tab
+    }))
+
+    response.render('session/moves', { tab })
   },
 
   showConsents(request, response) {
@@ -182,14 +216,29 @@ export const sessionController = {
     const { data } = request.session
 
     const session = new Session(data.sessions[id])
+    const patients = Object.values(data.patients)
+      .filter(({ session_id }) => session_id === id)
+      .filter(({ record }) => !record.pendingChanges?.urn)
+      .map((patient) => new Patient(patient))
 
     request.app.locals.session = session
-    request.app.locals.patients = Object.values(data.patients)
-      .filter((patient) => patient.session_id === id)
-      .map((patient) => new Patient(patient))
+    request.app.locals.patients = patients
     request.app.locals.programme = new Programme(
       data.programmes[session.programmes[0]]
     )
+
+    if (session.type === SessionType.School) {
+      request.app.locals.movedOut = getPatientsMoved(
+        data.patients,
+        session,
+        'Out'
+      )
+      request.app.locals.movedIn = getPatientsMoved(
+        data.patients,
+        session,
+        'In'
+      )
+    }
 
     // Get default batches selected for vaccines in this session
     const defaultBatches = []
