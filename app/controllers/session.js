@@ -248,7 +248,9 @@ export const sessionController = {
         for (let [_gtin, batch_id] of sessionBatches) {
           // Default batch ID may be saved in FormData as an array
           batch_id = Array.isArray(batch_id) ? batch_id.at(-1) : batch_id
-          defaultBatches.push(new Batch(data.batches[batch_id]))
+          if (batch_id) {
+            defaultBatches.push(new Batch(data.batches[batch_id]))
+          }
         }
       }
     }
