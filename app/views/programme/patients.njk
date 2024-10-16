@@ -1,0 +1,100 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = programme.name + " – " + __("programme.patients.title") %}
+{% set view = "patients" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("programme.list.title"),
+      href: "/programmes"
+    }],
+    text: programme.name,
+    href: programme.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: programme.name
+  }) }}
+
+  {% include "programme/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("programme.patients.title") }}
+  </h2>
+
+  {{ button({
+    classes: "app-button--secondary",
+    text: __("cohort.import.label"),
+    href: programme.uri + "/imports/new?type=" + ImportType.Cohort
+  }) }}
+
+  {% if programme.patients.length %}
+    {% set resultRows = [] %}
+    {% for patient in results.page | sort(false, false, "record.lastName") %}
+      {% set resultRows = resultRows | push([
+        {
+          header: __("record.fullName.label"),
+          html: patient.link.fullNameInSession
+        },
+        {
+          header: __("record.dob.label"),
+          html: patient.record.formatted.dob or "Not provided"
+        },
+        {
+          header: __("record.yearGroup.label"),
+          html: patient.record.formatted.yearGroup,
+          attributes: {
+            "data-filter": patient.record.yearGroup,
+            "data-sort": patient.record.yearGroup
+          }
+        },
+        {
+          header: __("session.status.label"),
+          text: patientStatus(patient).title
+        }
+      ]) %}
+    {% endfor %}
+
+    {% call actionTable({
+      id: "programme-patients",
+      classes: "app-patients nhsuk-u-margin-bottom-6",
+      tableClasses: "app-patients__table",
+      sort: "name",
+      caption: __n("patient.count", programme.patients.length),
+      captionClasses: "nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal nhsuk-u-font-size-19",
+      responsive: true,
+      head: [
+        { text: __("record.fullName.label") },
+        { text: __("record.dob.label") },
+        {
+          text: __("record.yearGroup.label"),
+          attributes: {
+            "data-col": "yearGroup"
+          }
+        },
+        { text: __("session.status.label") }
+      ],
+      rows: resultRows
+    }) %}
+      <action-table-filters class="app-patients__filters">
+        {% include "programme/_filters.njk" %}
+      </action-table-filters>
+    {% endcall %}
+
+    {{ govukPagination(pages) }}
+
+    {{ __("patient.results", { results: results }) | nhsukMarkdown }}
+  {% else %}
+    <div class="app-patients">
+      <p class="app-patients__no-results nhsuk-caption-m">{{ __n("patient.count", programme.patients.length) }}</p>
+    </div>
+  {% endif %}
+{% endblock %}

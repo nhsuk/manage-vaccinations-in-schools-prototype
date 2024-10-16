@@ -52,10 +52,10 @@
       {{ card({
         classes: "app-card--data app-card--reversed",
         clickable: true if not isDataConsumer,
-        heading: __("programme.records.label"),
+        heading: __("programme.patients.label"),
         headingClasses: "nhsuk-heading-xs",
-        href: programme.uri + "/cohorts" if not isDataConsumer,
-        description: programme.records.length or "0"
+        href: programme.uri + "/patients" if not isDataConsumer,
+        description: programme.patients.length or "0"
       }) }}
     </div>
 
