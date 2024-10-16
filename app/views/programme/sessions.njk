@@ -30,55 +30,96 @@
     {{ __("programme.sessions.title") }}
   </h2>
 
-  {% for status, sessions in programme.sessionsByStatus %}
-    {% set sessionRows = [] %}
-    {% for session in sessions | sort(false, false, "date") %}
-      {% set sessionRows = sessionRows | push([
-        {
-          header: __("session.location.label"),
-          html: session.link.location or "Not provided"
-        },
-        {
-          header: __("session.dates.label"),
-          html: session.formatted.dates or "None scheduled",
-          attributes: {
-            "data-sort": session.firstDate
-          }
-        },
-        {
-          header: __("session.consentWindow.label"),
-          text: session.formatted.consentWindow or "–"
-        },
-        {
-          header: __("session.patients.label"),
-          text: session.patients.length or "None",
-          format: "numeric"
-        }
-      ]) %}
-    {% endfor %}
+  {% macro count(number, percentage) %}
+    <div>
+      <span class="nhsuk-u-font-size-36 nhsuk-u-font-weight-bold">{{ number or "0" }}</span>
+    {% if percentage %}
+      <br><span class="nhsuk-u-secondary-text-color">{{ percentage }}%</span>
+    {% endif %}
+    </div>
+  {% endmacro %}
 
-    {{ actionTable({
-      id: "sessions",
-      sort: "date",
-      panel: true,
-      heading: status,
-      responsive: true,
-      head: [
-        {
-          text: __("session.location.label"),
-          attributes: { style: "width: 40%" }
-        },
-        { text: __("session.dates.label") },
-        { text: __("session.consentWindow.label") },
-        {
-          text: __("session.patients.label"),
-          format: "numeric",
-          attributes: {
-            "no-sort": "no-sort"
-          }
+  {% set sessionRows = [] %}
+  {% for session in programme.sessions | sort(false, false, "date") %}
+    {% set noResponse = session.patients | where("consent.value", ConsentOutcome.NoResponse) | length %}
+    {% set percentageNoResponse = percentage(noResponse, session.patients.length) %}
+    {% set triageNeeded = session.patients | where("triage.value", TriageOutcome.Needed) | length %}
+    {% set vaccinated = session.patients | where("outcome.value", PatientOutcome.Vaccinated) | length %}
+    {% set percentageVaccinated = percentage(vaccinated, session.patients.length) %}
+    {% set sessionRows = sessionRows | push([
+      {
+        header: __("session.details.label"),
+        html: session.details
+      },
+      {
+        header: __("session.patients.label"),
+        text: count(session.patients.length),
+        attributes: {
+          "data-sort": session.patients.length
         }
-      ],
-      rows: sessionRows
-    }) }}
+      },
+      {
+        header: __("consent.NoResponse.label"),
+        text: count(noResponse, percentageNoResponse),
+        attributes: {
+          "data-sort": noResponse
+        }
+      },
+      {
+        header: __("triage.Needed.label"),
+        text: count(triageNeeded),
+        attributes: {
+          "data-sort": triageNeeded
+        }
+      },
+      {
+        header: __("outcome.Vaccinated.label"),
+        text: count(vaccinated, percentageVaccinated),
+        attributes: {
+          "data-sort": vaccinated
+        }
+      }
+    ]) %}
   {% endfor %}
+
+  {{ actionTable({
+    id: "sessions",
+    sort: "date",
+    panel: true,
+    heading: __n("session.count", programme.sessions.length),
+    responsive: true,
+    head: [
+      {
+        text: __("session.details.label"),
+        attributes: {
+          "no-sort": "no-sort"
+        }
+      },
+      {
+        text: __("session.patients.label"),
+        attributes: {
+          "style": "width: 15%"
+        }
+      },
+      {
+        text: __("consent.NoResponse.label"),
+        attributes: {
+          "style": "width: 15%"
+        }
+      },
+      {
+        text: __("triage.Needed.label"),
+        attributes: {
+          "style": "width: 15"
+        }
+      },
+      {
+        text: __("outcome.Vaccinated.label"),
+        attributes: {
+          "style": "width: 15%"
+        }
+      }
+    ],
+    rows: sessionRows
+  }) }}
 {% endblock %}

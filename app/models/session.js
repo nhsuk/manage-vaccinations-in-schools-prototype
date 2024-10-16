@@ -13,7 +13,12 @@ import {
   includesDate,
   setMidday
 } from '../utils/date.js'
-import { formatLink, formatList, formatMonospace } from '../utils/string.js'
+import {
+  formatLink,
+  formatList,
+  formatMonospace,
+  lowerCaseFirst
+} from '../utils/string.js'
 import { getConsentWindow } from '../utils/session.js'
 import { OrganisationDefaults } from './organisation.js'
 import { ProgrammeStatus, programmeTypes } from './programme.js'
@@ -326,6 +331,29 @@ export class Session {
     if (this.location) {
       return `${this.type} at ${this.location.name}`
     }
+  }
+
+  get dateSummary() {
+    if (this.status === SessionStatus.Planned) {
+      const firstDate = formatDate(this.firstDate, {
+        day: 'numeric',
+        month: 'long'
+      })
+      const consentWindow = lowerCaseFirst(this.formatted.consentWindow)
+      return `First session starts ${firstDate}<br>Consent period ${consentWindow}`
+    } else if (this.status === SessionStatus.Completed) {
+      const lastDate = formatDate(this.lastDate, {
+        day: 'numeric',
+        month: 'long'
+      })
+      return `Last session completed ${lastDate}`
+    } else {
+      return 'No sessions scheduled'
+    }
+  }
+
+  get details() {
+    return `<div><p>${this.link.location}</p></p>${this.dateSummary}</p></div>`
   }
 
   /**

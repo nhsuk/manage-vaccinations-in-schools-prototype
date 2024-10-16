@@ -185,3 +185,12 @@ export function formatYearGroup(yearGroup) {
       return `Year ${yearGroup}`
   }
 }
+
+/**
+ * Lower case first letter
+ * @param {string} string
+ * @returns {string} String with lower cased first letter
+ */
+export function lowerCaseFirst(string) {
+  return string.charAt(0).toLowerCase() + string.slice(1)
+}

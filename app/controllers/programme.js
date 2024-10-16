@@ -35,9 +35,9 @@ export const programmeController = {
         .filter((session) => session.programmes.includes(programme.pid))
         .map((session) => {
           session = new Session(session)
-          session.patients = Object.values(data.patients).filter(
-            (patient) => patient.session_id === session.id
-          )
+          session.patients = Object.values(data.patients)
+            .filter((patient) => patient.session_id === session.id)
+            .map((patient) => new Patient(patient))
           return session
         })
         .filter((session) => session.patients.length > 0)

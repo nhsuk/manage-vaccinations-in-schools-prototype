@@ -213,6 +213,17 @@ export default () => {
   }
 
   /**
+   * Get percentage of two numbers
+   * @param {number} total - Total
+   * @param {number} number - Number of total
+   * @returns {number} Formatted HTML
+   */
+  globals.percentage = function (total, number) {
+    const percentage = (total / number) * 100
+    return Math.round(percentage)
+  }
+
+  /**
    * Get status details for a reply
    * @param {import('./models/reply.js').Reply} reply - Reply
    * @returns {object} Reply status

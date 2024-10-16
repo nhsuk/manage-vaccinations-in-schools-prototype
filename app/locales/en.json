@@ -1381,6 +1381,10 @@
     }
   },
   "session": {
+    "count": {
+      "one": "%s session",
+      "other": "[0] No sessions|%s sessions"
+    },
     "activity": {
       "consent": {
         "title": "Check consent responses"
@@ -1460,10 +1464,10 @@
       "add": "[{{patient.fullName}}]({{patient.uriInSession}})’s record created from a consent response from {{consent.parent.fullName}}"
     },
     "patients": {
-      "label": "Children",
+      "label": "Cohort",
       "count": {
-        "one": "%s child in this session",
-        "other": "[0] No children in this session|%s children in this session"
+        "one": "%s child in session cohort",
+        "other": "[0] No children in session cohort|%s children in session cohort"
       }
     },
     "date": {
@@ -1502,6 +1506,9 @@
       "Closed": {
         "text": "Consent period closed on {{close}}"
       }
+    },
+    "details": {
+      "label": "Details"
     },
     "moves": {
       "title": "Review children who have changed schools"
@@ -1982,6 +1989,12 @@
     },
     "vaccines": {
       "label": "Vaccines administered"
+    }
+  },
+  "patients": {
+    "count": {
+      "one": "patients.count",
+      "other": "patients.count"
     }
   }
 }
