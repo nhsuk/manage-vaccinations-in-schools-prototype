@@ -1,6 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = patient.record.fullName %}
+{% set title = patient.record.obscuredName + " – " + session.location.name %}
 {% set view = "show" %}
 
 {% block beforeContent %}
@@ -36,7 +36,7 @@
 
     {{ heading({
       caption: session.location.name if patient.session_id,
-      title: title
+      title: patient.record.fullName
     }) }}
 
     {% include "patient/_secondary-navigation.njk" %}

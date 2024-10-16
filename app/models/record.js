@@ -203,6 +203,14 @@ export class Record {
   }
 
   /**
+   * Get obscured name (to use in page titles)
+   * @returns {string} - Full name
+   */
+  get obscuredName() {
+    return [this.firstName.slice(0, 1), this.lastName.slice(0, 1)].join('')
+  }
+
+  /**
    * Get date of birth for `dateInput`
    * @returns {object|undefined} - `dateInput` object
    */

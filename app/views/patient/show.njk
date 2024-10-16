@@ -1,6 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = patient.record.fullName %}
+{% set title = patient.record.obscuredName %}
 {% set view = "show" %}
 
 {% block beforeContent %}
@@ -20,7 +20,7 @@
     {{ super() }}
 
     {{ heading({
-      title: title
+      title: patient.record.fullName
     }) }}
 
     {% include "patient/_secondary-navigation.njk" %}
