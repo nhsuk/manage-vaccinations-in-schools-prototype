@@ -93,7 +93,6 @@
 
         {{ actionTable({
           id: "cohorts",
-          classes: "nhsuk-u-margin-bottom-4",
           sort: "name",
           responsive: true,
           head: [
@@ -111,6 +110,38 @@
       heading: __("cohort.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: cohortsDescriptionHtml
+    }) }}
+
+    {% set sessionsDescriptionHtml %}
+      {% if sessions.length %}
+        {% set sessionRows = [] %}
+        {% for cohort in cohorts | sort(false, false, "created") %}
+          {% set sessionRows = sessionRows | push([
+            {
+              header: __("session.location.label"),
+              html: link(patient.uriInSession, session.location.name)
+            }
+          ]) %}
+        {% endfor %}
+
+        {{ actionTable({
+          id: "sessions",
+          sort: "name",
+          responsive: true,
+          head: [
+            { text: __("session.location.label") }
+          ],
+          rows: sessionRows
+        }) }}
+      {% else %}
+        {{ __n("session.count", 0) | nhsukMarkdown }}
+      {% endif %}
+    {% endset %}
+
+    {{ card({
+      heading: __("session.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: sessionsDescriptionHtml
     }) }}
 
     {% set vaccinationsDescriptionHtml %}

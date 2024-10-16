@@ -79,6 +79,11 @@ export const patientController = {
       (uid) => new Cohort(data.cohorts[uid])
     )
 
+    let sessions = []
+    if (patient.session_id) {
+      sessions = [new Session(data.sessions[patient.session_id])]
+    }
+
     let vaccinations = Object.keys(patient.vaccinations).map(
       (uuid) => new Vaccination(data.vaccinations[uuid])
     )
@@ -140,6 +145,7 @@ export const patientController = {
     response.locals.patient = patient
     response.locals.replies = replies
     response.locals.cohorts = cohorts
+    response.locals.sessions = sessions
     response.locals.vaccinations = vaccinations
 
     request.app.locals.record = patient.record

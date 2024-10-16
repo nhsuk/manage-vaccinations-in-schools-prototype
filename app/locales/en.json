@@ -240,7 +240,6 @@
     "gpSurgery": {
       "label": "GP surgery"
     },
-
     "parent": {
       "label": "Parent"
     }
@@ -1418,6 +1417,7 @@
     }
   },
   "session": {
+    "label": "Sessions",
     "count": {
       "one": "%s session",
       "other": "[0] No sessions|%s sessions"
