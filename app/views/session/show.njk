@@ -70,17 +70,6 @@
             }) }}
           </li>
         {% endif %}
-        {% if session.consents | length %}
-          <li class="nhsuk-grid-column-full nhsuk-card-group__item">
-            {{ card({
-              clickable: true,
-              heading: __("session.consents.title"),
-              headingClasses: "nhsuk-heading-m",
-              href:  session.uri + "/consents",
-              description: __n("session.consents.count", session.consents | length)
-            }) }}
-          </li>
-        {% endif %}
         {% if session.isActive %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {% set captureCardDescriptionHtml %}

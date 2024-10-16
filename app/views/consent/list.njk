@@ -1,26 +1,12 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = __("session.consents.title") %}
-
-{% block beforeContent %}
-  {{ breadcrumb({
-    items: [{
-      text: __("home.show.title"),
-      href: "/"
-    }, {
-      text: __("session.list.title"),
-      href: "/sessions"
-    }, {
-      text: session.location.name,
-      href: "/sessions/" + session.id
-    }]
-  }) }}
-{% endblock %}
+{% set title = __("consent.list.title") %}
 
 {% block content %}
   {{ super() }}
 
   {{ heading({
+    size: "xl",
     title: title
   }) }}
 
@@ -43,11 +29,11 @@
         header: __("consent.actions.label"),
         html: actionList({
           items: [{
-            text: __("session.consent-match.label"),
-            href: session.uri + "/consents/" + consent.uuid + "/match"
+            text: __("consent.match.label"),
+            href: "/consents/" + consent.uuid + "/match"
           }, {
-            text: __("session.consent-add.label"),
-            href: session.uri + "/consents/" + consent.uuid + "/add"
+            text: __("consent.add.label"),
+            href: "/consents/" + consent.uuid + "/add"
           }]
         })
       }
@@ -57,11 +43,9 @@
   {% if consents.length %}
     {{ actionTable({
       id: "consents",
-      classes: "app-patients",
-      tableClasses: "app-patients__table",
       sort: "created",
-      caption: __n("session.consents.count", consents.length),
-      captionClasses: "nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal nhsuk-u-font-size-19",
+      heading: __n("consent.count", consents.length),
+      panel: true,
       responsive: true,
       head: [
         {
@@ -82,7 +66,7 @@
   {% else %}
     <div class="app-patients">
       <p class="app-patients__no-results nhsuk-caption-m">
-        {{ __n("session.consents.count", consents.length) }}
+        {{ __n("consent.count", consents.length) }}
       </p>
     </div>
   {% endif %}

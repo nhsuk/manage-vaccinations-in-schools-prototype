@@ -41,7 +41,7 @@
   </ul>
 
   <ul class="nhsuk-grid-row nhsuk-card-group">
-    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         clickable: true,
         secondary: true,
@@ -51,7 +51,17 @@
         descriptionHtml: __("vaccine.list.description") | nhsukMarkdown
       }) }}
     </li>
-    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        clickable: true,
+        secondary: true,
+        heading: __("consent.list.title"),
+        headingClasses: "nhsuk-heading-s",
+        href: "/consents",
+        descriptionHtml: __("consent.list.description") | nhsukMarkdown
+      }) }}
+    </li>
+    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         clickable: true,
         secondary: true,
@@ -61,7 +71,7 @@
         descriptionHtml: __("notice.list.description") | nhsukMarkdown
       }) }}
     </li>
-    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         clickable: true,
         secondary: true,
@@ -71,7 +81,7 @@
         descriptionHtml: __("organisation.show.description") | nhsukMarkdown
       }) }}
     </li>
-    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         clickable: true,
         secondary: true,

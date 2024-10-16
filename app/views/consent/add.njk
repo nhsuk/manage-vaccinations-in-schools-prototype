@@ -1,16 +1,14 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("session.consent-add.title") %}
-{% set confirmButtonText = __("session.consent-add.confirm") %}
-{% set paths = {
-  back: "/sessions/" + session.id + "/consents/" + consent.uuid
-} %}
+{% set title = __("consent.add.title") %}
+{% set confirmButtonText = __("consent.add.confirm") %}
+{% set paths = { back: "/consents/" } %}
 
 {% block form %}
   {{ super() }}
 
   {{ heading({
-    caption: __("session.consent-add.caption", { parent: consent.parent } ),
+    caption: __("consent.add.caption", { parent: consent.parent } ),
     title: title
   }) }}
 
@@ -25,6 +23,7 @@
         dob: {},
         gender: {},
         address: {},
+        urn: {},
         gpSurgery: {}
       })
     })

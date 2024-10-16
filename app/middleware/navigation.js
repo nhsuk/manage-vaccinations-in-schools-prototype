@@ -47,32 +47,37 @@ export const navigation = (request, response, next) => {
       ? [
           {
             url: '/programmes',
-            label: __('programme.list.title'),
+            label: __('programme.list.label'),
             current: current === 'programmes'
           },
           {
             url: '/sessions',
-            label: __('session.list.title'),
+            label: __('session.list.label'),
             current: current === 'sessions'
           },
           {
             url: '/patients',
-            label: __('patient.list.title'),
+            label: __('patient.list.label'),
             current: current === 'patients'
           },
           {
             url: '/vaccines',
-            label: __('vaccine.list.title'),
+            label: __('vaccine.list.label'),
             current: current === 'vaccines'
           },
           {
+            url: '/consents',
+            label: __('consent.list.label'),
+            current: current === 'consents'
+          },
+          {
             url: '/notices',
-            label: __('notice.list.title'),
+            label: __('notice.list.label'),
             current: current === 'notices'
           },
           {
             url: organisation.uri,
-            label: __('organisation.show.title'),
+            label: __('organisation.show.label'),
             current: current === 'organisations'
           }
         ]

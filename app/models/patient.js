@@ -82,7 +82,7 @@ export class Patient {
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
-    this.cohorts = options.cohorts || []
+    this.cohorts = options?.cohorts || []
     this.session_id = !this.record.pendingChanges?.urn
       ? options.session_id
       : undefined

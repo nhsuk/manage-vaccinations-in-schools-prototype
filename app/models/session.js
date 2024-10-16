@@ -53,7 +53,6 @@ export class SessionType {
  * @property {string} [open] - Date consent window opens
  * @property {object} [open_] - Date consent window opens (from `dateInput`)
  * @property {number} [reminderWeeks] - Weeks before session to send reminders
- * @property {object} [consents] – (Unmatched) consent replies
  * @property {Array<string>} [programmes] - Programme PIDs
  */
 export class Session {
@@ -71,7 +70,6 @@ export class Session {
         : undefined
     this.reminderWeeks =
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
-    this.consents = options?.consents || {}
     this.programmes = options?.programmes || []
     // dateInput objects
     this.dates_ = options?.dates_

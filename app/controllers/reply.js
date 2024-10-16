@@ -14,9 +14,10 @@ import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
 export const replyController = {
   read(request, response, next) {
     const { uuid } = request.params
-    const { patient, session } = response.locals
+    const { data } = request.session
+    const { patient } = response.locals
 
-    const reply = patient.replies[uuid] || session.consents[uuid]
+    const reply = patient.replies[uuid] || data.consents[uuid]
 
     request.app.locals.reply = new Reply(reply)
 

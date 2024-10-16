@@ -20,13 +20,6 @@ router.get(
 )
 router.get('/:id/moves', sessionController.moves)
 
-router.get('/:id/consents', sessionController.showConsents)
-router.get('/:id/consents/:uuid/match', sessionController.showConsentMatch)
-router.get('/:id/consents/:uuid/link', sessionController.showConsentLink)
-router.post('/:id/consents/:uuid/link', sessionController.updateConsentLink)
-router.get('/:id/consents/:uuid/add', sessionController.showConsentAdd)
-router.post('/:id/consents/:uuid/add', sessionController.updateConsentAdd)
-
 router.all('/:id/offline', sessionController.readOffline)
 router.get('/:id/offline', sessionController.showOffline)
 router.post('/:id/offline', sessionController.updateOffline)

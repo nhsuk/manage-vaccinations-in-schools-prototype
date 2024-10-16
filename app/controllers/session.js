@@ -1,9 +1,7 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { Batch } from '../models/batch.js'
-import { Consent } from '../models/consent.js'
 import { Patient } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
-import { Reply } from '../models/reply.js'
 import { Session, SessionStatus, SessionType } from '../models/session.js'
 import { programmeTypes } from '../models/programme.js'
 
@@ -130,85 +128,6 @@ export const sessionController = {
     }))
 
     response.render('session/moves', { tab })
-  },
-
-  showConsents(request, response) {
-    const { session } = request.app.locals
-
-    response.locals.consents = Object.values(session.consents).map(
-      (consent) => new Consent(consent)
-    )
-
-    response.render('session/consents')
-  },
-
-  showConsentMatch(request, response) {
-    const { session } = request.app.locals
-    const { uuid } = request.params
-
-    request.app.locals.consent = new Consent(session.consents[uuid])
-
-    response.render('session/consent-match')
-  },
-
-  showConsentLink(request, response) {
-    const { patients } = request.app.locals
-    const { nhsn } = request.query
-
-    response.locals.patient = new Patient(
-      patients.find((patient) => patient.nhsn === nhsn)
-    )
-
-    response.render('session/consent-link')
-  },
-
-  updateConsentLink(request, response) {
-    const { patients, session } = request.app.locals
-    const { uuid } = request.params
-    const { nhsn } = request.query
-    const { __ } = response.locals
-
-    // Add consent response to patient record
-    const consent = session.consents[uuid]
-    const patient = new Patient(
-      patients.find((patient) => patient.nhsn === nhsn)
-    )
-    patient.respond = new Reply(consent)
-
-    // Remove unmatched consent response
-    delete session.consents[uuid]
-
-    request.flash('success', __(`session.success.link`, { consent, patient }))
-
-    response.redirect(`${session.uri}/consents`)
-  },
-
-  showConsentAdd(request, response) {
-    const { session } = request.app.locals
-    const { uuid } = request.params
-
-    request.app.locals.consent = new Reply(session.consents[uuid])
-
-    response.render('session/consent-add')
-  },
-
-  updateConsentAdd(request, response) {
-    const { consent, patients, session } = request.app.locals
-    const { uuid } = request.params
-    const { __ } = response.locals
-
-    const patient = new Patient(
-      patients.find((patient) => patient.nhsn === consent.child.nhsn)
-    )
-
-    patient.respond = new Reply(consent)
-
-    // Remove unmatched consent response
-    delete session.consents[uuid]
-
-    request.flash('success', __(`session.success.add`, { consent, patient }))
-
-    response.redirect(`${session.uri}/consents`)
   },
 
   read(request, response, next) {

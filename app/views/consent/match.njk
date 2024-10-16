@@ -1,16 +1,25 @@
 {% extends "_layouts/default.njk" %}
 
 {% set dateOfBirth = true %}
-{% set title = __("session.consent-match.title") %}
-{% set paths = {
-  back: "/sessions/" + session.id + "/consents"
-} %}
+{% set title = __("consent.match.title") %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("consent.list.title"),
+      href: "/consents"
+    }]
+  }) }}
+{% endblock %}
 
 {% block content %}
   {{ super() }}
 
   {{ heading({
-    caption: __("session.consent-match.caption", { parent: consent.parent } ),
+    caption: __("consent.match.caption", { parent: consent.parent } ),
     title: title
   }) }}
 
@@ -27,15 +36,15 @@
   }) }}
 
   {% set patientRows = [] %}
-  {% for patient in patients %}
+  {% for patient in results.page %}
     {% set patientRows = patientRows | push([
       {
         header: __("child.fullName.label"),
-        html: link("/sessions/" + session.id + "/consents/" + consent.uuid + "/link?nhsn=" + patient.nhsn, patient.record.fullName) + ('<br><span class="nhsuk-u-font-size-16">Known as: ' + patient.preferredNames + "</span>" if patient.preferredNames)
+        html: link("/consents/" + consent.uuid + "/link?nhsn=" + patient.nhsn, patient.record.fullName) + ('<br><span class="nhsuk-u-font-size-16">Known as: ' + patient.preferredNames + "</span>" if patient.preferredNames)
       },
       {
         header: __("child.address.postalCode.label"),
-        text: patient.record.address.postalCode
+        text: patient.record.address.postalCode or "Not provided"
       },
       {
         header: __("child.dob.label"),
@@ -51,7 +60,7 @@
   {% if patients.length %}
     {% call actionTable({
       id: "patients",
-      classes: "app-patients",
+      classes: "app-patients nhsuk-u-margin-bottom-6",
       tableClasses: "app-patients__table",
       sort: "name",
       caption: "Children in this cohort",
@@ -84,9 +93,13 @@
         {% include "session/_filters.njk" %}
       </action-table-filters>
     {% endcall %}
+
+    {{ govukPagination(pages) }}
+
+    {{ __("patient.results", { results: results }) | nhsukMarkdown }}
   {% else %}
     <div class="app-patients">
-      <p class="app-patients__no-results nhsuk-caption-m">{{ __n(activity + "." + tab + ".count", patients.length) }}</p>
+      <p class="app-patients__no-results nhsuk-caption-m">{{ __n("patient.count", patients.length) }}</p>
     </div>
   {% endif %}
 {% endblock %}

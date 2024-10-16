@@ -107,11 +107,7 @@ export class Consent {
    */
   get formatted() {
     return {
-      created: formatDate(this.created, {
-        dateStyle: 'long',
-        timeStyle: 'short',
-        hourCycle: 'h12'
-      }),
+      created: formatDate(this.created, { dateStyle: 'long' }),
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
       refusalReasonDetails: formatMarkdown(this.refusalReasonDetails)
     }
@@ -130,6 +126,6 @@ export class Consent {
    * @returns {string} - URI
    */
   get uri() {
-    return `/consents/${this.session_id}/${this.uuid}`
+    return `/consents/${this.uuid}`
   }
 }

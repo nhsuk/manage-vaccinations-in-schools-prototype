@@ -33,7 +33,7 @@
   </form>
 
   {% set patientRows = [] %}
-  {% for patient in patients | sort(false, false, "record.lastName") %}
+  {% for patient in results.page | sort(false, false, "record.lastName") %}
     {% set patientRows = patientRows | push([
       {
         header: __("record.fullName.label"),

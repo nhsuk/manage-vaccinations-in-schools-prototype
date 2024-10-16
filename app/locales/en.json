@@ -234,15 +234,23 @@
         "label": "Postcode"
       }
     },
+    "urn": {
+      "label": "School"
+    },
     "gpSurgery": {
       "label": "GP surgery"
     },
-    "urn": {
-      "label": "School"
+
+    "parent": {
+      "label": "Parent"
     }
   },
   "consent": {
     "label": "Consent response",
+    "count": {
+      "one": "%s consent response",
+      "other": "[0] No consent responses|%s consent responses"
+    },
     "summary": "Details of child given in consent response",
     "NoResponse": {
       "colour": "grey",
@@ -304,6 +312,28 @@
         "other": "[0] No children with no consent response|%s children with no consent response"
       }
     },
+    "list": {
+      "label": "Responses",
+      "title": "Unmatched consent responses",
+      "description": "Review incoming consent responses that can’t be automatically matched"
+    },
+    "match": {
+      "label": "Match with record",
+      "title": "Search for a child record to match with",
+      "caption": "Consent response from {{parent.fullName}}"
+    },
+    "link": {
+      "title": "Link consent response with child record?",
+      "caption": "Consent response from {{parent.fullName}}",
+      "confirm": "Link response with record",
+      "summary": "Compare child details"
+    },
+    "add": {
+      "label": "Create record",
+      "title": "Create a new child record from this consent response?",
+      "caption": "Consent response from {{parent.fullName}}",
+      "confirm": "Create a new record from response"
+    },
     "start": {
       "Flu": {
         "title": "Give or refuse consent for a flu vaccination",
@@ -336,6 +366,10 @@
         "confirm": "Confirm",
         "title": "Check and confirm"
       }
+    },
+    "success": {
+      "link": "Consent response from {{consent.parent.fullName}} linked to [{{patient.fullName}}]({{patient.uriInSession}})’s record",
+      "add": "[{{patient.fullName}}]({{patient.uriInSession}})’s record created from a consent response from {{consent.parent.fullName}}"
     },
     "created": {
       "label": "Response date"
@@ -840,6 +874,7 @@
   "notice": {
     "label": "Notice",
     "list": {
+      "label": "Notices",
       "title": "Important notices",
       "description": "View notices about important updates to patient records"
     },
@@ -856,6 +891,7 @@
   },
   "organisation": {
     "show": {
+      "label": "Your organisation",
       "title": "Your organisation",
       "description": "Manage your organisation’s settings"
     },
@@ -984,6 +1020,7 @@
   "patient": {
     "label": "Child",
     "list": {
+      "label": "Children",
       "title": "Children",
       "description": "Use this area to:\n- find child records\n- view child vaccinations"
     },
@@ -1406,6 +1443,7 @@
       "title": "Import class list"
     },
     "list": {
+      "label": "Sessions",
       "title": "Sessions",
       "description": "Use this area to:\n- review consent responses\n- triage health records\n- record vaccinations\n- review session outcomes",
       "active": {
@@ -1459,9 +1497,7 @@
     },
     "success": {
       "create": "{{session.name}} created",
-      "update": "{{session.name}} updated",
-      "link": "Consent response from {{consent.parent.fullName}} linked to [{{patient.fullName}}]({{patient.uriInSession}})’s record",
-      "add": "[{{patient.fullName}}]({{patient.uriInSession}})’s record created from a consent response from {{consent.parent.fullName}}"
+      "update": "{{session.name}} updated"
     },
     "patients": {
       "label": "Cohort",
@@ -1512,30 +1548,6 @@
     },
     "moves": {
       "title": "Review children who have changed schools"
-    },
-    "consents": {
-      "title": "Review unmatched consent responses",
-      "count": {
-        "one": "%s unmatched response",
-        "other": "[0] No unmatched responses|%s unmatched responses"
-      }
-    },
-    "consent-match": {
-      "title": "Search for a child record to match with",
-      "label": "Match with record",
-      "caption": "Consent response from {{parent.fullName}}"
-    },
-    "consent-link": {
-      "title": "Link consent response with child record?",
-      "caption": "Consent response from {{parent.fullName}}",
-      "confirm": "Link response with record",
-      "summary": "Compare child details"
-    },
-    "consent-add": {
-      "title": "Create a new child record from this consent response?",
-      "label": "Create a new record",
-      "caption": "Consent response from {{parent.fullName}}",
-      "confirm": "Create a new record from response"
     },
     "open": {
       "title": "When should parents get a request to give consent?",
@@ -1838,6 +1850,7 @@
   },
   "vaccine": {
     "list": {
+      "label": "Vaccines",
       "title": "Vaccines",
       "description": "Add and edit vaccine batches"
     },
@@ -1928,6 +1941,7 @@
   },
   "programme": {
     "list": {
+      "label": "Programmes",
       "title": "Programmes",
       "description": "Use this area to:\n- import child records\n- organise vaccination sessions\n- report vaccinations",
       "adolescent": "Adolescent",

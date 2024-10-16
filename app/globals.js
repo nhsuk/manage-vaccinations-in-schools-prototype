@@ -12,7 +12,7 @@ import { User } from './models/user.js'
 import { HealthQuestion } from './models/vaccine.js'
 import { Vaccination } from './models/vaccination.js'
 import { getEnumKeyAndValue } from './utils/enum.js'
-import { formatLink, pascalToKebabCase } from './utils/string.js'
+import { formatLink, formatParent, pascalToKebabCase } from './utils/string.js'
 
 /**
  * Prototype specific global functions for use in Nunjucks templates.
@@ -123,6 +123,10 @@ export default () => {
    */
   globals.link = function (href, text, attributes) {
     return formatLink(href, text, attributes)
+  }
+
+  globals.parent = function (parent) {
+    return formatParent(parent)
   }
 
   /**

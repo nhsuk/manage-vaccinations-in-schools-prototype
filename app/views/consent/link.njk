@@ -1,17 +1,15 @@
 {% extends "_layouts/form.njk" %}
 
 {% set gridColumns = "full" %}
-{% set title = __("session.consent-link.title") %}
-{% set confirmButtonText = __("session.consent-link.confirm") %}
-{% set paths = {
-  back: "/sessions/" + session.id + "/consents/" + consent.uuid
-} %}
+{% set title = __("consent.link.title") %}
+{% set confirmButtonText = __("consent.link.confirm") %}
+{% set paths = { back: consent.uri } %}
 
 {% block form %}
   {{ super() }}
 
   {{ heading({
-    caption: __("session.consent-link.caption", { parent: consent.parent } ),
+    caption: __("consent.link.caption", { parent: consent.parent } ),
     title: title
   }) }}
 
@@ -32,22 +30,15 @@
             address: {
               value: consent.child.formatted.address | highlightDifference(patient.record.formatted.address)
             },
+            urn: {
+              value: consent.child.formatted.urn | highlightDifference(patient.record.formatted.urn)
+            },
             gpSurgery: {
               value: consent.child.formatted.gpSurgery | highlightDifference(patient.record.formatted.gpSurgery)
+            },
+            parent: {
+              value: parent(consent.parent)
             }
-          })
-        }) + details({
-          text: __("parent.label"),
-          HTML: summaryList({
-            rows: summaryRows(consent.parent, {
-              fullName: {},
-              relationship: {},
-              hasParentalResponsibility: {},
-              email: {},
-              tel: {},
-              contactPreference: {},
-              sms: {}
-            })
           })
         })
       }) }}
@@ -62,7 +53,9 @@
             fullName: {},
             dob: {},
             address: {},
-            gpSurgery: {}
+            urn: {},
+            gpSurgery: {},
+            parents: {}
           })
         })
       }) }}
