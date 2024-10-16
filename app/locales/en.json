@@ -1059,6 +1059,9 @@
     "yearGroup": {
       "label": "Year group"
     },
+    "yearGroupWithRegistration": {
+      "label": "Year group"
+    },
     "gender": {
       "label": "Gender",
       "title": "What is the child’s gender?"

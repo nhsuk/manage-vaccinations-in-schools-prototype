@@ -51,6 +51,7 @@ export class GPRegistered {
  * @property {GPRegistered} gpRegistered - Registered with a GP
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} urn - School URN
+ * @property {string} registrationGroup - Registration group
  * @property {Parent} [parent1] - Parent 1
  * @property {Parent} [parent2] - Parent 2
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
@@ -72,6 +73,7 @@ export class Record {
     this.gpRegistered = options.gpRegistered
     this.gpSurgery = options.gpSurgery
     this.urn = options.urn
+    this.registrationGroup = options?.registrationGroup
     this.parent1 =
       !sensitive && options?.parent1 ? new Parent(options.parent1) : undefined
     this.parent2 =
@@ -87,15 +89,20 @@ export class Record {
    * @static
    */
   static generate() {
+    // Gender
     const gender = faker.helpers.weightedArrayElement([
       { value: Gender.Male, weight: 50 },
       { value: Gender.Female, weight: 50 },
       { value: Gender.NotKnown, weight: 1 },
       { value: Gender.NotSpecified, weight: 1 }
     ])
+
+    // Name
     const firstName = faker.helpers.arrayElement(firstNames[gender])
     const lastName = faker.person.lastName().replace(`'`, '’')
     const phase = faker.helpers.arrayElement(['Primary', 'Secondary'])
+
+    // GP
     const gpRegistered = faker.helpers.arrayElement(Object.values(GPRegistered))
 
     let gpSurgery
@@ -106,6 +113,7 @@ export class Record {
       gpSurgery = faker.helpers.arrayElement(gpSurgeryNames)
     }
 
+    // Date of birth and school
     let dob, urn, newUrn
     if (phase === 'Primary') {
       dob = faker.date.birthdate({ min: 4, max: 11, mode: 'age' })
@@ -126,6 +134,21 @@ export class Record {
       newUrn = faker.helpers.arrayElement(secondarySchools).urn
     }
 
+    // Get registration group
+    let registrationGroup
+    const hasRegistrationGroup = String(urn).startsWith('13')
+    if (hasRegistrationGroup) {
+      const yearGroup = getYearGroup(dob.toISOString())
+      const registration = faker.string.alpha({
+        length: 2,
+        casing: 'upper',
+        exclude: ['A', 'E', 'I', 'O', 'U']
+      })
+
+      registrationGroup = `${yearGroup}${registration}`
+    }
+
+    // Parents
     const parent1 = Parent.generate(lastName, true)
 
     let parent2
@@ -140,7 +163,7 @@ export class Record {
     delete parent1.contactPreference
     delete parent1.contactPreferenceOther
 
-    // Add a pending change
+    // Pending changes
     let pendingChanges = {}
     const hasPendingChanges = faker.datatype.boolean(0.1)
 
@@ -164,6 +187,7 @@ export class Record {
       gpRegistered,
       gpSurgery,
       urn,
+      registrationGroup,
       parent1,
       parent2,
       pendingChanges
@@ -238,7 +262,7 @@ export class Record {
 
   /**
    * Get year group
-   * @returns {number} - Year group
+   * @returns {number} - Year group, for example 8
    */
   get yearGroup() {
     return getYearGroup(this.dob)
@@ -298,11 +322,16 @@ export class Record {
     const formattedParents =
       this.parents && this.parents.map((parent) => formatParent(parent))
 
+    const yearGroup = formatYearGroup(this.yearGroup)
+
     return {
       nhsn: formatNhsNumber(this.nhsn),
       dob: formatDate(this.dob, { dateStyle: 'long' }),
       dod: formatDate(this.dod, { dateStyle: 'long' }),
-      yearGroup: formatYearGroup(this.yearGroup),
+      yearGroup,
+      yearGroupWithRegistration: this.registrationGroup
+        ? `${yearGroup} (${this.registrationGroup})`
+        : yearGroup,
       address: this.address && Object.values(this.address).join('<br>'),
       gpSurgery:
         this.gpRegistered === GPRegistered.Yes
