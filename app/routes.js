@@ -16,7 +16,6 @@ import { gillickRoutes } from './routes/gillick.js'
 import { homeRoutes } from './routes/home.js'
 import { importRoutes } from './routes/import.js'
 import { inviteRoutes } from './routes/invite.js'
-import { manualRoutes } from './routes/manual.js'
 import { moveRoutes } from './routes/move.js'
 import { noticeRoutes } from './routes/notice.js'
 import { organisationRoutes } from './routes/organisation.js'
@@ -45,7 +44,6 @@ router.use('/home', homeRoutes)
 router.use('/account', accountRoutes)
 router.use('/cohorts', cohortRoutes)
 router.use('/consents', consentRoutes)
-router.use('/manual', manualRoutes)
 router.use('/notices', noticeRoutes)
 router.use('/organisations', organisationRoutes)
 router.use('/organisations/:code/clinics', clinicRoutes)
