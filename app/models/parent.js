@@ -18,8 +18,8 @@ export class ParentalRelationship {
 /**
  * @class Parent
  * @property {string} uuid - UUID
- * @property {string} fullName - Full name
- * @property {ParentalRelationship} relationship - Relationship to child
+ * @property {string} [fullName] - Full name
+ * @property {ParentalRelationship} [relationship] - Relationship to child
  * @property {string} [relationshipOther] - Other relationship to child
  * @property {boolean} [hasParentalResponsibility] - Has parental responsibility
  * @property {boolean} notify - Notify about consent and vaccination events
@@ -35,7 +35,7 @@ export class Parent {
     this.fullName = options.fullName
     this.relationship = options.relationship
     this.relationshipOther =
-      this.relationship === ParentalRelationship.Other
+      this?.relationship === ParentalRelationship.Other
         ? options?.relationshipOther
         : undefined
     this.hasParentalResponsibility =
@@ -61,6 +61,7 @@ export class Parent {
    * @static
    */
   static generate(childLastName, isMum) {
+    // Relationship
     const relationship = isMum
       ? ParentalRelationship.Mum
       : faker.helpers.weightedArrayElement([
@@ -68,6 +69,8 @@ export class Parent {
           { value: ParentalRelationship.Guardian, weight: 1 },
           { value: ParentalRelationship.Other, weight: 1 }
         ])
+
+    // Contact details
     const phoneNumber = '07### ######'.replace(/#+/g, (m) =>
       faker.string.numeric(m.length)
     )
@@ -77,6 +80,7 @@ export class Parent {
       Object.values(ContactPreference)
     )
 
+    // Name
     let firstName
     let lastName
     switch (relationship) {
@@ -93,9 +97,13 @@ export class Parent {
         lastName = faker.person.lastName().replace(`'`, '’')
     }
 
+    // Name and relationship may not be provided
+    const hasName = faker.datatype.boolean(0.9)
+    const hasRelationship = faker.datatype.boolean(0.7)
+
     return new Parent({
-      fullName: `${firstName} ${lastName}`,
-      relationship,
+      ...(hasName && { fullName: `${firstName} ${lastName}` }),
+      ...(hasRelationship && { relationship }),
       ...(relationship === ParentalRelationship.Other && {
         relationshipOther: 'Foster parent'
       }),

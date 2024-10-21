@@ -145,13 +145,21 @@ export function formatNhsNumber(string) {
 /**
  * Format parent with optional display of telephone number
  * @param {import('../models/parent.js').Parent} parent - Patent
+ * @param {boolean} [includeTelephone] - Include telephone number
  * @returns {string|undefined} Formatted parent HTML
  */
-export function formatParent(parent) {
+export function formatParent(parent, includeTelephone = true) {
   if (!parent) return
 
-  let string = `${parent.fullName} (${parent.relationship})`
-  if (parent.tel) {
+  let string = parent.fullName || 'Parent or guardian (name unknown)'
+
+  // Add relationship, if provided
+  if (parent.fullName !== undefined && parent.relationship) {
+    string += ` (${parent.relationship})`
+  }
+
+  // Add telephone number, if provided
+  if (includeTelephone && parent.tel) {
     string += `<br><span class="nhsuk-u-secondary-text-color">${parent.tel}</span>`
   }
 

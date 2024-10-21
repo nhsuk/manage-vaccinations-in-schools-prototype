@@ -1,5 +1,6 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { getToday } from '../utils/date.js'
+import { formatParent } from '../utils/string.js'
 import { GillickCompetent } from '../models/gillick.js'
 import { Patient } from '../models/patient.js'
 import { Session } from '../models/session.js'
@@ -216,7 +217,7 @@ export const replyController = {
     } else {
       const { record } = new Patient(patient)
       response.locals.uuidItems = record.parents.map((parent, index) => ({
-        text: `${parent.fullName} (${parent.relationship})`,
+        text: formatParent(parent, false),
         hint: { text: parent.tel },
         value: `parent-${index + 1}`
       }))
