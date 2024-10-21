@@ -49,7 +49,7 @@ export const consentController = {
 
     data.wizard = { consent }
 
-    response.redirect(`/consents/${session.id}/new/child`)
+    response.redirect(`/consents/${session.id}/${consent.uuid}/new/child`)
   },
 
   show(request, response) {
@@ -106,7 +106,7 @@ export const consentController = {
     const { id, uuid } = request.params
     const { data } = request.session
 
-    data.sessions[id].consents[uuid] = new Consent({
+    data.consents[uuid] = new Consent({
       ...consent,
       ...request.body.consent
     })
