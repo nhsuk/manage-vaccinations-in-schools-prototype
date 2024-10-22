@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { formatISO, isAfter, isBefore, isEqual } from 'date-fns'
+import { formatISO, getDayOfYear, isAfter, isBefore, isEqual } from 'date-fns'
 
 const ALLOWED_VALUES_FOR_MONTHS = [
   ['1', '01', 'jan', 'january'],
@@ -165,7 +165,10 @@ export function setMidday(date) {
  * @returns {boolean} Dates includes date
  */
 export function includesDate(dates, date) {
-  return dates.filter((item) => isEqual(item, date)).length > 0
+  return (
+    dates.filter((item) => isEqual(getDayOfYear(item), getDayOfYear(date)))
+      .length > 0
+  )
 }
 
 /**
