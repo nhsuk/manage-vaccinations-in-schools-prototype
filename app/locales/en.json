@@ -1747,7 +1747,8 @@
     },
     "location": {
       "label": "Location",
-      "title": "Location"
+      "title": "Where was the vaccination given?",
+      "hint": "Enter name and address"
     },
     "outcome": {
       "label": "Outcome",

@@ -3,17 +3,17 @@
 {% set title = __("vaccination.location.title") %}
 
 {% block form %}
-  {{ radios({
-    fieldset: {
-      legend: {
-        html: heading({
-          classes: "nhsuk-fieldset__legend--l",
-          caption: record.fullName,
-          title: title
-        })
-      }
+  {{ input({
+    label: {
+      html: heading({
+        classes: "nhsuk-fieldset__legend--l",
+        caption: record.fullName,
+        title: title
+      })
     },
-    items: locationItems,
+    hint: {
+      text: __("vaccination.location.hint")
+    },
     decorate: "vaccination.location"
   }) }}
 {% endblock %}

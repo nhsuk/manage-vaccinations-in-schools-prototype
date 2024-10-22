@@ -331,6 +331,32 @@ export class Session {
     }
   }
 
+  get nameAndAddress() {
+    if (!this.location?.postalCode) {
+      return
+    }
+
+    let nameAndAddress = this.location.name
+
+    if (this.location.addressLine1) {
+      nameAndAddress += `, ${this.location.addressLine1}`
+    }
+
+    if (this.location.addressLine2) {
+      nameAndAddress += `, ${this.location.addressLine2}`
+    }
+
+    if (this.location.addressLevel1) {
+      nameAndAddress += `, ${this.location.addressLevel1}`
+    }
+
+    if (this.location.postalCode) {
+      nameAndAddress += `. ${this.location.postalCode}`
+    }
+
+    return nameAndAddress
+  }
+
   get dateSummary() {
     if (this.status === SessionStatus.Planned) {
       const firstDate = formatDate(this.firstDate, {

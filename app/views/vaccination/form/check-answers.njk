@@ -36,7 +36,9 @@
         created_user_uid: {
           value: users[vaccination.created_user_uid].fullName
         } if vaccination.created_user_uid,
-        location: {},
+        location: {
+          href: vaccination.uri + "/new/location"
+        },
         protocol: {}
       })
     })
