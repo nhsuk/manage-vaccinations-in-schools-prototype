@@ -1,0 +1,26 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("session.close.title") %}
+{% set confirmButtonText = __("session.close.confirm") %}
+
+{% block form %}
+  {{ heading({
+    caption: session.location.name,
+    title: title
+  }) }}
+
+  {{ __("session.close.description") | nhsukMarkdown }}
+
+  <ul class="nhsuk-list nhsuk-list--bullet">
+{% if couldNotVaccinate.length %}
+    <li>
+      {{ __n("session.close.couldNotVaccinate.count", couldNotVaccinate.length) }}
+    </li>
+{% endif %}
+{% if noReponse.length %}
+    <li>
+      {{ __n("session.close.noResponse.count", noReponse.length) }}
+    </li>
+{% endif %}
+  </ul>
+{% endblock %}

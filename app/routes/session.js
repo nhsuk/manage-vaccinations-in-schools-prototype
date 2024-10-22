@@ -4,7 +4,7 @@ import { sessionController } from '../controllers/session.js'
 const router = express.Router({ strict: true })
 
 router.get(
-  ['/', '/:view(active|completed|planned|unplanned)'],
+  ['/', '/:view(active|completed|planned|unplanned|closed)'],
   sessionController.list
 )
 
@@ -23,6 +23,10 @@ router.get('/:id/moves', sessionController.moves)
 router.all('/:id/offline', sessionController.readOffline)
 router.get('/:id/offline', sessionController.showOffline)
 router.post('/:id/offline', sessionController.updateOffline)
+
+router.all('/:id/close', sessionController.readClose)
+router.get('/:id/close', sessionController.showClose)
+router.post('/:id/close', sessionController.updateClose)
 
 router.get('/:id/?:form(edit)', sessionController.edit)
 router.post('/:id/?:form(edit)', sessionController.update)

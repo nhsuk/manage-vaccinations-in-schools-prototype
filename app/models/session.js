@@ -34,6 +34,7 @@ export class SessionStatus {
   static Unplanned = 'No sessions scheduled'
   static Planned = 'Sessions scheduled'
   static Completed = 'All sessions completed'
+  static Closed = 'Closed'
 }
 
 export class SessionType {
@@ -52,6 +53,7 @@ export class SessionType {
  * @property {Array<object>} [dates_] - Dates (from `dateInput`s)
  * @property {string} [open] - Date consent window opens
  * @property {object} [open_] - Date consent window opens (from `dateInput`)
+ * @property {boolean} [closed] - Session closed
  * @property {number} [reminderWeeks] - Weeks before session to send reminders
  * @property {Array<string>} [programmes] - Programme PIDs
  */
@@ -68,6 +70,7 @@ export class Session {
       : this.firstDate
         ? removeDays(this.firstDate, OrganisationDefaults.SessionOpenWeeks * 7)
         : undefined
+    this.closed = options?.closed || false
     this.reminderWeeks =
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
     this.programmes = options?.programmes || []
@@ -272,6 +275,8 @@ export class Session {
   get status() {
     const today = setMidday(getToday())
     switch (true) {
+      case this.closed:
+        return SessionStatus.Closed
       case this.dates.length === 0:
         return SessionStatus.Unplanned
       case isAfter(today, this.lastDate):
@@ -511,6 +516,9 @@ export class Session {
   get statusTag() {
     let colour
     switch (this.status) {
+      case SessionStatus.Closed:
+        colour = 'red'
+        break
       case SessionStatus.Completed:
         colour = 'green'
         break

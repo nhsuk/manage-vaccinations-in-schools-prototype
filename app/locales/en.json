@@ -1461,6 +1461,13 @@
           "one": "%s location with no sessions scheduled",
           "other": "[0] No locations with no sessions scheduled|%s locations with no sessions scheduled"
         }
+      },
+      "closed": {
+        "label": "Closed",
+        "count": {
+          "one": "%s location with closed sessions",
+          "other": "[0] No locations with closed sessions|%s locations with closed sessions"
+        }
       }
     },
     "new": {
@@ -1485,7 +1492,8 @@
     },
     "success": {
       "create": "{{session.name}} created",
-      "update": "{{session.name}} updated"
+      "update": "{{session.name}} updated",
+      "close": "{{session.name}} has been closed"
     },
     "patients": {
       "label": "Cohort",
@@ -1555,6 +1563,23 @@
         "label": "Administering nurse",
         "firstName": "First name",
         "lastName": "Last name"
+      }
+    },
+    "close": {
+      "title": "Close session",
+      "confirm": "Close session",
+      "description": "All sessions for this school have been completed.\n\nWhen you close this session, the following children will be invited to community clinics:",
+      "couldNotVaccinate": {
+        "count": {
+          "one": "%s child who could not be vaccinated",
+          "other": "[0] No children who could not be vaccinated|%s children who could not be vaccinated"
+        }
+      },
+      "noResponse": {
+        "count": {
+          "one": "%s child whose parents did not give a consent response",
+          "other": "[0] No children whose parents did not give a consent response|%s children whose parents did not give a consent response"
+        }
       }
     }
   },

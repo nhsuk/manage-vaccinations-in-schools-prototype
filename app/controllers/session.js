@@ -1,6 +1,6 @@
 import { wizard } from 'nhsuk-prototype-rig'
 import { Batch } from '../models/batch.js'
-import { Patient } from '../models/patient.js'
+import { ConsentOutcome, Patient, PatientOutcome } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
 import { Session, SessionStatus, SessionType } from '../models/session.js'
 import { programmeTypes } from '../models/programme.js'
@@ -35,6 +35,7 @@ export const sessionController = {
     const { data } = request.session
 
     const statuses = {
+      closed: SessionStatus.Closed,
       completed: SessionStatus.Completed,
       planned: SessionStatus.Planned,
       unplanned: SessionStatus.Unplanned
@@ -297,6 +298,64 @@ export const sessionController = {
 
   updateOffline(request, response) {
     const { paths } = response.locals
+
+    response.redirect(paths.next)
+  },
+
+  readClose(request, response, next) {
+    const { patients, session } = request.app.locals
+
+    response.locals.paths = {
+      back: session.uri,
+      next: session.uri
+    }
+
+    response.locals.couldNotVaccinate = patients
+      .map((patient) => new Patient(patient))
+      .filter(({ consent }) => consent.value !== ConsentOutcome.NoResponse)
+      .filter(
+        ({ outcome }) => outcome.value === PatientOutcome.CouldNotVaccinate
+      )
+
+    response.locals.noResponse = patients
+      .map((patient) => new Patient(patient))
+      .filter(({ consent }) => consent.value === ConsentOutcome.NoResponse)
+
+    next()
+  },
+
+  showClose(request, response) {
+    response.render('session/close')
+  },
+
+  updateClose(request, response) {
+    const { programme, session } = request.app.locals
+    const { data } = request.session
+    const { __, paths, couldNotVaccinate, noResponse } = response.locals
+
+    const updatedSession = new Session(session)
+    updatedSession.closed = true
+
+    // Update session data
+    data.sessions[updatedSession.id] = updatedSession
+
+    // Find clinics
+    const clinic = Object.values(data.sessions)
+      .map((session) => new Session(session))
+      .filter((session) => session.programmes.includes(programme.pid))
+      .filter((session) => session.type === SessionType.Clinic)
+
+    // Move patients to clinic
+    const patientsToMove = couldNotVaccinate.concat(noResponse)
+    for (const patient of patientsToMove) {
+      const updatedPatient = new Patient(patient)
+      updatedPatient.invite = clinic[0]
+
+      // Update session data
+      data.patients[patient.uuid] = updatedPatient
+    }
+
+    request.flash('success', __(`session.success.close`, { session }))
 
     response.redirect(paths.next)
   }
