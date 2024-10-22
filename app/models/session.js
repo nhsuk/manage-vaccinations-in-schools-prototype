@@ -424,13 +424,15 @@ export class Session {
    */
   get link() {
     return {
-      location: `<span>${formatLink(this.uri, this.location.name)}</br>
+      location: this.location?.postalCode
+        ? `<span>${formatLink(this.uri, this.location.name)}</br>
         <span class="nhsuk-u-secondary-text-color">
           ${this.location.addressLine1},
           ${this.location.addressLevel1},
           ${this.location.postalCode}
         </span>
       </span>`
+        : formatLink(this.uri, this.location.name)
     }
   }
 

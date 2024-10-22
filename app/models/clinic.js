@@ -40,13 +40,15 @@ export class Clinic {
   get formatted() {
     return {
       address: `${this.addressLine1}, ${this.addressLevel1}. ${this.postalCode}`,
-      location: `<span>${this.name}</br>
+      location: this.postalCode
+        ? `<span>${this.name}</br>
         <span class="nhsuk-u-secondary-text-color">
           ${this.addressLine1},
           ${this.addressLevel1},
           ${this.postalCode}
         </span>
       </span>`
+        : this.name
     }
   }
 

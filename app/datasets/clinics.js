@@ -349,5 +349,9 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV2 3NF',
     tel: '024 76455943'
+  },
+  X99999: {
+    id: 'X99999',
+    name: 'Community clinic'
   }
 }

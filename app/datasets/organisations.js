@@ -6,7 +6,7 @@ export default [
     name: 'Coventry and Warwickshire Partnership NHS Trust',
     email: 'example@covwarkpt.nhs.uk',
     tel: '01632 960000',
-    ids: ['M86005', 'M86012', 'Y00996'],
+    ids: ['X99999'],
     urns: Object.keys(schoolsData)
   }
 ]
