@@ -29,7 +29,7 @@ export class School {
 
   /**
    * Get location
-   * @returns {object} - Location
+   * @returns {object|undefined} - Location
    */
   get location() {
     if (!this.postalCode) {

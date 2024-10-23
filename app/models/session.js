@@ -243,7 +243,7 @@ export class Session {
 
   /**
    * Get consent URL
-   * @returns {object} - Consent window
+   * @returns {object|undefined} - Consent window
    */
   get consentUrl() {
     if (this.firstDate && this.consentWindow.value !== ConsentWindow.Closed) {

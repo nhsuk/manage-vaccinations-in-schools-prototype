@@ -83,6 +83,7 @@ export function formatList(array) {
 /**
  * Format markdown
  * @param {string} string - Markdown
+ * @param {string} headingsStartWith - Initial heading size
  * @returns {string|undefined} HTML decorated with nhsuk-* classes
  */
 export function formatMarkdown(string, headingsStartWith = 'l') {
@@ -196,7 +197,7 @@ export function formatYearGroup(yearGroup) {
 
 /**
  * Lower case first letter
- * @param {string} string
+ * @param {string} string - String to change
  * @returns {string} String with lower cased first letter
  */
 export function lowerCaseFirst(string) {

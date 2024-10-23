@@ -286,7 +286,7 @@ export class Record {
 
   /**
    * Get post code
-   * @returns {string} - Post code
+   * @returns {string|undefined} - Post code
    */
   get postalCode() {
     if (this.address) {
@@ -296,7 +296,7 @@ export class Record {
 
   /**
    * Get parents
-   * @returns {Array<Parent>} - Parents
+   * @returns {Array<Parent>|undefined} - Parents
    */
   get parents() {
     if (this.parent1 && this.parent2) {

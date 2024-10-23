@@ -94,6 +94,7 @@ export default (env) => {
   /**
    * Format markdown
    * @param {string} string - Markdown
+   * @param {string} headingsStartWith - Initial heading size
    * @returns {string} HTML decorated with nhsuk-* typography classes
    */
   filters.nhsukMarkdown = (string, headingsStartWith) => {
