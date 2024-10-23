@@ -1,0 +1,24 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("consent.child.home-schooled.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--l",
+        html: heading({
+          title: title
+        })
+      }
+    },
+    items: [{
+      text: __("consent.child.home-schooled.yes"),
+      value: "yes"
+    }, {
+      text: __("consent.child.home-schooled.no"),
+      value: "no"
+    }],
+    decorate: "consent.child.homeSchooled"
+  }) }}
+{% endblock %}
