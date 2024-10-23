@@ -44,13 +44,13 @@
             }
           },
           {
-            header: __("vaccine.actions.label"),
+            header: __("actions.label"),
             html: actionList({
               items: [{
-                text: "Change",
+                text: __("actions.change"),
                 href: batch.uri + "/edit"
               }, {
-                text: "Archive",
+                text: __("actions.archive"),
                 href: batch.uri + "/archive"
               }]
             })
@@ -66,7 +66,7 @@
           { text: __("batch.id.label") },
           { text: __("batch.created.label") },
           { text: __("batch.expires.label") },
-          { text: __("vaccine.actions.label") }
+          { text: __("actions.label") }
         ],
         rows: batchRows
       }) if batchRows.length }}

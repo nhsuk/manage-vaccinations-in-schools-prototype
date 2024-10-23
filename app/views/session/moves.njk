@@ -58,7 +58,7 @@
         text: patient.record.formatted.newUrn
       } if tab === 'Out',
       {
-        header: __("move.actions.label"),
+        header: __("actions.label"),
         html: confirmButtonHtml
       }
     ]) %}
@@ -77,7 +77,7 @@
         { text: __("record.fullName.label") },
         { text: __("move.from.label") } if tab === 'In',
         { text: __("move.to.label") } if tab === 'Out',
-        { text: __("move.actions.label") }
+        { text: __("actions.label") }
       ],
       rows: patientRows
     }) }}

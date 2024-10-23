@@ -1,4 +1,14 @@
 {
+  "actions": {
+    "label": "Actions",
+    "change": "Change",
+    "review": "Review",
+    "archive": "Archive"
+  },
+  "form": {
+    "confirm": "Save changes",
+    "continue": "Continue"
+  },
   "error": {
     "title": "There is a problem"
   },
@@ -74,9 +84,6 @@
     "id": {
       "label": "Batch ID"
     },
-    "actions": {
-      "label": "Actions"
-    },
     "action": {
       "title": "Are you sure you want to %s this batch?",
       "description": "This operation cannot be undone.",
@@ -123,9 +130,6 @@
     "postalCode": {
       "label": "Postcode"
     },
-    "actions": {
-      "label": "Actions"
-    },
     "count": {
       "one": "%s clinic",
       "other": "[0] No clinics|%s clinics"
@@ -158,9 +162,6 @@
     },
     "name": {
       "label": "Name"
-    },
-    "action": {
-      "label": "Actions"
     }
   },
   "capture": {
@@ -724,16 +725,12 @@
         "label": "Issue to review",
         "title": "This record needs reviewing",
         "text": "A field in a duplicate record does not match an existing child record"
-      },
-      "actions": {
-        "label": "Actions"
       }
     },
     "file": {
       "title": "Import {{type}}",
       "hint": "{{prefix}}Make sure the CSV you import has the same format as your usual template for {{type}}.",
       "format": "How to format your CSV for {{type}}",
-      "confirm": "Continue",
       "errors": {
         "invalid": "The selected file must be a CSV"
       }
@@ -805,9 +802,6 @@
         "other": "[0] No records imported|%s records imported"
       }
     },
-    "actions": {
-      "label": "Actions"
-    },
     "issue": {
       "label": "Issue to review",
       "title": "This record needs reviewing",
@@ -846,9 +840,6 @@
     },
     "to": {
       "label": "School moved to"
-    },
-    "actions": {
-      "label": "Actions"
     },
     "confirm": {
       "true": "Confirm move",
@@ -1052,7 +1043,6 @@
     },
     "edit": {
       "title": "Edit child record",
-      "confirm": "Save changes",
       "summary": "Record details"
     },
     "results": "Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> records",
@@ -1154,9 +1144,6 @@
       "title": "This record needs reviewing",
       "text": "A field in a duplicate record does not match that in an existing record"
     },
-    "actions": {
-      "label": "Actions"
-    },
     "parents": {
       "label": "Parents or guardians"
     },
@@ -1176,8 +1163,7 @@
       "label": "Is {{patient.fullName}} attending today’s session?",
       "true": "Yes, they are attending today’s session",
       "false": "No, they are absent from today’s session",
-      "undefined": "They have not been registered yet",
-      "confirm": "Save changes"
+      "undefined": "They have not been registered yet"
     },
     "update": {
       "true": {
@@ -1240,8 +1226,7 @@
     "new": {
       "title": "Get consent response",
       "check-answers": {
-        "title": "Check and confirm",
-        "confirm": "Save changes"
+        "title": "Check and confirm"
       }
     },
     "success": {
@@ -1480,13 +1465,11 @@
       "description": "Add dates for this school.",
       "check-answers": {
         "title": "Check and confirm",
-        "confirm": "Save changes",
         "summary": "Session details"
       }
     },
     "edit": {
       "title": "Edit session",
-      "confirm": "Save changes",
       "summary": "Session details",
       "programmes": {
         "title": "Which programmes is this session part of?"
@@ -1742,14 +1725,12 @@
     "new": {
       "check-answers": {
         "title": "Check and confirm",
-        "confirm": "Save changes",
         "summary": "Vaccination details",
         "callout": "Vaccination was not given"
       }
     },
     "edit": {
       "title": "Edit vaccination record",
-      "confirm": "Save changes",
       "summary": "Vaccination details"
     },
     "success": {
@@ -1838,9 +1819,6 @@
       "title": "Vaccine",
       "label": "Vaccine"
     },
-    "actions": {
-      "label": "Actions"
-    },
     "review": {
       "title": "Review duplicate vaccination record",
       "duplicate": {
@@ -1897,9 +1875,6 @@
     },
     "expires": {
       "label": "Expiry date"
-    },
-    "actions": {
-      "label": "Actions"
     },
     "gtin": {
       "label": "GTIN"
@@ -2022,12 +1997,6 @@
     },
     "vaccines": {
       "label": "Vaccines administered"
-    }
-  },
-  "patients": {
-    "count": {
-      "one": "patients.count",
-      "other": "patients.count"
     }
   }
 }

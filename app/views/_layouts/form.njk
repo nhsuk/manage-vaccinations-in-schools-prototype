@@ -12,7 +12,7 @@
 
       {% block afterForm %}
         {{ button({
-          html: confirmButtonText if confirmButtonText else "Continue"
+          html: confirmButtonText if confirmButtonText else __("form.continue")
         }) if not hideConfirmButton }}
       {% endblock %}
     </div>
