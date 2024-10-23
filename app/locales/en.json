@@ -91,6 +91,45 @@
       "cancel": "No, return to vaccines"
     }
   },
+  "capture": {
+    "label": "Status",
+    "title": "Record vaccinations",
+    "Register": {
+      "label": "Register",
+      "count": {
+        "one": "%s child still to register",
+        "other": "[0] No children still to register|%s children still to register"
+      }
+    },
+    "GetConsent": {
+      "label": "Get consent",
+      "count": {
+        "one": "%s child without a consent response",
+        "other": "[0] No children without a response|%s children without a response"
+      }
+    },
+    "CheckRefusal": {
+      "label": "Check refusal",
+      "count": {
+        "one": "%s child with refused consent",
+        "other": "[0] No children with refused consent|%s children with refused consent"
+      }
+    },
+    "NeedsTriage": {
+      "label": "Triage",
+      "count": {
+        "one": "%s child needing triage",
+        "other": "[0] No children needing triage|%s children needing triage"
+      }
+    },
+    "Vaccinate": {
+      "label": "Vaccinate",
+      "count": {
+        "one": "%s child ready to vaccinate",
+        "other": "[0] No children ready to vaccinate|%s children ready to vaccinate"
+      }
+    }
+  },
   "clinic": {
     "name": {
       "label": "Name"
@@ -162,45 +201,6 @@
     },
     "name": {
       "label": "Name"
-    }
-  },
-  "capture": {
-    "label": "Status",
-    "title": "Record vaccinations",
-    "Register": {
-      "label": "Register",
-      "count": {
-        "one": "%s child still to register",
-        "other": "[0] No children still to register|%s children still to register"
-      }
-    },
-    "GetConsent": {
-      "label": "Get consent",
-      "count": {
-        "one": "%s child without a consent response",
-        "other": "[0] No children without a response|%s children without a response"
-      }
-    },
-    "CheckRefusal": {
-      "label": "Check refusal",
-      "count": {
-        "one": "%s child with refused consent",
-        "other": "[0] No children with refused consent|%s children with refused consent"
-      }
-    },
-    "NeedsTriage": {
-      "label": "Triage",
-      "count": {
-        "one": "%s child needing triage",
-        "other": "[0] No children needing triage|%s children needing triage"
-      }
-    },
-    "Vaccinate": {
-      "label": "Vaccinate",
-      "count": {
-        "one": "%s child ready to vaccinate",
-        "other": "[0] No children ready to vaccinate|%s children ready to vaccinate"
-      }
     }
   },
   "child": {
@@ -553,6 +553,38 @@
     "count": {
       "one": "Default batch",
       "other": "Default batches"
+    }
+  },
+  "download": {
+    "new": {
+      "label": "Download vaccination report",
+      "check-answers": {
+        "confirm": "Download vaccination report",
+        "title": "Check and confirm",
+        "summary": "Requested download"
+      }
+    },
+    "dates": {
+      "title": "Select a vaccination date range"
+    },
+    "from": {
+      "label": "From",
+      "hint": "For example, 27 10 2024"
+    },
+    "until": {
+      "label": "Until",
+      "hint": "For example, 27 10 2025"
+    },
+    "format": {
+      "title": "Select file format",
+      "label": "File format"
+    },
+    "providers": {
+      "title": "Select providers",
+      "label": "Providers"
+    },
+    "vaccinations": {
+      "label": "Records"
     }
   },
   "emails": {
@@ -1030,6 +1062,85 @@
       "label": "Search children by name",
       "confirm": "Search",
       "clear": "Clear search"
+    }
+  },
+  "preScreen": {
+    "label": "Pre-screening questions",
+    "questions": {
+      "label": "Have you asked {{patient.firstName}} if:"
+    },
+    "continue": {
+      "label": "Is {{patient.firstName}} ready to vaccinate in this session?"
+    },
+    "confirm": "Continue",
+    "note": {
+      "label": "Pre-screening notes"
+    }
+  },
+  "programme": {
+    "list": {
+      "label": "Programmes",
+      "title": "Programmes",
+      "description": "Use this area to:\n- import child records\n- organise vaccination sessions\n- report vaccinations",
+      "adolescent": "Adolescent",
+      "seasonal": "Seasonal"
+    },
+    "show": {
+      "label": "Overview",
+      "title": "Overview"
+    },
+    "cohorts": {
+      "label": "Cohorts",
+      "title": "Cohorts"
+    },
+    "patients": {
+      "label": "Children",
+      "title": "Children",
+      "count": {
+        "one": "%s child",
+        "other": "[0] No children|%s children"
+      }
+    },
+    "sessions": {
+      "label": "Sessions",
+      "title": "Sessions",
+      "count": {
+        "one": "%s session organised",
+        "other": "[0] No sessions organised|%s sessions organised"
+      }
+    },
+    "reviews": {
+      "label": "Import issues",
+      "title": "Import issues",
+      "count": {
+        "one": "%s imported record needs review",
+        "other": "[0] No imported records need review|%s imported records need review"
+      }
+    },
+    "imports": {
+      "label": "Imports",
+      "title": "Imports",
+      "count": {
+        "one": "%s import",
+        "other": "[0] No imports|%s imports"
+      }
+    },
+    "vaccinations": {
+      "label": "Vaccinations",
+      "title": "Vaccinations",
+      "count": {
+        "one": "%s vaccination record",
+        "other": "[0] No vaccination records|%s vaccination records"
+      }
+    },
+    "name": {
+      "label": "Programme"
+    },
+    "type": {
+      "label": "Programme type"
+    },
+    "vaccines": {
+      "label": "Vaccines administered"
     }
   },
   "record": {
@@ -1690,19 +1801,6 @@
       "label": "Role"
     }
   },
-  "preScreen": {
-    "label": "Pre-screening questions",
-    "questions": {
-      "label": "Have you asked {{patient.firstName}} if:"
-    },
-    "continue": {
-      "label": "Is {{patient.firstName}} ready to vaccinate in this session?"
-    },
-    "confirm": "Continue",
-    "note": {
-      "label": "Pre-screening notes"
-    }
-  },
   "vaccination": {
     "label": "Vaccination record",
     "show": {
@@ -1899,104 +1997,6 @@
     },
     "preScreenQuestions": {
       "label": "Pre-screening questions"
-    }
-  },
-  "download": {
-    "new": {
-      "label": "Download vaccination report",
-      "check-answers": {
-        "confirm": "Download vaccination report",
-        "title": "Check and confirm",
-        "summary": "Requested download"
-      }
-    },
-    "dates": {
-      "title": "Select a vaccination date range"
-    },
-    "from": {
-      "label": "From",
-      "hint": "For example, 27 10 2024"
-    },
-    "until": {
-      "label": "Until",
-      "hint": "For example, 27 10 2025"
-    },
-    "format": {
-      "title": "Select file format",
-      "label": "File format"
-    },
-    "providers": {
-      "title": "Select providers",
-      "label": "Providers"
-    },
-    "vaccinations": {
-      "label": "Records"
-    }
-  },
-  "programme": {
-    "list": {
-      "label": "Programmes",
-      "title": "Programmes",
-      "description": "Use this area to:\n- import child records\n- organise vaccination sessions\n- report vaccinations",
-      "adolescent": "Adolescent",
-      "seasonal": "Seasonal"
-    },
-    "show": {
-      "label": "Overview",
-      "title": "Overview"
-    },
-    "cohorts": {
-      "label": "Cohorts",
-      "title": "Cohorts"
-    },
-    "patients": {
-      "label": "Children",
-      "title": "Children",
-      "count": {
-        "one": "%s child",
-        "other": "[0] No children|%s children"
-      }
-    },
-    "sessions": {
-      "label": "Sessions",
-      "title": "Sessions",
-      "count": {
-        "one": "%s session organised",
-        "other": "[0] No sessions organised|%s sessions organised"
-      }
-    },
-    "reviews": {
-      "label": "Import issues",
-      "title": "Import issues",
-      "count": {
-        "one": "%s imported record needs review",
-        "other": "[0] No imported records need review|%s imported records need review"
-      }
-    },
-    "imports": {
-      "label": "Imports",
-      "title": "Imports",
-      "count": {
-        "one": "%s import",
-        "other": "[0] No imports|%s imports"
-      }
-    },
-    "vaccinations": {
-      "label": "Vaccinations",
-      "title": "Vaccinations",
-      "count": {
-        "one": "%s vaccination record",
-        "other": "[0] No vaccination records|%s vaccination records"
-      }
-    },
-    "name": {
-      "label": "Programme"
-    },
-    "type": {
-      "label": "Programme type"
-    },
-    "vaccines": {
-      "label": "Vaccines administered"
     }
   }
 }
