@@ -17,7 +17,7 @@ export const navigation = (request, response, next) => {
   const account = data.token
     ? {
         user: {
-          text: user.fullName
+          text: `${user.fullName} (${user.role})`
         },
         items: [
           {
