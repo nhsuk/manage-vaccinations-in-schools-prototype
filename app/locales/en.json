@@ -848,8 +848,8 @@
   },
   "manual": {
     "show": {
-      "title": "User guide",
-      "description": "Guidance on how to use this service"
+      "title": "Service guidance",
+      "description": "How to use this service"
     }
   },
   "move": {
