@@ -135,7 +135,7 @@ export function formatNhsNumber(string) {
   if (isNhsNumber) {
     string = string
       .toString()
-      .replaceAll(/(\d{3})(\d{4})(\d{3})/g, '$1&nbsp;&zwj;$2&nbsp;&zwj;$3')
+      .replaceAll(/(\d{3})(\d{3})(\d{4})/g, '$1&nbsp;&zwj;$2&nbsp;&zwj;$3')
 
     return formatMonospace(string)
   }
