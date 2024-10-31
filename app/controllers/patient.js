@@ -21,7 +21,7 @@ import { Vaccination } from '../models/vaccination.js'
 
 export const patientController = {
   readAll(request, response, next) {
-    let { page, limit, q } = request.query
+    let { page, limit, q, hasMissingNhsNumber } = request.query
     const { data } = request.session
 
     let patients = Object.values(data.patients).map(
@@ -35,7 +35,13 @@ export const patientController = {
     page = parseInt(page) || 1
     limit = parseInt(limit) || 200
 
-    // Query
+    // Filter
+    if (hasMissingNhsNumber) {
+      patients = patients.filter(
+        (patient) => patient.record.hasMissingNhsNumber
+      )
+    }
+
     if (q) {
       patients = patients.filter((patient) => {
         const fullName = String(patient.fullName).toLowerCase()
@@ -45,6 +51,7 @@ export const patientController = {
       })
     }
 
+    delete data.hasMissingNhsNumber
     delete data.q
 
     response.locals.patients = patients
@@ -52,6 +59,25 @@ export const patientController = {
     response.locals.pages = getPagination(patients, page, limit)
 
     next()
+  },
+
+  updateAll(request, response) {
+    const { hasMissingNhsNumber, q } = request.body
+
+    let params = {}
+
+    if (q) {
+      params.q = String(q)
+    }
+
+    if (hasMissingNhsNumber && hasMissingNhsNumber[0] === 'true') {
+      params.hasMissingNhsNumber = true
+    }
+
+    // @ts-ignore
+    const queryString = new URLSearchParams(params).toString()
+
+    response.redirect(`/patients?${queryString}`)
   },
 
   showAll(request, response) {

@@ -10,27 +10,49 @@
     title: title
   }) }}
 
-  <form class="app-search" role="search">
-    {{ input({
-      formGroup: { classes: "app-search__form-group" },
-      classes: "app-search__input",
-      label: { text: __("patient.search.label") },
-      type: "search",
-      name: "q",
-      value: data.q
-    }) }}
+  {% set detailsHtml %}
+    <form role="search" method="post">
+      {{ input({
+        label: { text: __("patient.filter.name") },
+        decorate: "q"
+      }) }}
 
-    {{ button({
-      classes: "app-search__button",
-      text: __("patient.search.confirm")
-    }) }}
+      {{ checkboxes({
+        fieldset: {
+          legend: {
+            classes: "nhsuk-u-visually-hidden",
+            text: __("patient.filter.options")
+          }
+        },
+        items: [
+          {
+            value: "true",
+            text: __("patient.filter.hasMissingNhsNumber")
+          }
+        ],
+        decorate: "hasMissingNhsNumber"
+      }) }}
 
-    {{ button({
-      classes: "app-search__button nhsuk-button--secondary",
-      text: __("patient.search.clear"),
-      href: "/patients"
-    }) if data.q }}
-  </form>
+      <div class="app-button-group nhsuk-u-margin-bottom-0">
+        {{ button({
+          text: __("patient.filter.confirm")
+        }) }}
+
+        {{ button({
+          classes: "nhsuk-button--secondary",
+          text: __("patient.filter.clear"),
+          href: "/patients"
+        }) if data.q or data.hasMissingNhsNumber }}
+      </div>
+    </form>
+  {% endset %}
+
+  {{ details({
+    classes: "nhsuk-expander",
+    text: __("patient.filter.label"),
+    HTML: detailsHtml,
+    open: true if data.q or data.hasMissingNhsNumber
+  }) }}
 
   {% set patientRows = [] %}
   {% for patient in results.page | sort(false, false, "record.lastName") %}

@@ -65,7 +65,6 @@ $color_app-dark-orange: color.scale(color.mix($color_nhsuk-red, $color_nhsuk-war
 @import "patients";
 @import "prototype";
 @import "secondary-navigation";
-@import "search";
 @import "status";
 @import "sub-navigation";
 @import "summary-list";
@@ -90,4 +89,9 @@ $color_app-dark-orange: color.scale(color.mix($color_nhsuk-red, $color_nhsuk-war
       margin: 0 auto;
     }
   }
+}
+
+// Fix checkbox check sizing
+.nhsuk-checkboxes__label::after {
+  box-sizing: border-box;
 }

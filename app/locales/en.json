@@ -1058,10 +1058,13 @@
       "one": "%s child",
       "other": "%s children"
     },
-    "search": {
-      "label": "Search children by name",
-      "confirm": "Search",
-      "clear": "Clear search"
+    "filter": {
+      "label": "Filter children",
+      "options": "Options",
+      "name": "Name",
+      "hasMissingNhsNumber": "Missing NHS number",
+      "confirm": "Update children",
+      "clear": "Clear filters"
     }
   },
   "preScreen": {
