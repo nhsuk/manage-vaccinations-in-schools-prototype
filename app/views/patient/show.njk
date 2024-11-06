@@ -115,7 +115,7 @@
     {% set sessionsDescriptionHtml %}
       {% if sessions.length %}
         {% set sessionRows = [] %}
-        {% for cohort in cohorts | sort(false, false, "created") %}
+        {% for session in sessions | sort(false, false, "created") %}
           {% set sessionRows = sessionRows | push([
             {
               header: __("session.location.label"),
