@@ -289,6 +289,7 @@ export const vaccinationController = {
     data.wizard.vaccination = new Vaccination(
       Object.assign(
         vaccination, // Previous values
+        data.wizard.vaccination, // Wizard values
         request.body.vaccination // New value
       )
     )
