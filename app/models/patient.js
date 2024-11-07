@@ -15,7 +15,7 @@ import {
   getPatientOutcome
 } from '../utils/capture.js'
 import { getToday, removeDays } from '../utils/date.js'
-import { formatLink, stringToBoolean } from '../utils/string.js'
+import { formatLink, formatParent, stringToBoolean } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 import { Vaccination } from './vaccination.js'
 import { NoticeType } from './notice.js'
@@ -373,14 +373,16 @@ export class Patient {
 
     const { decision, fullName, invalid, relationship, uuid } = reply
     const created = !this.replies[uuid]
+    const parent = new Parent({ fullName, relationship })
+    const formattedParent = formatParent(parent, false)
 
-    let name = `${decision} by ${fullName} (${relationship})`
+    let name = `${decision} by ${formattedParent}`
     if (invalid) {
-      name = `${decision} by ${fullName} (${relationship}) marked as invalid`
+      name = `${decision} by ${formattedParent} marked as invalid`
     } else if (created) {
-      name = `${decision} in response from ${fullName} (${relationship})`
+      name = `${decision} in response from ${formattedParent}`
     } else {
-      name = `${decision} in updated response from ${fullName} (${relationship})`
+      name = `${decision} in updated response from ${formattedParent}`
     }
 
     this.replies[uuid] = reply
