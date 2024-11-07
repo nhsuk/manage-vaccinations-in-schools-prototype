@@ -50,8 +50,12 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         rows: summaryRows(reply.parent, {
-          fullName: {},
-          relationship: {},
+          fullName: {
+            href: reply.uri + "/edit/parent"
+          },
+          relationship: {
+            href: reply.uri + "/edit/parent"
+          },
           hasParentalResponsibility: {},
           email: {
             href: reply.uri + "/edit/parent"

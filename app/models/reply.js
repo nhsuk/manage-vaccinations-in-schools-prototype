@@ -4,6 +4,7 @@ import { Child } from './child.js'
 import { Parent } from './parent.js'
 import { formatDate, getToday } from '../utils/date.js'
 import {
+  formatLink,
   formatMarkdown,
   formatOther,
   stringToBoolean
@@ -157,8 +158,8 @@ export class Reply {
    * @returns {string|undefined} - Relationship to child
    */
   get relationship() {
-    if (this.parent?.relationship) {
-      return this.parent.relationship
+    if (this.parent) {
+      return this.parent.relationship || ''
     } else if (this.child) {
       return 'Child (Gillick competent)'
     }
@@ -189,6 +190,24 @@ export class Reply {
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
       refusalReasonDetails: formatMarkdown(this.refusalReasonDetails),
       note: formatMarkdown(this.note)
+    }
+  }
+
+  /**
+   * Get formatted links
+   * @returns {object} - Formatted links
+   */
+  get link() {
+    const fullName = this.fullName || 'Name unknown'
+
+    return {
+      fullNameAndRelationship: this.relationship
+        ? `<span>${formatLink(this.uri, fullName)}</br>
+          <span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">
+            ${this.relationship}
+          </span>
+        </span>`
+        : formatLink(this.uri, fullName)
     }
   }
 

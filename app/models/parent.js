@@ -32,7 +32,7 @@ export class ParentalRelationship {
 export class Parent {
   constructor(options) {
     this.uuid = options?.uuid || faker.string.uuid()
-    this.fullName = options.fullName
+    this.fullName = options.fullName || ''
     this.relationship = options.relationship
     this.relationshipOther =
       this?.relationship === ParentalRelationship.Other

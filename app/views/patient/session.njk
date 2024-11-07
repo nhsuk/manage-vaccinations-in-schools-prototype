@@ -193,7 +193,7 @@
             {
               classes: "app-table__cell-status--" + replyModifier,
               header: __("parent.fullName.label"),
-              html: "<span>" + link(reply.uri, reply.fullName) + ('<br><span class="nhsuk-u-font-size-16">' + reply.relationship + "</span></span>")
+              html: reply.link.fullNameAndRelationship
             },
             {
               classes: "app-table__cell-status--" + replyModifier,
