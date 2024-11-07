@@ -57,7 +57,9 @@ export function convertObjectToIsoDate(object, namePrefix) {
     if (!day) {
       return formatISO(new Date(year, month))
     } else {
-      return formatISO(new Date(year, month, day, hour, minute))
+      const ms = new Date().getMilliseconds()
+
+      return formatISO(new Date(year, month, day, hour, minute, ms))
     }
   } catch (error) {
     console.error(error.message.split(':')[0])
