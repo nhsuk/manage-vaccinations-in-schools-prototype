@@ -902,6 +902,15 @@
     },
     "name": {
       "label": "Notice"
+    },
+    "action": {
+      "title": "Are you sure you want to %s the notice on this patient?",
+      "description": "This operation cannot be undone.",
+      "confirm": "Yes, %s this notice",
+      "cancel": "No, return to notices"
+    },
+    "success": {
+      "delete": "Notice archived"
     }
   },
   "organisation": {

@@ -28,6 +28,15 @@
         {
           header: __("notice.name.label"),
           html: notice.name or "Not provided"
+        },
+        {
+          header: __("actions.label"),
+          html: actionList({
+            items: [{
+              text: __("actions.archive"),
+              href: notice.uri + "/archive"
+            }]
+          }) if notice.type == NoticeType.Hidden else " "
         }
       ]) %}
     {% endfor %}
@@ -41,7 +50,8 @@
       head: [
         { text: __("notice.created.label") },
         { text: __("patient.label") },
-        { text: __("notice.name.label") }
+        { text: __("notice.name.label") },
+        { text: __("actions.label") }
       ],
       rows: noticeRows
     }) }}

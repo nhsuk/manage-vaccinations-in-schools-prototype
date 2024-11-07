@@ -3,6 +3,7 @@ import { formatDate, getToday } from '../utils/date.js'
 
 export class NoticeType {
   static Deceased = 'Deceased'
+  static Hidden = 'Hidden'
   static Invalid = 'Invalid'
   static Sensitive = 'Sensitive'
 }

@@ -480,6 +480,10 @@ export class Patient {
         this.record.dod = removeDays(getToday(), 5)
         name = `Record updated with child’s date of death`
         break
+      case NoticeType.Hidden:
+        // Notify request to not share vaccination with GP
+        name = `Request for vaccination not to be shared with GP`
+        break
       case NoticeType.Invalid:
         // Update patient record with temporary NHS number
         this.record.nhsn = faker.string.alpha(10)
