@@ -26,6 +26,9 @@
         },
         refusalReasonDetails: {
           href: reply.uri + "/new/refusal-reason-details"
+        },
+        created_user_uid: {
+          value: users[reply.created_user_uid].fullName
         }
       })
     })

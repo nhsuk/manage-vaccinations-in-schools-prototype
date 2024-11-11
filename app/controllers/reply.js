@@ -52,7 +52,8 @@ export const replyController = {
       child: patient.record,
       patient_uuid: patient.uuid,
       session_id: session.id,
-      ...(!isSelfConsent && { method: ReplyMethod.Phone })
+      ...(!isSelfConsent && { method: ReplyMethod.Phone }),
+      ...(data.token && { created_user_uid: data.token?.uid })
     })
 
     data.wizard = { reply }
@@ -86,8 +87,7 @@ export const replyController = {
     const updatedReply = new Reply({
       ...reply, // Previous values
       ...data?.wizard?.reply, // Wizard values
-      ...request.body.reply, // New value
-      ...(data.token && { created_user_uid: data.token?.uid })
+      ...request.body.reply // New value
     })
 
     // Remove any parent details in reply if self consent

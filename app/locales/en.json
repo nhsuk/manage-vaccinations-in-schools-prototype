@@ -1361,6 +1361,9 @@
     "created": {
       "label": "Date"
     },
+    "created_user_uid": {
+      "label": "Recorded by"
+    },
     "uuid": {
       "title": "Who are you trying to get consent from?",
       "label": "Parent or guardian",
