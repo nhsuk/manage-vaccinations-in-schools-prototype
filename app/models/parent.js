@@ -1,5 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import { formatOther, stringToBoolean } from '../utils/string.js'
+import { formatOther, formatParent, stringToBoolean } from '../utils/string.js'
 
 export class ContactPreference {
   static None = 'No preference'
@@ -121,18 +121,6 @@ export class Parent {
   }
 
   /**
-   * Get name and relationship
-   * @returns {string} - Name and relationship
-   */
-  get nameAndRelationship() {
-    const relationship = this.relationshipOther
-      ? `${this.relationship} – ${this.relationshipOther}`
-      : this.relationship
-
-    return `${this.fullName} (${relationship})`
-  }
-
-  /**
    * Get formatted values
    * @returns {object} - Formatted values
    */
@@ -142,6 +130,8 @@ export class Parent {
         this.contactPreferenceOther,
         this.contactPreference
       ),
+      fullName: this.fullName || 'Name unknown',
+      fullNameAndRelationship: formatParent(this, false),
       relationship: formatOther(this.relationshipOther, this.relationship)
     }
   }
