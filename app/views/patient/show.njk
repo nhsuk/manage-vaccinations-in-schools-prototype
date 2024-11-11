@@ -120,6 +120,10 @@
             {
               header: __("session.location.label"),
               html: link(patient.uriInSession, session.location.name)
+            },
+            {
+              header: __("session.dates.label"),
+              html: session.formatted.dates if session.dates.length else session.status
             }
           ]) %}
         {% endfor %}
@@ -129,7 +133,8 @@
           sort: "name",
           responsive: true,
           head: [
-            { text: __("session.location.label") }
+            { text: __("session.location.label") },
+            { text: __("session.dates.label") }
           ],
           rows: sessionRows
         }) }}
