@@ -15,6 +15,7 @@ export class ReplyDecision {
   static Refused = 'Consent refused'
   static OnlyMenACWY = 'Consent given for MenACWY only'
   static Only3in1 = 'Consent given for 3-in-1 only'
+  static NoResponse = 'No response'
 }
 
 export class ReplyMethod {
@@ -61,7 +62,9 @@ export class Reply {
     this.parent = options?.parent && new Parent(options.parent)
     this.decision = options?.decision
     this.confirmed = stringToBoolean(options?.confirmed)
-    this.invalid = stringToBoolean(options?.invalid) || false
+    this.invalid = this.decision
+      ? this.decision === ReplyDecision.NoResponse
+      : stringToBoolean(options?.invalid) || false
     this.method = options?.method
     this.healthAnswers = options?.healthAnswers
     this.refusalReason = options?.refusalReason

@@ -94,6 +94,10 @@ export function getConsentHealthAnswers(replies) {
 export const getConfirmedConsentOutcome = (reply) => {
   const { key } = getEnumKeyAndValue(ReplyDecision, reply.decision)
 
+  if (key === 'NoResponse') {
+    return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.NoResponse)
+  }
+
   if (key === 'Refused' && reply.confirmed) {
     return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.FinalRefusal)
   }

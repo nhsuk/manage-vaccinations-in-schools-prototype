@@ -169,6 +169,10 @@ export const replyController = {
         [`/${uuid}/${form}/refusal-reason`]: {
           data: 'reply.decision',
           value: ReplyDecision.Refused
+        },
+        [`/${uuid}/${form}/note`]: {
+          data: 'reply.decision',
+          value: ReplyDecision.NoResponse
         }
       },
       [`/${uuid}/${form}/notify-parent`]: {},
@@ -190,6 +194,9 @@ export const replyController = {
         [`/${uuid}/${form}/check-answers`]: true
       },
       [`/${uuid}/${form}/triage`]: {
+        [`/${uuid}/${form}/check-answers`]: true
+      },
+      [`/${uuid}/${form}/note`]: {
         [`/${uuid}/${form}/check-answers`]: true
       },
       [`/${uuid}`]: {}
