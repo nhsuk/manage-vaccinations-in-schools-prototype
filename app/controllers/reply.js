@@ -45,26 +45,25 @@ export const replyController = {
     delete data?.wizard?.reply
     delete data?.wizard?.triage
 
-    const isSelfConsent =
+    const selfConsent =
       patient.gillick?.competent?.value === GillickCompetent.True
 
     const reply = new Reply({
       child: patient.record,
       patient_uuid: patient.uuid,
       session_id: session.id,
-      ...(!isSelfConsent && { method: ReplyMethod.Phone }),
+      selfConsent,
+      ...(!selfConsent && { method: ReplyMethod.Phone }),
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
     data.wizard = { reply }
 
-    request.app.locals.isSelfConsent = isSelfConsent
-
     response.redirect(`/sessions/${id}/${nhsn}/replies/${reply.uuid}/new/uuid`)
   },
 
   update(request, response) {
-    const { activity, invalidUuid, isSelfConsent, reply, triage, vaccination } =
+    const { activity, invalidUuid, reply, triage, vaccination } =
       request.app.locals
     const { form, id } = request.params
     const { data } = request.session
@@ -91,9 +90,8 @@ export const replyController = {
     })
 
     // Remove any parent details in reply if self consent
-    if (isSelfConsent) {
+    if (updatedReply.selfConsent) {
       delete updatedReply.parent
-      delete request.app.locals.isSelfConsent
     }
 
     patient.respond = updatedReply
@@ -129,7 +127,7 @@ export const replyController = {
   },
 
   readForm(request, response, next) {
-    const { isSelfConsent, reply, triage } = request.app.locals
+    let { reply, triage } = request.app.locals
     const { form, uuid, nhsn } = request.params
     const { referrer } = request.query
     const { data } = request.session
@@ -138,15 +136,18 @@ export const replyController = {
       (patient) => patient.record.nhsn === nhsn
     )
 
-    request.app.locals.reply = new Reply({
+    reply = new Reply({
       ...(form === 'edit' && reply), // Previous values
       ...data?.wizard?.reply // Wizard values
     })
 
-    request.app.locals.triage = {
+    triage = {
       ...(form === 'edit' && triage), // Previous values
       ...data?.wizard?.triage // Wizard values
     }
+
+    request.app.locals.reply = reply
+    request.app.locals.triage = triage
 
     const replyNeedsTriage = (reply) => {
       return reply?.healthAnswers
@@ -157,11 +158,11 @@ export const replyController = {
     const journey = {
       [`/`]: {},
       [`/${uuid}/${form}/uuid`]: {},
-      ...(!isSelfConsent && {
+      ...(!reply.selfConsent && {
         [`/${uuid}/${form}/parent`]: {}
       }),
       [`/${uuid}/${form}/decision`]: {
-        [`/${uuid}/${form}/${isSelfConsent ? 'notify-parent' : 'health-answers'}`]:
+        [`/${uuid}/${form}/${reply.selfConsent ? 'notify-parent' : 'health-answers'}`]:
           {
             data: 'reply.decision',
             value: ReplyDecision.Given
@@ -230,9 +231,9 @@ export const replyController = {
       }))
     }
 
-    if (isSelfConsent) {
+    if (reply.selfConsent) {
       response.locals.uuidItems.unshift({
-        text: request.app.locals.reply.relationship,
+        text: reply.relationship,
         value: 'self'
       })
     }

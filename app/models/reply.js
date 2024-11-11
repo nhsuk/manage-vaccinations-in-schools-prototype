@@ -49,6 +49,7 @@ export class ReplyRefusal {
  * @property {ReplyRefusal} [refusalReason] - Refusal reason
  * @property {string} [refusalReasonOther] - Other refusal reason
  * @property {string} [refusalReasonDetails] - Refusal reason details
+ * @property {boolean} [selfConsent] - Reply given by child
  * @property {string} [note] - Note about this response
  * @property {string} patient_uuid - Patient UUID
  * @property {string} session_id - Session ID
@@ -70,6 +71,7 @@ export class Reply {
     this.refusalReason = options?.refusalReason
     this.refusalReasonOther = options?.refusalReasonOther
     this.refusalReasonDetails = options?.refusalReasonDetails
+    this.selfConsent = options?.selfConsent
     this.note = options?.note || ''
     this.patient_uuid = options?.patient_uuid
     this.session_id = options?.session_id
