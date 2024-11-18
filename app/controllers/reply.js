@@ -1,4 +1,4 @@
-import { wizard } from 'nhsuk-prototype-rig'
+import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { GillickCompetent } from '../models/gillick.js'
 import { Patient } from '../models/patient.js'

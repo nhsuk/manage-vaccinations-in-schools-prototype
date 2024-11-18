@@ -1,5 +1,5 @@
 .app-highlight {
-  background-color: mix($color_nhsuk-white, $color_nhsuk-warm-yellow, 80%);
+  background-color: color.mix($color_nhsuk-white, $color_nhsuk-warm-yellow, 80%);
   border-bottom: 3px solid $color_nhsuk-warm-yellow;
 
   // Ensure highlight is announced by screen readers

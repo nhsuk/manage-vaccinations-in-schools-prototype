@@ -12,7 +12,7 @@ export default [
   },
   {
     ignores: [
-      'public',
+      'assets',
       'app/data.js' // https://github.com/eslint/eslint/discussions/15305
     ]
   }

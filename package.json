@@ -8,8 +8,6 @@
   ],
   "license": "MIT",
   "scripts": {
-    "assets:build": "rollup --config --silent",
-    "assets:watch": "rollup --config --silent --watch",
     "create-data": "node lib/create-data.js",
     "lint:prettier": "prettier . --check",
     "lint:prettier:fix": "prettier . --write",
@@ -19,40 +17,31 @@
     "lint:scss:fix": "stylelint '**/*.scss' --fix",
     "lint": "npm run lint:prettier && npm run lint:js && npm run lint:scss",
     "lint:fix": "npm run lint:prettier:fix && npm run lint:js:fix && npm run lint:scss:fix",
-    "serve": "nhsuk-prototype-rig",
-    "start": "npm-run-all --serial assets:build serve",
-    "watch": "npm-run-all --parallel assets:watch serve",
-    "dev": "npm run watch",
+    "dev": "nhsuk-prototype-rig --watch",
+    "start": "nhsuk-prototype-rig",
     "postinstall": "npm run create-data"
   },
   "dependencies": {
     "@colinaut/action-table": "^2.4.6",
     "@faker-js/faker": "^9.0.0",
+    "@x-govuk/govuk-prototype-components": "^3.0.0",
+    "@x-govuk/govuk-prototype-wizard": "^0.4.0",
     "date-fns": "^4.0.0",
     "dotenv": "^16.4.5",
     "express-flash": "^0.0.2",
+    "govuk-frontend": "^5.0.0",
     "i18n": "^0.15.1",
     "json-as-xlsx": "^2.5.6",
     "lodash": "^4.17.21",
-    "nhsuk-prototype-rig": "^0.3.0",
-    "npm-run-all": "^4.1.5",
-    "rollup": "^4.9.6",
-    "rollup-plugin-copy": "^3.5.0",
-    "rollup-plugin-scss": "^4.0.0",
-    "sass": "^1.70.0"
+    "nhsuk-prototype-rig": "^0.4.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.0",
-    "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/lodash": "^4.17.10",
     "@x-govuk/eslint-config": "^0.0.1",
     "prettier": "^3.1.0",
     "stylelint": "^16.2.1",
     "stylelint-config-gds": "^2.0.0",
     "stylelint-order": "^6.0.4"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.18.0"
   },
   "engines": {
     "node": "^22"
@@ -61,6 +50,10 @@
   "type": "module",
   "prototype": {
     "defaultRigLayout": "_layouts/default.njk",
+    "nunjucksPaths": [
+      "./node_modules/govuk-frontend/dist",
+      "./node_modules/@x-govuk/govuk-prototype-components"
+    ],
     "serviceName": "Manage vaccinations in schools",
     "templateExtension": "njk"
   }

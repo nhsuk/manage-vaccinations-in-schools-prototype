@@ -1,4 +1,4 @@
-import { wizard } from 'nhsuk-prototype-rig'
+import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { Batch } from '../models/batch.js'
 import { ConsentOutcome, Patient, PatientOutcome } from '../models/patient.js'

@@ -1,5 +1,5 @@
+import wizard from '@x-govuk/govuk-prototype-wizard'
 import xlsx from 'json-as-xlsx'
-import { wizard } from 'nhsuk-prototype-rig'
 
 import { Download } from '../models/download.js'
 import { Record } from '../models/record.js'

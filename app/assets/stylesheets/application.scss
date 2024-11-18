@@ -4,7 +4,6 @@
 $govuk-font-family: "Frutiger W01", arial, sans-serif;
 $govuk-border-colour: #d8dde0;
 $govuk-global-styles: false;
-$govuk-assets-path: "/govuk/assets/";
 $govuk-colours: (
   "red": #d5281b,
   "yellow": #ffeb3b,
@@ -31,7 +30,8 @@ $govuk-colours: (
 @import "node_modules/nhsuk-frontend/packages/nhsuk";
 
 // Import GOV.UK Frontend
-@import "govuk-frontend/dist/govuk/all";
+@import "govuk-frontend/dist/govuk/base";
+@import "govuk-frontend/dist/govuk/core";
 
 // Import GOV.UK Prototype Components
 @import "@x-govuk/govuk-prototype-components/x-govuk/components/autocomplete/autocomplete";

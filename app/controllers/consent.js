@@ -1,5 +1,5 @@
+import wizard from '@x-govuk/govuk-prototype-wizard'
 import _ from 'lodash'
-import { wizard } from 'nhsuk-prototype-rig'
 
 import { Child } from '../models/child.js'
 import { Consent } from '../models/consent.js'

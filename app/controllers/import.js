@@ -1,4 +1,4 @@
-import { wizard } from 'nhsuk-prototype-rig'
+import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { Import, ImportType } from '../models/import.js'
 import { Record } from '../models/record.js'

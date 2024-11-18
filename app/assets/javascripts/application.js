@@ -1,4 +1,3 @@
-import '../stylesheets/application.scss'
 import { Edge } from '@x-govuk/govuk-prototype-components'
 import { initAll as GOVUKFrontend } from 'govuk-frontend'
 import '@colinaut/action-table'
