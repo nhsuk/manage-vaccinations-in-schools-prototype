@@ -1,16 +1,17 @@
 import { wizard } from 'nhsuk-prototype-rig'
-import { getToday } from '../utils/date.js'
-import { formatParent } from '../utils/string.js'
+
 import { GillickCompetent } from '../models/gillick.js'
 import { Patient } from '../models/patient.js'
-import { Session } from '../models/session.js'
 import {
   Reply,
   ReplyDecision,
   ReplyMethod,
   ReplyRefusal
 } from '../models/reply.js'
+import { Session } from '../models/session.js'
 import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
+import { getToday } from '../utils/date.js'
+import { formatParent } from '../utils/string.js'
 
 export const replyController = {
   read(request, response, next) {

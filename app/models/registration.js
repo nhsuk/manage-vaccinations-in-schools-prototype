@@ -25,6 +25,7 @@ export class Registration {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {

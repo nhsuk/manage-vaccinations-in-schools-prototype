@@ -1,4 +1,5 @@
 import express from 'express'
+
 import { organisationController } from '../controllers/organisation.js'
 
 const router = express.Router({ strict: true })

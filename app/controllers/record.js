@@ -1,7 +1,8 @@
 import _ from 'lodash'
-import { getResults, getPagination } from '../utils/pagination.js'
+
 import { Record } from '../models/record.js'
 import { Vaccination } from '../models/vaccination.js'
+import { getResults, getPagination } from '../utils/pagination.js'
 
 export const recordController = {
   readAll(request, response, next) {

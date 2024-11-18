@@ -1,4 +1,5 @@
 import express from 'express'
+
 import { vaccinationController } from '../controllers/vaccination.js'
 
 const router = express.Router({ strict: true, mergeParams: true })

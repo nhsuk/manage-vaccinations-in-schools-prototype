@@ -1,5 +1,6 @@
 import { wizard } from 'nhsuk-prototype-rig'
-import { Import, ImportStatus, ImportType } from '../models/import.js'
+
+import { Import, ImportType } from '../models/import.js'
 import { Record } from '../models/record.js'
 import { Vaccination } from '../models/vaccination.js'
 import { formatList } from '../utils/string.js'

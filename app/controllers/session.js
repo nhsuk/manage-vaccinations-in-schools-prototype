@@ -1,9 +1,10 @@
 import { wizard } from 'nhsuk-prototype-rig'
+
 import { Batch } from '../models/batch.js'
 import { ConsentOutcome, Patient, PatientOutcome } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
-import { Session, SessionStatus, SessionType } from '../models/session.js'
 import { programmeTypes } from '../models/programme.js'
+import { Session, SessionStatus, SessionType } from '../models/session.js'
 
 const getPatientsForKey = (patients, activity, tab) => {
   return patients.filter((patient) => {
@@ -115,10 +116,10 @@ export const sessionController = {
   moves(request, response) {
     const { session } = request.app.locals
     const { data } = request.session
-    let tab = request.query.tab || 'In'
+    const tab = request.query.tab || 'In'
     const { __ } = response.locals
 
-    let tabs = ['In', 'Out']
+    const tabs = ['In', 'Out']
 
     response.locals.patients = getPatientsMoved(data.patients, session, tab)
     response.locals.navigationItems = tabs.map((key) => ({
@@ -165,7 +166,7 @@ export const sessionController = {
     if (data.token?.batch[id]) {
       const sessionBatches = Object.entries(data.token.batch[id])
       if (sessionBatches.length > 0) {
-        for (let [_gtin, batch_id] of sessionBatches) {
+        for (let [, batch_id] of sessionBatches) {
           // Default batch ID may be saved in FormData as an array
           batch_id = Array.isArray(batch_id) ? batch_id.at(-1) : batch_id
           if (batch_id) {

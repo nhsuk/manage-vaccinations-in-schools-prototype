@@ -6,10 +6,12 @@ import {
   TriageOutcome
 } from '../models/patient.js'
 import { RegistrationOutcome } from '../models/registration.js'
+
 import { getEnumKeyAndValue } from './enum.js'
 
 /**
  * Get patient outcome
+ *
  * @param {import('../models/patient.js').Patient} patient - Patient
  * @returns {object} Patient outcome
  */
@@ -44,6 +46,7 @@ export const getPatientOutcome = (patient) => {
 
 /**
  * Get registration outcome (has the patient been checked into the session)
+ *
  * @param {import('../models/patient.js').Patient} patient - Patient
  * @returns {object} Outcome key and value
  */
@@ -64,6 +67,7 @@ export const getRegistrationOutcome = (patient) => {
 
 /**
  * Get capture outcome (what capture activity needs to be performed)
+ *
  * @param {import('../models/patient.js').Patient} patient - Patient
  * @returns {object} Outcome key and value
  */

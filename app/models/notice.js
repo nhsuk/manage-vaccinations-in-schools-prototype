@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+
 import { formatDate, getToday } from '../utils/date.js'
 
 export class NoticeType {
@@ -34,6 +35,7 @@ export class Notice {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -46,6 +48,7 @@ export class Notice {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -54,6 +57,7 @@ export class Notice {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

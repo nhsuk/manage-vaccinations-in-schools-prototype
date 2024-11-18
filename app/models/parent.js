@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+
 import { formatOther, formatParent, stringToBoolean } from '../utils/string.js'
 
 export class ContactPreference {
@@ -55,6 +56,7 @@ export class Parent {
 
   /**
    * Generate fake parent
+   *
    * @param {string} childLastName - Child’s last name
    * @param {boolean} [isMum] - Parent is child’s mother
    * @returns {Parent} - Parent
@@ -122,6 +124,7 @@ export class Parent {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -138,6 +141,7 @@ export class Parent {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {

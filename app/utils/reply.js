@@ -1,15 +1,18 @@
-import _ from 'lodash'
 import { faker } from '@faker-js/faker'
+import _ from 'lodash'
+
 import healthConditions from '../datasets/health-conditions.js'
 import { Child } from '../models/child.js'
 import { ParentalRelationship } from '../models/parent.js'
 import { ConsentOutcome } from '../models/patient.js'
 import { ProgrammeType } from '../models/programme.js'
 import { Reply, ReplyDecision, ReplyRefusal } from '../models/reply.js'
+
 import { getEnumKeyAndValue } from './enum.js'
 
 /**
  * Add example answers to health questions
+ *
  * @param {string} key - Health question key
  * @returns {string|boolean} Health answer, or `false`
  */
@@ -26,31 +29,28 @@ const enrichWithRealisticAnswer = (key) => {
 
 /**
  * Get consent responses with answers to health questions
+ *
  * @param {Array} replies - Consent responses
  * @returns {Array} Consent responses with answers to health questions
  */
 export function getRepliesWithHealthAnswers(replies) {
   replies = Array.isArray(replies) ? replies : [replies]
 
-  return replies.filter((reply) => {
-    for (const key in reply.healthAnswers) {
-      if (
-        reply.healthAnswers.hasOwnProperty(key) &&
-        reply.healthAnswers[key] !== false
-      ) {
-        return reply.healthAnswers[key]
-      }
-    }
-  })
+  return replies.filter(
+    (reply) =>
+      reply.healthAnswers &&
+      Object.values(reply.healthAnswers).some((value) => value !== false)
+  )
 }
 
 /**
  * Get combined answers to health questions
+ *
  * @param {Array<import('../models/reply.js').Reply>} replies - Consent replies
  * @returns {object|boolean} Combined answers to health questions
  */
 export function getConsentHealthAnswers(replies) {
-  let answers = {}
+  const answers = {}
 
   const repliesWithHealthAnswers = Object.values(replies).filter(
     (reply) => reply.healthAnswers
@@ -88,6 +88,7 @@ export function getConsentHealthAnswers(replies) {
 
 /**
  * Get consent outcome
+ *
  * @param {import('../models/reply.js').Reply} reply - Reply
  * @returns {object} Consent outcome
  */
@@ -107,6 +108,7 @@ export const getConfirmedConsentOutcome = (reply) => {
 
 /**
  * Get consent outcome
+ *
  * @param {import('../models/patient.js').Patient} patient - Patient
  * @returns {object} Consent outcome
  */
@@ -132,9 +134,8 @@ export const getConsentOutcome = (patient) => {
       }
 
       return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.Inconsistent)
-    } else {
-      return getConfirmedConsentOutcome(decisions[0])
     }
+    return getConfirmedConsentOutcome(decisions[0])
   }
 
   return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.NoResponse)
@@ -142,28 +143,22 @@ export const getConsentOutcome = (patient) => {
 
 /**
  * Get combined refusal reasons
+ *
  * @param {Array<import('../models/reply.js').Reply>} replies - Consent replies
  * @returns {Array} Refusal reasons
  */
 export const getConsentRefusalReasons = (replies) => {
-  let reasons = []
+  const reasons = []
 
   for (const reply of Object.values(replies)) {
-    if (!reply.refusalReason) {
-      continue
+    if (reply.refusalReason && !reply.invalid) {
+      // Indicate confirmed refusal reason
+      const refusalReason = reply.confirmed
+        ? `${reply.refusalReason}<br><b>Confirmed</b>`
+        : reply.refusalReason
+
+      reasons.push(refusalReason)
     }
-
-    // Ignore invalid replies
-    if (reply.invalid) {
-      continue
-    }
-
-    // Indicate confirmed refusal reason
-    const refusalReason = reply.confirmed
-      ? `${reply.refusalReason}<br><b>Confirmed</b>`
-      : reply.refusalReason
-
-    reasons.push(refusalReason)
   }
 
   return reasons ? [...new Set(reasons)] : []
@@ -171,6 +166,7 @@ export const getConsentRefusalReasons = (replies) => {
 
 /**
  * Get faked answers for health questions needed for a vaccine
+ *
  * @param {import('../models/vaccine.js').Vaccine} vaccine - Vaccine
  * @returns {object} Health answers
  */
@@ -186,24 +182,26 @@ export const getHealthAnswers = (vaccine) => {
 
 /**
  * Get child’s preferred names, based on information in consent replies
+ *
  * @param {Array<import('../models/reply.js').Reply>} replies - Consent replies
  * @returns {string|boolean} Names(s)
  */
 export const getPreferredNames = (replies) => {
-  const names = []
+  const names = new Set()
 
-  Object.values(replies).map((reply) => {
+  Object.values(replies).forEach((reply) => {
     const child = new Child(reply.child)
     if (child.preferredName) {
-      names.push(child.preferredName)
+      names.add(child.preferredName)
     }
   })
 
-  return names.length ? [...new Set(names)].join(', ') : false
+  return names.size ? [...names].join(', ') : false
 }
 
 /**
  * Get valid refusal reasons for a programme
+ *
  * @param {ProgrammeType} type - Programme type
  * @returns {string} Refusal reason
  */

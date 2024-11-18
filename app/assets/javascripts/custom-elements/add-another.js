@@ -13,6 +13,7 @@ export const AddAnotherComponent = class extends HTMLElement {
 
   /**
    * Add item to list
+   *
    * @param {Event} event - Add button event
    */
   add(event) {
@@ -25,6 +26,7 @@ export const AddAnotherComponent = class extends HTMLElement {
 
   /**
    * Delete item from list
+   *
    * @param {Event} event - Delete button event
    */
   delete(event) {
@@ -36,6 +38,7 @@ export const AddAnotherComponent = class extends HTMLElement {
 
   /**
    * Get heading
+   *
    * @returns {HTMLLegendElement} - Get page heading
    */
   getHeading() {
@@ -66,6 +69,7 @@ export const AddAnotherComponent = class extends HTMLElement {
 
   /**
    * Get delete button
+   *
    * @param {HTMLElement} element - Containing element
    * @returns {HTMLButtonElement} - Delete button
    */
@@ -75,6 +79,7 @@ export const AddAnotherComponent = class extends HTMLElement {
 
   /**
    * Create delete button
+   *
    * @param {HTMLElement} element - Containing element
    */
   createDeleteButton(element) {
@@ -86,6 +91,7 @@ export const AddAnotherComponent = class extends HTMLElement {
 
   /**
    * Update delete button
+   *
    * @param {HTMLElement} element - Containing element
    */
   updateDeleteButton(element) {
@@ -95,6 +101,7 @@ export const AddAnotherComponent = class extends HTMLElement {
 
   /**
    * Create new item by cloning first item in list and updating its attributes
+   *
    * @returns {HTMLLIElement} - List item containing form field(s)
    */
   createItem() {

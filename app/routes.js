@@ -1,5 +1,6 @@
 import express from 'express'
 import flash from 'express-flash'
+
 import { enumeration } from './middleware/enumeration.js'
 import { internationalisation } from './middleware/internationalisation.js'
 import { navigation } from './middleware/navigation.js'

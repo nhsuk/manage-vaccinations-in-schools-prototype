@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+
 import { formatDate, getToday } from '../utils/date.js'
 
 export class EventType {
@@ -35,6 +36,7 @@ export class Event {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -47,6 +49,7 @@ export class Event {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {

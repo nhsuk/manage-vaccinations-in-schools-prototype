@@ -1,5 +1,4 @@
 import schools from '../datasets/schools.js'
-import { GPRegistered } from './record.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -7,6 +6,8 @@ import {
   getAge
 } from '../utils/date.js'
 import { formatNhsNumber } from '../utils/string.js'
+
+import { GPRegistered } from './record.js'
 
 /**
  * @class Child
@@ -39,6 +40,7 @@ export class Child {
 
   /**
    * Generate fake child
+   *
    * @param {import('./record.js').Record} record - Record
    * @returns {Child} - Child
    * @static
@@ -70,6 +72,7 @@ export class Child {
 
   /**
    * Get date of birth for `dateInput`
+   *
    * @returns {object|undefined} - `dateInput` object
    */
   get dob_() {
@@ -78,6 +81,7 @@ export class Child {
 
   /**
    * Set date of birth from `dateInput`
+   *
    * @param {object} object - dateInput object
    */
   set dob_(object) {
@@ -88,6 +92,7 @@ export class Child {
 
   /**
    * Get age
+   *
    * @returns {number} - Age in years
    */
   get age() {
@@ -96,6 +101,7 @@ export class Child {
 
   /**
    * Get formatted date of birth and age
+   *
    * @returns {string} - Date of birth and age in years
    */
   get dobWithAge() {
@@ -104,6 +110,7 @@ export class Child {
 
   /**
    * Get full name
+   *
    * @returns {string} - Full name
    */
   get fullName() {
@@ -114,6 +121,7 @@ export class Child {
 
   /**
    * Get preferred name
+   *
    * @returns {string|undefined} - Preferred name
    */
   get preferredName() {
@@ -129,6 +137,7 @@ export class Child {
 
   /**
    * Get full and preferred names
+   *
    * @returns {string} - Full and preferred names
    */
   get fullAndPreferredNames() {
@@ -139,6 +148,7 @@ export class Child {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -163,6 +173,7 @@ export class Child {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {

@@ -1,5 +1,5 @@
 import { wizard } from 'nhsuk-prototype-rig'
-import { getToday } from '../utils/date.js'
+
 import { Batch } from '../models/batch.js'
 import { Patient } from '../models/patient.js'
 import { Record } from '../models/record.js'
@@ -12,6 +12,7 @@ import {
   VaccinationSite
 } from '../models/vaccination.js'
 import { Vaccine } from '../models/vaccine.js'
+import { getToday } from '../utils/date.js'
 
 export const vaccinationController = {
   read(request, response, next) {

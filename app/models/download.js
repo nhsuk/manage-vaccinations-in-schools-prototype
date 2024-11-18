@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+
 import { VaccinationSequence } from '../models/vaccination.js'
 import {
   convertIsoDateToObject,
@@ -48,6 +49,7 @@ export class Download {
 
   /**
    * Get date from for `dateInput`
+   *
    * @returns {object|undefined} - `dateInput` object
    */
   get from_() {
@@ -56,6 +58,7 @@ export class Download {
 
   /**
    * Set date from from `dateInput`
+   *
    * @param {object} object - dateInput object
    */
   set from_(object) {
@@ -66,6 +69,7 @@ export class Download {
 
   /**
    * Get date until for `dateInput`
+   *
    * @returns {object|undefined} - `dateInput` object
    */
   get until_() {
@@ -74,6 +78,7 @@ export class Download {
 
   /**
    * Set date until from `dateInput`
+   *
    * @param {object} object - dateInput object
    */
   set until_(object) {
@@ -84,6 +89,7 @@ export class Download {
 
   /**
    * Get CarePlus XSL definition
+   *
    * @returns {Array} - XSL definition
    */
   get carePlus() {
@@ -173,6 +179,7 @@ export class Download {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -190,6 +197,7 @@ export class Download {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -198,6 +206,7 @@ export class Download {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

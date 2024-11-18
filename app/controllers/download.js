@@ -1,9 +1,10 @@
-import { wizard } from 'nhsuk-prototype-rig'
 import xlsx from 'json-as-xlsx'
+import { wizard } from 'nhsuk-prototype-rig'
+
 import { Download } from '../models/download.js'
 import { Record } from '../models/record.js'
-import { Vaccination } from '../models/vaccination.js'
 import { UserRole } from '../models/user.js'
+import { Vaccination } from '../models/vaccination.js'
 
 export const downloadController = {
   redirect(request, response) {

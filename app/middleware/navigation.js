@@ -40,10 +40,10 @@ export const navigation = (request, response, next) => {
       }
 
   // Get currently active section
-  let current = root
+  const current = root
 
   const primaryLinks =
-    data.token?.role != UserRole.DataConsumer
+    data.token?.role !== UserRole.DataConsumer
       ? [
           {
             url: '/programmes',

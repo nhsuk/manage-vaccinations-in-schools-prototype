@@ -1,5 +1,3 @@
-import { getResults, getPagination } from '../utils/pagination.js'
-import { formatYearGroup } from '../utils/string.js'
 import { Cohort } from '../models/cohort.js'
 import { Import } from '../models/import.js'
 import { Patient } from '../models/patient.js'
@@ -7,6 +5,8 @@ import { Programme } from '../models/programme.js'
 import { Record } from '../models/record.js'
 import { Session } from '../models/session.js'
 import { Vaccination } from '../models/vaccination.js'
+import { getResults, getPagination } from '../utils/pagination.js'
+import { formatYearGroup } from '../utils/string.js'
 
 export const programmeController = {
   readAll(request, response, next) {

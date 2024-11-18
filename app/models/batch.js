@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+
 import vaccines from '../datasets/vaccines.js'
 import {
   addDays,
@@ -8,6 +9,7 @@ import {
   getToday
 } from '../utils/date.js'
 import { formatMonospace } from '../utils/string.js'
+
 import { Vaccine } from './vaccine.js'
 
 /**
@@ -29,6 +31,7 @@ export class Batch {
 
   /**
    * Generate fake batch
+   *
    * @param {string} [vaccine_gtin] - Vaccine GTIN
    * @returns {Batch} - Batch
    * @static
@@ -48,6 +51,7 @@ export class Batch {
 
   /**
    * Get expiry date for `dateInput`
+   *
    * @returns {object|undefined} - `dateInput` object
    */
   get expires_() {
@@ -56,6 +60,7 @@ export class Batch {
 
   /**
    * Set expiry date from `dateInput`
+   *
    * @param {object} object - dateInput object
    */
   set expires_(object) {
@@ -66,6 +71,7 @@ export class Batch {
 
   /**
    * Get name
+   *
    * @returns {string} - Name
    */
   get name() {
@@ -74,6 +80,7 @@ export class Batch {
 
   /**
    * Get vaccine this batch belongs to
+   *
    * @returns {Vaccine} - Vaccine
    */
   get vaccine() {
@@ -82,6 +89,7 @@ export class Batch {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -94,6 +102,7 @@ export class Batch {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -102,6 +111,7 @@ export class Batch {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

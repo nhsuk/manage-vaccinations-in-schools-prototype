@@ -1,6 +1,8 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
+
 import schoolsData from '../datasets/schools.js'
+
 import { School } from './school.js'
 
 export class OrganisationDefaults {
@@ -42,6 +44,7 @@ export class Organisation {
 
   /**
    * Generate fake organisation
+   *
    * @returns {Organisation} - Organisation
    * @static
    */
@@ -65,6 +68,7 @@ export class Organisation {
 
   /**
    * Get schools
+   *
    * @returns {Array} - Schools
    */
   get schools() {
@@ -73,6 +77,7 @@ export class Organisation {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -93,6 +98,7 @@ export class Organisation {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -101,6 +107,7 @@ export class Organisation {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

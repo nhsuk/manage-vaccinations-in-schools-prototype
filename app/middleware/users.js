@@ -1,4 +1,5 @@
 import _ from 'lodash'
+
 import { User } from '../models/user.js'
 
 export const users = (request, response, next) => {

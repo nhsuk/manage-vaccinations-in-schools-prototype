@@ -1,4 +1,5 @@
 import express from 'express'
+
 import { clinicController } from '../controllers/clinic.js'
 
 const router = express.Router({ strict: true, mergeParams: true })

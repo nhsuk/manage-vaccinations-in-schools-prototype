@@ -1,11 +1,14 @@
 import { isAfter, isBefore } from 'date-fns'
-import { getToday } from '../utils/date.js'
+
 import { ProgrammeType, programmeTypes } from '../models/programme.js'
 import { ConsentWindow, Session, SessionType } from '../models/session.js'
+import { getToday } from '../utils/date.js'
+
 import { getEnumKeyAndValue } from './enum.js'
 
 /**
  * Get consent window (is it open, opening or closed)
+ *
  * @param {import('../models/session.js').Session} session - Session
  * @returns {object} Consent window key and value
  */

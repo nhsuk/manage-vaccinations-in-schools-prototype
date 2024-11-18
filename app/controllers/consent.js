@@ -1,10 +1,6 @@
 import _ from 'lodash'
 import { wizard } from 'nhsuk-prototype-rig'
-import {
-  getHealthQuestionKey,
-  getHealthQuestionPaths
-} from '../utils/consent.js'
-import { getResults, getPagination } from '../utils/pagination.js'
+
 import { Child } from '../models/child.js'
 import { Consent } from '../models/consent.js'
 import { Parent } from '../models/parent.js'
@@ -14,6 +10,11 @@ import { Record } from '../models/record.js'
 import { Reply, ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { School } from '../models/school.js'
 import { ConsentWindow, Session, SessionType } from '../models/session.js'
+import {
+  getHealthQuestionKey,
+  getHealthQuestionPaths
+} from '../utils/consent.js'
+import { getResults, getPagination } from '../utils/pagination.js'
 
 export const consentController = {
   readAll(request, response, next) {

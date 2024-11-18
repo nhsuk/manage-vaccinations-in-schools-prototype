@@ -1,8 +1,8 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import firstNames from '../datasets/first-names.js'
+
 import gpSurgeries from '../datasets/clinics.js'
+import firstNames from '../datasets/first-names.js'
 import schools from '../datasets/schools.js'
-import { Parent } from './parent.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -17,6 +17,8 @@ import {
   formatYearGroup,
   stringToBoolean
 } from '../utils/string.js'
+
+import { Parent } from './parent.js'
 
 const primarySchools = Object.values(schools).filter(
   (school) => school.phase === 'Primary'
@@ -85,6 +87,7 @@ export class Record {
 
   /**
    * Generate fake record
+   *
    * @returns {Record} - Record
    * @static
    */
@@ -164,7 +167,7 @@ export class Record {
     delete parent1.contactPreferenceOther
 
     // Pending changes
-    let pendingChanges = {}
+    const pendingChanges = {}
     const hasPendingChanges = faker.datatype.boolean(0.1)
 
     if (hasPendingChanges) {
@@ -196,6 +199,7 @@ export class Record {
 
   /**
    * Get NHS number
+   *
    * @returns {string} - NHS Number
    */
   get nhsNumber() {
@@ -212,6 +216,7 @@ export class Record {
 
   /**
    * Has missing NHS number
+   *
    * @returns {boolean} - Has missing NHS number
    */
   get hasMissingNhsNumber() {
@@ -220,6 +225,7 @@ export class Record {
 
   /**
    * Get full name
+   *
    * @returns {string} - Full name
    */
   get fullName() {
@@ -228,6 +234,7 @@ export class Record {
 
   /**
    * Get obscured name (to use in page titles)
+   *
    * @returns {string} - Full name
    */
   get obscuredName() {
@@ -236,6 +243,7 @@ export class Record {
 
   /**
    * Get date of birth for `dateInput`
+   *
    * @returns {object|undefined} - `dateInput` object
    */
   get dob_() {
@@ -244,6 +252,7 @@ export class Record {
 
   /**
    * Set date of birth from `dateInput`
+   *
    * @param {object} object - dateInput object
    */
   set dob_(object) {
@@ -254,6 +263,7 @@ export class Record {
 
   /**
    * Get age
+   *
    * @returns {number} - Age in years
    */
   get age() {
@@ -262,6 +272,7 @@ export class Record {
 
   /**
    * Get year group
+   *
    * @returns {number} - Year group, for example 8
    */
   get yearGroup() {
@@ -270,6 +281,7 @@ export class Record {
 
   /**
    * Get date of birth with age
+   *
    * @returns {string} - Date of birth with age
    */
   get dobWithAge() {
@@ -278,6 +290,7 @@ export class Record {
 
   /**
    * Get date of birth with year group
+   *
    * @returns {string} - Date of birth with year group
    */
   get dobWithYearGroup() {
@@ -286,6 +299,7 @@ export class Record {
 
   /**
    * Get post code
+   *
    * @returns {string|undefined} - Post code
    */
   get postalCode() {
@@ -296,6 +310,7 @@ export class Record {
 
   /**
    * Get parents
+   *
    * @returns {Array<Parent>|undefined} - Parents
    */
   get parents() {
@@ -308,6 +323,7 @@ export class Record {
 
   /**
    * Has pending changes
+   *
    * @returns {boolean} - Has pending changes
    */
   get hasPendingChanges() {
@@ -316,6 +332,7 @@ export class Record {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -347,6 +364,7 @@ export class Record {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -355,6 +373,7 @@ export class Record {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

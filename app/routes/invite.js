@@ -1,4 +1,5 @@
 import express from 'express'
+
 import { inviteController } from '../controllers/invite.js'
 
 const router = express.Router({ strict: true, mergeParams: true })

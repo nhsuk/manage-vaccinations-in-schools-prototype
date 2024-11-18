@@ -1,7 +1,9 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+
 import { formatDate, getToday } from '../utils/date.js'
-import { formatMarkdown, formatOther } from '../utils/string.js'
 import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
+import { formatMarkdown, formatOther } from '../utils/string.js'
+
 import { Child } from './child.js'
 import { Parent } from './parent.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from './reply.js'
@@ -47,6 +49,7 @@ export class Consent {
 
   /**
    * Generate fake consent
+   *
    * @param {import('./programme.js').Programme} programme - Programme
    * @param {import('./session.js').Session} session - Session
    * @param {import('./patient.js').Patient} patient - Patient
@@ -103,6 +106,7 @@ export class Consent {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -115,6 +119,7 @@ export class Consent {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -123,6 +128,7 @@ export class Consent {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

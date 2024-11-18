@@ -1,5 +1,4 @@
 import { Patient } from '../models/patient.js'
-import { SessionStatus } from '../models/session.js'
 
 export const triageController = {
   update(request, response) {

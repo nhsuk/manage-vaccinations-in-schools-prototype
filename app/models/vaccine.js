@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+
 import vaccines from '../datasets/vaccines.js'
 import {
   formatList,
@@ -79,6 +80,7 @@ export class Vaccine {
 
   /**
    * Get brand with vaccine type
+   *
    * @returns {string} - Brand with vaccine type
    */
   get brandWithType() {
@@ -87,6 +89,7 @@ export class Vaccine {
 
   /**
    * Get health questions
+   *
    * @returns {Array} - Health questions
    */
   get healthQuestions() {
@@ -97,6 +100,7 @@ export class Vaccine {
 
   /**
    * Get pre-screening questions
+   *
    * @returns {Array} - Pre-screening questions
    */
   get preScreenQuestions() {
@@ -107,6 +111,7 @@ export class Vaccine {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -120,6 +125,7 @@ export class Vaccine {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -128,6 +134,7 @@ export class Vaccine {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

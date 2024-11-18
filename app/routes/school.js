@@ -1,4 +1,5 @@
 import express from 'express'
+
 import { schoolController } from '../controllers/school.js'
 
 const router = express.Router({ strict: true })

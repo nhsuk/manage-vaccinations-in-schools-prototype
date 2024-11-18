@@ -1,13 +1,9 @@
-// Sass entry point for rollup.js
 import '../stylesheets/application.scss'
-
-// Import GOV.UK Frontend
-import { initAll as GOVUKFrontend } from 'govuk-frontend'
-
-// Import edge detection from GOV.UK Prototype Rig
 import { Edge } from '@x-govuk/govuk-prototype-components'
+import { initAll as GOVUKFrontend } from 'govuk-frontend'
+import '@colinaut/action-table'
 
-// Import custom elements
+import Autocomplete from './autocomplete.js'
 import { AddAnotherComponent } from './custom-elements/add-another.js'
 
 // Register custom elements
@@ -20,14 +16,10 @@ $edges.forEach(($edge) => {
 })
 
 // Initiate autocompletes
-import Autocomplete from './autocomplete.js'
 const $autocompletes = document.querySelectorAll('[data-module="autocomplete"]')
 $autocompletes.forEach(($autocomplete) => {
   new Autocomplete($autocomplete).init()
 })
-
-// Import action-table custom element
-import '@colinaut/action-table'
 
 // Initiate scripts on page load
 document.addEventListener('DOMContentLoaded', () => {

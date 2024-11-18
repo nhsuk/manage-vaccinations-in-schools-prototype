@@ -15,9 +15,8 @@ const suggestion = (value, options) => {
     return option.hint
       ? `${html}<br><span class="autocomplete__option-hint">${option.hint}</span>`
       : html
-  } else {
-    return 'No results found'
   }
+  return 'No results found'
 }
 
 /**

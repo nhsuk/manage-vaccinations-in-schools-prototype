@@ -1,14 +1,16 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
-import { Child } from './child.js'
-import { Parent } from './parent.js'
+
 import { formatDate, getToday } from '../utils/date.js'
+import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
 import {
   formatLink,
   formatMarkdown,
   formatOther,
   stringToBoolean
 } from '../utils/string.js'
+
+import { Child } from './child.js'
+import { Parent } from './parent.js'
 
 export class ReplyDecision {
   static Given = 'Consent given'
@@ -79,6 +81,7 @@ export class Reply {
 
   /**
    * Generate fake reply
+   *
    * @param {import('./programme.js').Programme} programme - Programme
    * @param {import('./session.js').Session} session - Session
    * @param {import('./patient.js').Patient} patient - Patient
@@ -148,6 +151,7 @@ export class Reply {
 
   /**
    * Get respondent’s full name
+   *
    * @returns {string|undefined} - Full name
    */
   get fullName() {
@@ -160,6 +164,7 @@ export class Reply {
 
   /**
    * Get respondent’s relationship to child
+   *
    * @returns {string|undefined} - Relationship to child
    */
   get relationship() {
@@ -172,6 +177,7 @@ export class Reply {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -200,6 +206,7 @@ export class Reply {
 
   /**
    * Get formatted links
+   *
    * @returns {object} - Formatted links
    */
   get link() {
@@ -218,6 +225,7 @@ export class Reply {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -226,6 +234,7 @@ export class Reply {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

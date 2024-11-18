@@ -1,7 +1,8 @@
 /**
  * Generate range of numbers
- * @param {number} start First number
- * @param {number} end Last number
+ *
+ * @param {number} start - First number
+ * @param {number} end - Last number
  * @yields {object} Generator
  */
 export function* range(start, end) {

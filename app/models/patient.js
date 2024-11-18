@@ -1,24 +1,26 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import { Event, EventType } from './event.js'
-import { Gillick } from './gillick.js'
-import { Parent } from './parent.js'
-import { Record } from './record.js'
-import {
-  getConsentHealthAnswers,
-  getConsentOutcome,
-  getConsentRefusalReasons,
-  getPreferredNames
-} from '../utils/reply.js'
+
 import {
   getCaptureOutcome,
   getRegistrationOutcome,
   getPatientOutcome
 } from '../utils/capture.js'
 import { getToday, removeDays } from '../utils/date.js'
+import {
+  getConsentHealthAnswers,
+  getConsentOutcome,
+  getConsentRefusalReasons,
+  getPreferredNames
+} from '../utils/reply.js'
 import { formatLink, formatParent, stringToBoolean } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
-import { Vaccination } from './vaccination.js'
+
+import { Event, EventType } from './event.js'
+import { Gillick } from './gillick.js'
 import { NoticeType } from './notice.js'
+import { Parent } from './parent.js'
+import { Record } from './record.js'
+import { Vaccination } from './vaccination.js'
 
 export class ConsentOutcome {
   static NoResponse = 'No response'
@@ -93,6 +95,7 @@ export class Patient {
 
   /**
    * Generate fake patient
+   *
    * @param {Record} record - Record
    * @returns {Patient} Patient
    * @static
@@ -106,6 +109,7 @@ export class Patient {
 
   /**
    * Get NHS number
+   *
    * @returns {string} - NHS Number
    */
   get nhsn() {
@@ -114,6 +118,7 @@ export class Patient {
 
   /**
    * Get first name
+   *
    * @returns {string} - First name
    */
   get firstName() {
@@ -122,6 +127,7 @@ export class Patient {
 
   /**
    * Get full name
+   *
    * @returns {string} - Full name
    */
   get fullName() {
@@ -130,6 +136,7 @@ export class Patient {
 
   /**
    * Get preferred names (from replies)
+   *
    * @returns {string|boolean} - Full name
    */
   get preferredNames() {
@@ -138,19 +145,20 @@ export class Patient {
 
   /**
    * Get parents (from record and replies)
+   *
    * @returns {Array<Parent>} - Parents
    */
   get parents() {
     const replies = Object.values(this.replies)
     if (replies.length > 0) {
       return replies.map((reply) => new Parent(reply.parent))
-    } else {
-      return [this.record.parent1]
     }
+    return [this.record.parent1]
   }
 
   /**
    * Get events grouped by date
+   *
    * @returns {object} - Events grouped by date
    */
   get groupedEvents() {
@@ -165,6 +173,7 @@ export class Patient {
 
   /**
    * Get triage notes
+   *
    * @returns {Array} - Triage notes
    */
   get triageNotes() {
@@ -175,6 +184,7 @@ export class Patient {
 
   /**
    * Get reminders sent
+   *
    * @returns {Array} - Reminders sent
    */
   get reminders() {
@@ -185,6 +195,7 @@ export class Patient {
 
   /**
    * Get notices
+   *
    * @returns {Array} - Reminders sent
    */
   get notices() {
@@ -195,6 +206,7 @@ export class Patient {
 
   /**
    * Get date last reminders sent
+   *
    * @returns {string|undefined} - Date last reminders sent
    */
   get lastReminderDate() {
@@ -206,6 +218,7 @@ export class Patient {
 
   /**
    * Get consent outcome
+   *
    * @returns {object} - Consent outcome
    */
   get consent() {
@@ -214,6 +227,7 @@ export class Patient {
 
   /**
    * Get consent health answers (from replies)
+   *
    * @returns {object|boolean} - Consent health answers
    */
   get consentHealthAnswers() {
@@ -222,6 +236,7 @@ export class Patient {
 
   /**
    * Get consent refusal reasons (from replies)
+   *
    * @returns {object|boolean} - Consent refusal reasons
    */
   get consentRefusalReasons() {
@@ -230,6 +245,7 @@ export class Patient {
 
   /**
    * Get screening outcome
+   *
    * @returns {object} - Screening outcome
    */
   get screen() {
@@ -238,6 +254,7 @@ export class Patient {
 
   /**
    * Get triage outcome
+   *
    * @returns {object} - Triage outcome
    */
   get triage() {
@@ -246,6 +263,7 @@ export class Patient {
 
   /**
    * Get registration outcome
+   *
    * @returns {object} - Registration outcome
    */
   get registration() {
@@ -254,6 +272,7 @@ export class Patient {
 
   /**
    * Get capture outcome
+   *
    * @returns {object} - Capture outcome
    */
   get capture() {
@@ -262,6 +281,7 @@ export class Patient {
 
   /**
    * Get overall patient outcome
+   *
    * @returns {object} - Overall patient outcome
    */
   get outcome() {
@@ -270,6 +290,7 @@ export class Patient {
 
   /**
    * Add event to activity log
+   *
    * @param {object} event - Event
    */
   set log(event) {
@@ -278,6 +299,7 @@ export class Patient {
 
   /**
    * Select patient for cohort
+   *
    * @param {import('./cohort.js').Cohort} cohort - Cohort
    */
   set select(cohort) {
@@ -292,6 +314,7 @@ export class Patient {
 
   /**
    * Remove patient from cohort
+   *
    * @param {import('./cohort.js').Cohort} cohort - Cohort
    */
   set unselect(cohort) {
@@ -306,6 +329,7 @@ export class Patient {
 
   /**
    * Invite patient to session
+   *
    * @param {import('./session.js').Session} session - Session
    */
   set invite(session) {
@@ -320,6 +344,7 @@ export class Patient {
 
   /**
    * Remove patient from session
+   *
    * @param {import('./session.js').Session} session - Session
    */
   set disinvite(session) {
@@ -334,6 +359,7 @@ export class Patient {
 
   /**
    * Record sent reminder
+   *
    * @param {object} target - Target of reminder
    */
   set remind(target) {
@@ -347,6 +373,7 @@ export class Patient {
 
   /**
    * Assess Gillick competence
+   *
    * @param {import('./gillick.js').Gillick} gillick - Gillick
    */
   set assess(gillick) {
@@ -364,6 +391,7 @@ export class Patient {
 
   /**
    * Record reply
+   *
    * @param {import('./reply.js').Reply} reply - Reply
    */
   set respond(reply) {
@@ -396,6 +424,7 @@ export class Patient {
 
   /**
    * Record triage
+   *
    * @param {object} triage - Triage
    */
   set triage(triage) {
@@ -416,6 +445,7 @@ export class Patient {
 
   /**
    * Register attendance
+   *
    * @param {import('./registration.js').Registration} registration - Registration
    */
   set register(registration) {
@@ -430,6 +460,7 @@ export class Patient {
 
   /**
    * Record pre-screening interview
+   *
    * @param {Event} interview - Interview
    */
   set preScreen(interview) {
@@ -444,6 +475,7 @@ export class Patient {
 
   /**
    * Capture vaccination
+   *
    * @param {import('./vaccination.js').Vaccination} vaccination - Vaccination
    */
   set capture(vaccination) {
@@ -472,6 +504,7 @@ export class Patient {
 
   /**
    * Flag with notice
+   *
    * @param {import('./notice.js').Notice} notice - Notice
    */
   set flag(notice) {
@@ -508,6 +541,7 @@ export class Patient {
 
   /**
    * Move between schools
+   *
    * @param {object} movement - Movement
    */
   set move(movement) {
@@ -525,6 +559,7 @@ export class Patient {
 
   /**
    * Get formatted links
+   *
    * @returns {object} - Formatted links
    */
   get link() {
@@ -541,6 +576,7 @@ export class Patient {
 
   /**
    * Get formatted summary
+   *
    * @returns {object} - Formatted summaries
    */
   get summary() {
@@ -554,6 +590,7 @@ export class Patient {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -562,6 +599,7 @@ export class Patient {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {
@@ -570,6 +608,7 @@ export class Patient {
 
   /**
    * Get in session URI
+   *
    * @returns {string} - URI
    */
   get uriInSession() {

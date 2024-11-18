@@ -1,5 +1,5 @@
-import { getEnumKeyAndValue } from '../utils/enum.js'
 import { getToday } from '../utils/date.js'
+import { getEnumKeyAndValue } from '../utils/enum.js'
 import { stringToBoolean } from '../utils/string.js'
 
 export class GillickCompetent {
@@ -32,6 +32,7 @@ export class Gillick {
 
   /**
    * Get Gillick competency outcome
+   *
    * @returns {object|undefined} - Gillick competency outcome
    */
   get competent() {
@@ -45,6 +46,7 @@ export class Gillick {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {

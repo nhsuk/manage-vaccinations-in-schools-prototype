@@ -1,4 +1,5 @@
 import process from 'node:process'
+
 import { formatISO, getDayOfYear, isAfter, isBefore, isEqual } from 'date-fns'
 
 const ALLOWED_VALUES_FOR_MONTHS = [
@@ -18,7 +19,8 @@ const ALLOWED_VALUES_FOR_MONTHS = [
 
 /**
  * Normalise month input as words to it’s number from 1 to 12
- * @param {string} input month in words or as a number with or without a leading 0
+ *
+ * @param {string} input - month in words or as a number with or without a leading 0
  * @returns {string|undefined} number of the month without a leading 0 or undefined
  */
 function parseMonth(input) {
@@ -32,6 +34,7 @@ function parseMonth(input) {
 
 /**
  * Convert `govukDateInput` values into an ISO 8601 date.
+ *
  * @param {object} object - Object containing date values
  * @param {string} [namePrefix] - `namePrefix` used for date values
  * @returns {string|undefined} ISO 8601 date string
@@ -56,11 +59,10 @@ export function convertObjectToIsoDate(object, namePrefix) {
   try {
     if (!day) {
       return formatISO(new Date(year, month))
-    } else {
-      const ms = new Date().getMilliseconds()
-
-      return formatISO(new Date(year, month, day, hour, minute, ms))
     }
+    const ms = new Date().getMilliseconds()
+
+    return formatISO(new Date(year, month, day, hour, minute, ms))
   } catch (error) {
     console.error(error.message.split(':')[0])
   }
@@ -68,6 +70,7 @@ export function convertObjectToIsoDate(object, namePrefix) {
 
 /**
  * Convert ISO 8601 date to`items` object
+ *
  * @param {string} isoDate - ISO 8601 date
  * @returns {object|undefined} `items` for dateInput component
  */
@@ -88,6 +91,7 @@ export function convertIsoDateToObject(isoDate) {
 
 /**
  * Add days to a date
+ *
  * @param {Date|string} isoDate - ISO 8601 date
  * @param {number} days - Number of days to add
  * @returns {Date} Date with days added
@@ -101,6 +105,7 @@ export function addDays(isoDate, days) {
 
 /**
  * Remove days from a date
+ *
  * @param {Date|string} isoDate - ISO 8601 date
  * @param {number} days - Number of days to remove
  * @returns {Date} Date with days removed
@@ -114,6 +119,7 @@ export function removeDays(isoDate, days) {
 
 /**
  * Check if date lies between two other dates
+ *
  * @param {Date|string} isoDate - ISO 8601 date to check
  * @param {Date|string} isoStartDate - ISO 8601 start date
  * @param {Date|string} isoEndDate - ISO 8601 end date
@@ -128,6 +134,7 @@ export function isBetweenDates(isoDate, isoStartDate, isoEndDate) {
 
 /**
  * Format a data
+ *
  * @param {Date|string} date - Date string
  * @param {object} [options] - DateTimeFormat options
  * @returns {string|undefined} Formatted date
@@ -142,6 +149,7 @@ export function formatDate(date, options) {
 
 /**
  * Get age from date
+ *
  * @param {string} isoDate - ISO 8601 date
  * @returns {number} Age
  */
@@ -153,6 +161,7 @@ export function getAge(isoDate) {
 
 /**
  * Set time to midday
+ *
  * @param {Date} date - Date
  * @returns {Date} Date with time set to midday
  */
@@ -175,6 +184,7 @@ export function includesDate(dates, date) {
 
 /**
  * Get’s today’s date, as set by environment
+ *
  * @param {number} [secondsToAdd] - Seconds to add
  * @returns {Date} ‘Today’s’ date
  */
@@ -201,6 +211,7 @@ export function getToday(secondsToAdd) {
 
 /**
  * Get school year group
+ *
  * @param {string} isoDate - Date string
  * @returns {number} School year group
  */

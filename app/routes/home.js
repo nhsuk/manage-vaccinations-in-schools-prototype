@@ -1,4 +1,5 @@
 import express from 'express'
+
 import { UserRole } from '../models/user.js'
 
 const router = express.Router({ strict: true })

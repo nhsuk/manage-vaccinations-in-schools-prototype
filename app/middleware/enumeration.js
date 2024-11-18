@@ -2,6 +2,7 @@ import { AcademicYear } from '../models/cohort.js'
 import { DownloadFormat } from '../models/download.js'
 import { EventType } from '../models/event.js'
 import { GillickCompetent } from '../models/gillick.js'
+import { ImportStatus, ImportType } from '../models/import.js'
 import { NoticeType } from '../models/notice.js'
 import { ContactPreference, ParentalRelationship } from '../models/parent.js'
 import {
@@ -11,13 +12,12 @@ import {
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient.js'
-import { Gender, GPRegistered } from '../models/record.js'
 import { ProgrammeType } from '../models/programme.js'
+import { Gender, GPRegistered } from '../models/record.js'
 import { RegistrationOutcome } from '../models/registration.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { SchoolPhase } from '../models/school.js'
 import { ConsentWindow, SessionStatus, SessionType } from '../models/session.js'
-import { ImportStatus, ImportType } from '../models/import.js'
 import { UserRole } from '../models/user.js'
 import {
   VaccinationMethod,

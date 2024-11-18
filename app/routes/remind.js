@@ -1,4 +1,5 @@
 import express from 'express'
+
 import { remindController } from '../controllers/remind.js'
 
 const router = express.Router({ strict: true, mergeParams: true })

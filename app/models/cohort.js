@@ -1,6 +1,6 @@
-import { ProgrammeType } from './programme.js'
-import { Record } from './record.js'
 import { formatLink, formatYearGroup } from '../utils/string.js'
+
+import { ProgrammeType } from './programme.js'
 
 export class AcademicYear {
   static Y2024 = '2024/25'
@@ -8,12 +8,13 @@ export class AcademicYear {
 
 /**
  * Get NHS Numbers of CHIS records within year group
- * @param {Map<Record>} records - CHIS records
+ *
+ * @param {Map<import('./record.js').Record>} records - CHIS records
  * @param {number} yearGroup - Year group
  * @returns {Array} NHS numbers of selected cohort
  */
 export function getRecordsFromYearGroup(records, yearGroup) {
-  let yearGroupRecords = new Set()
+  const yearGroupRecords = new Set()
 
   records.forEach((record) => {
     if (record.yearGroup === yearGroup) {
@@ -52,6 +53,7 @@ export class Cohort {
 
   /**
    * Generate fake cohort
+   *
    * @param {import('./programme.js').Programme} programme - Programme
    * @param {Map<Record>} recordsMap - Records
    * @param {number} yearGroup - Year group
@@ -73,6 +75,7 @@ export class Cohort {
 
   /**
    * Get UID
+   *
    * @returns {string} - UID
    */
   get uid() {
@@ -83,6 +86,7 @@ export class Cohort {
 
   /**
    * Get name
+   *
    * @returns {string} - Name
    */
   get name() {
@@ -93,6 +97,7 @@ export class Cohort {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -103,6 +108,7 @@ export class Cohort {
 
   /**
    * Get formatted links
+   *
    * @returns {object} - Formatted links
    */
   get link() {
@@ -113,6 +119,7 @@ export class Cohort {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -121,6 +128,7 @@ export class Cohort {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

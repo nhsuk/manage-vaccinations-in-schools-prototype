@@ -3,11 +3,13 @@ import {
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient.js'
+
 import { getEnumKeyAndValue } from './enum.js'
 import { getRepliesWithHealthAnswers } from './reply.js'
 
 /**
  * Get screen outcome (what was the triage decision)
+ *
  * @param {import('../models/patient.js').Patient} patient - Patient
  * @returns {object} Screen outcome key and value
  */
@@ -43,6 +45,7 @@ export const getScreenOutcome = (patient) => {
 
 /**
  * Get triage outcome (has triage taken place)
+ *
  * @param {import('../models/patient.js').Patient} patient - Patient
  * @returns {object} Outcome key and value
  */
@@ -51,7 +54,6 @@ export const getTriageOutcome = (patient) => {
     return getEnumKeyAndValue(TriageOutcome, TriageOutcome.Needed)
   } else if (patient.screen) {
     return getEnumKeyAndValue(TriageOutcome, TriageOutcome.Completed)
-  } else {
-    return getEnumKeyAndValue(TriageOutcome, TriageOutcome.NotNeeded)
   }
+  return getEnumKeyAndValue(TriageOutcome, TriageOutcome.NotNeeded)
 }

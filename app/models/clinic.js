@@ -21,6 +21,7 @@ export class Clinic {
 
   /**
    * Get location
+   *
    * @returns {object} - Location
    */
   get location() {
@@ -35,6 +36,7 @@ export class Clinic {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -54,6 +56,7 @@ export class Clinic {
 
   /**
    * Get formatted links
+   *
    * @returns {object} - Formatted links
    */
   get link() {
@@ -70,6 +73,7 @@ export class Clinic {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {

@@ -1,4 +1,5 @@
 import express from 'express'
+
 import { recordController } from '../controllers/record.js'
 
 const router = express.Router({ strict: true })

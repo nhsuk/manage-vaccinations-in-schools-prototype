@@ -1,5 +1,6 @@
 /**
  * Generate results page
+ *
  * @param {Array} items - Items to paginate
  * @param {number} currentPage - Current page
  * @param {number} limit - Limit of items per page
@@ -22,6 +23,7 @@ export function getResults(items, currentPage, limit) {
 
 /**
  * Generate pagination items
+ *
  * @param {Array} items - Items to paginate
  * @param {number} currentPage - Current page
  * @param {number} limit - Limit of items per page

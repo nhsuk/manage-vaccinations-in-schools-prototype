@@ -1,9 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+
 import vaccines from '../datasets/vaccines.js'
-import { Batch } from './batch.js'
-import { ConsentOutcome } from './patient.js'
-import { ProgrammeType } from './programme.js'
-import { Vaccine, VaccineMethod } from './vaccine.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -16,6 +13,11 @@ import {
   formatMarkdown,
   formatMonospace
 } from '../utils/string.js'
+
+import { Batch } from './batch.js'
+import { ConsentOutcome } from './patient.js'
+import { ProgrammeType } from './programme.js'
+import { Vaccine, VaccineMethod } from './vaccine.js'
 
 export class VaccinationOutcome {
   static Vaccinated = 'Vaccinated'
@@ -111,6 +113,7 @@ export class Vaccination {
 
   /**
    * Generate fake vaccination
+   *
    * @param {import('./patient.js').Patient} patient - Patient
    * @param {import('./programme.js').Programme} programme - Programme
    * @param {import('./session.js').Session} session - Session
@@ -188,6 +191,7 @@ export class Vaccination {
 
   /**
    * Get created date for `dateInput`
+   *
    * @returns {object|undefined} - `dateInput` object
    */
   get created_() {
@@ -196,6 +200,7 @@ export class Vaccination {
 
   /**
    * Set created date from `dateInput`
+   *
    * @param {object} object - dateInput object
    */
   set created_(object) {
@@ -206,6 +211,7 @@ export class Vaccination {
 
   /**
    * Get batch expiry date for `dateInput`
+   *
    * @returns {object|undefined} - `dateInput` object
    */
   get batch_expires_() {
@@ -214,6 +220,7 @@ export class Vaccination {
 
   /**
    * Set batch expiry date from `dateInput`
+   *
    * @param {object} object - dateInput object
    */
   set batch_expires_(object) {
@@ -224,6 +231,7 @@ export class Vaccination {
 
   /**
    * Get vaccine
+   *
    * @returns {object|undefined} - Vaccine
    */
   get vaccine() {
@@ -234,12 +242,13 @@ export class Vaccination {
 
   /**
    * Get method
+   *
    * @returns {string|undefined} - Method
    */
   get method() {
     if (!this.vaccine || !this.given) return
 
-    if (this.vaccine.method == VaccineMethod.Nasal) {
+    if (this.vaccine.method === VaccineMethod.Nasal) {
       return VaccinationMethod.Nasal
     }
 
@@ -248,12 +257,13 @@ export class Vaccination {
 
   /**
    * Get anatomical site
+   *
    * @returns {string|undefined} - Anatomical site
    */
   get site() {
     if (!this.vaccine || !this.given) return
 
-    if (this.vaccine.method == VaccineMethod.Nasal) {
+    if (this.vaccine.method === VaccineMethod.Nasal) {
       return VaccinationSite.Nose
     }
 
@@ -262,6 +272,7 @@ export class Vaccination {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -291,6 +302,7 @@ export class Vaccination {
 
   /**
    * Get formatted links
+   *
    * @returns {object} - Formatted links
    */
   get link() {
@@ -301,6 +313,7 @@ export class Vaccination {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -309,6 +322,7 @@ export class Vaccination {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 export class SchoolPhase {
@@ -29,6 +30,7 @@ export class School {
 
   /**
    * Get location
+   *
    * @returns {object|undefined} - Location
    */
   get location() {
@@ -47,6 +49,7 @@ export class School {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -65,6 +68,7 @@ export class School {
 
   /**
    * Get formatted links
+   *
    * @returns {object} - Formatted links
    */
   get link() {
@@ -82,6 +86,7 @@ export class School {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -90,6 +95,7 @@ export class School {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

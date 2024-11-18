@@ -1,4 +1,5 @@
 import express from 'express'
+
 import { consentController } from '../controllers/consent.js'
 
 const router = express.Router({ strict: true })

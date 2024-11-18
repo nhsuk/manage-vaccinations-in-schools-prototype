@@ -2,6 +2,7 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 /**
  * kebab-case to PascalCase
+ *
  * @param {string} string - String to convert
  * @returns {string} PascalCase string
  */
@@ -13,6 +14,7 @@ export function kebabToPascalCase(string) {
 
 /**
  * PascalCase to kebab-case
+ *
  * @param {string} string - String to convert
  * @returns {string} kebab-case string
  */
@@ -22,6 +24,7 @@ export function pascalToKebabCase(string) {
 
 /**
  * Convert string to boolean
+ *
  * @param {any} value - Value to test
  * @returns {boolean|any} Boolean
  */
@@ -31,6 +34,7 @@ export function stringToBoolean(value) {
 
 /**
  * Format highlight
+ *
  * @param {string|number} string - String
  * @returns {string|undefined} Formatted HTML
  */
@@ -42,13 +46,14 @@ export function formatHighlight(string) {
 
 /**
  * Format link
+ *
  * @param {string} href - Hyperlink reference
  * @param {string} text - Hyperlink text
  * @param {object} [attributes] - Hyperlink attributes
  * @returns {string} HTML anchor decorated with nhsuk-link class
  */
 export function formatLink(href, text, attributes = {}) {
-  let attrs = []
+  const attrs = []
 
   for (const [key, value] of Object.entries(attributes)) {
     if (value === true || value === 'true') {
@@ -63,6 +68,7 @@ export function formatLink(href, text, attributes = {}) {
 
 /**
  * Format array as HTML list
+ *
  * @param {Array} array - Array
  * @returns {string|undefined} HTML unordered list with nhsuk-* classes
  */
@@ -82,6 +88,7 @@ export function formatList(array) {
 
 /**
  * Format markdown
+ *
  * @param {string} string - Markdown
  * @param {string} headingsStartWith - Initial heading size
  * @returns {string|undefined} HTML decorated with nhsuk-* classes
@@ -99,6 +106,7 @@ export function formatMarkdown(string, headingsStartWith = 'l') {
 
 /**
  * Format millilitres
+ *
  * @param {string|number} string - Amount
  * @returns {string|undefined} Formatted string
  */
@@ -110,6 +118,7 @@ export function formatMillilitres(string) {
 
 /**
  * Format monospaced
+ *
  * @param {string|number} string - String
  * @returns {string|undefined} Formatted HTML
  */
@@ -123,6 +132,7 @@ export function formatMonospace(string) {
  * Format NHS number
  * Replace each space in number with a non-breaking space and zero-width word
  * joiner to prevent telephone format detection
+ *
  * @param {string} string - String
  * @returns {string|undefined} Formatted HTML
  */
@@ -145,6 +155,7 @@ export function formatNhsNumber(string) {
 
 /**
  * Format parent with optional display of telephone number
+ *
  * @param {import('../models/parent.js').Parent} parent - Patent
  * @param {boolean} [includeTelephone] - Include telephone number
  * @returns {string|undefined} Formatted parent HTML
@@ -169,6 +180,7 @@ export function formatParent(parent, includeTelephone = true) {
 
 /**
  * Append other value, if one is provided
+ *
  * @param {string} other - Other option name (typically ‘Other’)
  * @param {string} string - Other value
  * @returns {string|undefined} Full other value
@@ -181,6 +193,7 @@ export function formatOther(other, string) {
 
 /**
  * Format year group
+ *
  * @param {number} yearGroup - Year group
  * @returns {string} Formatted year group
  */
@@ -197,6 +210,7 @@ export function formatYearGroup(yearGroup) {
 
 /**
  * Lower case first letter
+ *
  * @param {string} string - String to change
  * @returns {string} String with lower cased first letter
  */

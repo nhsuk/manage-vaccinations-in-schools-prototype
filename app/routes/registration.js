@@ -1,4 +1,5 @@
 import express from 'express'
+
 import { registrationController } from '../controllers/registration.js'
 
 const router = express.Router({ strict: true, mergeParams: true })

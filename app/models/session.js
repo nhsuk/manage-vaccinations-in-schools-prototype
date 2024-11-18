@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import { isAfter } from 'date-fns'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
+import { isAfter } from 'date-fns'
+
 import clinics from '../datasets/clinics.js'
 import schools from '../datasets/schools.js'
 import {
@@ -13,13 +14,14 @@ import {
   includesDate,
   setMidday
 } from '../utils/date.js'
+import { getConsentWindow } from '../utils/session.js'
 import {
   formatLink,
   formatList,
   formatMonospace,
   lowerCaseFirst
 } from '../utils/string.js'
-import { getConsentWindow } from '../utils/session.js'
+
 import { OrganisationDefaults } from './organisation.js'
 import { ProgrammeStatus, programmeTypes } from './programme.js'
 
@@ -82,6 +84,7 @@ export class Session {
 
   /**
    * Generate fake session
+   *
    * @param {string} urn - School URN
    * @param {import('./programme.js').Programme} programme - Programme
    * @param {import('./user.js').User} user - User
@@ -103,14 +106,16 @@ export class Session {
       ])
     }
 
-    let dates = []
+    const dates = []
     let firstSessionDate
     switch (status) {
       case SessionStatus.Planned:
         // Session will take place according programme schedule
-        let { to } = programmeTypes[programme.type].schedule
         // Sessions start after first content window closes
-        firstSessionDate = faker.date.between({ from: getToday(), to })
+        firstSessionDate = faker.date.between({
+          from: getToday(),
+          to: programmeTypes[programme.type].schedule.to
+        })
         break
       case SessionStatus.Unplanned:
         firstSessionDate = undefined
@@ -137,10 +142,11 @@ export class Session {
 
       // Add additional session dates
       for (const _index of [1, 2]) {
-        if (_index === 0) continue
-        const previousDate = dates[_index - 1]
-        const subsequentDate = setMidday(addDays(previousDate, 7))
-        dates.push(subsequentDate)
+        if (_index !== 0) {
+          const previousDate = dates[_index - 1]
+          const subsequentDate = setMidday(addDays(previousDate, 7))
+          dates.push(subsequentDate)
+        }
       }
     }
 
@@ -157,6 +163,7 @@ export class Session {
 
   /**
    * Get session dates for `dateInput`s
+   *
    * @returns {Array<object|undefined>} - `dateInput` objects
    */
   get dates_() {
@@ -165,6 +172,7 @@ export class Session {
 
   /**
    * Set session dates from `dateInput`s
+   *
    * @param {object} object - dateInput object
    */
   set dates_(object) {
@@ -177,6 +185,7 @@ export class Session {
 
   /**
    * Get date consent window opens for `dateInput`
+   *
    * @returns {object|undefined} - `dateInput` object
    */
   get open_() {
@@ -185,6 +194,7 @@ export class Session {
 
   /**
    * Set date consent window opens from `dateInput`
+   *
    * @param {object} object - dateInput object
    */
   set open_(object) {
@@ -195,6 +205,7 @@ export class Session {
 
   /**
    * Get first session date
+   *
    * @returns {string} - First session date
    */
   get firstDate() {
@@ -203,6 +214,7 @@ export class Session {
 
   /**
    * Get last session date
+   *
    * @returns {string} - Last session date
    */
   get lastDate() {
@@ -211,10 +223,11 @@ export class Session {
 
   /**
    * Get remaining session dates
+   *
    * @returns {Array<string>} - Remaining session dates
    */
   get remainingDates() {
-    let remainingDates = [...this.dates]
+    const remainingDates = [...this.dates]
     remainingDates.shift()
 
     return remainingDates
@@ -222,6 +235,7 @@ export class Session {
 
   /**
    * Get date next automated reminder will be sent
+   *
    * @returns {Date|undefined} - Next reminder date
    */
   get nextReminderDate() {
@@ -232,6 +246,7 @@ export class Session {
 
   /**
    * Get consent close date
+   *
    * @returns {Date|undefined} - Consent close date
    */
   get close() {
@@ -243,6 +258,7 @@ export class Session {
 
   /**
    * Get consent URL
+   *
    * @returns {object|undefined} - Consent window
    */
   get consentUrl() {
@@ -253,6 +269,7 @@ export class Session {
 
   /**
    * Get consent window
+   *
    * @returns {object} - Consent window
    */
   get consentWindow() {
@@ -261,6 +278,7 @@ export class Session {
 
   /**
    * Is active session
+   *
    * @returns {boolean} - Is active session
    */
   get isActive() {
@@ -270,6 +288,7 @@ export class Session {
 
   /**
    * Get status
+   *
    * @returns {string} - Status
    */
   get status() {
@@ -288,6 +307,7 @@ export class Session {
 
   /**
    * Get clinic
+   *
    * @returns {object} - School
    */
   get clinic() {
@@ -296,6 +316,7 @@ export class Session {
 
   /**
    * Get school
+   *
    * @returns {object} - School
    */
   get school() {
@@ -304,6 +325,7 @@ export class Session {
 
   /**
    * Get type
+   *
    * @returns {string} - Status
    */
   get type() {
@@ -312,6 +334,7 @@ export class Session {
 
   /**
    * Get location
+   *
    * @returns {object} - Location
    */
   get location() {
@@ -328,6 +351,7 @@ export class Session {
 
   /**
    * Get name
+   *
    * @returns {string|undefined} - Name
    */
   get name() {
@@ -376,9 +400,8 @@ export class Session {
         month: 'long'
       })
       return `Last session completed ${lastDate}`
-    } else {
-      return 'No sessions scheduled'
     }
+    return 'No sessions scheduled'
   }
 
   get details() {
@@ -387,6 +410,7 @@ export class Session {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -406,7 +430,7 @@ export class Session {
         consentWindow = ''
     }
 
-    let formattedDates =
+    const formattedDates =
       this.dates.length > 0
         ? this.dates.map((date) => formatDate(date, { dateStyle: 'full' }))
         : ''
@@ -451,6 +475,7 @@ export class Session {
 
   /**
    * Get formatted links
+   *
    * @returns {object} - Formatted links
    */
   get link() {
@@ -469,17 +494,18 @@ export class Session {
 
   /**
    * Get formatted summary
+   *
    * @returns {object} - Formatted summaries
    */
   get summary() {
-    let dates =
+    const dates =
       this.dates.length > 0
         ? this.dates.map((date) =>
             formatDate(date, { weekday: 'long', month: 'long', day: 'numeric' })
           )
         : ''
 
-    let firstDate =
+    const firstDate =
       this.dates.length > 0
         ? formatDate(this.firstDate, {
             weekday: 'long',
@@ -488,7 +514,7 @@ export class Session {
           })
         : ''
 
-    let remainingDates =
+    const remainingDates =
       this.remainingDates && this.remainingDates.length > 0
         ? this.remainingDates.map((date) =>
             formatDate(date, { weekday: 'long', month: 'long', day: 'numeric' })
@@ -511,6 +537,7 @@ export class Session {
 
   /**
    * Get status for `tag`
+   *
    * @returns {object} - `tag` object
    */
   get statusTag() {
@@ -541,6 +568,7 @@ export class Session {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -549,6 +577,7 @@ export class Session {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

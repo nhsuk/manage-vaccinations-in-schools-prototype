@@ -1,8 +1,10 @@
 import { isAfter } from 'date-fns'
+
 import vaccines from '../datasets/vaccines.js'
-import { Vaccine } from './vaccine.js'
 import { isBetweenDates, getToday } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
+
+import { Vaccine } from './vaccine.js'
 
 export class ProgrammeStatus {
   static Planned = 'Planned'
@@ -74,6 +76,7 @@ export class Programme {
 
   /**
    * Generate fake programme
+   *
    * @param {string} type - Type
    * @returns {Programme} - Programme
    * @static
@@ -84,6 +87,7 @@ export class Programme {
 
   /**
    * Get status
+   *
    * @returns {string} - Status
    */
   get status() {
@@ -93,13 +97,13 @@ export class Programme {
       return ProgrammeStatus.Current
     } else if (isAfter(getToday(), to)) {
       return ProgrammeStatus.Completed
-    } else {
-      return ProgrammeStatus.Planned
     }
+    return ProgrammeStatus.Planned
   }
 
   /**
    * Get start date
+   *
    * @returns {string} - Start date
    */
   get start() {
@@ -110,6 +114,7 @@ export class Programme {
 
   /**
    * Get programme ID
+   *
    * @returns {string} - Programme ID
    */
   get pid() {
@@ -118,6 +123,7 @@ export class Programme {
 
   /**
    * Get vaccine used by this programme
+   *
    * @todo A programme can use multiple vaccines, and one used for a patient
    * will depend on answers to screening questions in consent flow. For now,
    * however we’ll assume each programme administers one vaccine.
@@ -129,6 +135,7 @@ export class Programme {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -143,6 +150,7 @@ export class Programme {
 
   /**
    * Get formatted links
+   *
    * @returns {object} - Formatted links
    */
   get link() {
@@ -153,6 +161,7 @@ export class Programme {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -161,6 +170,7 @@ export class Programme {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

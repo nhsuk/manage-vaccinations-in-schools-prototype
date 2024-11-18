@@ -1,5 +1,6 @@
-import _ from 'lodash'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
+import _ from 'lodash'
+
 import exampleUsers from './datasets/users.js'
 import {
   ConsentOutcome,
@@ -9,13 +10,14 @@ import {
 import { Gender } from './models/record.js'
 import { Reply, ReplyDecision } from './models/reply.js'
 import { User } from './models/user.js'
-import { HealthQuestion } from './models/vaccine.js'
 import { Vaccination } from './models/vaccination.js'
+import { HealthQuestion } from './models/vaccine.js'
 import { getEnumKeyAndValue } from './utils/enum.js'
 import { formatLink, formatParent, pascalToKebabCase } from './utils/string.js'
 
 /**
  * Prototype specific global functions for use in Nunjucks templates.
+ *
  * @returns {object} Globals
  */
 export default () => {
@@ -23,6 +25,7 @@ export default () => {
 
   /**
    * Get boolean form field items
+   *
    * @returns {object} Form field items
    */
   globals.booleanItems = [
@@ -32,6 +35,7 @@ export default () => {
 
   /**
    * Get form field items for a given Enum
+   *
    * @param {object} Enum - Enumerable name
    * @returns {object} Form field items
    */
@@ -46,11 +50,12 @@ export default () => {
 
   /**
    * Convert errors object to array for errorSummary component
+   *
    * @param {object} errors - Error messages
    * @returns {Array} Error list
    */
   globals.errorList = function (errors) {
-    let errorsList = []
+    const errorsList = []
 
     for (const [key, value] of Object.entries(errors)) {
       errorsList.push({
@@ -64,6 +69,7 @@ export default () => {
 
   /**
    * Get health answers for summary list rows
+   *
    * @param {object} healthAnswers - Health answers
    * @param {string} edit - Edit link
    * @returns {Array|undefined} Parameters for summary list component
@@ -74,12 +80,12 @@ export default () => {
     }
 
     const rows = []
-    for (let [id, value] of Object.entries(healthAnswers)) {
+    for (const [id, value] of Object.entries(healthAnswers)) {
       let html = ''
       if (typeof value === 'object') {
         // Answers across all replies
         // Show the relationship of person of answered, as well as their answer
-        for (let [relationship, answer] of Object.entries(value)) {
+        for (const [relationship, answer] of Object.entries(value)) {
           html += answer
             ? `<p>${relationship} responded: Yes:</p>\n<blockquote>${answer}</blockquote>`
             : `<p>${relationship} responded: No<p>`
@@ -116,6 +122,7 @@ export default () => {
 
   /**
    * Format link
+   *
    * @param {string} href - Hyperlink reference
    * @param {string} text - Hyperlink text
    * @param {object} [attributes] - Hyperlink attributes
@@ -131,6 +138,7 @@ export default () => {
 
   /**
    * Get status details for a patient
+   *
    * @param {import('./models/patient.js').Patient} patient - Patient
    * @returns {object} Patient status
    */
@@ -148,11 +156,11 @@ export default () => {
 
     let colour
     let description = false
-    let relationships = []
+    const relationships = []
     let title
 
     // Build list of reply relationships
-    for (let reply of replies) {
+    for (const reply of replies) {
       relationships.push(reply.relationship)
     }
 
@@ -218,6 +226,7 @@ export default () => {
 
   /**
    * Get percentage of two numbers
+   *
    * @param {number} total - Total
    * @param {number} number - Number of total
    * @returns {number} Formatted HTML
@@ -229,6 +238,7 @@ export default () => {
 
   /**
    * Get status details for a reply
+   *
    * @param {import('./models/reply.js').Reply} reply - Reply
    * @returns {object} Reply status
    */
@@ -243,6 +253,7 @@ export default () => {
 
   /**
    * Show relevant pre-screening questions based on gender of the patient
+   *
    * @param {import('./models/programme.js').Programme} programme - Programme
    * @param {import('./models/patient.js').Patient} patient - Patient
    * @returns {Array<string>|undefined} Pre-screening question keys
@@ -262,6 +273,7 @@ export default () => {
 
   /**
    * Show reason could not vaccinate
+   *
    * @param {import('./models/patient.js').Patient} patient - Patient
    * @returns {string|undefined} Reason could not vaccinate
    */
@@ -285,6 +297,7 @@ export default () => {
 
   /**
    * Get summaryList `rows` parameters
+   *
    * @param {object} data - Data
    * @param {object} rows - Row configuration
    * @returns {object} `rows`
@@ -305,52 +318,49 @@ export default () => {
       // Allow value to be explicitly set
       let value = rows[key]?.value || formattedValue
 
-      // Don’t show row for conditional answer
-      if (typeof value === 'undefined' || value === 0) {
-        continue
+      if (typeof value !== 'undefined' || value !== 0) {
+        // Handle _unchecked checkbox value
+        if (value === '_unchecked') {
+          value = 'None selected'
+        }
+
+        // Handle falsy values
+        if (value === false) {
+          value = 'No'
+        }
+
+        // Handle truthy values
+        if (value === true) {
+          value = 'Yes'
+        }
+
+        const label = rows[key].label || __(`${data.ns}.${key}.label`)
+        const changeLabel = rows[key].changeLabel || _.lowerFirst(label)
+        const href = rows[key].href
+        const fallbackValue = href
+          ? `<a href="${href}">Add ${changeLabel}</a>`
+          : 'Not provided'
+
+        summaryRows.push({
+          key: {
+            text: label
+          },
+          value: {
+            classes: rows[key]?.classes,
+            html: value ? String(value) : fallbackValue
+          },
+          actions: href &&
+            value && {
+              items: [
+                {
+                  href,
+                  text: 'Change',
+                  visuallyHiddenText: changeLabel
+                }
+              ]
+            }
+        })
       }
-
-      // Handle _unchecked checkbox value
-      if (value === '_unchecked') {
-        value = 'None selected'
-      }
-
-      // Handle falsy values
-      if (value === false) {
-        value = 'No'
-      }
-
-      // Handle truthy values
-      if (value === true) {
-        value = 'Yes'
-      }
-
-      const label = rows[key].label || __(`${data.ns}.${key}.label`)
-      const changeLabel = rows[key].changeLabel || _.lowerFirst(label)
-      const href = rows[key].href
-      const fallbackValue = href
-        ? `<a href="${href}">Add ${changeLabel}</a>`
-        : 'Not provided'
-
-      summaryRows.push({
-        key: {
-          text: label
-        },
-        value: {
-          classes: rows[key]?.classes,
-          html: value ? String(value) : fallbackValue
-        },
-        actions: href &&
-          value && {
-            items: [
-              {
-                href,
-                text: 'Change',
-                visuallyHiddenText: changeLabel
-              }
-            ]
-          }
-      })
     }
 
     return summaryRows

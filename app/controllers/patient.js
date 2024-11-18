@@ -1,11 +1,6 @@
 import _ from 'lodash'
-import { getResults, getPagination } from '../utils/pagination.js'
+
 import { Cohort } from '../models/cohort.js'
-import {
-  Programme,
-  ProgrammeType,
-  programmeTypes
-} from '../models/programme.js'
 import {
   CaptureOutcome,
   ConsentOutcome,
@@ -13,11 +8,17 @@ import {
   PatientOutcome,
   TriageOutcome
 } from '../models/patient.js'
+import {
+  Programme,
+  ProgrammeType,
+  programmeTypes
+} from '../models/programme.js'
 import { Record } from '../models/record.js'
 import { Reply } from '../models/reply.js'
 import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
 import { Vaccination } from '../models/vaccination.js'
+import { getResults, getPagination } from '../utils/pagination.js'
 
 export const patientController = {
   readAll(request, response, next) {
@@ -64,7 +65,7 @@ export const patientController = {
   updateAll(request, response) {
     const { hasMissingNhsNumber, q } = request.body
 
-    let params = {}
+    const params = {}
 
     if (q) {
       params.q = String(q)
@@ -181,7 +182,7 @@ export const patientController = {
 
   show(request, response) {
     let { view } = request.params
-    let { inSession } = response.locals
+    const { inSession } = response.locals
 
     if (!view) {
       view = inSession ? 'session' : 'show'

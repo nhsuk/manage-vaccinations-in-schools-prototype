@@ -1,5 +1,6 @@
-import { formatLink, formatMonospace } from '../utils/string.js'
 import { fakerEN_GB as faker } from '@faker-js/faker'
+
+import { formatLink, formatMonospace } from '../utils/string.js'
 
 export class UserRole {
   static ClinicalAdmin = 'Nurse'
@@ -28,6 +29,7 @@ export class User {
 
   /**
    * Generate fake user
+   *
    * @returns {User} - User
    * @static
    */
@@ -51,6 +53,7 @@ export class User {
 
   /**
    * Get full name
+   *
    * @returns {string} - Full name
    */
   get fullName() {
@@ -59,6 +62,7 @@ export class User {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -69,6 +73,7 @@ export class User {
 
   /**
    * Get formatted links
+   *
    * @returns {object} - Formatted links
    */
   get link() {
@@ -79,6 +84,7 @@ export class User {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -87,6 +93,7 @@ export class User {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

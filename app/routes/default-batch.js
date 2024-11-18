@@ -1,4 +1,5 @@
 import express from 'express'
+
 import { defaultBatchController } from '../controllers/default-batch.js'
 
 const router = express.Router({ strict: true, mergeParams: true })

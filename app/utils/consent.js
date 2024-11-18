@@ -2,6 +2,7 @@ import { kebabToPascalCase, pascalToKebabCase } from './string.js'
 
 /**
  * Get health question key from view name
+ *
  * @param {string} view - View name
  * @returns {string} Health question key
  */
@@ -11,6 +12,7 @@ export const getHealthQuestionKey = (view) => {
 
 /**
  * Get health question paths for a given vaccine
+ *
  * @param {string} pathPrefix - Path prefix
  * @param {import('../models/vaccine.js').Vaccine} vaccine - Vaccine
  * @returns {object} Health question paths

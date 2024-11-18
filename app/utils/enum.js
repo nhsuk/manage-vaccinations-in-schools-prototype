@@ -1,5 +1,6 @@
 /**
  * Get an enum key value pair
+ *
  * @param {object} enums - Enum to search
  * @param {string} enumValue - Value to find
  * @returns {object} Enum key value pair

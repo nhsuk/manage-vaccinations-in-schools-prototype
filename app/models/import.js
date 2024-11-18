@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+
 import { formatDate, getToday } from '../utils/date.js'
 
 export class ImportType {
@@ -17,7 +18,7 @@ export class ImportStatus {
  * @class Import
  * @property {string} id - Import ID
  * @property {ImportStatus} status - Import status
- * @property {ImportType} type -  Import type
+ * @property {ImportType} type - Import type
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created import
  * @property {string} [programme_pid] - Programme ID
@@ -46,6 +47,7 @@ export class Import {
 
   /**
    * Generate fake import
+   *
    * @param {import('./programme.js').Programme} programme - Programme
    * @param {Array|boolean|undefined} records - Records
    * @param {import('./user.js').User} user - User
@@ -56,7 +58,6 @@ export class Import {
   static generate(programme, records, user, type) {
     const created = faker.date.recent({ days: 14, refDate: programme.start })
 
-    let devoid
     let validations
     let status = ImportStatus.Complete
 
@@ -75,9 +76,6 @@ export class Import {
           CHILD_DOB: '‘Simon’ should be formatted as YYYY-MM-DD'
         }
       }
-    } else if (records === undefined) {
-      // Simulate file with no new records
-      devoid = 101
     }
 
     return new Import({
@@ -95,6 +93,7 @@ export class Import {
 
   /**
    * Get formatted values
+   *
    * @returns {object} - Formatted values
    */
   get formatted() {
@@ -109,6 +108,7 @@ export class Import {
 
   /**
    * Get status for `tag`
+   *
    * @returns {object} - `tag` object
    */
   get statusTag() {
@@ -132,6 +132,7 @@ export class Import {
 
   /**
    * Get namespace
+   *
    * @returns {string} - Namespace
    */
   get ns() {
@@ -140,6 +141,7 @@ export class Import {
 
   /**
    * Get URI
+   *
    * @returns {string} - URI
    */
   get uri() {

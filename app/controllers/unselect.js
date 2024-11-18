@@ -1,5 +1,5 @@
-import { getToday } from '../utils/date.js'
 import { Cohort } from '../models/cohort.js'
+import { getToday } from '../utils/date.js'
 
 export const unselectController = {
   update(request, response) {
