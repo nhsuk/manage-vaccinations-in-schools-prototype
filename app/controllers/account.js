@@ -2,6 +2,8 @@ import { UserRole } from '../models/user.js'
 
 export const accountController = {
   changeRole(request, response) {
+    request.session.data.token.role = request.body.role
+
     response.redirect('/home')
   },
 
