@@ -32,6 +32,10 @@ $govuk-colours: (
 // Import GOV.UK Frontend
 @import "govuk-frontend/dist/govuk/base";
 @import "govuk-frontend/dist/govuk/core";
+@import "govuk-frontend/dist/govuk/utilities/visually-hidden";
+@import "govuk-frontend/dist/govuk/components/notification-banner";
+@import "govuk-frontend/dist/govuk/components/pagination";
+@import "govuk-frontend/dist/govuk/components/panel";
 
 // Import GOV.UK Prototype Components
 @import "@x-govuk/govuk-prototype-components/x-govuk/components/autocomplete/autocomplete";

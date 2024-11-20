@@ -16,10 +16,13 @@
   }) }}
 
   {{ govukPasswordInput({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-2"
+    },
     label: { text: __("account.password.label") },
     id: "password",
     name: "password"
-  }) | replace("govuk-input", "nhsuk-input") | replace("govuk-button", "nhsuk-button") }}
+  }) | replace("govuk-input", "nhsuk-input") | replace("govuk-button", "nhsuk-button") | replace("govuk-label", "nhsuk-label") }}
 
   {{ link("/account/reset-password", __("account.password.forgot")) | nhsukMarkdown }}
 {% endblock %}
