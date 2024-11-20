@@ -5,5 +5,5 @@
 .start.pid
 
 .data
-node_modules
-assets
+/node_modules
+/assets
