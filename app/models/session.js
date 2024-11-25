@@ -234,6 +234,15 @@ export class Session {
   }
 
   /**
+   * Get next session date
+   *
+   * @returns {string} - Next session dates
+   */
+  get nextDate() {
+    return this.remainingDates[0]
+  }
+
+  /**
    * Get date next automated reminder will be sent
    *
    * @returns {Date|undefined} - Next reminder date
@@ -454,6 +463,11 @@ export class Session {
         'app-list--sessions'
       ),
       firstDate: formatDate(this.firstDate, { dateStyle: 'full' }),
+      nextDate: formatDate(this.nextDate, {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric'
+      }),
       open: formatDate(this.open, { dateStyle: 'full' }),
       reminderWeeks: `Send ${reminderWeeks} before each session</br>
       <span class="nhsuk-u-secondary-text-color">First: ${formattedNextReminderDate}</span>`,
