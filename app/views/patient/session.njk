@@ -1,6 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = patient.record.obscuredName + " – " + session.location.name %}
+{% set title = patient.record.initials + " – " + session.location.name %}
 {% set view = "show" %}
 
 {% block beforeContent %}

@@ -237,8 +237,8 @@ export class Record {
    *
    * @returns {string} - Full name
    */
-  get obscuredName() {
-    return [this.firstName.slice(0, 1), this.lastName.slice(0, 1)].join('')
+  get initials() {
+    return [this.firstName[0], this.lastName[0]].join('')
   }
 
   /**
