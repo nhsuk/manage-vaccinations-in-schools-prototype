@@ -8,12 +8,14 @@
 {% set navigationItems = [] %}
 {% for theme, items in templates %}
   {% for item in items %}
-    {% set navigationItems = navigationItems | push({
-      text: __("texts." + dir + "." + item + ".label"),
-      href: "?template=" + item,
-      current: template === item,
-      theme: theme
-    }) %}
+    {% if item != "" %}
+      {% set navigationItems = navigationItems | push({
+        text: __("texts." + dir + "." + item + ".label"),
+        href: "?template=" + item,
+        current: template === item,
+        theme: theme
+      }) %}
+    {% endif %}
   {% endfor %}
 {% endfor %}
 
