@@ -13,17 +13,22 @@
 {% set defaultTemplate = "invite" %}
 {% set dir = "consent" %}
 {% set templates = {
-  "Sent to parents": [
+  "Invite": [
     "invite",
     "invite-reminder",
-    "consent-given",
-    "consent-refused",
-    "session-reminder",
-    "session-outcome-vaccinated",
-    "session-outcome-could-not-vaccinate"
+    "invite-clinic",
+    "invite-clinic-reminder",
+    "invite-clinic-consent"
   ],
-  "Sent to children": [
+  "Consent": [
+    "consent-given",
     "consent-given-child",
-    "session-reminder-child"
+    "consent-refused"
+  ],
+  "Vaccination": [
+    "capture-reminder",
+    "capture-reminder-child",
+    "capture-vaccinated",
+    "capture-could-not-vaccinate"
   ]
 } %}

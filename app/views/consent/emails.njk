@@ -21,29 +21,32 @@
 {% set defaultTemplate = "invite" %}
 {% set dir = "consent" %}
 {% set templates = {
-  "Get consent": [
+  "Invite": [
     "invite",
     "invite-catch-up" if programme.type == ProgrammeType.HPV,
     "invite-reminder",
     "invite-subsequent-reminder",
     "invite-clinic",
     "invite-clinic-reminder",
+    "invite-clinic-consent",
+    "information-child" if programme.type == ProgrammeType.HPV
+  ],
+  "Consent": [
     "consent-given",
+    "consent-given-changed-school",
     "consent-conflicts",
-    "consent-refused"
+    "consent-refused",
+    "consent-refused-injection" if programme.type == ProgrammeType.Flu,
+    "consent-needs-triage"
   ],
   "Triage": [
-    "triage-needed",
     "triage-vaccinate",
     "triage-delay-vaccination",
     "triage-do-not-vaccinate"
   ],
   "Vaccination": [
-    "session-reminder",
-    "session-outcome-vaccinated",
-    "session-outcome-could-not-vaccinate"
-  ],
-  "Sent to children": [
-    "information-child"
-  ] if programme.type == ProgrammeType.HPV
+    "capture-reminder",
+    "capture-vaccinated",
+    "capture-could-not-vaccinate"
+  ]
 } %}
