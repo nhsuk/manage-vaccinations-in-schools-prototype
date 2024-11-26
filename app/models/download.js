@@ -133,7 +133,7 @@ export class Download {
           {
             label: 'SuspensionEndDate',
             value: (row) =>
-              formatDate(row.batch_expires, {
+              formatDate(row.batch_expiry, {
                 timeStyle: 'short'
               })
           },
@@ -164,7 +164,7 @@ export class Download {
           user_code: '',
           attended: vaccination.given ? 'Y' : 'N',
           non_attendance: '',
-          batch_expires: vaccination.batch_expires,
+          batch_expiry: vaccination.batch_expiry,
           sequence: vaccination.sequence,
           refusal: !vaccination.given ? vaccination.outcome : '',
           batch_id: vaccination.batch_id,

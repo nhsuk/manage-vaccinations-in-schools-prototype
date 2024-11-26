@@ -79,8 +79,8 @@ export class VaccinationProtocol {
  * @property {string} [session_id] - Session ID
  * @property {string} [patient_uuid] - Patient UUID
  * @property {string} [batch_id] - Batch ID
- * @property {string} [batch_expires] - Batch expiry date
- * @property {object} [batch_expires_] - Batch expiry date (from `dateInput`)
+ * @property {string} [batch_expiry] - Batch expiry date
+ * @property {object} [batch_expiry_] - Batch expiry date (from `dateInput`)
  * @property {string} [vaccine_gtin] - Vaccine GTIN
  */
 export class Vaccination {
@@ -107,7 +107,7 @@ export class Vaccination {
     this.session_id = options?.session_id
     this.patient_uuid = options?.patient_uuid
     this.batch_id = this.given ? options?.batch_id || '' : undefined
-    this.batch_expires = this.given ? options?.batch_expires || '' : undefined
+    this.batch_expiry = this.given ? options?.batch_expiry || '' : undefined
     this.vaccine_gtin = options?.vaccine_gtin
   }
 
@@ -180,7 +180,7 @@ export class Vaccination {
       vaccine_gtin,
       ...(vaccinated && {
         batch_id: batch.id,
-        batch_expires: batch.expires,
+        batch_expiry: batch.expiry,
         dose: vaccines[vaccine_gtin].dose,
         sequence,
         injectionMethod,
@@ -214,8 +214,8 @@ export class Vaccination {
    *
    * @returns {object|undefined} - `dateInput` object
    */
-  get batch_expires_() {
-    return convertIsoDateToObject(this.batch_expires)
+  get batch_expiry_() {
+    return convertIsoDateToObject(this.batch_expiry)
   }
 
   /**
@@ -223,9 +223,9 @@ export class Vaccination {
    *
    * @param {object} object - dateInput object
    */
-  set batch_expires_(object) {
+  set batch_expiry_(object) {
     if (object) {
-      this.batch_expires = convertObjectToIsoDate(object)
+      this.batch_expiry = convertObjectToIsoDate(object)
     }
   }
 
@@ -291,7 +291,7 @@ export class Vaccination {
         hourCycle: 'h12'
       }),
       batch_id: formatMonospace(this.batch_id),
-      batch_expires: formatDate(this.batch_expires, {
+      batch_expiry: formatDate(this.batch_expiry, {
         dateStyle: 'long'
       }),
       dose: formatMillilitres(this.dose),

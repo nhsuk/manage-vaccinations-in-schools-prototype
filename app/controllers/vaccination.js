@@ -102,9 +102,8 @@ export const vaccinationController = {
       ...data?.wizard?.vaccination, // Wizard values (new flow)
       ...request.body.vaccination, // New values (edit flow)
       vaccine_gtin: programme.vaccine.gtin,
-      batch_expires:
-        vaccination.batch_expires ||
-        data.batches[vaccination.batch_id]?.expires,
+      batch_expiry:
+        vaccination.batch_expiry || data.batches[vaccination.batch_id]?.expiry,
       created_user_uid: data.vaccination?.created_user_uid || data.token?.uid
     })
 

@@ -16,16 +16,16 @@ import { Vaccine } from './vaccine.js'
  * @class Batch
  * @property {string} id - Batch ID
  * @property {string} [created] - Created date
- * @property {string} expires - Expiry date
- * @property {object} [expires_] - Expiry date (from `dateInput`)
+ * @property {string} expiry - Expiry date
+ * @property {object} [expiry_] - Expiry date (from `dateInput`)
  * @property {string} vaccine_gtin - Vaccine GTIN
  */
 export class Batch {
   constructor(options) {
     this.id = options?.id || faker.helpers.replaceSymbols('??####')
     this.created = options?.created || getToday().toISOString()
-    this.expires = options.expires
-    this.expires_ = options?.expires_
+    this.expiry = options.expiry
+    this.expiry_ = options?.expiry_
     this.vaccine_gtin = options.vaccine_gtin
   }
 
@@ -38,13 +38,13 @@ export class Batch {
    */
   static generate(vaccine_gtin) {
     const created = faker.date.recent({ days: 30 })
-    const expires = addDays(created, 120)
+    const expiry = addDays(created, 120)
     vaccine_gtin =
       vaccine_gtin || faker.helpers.arrayElement(Object.keys(vaccines))
 
     return new Batch({
       created,
-      expires,
+      expiry,
       vaccine_gtin
     })
   }
@@ -54,8 +54,8 @@ export class Batch {
    *
    * @returns {object|undefined} - `dateInput` object
    */
-  get expires_() {
-    return convertIsoDateToObject(this.expires)
+  get expiry_() {
+    return convertIsoDateToObject(this.expiry)
   }
 
   /**
@@ -63,9 +63,9 @@ export class Batch {
    *
    * @param {object} object - dateInput object
    */
-  set expires_(object) {
+  set expiry_(object) {
     if (object) {
-      this.expires = convertObjectToIsoDate(object)
+      this.expiry = convertObjectToIsoDate(object)
     }
   }
 
@@ -75,7 +75,7 @@ export class Batch {
    * @returns {string} - Name
    */
   get name() {
-    return `${this.formatted.id} (${this.formatted.expires})`
+    return `${this.formatted.id} (${this.formatted.expiry})`
   }
 
   /**
@@ -94,10 +94,10 @@ export class Batch {
    */
   get formatted() {
     const created = formatDate(this.created, { dateStyle: 'long' })
-    const expires = formatDate(this.expires, { dateStyle: 'long' })
+    const expiry = formatDate(this.expiry, { dateStyle: 'long' })
     const id = formatMonospace(this.id)
 
-    return { created, expires, id }
+    return { created, expiry, id }
   }
 
   /**

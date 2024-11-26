@@ -37,10 +37,10 @@
             }
           },
           {
-            header: __("batch.expires.label"),
-            html: batch.formatted.expires or "Not provided",
+            header: __("batch.expiry.label"),
+            html: batch.formatted.expiry or "Not provided",
             attributes: {
-              "data-sort": batch.expires
+              "data-sort": batch.expiry
             }
           },
           {
@@ -65,7 +65,7 @@
         head: [
           { text: __("batch.id.label") },
           { text: __("batch.created.label") },
-          { text: __("batch.expires.label") },
+          { text: __("batch.expiry.label") },
           { text: __("actions.label") }
         ],
         rows: batchRows
