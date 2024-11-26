@@ -45,7 +45,8 @@ export const batchController = {
 
     const updatedBatch = new Batch({
       ...batch,
-      ...request.body.batch
+      ...request.body.batch,
+      updated: new Date().toISOString()
     })
 
     // Update session data
