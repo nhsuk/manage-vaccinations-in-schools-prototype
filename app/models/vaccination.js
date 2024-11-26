@@ -282,17 +282,23 @@ export class Vaccination {
   get formatted() {
     return {
       created: formatDate(this.created, {
-        dateStyle: 'long',
-        timeStyle: 'short',
-        hourCycle: 'h12'
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
       }),
       created_date: formatDate(this.created, {
         dateStyle: 'long'
       }),
       updated: formatDate(this.updated, {
-        dateStyle: 'long',
-        timeStyle: 'short',
-        hourCycle: 'h12'
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
       }),
       batch_id: formatMonospace(this.batch_id),
       batch_expiry: this.batch_expiry

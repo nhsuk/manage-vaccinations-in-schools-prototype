@@ -43,6 +43,14 @@ export class Event {
     return {
       date: formatDate(this.date, {
         dateStyle: 'long'
+      }),
+      datetime: formatDate(this.date, {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
       })
     }
   }

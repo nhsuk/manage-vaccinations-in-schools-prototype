@@ -99,9 +99,12 @@ export class Import {
   get formatted() {
     return {
       created: formatDate(this.created, {
-        dateStyle: 'long',
-        timeStyle: 'short',
-        hourCycle: 'h12'
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
       })
     }
   }

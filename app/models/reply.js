@@ -193,9 +193,12 @@ export class Reply {
 
     return {
       created: formatDate(this.created, {
-        dateStyle: 'long',
-        timeStyle: 'short',
-        hourCycle: 'h12'
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
       }),
       decision: decision(),
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),

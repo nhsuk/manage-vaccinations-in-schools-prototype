@@ -6,9 +6,12 @@
   {%- endif %}
   <p class="nhsuk-body-s nhsuk-u-margin-0 nhsuk-u-secondary-text-color">
     {{ item.date | date({
-      dateStyle: 'long',
-      timeStyle: 'short',
-      hourCycle: 'h12'
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true
     }) }}
     {% if item.user_uid %}&middot;
       {{ link(users[item.user_uid].uri, users[item.user_uid].fullName) | safe }}
