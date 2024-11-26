@@ -1,6 +1,6 @@
 import process from 'node:process'
 
-import { formatISO, getDayOfYear, isAfter, isBefore, isEqual } from 'date-fns'
+import { getDayOfYear, isAfter, isBefore, isEqual } from 'date-fns'
 
 const ALLOWED_VALUES_FOR_MONTHS = [
   ['1', '01', 'jan', 'january'],
@@ -37,7 +37,7 @@ function parseMonth(input) {
  *
  * @param {object} object - Object containing date values
  * @param {string} [namePrefix] - `namePrefix` used for date values
- * @returns {string|undefined} ISO 8601 date string
+ * @returns {Date|undefined} ISO 8601 date string
  */
 export function convertObjectToIsoDate(object, namePrefix) {
   let day, month, year, hour, minute
@@ -58,11 +58,11 @@ export function convertObjectToIsoDate(object, namePrefix) {
 
   try {
     if (!day) {
-      return formatISO(new Date(year, month))
+      return new Date(year, month)
     }
     const ms = new Date().getMilliseconds()
 
-    return formatISO(new Date(year, month, day, hour, minute, ms))
+    return new Date(year, month, day, hour, minute, ms)
   } catch (error) {
     console.error(error.message.split(':')[0])
   }
@@ -71,21 +71,21 @@ export function convertObjectToIsoDate(object, namePrefix) {
 /**
  * Convert ISO 8601 date to`items` object
  *
- * @param {string} isoDate - ISO 8601 date
- * @returns {object|undefined} `items` for dateInput component
+ * @param {Date|string} date - ISO 8601 date
+ * @returns {object|string} `items` for dateInput component
  */
-export function convertIsoDateToObject(isoDate) {
-  if (!isoDate) return
+export function convertIsoDateToObject(date) {
+  if (typeof date === 'string') return ''
 
-  const dateObj = new Date(isoDate)
+  if (!date || isNaN(date.valueOf())) return ''
 
   return {
-    year: String(dateObj.getFullYear()),
-    month: String(dateObj.getMonth() + 1),
-    day: String(dateObj.getDate()),
-    hour: String(dateObj.getHours()),
-    minute: String(dateObj.getMinutes()).padStart(2, '0'),
-    seconds: String(dateObj.getSeconds()).padStart(2, '0')
+    year: String(date.getFullYear()),
+    month: String(date.getMonth() + 1),
+    day: String(date.getDate()),
+    hour: String(date.getHours()),
+    minute: String(date.getMinutes()).padStart(2, '0'),
+    seconds: String(date.getSeconds()).padStart(2, '0')
   }
 }
 
@@ -135,14 +135,12 @@ export function isBetweenDates(isoDate, isoStartDate, isoEndDate) {
 /**
  * Format a data
  *
- * @param {Date|string} date - Date string
+ * @param {Date} date - Date string
  * @param {object} [options] - DateTimeFormat options
  * @returns {string|undefined} Formatted date
  */
 export function formatDate(date, options) {
-  if (!date) return
-
-  date = new Date(date)
+  if (!date || isNaN(date.valueOf())) return
 
   return new Intl.DateTimeFormat('en-GB', options).format(date)
 }
@@ -150,11 +148,11 @@ export function formatDate(date, options) {
 /**
  * Get age from date
  *
- * @param {string} isoDate - ISO 8601 date
+ * @param {Date} date - Date
  * @returns {number} Age
  */
-export function getAge(isoDate) {
-  const date = new Date(isoDate)
+export function getAge(date) {
+  if (!date || isNaN(date.valueOf())) return 0
 
   return Math.floor((getToday().valueOf() - date.getTime()) / 3.15576e10)
 }
@@ -212,11 +210,11 @@ export function getToday(secondsToAdd) {
 /**
  * Get school year group
  *
- * @param {string} isoDate - Date string
+ * @param {Date} date - Date
  * @returns {number} School year group
  */
-export function getYearGroup(isoDate) {
-  const date = new Date(isoDate)
+export function getYearGroup(date) {
+  if (!date || isNaN(date.valueOf())) return 0
 
   const today = getToday()
   const currentYear = today.getFullYear()

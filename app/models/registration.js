@@ -10,14 +10,14 @@ export class RegistrationOutcome {
 
 /**
  * @class Registration
- * @property {string} created - Created date
+ * @property {Date} created - Created date
  * @property {string} [created_user_uid] - User who registered patient
  * @property {string} [name] - Event name
  * @property {boolean} [registered] - Registration status
  */
 export class Registration {
   constructor(options) {
-    this.created = options?.created || getToday().toISOString()
+    this.created = options?.created ? new Date(options.created) : getToday()
     this.created_user_uid = options?.created_user_uid
     this.name = options?.name
     this.registered = stringToBoolean(options?.registered)

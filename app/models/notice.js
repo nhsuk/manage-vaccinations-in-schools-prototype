@@ -12,7 +12,7 @@ export class NoticeType {
 /**
  * @class Notice
  * @property {string} uuid - UUID
- * @property {string} date - Creation date
+ * @property {Date} date - Creation date
  * @property {NoticeType} type - Notice type
  * @property {string} name - Name
  * @property {string} [note] - Note
@@ -21,7 +21,7 @@ export class NoticeType {
 export class Notice {
   constructor(options) {
     this.uuid = options.uuid || faker.string.uuid()
-    this.created = options.created || getToday().toISOString()
+    this.created = options?.created ? new Date(options.created) : getToday()
     this.type = options.type
     this.patient_uuid = options.patient_uuid
   }

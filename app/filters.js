@@ -25,7 +25,7 @@ export default (env) => {
    * @returns {string} Formatted date, for example Sunday, 7 December 2021
    */
   filters.date = (string, options) => {
-    return formatDate(string, options)
+    return formatDate(new Date(string), options)
   }
 
   /**

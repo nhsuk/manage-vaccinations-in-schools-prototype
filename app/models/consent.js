@@ -11,7 +11,7 @@ import { ReplyDecision, ReplyMethod, ReplyRefusal } from './reply.js'
 /**
  * @class Consent
  * @property {string} uuid - UUID
- * @property {string} created - Created date
+ * @property {Date} created - Created date
  * @property {import('./child.js').Child} child - Child
  * @property {import('./parent.js').Parent} parent - Parent or guardian
  * @property {ReplyDecision} decision - Consent decision
@@ -27,7 +27,7 @@ import { ReplyDecision, ReplyMethod, ReplyRefusal } from './reply.js'
 export class Consent {
   constructor(options) {
     this.uuid = options?.uuid || faker.string.uuid()
-    this.created = options?.created || getToday().toISOString()
+    this.created = options?.created ? new Date(options.created) : getToday()
     this.child = options?.child && new Child(options.child)
     this.parent = options?.parent && new Parent(options.parent)
     this.decision = options?.decision || ''

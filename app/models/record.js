@@ -45,9 +45,9 @@ export class GPRegistered {
  * @property {string} nhsn - NHS number
  * @property {string} firstName - First/given name
  * @property {string} lastName - Last/family name
- * @property {string} dob - Date of birth
+ * @property {Date} dob - Date of birth
  * @property {object} [dob_] - Date of birth (from `dateInput`)
- * @property {string} dod - Date of death
+ * @property {Date} dod - Date of death
  * @property {Gender} gender - Gender
  * @property {object} address - Address
  * @property {GPRegistered} gpRegistered - Registered with a GP
@@ -67,9 +67,9 @@ export class Record {
     this.nhsn = options?.nhsn || this.nhsNumber
     this.firstName = options.firstName
     this.lastName = options.lastName
-    this.dob = options.dob
+    this.dob = new Date(options.dob)
     this.dob_ = options?.dob_
-    this.dod = options?.dod
+    this.dod = options?.dod ? new Date(options.dod) : undefined
     this.gender = options.gender
     this.address = !sensitive ? options.address : undefined
     this.gpRegistered = options.gpRegistered
@@ -141,7 +141,7 @@ export class Record {
     let registrationGroup
     const hasRegistrationGroup = String(urn).startsWith('13')
     if (hasRegistrationGroup) {
-      const yearGroup = getYearGroup(dob.toISOString())
+      const yearGroup = getYearGroup(dob)
       const registration = faker.string.alpha({
         length: 2,
         casing: 'upper',

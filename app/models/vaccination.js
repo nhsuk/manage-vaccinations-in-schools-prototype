@@ -62,10 +62,10 @@ export class VaccinationProtocol {
 /**
  * @class Vaccination
  * @property {string} uuid - UUID
- * @property {string} created - Vaccination date
+ * @property {Date} created - Vaccination date
  * @property {object} [created_] - Vaccination date (from `dateInput`)
  * @property {string} [created_user_uid] - User who performed vaccination
- * @property {string} [updated] - Vaccination updated date
+ * @property {Date} [updated] - Vaccination updated date
  * @property {string} [location] - Location
  * @property {string} [urn] - School URN
  * @property {VaccinationOutcome} [outcome] - Outcome
@@ -79,17 +79,17 @@ export class VaccinationProtocol {
  * @property {string} [session_id] - Session ID
  * @property {string} [patient_uuid] - Patient UUID
  * @property {string} [batch_id] - Batch ID
- * @property {string} [batch_expiry] - Batch expiry date
+ * @property {Date} [batch_expiry] - Batch expiry date
  * @property {object} [batch_expiry_] - Batch expiry date (from `dateInput`)
  * @property {string} [vaccine_gtin] - Vaccine GTIN
  */
 export class Vaccination {
   constructor(options) {
     this.uuid = options?.uuid || faker.string.uuid()
-    this.created = options?.created || getToday().toISOString()
+    this.created = options?.created ? new Date(options.created) : getToday()
     this.created_ = options?.created_
     this.created_user_uid = options?.created_user_uid
-    this.updated = options?.updated
+    this.updated = options?.updated ? new Date(options.updated) : undefined
     this.location = options?.location
     this.urn = options?.urn
     this.outcome = options?.outcome
@@ -107,7 +107,11 @@ export class Vaccination {
     this.session_id = options?.session_id
     this.patient_uuid = options?.patient_uuid
     this.batch_id = this.given ? options?.batch_id || '' : undefined
-    this.batch_expiry = this.given ? options?.batch_expiry || '' : undefined
+    this.batch_expiry = this.given
+      ? options?.batch_expiry
+        ? new Date(options.batch_expiry)
+        : undefined
+      : undefined
     this.vaccine_gtin = options?.vaccine_gtin
   }
 
@@ -291,9 +295,9 @@ export class Vaccination {
         hourCycle: 'h12'
       }),
       batch_id: formatMonospace(this.batch_id),
-      batch_expiry: formatDate(this.batch_expiry, {
-        dateStyle: 'long'
-      }),
+      batch_expiry: this.batch_expiry
+        ? formatDate(this.batch_expiry, { dateStyle: 'long' })
+        : '',
       dose: formatMillilitres(this.dose),
       vaccine_gtin: this.vaccine?.brandWithType,
       note: formatMarkdown(this.note)

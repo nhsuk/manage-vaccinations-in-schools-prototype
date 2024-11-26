@@ -20,7 +20,7 @@ export class GillickCompetent {
  */
 export class Gillick {
   constructor(options) {
-    this.created = options?.created || getToday().toISOString()
+    this.created = options?.created ? new Date(options.created) : getToday()
     this.created_user_uid = options?.created_user_uid
     this.q1 = stringToBoolean(options?.q1)
     this.q2 = stringToBoolean(options?.q2)

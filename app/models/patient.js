@@ -366,7 +366,7 @@ export class Patient {
     this.log = {
       type: EventType.Remind,
       name: `Reminder to give consent sent to ${target.fullName}`,
-      date: getToday().toISOString(),
+      date: getToday(),
       user_uid: target.created_user_uid
     }
   }
@@ -384,7 +384,7 @@ export class Patient {
       type: EventType.Consent,
       name: `${created ? 'Completed' : 'Updated'} Gillick assessment`,
       note: gillick.note,
-      date: created ? gillick.created : getToday().toISOString(),
+      date: created ? gillick.created : getToday(),
       user_uid: gillick.created_user_uid
     }
   }
@@ -417,7 +417,7 @@ export class Patient {
     this.log = {
       type: EventType.Consent,
       name,
-      date: created ? reply.created : getToday().toISOString(),
+      date: created ? reply.created : getToday(),
       user_uid: reply.created_user_uid
     }
   }
@@ -437,7 +437,7 @@ export class Patient {
       type: EventType.Screen,
       name: `Triaged decision: ${outcome}`,
       note: triage.note,
-      date: getToday().toISOString(),
+      date: getToday(),
       user_uid: triage.created_user_uid,
       info_: triage
     }
@@ -453,7 +453,7 @@ export class Patient {
     this.log = {
       type: EventType.Capture,
       name: registration.name,
-      date: getToday().toISOString(),
+      date: getToday(),
       user_uid: registration.created_user_uid
     }
   }
@@ -468,7 +468,7 @@ export class Patient {
       type: EventType.Screen,
       name: 'Completed pre-screening checks',
       note: interview.note,
-      date: getToday().toISOString(),
+      date: getToday(),
       user_uid: interview.user_uid
     }
   }
@@ -552,7 +552,7 @@ export class Patient {
     this.log = {
       type: EventType.Invite,
       name,
-      date: movement.created || getToday().toISOString(),
+      date: movement.created || getToday(),
       user_uid: movement.created_user_uid
     }
   }

@@ -109,7 +109,7 @@ export const vaccinationController = {
 
     // Check if new vaccination record or updating an existing one
     if (Object.keys(data.vaccinations).includes(updatedVaccination.uuid)) {
-      updatedVaccination.updated = getToday().toISOString()
+      updatedVaccination.updated = getToday()
     }
 
     // Add vaccination

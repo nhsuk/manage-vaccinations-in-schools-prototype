@@ -16,7 +16,7 @@ export class EventType {
 /**
  * @class Audit event
  * @property {string} uuid - UUID
- * @property {string} date - Creation date
+ * @property {Date} date - Creation date
  * @property {EventType} type - Activity type
  * @property {string} name - Name
  * @property {string} [note] - Note
@@ -26,7 +26,7 @@ export class EventType {
 export class Event {
   constructor(options) {
     this.uuid = options.uuid || faker.string.uuid()
-    this.date = options.date || getToday().toISOString()
+    this.date = new Date(options.date) || getToday()
     this.type = options.type
     this.name = options.name
     this.note = options.note

@@ -19,7 +19,7 @@ export class DownloadFormat {
 /**
  * @class Vaccination report download
  * @property {string} id - Download ID
- * @property {string} created - Created date
+ * @property {Date} created - Created date
  * @property {string} [created_user_uid] - User who created download
  * @property {string} [programme_pid] - Programme ID
  * @property {Array<string>} [vaccinations] - Vaccination UUIDs
@@ -34,7 +34,7 @@ export class DownloadFormat {
 export class Download {
   constructor(options) {
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
-    this.created = options?.created || getToday().toISOString()
+    this.created = options?.created ? new Date(options.created) : getToday()
     this.created_user_uid = options?.created_user_uid
     this.programme_pid = options?.programme_pid
     this.vaccinations = options?.vaccinations || []

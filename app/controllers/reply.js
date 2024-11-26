@@ -405,7 +405,7 @@ export const replyController = {
     patient.respond = new Reply({
       ...reply,
       uuid: false,
-      created: getToday().toISOString(),
+      created: getToday(),
       decision: ReplyDecision.Refused,
       refusalReason,
       ...(refusalReason === ReplyRefusal.Other && { refusalReasonOther }),

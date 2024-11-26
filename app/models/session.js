@@ -47,13 +47,13 @@ export class SessionType {
 /**
  * @class Session
  * @property {string} id - ID
- * @property {string} created - Created date
+ * @property {Date} created - Created date
  * @property {string} [created_user_uid] - User who created session
  * @property {string} [clinic_id] - Clinic ID
  * @property {string} [school_urn] - School URN
  * @property {Array<string>} [dates] - Dates
  * @property {Array<object>} [dates_] - Dates (from `dateInput`s)
- * @property {string} [open] - Date consent window opens
+ * @property {Date} [open] - Date consent window opens
  * @property {object} [open_] - Date consent window opens (from `dateInput`)
  * @property {boolean} [closed] - Session closed
  * @property {number} [reminderWeeks] - Weeks before session to send reminders
@@ -62,13 +62,13 @@ export class SessionType {
 export class Session {
   constructor(options) {
     this.id = options?.id || faker.helpers.replaceSymbols('###')
-    this.created = options?.created || getToday().toISOString()
+    this.created = options?.created ? new Date(options.created) : getToday()
     this.created_user_uid = options?.created_user_uid
     this.clinic_id = options?.clinic_id
     this.school_urn = options?.school_urn
     this.dates = options?.dates || []
     this.open = options?.open
-      ? options.open
+      ? new Date(options.open)
       : this.firstDate
         ? removeDays(this.firstDate, OrganisationDefaults.SessionOpenWeeks * 7)
         : undefined
@@ -150,10 +150,8 @@ export class Session {
       }
     }
 
-    const created = new Date(removeDays(getToday(), 70))
-
     return new Session({
-      created,
+      created: removeDays(getToday(), 70),
       created_user_uid: user.uid,
       school_urn: urn,
       dates,
@@ -206,7 +204,7 @@ export class Session {
   /**
    * Get first session date
    *
-   * @returns {string} - First session date
+   * @returns {Date} - First session date
    */
   get firstDate() {
     return this.dates[0]
@@ -215,7 +213,7 @@ export class Session {
   /**
    * Get last session date
    *
-   * @returns {string} - Last session date
+   * @returns {Date} - Last session date
    */
   get lastDate() {
     return this.dates.at(-1)
@@ -224,7 +222,7 @@ export class Session {
   /**
    * Get remaining session dates
    *
-   * @returns {Array<string>} - Remaining session dates
+   * @returns {Array<Date>} - Remaining session dates
    */
   get remainingDates() {
     const remainingDates = [...this.dates]
@@ -236,7 +234,7 @@ export class Session {
   /**
    * Get next session date
    *
-   * @returns {string} - Next session dates
+   * @returns {Date} - Next session dates
    */
   get nextDate() {
     return this.remainingDates[0]
