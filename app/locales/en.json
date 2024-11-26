@@ -2022,7 +2022,7 @@
     "manufacturer": {
       "label": "Manufacturer"
     },
-    "name": {
+    "type": {
       "label": "Vaccine"
     },
     "method": {
