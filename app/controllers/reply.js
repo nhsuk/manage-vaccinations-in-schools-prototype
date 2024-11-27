@@ -134,7 +134,7 @@ export const replyController = {
     const { data } = request.session
 
     const patient = Object.values(data.patients).find(
-      (patient) => patient.record.nhsn === nhsn
+      (patient) => patient.record_nhsn === nhsn
     )
 
     reply = new Reply({

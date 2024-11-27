@@ -250,6 +250,7 @@ export const sessionController = {
 
   readClose(request, response, next) {
     const { patients, session } = request.app.locals
+    const { data } = request.session
 
     response.locals.paths = {
       back: session.uri,
@@ -257,14 +258,14 @@ export const sessionController = {
     }
 
     response.locals.couldNotVaccinate = patients
-      .map((patient) => new Patient(patient))
+      .map((patient) => new Patient(patient, data))
       .filter(({ consent }) => consent.value !== ConsentOutcome.NoResponse)
       .filter(
         ({ outcome }) => outcome.value === PatientOutcome.CouldNotVaccinate
       )
 
     response.locals.noResponse = patients
-      .map((patient) => new Patient(patient))
+      .map((patient) => new Patient(patient, data))
       .filter(({ consent }) => consent.value === ConsentOutcome.NoResponse)
 
     next()

@@ -357,11 +357,11 @@ export class Session {
    * @returns {Array<Patient>} - Patients
    */
   get patients() {
-    if (this.context.patients && this.id) {
+    if (this.context && this.id) {
       return Object.values(this.context.patients)
         .filter(({ session_id }) => session_id === this.id)
         .filter(({ record }) => !record?.pendingChanges?.urn)
-        .map((patient) => new Patient(patient))
+        .map((patient) => new Patient(patient, this.context))
     }
 
     console.warn('Provide context to get the patients for this session')

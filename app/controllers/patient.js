@@ -26,7 +26,7 @@ export const patientController = {
     const { data } = request.session
 
     let patients = Object.values(data.patients).map(
-      (patient) => new Patient(patient)
+      (patient) => new Patient(patient, data)
     )
 
     // Sort
@@ -90,7 +90,7 @@ export const patientController = {
     const { data } = request.session
     const { patients } = response.locals
 
-    let patient = patients.find((patient) => patient.record.nhsn === nhsn)
+    let patient = patients.find((patient) => patient.record_nhsn === nhsn)
 
     // If no patient found, use CHIS record (patient not imported yet)
     if (!patient) {
@@ -99,8 +99,6 @@ export const patientController = {
       )
       patient = { record }
     }
-
-    patient = new Patient(patient)
 
     const cohorts = Object.values(patient.cohorts).map(
       (uid) => new Cohort(data.cohorts[uid])
@@ -220,10 +218,9 @@ export const patientController = {
     )
 
     const updatedPatient = new Patient(
-      Object.assign(patient, { record: updatedRecord })
+      Object.assign(patient, { record: updatedRecord }),
+      data
     )
-
-    data.patients[updatedPatient.uuid] = updatedPatient
 
     // Clean up
     delete data?.wizard?.record

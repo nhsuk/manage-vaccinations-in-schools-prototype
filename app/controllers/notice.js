@@ -8,7 +8,8 @@ export const noticeController = {
     const notices = Object.values(data.notices).map((notice) => {
       notice = new Notice(notice)
 
-      notice.patient = new Patient(data.patients[notice.patient_uuid])
+      const patient = data.patients[notice.patient_uuid]
+      notice.patient = new Patient(patient, data)
 
       notice.name = notice.patient.notices[0].name
 

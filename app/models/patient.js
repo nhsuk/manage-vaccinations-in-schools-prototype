@@ -65,26 +65,30 @@ export class PatientMovement {
 
 /**
  * @class Patient in-session record
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} uuid - UUID
  * @property {Array<import('./event.js').Event>} events - Logged events
  * @property {object} replies - Consent replies
- * @property {import('./record.js').Record} record - CHIS record
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {object} [vaccinations] - Vaccination UUIDs with given boolean
  * @property {Array<string>} [cohorts] - Cohort UIDs
+ * @property {string} record_nhsn - Child’s NHS number
  * @property {string} [session_id] - Session ID
  */
 export class Patient {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
     this.events = options?.events || []
     this.replies = options?.replies || {}
-    this.record = options?.record && new Record(options.record)
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
     this.cohorts = options?.cohorts || []
+    this.record_nhsn = options?.record_nhsn
     this.session_id = !this.record?.pendingChanges?.urn
       ? options.session_id
       : undefined
@@ -99,9 +103,30 @@ export class Patient {
    */
   static generate(record) {
     return new Patient({
-      nhsn: record.nhsn,
-      record
+      record_nhsn: record.nhsn
     })
+  }
+
+  /**
+   * Get record
+   *
+   * @returns {Record|undefined} - Record
+   */
+  get record() {
+    if (this.context && this.record_nhsn) {
+      const record = this.context.records[this.record_nhsn]
+      if (record) {
+        return new Record(record)
+      }
+    }
+  }
+
+  set record(record) {
+    if (this.context) {
+      this.context.records[this.record_nhsn] = record
+    } else {
+      console.warn('Provide context to set the record for this patient')
+    }
   }
 
   /**

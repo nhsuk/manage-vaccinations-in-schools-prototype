@@ -27,8 +27,8 @@ export const programmeController = {
       }
 
       programme.patients = Object.values(data.patients)
-        .filter((patient) => records.includes(patient.record.nhsn))
-        .map((patient) => new Patient(patient))
+        .filter((patient) => records.includes(patient.record_nhsn))
+        .map((patient) => new Patient(patient, data))
 
       // Sessions in programme
       programme.sessions = Object.values(data.sessions)
@@ -49,9 +49,9 @@ export const programmeController = {
           vaccination = new Vaccination(vaccination)
 
           // Add record to vaccination
-          vaccination.record = new Record(
-            data.patients[vaccination.patient_uuid].record
-          )
+          const patient = data.patients[vaccination.patient_uuid]
+          const { record } = new Patient(patient, data)
+          vaccination.record = record
 
           return vaccination
         })

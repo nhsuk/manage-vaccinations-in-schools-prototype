@@ -241,7 +241,7 @@ export const consentController = {
 
     const consent = new Consent(data.consents[uuid])
     let patients = Object.values(data.patients).map(
-      (patient) => new Patient(patient)
+      (patient) => new Patient(patient, data)
     )
 
     // Sort
@@ -266,7 +266,7 @@ export const consentController = {
 
     response.locals.consent = new Consent(data.consents[uuid])
     response.locals.patient = Object.values(data.patients)
-      .map((patient) => new Patient(patient))
+      .map((patient) => new Patient(patient, data))
       .find((patient) => patient.nhsn === nhsn)
 
     response.render('consent/link')
@@ -307,7 +307,7 @@ export const consentController = {
     const { __ } = response.locals
 
     let newPatient = Object.values(data.patients).find(
-      (patient) => patient.record.nhsn === consent.child.nhsn
+      (patient) => patient.record_nhsn === consent.child.nhsn
     )
 
     newPatient = new Patient(newPatient)

@@ -1,4 +1,4 @@
-import { PatientOutcome } from '../models/patient.js'
+import { Patient, PatientOutcome } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
 import { Registration } from '../models/registration.js'
 import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
@@ -26,6 +26,8 @@ export const registrationController = {
     const { data } = request.session
     const { __, paths, patient, session } = response.locals
 
+    const updatedPatient = new Patient(patient)
+
     // Convert boolean to string
     let registered
     let key
@@ -45,14 +47,14 @@ export const registrationController = {
 
     if (registered === true) {
       // Register attendance
-      patient.register = new Registration({
+      updatedPatient.register = new Registration({
         name: __(`registration.${key}.name`, { location: session.location }),
         registered,
         ...(data.token && { created_user_uid: data.token?.uid })
       })
     } else if (
       registered === false &&
-      patient.outcome?.value !== PatientOutcome.CouldNotVaccinate
+      updatedPatient.outcome?.value !== PatientOutcome.CouldNotVaccinate
     ) {
       // Capture vaccination outcome as absent from session if safe to vaccinate
       const programme = new Programme(data.programmes[session.programmes[0]])
@@ -71,17 +73,19 @@ export const registrationController = {
       data.vaccinations[absentVaccination.uuid] = absentVaccination
 
       // Add vaccination outcome to patient
-      patient.capture = absentVaccination
+      updatedPatient.capture = absentVaccination
     } else {
-      delete patient.registered
+      delete updatedPatient.registered
     }
 
     // Update patient record
-    data.patients[patient.uuid] = patient
+    data.patients[patient.uuid] = updatedPatient
 
     request.flash(
       'message',
-      __(`registration.update.success.${patient.capture.key}`, { patient })
+      __(`registration.update.success.${updatedPatient.capture.key}`, {
+        patient
+      })
     )
 
     if (tab) {

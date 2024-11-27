@@ -16,16 +16,17 @@ import { getToday } from '../utils/date.js'
 
 export const vaccinationController = {
   read(request, response, next) {
-    const { patient } = request.app.locals
+    let { patient } = request.app.locals
     const { uuid } = request.params
     const { data } = request.session
 
     const vaccination = new Vaccination(data.vaccinations[uuid])
     const patient_uuid = vaccination?.patient_uuid || patient?.uuid
-    const record = new Record(data.patients[patient_uuid].record)
+    patient = new Patient(data.patients[patient_uuid], data)
 
     request.app.locals.vaccination = vaccination
-    request.app.locals.record = record
+    request.app.locals.patient = patient
+    request.app.locals.record = patient.record
 
     next()
   },
@@ -59,7 +60,7 @@ export const vaccinationController = {
     const { data } = request.session
     const { patient_uuid, session_id } = request.query
 
-    const patient = new Patient(data.patients[patient_uuid])
+    const patient = new Patient(data.patients[patient_uuid], data)
     const startPath =
       data.preScreen.continue === 'true' ? 'administer' : 'decline'
 
@@ -89,12 +90,10 @@ export const vaccinationController = {
   },
 
   update(request, response) {
-    const { back, programme, vaccination } = request.app.locals
+    const { back, patient, programme, vaccination } = request.app.locals
     const { form } = request.params
     const { data } = request.session
     const { __ } = response.locals
-
-    const patient = new Patient(data.patients[vaccination.patient_uuid])
 
     // Capture vaccination
     const updatedVaccination = new Vaccination({
@@ -112,13 +111,14 @@ export const vaccinationController = {
       updatedVaccination.updated = getToday()
     }
 
-    // Add vaccination
+    // Update session data: vaccination
     data.vaccinations[updatedVaccination.uuid] = updatedVaccination
 
-    // Add vaccination outcome to patient
+    // Update session data: patient
     patient.capture = updatedVaccination
+    data.patients[patient.uuid] = patient
 
-    // Add vaccination directly to CHIS record
+    // Update session data: record
     data.records[patient.nhsn].vaccinations.push(updatedVaccination.uuid)
 
     // Clean up
