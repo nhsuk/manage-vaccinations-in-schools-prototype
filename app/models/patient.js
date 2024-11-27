@@ -85,10 +85,7 @@ export class Patient {
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
     this.cohorts = options?.cohorts || []
-    this.session_id = !this.record.pendingChanges?.urn
-      ? options.session_id
-      : undefined
-    this.pendingSession_id = this.record.pendingChanges?.urn
+    this.session_id = !this.record?.pendingChanges?.urn
       ? options.session_id
       : undefined
   }

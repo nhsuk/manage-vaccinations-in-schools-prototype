@@ -1,7 +1,6 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { Batch } from '../models/batch.js'
-import { Move, MoveSource } from '../models/move.js'
 import { ConsentOutcome, Patient, PatientOutcome } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
 import { programmeTypes } from '../models/programme.js'
@@ -16,41 +15,6 @@ const getPatientsForKey = (patients, activity, tab) => {
 
     return patient[activity]?.key === tab
   })
-}
-
-const getMoves = (data, session, moved) => {
-  if (moved === 'In') {
-    return Object.values(data.patients)
-      .filter(({ record }) => record.pendingChanges?.urn === session.school_urn)
-      .map(
-        ({ record }) =>
-          new Move(
-            {
-              from: session.school_urn,
-              to: record.pendingChanges?.urn,
-              source: MoveSource.School,
-              record_nhsn: record.nhsn
-            },
-            data
-          )
-      )
-  } else if (moved === 'Out') {
-    return Object.values(data.patients)
-      .filter(({ session_id }) => session_id === session.id)
-      .filter(({ record }) => record.pendingChanges?.urn)
-      .map(
-        ({ record }) =>
-          new Move(
-            {
-              from: record.pendingChanges?.urn,
-              to: session.school_urn,
-              source: MoveSource.School,
-              record_nhsn: record.nhsn
-            },
-            data
-          )
-      )
-  }
 }
 
 export const sessionController = {
@@ -136,25 +100,6 @@ export const sessionController = {
     })
   },
 
-  moves(request, response) {
-    const { session } = request.app.locals
-    const { data } = request.session
-    const tab = request.query.tab || 'In'
-    const { __ } = response.locals
-
-    const tabs = ['In', 'Out']
-
-    response.locals.moves = getMoves(data, session, tab)
-    response.locals.navigationItems = tabs.map((key) => ({
-      text: __(`move.${key}.label`),
-      count: getMoves(data, session, key).length,
-      href: `?tab=${key}`,
-      current: key === tab
-    }))
-
-    response.render('session/moves', { tab })
-  },
-
   read(request, response, next) {
     const { id } = request.params
     const { data } = request.session
@@ -170,11 +115,6 @@ export const sessionController = {
     request.app.locals.programme = new Programme(
       data.programmes[session.programmes[0]]
     )
-
-    if (session.type === SessionType.School) {
-      request.app.locals.movedOut = getMoves(data, session, 'Out')
-      request.app.locals.movedIn = getMoves(data, session, 'In')
-    }
 
     // Get default batches selected for vaccines in this session
     const defaultBatches = []

@@ -19,8 +19,6 @@ router.get(
   '/:id/:activity(consent|triage|capture|outcome)',
   sessionController.activity
 )
-router.get('/:id/moves', sessionController.moves)
-
 router.all('/:id/offline', sessionController.readOffline)
 router.get('/:id/offline', sessionController.showOffline)
 router.post('/:id/offline', sessionController.updateOffline)

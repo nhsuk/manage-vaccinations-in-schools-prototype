@@ -890,20 +890,6 @@
       "other": "[0] No school moves|%s school moves"
     },
     "results": "Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> school moves",
-    "In": {
-      "label": "Moved in",
-      "count": {
-        "one": "%s child joined this school",
-        "other": "[0] No children joined this school|%s children joined this school"
-      }
-    },
-    "Out": {
-      "label": "Moved out",
-      "count": {
-        "one": "%s child left this school",
-        "other": "[0] No children left this school|%s children left this school"
-      }
-    },
     "created": {
       "label": "Updated"
     },
@@ -919,16 +905,9 @@
     "movement": {
       "label": "Move"
     },
-    "confirm": {
-      "true": "Confirm move",
-      "false": "Ignore move"
-    },
     "success": {
       "ignore": "{{move.record.fullName}}’s school move ignored",
       "update": "{{move.record.fullName}}’s record updated with new school"
-    },
-    "false": {
-      "count": "move.false.count"
     }
   },
   "notice": {
@@ -1700,9 +1679,6 @@
     },
     "details": {
       "label": "Details"
-    },
-    "moves": {
-      "title": "Review children who have changed schools"
     },
     "open": {
       "title": "When should parents get a request to give consent?",

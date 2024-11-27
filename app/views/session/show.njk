@@ -53,27 +53,6 @@
             }) }}
           </li>
         {% endif %}
-        {% if
-          session.type == SessionType.School and
-          session.status != SessionStatus.Completed and
-          session.status != SessionStatus.Closed
-        %}
-          {% set movesCardDescriptionHtml %}
-            <p>
-              {{ __n("move.In.count", movedIn | length) }}<br>
-              {{ __n("move.Out.count", movedOut | length) }}
-            </p>
-          {% endset %}
-          <li class="nhsuk-grid-column-full nhsuk-card-group__item">
-            {{ card({
-              clickable: true,
-              heading: __("session.moves.title"),
-              headingClasses: "nhsuk-heading-m",
-              href: session.uri + "/moves",
-              descriptionHtml: movesCardDescriptionHtml
-            }) }}
-          </li>
-        {% endif %}
         {% if session.isActive %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {% set captureCardDescriptionHtml %}
