@@ -33,7 +33,7 @@ export const sessionController = {
       session = new Session(session)
       session.patients = Object.values(data.patients)
         .filter(({ session_id }) => session_id === session.id)
-        .filter(({ record }) => !record.pendingChanges?.urn)
+        .filter(({ record }) => !record?.pendingChanges?.urn)
         .map((patient) => new Patient(patient))
 
       return session
@@ -107,7 +107,7 @@ export const sessionController = {
     const session = new Session(data.sessions[id])
     const patients = Object.values(data.patients)
       .filter(({ session_id }) => session_id === id)
-      .filter(({ record }) => !record.pendingChanges?.urn)
+      .filter(({ record }) => !record?.pendingChanges?.urn)
       .map((patient) => new Patient(patient))
 
     request.app.locals.session = session

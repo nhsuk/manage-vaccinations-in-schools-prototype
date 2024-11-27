@@ -543,8 +543,8 @@ export class Patient {
    */
   set move(movement) {
     const name = `Moved from ${this.record.formatted.urn} to ${this.record.formatted.newUrn}`
-    this.record.urn = this.record.pendingChanges.urn
-    delete this.record.pendingChanges.urn
+    this.record.urn = this.record?.pendingChanges?.urn
+    delete this.record?.pendingChanges?.urn
 
     this.log = {
       type: EventType.Invite,

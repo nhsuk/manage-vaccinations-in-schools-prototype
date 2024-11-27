@@ -175,7 +175,7 @@ export const importController = {
     response.locals.record = new Record(record)
     response.locals.duplicateRecord = new Record({
       ...record,
-      ...record.pendingChanges
+      ...record?.pendingChanges
     })
 
     next()
