@@ -1,0 +1,107 @@
+{% extends "_layouts/form.njk" %}
+
+{% set gridColumns = "full" %}
+{% set title = __("move.show.title") %}
+{% set confirmButtonText = __("move.show.confirm") %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("move.list.title"),
+      href: "/moves"
+    }]
+  }) }}
+{% endblock %}
+
+{% block form %}
+  {{ super() }}
+
+  {{ heading({
+    caption: move.record.fullName,
+    title: title
+  }) }}
+
+  <div class="nhsuk-grid-row nhsuk-card-group">
+    <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+      {{ card({
+        feature: true,
+        heading: move.source,
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: summaryList({
+          rows: summaryRows(move.record, {
+            nhsn: {},
+            fullName: {},
+            dob: {},
+            gender: {},
+            postalCode: {},
+            urn: {
+              value: move.formatted.to | highlightDifference(move.formatted.from)
+            }
+          })
+        })
+      }) }}
+    </div>
+    <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+      {{ card({
+        feature: true,
+        heading: __("record.label"),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: summaryList({
+          rows: summaryRows(move.record, {
+            nhsn: {},
+            fullName: {},
+            dob: {},
+            gender: {},
+            postalCode: {},
+            urn: {}
+          })
+        })
+      }) }}
+    </div>
+  </div>
+
+  {{ radios({
+    formGroup: {
+      classes: "nhsuk-u-width-two-thirds"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("move.show.decision.label")
+      }
+    },
+    items: [{
+      text: __("move.show.decision.update"),
+      value: "update",
+      conditional: {
+        html: radios({
+          fieldset: {
+            legend: { text: __("move.show.session.label", { firstName: move.record.firstName }) }
+          },
+          hint: {
+            text: __("move.show.session.hint", {
+              school: move.formatted.to,
+              dates: "Wednesday 6 March 2025 and Thursday 7 March 2025"
+            })
+          },
+          items: [{
+            text: __("move.show.session.clinic"),
+            value: "clinic",
+            checked: true
+          }, {
+            text: __("move.show.session.school"),
+            value: "school"
+          }],
+          decorate: "session"
+        })
+      } if move.from == "888888" or move.from == "999999"
+    }, {
+      text: __("move.show.decision.ignore"),
+      value: "ignore"
+    }],
+    decorate: "decision"
+  }) }}
+{% endblock %}

@@ -71,6 +71,11 @@ export const navigation = (request, response, next) => {
             current: current === 'consents'
           },
           {
+            url: '/moves',
+            label: __('move.list.label'),
+            current: current === 'moves'
+          },
+          {
             url: '/notices',
             label: __('notice.list.label'),
             current: current === 'notices'

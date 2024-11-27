@@ -1,0 +1,68 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("move.list.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    size: "xl",
+    title: title
+  }) }}
+
+  {% set resultRows = [] %}
+  {% for move in results.page %}
+    {% set resultRows = resultRows | push([
+      {
+        header: __("move.created.label"),
+        text: move.formatted.created
+      },
+      {
+        header: __("child.label"),
+        html: move.record.fullName
+      },
+      {
+        header: __("move.movement.label"),
+        html: move.movement
+      },
+      {
+        header: __("actions.label"),
+        html: actionList({
+          items: [{
+            text: __("actions.review"),
+            href: move.uri
+          }]
+        })
+      }
+    ]) %}
+  {% endfor %}
+
+  {% if moves.length %}
+    {{ actionTable({
+      id: "moves",
+      sort: "name",
+      heading: __n("move.count", moves.length),
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("move.created.label") },
+        { text: __("child.label") },
+        {
+          text: __("move.movement.label"),
+          attributes: { "no-sort": "no-sort" }
+        },
+        {
+          text: __("actions.label"),
+          attributes: { "no-sort": "no-sort" }
+        }
+      ],
+      rows: resultRows
+    }) }}
+  {% else %}
+    {{ __n("move.count", 0) | nhsukMarkdown }}
+  {% endif %}
+
+  {{ govukPagination(pages) }}
+
+  {{ __("move.results", { results: results }) | nhsukMarkdown }}
+{% endblock %}

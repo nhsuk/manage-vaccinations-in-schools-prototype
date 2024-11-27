@@ -26,8 +26,8 @@
 
   {% include "session/_activity-navigation.njk" %}
 
-  {% set patientRows = [] %}
-  {% for patient in patients | sort(false, false, "firstName") %}
+  {% set moveRows = [] %}
+  {% for move in moves | sort(false, false, "firstName") %}
     {% set confirmButtonHtml %}
       <form class="app-button-group app-button-group--table" action="{{ patient.uri }}/move?referrer={{session.uri}}/moves?tab={{tab}}" method="post">
         {{ button({
@@ -44,19 +44,23 @@
         }) }}
       </form>
     {% endset %}
-    {% set patientRows = patientRows | push([
+    {% set moveRows = moveRows | push([
       {
         header: __("record.fullName.label"),
-        html: patient.link.fullName
+        html: move.record.fullName
       },
       {
         header: __("move.from.label"),
-        text: patient.record.formatted.urn
+        text: move.formatted.from
       } if tab === 'In',
       {
         header: __("move.to.label"),
-        text: patient.record.formatted.newUrn
+        text: move.formatted.to
       } if tab === 'Out',
+      {
+        header: __("move.source.label"),
+        html: move.source
+      },
       {
         header: __("actions.label"),
         html: confirmButtonHtml
@@ -64,26 +68,27 @@
     ]) %}
   {% endfor %}
 
-  {% if patients.length %}
+  {% if moves.length %}
     {{ actionTable({
-      id: "patients",
+      id: "moves",
       classes: "app-patients",
       tableClasses: "app-patients__table",
       sort: "name",
-      caption: __n("move." + tab + ".count", patients.length),
+      caption: __n("move." + tab + ".count", moves.length),
       captionClasses: "nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal nhsuk-u-font-size-19",
       responsive: true,
       head: [
         { text: __("record.fullName.label") },
         { text: __("move.from.label") } if tab === 'In',
         { text: __("move.to.label") } if tab === 'Out',
+        { text: __("move.source.label") },
         { text: __("actions.label") }
       ],
-      rows: patientRows
+      rows: moveRows
     }) }}
   {% else %}
     <div class="app-patients">
-      <p class="app-patients__no-results nhsuk-caption-m">{{ __n("move." + tab + ".count", patients.length) }}</p>
+      <p class="app-patients__no-results nhsuk-caption-m">{{ __n("move." + tab + ".count", moves.length) }}</p>
     </div>
   {% endif %}
 {% endblock %}

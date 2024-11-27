@@ -137,6 +137,11 @@ export class Record {
       newUrn = faker.helpers.arrayElement(secondarySchools).urn
     }
 
+    // Add examples of children who are home-schooled or at an unknown school
+    if (faker.datatype.boolean(0.1)) {
+      urn = faker.helpers.arrayElement([888888, 999999])
+    }
+
     // Get registration group
     let registrationGroup
     const hasRegistrationGroup = String(urn).startsWith('13')

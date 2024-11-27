@@ -65,6 +65,16 @@
       {{ card({
         clickable: true,
         secondary: true,
+        heading: __("move.list.title"),
+        headingClasses: "nhsuk-heading-s",
+        href: "/moves",
+        descriptionHtml: __("move.list.description") | nhsukMarkdown
+      }) }}
+    </li>
+    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        clickable: true,
+        secondary: true,
         heading: __("notice.list.title"),
         headingClasses: "nhsuk-heading-s",
         href: "/notices",

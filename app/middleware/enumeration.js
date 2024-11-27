@@ -3,6 +3,7 @@ import { DownloadFormat } from '../models/download.js'
 import { EventType } from '../models/event.js'
 import { GillickCompetent } from '../models/gillick.js'
 import { ImportStatus, ImportType } from '../models/import.js'
+import { MoveSource } from '../models/move.js'
 import { NoticeType } from '../models/notice.js'
 import { ContactPreference, ParentalRelationship } from '../models/parent.js'
 import {
@@ -46,6 +47,7 @@ export const enumeration = (request, response, next) => {
   response.locals.HealthQuestion = HealthQuestion
   response.locals.ImportStatus = ImportStatus
   response.locals.ImportType = ImportType
+  response.locals.MoveSource = MoveSource
   response.locals.NoticeType = NoticeType
   response.locals.ParentalRelationship = ParentalRelationship
   response.locals.PatientOutcome = PatientOutcome
