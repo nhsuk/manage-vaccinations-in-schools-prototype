@@ -18,7 +18,7 @@ Node.js v22
    `npm install`
 
 3. Start the application:\
-   `npm run dev`
+   `npm start`
 
 ## Creating session data
 

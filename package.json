@@ -17,7 +17,6 @@
     "lint:scss:fix": "stylelint '**/*.scss' --fix",
     "lint": "npm run lint:prettier && npm run lint:js && npm run lint:scss",
     "lint:fix": "npm run lint:prettier:fix && npm run lint:js:fix && npm run lint:scss:fix",
-    "dev": "nhsuk-prototype-rig --watch",
     "start": "nhsuk-prototype-rig",
     "postinstall": "npm run create-data"
   },
@@ -33,7 +32,7 @@
     "i18n": "^0.15.1",
     "json-as-xlsx": "^2.5.6",
     "lodash": "^4.17.21",
-    "nhsuk-prototype-rig": "^0.4.0"
+    "nhsuk-prototype-rig": "^0.4.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.10",
