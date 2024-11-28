@@ -92,12 +92,12 @@ export function convertIsoDateToObject(date) {
 /**
  * Add days to a date
  *
- * @param {Date|string} isoDate - ISO 8601 date
+ * @param {Date} date - Date
  * @param {number} days - Number of days to add
  * @returns {Date} Date with days added
  */
-export function addDays(isoDate, days) {
-  const date = new Date(isoDate)
+export function addDays(date, days) {
+  date = new Date(date.valueOf())
   date.setDate(date.getDate() + days)
 
   return date
@@ -106,12 +106,12 @@ export function addDays(isoDate, days) {
 /**
  * Remove days from a date
  *
- * @param {Date|string} isoDate - ISO 8601 date
+ * @param {Date} date - Date
  * @param {number} days - Number of days to remove
  * @returns {Date} Date with days removed
  */
-export function removeDays(isoDate, days) {
-  const date = new Date(isoDate)
+export function removeDays(date, days) {
+  date = new Date(date.valueOf())
   date.setDate(date.getDate() - days)
 
   return date

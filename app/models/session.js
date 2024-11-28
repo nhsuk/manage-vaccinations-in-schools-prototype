@@ -66,7 +66,9 @@ export class Session {
     this.created_user_uid = options?.created_user_uid
     this.clinic_id = options?.clinic_id
     this.school_urn = options?.school_urn
-    this.dates = options?.dates || []
+    this.dates = options?.dates
+      ? options.dates.map((date) => new Date(date))
+      : []
     this.open = options?.open
       ? new Date(options.open)
       : this.firstDate
