@@ -47,6 +47,8 @@ export class Move {
       if (record) {
         return new Record(record)
       }
+    } else {
+      console.warn('Provide context to get the record for this move')
     }
   }
 
