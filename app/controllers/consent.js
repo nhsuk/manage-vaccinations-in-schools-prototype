@@ -86,7 +86,7 @@ export const consentController = {
     const { data } = request.session
     const { id } = request.params
 
-    const session = new Session(data.sessions[id])
+    const session = new Session(data.sessions[id], data)
     const programme = new Programme(data.programmes[session.programmes[0]])
 
     request.app.locals.programme = programme
@@ -120,7 +120,7 @@ export const consentController = {
     const { form, id, uuid, view } = request.params
     const { data } = request.session
 
-    const session = new Session(data.sessions[id])
+    const session = new Session(data.sessions[id], data)
 
     request.app.locals.session = session
     request.app.locals.consent = new Consent({

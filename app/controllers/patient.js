@@ -108,7 +108,7 @@ export const patientController = {
 
     let sessions = []
     if (patient.session_id) {
-      sessions = [new Session(data.sessions[patient.session_id])]
+      sessions = [new Session(data.sessions[patient.session_id], data)]
     }
 
     let vaccinations = Object.keys(patient.vaccinations).map(
@@ -122,7 +122,7 @@ export const patientController = {
 
     // Patient in session
     if (inSession) {
-      const session = new Session(data.sessions[id])
+      const session = new Session(data.sessions[id], data)
 
       // Select first programme in session to show pre-screening questions
       // TODO: Make pre-screening questions pull from all session programmes

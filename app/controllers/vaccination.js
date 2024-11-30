@@ -71,7 +71,7 @@ export const vaccinationController = {
     delete data.vaccination
     delete data?.wizard?.vaccination
 
-    const session = new Session(data.sessions[session_id])
+    const session = new Session(data.sessions[session_id], data)
 
     const vaccination = new Vaccination({
       location: session.nameAndAddress,

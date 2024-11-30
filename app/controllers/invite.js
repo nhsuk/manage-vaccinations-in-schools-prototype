@@ -11,7 +11,7 @@ export const inviteController = {
     }
 
     response.locals.sessionIdItems = Object.values(data.sessions)
-      .map((session) => new Session(session))
+      .map((session) => new Session(session, data))
       .filter((session) => session.status !== SessionStatus.Completed)
       .sort(
         (a, b) =>
@@ -39,7 +39,7 @@ export const inviteController = {
 
     const { session_id } = data.patient
 
-    const session = new Session(data.sessions[session_id])
+    const session = new Session(data.sessions[session_id], data)
 
     // Invite patient to session
     patient.invite = session
