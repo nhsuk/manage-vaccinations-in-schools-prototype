@@ -29,15 +29,9 @@ export const sessionController = {
       unplanned: SessionStatus.Unplanned
     }
 
-    let sessions = Object.values(data.sessions).map((session) => {
-      session = new Session(session)
-      session.patients = Object.values(data.patients)
-        .filter(({ session_id }) => session_id === session.id)
-        .filter(({ record }) => !record?.pendingChanges?.urn)
-        .map((patient) => new Patient(patient))
-
-      return session
-    })
+    let sessions = Object.values(data.sessions).map(
+      (session) => new Session(session, data)
+    )
 
     if (view === 'active') {
       sessions = sessions.filter((session) => session.isActive)
@@ -53,7 +47,7 @@ export const sessionController = {
   },
 
   activity(request, response) {
-    const { patients } = request.app.locals
+    const { session } = request.app.locals
     const { activity } = request.params
     let { tab } = request.query
     const { __ } = response.locals
@@ -86,32 +80,28 @@ export const sessionController = {
 
     request.app.locals.activity = activity
 
-    response.locals.patients = getPatientsForKey(patients, activity, tab)
+    response.locals.patients = getPatientsForKey(
+      session.patients,
+      activity,
+      tab
+    )
     response.locals.navigationItems = tabs.map((key) => ({
       text: __(`${activity}.${key}.label`),
-      count: getPatientsForKey(patients, activity, key).length,
+      count: getPatientsForKey(session.patients, activity, key).length,
       href: `?tab=${key}`,
       current: key === tab
     }))
 
-    response.render('session/activity', {
-      allPatients: patients,
-      tab
-    })
+    response.render('session/activity', { tab })
   },
 
   read(request, response, next) {
     const { id } = request.params
     const { data } = request.session
 
-    const session = new Session(data.sessions[id])
-    const patients = Object.values(data.patients)
-      .filter(({ session_id }) => session_id === id)
-      .filter(({ record }) => !record?.pendingChanges?.urn)
-      .map((patient) => new Patient(patient))
+    const session = new Session(data.sessions[id], data)
 
     request.app.locals.session = session
-    request.app.locals.patients = patients
     request.app.locals.programme = new Programme(
       data.programmes[session.programmes[0]]
     )
@@ -297,7 +287,7 @@ export const sessionController = {
 
     // Find clinics
     const clinic = Object.values(data.sessions)
-      .map((session) => new Session(session))
+      .map((session) => new Session(session, data))
       .filter((session) => session.programmes.includes(programme.pid))
       .filter((session) => session.type === SessionType.Clinic)
 

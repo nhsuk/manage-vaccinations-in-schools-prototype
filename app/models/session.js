@@ -2,8 +2,6 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import { isAfter } from 'date-fns'
 
-import clinics from '../datasets/clinics.js'
-import schools from '../datasets/schools.js'
 import {
   addDays,
   removeDays,
@@ -22,8 +20,11 @@ import {
   lowerCaseFirst
 } from '../utils/string.js'
 
+import { Clinic } from './clinic.js'
 import { OrganisationDefaults } from './organisation.js'
+import { Patient } from './patient.js'
 import { ProgrammeStatus, programmeTypes } from './programme.js'
+import { School } from './school.js'
 
 export class ConsentWindow {
   static Opening = 'Opening'
@@ -46,6 +47,9 @@ export class SessionType {
 
 /**
  * @class Session
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} id - ID
  * @property {Date} created - Created date
  * @property {string} [created_user_uid] - User who created session
@@ -60,7 +64,8 @@ export class SessionType {
  * @property {Array<string>} [programmes] - Programme PIDs
  */
 export class Session {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('###')
     this.created = options?.created ? new Date(options.created) : getToday()
     this.created_user_uid = options?.created_user_uid
@@ -317,19 +322,49 @@ export class Session {
   /**
    * Get clinic
    *
-   * @returns {object} - School
+   * @returns {Clinic} - Clinic
    */
   get clinic() {
-    return clinics[this.clinic_id]
+    if (this.context && this.clinic_id) {
+      const clinic = this.context.clinics[this.clinic_id]
+      if (clinic) {
+        return new Clinic(clinic)
+      }
+    } else {
+      console.warn('Provide context to get the clinic for this session')
+    }
   }
 
   /**
    * Get school
    *
-   * @returns {object} - School
+   * @returns {School} - School
    */
   get school() {
-    return schools[this.school_urn]
+    if (this.context && this.school_urn) {
+      const school = this.context.schools[this.school_urn]
+      if (school) {
+        return new School(school)
+      }
+    } else {
+      console.warn('Provide context to get the school for this session')
+    }
+  }
+
+  /**
+   * Get session patients
+   *
+   * @returns {Array<Patient>} - Patients
+   */
+  get patients() {
+    if (this.context.patients && this.id) {
+      return Object.values(this.context.patients)
+        .map((patient) => new Patient(patient))
+        .filter(({ session_id }) => session_id === this.id)
+        .filter(({ record }) => !record?.pendingChanges?.urn)
+    }
+
+    return []
   }
 
   /**
@@ -349,12 +384,14 @@ export class Session {
   get location() {
     const type = this.type === SessionType.School ? 'school' : 'clinic'
 
-    return {
-      name: this[type].name,
-      addressLine1: this[type].addressLine1,
-      addressLine2: this[type].addressLine2,
-      addressLevel1: this[type].addressLevel1,
-      postalCode: this[type].postalCode
+    if (this[type]) {
+      return {
+        name: this[type].name,
+        addressLine1: this[type].addressLine1,
+        addressLine2: this[type].addressLine2,
+        addressLevel1: this[type].addressLevel1,
+        postalCode: this[type].postalCode
+      }
     }
   }
 
