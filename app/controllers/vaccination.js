@@ -232,7 +232,7 @@ export const vaccinationController = {
 
     response.locals.vaccineItems = Object.values(data.vaccines)
       .filter((vaccine) => programme.type.includes(vaccine.type))
-      .map((vaccine) => (vaccine = new Vaccine(vaccine)))
+      .map((vaccine) => (vaccine = new Vaccine(vaccine, data)))
       .map((vaccine) => ({
         text: vaccine.brandWithType,
         value: vaccine.gtin

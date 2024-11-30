@@ -7,6 +7,8 @@ import {
   formatMonospace
 } from '../utils/string.js'
 
+import { Batch } from './batch.js'
+
 export class HealthQuestion {
   static Aspirin = 'Does the child take regular aspirin?'
   static Allergy = 'Does the child have any severe allergies?'
@@ -55,6 +57,9 @@ export class VaccineMethod {
 
 /**
  * @class Vaccine
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} gtin - GTIN
  * @property {string} type - Type
  * @property {string} brand - Brand
@@ -66,7 +71,8 @@ export class VaccineMethod {
  * @property {Array<string>} preScreenQuestionKeys - Pre-screening question keys
  */
 export class Vaccine {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.gtin = options?.gtin || faker.string.numeric(14)
     this.type = options.type
     this.brand = options.brand
@@ -107,6 +113,21 @@ export class Vaccine {
     return vaccines[this.gtin].preScreenQuestionKeys.map(
       (key) => PreScreenQuestion[key]
     )
+  }
+
+  /**
+   * Get vaccine batches
+   *
+   * @returns {Array<Batch>} - Batches
+   */
+  get batches() {
+    if (this.context && this.gtin) {
+      return Object.values(this.context.batches)
+        .filter((batch) => batch.vaccine_gtin === this.gtin)
+        .map((batch) => new Batch(batch))
+    }
+
+    console.warn('Provide context to get the batches for this vaccine')
   }
 
   /**

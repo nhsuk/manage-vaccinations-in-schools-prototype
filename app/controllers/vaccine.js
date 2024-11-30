@@ -1,19 +1,12 @@
-import { Batch } from '../models/batch.js'
 import { Vaccine } from '../models/vaccine.js'
 
 export const vaccineController = {
   readAll(request, response, next) {
     const { data } = request.session
 
-    const vaccines = Object.values(data.vaccines).map((vaccine) => {
-      vaccine = new Vaccine(vaccine)
-
-      vaccine.batches = Object.values(data.batches)
-        .filter((batch) => batch.vaccine_gtin === vaccine.gtin)
-        .map((batch) => new Batch(batch, data))
-
-      return vaccine
-    })
+    const vaccines = Object.values(data.vaccines).map(
+      (vaccine) => new Vaccine(vaccine, data)
+    )
 
     response.locals.vaccines = vaccines
 
