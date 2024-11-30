@@ -28,7 +28,7 @@ export const batchController = {
     const { id } = request.params
     const { data } = request.session
 
-    response.locals.batch = new Batch(data.batches[id])
+    response.locals.batch = new Batch(data.batches[id], data)
 
     response.locals.paths = {
       back: `/vaccines`,

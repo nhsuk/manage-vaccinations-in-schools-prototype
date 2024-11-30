@@ -14,21 +14,25 @@ import { Vaccine } from './vaccine.js'
 
 /**
  * @class Batch
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} id - Batch ID
  * @property {Date} [created] - Created date
  * @property {Date} [updated] - Updated date
  * @property {Date} [expiry] - Expiry date
  * @property {object} [expiry_] - Expiry date (from `dateInput`)
- * @property {string} vaccine_gtin - Vaccine GTIN
+ * @property {string} [vaccine_gtin] - Vaccine GTIN
  */
 export class Batch {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('??####')
     this.created = options?.created ? new Date(options.created) : getToday()
     this.updated = options?.updated ? new Date(options.updated) : undefined
     this.expiry = options?.expiry ? new Date(options.expiry) : undefined
     this.expiry_ = options?.expiry_
-    this.vaccine_gtin = options.vaccine_gtin
+    this.vaccine_gtin = options?.vaccine_gtin
   }
 
   /**
@@ -86,7 +90,14 @@ export class Batch {
    * @returns {Vaccine} - Vaccine
    */
   get vaccine() {
-    return new Vaccine(vaccines[this.vaccine_gtin])
+    if (this.context && this.vaccine_gtin) {
+      const vaccine = this.context.vaccines[this.vaccine_gtin]
+      if (vaccine) {
+        return new Vaccine(vaccine)
+      }
+    } else {
+      console.warn('Provide context to get the vaccine for this batch')
+    }
   }
 
   /**

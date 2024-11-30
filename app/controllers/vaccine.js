@@ -10,7 +10,7 @@ export const vaccineController = {
 
       vaccine.batches = Object.values(data.batches)
         .filter((batch) => batch.vaccine_gtin === vaccine.gtin)
-        .map((batch) => new Batch(batch))
+        .map((batch) => new Batch(batch, data))
 
       return vaccine
     })

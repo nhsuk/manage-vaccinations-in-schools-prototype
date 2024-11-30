@@ -189,7 +189,7 @@ export const vaccinationController = {
     }
 
     response.locals.batchItems = Object.values(data.batches)
-      .map((batch) => new Batch(batch))
+      .map((batch) => new Batch(batch, data))
       .filter((batch) => batch.vaccine.type === programme.type)
 
     response.locals.injectionMethodItems = Object.entries(VaccinationMethod)
