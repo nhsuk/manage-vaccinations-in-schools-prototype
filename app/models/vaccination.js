@@ -15,8 +15,9 @@ import {
 } from '../utils/string.js'
 
 import { Batch } from './batch.js'
-import { ConsentOutcome } from './patient.js'
-import { ProgrammeType } from './programme.js'
+import { ConsentOutcome, Patient } from './patient.js'
+import { Programme, ProgrammeType } from './programme.js'
+import { Session } from './session.js'
 import { Vaccine, VaccineMethod } from './vaccine.js'
 
 export class VaccinationOutcome {
@@ -61,6 +62,9 @@ export class VaccinationProtocol {
 
 /**
  * @class Vaccination
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} uuid - UUID
  * @property {Date} created - Vaccination date
  * @property {object} [created_] - Vaccination date (from `dateInput`)
@@ -84,7 +88,8 @@ export class VaccinationProtocol {
  * @property {string} [vaccine_gtin] - Vaccine GTIN
  */
 export class Vaccination {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
     this.created = options?.created ? new Date(options.created) : getToday()
     this.created_ = options?.created_
@@ -272,6 +277,54 @@ export class Vaccination {
     }
 
     return this.injectionSite || ''
+  }
+
+  /**
+   * Get patient
+   *
+   * @returns {Patient} - Patient
+   */
+  get patient() {
+    if (this.context.patients && this.patient_uuid) {
+      const patient = this.context.patients[this.patient_uuid]
+      if (patient) {
+        return new Patient(patient)
+      }
+    } else {
+      console.warn('Provide context to get the patient for this vaccination')
+    }
+  }
+
+  /**
+   * Get programme
+   *
+   * @returns {Programme} - Programme
+   */
+  get programme() {
+    if (this.context.programmes && this.programme_pid) {
+      const programme = this.context.programmes[this.programme_pid]
+      if (programme) {
+        return new Programme(programme)
+      }
+    } else {
+      console.warn('Provide context to get the programme for this vaccination')
+    }
+  }
+
+  /**
+   * Get session
+   *
+   * @returns {Session} - Session
+   */
+  get session() {
+    if (this.context.sessions && this.session_id) {
+      const session = this.context.sessions[this.session_id]
+      if (session) {
+        return new Session(session)
+      }
+    } else {
+      console.warn('Provide context to get the session for this vaccination')
+    }
   }
 
   /**
