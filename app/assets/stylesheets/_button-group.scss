@@ -22,7 +22,6 @@
   }
 
   @include mq($from: tablet) {
-    align-items: baseline;
     flex-direction: row;
     flex-wrap: wrap;
 
