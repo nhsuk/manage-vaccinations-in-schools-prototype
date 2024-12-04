@@ -816,10 +816,10 @@
     "created": {
       "label": "Imported on"
     },
-    "created_user_uid": {
+    "created_user": {
       "label": "Imported by"
     },
-    "programme_pid": {
+    "programme": {
       "label": "Programme"
     },
     "type": {

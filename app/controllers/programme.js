@@ -58,7 +58,7 @@ export const programmeController = {
 
       programme.imports = Object.values(data.imports)
         .filter((_import) => _import.programme_pid === programme.pid)
-        .map((_import) => new Import(_import))
+        .map((_import) => new Import(_import, data))
 
       // Only mock issues with imported records if there are imports
       if (programme.imports.length) {

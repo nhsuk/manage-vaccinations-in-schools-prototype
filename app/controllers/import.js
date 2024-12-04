@@ -18,7 +18,7 @@ export const importController = {
     const { data } = request.session
     const { __n } = response.locals
 
-    _import = new Import(data.imports[id] || _import)
+    _import = new Import(data.imports[id] || _import, data)
 
     const records = _import.records.map((record) => {
       record = new Record(record)

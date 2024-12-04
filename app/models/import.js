@@ -2,6 +2,9 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { formatDate, getToday } from '../utils/date.js'
 
+import { Programme } from './programme.js'
+import { User } from './user.js'
+
 export class ImportType {
   static Cohort = 'Child records'
   static School = 'Class list'
@@ -16,6 +19,9 @@ export class ImportStatus {
 
 /**
  * @class Import
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} id - Import ID
  * @property {ImportStatus} status - Import status
  * @property {ImportType} type - Import type
@@ -29,7 +35,8 @@ export class ImportStatus {
  * @property {number|undefined} [invalid] - Invalid records (no vaccination)
  */
 export class Import {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
     this.status = options?.status || ImportStatus.Processing
     this.type = options?.type || ImportType.Cohort
@@ -92,6 +99,38 @@ export class Import {
   }
 
   /**
+   * Get user who created import
+   *
+   * @returns {User} - User
+   */
+  get created_user() {
+    if (this.context?.users && this.created_user_uid) {
+      const user = this.context.users[this.created_user_uid]
+      if (user) {
+        return new User(user)
+      }
+    } else {
+      console.warn('Provide context to get the user for this import')
+    }
+  }
+
+  /**
+   * Get programme
+   *
+   * @returns {Programme} - User
+   */
+  get programme() {
+    if (this.context?.programmes && this.programme_pid) {
+      const programme = this.context.programmes[this.programme_pid]
+      if (programme) {
+        return new Programme(programme)
+      }
+    } else {
+      console.warn('Provide context to get the programme for this import')
+    }
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values
@@ -105,7 +144,9 @@ export class Import {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true
-      })
+      }),
+      created_user: this.created_user?.fullName || '',
+      programme: this.programme.type
     }
   }
 

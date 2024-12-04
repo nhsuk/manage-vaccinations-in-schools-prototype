@@ -55,12 +55,8 @@
     descriptionHtml: summaryList({
       rows: summaryRows(import, {
         created: {},
-        created_user_uid: {
-          value: users[import.created_user_uid].fullName
-        },
-        programme_pid: {
-          value: programme.type
-        },
+        created_user: {},
+        programme: {},
         type: {},
         invalid: {
           value: __n("import.invalid.count", import.invalid)
