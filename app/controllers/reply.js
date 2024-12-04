@@ -21,7 +21,7 @@ export const replyController = {
 
     const reply = patient.replies[uuid] || data.consents[uuid]
 
-    request.app.locals.reply = new Reply(reply)
+    request.app.locals.reply = new Reply(reply, data)
 
     next()
   },
@@ -137,10 +137,13 @@ export const replyController = {
       (patient) => patient.record.nhsn === nhsn
     )
 
-    reply = new Reply({
-      ...(form === 'edit' && reply), // Previous values
-      ...data?.wizard?.reply // Wizard values
-    })
+    reply = new Reply(
+      {
+        ...(form === 'edit' && reply), // Previous values
+        ...data?.wizard?.reply // Wizard values
+      },
+      data
+    )
 
     triage = {
       ...(form === 'edit' && triage), // Previous values

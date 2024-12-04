@@ -11,6 +11,9 @@ import {
 
 import { Child } from './child.js'
 import { Parent } from './parent.js'
+import { Patient } from './patient.js'
+import { Session } from './session.js'
+import { User } from './user.js'
 
 export class ReplyDecision {
   static Given = 'Consent given'
@@ -38,6 +41,9 @@ export class ReplyRefusal {
 
 /**
  * @class Reply
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} uuid - UUID
  * @property {Date} created - Created date
  * @property {string} [created_user_uid] - User who created reply
@@ -57,7 +63,8 @@ export class ReplyRefusal {
  * @property {string} session_id - Session ID
  */
 export class Reply {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
     this.created = options?.created ? new Date(options.created) : getToday()
     this.created_user_uid = options?.created_user_uid
@@ -176,6 +183,54 @@ export class Reply {
   }
 
   /**
+   * Get user who created reply
+   *
+   * @returns {User} - User
+   */
+  get created_user() {
+    if (this.context?.users && this.created_user_uid) {
+      const user = this.context.users[this.created_user_uid]
+      if (user) {
+        return new User(user)
+      }
+    } else {
+      console.warn('Provide context to get the user for this reply')
+    }
+  }
+
+  /**
+   * Get patient
+   *
+   * @returns {Patient} - Patient
+   */
+  get patient() {
+    if (this.context?.patients && this.patient_uuid) {
+      const patient = this.context.patients[this.patient_uuid]
+      if (patient) {
+        return new Patient(patient)
+      }
+    } else {
+      console.warn('Provide context to get the patient for this reply')
+    }
+  }
+
+  /**
+   * Get session
+   *
+   * @returns {Session} - Session
+   */
+  get session() {
+    if (this.context?.sessions && this.session_id) {
+      const session = this.context.sessions[this.session_id]
+      if (session) {
+        return new Session(session)
+      }
+    } else {
+      console.warn('Provide context to get the session for this reply')
+    }
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values
@@ -200,6 +255,7 @@ export class Reply {
         minute: '2-digit',
         hour12: true
       }),
+      created_user: this.created_user?.fullName || '',
       decision: decision(),
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
       refusalReasonDetails: formatMarkdown(this.refusalReasonDetails),

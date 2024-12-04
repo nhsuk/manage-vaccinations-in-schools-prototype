@@ -117,7 +117,7 @@ export const patientController = {
 
     const inSession = request.originalUrl.includes('sessions')
     const replies = Object.values(patient.replies).map(
-      (reply) => new Reply(reply)
+      (reply) => new Reply(reply, data)
     )
 
     // Patient in session

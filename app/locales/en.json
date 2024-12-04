@@ -1383,7 +1383,7 @@
     "created": {
       "label": "Date"
     },
-    "created_user_uid": {
+    "created_user": {
       "label": "Recorded by"
     },
     "uuid": {

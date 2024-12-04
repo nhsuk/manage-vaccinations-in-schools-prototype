@@ -294,7 +294,7 @@ export const consentController = {
     const { uuid } = request.params
     const { data } = request.session
 
-    request.app.locals.consent = new Reply(data.consents[uuid])
+    request.app.locals.consent = new Reply(data.consents[uuid], data)
 
     response.render('consent/add')
   },
