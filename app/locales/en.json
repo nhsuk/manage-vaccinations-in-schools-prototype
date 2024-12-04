@@ -402,12 +402,6 @@
       "fullAndPreferredNames": {
         "label": "Child’s name"
       },
-      "gpRegistered": {
-        "title": "Is your child registered with a GP?",
-        "yes": "Yes, they are registered with a GP",
-        "no": "No, they are not registered with a GP",
-        "unknown": "I don’t know"
-      },
       "gpSurgery": {
         "label": "Name of GP surgery"
       },

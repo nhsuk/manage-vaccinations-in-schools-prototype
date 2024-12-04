@@ -154,7 +154,6 @@ export const consentController = {
         }
       },
       [`/${id}/${uuid}/${form}/address`]: {},
-      [`/${id}/${uuid}/${form}/gp-registered`]: {},
       ...getHealthQuestionPaths(`/${id}/${uuid}/${form}/`, programme.vaccine),
       [`/${id}/${uuid}/${form}/check-answers`]: {},
       [`/${id}/${uuid}/new/confirmation`]: {},
