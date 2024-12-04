@@ -20,7 +20,7 @@
     <div class="nhsuk-grid-column-three-quarters">
       {% set cardDescriptionHtml %}
         {% set clinicRows = [] %}
-        {% for clinic in clinics | sort(false, false, "name") %}
+        {% for clinic in organisation.clinics | sort(false, false, "name") %}
           {% set clinicRows = clinicRows | push([
             {
               header: __("clinic.name.label"),
@@ -49,7 +49,7 @@
           href: organisation.uri + "/clinics/new"
         }) }}
 
-        {% if clinics.length %}
+        {% if organisation.clinics.length %}
           {{ actionTable({
             id: "clinics",
             sort: "name",

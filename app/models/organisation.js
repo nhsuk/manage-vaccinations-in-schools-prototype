@@ -1,8 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
-import schoolsData from '../datasets/schools.js'
-
+import { Clinic } from './clinic.js'
 import { School } from './school.js'
 
 export class OrganisationDefaults {
@@ -12,6 +11,9 @@ export class OrganisationDefaults {
 
 /**
  * @class Organisation
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} [code] - ODS code
  * @property {string} [name] - Full name
  * @property {string} [email] - Email address
@@ -23,7 +25,8 @@ export class OrganisationDefaults {
  * @property {string} [password] - Shared password
  */
 export class Organisation {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.code = options?.code
     this.name = options?.name
     this.email = options?.email
@@ -67,12 +70,29 @@ export class Organisation {
   }
 
   /**
+   * Get clinics
+   *
+   * @returns {Array<Clinic>} - Clinics
+   */
+  get clinics() {
+    if (this.context && this.ids) {
+      return this.ids.map((id) => new Clinic(this.context.clinics[id]))
+    }
+
+    console.warn('Provide context to get the clinics for this organisation')
+  }
+
+  /**
    * Get schools
    *
-   * @returns {Array} - Schools
+   * @returns {Array<School>} - Schools
    */
   get schools() {
-    return this.urns.map((urn) => new School(schoolsData[urn]))
+    if (this.context && this.urns) {
+      return this.urns.map((urn) => new School(this.context.schools[urn]))
+    }
+
+    console.warn('Provide context to get the schools for this organisation')
   }
 
   /**
