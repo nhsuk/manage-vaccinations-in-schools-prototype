@@ -1103,8 +1103,13 @@
     "questions": {
       "label": "Have you asked {{patient.firstName}} if:"
     },
-    "continue": {
-      "label": "Is {{patient.firstName}} ready to vaccinate in this session?"
+    "ready": {
+      "label": "Is {{patient.firstName}} ready to vaccinate in this session?",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "injectionSite": {
+      "label": "Where will the injection be given?"
     },
     "confirm": "Continue",
     "note": {

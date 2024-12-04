@@ -16,13 +16,23 @@ import { getToday } from '../utils/date.js'
 
 export const vaccinationController = {
   read(request, response, next) {
-    const { patient } = request.app.locals
+    const { patient, programme, session } = request.app.locals
     const { uuid } = request.params
     const { data } = request.session
 
     const vaccination = new Vaccination(data.vaccinations[uuid])
     const patient_uuid = vaccination?.patient_uuid || patient?.uuid
     const record = new Record(data.patients[patient_uuid].record)
+
+    // Get default batch for vaccination, if set
+    const defaultBatch = data.token?.batch?.[session?.id]
+    if (defaultBatch) {
+      const batchId = defaultBatch[programme.vaccine.gtin]
+      // Default batch ID may be saved in FormData as an array
+      request.app.locals.defaultBatchId = Array.isArray(batchId)
+        ? batchId.at(-1)
+        : batchId
+    }
 
     request.app.locals.vaccination = vaccination
     request.app.locals.record = record
@@ -55,13 +65,33 @@ export const vaccinationController = {
   },
 
   new(request, response) {
-    const { programme } = request.app.locals
+    const { defaultBatchId, programme } = request.app.locals
     const { data } = request.session
     const { patient_uuid, session_id } = request.query
 
     const patient = new Patient(data.patients[patient_uuid])
-    const startPath =
-      data.preScreen.continue === 'true' ? 'administer' : 'decline'
+    const { injectionSite, ready } = data.preScreen
+
+    const readyToVaccine = ready === 'true'
+    const injectionSiteGiven =
+      injectionSite === VaccinationSite.ArmLeftUpper ||
+      injectionSite === VaccinationSite.ArmRightUpper
+    const defaultBatchSet = defaultBatchId !== undefined
+
+    let startPath
+    switch (true) {
+      case readyToVaccine && injectionSiteGiven && defaultBatchSet:
+        startPath = 'check-answers'
+        break
+      case readyToVaccine && injectionSiteGiven:
+        startPath = 'batch-id'
+        break
+      case readyToVaccine:
+        startPath = 'administer'
+        break
+      default:
+        startPath = 'decline'
+    }
 
     request.app.locals.patient = patient
     request.app.locals.back = patient.uriInSession
@@ -80,7 +110,16 @@ export const vaccinationController = {
       programme_pid: programme.pid,
       session_id: session.id,
       vaccine_gtin: programme.vaccine.gtin,
-      ...(data.token && { created_user_uid: data.token?.uid })
+      ...(data.token && { created_user_uid: data.token?.uid }),
+      ...(injectionSite && {
+        dose: programme.vaccine.dose,
+        injectionMethod: VaccinationMethod.Subcutaneous,
+        injectionSite,
+        outcome: VaccinationOutcome.Vaccinated
+      }),
+      ...(defaultBatchId && {
+        batch_id: defaultBatchId
+      })
     })
 
     data.wizard = { vaccination }
@@ -134,7 +173,7 @@ export const vaccinationController = {
   },
 
   readForm(request, response, next) {
-    const { back, programme, session, startPath, vaccination } =
+    const { back, defaultBatchId, programme, session, startPath, vaccination } =
       request.app.locals
     const { form, uuid } = request.params
     const { referrer } = request.query
@@ -147,34 +186,25 @@ export const vaccinationController = {
       ...data?.wizard?.vaccination // Wizard values,
     })
 
-    // Check if default batch saved for session in programme
-    let defaultBatchForProgramme = false
-    const defaultBatch = data.token?.batch?.[session.id]
-    if (defaultBatch) {
-      defaultBatchForProgramme = programme.vaccines.filter((vaccine) =>
-        Object.keys(defaultBatch).includes(vaccine)
-      )
-    }
-
     const journey = {
       [`/`]: {},
-      ...(startPath === 'administer'
+      ...(startPath === 'decline'
         ? {
+            [`/${uuid}/${form}/decline`]: {},
+            [`/${uuid}/${form}/check-answers`]: {}
+          }
+        : {
             [`/${uuid}/${form}/administer`]: {
               [`/${uuid}/${form}/check-answers`]: () => {
-                return defaultBatchForProgramme
+                return defaultBatchId
               }
             },
             [`/${uuid}/${form}/batch-id`]: () => {
-              return !defaultBatchForProgramme
+              return !defaultBatchId
             },
             ...(!session.address && {
               [`/${uuid}/${form}/location`]: {}
             }),
-            [`/${uuid}/${form}/check-answers`]: {}
-          }
-        : {
-            [`/${uuid}/${form}/decline`]: {},
             [`/${uuid}/${form}/check-answers`]: {}
           }),
       [`/${uuid}`]: {}
@@ -261,7 +291,7 @@ export const vaccinationController = {
   },
 
   updateForm(request, response) {
-    const { programme, session, vaccination } = request.app.locals
+    const { defaultBatchId, programme, vaccination } = request.app.locals
     const { data } = request.session
     const { paths } = response.locals
 
@@ -278,12 +308,8 @@ export const vaccinationController = {
     }
 
     // Use default batch, if set
-    const defaultBatch = data.token?.batch?.[session?.id]
-    if (defaultBatch) {
-      let batchId = defaultBatch[programme.vaccine.gtin]
-      // Default batch ID may be saved in FormData as an array
-      batchId = Array.isArray(batchId) ? batchId.at(-1) : batchId
-      vaccination.batch_id = batchId
+    if (defaultBatchId) {
+      vaccination.batch_id = defaultBatchId
     }
 
     data.wizard.vaccination = new Vaccination(

@@ -348,15 +348,32 @@
       <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
 
       {{ radios({
-        classes: "nhsuk-radios--inline",
         fieldset: {
           legend: {
             classes: "nhsuk-fieldset__legend--m",
-            text: __("preScreen.continue.label", { patient: patient })
+            text: __("preScreen.ready.label", { patient: patient })
           }
         },
-        items: booleanItems,
-        decorate: "preScreen.continue"
+        items: [
+          {
+            text: __("preScreen.ready.yes"),
+            value: true,
+            conditional: {
+              html: radios({
+                fieldset: {
+                  legend: { text: __("preScreen.injectionSite.label") }
+                },
+                items: injectionSiteItems,
+                decorate: "preScreen.injectionSite"
+              })
+            }
+          },
+          {
+            text: __("preScreen.ready.no"),
+            value: false
+          }
+        ],
+        decorate: "preScreen.ready"
       }) }}
 
       {{ button({

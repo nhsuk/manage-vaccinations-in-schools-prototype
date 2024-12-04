@@ -17,7 +17,7 @@ import { Record } from '../models/record.js'
 import { Reply } from '../models/reply.js'
 import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
-import { Vaccination } from '../models/vaccination.js'
+import { Vaccination, VaccinationSite } from '../models/vaccination.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const patientController = {
@@ -163,6 +163,19 @@ export const patientController = {
       vaccinations = vaccinations.filter(
         (vaccination) => vaccination.session_id === id
       )
+
+      response.locals.injectionSiteItems = Object.entries(VaccinationSite)
+        .filter(([, value]) =>
+          [
+            VaccinationSite.ArmLeftUpper,
+            VaccinationSite.ArmRightUpper,
+            VaccinationSite.Other
+          ].includes(value)
+        )
+        .map(([key, value]) => ({
+          text: VaccinationSite[key],
+          value
+        }))
 
       response.locals.programme = programme
       response.locals.session = session
