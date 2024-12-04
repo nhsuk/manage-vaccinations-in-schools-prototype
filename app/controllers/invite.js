@@ -42,7 +42,7 @@ export const inviteController = {
     const session = new Session(data.sessions[session_id], data)
 
     // Invite patient to session
-    patient.invite = session
+    patient.inviteToSession(session)
 
     // Update patient record
     data.patients[patient.uuid] = patient

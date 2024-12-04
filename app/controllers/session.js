@@ -298,7 +298,7 @@ export const sessionController = {
     const patientsToMove = couldNotVaccinate.concat(noResponse)
     for (const patient of patientsToMove) {
       const updatedPatient = new Patient(patient)
-      updatedPatient.invite = clinic[0]
+      updatedPatient.inviteToSession(clinic[0])
 
       // Update session data
       data.patients[patient.uuid] = updatedPatient

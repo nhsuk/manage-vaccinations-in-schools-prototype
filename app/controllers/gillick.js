@@ -21,17 +21,19 @@ export const gillickController = {
     const { data } = request.session
     const { __, patient } = response.locals
 
-    data.patients[patient.uuid] = new Patient(patient)
-    data.patients[patient.uuid].assess = new Gillick({
+    const updatedPatient = new Patient(patient)
+    updatedPatient.assessGillick({
       ...request.body.gillick,
       ...(data.token && { created_user_uid: data.token?.uid })
     })
+
+    data.patients[patient.uuid] = updatedPatient
 
     delete data.gillick
 
     const action = form === 'edit' ? 'update' : 'create'
     request.flash('success', __(`gillick.success.${action}`))
 
-    response.redirect(patient.uriInSession)
+    response.redirect(updatedPatient.uriInSession)
   }
 }

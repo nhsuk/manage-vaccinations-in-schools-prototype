@@ -7,19 +7,24 @@ export const triageController = {
     const { data } = request.session
     const { __, patient } = response.locals
 
-    data.patients[patient.uuid] = new Patient(patient)
-    data.patients[patient.uuid].triage = {
+    const updatedPatient = new Patient(patient)
+    updatedPatient.recordTriage({
       ...data.triage,
       ...(data.token && { created_user_uid: data.token?.uid })
-    }
+    })
+
+    data.patients[patient.uuid] = updatedPatient
 
     delete data.triage
 
     const action = form === 'edit' ? 'update' : 'create'
-    request.flash('success', __(`triage.success.${action}`, { patient }))
+    request.flash(
+      'success',
+      __(`triage.success.${action}`, { patient: updatedPatient })
+    )
 
     if (session.isActive) {
-      response.redirect(patient.uriInSession)
+      response.redirect(updatedPatient.uriInSession)
     } else {
       response.redirect(`/sessions/${id}/${activity || 'triage'}`)
     }

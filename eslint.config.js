@@ -5,7 +5,6 @@ export default [
   {
     files: ['**/*.js'],
     rules: {
-      'accessor-pairs': ['error', { enforceForClassMembers: false }],
       camelcase: 'off',
       'no-continue': 'off'
     }

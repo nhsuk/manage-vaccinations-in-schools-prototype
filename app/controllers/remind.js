@@ -3,10 +3,10 @@ export const remindController = {
     const { data } = request.session
     const { patient } = response.locals
 
-    patient.remind = {
+    patient.sendReminder({
       fullName: patient.record.parent1.fullName,
       ...(data.token && { user_uid: data.token?.uid })
-    }
+    })
 
     response.redirect(patient.uriInSession)
   }

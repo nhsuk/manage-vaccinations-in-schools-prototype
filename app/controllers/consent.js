@@ -277,7 +277,7 @@ export const consentController = {
     const { __, consent, patient } = response.locals
 
     const updatedPatient = new Patient(patient)
-    updatedPatient.respond = new Reply(consent)
+    updatedPatient.addReply(consent)
 
     // Update session data
     delete data.consents[uuid]
@@ -310,7 +310,7 @@ export const consentController = {
     )
 
     newPatient = new Patient(newPatient)
-    newPatient.respond = new Reply(consent)
+    newPatient.addReply(consent)
 
     // Update session data
     delete data.consents[uuid]

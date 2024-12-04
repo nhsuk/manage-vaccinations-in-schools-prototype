@@ -45,11 +45,12 @@ export const registrationController = {
 
     if (registered === true) {
       // Register attendance
-      patient.register = new Registration({
+      const registration = new Registration({
         name: __(`registration.${key}.name`, { location: session.location }),
         registered,
         ...(data.token && { created_user_uid: data.token?.uid })
       })
+      patient.registerAttendance(registration)
     } else if (
       registered === false &&
       patient.outcome?.value !== PatientOutcome.CouldNotVaccinate
@@ -71,7 +72,7 @@ export const registrationController = {
       data.vaccinations[absentVaccination.uuid] = absentVaccination
 
       // Add vaccination outcome to patient
-      patient.capture = absentVaccination
+      patient.captureVaccination(absentVaccination)
     } else {
       delete patient.registered
     }

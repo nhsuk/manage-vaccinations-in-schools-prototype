@@ -155,7 +155,7 @@ export const vaccinationController = {
     data.vaccinations[updatedVaccination.uuid] = updatedVaccination
 
     // Add vaccination outcome to patient
-    patient.capture = updatedVaccination
+    patient.captureVaccination(updatedVaccination)
 
     // Add vaccination directly to CHIS record
     data.records[patient.nhsn].vaccinations.push(updatedVaccination.uuid)

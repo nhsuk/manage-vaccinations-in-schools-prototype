@@ -79,7 +79,7 @@ export const replyController = {
 
     // Record vaccination that has already been given
     if (vaccination) {
-      patient.capture = new Vaccination(vaccination)
+      patient.captureVaccination(vaccination)
       delete request.app.locals.vaccination
     }
 
@@ -95,14 +95,14 @@ export const replyController = {
       delete updatedReply.parent
     }
 
-    patient.respond = updatedReply
+    patient.addReply(updatedReply)
 
     if (triage.outcome) {
-      patient.triage = {
+      patient.recordTriage({
         ...triage,
         ...data?.wizard?.triage, // Wizard values
         ...(data.token && { created_user_uid: data.token?.uid })
-      }
+      })
     }
 
     // Clean up
@@ -357,7 +357,7 @@ export const replyController = {
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
-    patient.invite = session
+    patient.inviteToSession(session)
 
     request.flash('success', __('reply.send.success', { parent }))
     response.redirect(patient.uriInSession)
@@ -373,7 +373,7 @@ export const replyController = {
     const { patient } = response.locals
     const { __ } = response.locals
 
-    patient.respond = new Reply({
+    patient.addReply({
       ...reply,
       ...(data.reply?.note && { note: data.reply.note }),
       ...(data.token && { created_user_uid: data.token?.uid }),
@@ -402,7 +402,7 @@ export const replyController = {
     patient.replies[reply.uuid].invalid = true
 
     // Create a new reply
-    patient.respond = new Reply({
+    patient.addReply({
       ...reply,
       uuid: false,
       created: getToday(),
@@ -414,7 +414,7 @@ export const replyController = {
     })
 
     if (request.body.reply?.refusalReason === ReplyRefusal.AlreadyGiven) {
-      patient.capture = new Vaccination({
+      const vaccination = new Vaccination({
         outcome: VaccinationOutcome.AlreadyVaccinated,
         patient_uuid: patient.uuid,
         programme_pid: programme.pid,
@@ -422,6 +422,7 @@ export const replyController = {
         ...(data.reply?.note && { note }),
         ...(data.token && { created_user_uid: data.token?.uid })
       })
+      patient.captureVaccination(vaccination)
     }
 
     delete data.reply

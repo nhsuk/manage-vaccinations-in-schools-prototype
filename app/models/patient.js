@@ -25,6 +25,7 @@ import { Gillick } from './gillick.js'
 import { NoticeType } from './notice.js'
 import { Parent } from './parent.js'
 import { Record } from './record.js'
+import { Reply } from './reply.js'
 import { Vaccination } from './vaccination.js'
 
 export class ConsentOutcome {
@@ -304,7 +305,7 @@ export class Patient {
    *
    * @param {object} event - Event
    */
-  set log(event) {
+  addEvent(event) {
     this.events.push(new Event(event))
   }
 
@@ -313,14 +314,14 @@ export class Patient {
    *
    * @param {import('./cohort.js').Cohort} cohort - Cohort
    */
-  set select(cohort) {
+  addToCohort(cohort) {
     this.cohorts.push(cohort.uid)
-    this.log = {
+    this.addEvent({
       type: EventType.Select,
       name: `Selected for the ${cohort.name} cohort`,
       date: cohort.created,
       user_uid: cohort.created_user_uid
-    }
+    })
   }
 
   /**
@@ -328,14 +329,14 @@ export class Patient {
    *
    * @param {import('./cohort.js').Cohort} cohort - Cohort
    */
-  set unselect(cohort) {
+  removeFromCohort(cohort) {
     this.cohorts = this.cohorts.filter((uid) => uid !== cohort.uid)
-    this.log = {
+    this.addEvent({
       type: EventType.Select,
       name: `Removed from the ${cohort.name} cohort`,
       date: cohort.created,
       user_uid: cohort.created_user_uid
-    }
+    })
   }
 
   /**
@@ -343,14 +344,14 @@ export class Patient {
    *
    * @param {import('./session.js').Session} session - Session
    */
-  set invite(session) {
+  inviteToSession(session) {
     this.session_id = session.id
-    this.log = {
+    this.addEvent({
       type: EventType.Invite,
       name: `Invited to session at ${session.location.name}`,
       date: session.created,
       user_uid: session.created_user_uid
-    }
+    })
   }
 
   /**
@@ -358,14 +359,14 @@ export class Patient {
    *
    * @param {import('./session.js').Session} session - Session
    */
-  set disinvite(session) {
+  removeFromSession(session) {
     this.session_id = false
-    this.log = {
+    this.addEvent({
       type: EventType.Select,
       name: `Removed from the ${session.name} cohort`,
       date: session.created,
       user_uid: session.created_user_uid
-    }
+    })
   }
 
   /**
@@ -373,39 +374,39 @@ export class Patient {
    *
    * @param {object} target - Target of reminder
    */
-  set remind(target) {
-    this.log = {
+  sendReminder(target) {
+    this.addEvent({
       type: EventType.Remind,
       name: `Reminder to give consent sent to ${target.fullName}`,
       date: getToday(),
       user_uid: target.created_user_uid
-    }
+    })
   }
 
   /**
    * Assess Gillick competence
    *
-   * @param {import('./gillick.js').Gillick} gillick - Gillick
+   * @param {object} gillick - Gillick
    */
-  set assess(gillick) {
+  assessGillick(gillick) {
     const created = this.gillick && !Object.entries(this.gillick).length
 
     this.gillick = gillick
-    this.log = {
+    this.addEvent({
       type: EventType.Consent,
       name: `${created ? 'Completed' : 'Updated'} Gillick assessment`,
       note: gillick.note,
       date: created ? gillick.created : getToday(),
       user_uid: gillick.created_user_uid
-    }
+    })
   }
 
   /**
    * Record reply
    *
-   * @param {import('./reply.js').Reply} reply - Reply
+   * @param {object} reply - Reply
    */
-  set respond(reply) {
+  addReply(reply) {
     if (!reply) {
       return
     }
@@ -424,13 +425,13 @@ export class Patient {
       name = `${decision} in updated response from ${formattedParent}`
     }
 
-    this.replies[uuid] = reply
-    this.log = {
+    this.replies[uuid] = new Reply(reply)
+    this.addEvent({
       type: EventType.Consent,
       name,
       date: created ? reply.created : getToday(),
       user_uid: reply.created_user_uid
-    }
+    })
   }
 
   /**
@@ -438,20 +439,20 @@ export class Patient {
    *
    * @param {object} triage - Triage
    */
-  set triage(triage) {
+  recordTriage(triage) {
     const outcome =
       triage.outcome === ScreenOutcome.NeedsTriage
         ? 'Keep in triage'
         : triage.outcome
 
-    this.log = {
+    this.addEvent({
       type: EventType.Screen,
       name: `Triaged decision: ${outcome}`,
       note: triage.note,
       date: getToday(),
       user_uid: triage.created_user_uid,
       info_: triage
-    }
+    })
   }
 
   /**
@@ -459,29 +460,29 @@ export class Patient {
    *
    * @param {import('./registration.js').Registration} registration - Registration
    */
-  set register(registration) {
+  registerAttendance(registration) {
     this.registered = registration.registered
-    this.log = {
+    this.addEvent({
       type: EventType.Capture,
       name: registration.name,
       date: getToday(),
       user_uid: registration.created_user_uid
-    }
+    })
   }
 
   /**
    * Record pre-screening interview
    *
-   * @param {Event} interview - Interview
+   * @param {object} interview - Interview
    */
-  set preScreen(interview) {
-    this.log = {
+  preScreen(interview) {
+    this.addEvent({
       type: EventType.Screen,
       name: 'Completed pre-screening checks',
       note: interview.note,
       date: getToday(),
       user_uid: interview.user_uid
-    }
+    })
   }
 
   /**
@@ -489,7 +490,7 @@ export class Patient {
    *
    * @param {import('./vaccination.js').Vaccination} vaccination - Vaccination
    */
-  set capture(vaccination) {
+  captureVaccination(vaccination) {
     vaccination = new Vaccination(vaccination)
 
     let name
@@ -504,21 +505,21 @@ export class Patient {
     // Providing a boolean for vaccination enables patient outcome calculation
     this.vaccinations[vaccination.uuid] = vaccination.given
 
-    this.log = {
+    this.addEvent({
       type: EventType.Capture,
       name,
       note: vaccination.note,
       date: vaccination.updated || vaccination.created,
       user_uid: vaccination.created_user_uid
-    }
+    })
   }
 
   /**
-   * Flag with notice
+   * Add notice
    *
    * @param {import('./notice.js').Notice} notice - Notice
    */
-  set flag(notice) {
+  addNotice(notice) {
     let name
     switch (notice.type) {
       case NoticeType.Deceased:
@@ -543,29 +544,11 @@ export class Patient {
       default:
     }
 
-    this.log = {
+    this.addEvent({
       type: EventType.Notice,
       name,
       date: notice.created
-    }
-  }
-
-  /**
-   * Move between schools
-   *
-   * @param {object} movement - Movement
-   */
-  set move(movement) {
-    const name = `Moved from ${this.record.formatted.urn} to ${this.record.formatted.newUrn}`
-    this.record.urn = this.record?.pendingChanges?.urn
-    delete this.record?.pendingChanges?.urn
-
-    this.log = {
-      type: EventType.Invite,
-      name,
-      date: movement.created || getToday(),
-      user_uid: movement.created_user_uid
-    }
+    })
   }
 
   /**

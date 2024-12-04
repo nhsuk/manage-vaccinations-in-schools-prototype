@@ -14,8 +14,8 @@ export const unselectController = {
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
-    // Remove patient from session
-    patient.unselect = cohort
+    // Remove patient from cohort
+    patient.removeFromCohort(cohort)
 
     // Update patient record
     data.patients[patient.uuid] = patient
