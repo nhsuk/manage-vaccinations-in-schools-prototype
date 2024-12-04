@@ -30,6 +30,8 @@
     </h2>
 
     {% set recordDescriptionHtml %}
+      {{ status(patient.notice.name, "warning", "blue") if patient.notice }}
+
       {{ summaryList({
         rows: summaryRows(patient.record, {
           nhsn: {
