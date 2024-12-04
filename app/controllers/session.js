@@ -130,10 +130,13 @@ export const sessionController = {
     const { session } = request.app.locals
     const { data } = request.session
 
-    request.app.locals.session = new Session({
-      ...session, // Previous values
-      ...data?.wizard?.session // Wizard values
-    })
+    request.app.locals.session = new Session(
+      {
+        ...session, // Previous values
+        ...data?.wizard?.session // Wizard values
+      },
+      data
+    )
 
     response.render('session/edit')
   },
