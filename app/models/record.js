@@ -39,7 +39,7 @@ export class Gender {
  * @property {string} nhsn - NHS number
  * @property {string} firstName - First/given name
  * @property {string} lastName - Last/family name
- * @property {Date} dob - Date of birth
+ * @property {Date} [dob] - Date of birth
  * @property {object} [dob_] - Date of birth (from `dateInput`)
  * @property {Date} dod - Date of death
  * @property {Gender} gender - Gender
@@ -60,7 +60,7 @@ export class Record {
     this.nhsn = options?.nhsn || this.nhsNumber
     this.firstName = options.firstName
     this.lastName = options.lastName
-    this.dob = new Date(options.dob)
+    this.dob = options?.dob && new Date(options.dob)
     this.dob_ = options?.dob_
     this.dod = options?.dod ? new Date(options.dod) : undefined
     this.gender = options.gender

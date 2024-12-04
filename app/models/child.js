@@ -14,7 +14,7 @@ import { formatNhsNumber } from '../utils/string.js'
  * @property {string} lastName - Last name
  * @property {string} [preferredFirstName] - Preferred first name
  * @property {string} [preferredLastName] - Preferred last name
- * @property {Date|string} dob - Date of birth
+ * @property {Date} [dob] - Date of birth
  * @property {object} [dob_] - Date of birth (from `dateInput`)
  * @property {object} address - Address
  * @property {string} [gpSurgery] - GP surgery
@@ -27,7 +27,7 @@ export class Child {
     this.lastName = options.lastName || ''
     this.preferredFirstName = options?.preferredFirstName
     this.preferredLastName = options?.preferredLastName
-    this.dob = new Date(options.dob)
+    this.dob = options?.dob && new Date(options.dob)
     this.dob_ = options?.dob_
     this.address = options?.address
     this.gpSurgery = options?.gpSurgery
