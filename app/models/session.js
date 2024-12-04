@@ -15,6 +15,7 @@ import {
 import { getConsentWindow } from '../utils/session.js'
 import {
   formatLink,
+  formatLinkWithSecondaryText,
   formatList,
   formatMonospace,
   lowerCaseFirst
@@ -385,13 +386,20 @@ export class Session {
     const type = this.type === SessionType.School ? 'school' : 'clinic'
 
     if (this[type]) {
-      return {
-        name: this[type].name,
-        addressLine1: this[type].addressLine1,
-        addressLine2: this[type].addressLine2,
-        addressLevel1: this[type].addressLevel1,
-        postalCode: this[type].postalCode
-      }
+      return this[type].location
+    }
+  }
+
+  /**
+   * Get address
+   *
+   * @returns {import('./address.js').Address} Address
+   */
+  get address() {
+    const type = this.type === SessionType.School ? 'school' : 'clinic'
+
+    if (this[type]) {
+      return this[type].address
     }
   }
 
@@ -404,32 +412,6 @@ export class Session {
     if (this.location) {
       return `${this.type} at ${this.location.name}`
     }
-  }
-
-  get nameAndAddress() {
-    if (!this.location?.postalCode) {
-      return
-    }
-
-    let nameAndAddress = this.location.name
-
-    if (this.location.addressLine1) {
-      nameAndAddress += `, ${this.location.addressLine1}`
-    }
-
-    if (this.location.addressLine2) {
-      nameAndAddress += `, ${this.location.addressLine2}`
-    }
-
-    if (this.location.addressLevel1) {
-      nameAndAddress += `, ${this.location.addressLevel1}`
-    }
-
-    if (this.location.postalCode) {
-      nameAndAddress += `. ${this.location.postalCode}`
-    }
-
-    return nameAndAddress
   }
 
   get dateSummary() {
@@ -451,7 +433,10 @@ export class Session {
   }
 
   get details() {
-    return `<div><p>${this.link.location}</p></p>${this.dateSummary}</p></div>`
+    return `<div>
+      <p>${this.link.nameAndAddress}</p>
+      </p>${this.dateSummary}</p>
+    </div>`
   }
 
   /**
@@ -520,7 +505,10 @@ export class Session {
           }
         ),
       consentWindow,
-      school_urn: formatMonospace(this.school_urn)
+      school_urn: formatMonospace(this.school_urn),
+      location: Object.values(this.location)
+        .filter((string) => string)
+        .join(', ')
     }
   }
 
@@ -531,15 +519,11 @@ export class Session {
    */
   get link() {
     return {
-      location: this.location?.postalCode
-        ? `<span>${formatLink(this.uri, this.location.name)}</br>
-        <span class="nhsuk-u-secondary-text-color">
-          ${this.location.addressLine1},
-          ${this.location.addressLevel1},
-          ${this.location.postalCode}
-        </span>
-      </span>`
-        : formatLink(this.uri, this.location.name)
+      nameAndAddress: formatLinkWithSecondaryText(
+        this.uri,
+        this.location.name,
+        this.address?.formatted.singleline
+      )
     }
   }
 

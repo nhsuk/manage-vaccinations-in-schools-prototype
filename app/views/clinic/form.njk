@@ -18,29 +18,29 @@
     }) }}
 
     {{ input({
-      label: { text: __("clinic.addressLine1.label") },
+      label: { text: __("address.addressLine1.label") },
       autocomplete: "address-line1",
-      decorate: "clinic.addressLine1"
+      decorate: "clinic.address.addressLine1"
     }) }}
 
     {{ input({
-      label: { text: __("clinic.addressLine2.label") + " (optional)" },
+      label: { text: __("address.addressLine2.label") + " (optional)" },
       autocomplete: "address-line2",
-      decorate: "clinic.addressLine2"
+      decorate: "clinic.address.addressLine2"
     }) }}
 
     {{ input({
       classes: "nhsuk-u-width-two-thirds",
-      label: { text: __("clinic.addressLevel1.label") },
+      label: { text: __("address.addressLevel1.label") },
       autocomplete: "addressLevel1",
-      decorate: "clinic.addressLevel1"
+      decorate: "clinic.address.addressLevel1"
     }) }}
 
     {{ input({
       classes: "nhsuk-input--width-10",
-      label: { text: __("clinic.postalCode.label") },
+      label: { text: __("address.postalCode.label") },
       autocomplete: "postal-code",
-      decorate: "clinic.postalCode"
+      decorate: "clinic.address.postalCode"
     }) }}
   {% endcall %}
 {% endblock %}

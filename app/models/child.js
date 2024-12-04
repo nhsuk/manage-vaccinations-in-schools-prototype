@@ -7,6 +7,8 @@ import {
 } from '../utils/date.js'
 import { formatNhsNumber } from '../utils/string.js'
 
+import { Address } from './address.js'
+
 /**
  * @class Child
  * @property {string} nhsn - NHS number
@@ -16,7 +18,7 @@ import { formatNhsNumber } from '../utils/string.js'
  * @property {string} [preferredLastName] - Preferred last name
  * @property {Date} [dob] - Date of birth
  * @property {object} [dob_] - Date of birth (from `dateInput`)
- * @property {object} address - Address
+ * @property {Address} address - Address
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} [urn] - School
  */
@@ -29,7 +31,7 @@ export class Child {
     this.preferredLastName = options?.preferredLastName
     this.dob = options?.dob && new Date(options.dob)
     this.dob_ = options?.dob_
-    this.address = options?.address
+    this.address = options?.address && new Address(options.address)
     this.gpSurgery = options?.gpSurgery
     this.urn = options?.urn
   }
@@ -147,17 +149,12 @@ export class Child {
    * @returns {object} - Formatted values
    */
   get formatted() {
-    const address =
-      this.address && Object.values(this.address).every((value) => value !== '')
-        ? Object.values(this.address).join('<br>')
-        : ''
-
     return {
       nhsn: formatNhsNumber(this.nhsn),
       dob: formatDate(this.dob, {
         dateStyle: 'long'
       }),
-      address,
+      address: this.address && this.address.formatted.multiline,
       urn: schools[this.urn]?.name
     }
   }

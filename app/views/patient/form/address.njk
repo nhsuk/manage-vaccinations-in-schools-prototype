@@ -13,27 +13,27 @@
     }
   }) %}
     {{ input({
-      label: { text: __("record.address.line1") },
+      label: { text: __("address.addressLine1.label") },
       autocomplete: "address-line1",
       decorate: "record.address.addressLine1"
     }) }}
 
     {{ input({
-      label: { text: __("record.address.line2") },
+      label: { text: __("address.addressLine2.label") },
       autocomplete: "address-line2",
       decorate: "record.address.addressLine2"
     }) }}
 
     {{ input({
       classes: "nhsuk-u-width-two-thirds",
-      label: { text: __("record.address.level2") },
-      autocomplete: "address-level2",
-      decorate: "record.address.addressLevel2"
+      label: { text: __("address.addressLevel1.label") },
+      autocomplete: "address-level1",
+      decorate: "record.address.addressLevel1"
     }) }}
 
     {{ input({
       classes: "nhsuk-input--width-10",
-      label: { text: __("record.address.postalCode") },
+      label: { text: __("address.postalCode.label") },
       autocomplete: "postal-code",
       decorate: "record.address.postalCode"
     }) }}

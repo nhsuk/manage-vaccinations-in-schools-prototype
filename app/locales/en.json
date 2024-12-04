@@ -5,6 +5,21 @@
     "review": "Review",
     "archive": "Archive"
   },
+  "address": {
+    "label": "Address",
+    "addressLine1": {
+      "label": "Address line 1"
+    },
+    "addressLine2": {
+      "label": "Address line 2"
+    },
+    "addressLevel1": {
+      "label": "Town or city"
+    },
+    "postalCode": {
+      "label": "Postcode"
+    }
+  },
   "form": {
     "confirm": "Save changes",
     "continue": "Continue"
@@ -160,17 +175,8 @@
       "update": "{{clinic.name}} updated",
       "delete": "Clinic deleted"
     },
-    "addressLine1": {
-      "label": "Address line 1"
-    },
-    "addressLine2": {
-      "label": "Address line 2"
-    },
-    "addressLevel1": {
-      "label": "Town or city"
-    },
-    "postalCode": {
-      "label": "Postcode"
+    "address": {
+      "label": "Address"
     },
     "count": {
       "one": "%s clinic",
@@ -233,10 +239,7 @@
       "label": "Date of birth"
     },
     "address": {
-      "label": "Home address",
-      "postalCode": {
-        "label": "Postcode"
-      }
+      "label": "Home address"
     },
     "urn": {
       "label": "School"
@@ -246,6 +249,11 @@
     },
     "parent": {
       "label": "Parent"
+    },
+    "record": {
+      "postalCode": {
+        "label": "child.record.postalCode.label"
+      }
     }
   },
   "consent": {
@@ -429,11 +437,7 @@
       "address": {
         "title": "Home address",
         "label": "Child’s home address",
-        "hint": "Give the child’s primary address. We use this to confirm their identity.",
-        "line1": "Address line 1",
-        "line2": "Address line 2",
-        "level2": "Town or city",
-        "postalCode": "Postcode"
+        "hint": "Give the child’s primary address. We use this to confirm their identity."
       }
     },
     "parent": {
@@ -1227,12 +1231,7 @@
       "title": "What is the child’s gender?"
     },
     "address": {
-      "label": "Address",
-      "title": "What is the child’s address",
-      "line1": "Address line 1",
-      "line2": "Address line 2",
-      "level2": "Town or city",
-      "postalCode": "Postcode"
+      "label": "Address"
     },
     "postalCode": {
       "label": "Postcode"

@@ -188,9 +188,9 @@ export const consentController = {
       .map((school) => ({
         text: school.name,
         value: school.urn,
-        ...(school.location && {
+        ...(school.address && {
           attributes: {
-            'data-hint': school.formatted.address
+            'data-hint': school.address.formatted.singleline
           }
         })
       }))

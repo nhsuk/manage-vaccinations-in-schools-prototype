@@ -24,7 +24,7 @@
           {% set clinicRows = clinicRows | push([
             {
               header: __("clinic.name.label"),
-              html: clinic.formatted.location or "Not provided",
+              html: clinic.formatted.nameAndAddress or "Not provided",
               attributes: {
                 "data-sort": clinic.name
               }

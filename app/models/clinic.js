@@ -1,22 +1,18 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import { Address } from './address.js'
+
 /**
  * @class Clinic
  * @property {string} id - Organisation code
  * @property {string} [name] - Name
- * @property {string} [addressLine1] - Address line 1
- * @property {string} [addressLine2] - Address line 2
- * @property {string} [addressLevel1] - Address level 1
- * @property {string} postalCode - Postcode
+ * @property {Address} [address] - Address
  */
 export class Clinic {
   constructor(options) {
     this.id = options?.id || faker.helpers.replaceSymbols('?#####')
     this.name = options?.name
-    this.addressLine1 = options?.addressLine1
-    this.addressLine2 = options?.addressLine2
-    this.addressLevel1 = options?.addressLevel1
-    this.postalCode = options?.postalCode
+    this.address = options?.address && new Address(options.address)
   }
 
   /**
@@ -27,10 +23,7 @@ export class Clinic {
   get location() {
     return {
       name: this.name,
-      addressLine1: this.addressLine1,
-      addressLine2: this.addressLine2,
-      addressLevel1: this.addressLevel1,
-      postalCode: this.postalCode
+      ...this.address
     }
   }
 
@@ -41,33 +34,15 @@ export class Clinic {
    */
   get formatted() {
     return {
-      address: `${this.addressLine1}, ${this.addressLevel1}. ${this.postalCode}`,
-      location: this.postalCode
-        ? `<span>${this.name}</br>
-        <span class="nhsuk-u-secondary-text-color">
-          ${this.addressLine1},
-          ${this.addressLevel1},
-          ${this.postalCode}
-        </span>
-      </span>`
+      address: this.address?.formatted.multiline,
+      location: Object.values(this.location)
+        .filter((string) => string)
+        .join(', '),
+      nameAndAddress: this.address
+        ? `<span>${this.name}</br><span class="nhsuk-u-secondary-text-color">${
+            this.address.formatted.singleline
+          }</span></span>`
         : this.name
-    }
-  }
-
-  /**
-   * Get formatted links
-   *
-   * @returns {object} - Formatted links
-   */
-  get link() {
-    return {
-      location: `<span>${this.name}</br>
-        <span class="nhsuk-u-secondary-text-color">
-          ${this.addressLine1},
-          ${this.addressLevel1},
-          ${this.postalCode}
-        </span>
-      </span>`
     }
   }
 
@@ -77,6 +52,6 @@ export class Clinic {
    * @returns {string} - Namespace
    */
   get ns() {
-    return 'clinics'
+    return 'clinic'
   }
 }

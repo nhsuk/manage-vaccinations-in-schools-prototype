@@ -1,6 +1,9 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import schoolsData from '../datasets/schools.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
+
+import { Address } from './address.js'
 
 export class SchoolPhase {
   static Primary = 'Primary'
@@ -12,38 +15,39 @@ export class SchoolPhase {
  * @property {string} urn - URN
  * @property {string} name - Name
  * @property {SchoolPhase} [phase] - Phase
- * @property {string} [addressLine1] - Address line 1
- * @property {string} [addressLine2] - Address line 2
- * @property {string} [addressLevel2] - Address level 2
- * @property {string} [postalCode] - Postcode
+ * @property {Address} [address] - Address
  */
 export class School {
   constructor(options) {
     this.urn = (options.urn && Number(options.urn)) || faker.string.numeric(6)
     this.name = options?.name
     this.phase = options?.phase
-    this.addressLine1 = options?.addressLine1
-    this.addressLine2 = options?.addressLine2
-    this.addressLevel1 = options?.addressLevel1
-    this.postalCode = options?.postalCode
+    this.address = options?.address && new Address(options.address)
+  }
+
+  /**
+   * Generate school
+   *
+   * @param {number} urn - School URN
+   * @returns {School} - School
+   * @static
+   */
+  static generate(urn) {
+    return new School({
+      ...schoolsData[urn],
+      address: schoolsData[urn]
+    })
   }
 
   /**
    * Get location
    *
-   * @returns {object|undefined} - Location
+   * @returns {object} - Location
    */
   get location() {
-    if (!this.postalCode) {
-      return
-    }
-
     return {
       name: this.name,
-      addressLine1: this.addressLine1,
-      addressLine2: this.addressLine2,
-      addressLevel1: this.addressLevel1,
-      postalCode: this.postalCode
+      ...this.address
     }
   }
 
@@ -54,14 +58,15 @@ export class School {
    */
   get formatted() {
     return {
-      address: `${this.addressLine1}, ${this.addressLevel1}. ${this.postalCode}`,
-      location: `<span>${this.name}</br>
-        <span class="nhsuk-u-secondary-text-color">
-          ${this.addressLine1},
-          ${this.addressLevel1},
-          ${this.postalCode}
-        </span>
-      </span>`,
+      address: this.address?.formatted.multiline,
+      location: Object.values(this.location)
+        .filter((string) => string)
+        .join(', '),
+      nameAndAddress: this.address
+        ? `<span>${this.name}</br><span class="nhsuk-u-secondary-text-color">${
+            this.address.formatted.singleline
+          }</span></span>`
+        : this.name,
       urn: formatMonospace(this.urn)
     }
   }
@@ -73,14 +78,7 @@ export class School {
    */
   get link() {
     return {
-      name: formatLink(this.uri, this.name),
-      location: `<span>${formatLink(this.uri, this.name)}</br>
-        <span class="nhsuk-u-secondary-text-color">
-          ${this.addressLine1},
-          ${this.addressLevel1},
-          ${this.postalCode}
-        </span>
-      </span>`
+      name: formatLink(this.uri, this.name)
     }
   }
 

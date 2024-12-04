@@ -19,7 +19,7 @@
       {% set sessionRows = sessionRows | push([
         {
           header: __("session.location.label"),
-          html: session.link.location or "Not provided"
+          html: session.link.nameAndAddress or "Not provided"
         },
         {
           header: __("session.dates.label"),

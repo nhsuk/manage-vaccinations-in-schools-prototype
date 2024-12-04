@@ -18,6 +18,7 @@ import {
   stringToBoolean
 } from '../utils/string.js'
 
+import { Address } from './address.js'
 import { Parent } from './parent.js'
 
 const primarySchools = Object.values(schools).filter(
@@ -43,7 +44,7 @@ export class Gender {
  * @property {object} [dob_] - Date of birth (from `dateInput`)
  * @property {Date} dod - Date of death
  * @property {Gender} gender - Gender
- * @property {object} address - Address
+ * @property {Address} [address] - Address
  * @property {string} gpSurgery - GP surgery
  * @property {string} urn - School URN
  * @property {string} registrationGroup - Registration group
@@ -64,7 +65,9 @@ export class Record {
     this.dob_ = options?.dob_
     this.dod = options?.dod ? new Date(options.dod) : undefined
     this.gender = options.gender
-    this.address = !sensitive ? options.address : undefined
+    this.address = !sensitive
+      ? options?.address && new Address(options.address)
+      : undefined
     this.gpSurgery = options.gpSurgery || ''
     this.urn = options.urn
     this.registrationGroup = options?.registrationGroup
@@ -177,11 +180,7 @@ export class Record {
       lastName,
       dob,
       gender,
-      address: {
-        addressLine1: faker.location.streetAddress(),
-        addressLevel2: faker.location.city(),
-        postalCode: faker.location.zipCode({ format: 'CV## #??' })
-      },
+      address: Address.generate(),
       gpSurgery,
       urn,
       registrationGroup,
@@ -297,7 +296,7 @@ export class Record {
    * @returns {string|undefined} - Post code
    */
   get postalCode() {
-    if (this.address) {
+    if (this.address?.postalCode) {
       return this.address.postalCode
     }
   }
@@ -343,7 +342,7 @@ export class Record {
       yearGroupWithRegistration: this.registrationGroup
         ? `${yearGroup} (${this.registrationGroup})`
         : yearGroup,
-      address: this.address && Object.values(this.address).join('<br>'),
+      address: this.address && this.address.formatted.multiline,
       urn: schools[this.urn].name,
       newUrn: this.pendingChanges?.urn && schools[this.pendingChanges.urn].name,
       parent1: this.parent1 && formatParent(this.parent1),

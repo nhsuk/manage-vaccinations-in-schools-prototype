@@ -74,7 +74,7 @@ export const vaccinationController = {
     const session = new Session(data.sessions[session_id], data)
 
     const vaccination = new Vaccination({
-      location: session.nameAndAddress,
+      location: session.formatted.location,
       urn: session.uri,
       patient_uuid,
       programme_pid: programme.pid,
@@ -168,7 +168,7 @@ export const vaccinationController = {
             [`/${uuid}/${form}/batch-id`]: () => {
               return !defaultBatchForProgramme
             },
-            ...(!session.nameAndAddress && {
+            ...(!session.address && {
               [`/${uuid}/${form}/location`]: {}
             }),
             [`/${uuid}/${form}/check-answers`]: {}

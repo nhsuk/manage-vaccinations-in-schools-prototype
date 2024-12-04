@@ -11,7 +11,7 @@
     title: title
   }) }}
 
-  {% for phase, schools in schools | groupby("phase") %}
+  {% for phase, schools in schools | selectattr("phase") | groupby("phase") %}
     {% set schoolRows = [] %}
     {% for school in schools | sort(false, false, "name") %}
       {% set schoolRows = schoolRows | push([
@@ -28,7 +28,7 @@
         },
         {
           header: __("school.address.label"),
-          html: school.formatted.address or "Not provided"
+          html: school.address.formatted.singleline or "Not provided"
         }
       ]) %}
     {% endfor %}

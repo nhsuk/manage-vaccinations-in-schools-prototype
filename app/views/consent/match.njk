@@ -43,8 +43,8 @@
         html: link("/consents/" + consent.uuid + "/link?nhsn=" + patient.nhsn, patient.record.fullName) + ('<br><span class="nhsuk-u-font-size-16">Known as: ' + patient.preferredNames + "</span>" if patient.preferredNames)
       },
       {
-        header: __("child.address.postalCode.label"),
-        text: patient.record.address.postalCode or "Not provided"
+        header: __("record.postalCode.label"),
+        text: patient.record.postalCode or "Not provided"
       },
       {
         header: __("child.dob.label"),
@@ -74,7 +74,7 @@
           }
         },
         {
-          text: __("child.address.postalCode.label"),
+          text: __("record.postalCode.label"),
           attributes: {
             "data-col": "postalCode"
           }
