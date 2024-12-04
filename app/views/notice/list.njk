@@ -26,8 +26,8 @@
           html: notice.patient.link.fullName
         },
         {
-          header: __("notice.name.label"),
-          html: notice.name or "Not provided"
+          header: __("patient.notice.label"),
+          html: notice.patient.notice.name or "Not provided"
         },
         {
           header: __("actions.label"),
@@ -50,7 +50,7 @@
       head: [
         { text: __("notice.created.label") },
         { text: __("patient.label") },
-        { text: __("notice.name.label") },
+        { text: __("patient.notice.label") },
         { text: __("actions.label") }
       ],
       rows: noticeRows

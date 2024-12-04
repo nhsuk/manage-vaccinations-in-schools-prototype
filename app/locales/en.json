@@ -918,9 +918,6 @@
     "created": {
       "label": "Date"
     },
-    "name": {
-      "label": "Notice"
-    },
     "action": {
       "title": "Are you sure you want to %s the notice on this patient?",
       "description": "This operation cannot be undone.",
@@ -1079,6 +1076,9 @@
     "lastReminderDate": {
       "label": "Last reminder sent",
       "title": "Last reminder sent %s"
+    },
+    "notice": {
+      "label": "Notice"
     },
     "results": "Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> children",
     "count": {

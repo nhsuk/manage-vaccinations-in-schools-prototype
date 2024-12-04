@@ -2,6 +2,8 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { formatDate, getToday } from '../utils/date.js'
 
+import { Patient } from './patient.js'
+
 export class NoticeType {
   static Deceased = 'Deceased'
   static Hidden = 'Hidden'
@@ -11,6 +13,9 @@ export class NoticeType {
 
 /**
  * @class Notice
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} uuid - UUID
  * @property {Date} date - Creation date
  * @property {NoticeType} type - Notice type
@@ -19,7 +24,8 @@ export class NoticeType {
  * @property {string} patient_uuid - Patient notice applies to
  */
 export class Notice {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.uuid = options.uuid || faker.string.uuid()
     this.created = options?.created ? new Date(options.created) : getToday()
     this.type = options.type
@@ -31,6 +37,22 @@ export class Notice {
       type,
       patient_uuid: patient.uuid
     })
+  }
+
+  /**
+   * Get patient
+   *
+   * @returns {Patient} - Patient
+   */
+  get patient() {
+    if (this.context.patients && this.patient_uuid) {
+      const patient = this.context.patients[this.patient_uuid]
+      if (patient) {
+        return new Patient(patient)
+      }
+    } else {
+      console.warn('Provide context to get the patient for this notice')
+    }
   }
 
   /**

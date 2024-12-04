@@ -191,14 +191,23 @@ export class Patient {
   }
 
   /**
-   * Get notices
+   * Get all notices
    *
-   * @returns {Array} - Reminders sent
+   * @returns {Array<Event>} - Notice events
    */
   get notices() {
     return this.events
       .map((event) => new Event(event))
       .filter((event) => event.type === EventType.Notice)
+  }
+
+  /**
+   * Get most recent notice
+   *
+   * @returns {Event} - Notice event
+   */
+  get notice() {
+    return this.notices && this.notices[0]
   }
 
   /**
