@@ -55,7 +55,7 @@ export class Cohort {
    * Generate fake cohort
    *
    * @param {import('./programme.js').Programme} programme - Programme
-   * @param {Map<Record>} recordsMap - Records
+   * @param {Map<import('./record.js').Record>} recordsMap - Records
    * @param {number} yearGroup - Year group
    * @param {import('./user.js').User} user - User
    * @returns {Cohort} - Cohort
