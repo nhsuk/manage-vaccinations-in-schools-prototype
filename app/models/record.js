@@ -34,12 +34,6 @@ export class Gender {
   static NotSpecified = 'Not specified'
 }
 
-export class GPRegistered {
-  static Yes = 'Registered'
-  static No = 'Not registered'
-  static Unknown = 'Not known'
-}
-
 /**
  * @class Child Health Information Service (CHIS) record
  * @property {string} nhsn - NHS number
@@ -50,8 +44,7 @@ export class GPRegistered {
  * @property {Date} dod - Date of death
  * @property {Gender} gender - Gender
  * @property {object} address - Address
- * @property {GPRegistered} gpRegistered - Registered with a GP
- * @property {string} [gpSurgery] - GP surgery
+ * @property {string} gpSurgery - GP surgery
  * @property {string} urn - School URN
  * @property {string} registrationGroup - Registration group
  * @property {Parent} [parent1] - Parent 1
@@ -72,8 +65,7 @@ export class Record {
     this.dod = options?.dod ? new Date(options.dod) : undefined
     this.gender = options.gender
     this.address = !sensitive ? options.address : undefined
-    this.gpRegistered = options.gpRegistered
-    this.gpSurgery = options.gpSurgery
+    this.gpSurgery = options.gpSurgery || ''
     this.urn = options.urn
     this.registrationGroup = options?.registrationGroup
     this.parent1 =
@@ -105,14 +97,12 @@ export class Record {
     const lastName = faker.person.lastName().replace(`'`, '’')
     const phase = faker.helpers.arrayElement(['Primary', 'Secondary'])
 
-    // GP
-    const gpRegistered = faker.helpers.arrayElement(Object.values(GPRegistered))
-
+    // GP surgery
     let gpSurgery
-    const gpSurgeryNames = Object.values(gpSurgeries).map(
-      (surgery) => surgery.name
-    )
-    if (gpRegistered === GPRegistered.Yes) {
+    if (faker.datatype.boolean(0.8)) {
+      const gpSurgeryNames = Object.values(gpSurgeries).map(
+        (surgery) => surgery.name
+      )
       gpSurgery = faker.helpers.arrayElement(gpSurgeryNames)
     }
 
@@ -192,7 +182,6 @@ export class Record {
         addressLevel2: faker.location.city(),
         postalCode: faker.location.zipCode({ format: 'CV## #??' })
       },
-      gpRegistered,
       gpSurgery,
       urn,
       registrationGroup,
@@ -355,10 +344,6 @@ export class Record {
         ? `${yearGroup} (${this.registrationGroup})`
         : yearGroup,
       address: this.address && Object.values(this.address).join('<br>'),
-      gpSurgery:
-        this.gpRegistered === GPRegistered.Yes
-          ? this.gpSurgery
-          : this.gpRegistered,
       urn: schools[this.urn].name,
       newUrn: this.pendingChanges?.urn && schools[this.pendingChanges.urn].name,
       parent1: this.parent1 && formatParent(this.parent1),

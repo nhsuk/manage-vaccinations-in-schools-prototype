@@ -7,8 +7,6 @@ import {
 } from '../utils/date.js'
 import { formatNhsNumber } from '../utils/string.js'
 
-import { GPRegistered } from './record.js'
-
 /**
  * @class Child
  * @property {string} nhsn - NHS number
@@ -19,7 +17,6 @@ import { GPRegistered } from './record.js'
  * @property {Date|string} dob - Date of birth
  * @property {object} [dob_] - Date of birth (from `dateInput`)
  * @property {object} address - Address
- * @property {GPRegistered} [gpRegistered] - Registered with a GP
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} [urn] - School
  */
@@ -33,7 +30,6 @@ export class Child {
     this.dob = new Date(options.dob)
     this.dob_ = options?.dob_
     this.address = options?.address
-    this.gpRegistered = options?.gpRegistered
     this.gpSurgery = options?.gpSurgery
     this.urn = options?.urn
   }
@@ -64,7 +60,6 @@ export class Child {
       lastName: record.lastName,
       dob: record.dob,
       address: record.address,
-      gpRegistered: record.gpRegistered,
       gpSurgery: record.gpSurgery,
       urn: record.urn
     })
@@ -163,10 +158,6 @@ export class Child {
         dateStyle: 'long'
       }),
       address,
-      gpSurgery:
-        this.gpRegistered === GPRegistered.Yes
-          ? this.gpSurgery
-          : this.gpRegistered,
       urn: schools[this.urn]?.name
     }
   }

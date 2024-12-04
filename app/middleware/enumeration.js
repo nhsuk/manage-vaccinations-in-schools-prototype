@@ -14,7 +14,7 @@ import {
   TriageOutcome
 } from '../models/patient.js'
 import { ProgrammeType } from '../models/programme.js'
-import { Gender, GPRegistered } from '../models/record.js'
+import { Gender } from '../models/record.js'
 import { RegistrationOutcome } from '../models/registration.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { SchoolPhase } from '../models/school.js'
@@ -43,7 +43,6 @@ export const enumeration = (request, response, next) => {
   response.locals.EventType = EventType
   response.locals.Gender = Gender
   response.locals.GillickCompetent = GillickCompetent
-  response.locals.GPRegistered = GPRegistered
   response.locals.HealthQuestion = HealthQuestion
   response.locals.ImportStatus = ImportStatus
   response.locals.ImportType = ImportType
