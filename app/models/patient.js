@@ -12,7 +12,12 @@ import {
   getConsentRefusalReasons,
   getPreferredNames
 } from '../utils/reply.js'
-import { formatLink, formatParent, stringToBoolean } from '../utils/string.js'
+import {
+  formatLink,
+  formatLinkWithSecondaryText,
+  formatParent,
+  stringToBoolean
+} from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 
 import { Event, EventType } from './event.js'
@@ -569,14 +574,13 @@ export class Patient {
    * @returns {object} - Formatted links
    */
   get link() {
-    let fullNameInSession = `${formatLink(this.uriInSession, this.fullName)}`
-    if (this.preferredNames) {
-      fullNameInSession += `<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">Known as: ${this.preferredNames}</span>`
-    }
-
     return {
       fullName: formatLink(this.uri, this.fullName),
-      fullNameInSession
+      fullNameInSession: formatLinkWithSecondaryText(
+        this.uriInSession,
+        this.fullName,
+        this.preferredNames
+      )
     }
   }
 

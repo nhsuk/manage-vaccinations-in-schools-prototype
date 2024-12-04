@@ -67,6 +67,28 @@ export function formatLink(href, text, attributes = {}) {
 }
 
 /**
+ * Format link with optional secondary text
+ *
+ * @param {string} href - Hyperlink reference
+ * @param {string} text - Hyperlink text
+ * @param {object} [secondary] - Secondary text
+ * @returns {string} HTML anchor decorated with nhsuk-link class
+ */
+export function formatLinkWithSecondaryText(href, text, secondary) {
+  let html = text
+
+  if (href) {
+    html = formatLink(href, text)
+  }
+
+  if (secondary) {
+    html += `<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">${secondary}</span>`
+  }
+
+  return `<span>${html}</span>`
+}
+
+/**
  * Format array as HTML list
  *
  * @param {Array} array - Array

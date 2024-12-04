@@ -3,7 +3,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { formatDate, getToday } from '../utils/date.js'
 import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
 import {
-  formatLink,
+  formatLinkWithSecondaryText,
   formatMarkdown,
   formatOther,
   stringToBoolean
@@ -216,13 +216,11 @@ export class Reply {
     const fullName = this.fullName || 'Name unknown'
 
     return {
-      fullNameAndRelationship: this.relationship
-        ? `<span>${formatLink(this.uri, fullName)}</br>
-          <span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">
-            ${this.relationship}
-          </span>
-        </span>`
-        : formatLink(this.uri, fullName)
+      fullNameAndRelationship: formatLinkWithSecondaryText(
+        this.uri,
+        fullName,
+        this.relationship
+      )
     }
   }
 
