@@ -33,9 +33,9 @@
         created: {
           href: vaccination.uri + "/new/created"
         },
-        created_user_uid: {
-          value: users[vaccination.created_user_uid].fullName
-        } if vaccination.created_user_uid,
+        created_user: {
+          href: vaccination.uri + "/new/created-user-uid"
+        },
         location: {
           href: vaccination.uri + "/new/location"
         },

@@ -18,6 +18,7 @@ import { Batch } from './batch.js'
 import { ConsentOutcome, Patient } from './patient.js'
 import { Programme, ProgrammeType } from './programme.js'
 import { Session } from './session.js'
+import { User } from './user.js'
 import { Vaccine, VaccineMethod } from './vaccine.js'
 
 export class VaccinationOutcome {
@@ -285,7 +286,7 @@ export class Vaccination {
    * @returns {Patient} - Patient
    */
   get patient() {
-    if (this.context.patients && this.patient_uuid) {
+    if (this.context?.patients && this.patient_uuid) {
       const patient = this.context.patients[this.patient_uuid]
       if (patient) {
         return new Patient(patient)
@@ -296,12 +297,28 @@ export class Vaccination {
   }
 
   /**
+   * Get user who performed vaccination
+   *
+   * @returns {User} - User
+   */
+  get created_user() {
+    if (this.context?.users && this.created_user_uid) {
+      const user = this.context.users[this.created_user_uid]
+      if (user) {
+        return new User(user)
+      }
+    } else {
+      console.warn('Provide context to get the user for this vaccination')
+    }
+  }
+
+  /**
    * Get programme
    *
    * @returns {Programme} - Programme
    */
   get programme() {
-    if (this.context.programmes && this.programme_pid) {
+    if (this.context?.programmes && this.programme_pid) {
       const programme = this.context.programmes[this.programme_pid]
       if (programme) {
         return new Programme(programme)
@@ -345,6 +362,7 @@ export class Vaccination {
       created_date: formatDate(this.created, {
         dateStyle: 'long'
       }),
+      created_user: this.created_user?.fullName || '',
       updated: formatDate(this.updated, {
         day: 'numeric',
         month: 'long',

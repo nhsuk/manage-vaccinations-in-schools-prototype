@@ -1900,6 +1900,9 @@
       "label": "Nurse",
       "title": "Which nurse gave the vaccination?"
     },
+    "created_user": {
+      "label": "Nurse"
+    },
     "updated": {
       "label": "Record updated"
     },

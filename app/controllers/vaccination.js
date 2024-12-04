@@ -20,7 +20,7 @@ export const vaccinationController = {
     const { uuid } = request.params
     const { data } = request.session
 
-    const vaccination = new Vaccination(data.vaccinations[uuid])
+    const vaccination = new Vaccination(data.vaccinations[uuid], data)
     const patient_uuid = vaccination?.patient_uuid || patient?.uuid
     const record = new Record(data.patients[patient_uuid].record)
 
@@ -56,10 +56,13 @@ export const vaccinationController = {
     const { data } = request.session
 
     request.app.locals.back = referrer || back || vaccination.uri
-    request.app.locals.vaccination = new Vaccination({
-      ...vaccination, // Previous values
-      ...data?.wizard?.vaccination // Wizard values,
-    })
+    request.app.locals.vaccination = new Vaccination(
+      {
+        ...vaccination, // Previous values
+        ...data?.wizard?.vaccination // Wizard values,
+      },
+      data
+    )
 
     response.render('vaccination/edit')
   },
