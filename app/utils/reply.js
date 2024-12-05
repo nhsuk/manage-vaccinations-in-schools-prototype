@@ -9,6 +9,7 @@ import { ProgrammeType } from '../models/programme.js'
 import { Reply, ReplyDecision, ReplyRefusal } from '../models/reply.js'
 
 import { getEnumKeyAndValue } from './enum.js'
+import { formatParentalRelationship } from './string.js'
 
 /**
  * Add example answers to health questions
@@ -72,13 +73,14 @@ export function getConsentHealthAnswers(replies) {
       const hasSameAnswers = repliesWithHealthAnswers.every(
         (reply) => reply.healthAnswers[key] === value
       )
+      const relationship = formatParentalRelationship(reply.parent)
 
       if (hasSingleReply) {
-        answers[key][reply.relationship] = value
+        answers[key][relationship] = value
       } else if (hasSameAnswers) {
         answers[key].All = value
       } else {
-        answers[key][reply.relationship] = value
+        answers[key][relationship] = value
       }
     }
   }

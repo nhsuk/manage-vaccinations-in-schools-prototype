@@ -201,6 +201,18 @@ export function formatParent(parent, includeTelephone = true) {
 }
 
 /**
+ * Format parental relationship, falling back to name else unknown
+ *
+ * @param {import('../models/parent.js').Parent} parent - Patent
+ * @returns {string|undefined} Formatted parent HTML
+ */
+export function formatParentalRelationship(parent) {
+  if (!parent) return
+
+  return parent.relationship || parent.fullName || 'Name unknown'
+}
+
+/**
  * Append other value, if one is provided
  *
  * @param {string} other - Other option name (typically ‘Other’)
