@@ -30,7 +30,7 @@
         } if showDates,
         {
           header: __("session.programmes.label"),
-          html: data.programmes[session.programmes[0]].name or "Not provided"
+          html: session.formatted.programmes or "Not provided"
         },
         {
           header: __("session.patients.label"),

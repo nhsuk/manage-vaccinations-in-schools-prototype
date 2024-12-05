@@ -466,9 +466,9 @@ export class Session {
         ? this.dates.map((date) => formatDate(date, { dateStyle: 'full' }))
         : ''
 
-    const formattedProgrammes = this.programmes.map((programme) => {
+    const programmeList = this.programmes.map((pid) => {
       const { name } = Object.values(programmeTypes).find(
-        (type) => type.pid === programme
+        (type) => type.pid === pid
       )
       return name
     })
@@ -494,7 +494,7 @@ export class Session {
       reminderWeeks: `Send ${reminderWeeks} before each session</br>
       <span class="nhsuk-u-secondary-text-color">First: ${formattedNextReminderDate}</span>`,
       close: formatDate(this.close, { dateStyle: 'full' }),
-      programmes: prototypeFilters.formatList(formattedProgrammes),
+      programmes: programmeList.join('<br>'),
       consentUrl:
         this.consentUrl &&
         formatLink(
