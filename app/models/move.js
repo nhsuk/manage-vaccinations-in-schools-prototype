@@ -42,13 +42,13 @@ export class Move {
    * @returns {Record|undefined} - Record
    */
   get record() {
-    if (this.context && this.record_nhsn) {
-      const record = this.context.records[this.record_nhsn]
+    try {
+      const record = this.context?.records[this.record_nhsn]
       if (record) {
         return new Record(record)
       }
-    } else {
-      console.warn('Provide context to get the record for this move')
+    } catch (error) {
+      console.error('Move.record', error.message)
     }
   }
 

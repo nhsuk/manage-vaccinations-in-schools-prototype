@@ -90,13 +90,13 @@ export class Batch {
    * @returns {Vaccine} - Vaccine
    */
   get vaccine() {
-    if (this.context && this.vaccine_gtin) {
-      const vaccine = this.context.vaccines[this.vaccine_gtin]
+    try {
+      const vaccine = this.context?.vaccines[this.vaccine_gtin]
       if (vaccine) {
         return new Vaccine(vaccine)
       }
-    } else {
-      console.warn('Provide context to get the vaccine for this batch')
+    } catch (error) {
+      console.error('Batch.vaccine', error.message)
     }
   }
 

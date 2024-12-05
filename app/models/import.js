@@ -104,13 +104,13 @@ export class Import {
    * @returns {User} - User
    */
   get created_user() {
-    if (this.context?.users && this.created_user_uid) {
-      const user = this.context.users[this.created_user_uid]
+    try {
+      const user = this.context?.users[this.created_user_uid]
       if (user) {
         return new User(user)
       }
-    } else {
-      console.warn('Provide context to get the user for this import')
+    } catch (error) {
+      console.error('Import.created_user', error.message)
     }
   }
 
@@ -120,13 +120,13 @@ export class Import {
    * @returns {Programme} - User
    */
   get programme() {
-    if (this.context?.programmes && this.programme_pid) {
-      const programme = this.context.programmes[this.programme_pid]
+    try {
+      const programme = this.context?.programmes[this.programme_pid]
       if (programme) {
         return new Programme(programme)
       }
-    } else {
-      console.warn('Provide context to get the programme for this import')
+    } catch (error) {
+      console.error('Import.programme', error.message)
     }
   }
 

@@ -188,13 +188,13 @@ export class Reply {
    * @returns {User} - User
    */
   get created_user() {
-    if (this.context?.users && this.created_user_uid) {
-      const user = this.context.users[this.created_user_uid]
+    try {
+      const user = this.context?.users[this.created_user_uid]
       if (user) {
         return new User(user)
       }
-    } else {
-      console.warn('Provide context to get the user for this reply')
+    } catch (error) {
+      console.error('Reply.created_user', error.message)
     }
   }
 
@@ -204,13 +204,13 @@ export class Reply {
    * @returns {Patient} - Patient
    */
   get patient() {
-    if (this.context?.patients && this.patient_uuid) {
-      const patient = this.context.patients[this.patient_uuid]
+    try {
+      const patient = this.context?.patients[this.patient_uuid]
       if (patient) {
         return new Patient(patient)
       }
-    } else {
-      console.warn('Provide context to get the patient for this reply')
+    } catch (error) {
+      console.error('Reply.patient', error.message)
     }
   }
 
@@ -220,13 +220,13 @@ export class Reply {
    * @returns {Session} - Session
    */
   get session() {
-    if (this.context?.sessions && this.session_id) {
-      const session = this.context.sessions[this.session_id]
+    try {
+      const session = this.context?.sessions[this.session_id]
       if (session) {
         return new Session(session)
       }
-    } else {
-      console.warn('Provide context to get the session for this reply')
+    } catch (error) {
+      console.error('Reply.session', error.message)
     }
   }
 

@@ -45,13 +45,13 @@ export class Notice {
    * @returns {Patient} - Patient
    */
   get patient() {
-    if (this.context.patients && this.patient_uuid) {
-      const patient = this.context.patients[this.patient_uuid]
+    try {
+      const patient = this.context?.patients[this.patient_uuid]
       if (patient) {
         return new Patient(patient)
       }
-    } else {
-      console.warn('Provide context to get the patient for this notice')
+    } catch (error) {
+      console.error('Notice.patient', error.message)
     }
   }
 

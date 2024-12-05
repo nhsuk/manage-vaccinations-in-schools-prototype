@@ -326,13 +326,13 @@ export class Session {
    * @returns {Clinic} - Clinic
    */
   get clinic() {
-    if (this.context && this.clinic_id) {
-      const clinic = this.context.clinics[this.clinic_id]
+    try {
+      const clinic = this.context?.clinics[this.clinic_id]
       if (clinic) {
         return new Clinic(clinic)
       }
-    } else {
-      console.warn('Provide context to get the clinic for this session')
+    } catch (error) {
+      console.error('Session.clinic', error.message)
     }
   }
 
@@ -342,13 +342,13 @@ export class Session {
    * @returns {School} - School
    */
   get school() {
-    if (this.context && this.school_urn) {
-      const school = this.context.schools[this.school_urn]
+    try {
+      const school = this.context?.schools[this.school_urn]
       if (school) {
         return new School(school)
       }
-    } else {
-      console.warn('Provide context to get the school for this session')
+    } catch (error) {
+      console.error('Session.school', error.message)
     }
   }
 
@@ -358,7 +358,7 @@ export class Session {
    * @returns {Array<Patient>} - Patients
    */
   get patients() {
-    if (this.context.patients && this.id) {
+    if (this.context?.patients && this.id) {
       return Object.values(this.context.patients)
         .map((patient) => new Patient(patient))
         .filter(({ session_id }) => session_id === this.id)

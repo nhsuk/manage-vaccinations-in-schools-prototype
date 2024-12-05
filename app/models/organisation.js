@@ -75,11 +75,11 @@ export class Organisation {
    * @returns {Array<Clinic>} - Clinics
    */
   get clinics() {
-    if (this.context && this.ids) {
-      return this.ids.map((id) => new Clinic(this.context.clinics[id]))
+    try {
+      return this?.ids.map((id) => new Clinic(this.context?.clinics[id]))
+    } catch (error) {
+      console.error('Organisation.clinics', error.message)
     }
-
-    console.warn('Provide context to get the clinics for this organisation')
   }
 
   /**
@@ -88,11 +88,11 @@ export class Organisation {
    * @returns {Array<School>} - Schools
    */
   get schools() {
-    if (this.context && this.urns) {
-      return this.urns.map((urn) => new School(this.context.schools[urn]))
+    try {
+      return this?.urns.map((urn) => new School(this.context?.schools[urn]))
+    } catch (error) {
+      console.error('Organisation.schools', error.message)
     }
-
-    console.warn('Provide context to get the schools for this organisation')
   }
 
   /**

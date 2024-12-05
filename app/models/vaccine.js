@@ -121,13 +121,13 @@ export class Vaccine {
    * @returns {Array<Batch>} - Batches
    */
   get batches() {
-    if (this.context && this.gtin) {
+    try {
       return Object.values(this.context.batches)
         .filter((batch) => batch.vaccine_gtin === this.gtin)
         .map((batch) => new Batch(batch))
+    } catch (error) {
+      console.error('Vaccine.batches', error.message)
     }
-
-    console.warn('Provide context to get the batches for this vaccine')
   }
 
   /**
