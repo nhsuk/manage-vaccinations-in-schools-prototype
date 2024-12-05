@@ -10,12 +10,25 @@ export class SchoolPhase {
   static Secondary = 'Secondary'
 }
 
+export class SchoolTerm {
+  static Autumn = 'Autumn'
+  static Spring = 'Spring'
+  static Summer = 'Summer'
+}
+
+export const schoolTerms = {
+  [SchoolTerm.Autumn]: { from: '2024-09-03', to: '2024-12-13' },
+  [SchoolTerm.Spring]: { from: '2025-01-06', to: '2025-04-11' },
+  [SchoolTerm.Summer]: { from: '2025-04-28', to: '2025-07-21' }
+}
+
 /**
  * @class School
  * @property {string} urn - URN
  * @property {string} name - Name
  * @property {SchoolPhase} [phase] - Phase
  * @property {Address} [address] - Address
+ * @property {object} terms - Term dates
  */
 export class School {
   constructor(options) {
@@ -23,6 +36,7 @@ export class School {
     this.name = options?.name
     this.phase = options?.phase
     this.address = options?.address && new Address(options.address)
+    this.terms = options?.terms || schoolTerms
   }
 
   /**
