@@ -18,11 +18,11 @@ export class OrganisationDefaults {
  * @property {string} [name] - Full name
  * @property {string} [email] - Email address
  * @property {string} [tel] - Phone number
- * @property {Array<string>} [ids] - Clinic organisation IDs
- * @property {Array<string>} [urns] - School URNs
  * @property {number} [sessionOpenWeeks] - Weeks before session to request consent
  * @property {number} [SessionReminderWeeks] - Days before sending first reminder
  * @property {string} [password] - Shared password
+ * @property {Array<string>} [clinic_ids] - Clinic organisation IDs
+ * @property {Array<string>} [school_urns] - School URNs
  */
 export class Organisation {
   constructor(options, context) {
@@ -31,8 +31,6 @@ export class Organisation {
     this.name = options?.name
     this.email = options?.email
     this.tel = options?.tel
-    this.ids = options?.ids || []
-    this.urns = options?.urns || []
     this.sessionOpenWeeks =
       options?.sessionOpenWeeks || OrganisationDefaults.SessionOpenWeeks
     this.sessionReminderWeeks =
@@ -43,6 +41,8 @@ export class Organisation {
         memorable: true,
         length: 16
       })
+    this.clinic_ids = options?.clinic_ids || []
+    this.school_urns = options?.school_urns || []
   }
 
   /**
@@ -76,7 +76,7 @@ export class Organisation {
    */
   get clinics() {
     try {
-      return this?.ids.map((id) => new Clinic(this.context?.clinics[id]))
+      return this?.clinic_ids.map((id) => new Clinic(this.context?.clinics[id]))
     } catch (error) {
       console.error('Organisation.clinics', error.message)
     }
@@ -89,7 +89,9 @@ export class Organisation {
    */
   get schools() {
     try {
-      return this?.urns.map((urn) => new School(this.context?.schools[urn]))
+      return this?.school_urns.map(
+        (urn) => new School(this.context?.schools[urn])
+      )
     } catch (error) {
       console.error('Organisation.schools', error.message)
     }

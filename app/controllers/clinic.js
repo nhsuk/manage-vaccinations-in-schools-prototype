@@ -24,7 +24,7 @@ export const clinicController = {
     data.clinics[clinic.id] = clinic
 
     // Add to organisation
-    data.organisations[code].ids.push(clinic.id)
+    data.organisations[code].clinic_ids.push(clinic.id)
 
     request.flash('success', __(`clinic.success.create`, { clinic }))
 
@@ -91,7 +91,7 @@ export const clinicController = {
     delete data.clinics[id]
 
     // Remove from organisation
-    data.organisations[code].ids = organisation.ids.filter(
+    data.organisations[code].clinic_ids = organisation.clinic_ids.filter(
       (item) => item !== id
     )
 
