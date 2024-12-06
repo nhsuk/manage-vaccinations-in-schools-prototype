@@ -13,7 +13,7 @@ export const recordController = {
       record = new Record(record)
 
       // Add complete vaccination record
-      record.vaccinations = record.vaccinations.map(
+      record.vaccinations = record.vaccination_uuids.map(
         (uuid) => new Vaccination(data.vaccinations[uuid])
       )
 

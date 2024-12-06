@@ -50,7 +50,7 @@ export class Gender {
  * @property {string} registrationGroup - Registration group
  * @property {Parent} [parent1] - Parent 1
  * @property {Parent} [parent2] - Parent 2
- * @property {Array<string>} [vaccinations] - Vaccination UUIDs
+ * @property {Array<string>} [vaccination_uuids] - Vaccination UUIDs
  * @property {Record} [pendingChanges] - Pending changes to record values
  * @property {boolean} sensitive - Flagged as sensitive
  */
@@ -75,7 +75,7 @@ export class Record {
       !sensitive && options?.parent1 ? new Parent(options.parent1) : undefined
     this.parent2 =
       !sensitive && options?.parent2 ? new Parent(options.parent2) : undefined
-    this.vaccinations = options?.vaccinations || []
+    this.vaccination_uuids = options?.vaccination_uuids || []
     this.pendingChanges = options?.pendingChanges || {}
     this.sensitive = sensitive
   }

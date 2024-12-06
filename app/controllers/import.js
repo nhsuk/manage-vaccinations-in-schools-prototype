@@ -23,7 +23,10 @@ export const importController = {
     const records = _import.records.map((record) => {
       record = new Record(record)
       // TODO: Review multiple vaccination programmes in a single import
-      record.vaccination = new Vaccination(record.vaccinations[0])
+      record.vaccination = record.vaccination_uuids.map(
+        (uuid) => new Vaccination(data.vaccinations[uuid])
+      )[0]
+
       return record
     })
 
