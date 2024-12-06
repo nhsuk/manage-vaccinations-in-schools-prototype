@@ -79,7 +79,7 @@ export class PatientMovement {
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {object} [vaccinations] - Vaccination UUIDs with given boolean
  * @property {Array<string>} [cohort_uids] - Cohort UIDs
- * @property {string} [session_id] - Session ID
+ * @property {Array<string>} [session_ids] - Session IDs
  */
 export class Patient {
   constructor(options) {
@@ -91,9 +91,7 @@ export class Patient {
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
     this.cohort_uids = options?.cohort_uids || []
-    this.session_id = !this.record?.pendingChanges?.urn
-      ? options.session_id
-      : undefined
+    this.session_ids = options?.session_ids || []
   }
 
   /**
@@ -243,7 +241,9 @@ export class Patient {
    * @returns {object|boolean} - Consent health answers
    */
   get consentHealthAnswers() {
-    return this.session_id ? getConsentHealthAnswers(this.replies) : false
+    return this.session_ids.length > 0
+      ? getConsentHealthAnswers(this.replies)
+      : false
   }
 
   /**
@@ -252,7 +252,9 @@ export class Patient {
    * @returns {object|boolean} - Consent refusal reasons
    */
   get consentRefusalReasons() {
-    return this.session_id ? getConsentRefusalReasons(this.replies) : false
+    return this.session_ids.length > 0
+      ? getConsentRefusalReasons(this.replies)
+      : false
   }
 
   /**
@@ -345,7 +347,7 @@ export class Patient {
    * @param {import('./session.js').Session} session - Session
    */
   inviteToSession(session) {
-    this.session_id = session.id
+    this.session_ids.push(session.id)
     this.addEvent({
       type: EventType.Invite,
       name: `Invited to session at ${session.location.name}`,
@@ -360,7 +362,7 @@ export class Patient {
    * @param {import('./session.js').Session} session - Session
    */
   removeFromSession(session) {
-    this.session_id = false
+    this.session_ids = this.session_ids.filter((id) => id !== session.id)
     this.addEvent({
       type: EventType.Select,
       name: `Removed from the ${session.name} cohort`,
@@ -605,6 +607,6 @@ export class Patient {
    * @returns {string} - URI
    */
   get uriInSession() {
-    return `/sessions/${this.session_id}/${this.nhsn}`
+    return `/sessions/${this.session_ids[0]}/${this.nhsn}`
   }
 }

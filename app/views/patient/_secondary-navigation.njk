@@ -10,10 +10,10 @@
         classes: "nhsuk-tag--" + tagColor if tagColor,
         text: patient.registration.value
       }
-    } if patient.session_id and session.isActive, {
+    } if session.isActive, {
       text: __("registration.edit.title"),
       href: patient.uriInSession + "/registration/edit"
-    } if patient.session_id and session.isActive and patient.registration.value != RegistrationOutcome.Complete]
+    } if session.isActive and patient.registration.value != RegistrationOutcome.Complete]
   }) }}
 {% endif %}
 
