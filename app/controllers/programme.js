@@ -21,13 +21,13 @@ export const programmeController = {
         .map((cohort) => new Cohort(cohort))
 
       // Patients in programme
-      let records = []
+      let record_nhsns = []
       for (const cohort of programme.cohorts) {
-        records = [...records, ...cohort.records]
+        record_nhsns = [...record_nhsns, ...cohort.record_nhsns]
       }
 
       programme.patients = Object.values(data.patients)
-        .filter((patient) => records.includes(patient.record.nhsn))
+        .filter((patient) => record_nhsns.includes(patient.record.nhsn))
         .map((patient) => new Patient(patient))
 
       // Sessions in programme
