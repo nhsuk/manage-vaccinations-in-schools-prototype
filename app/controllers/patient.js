@@ -126,7 +126,7 @@ export const patientController = {
 
       // Select first programme in session to show pre-screening questions
       // TODO: Make pre-screening questions pull from all session programmes
-      const programme_pid = session.programmes[0]
+      const programme_pid = session.programme_pids[0]
       const programme = new Programme(data.programmes[programme_pid])
       const fluPid = programmeTypes[ProgrammeType.Flu].pid
 
@@ -135,7 +135,7 @@ export const patientController = {
           patient.consent?.value !== ConsentOutcome.Given &&
           patient.outcome?.value !== PatientOutcome.Vaccinated,
         showGillick:
-          !session.programmes?.includes(fluPid) &&
+          !session.programme_pids?.includes(fluPid) &&
           session.isActive &&
           patient.consent?.value !== ConsentOutcome.Given,
         showReminder: patient.consent?.value === ConsentOutcome.NoResponse,

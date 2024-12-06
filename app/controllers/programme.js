@@ -33,7 +33,7 @@ export const programmeController = {
       // Sessions in programme
       programme.sessions = Object.values(data.sessions)
         .map((session) => new Session(session, data))
-        .filter((session) => session.programmes.includes(programme.pid))
+        .filter((session) => session.programme_pids.includes(programme.pid))
         .filter((session) => session.patients.length > 0)
 
       // Sessions in programme (grouped by status)

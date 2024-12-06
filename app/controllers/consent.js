@@ -87,7 +87,7 @@ export const consentController = {
     const { id } = request.params
 
     const session = new Session(data.sessions[id], data)
-    const programme = new Programme(data.programmes[session.programmes[0]])
+    const programme = new Programme(data.programmes[session.programme_pids[0]])
 
     request.app.locals.programme = programme
     request.app.locals.session = session

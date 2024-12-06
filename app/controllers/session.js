@@ -103,7 +103,7 @@ export const sessionController = {
 
     request.app.locals.session = session
     request.app.locals.programme = new Programme(
-      data.programmes[session.programmes[0]]
+      data.programmes[session.programme_pids[0]]
     )
 
     // Get default batches selected for vaccines in this session
@@ -201,7 +201,7 @@ export const sessionController = {
       })
     }
 
-    response.locals.programmeItems = Object.values(programmeTypes).map(
+    response.locals.programmePidsItems = Object.values(programmeTypes).map(
       (type) => ({
         text: type.name,
         value: type.pid
@@ -291,7 +291,7 @@ export const sessionController = {
     // Find clinics
     const clinic = Object.values(data.sessions)
       .map((session) => new Session(session, data))
-      .filter((session) => session.programmes.includes(programme.pid))
+      .filter((session) => session.programme_pids.includes(programme.pid))
       .filter((session) => session.type === SessionType.Clinic)
 
     // Move patients to clinic

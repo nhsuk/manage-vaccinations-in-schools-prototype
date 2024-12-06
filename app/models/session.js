@@ -24,7 +24,7 @@ import {
 import { Clinic } from './clinic.js'
 import { OrganisationDefaults } from './organisation.js'
 import { Patient } from './patient.js'
-import { ProgrammeStatus, programmeTypes } from './programme.js'
+import { Programme, ProgrammeStatus, programmeTypes } from './programme.js'
 import { School } from './school.js'
 
 export class ConsentWindow {
@@ -56,13 +56,13 @@ export class SessionType {
  * @property {string} [created_user_uid] - User who created session
  * @property {string} [clinic_id] - Clinic ID
  * @property {string} [school_urn] - School URN
- * @property {Array<string>} [dates] - Dates
+ * @property {Array<Date>} [dates] - Dates
  * @property {Array<object>} [dates_] - Dates (from `dateInput`s)
  * @property {Date} [open] - Date consent window opens
  * @property {object} [open_] - Date consent window opens (from `dateInput`)
  * @property {boolean} [closed] - Session closed
  * @property {number} [reminderWeeks] - Weeks before session to send reminders
- * @property {Array<string>} [programmes] - Programme PIDs
+ * @property {Array<string>} [programme_pids] - Programme PIDs
  */
 export class Session {
   constructor(options, context) {
@@ -83,7 +83,7 @@ export class Session {
     this.closed = options?.closed || false
     this.reminderWeeks =
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
-    this.programmes = options?.programmes || []
+    this.programme_pids = options?.programme_pids || []
     // dateInput objects
     this.dates_ = options?.dates_
     this.open_ = options?.open_
@@ -163,7 +163,7 @@ export class Session {
       created_user_uid: user.uid,
       school_urn: urn,
       dates,
-      programmes: [programme.pid]
+      programme_pids: [programme.pid]
     })
   }
 
@@ -369,6 +369,21 @@ export class Session {
   }
 
   /**
+   * Get session programmes
+   *
+   * @returns {Array<Programme>} - Programmes
+   */
+  get programmes() {
+    if (this.context?.programmes && this.programme_pids) {
+      return this.programme_pids.map(
+        (pid) => new Programme(this.context?.programmes[pid])
+      )
+    }
+
+    return []
+  }
+
+  /**
    * Get type
    *
    * @returns {string} - Status
@@ -466,13 +481,6 @@ export class Session {
         ? this.dates.map((date) => formatDate(date, { dateStyle: 'full' }))
         : ''
 
-    const programmeList = this.programmes.map((pid) => {
-      const { name } = Object.values(programmeTypes).find(
-        (type) => type.pid === pid
-      )
-      return name
-    })
-
     const formattedNextReminderDate = formatDate(this.nextReminderDate, {
       dateStyle: 'full'
     })
@@ -494,7 +502,7 @@ export class Session {
       reminderWeeks: `Send ${reminderWeeks} before each session</br>
       <span class="nhsuk-u-secondary-text-color">First: ${formattedNextReminderDate}</span>`,
       close: formatDate(this.close, { dateStyle: 'full' }),
-      programmes: programmeList.join('<br>'),
+      programmes: this.programmes.map(({ name }) => name).join('<br>'),
       consentUrl:
         this.consentUrl &&
         formatLink(

@@ -37,7 +37,7 @@ export const getProgrammeSession = (sessions, type, isSchool = true) => {
 
   return Object.values(sessions)
     .map((session) => new Session(session))
-    .filter((session) => session.programmes.includes(pid))
+    .filter((session) => session.programme_pids.includes(pid))
     .filter((session) => session.consentWindow.value === ConsentWindow.Open)
     .filter((session) => session.type === sessionType)
     .at(-1)

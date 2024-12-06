@@ -56,7 +56,9 @@ export const registrationController = {
       patient.outcome?.value !== PatientOutcome.CouldNotVaccinate
     ) {
       // Capture vaccination outcome as absent from session if safe to vaccinate
-      const programme = new Programme(data.programmes[session.programmes[0]])
+      const programme = new Programme(
+        data.programmes[session.programme_pids[0]]
+      )
       const absentVaccination = new Vaccination({
         location: session.location.name,
         urn: session.urn,
