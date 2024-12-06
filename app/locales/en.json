@@ -850,12 +850,6 @@
       "text": "A field in a duplicate record does not match that in a previously imported record"
     }
   },
-  "invite": {
-    "edit": {
-      "title": "Invite to session",
-      "confirm": "Invite"
-    }
-  },
   "manual": {
     "show": {
       "title": "Service guidance",
@@ -1074,7 +1068,6 @@
       "title": "Activity log"
     },
     "success": {
-      "invite": "Child invited to {{session.name}}",
       "update": "Child record updated"
     },
     "lastReminderDate": {
