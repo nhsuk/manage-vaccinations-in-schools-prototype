@@ -102,7 +102,7 @@ export const patientController = {
 
     patient = new Patient(patient)
 
-    const cohorts = Object.values(patient.cohorts).map(
+    const cohorts = Object.values(patient.cohort_uids).map(
       (uid) => new Cohort(data.cohorts[uid])
     )
 

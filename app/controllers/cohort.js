@@ -9,7 +9,7 @@ export const cohortController = {
       cohort = new Cohort(cohort)
 
       cohort.records = Object.values(data.patients)
-        .filter((patient) => patient.cohorts.includes(cohort.uid))
+        .filter((patient) => patient.cohort_uids.includes(cohort.uid))
         .map((patient) => new Record(patient.record))
 
       return cohort

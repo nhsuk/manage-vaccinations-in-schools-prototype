@@ -78,7 +78,7 @@ export class PatientMovement {
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {object} [vaccinations] - Vaccination UUIDs with given boolean
- * @property {Array<string>} [cohorts] - Cohort UIDs
+ * @property {Array<string>} [cohort_uids] - Cohort UIDs
  * @property {string} [session_id] - Session ID
  */
 export class Patient {
@@ -90,7 +90,7 @@ export class Patient {
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
-    this.cohorts = options?.cohorts || []
+    this.cohort_uids = options?.cohort_uids || []
     this.session_id = !this.record?.pendingChanges?.urn
       ? options.session_id
       : undefined
@@ -315,7 +315,7 @@ export class Patient {
    * @param {import('./cohort.js').Cohort} cohort - Cohort
    */
   addToCohort(cohort) {
-    this.cohorts.push(cohort.uid)
+    this.cohort_uids.push(cohort.uid)
     this.addEvent({
       type: EventType.Select,
       name: `Selected for the ${cohort.name} cohort`,
@@ -330,7 +330,7 @@ export class Patient {
    * @param {import('./cohort.js').Cohort} cohort - Cohort
    */
   removeFromCohort(cohort) {
-    this.cohorts = this.cohorts.filter((uid) => uid !== cohort.uid)
+    this.cohort_uids = this.cohort_uids.filter((uid) => uid !== cohort.uid)
     this.addEvent({
       type: EventType.Select,
       name: `Removed from the ${cohort.name} cohort`,
