@@ -1358,6 +1358,9 @@
     "Refused": {
       "colour": "red"
     },
+    "NoResponse": {
+      "colour": "grey"
+    },
     "show": {
       "title": "Consent response from %s"
     },
