@@ -62,7 +62,7 @@
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-0",
             text: __("vaccination.edit.title"),
-            href: vaccination.uri + "/edit?referrer=" + patient.uriInSession
+            href: vaccination.uri + "/edit?referrer=" + sessionPatientPath
           }) }}
         </p>
       {% endfor %}
@@ -72,13 +72,13 @@
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-0",
             text: __("triage.edit.title"),
-            href: patient.uriInSession + "/triage/edit/outcome"
+            href: sessionPatientPath + "/triage/edit/outcome"
           }) }}
         </p>
       {% endif %}
 
       {% if options.showReminder %}
-        <form class="app-button-group" action="{{ patient.uriInSession }}/remind" method="post">
+        <form class="app-button-group" action="{{ sessionPatientPath }}/remind" method="post">
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-0",
             text: __("remind.new.title")
@@ -107,7 +107,7 @@
         rows: summaryRows(patient.record, {
           nhsn: {
             changeLabel: "the child’s NHS number",
-            href: patient.uriInSession + "/edit/nhsn" if patient.record.hasMissingNhsNumber
+            href: sessionPatientPath + "/edit/nhsn" if patient.record.hasMissingNhsNumber
           },
           fullName: {},
           preferredNames: { value: patient.preferredNames },
@@ -125,7 +125,7 @@
         {{ button({
           classes: "app-button--secondary nhsuk-u-margin-0",
           text: __("record.edit.title"),
-          href: patient.uriInSession + "/edit"
+          href: sessionPatientPath + "/edit"
         }) }}
       </p>
     {% endset %}
@@ -148,7 +148,7 @@
             {{ button({
               classes: "app-button--secondary nhsuk-u-margin-0",
               text: __("gillick.edit.title"),
-              href: patient.uriInSession + "/gillick/edit"
+              href: sessionPatientPath + "/gillick/edit"
             }) }}
           </p>
         {% endif %}
@@ -157,7 +157,7 @@
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-0",
             text: __("gillick.new.title"),
-            href: patient.uriInSession + "/gillick/new"
+            href: sessionPatientPath + "/gillick/new"
           }) }}
         </p>
       {% endif %}
@@ -225,7 +225,7 @@
         {{ __("consent.NoResponse.description") | nhsukMarkdown }}
       {% endif %}
       {% if options.getReply %}
-        <form action="{{ patient.uriInSession }}/replies/send" method="post">
+        <form action="{{ sessionPatientPath }}/replies/send" method="post">
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-bottom-4",
             text: __("reply.send.title")
@@ -237,7 +237,7 @@
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-0",
             text: __("reply.new.title"),
-            href: patient.uriInSession + "/replies/new"
+            href: sessionPatientPath + "/replies/new"
           }) }}
         </p>
       {% endif %}
@@ -312,7 +312,7 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: triageDescriptionHtml,
       attributes: {
-        action: patient.uriInSession + "/triage/new"
+        action: sessionPatientPath + "/triage/new"
       }
     }) | formCard if options.showTriage }}
 
@@ -375,7 +375,7 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: preScreenDescriptionHtml,
       attributes: {
-        action: patient.uriInSession + "/pre-screen"
+        action: sessionPatientPath + "/pre-screen"
       }
     }) | formCard if options.showPreScreen }}
   </div>

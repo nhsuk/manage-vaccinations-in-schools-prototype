@@ -379,8 +379,8 @@
       }
     },
     "success": {
-      "link": "Consent response from {{consent.parent.fullName}} linked to [{{patient.fullName}}]({{patient.uriInSession}})’s record",
-      "add": "[{{patient.fullName}}]({{patient.uriInSession}})’s record created from a consent response from {{consent.parent.fullName}}"
+      "link": "Consent response from {{consent.parent.fullName}} linked to [{{patient.fullName}}]({{patient.uri}})’s record",
+      "add": "[{{patient.fullName}}]({{patient.uri}})’s record created from a consent response from {{consent.parent.fullName}}"
     },
     "created": {
       "label": "Response date"
@@ -1313,12 +1313,12 @@
         "label": "Register {{patient.fullName}} as absent"
       },
       "success": {
-        "GetConsent": "[{{patient.fullName}}]({{patient.uriInSession}}) is attending today’s session. They still need consent to vaccinate.",
-        "CheckRefusal": "[{{patient.fullName}}]({{patient.uriInSession}}) needs to leave the session because their parent or guardian refused to give consent.",
-        "NeedsTriage": "[{{patient.fullName}}]({{patient.uriInSession}}) is attending today’s session. A nurse needs to triage their record.",
-        "Vaccinate": "[{{patient.fullName}}]({{patient.uriInSession}}) is attending today’s session. They are ready for the nurse.",
-        "Register": "[{{patient.fullName}}]({{patient.uriInSession}}) is absent from today’s session.",
-        "Absent": "[{{patient.fullName}}]({{patient.uriInSession}}) is absent from today’s session."
+        "GetConsent": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. They still need consent to vaccinate.",
+        "CheckRefusal": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) needs to leave the session because their parent or guardian refused to give consent.",
+        "NeedsTriage": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. A nurse needs to triage their record.",
+        "Vaccinate": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. They are ready for the nurse.",
+        "Register": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is absent from today’s session.",
+        "Absent": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is absent from today’s session."
       }
     },
     "Present": {
@@ -1371,8 +1371,8 @@
       }
     },
     "success": {
-      "create": "Consent response from {{reply.fullName}} added to [{{patient.fullName}}]({{patient.uriInSession}})’s record",
-      "update": "Consent response from {{reply.fullName}} updated on [{{patient.fullName}}]({{patient.uriInSession}})’s record",
+      "create": "Consent response from {{reply.fullName}} added to [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})’s record",
+      "update": "Consent response from {{reply.fullName}} updated on [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})’s record",
       "invalidate": "Consent response from {{reply.fullName}} marked as invalid",
       "withdraw": "Consent response from {{reply.fullName}} withdrawn"
     },
@@ -1784,8 +1784,8 @@
       "title": "Update triage outcome"
     },
     "success": {
-      "create": "Triage outcome updated for [{{patient.fullName}}]({{patient.uriInSession}})",
-      "update": "Triage outcome updated for [{{patient.fullName}}]({{patient.uriInSession}})"
+      "create": "Triage outcome updated for [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})",
+      "update": "Triage outcome updated for [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})"
     },
     "note": {
       "label": "Triage notes"

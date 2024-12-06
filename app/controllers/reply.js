@@ -11,17 +11,23 @@ import {
 import { Session } from '../models/session.js'
 import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
 import { getToday } from '../utils/date.js'
+import { getSessionPatientPath } from '../utils/session.js'
 import { formatParent } from '../utils/string.js'
 
 export const replyController = {
   read(request, response, next) {
     const { uuid } = request.params
     const { data } = request.session
-    const { patient } = response.locals
+    const { patient, session } = response.locals
 
     const reply = patient.replies[uuid] || data.consents[uuid]
 
     request.app.locals.reply = new Reply(reply, data)
+
+    response.locals.paths = {
+      back: getSessionPatientPath(session, patient),
+      next: getSessionPatientPath(session, patient)
+    }
 
     next()
   },
@@ -64,7 +70,7 @@ export const replyController = {
   },
 
   update(request, response) {
-    const { activity, invalidUuid, reply, triage, vaccination } =
+    const { activity, invalidUuid, reply, session, triage, vaccination } =
       request.app.locals
     const { form, id } = request.params
     const { data } = request.session
@@ -116,7 +122,7 @@ export const replyController = {
     const action = form === 'edit' ? 'update' : 'create'
     request.flash(
       'success',
-      __(`reply.success.${action}`, { reply: updatedReply, patient })
+      __(`reply.success.${action}`, { reply: updatedReply, patient, session })
     )
 
     const next =
@@ -128,7 +134,7 @@ export const replyController = {
   },
 
   readForm(request, response, next) {
-    let { reply, triage } = request.app.locals
+    let { reply, session, triage } = request.app.locals
     const { form, uuid, nhsn } = request.params
     const { referrer } = request.query
     const { data } = request.session
@@ -210,8 +216,8 @@ export const replyController = {
     response.locals.paths = {
       ...wizard(journey, request),
       ...(form === 'edit' && {
-        back: `${patient.uriInSession}/replies/${uuid}/edit`,
-        next: `${patient.uriInSession}/replies/${uuid}/edit`
+        back: getSessionPatientPath(session, patient, `replies/${uuid}/edit`),
+        next: getSessionPatientPath(session, patient, `replies/${uuid}/edit`)
       }),
       ...(referrer && { back: referrer })
     }
@@ -314,7 +320,12 @@ export const replyController = {
     }
 
     response.redirect(
-      paths.next || `${patient.uriInSession}/replies/${uuid}/new/check-answers`
+      paths.next ||
+        getSessionPatientPath(
+          session,
+          patient,
+          `replies/${uuid}/new/check-answers`
+        )
     )
   },
 
@@ -355,15 +366,18 @@ export const replyController = {
 
     const parent = patient.record.parent1
 
-    const session = new Session({
-      ...response.locals.session,
-      ...(data.token && { created_user_uid: data.token?.uid })
-    })
+    const session = new Session(
+      {
+        ...response.locals.session,
+        ...(data.token && { created_user_uid: data.token?.uid })
+      },
+      data
+    )
 
     patient.inviteToSession(session)
 
     request.flash('success', __('reply.send.success', { parent }))
-    response.redirect(patient.uriInSession)
+    response.redirect(getSessionPatientPath(session, patient))
   },
 
   showInvalidate(request, response) {
@@ -373,7 +387,7 @@ export const replyController = {
   updateInvalidate(request, response) {
     const { reply } = request.app.locals
     const { data } = request.session
-    const { patient } = response.locals
+    const { patient, session } = response.locals
     const { __ } = response.locals
 
     patient.addReply({
@@ -386,7 +400,7 @@ export const replyController = {
     delete data.reply
 
     request.flash('success', __(`reply.success.invalidate`, { reply }))
-    response.redirect(patient.uriInSession)
+    response.redirect(getSessionPatientPath(session, patient))
   },
 
   showWithdraw(request, response) {
@@ -431,6 +445,6 @@ export const replyController = {
     delete data.reply
 
     request.flash('success', __(`reply.success.withdraw`, { reply }))
-    response.redirect(patient.uriInSession)
+    response.redirect(getSessionPatientPath(session, patient))
   }
 }

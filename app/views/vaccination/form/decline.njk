@@ -1,7 +1,5 @@
 {% extends "_layouts/form.njk" %}
 
-{# Force return to patient in session for new vaccination #}
-{% set paths = { back: patient.uriInSession } if form == "new" %}
 {% set title = __("vaccination.decline.title", { vaccine: programme.vaccine }) %}
 
 {% block form %}

@@ -13,6 +13,7 @@ import {
 } from '../models/vaccination.js'
 import { Vaccine } from '../models/vaccine.js'
 import { getToday } from '../utils/date.js'
+import { getSessionPatientPath } from '../utils/session.js'
 
 export const vaccinationController = {
   read(request, response, next) {
@@ -73,6 +74,7 @@ export const vaccinationController = {
     const { patient_uuid, session_id } = request.query
 
     const patient = new Patient(data.patients[patient_uuid])
+    const session = new Session(data.sessions[session_id], data)
     const { injectionSite, ready } = data.preScreen
 
     const readyToVaccine = ready === 'true'
@@ -97,14 +99,12 @@ export const vaccinationController = {
     }
 
     request.app.locals.patient = patient
-    request.app.locals.back = patient.uriInSession
+    request.app.locals.back = getSessionPatientPath(session, patient)
     request.app.locals.startPath = startPath
 
     delete data.preScreen
     delete data.vaccination
     delete data?.wizard?.vaccination
-
-    const session = new Session(data.sessions[session_id], data)
 
     const vaccination = new Vaccination({
       location: session.formatted.location,
@@ -219,6 +219,14 @@ export const vaccinationController = {
         back: `${vaccination.uri}/edit`,
         next: `${vaccination.uri}/edit`
       })
+    }
+
+    // If first page in journey, return to page that initiated recording
+    const currentPath = request.path.split('/').at(-1)
+    if (currentPath === startPath) {
+      response.locals.paths = {
+        back: referrer || back || vaccination.uri
+      }
     }
 
     response.locals.batchItems = Object.values(data.batches)

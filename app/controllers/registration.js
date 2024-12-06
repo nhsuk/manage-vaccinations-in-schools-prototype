@@ -2,14 +2,15 @@ import { PatientOutcome } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
 import { Registration } from '../models/registration.js'
 import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
+import { getSessionPatientPath } from '../utils/session.js'
 
 export const registrationController = {
   read(request, response, next) {
-    const { patient } = response.locals
+    const { patient, session } = response.locals
 
     response.locals.paths = {
-      back: patient.uriInSession,
-      next: patient.uriInSession
+      back: getSessionPatientPath(session, patient),
+      next: getSessionPatientPath(session, patient)
     }
 
     next()
@@ -84,7 +85,10 @@ export const registrationController = {
 
     request.flash(
       'message',
-      __(`registration.update.success.${patient.capture.key}`, { patient })
+      __(`registration.update.success.${patient.capture.key}`, {
+        patient,
+        session
+      })
     )
 
     if (tab) {

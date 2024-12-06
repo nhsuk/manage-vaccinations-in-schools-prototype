@@ -1,4 +1,5 @@
 import { Patient } from '../models/patient.js'
+import { getSessionPatientPath } from '../utils/session.js'
 
 export const triageController = {
   update(request, response) {
@@ -20,22 +21,22 @@ export const triageController = {
     const action = form === 'edit' ? 'update' : 'create'
     request.flash(
       'success',
-      __(`triage.success.${action}`, { patient: updatedPatient })
+      __(`triage.success.${action}`, { patient: updatedPatient, session })
     )
 
     if (session.isActive) {
-      response.redirect(updatedPatient.uriInSession)
+      response.redirect(getSessionPatientPath(session, updatedPatient))
     } else {
       response.redirect(`/sessions/${id}/${activity || 'triage'}`)
     }
   },
 
   readForm(request, response, next) {
-    const { patient } = response.locals
+    const { patient, session } = response.locals
 
     response.locals.paths = {
-      back: `${patient.uriInSession}`,
-      next: `${patient.uriInSession}/triage/new`
+      back: getSessionPatientPath(session, patient),
+      next: getSessionPatientPath(session, patient, 'triage/new')
     }
 
     next()

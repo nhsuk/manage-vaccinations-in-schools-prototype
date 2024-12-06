@@ -12,12 +12,12 @@
       }
     } if session.isActive, {
       text: __("registration.edit.title"),
-      href: patient.uriInSession + "/registration/edit"
+      href: sessionPatientPath + "/registration/edit"
     } if session.isActive and patient.registration.value != RegistrationOutcome.Complete]
   }) }}
 {% endif %}
 
-{% set uri = patient.uriInSession if inSession else patient.uri %}
+{% set uri = sessionPatientPath if inSession else patient.uri %}
 {{ xGovukSecondaryNavigation({
   items: [{
     text: __("patient.show.title"),

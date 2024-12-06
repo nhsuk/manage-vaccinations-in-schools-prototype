@@ -121,7 +121,7 @@
           {% set sessionRows = sessionRows | push([
             {
               header: __("session.location.label"),
-              html: link(patient.uriInSession, session.location.name)
+              html: link(session.uri + "/" + patient.nhsn, session.location.name)
             },
             {
               header: __("session.dates.label"),

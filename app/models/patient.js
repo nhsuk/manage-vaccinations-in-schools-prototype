@@ -12,12 +12,7 @@ import {
   getConsentRefusalReasons,
   getPreferredNames
 } from '../utils/reply.js'
-import {
-  formatLink,
-  formatLinkWithSecondaryText,
-  formatParent,
-  stringToBoolean
-} from '../utils/string.js'
+import { formatLink, formatParent, stringToBoolean } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 
 import { Event, EventType } from './event.js'
@@ -560,12 +555,7 @@ export class Patient {
    */
   get link() {
     return {
-      fullName: formatLink(this.uri, this.fullName),
-      fullNameInSession: formatLinkWithSecondaryText(
-        this.uriInSession,
-        this.fullName,
-        this.preferredNames
-      )
+      fullName: formatLink(this.uri, this.fullName)
     }
   }
 
@@ -599,14 +589,5 @@ export class Patient {
    */
   get uri() {
     return `/patients/${this.nhsn}`
-  }
-
-  /**
-   * Get in session URI
-   *
-   * @returns {string} - URI
-   */
-  get uriInSession() {
-    return `/sessions/${this.session_ids[0]}/${this.nhsn}`
   }
 }

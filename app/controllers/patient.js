@@ -19,6 +19,7 @@ import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
 import { Vaccination, VaccinationSite } from '../models/vaccination.js'
 import { getResults, getPagination } from '../utils/pagination.js'
+import { getSessionPatientPath } from '../utils/session.js'
 
 export const patientController = {
   readAll(request, response, next) {
@@ -128,6 +129,11 @@ export const patientController = {
       const programme_pid = session.programme_pids[0]
       const programme = new Programme(data.programmes[programme_pid])
       const fluPid = programmeTypes[ProgrammeType.Flu].pid
+
+      response.locals.sessionPatientPath = getSessionPatientPath(
+        session,
+        patient
+      )
 
       response.locals.options = {
         editGillick:
