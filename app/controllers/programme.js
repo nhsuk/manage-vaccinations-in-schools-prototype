@@ -18,7 +18,7 @@ export const programmeController = {
       // Cohorts in programme
       programme.cohorts = Object.values(data.cohorts)
         .filter((cohort) => cohort.programme_pid === programme.pid)
-        .map((cohort) => new Cohort(cohort))
+        .map((cohort) => new Cohort(cohort, data))
 
       // Patients in programme
       let record_nhsns = []

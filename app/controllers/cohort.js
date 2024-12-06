@@ -1,19 +1,12 @@
 import { Cohort } from '../models/cohort.js'
-import { Record } from '../models/record.js'
 
 export const cohortController = {
   readAll(request, response, next) {
     const { data } = request.session
 
-    const cohorts = Object.values(data.cohorts).map((cohort) => {
-      cohort = new Cohort(cohort)
-
-      cohort.records = Object.values(data.patients)
-        .filter((patient) => patient.cohort_uids.includes(cohort.uid))
-        .map((patient) => new Record(patient.record))
-
-      return cohort
-    })
+    const cohorts = Object.values(data.cohorts).map(
+      (cohort) => new Cohort(cohort, data)
+    )
 
     response.locals.cohorts = cohorts
 

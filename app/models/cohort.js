@@ -1,6 +1,7 @@
 import { formatLink, formatYearGroup } from '../utils/string.js'
 
-import { ProgrammeType } from './programme.js'
+import { Programme, ProgrammeType } from './programme.js'
+import { Record } from './record.js'
 
 export class AcademicYear {
   static Y2024 = '2024/25'
@@ -27,6 +28,9 @@ export function getRecordsFromYearGroup(records, yearGroup) {
 
 /**
  * @class Cohort
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} uid - UID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created cohort
@@ -34,21 +38,20 @@ export function getRecordsFromYearGroup(records, yearGroup) {
  * @property {number} yearGroup - Year group
  * @property {Array<string>} record_nhsns - Records NHS numbers
  * @property {string} [programme_pid] - Programme ID
- * @property {ProgrammeType} [programme_type] - Programme type
  * @function ns - Namespace
  * @function uri - URL
  */
 export class Cohort {
-  constructor(options) {
+  constructor(options, context) {
     const year = options?.year || AcademicYear.Y2024
 
+    this.context = context
     this.created = options?.created || `${year.split('/')[0]}-08-01`
     this.created_user_uid = options?.created_user_uid
     this.year = year
     this.yearGroup = options?.yearGroup
     this.record_nhsns = options?.record_nhsns || []
     this.programme_pid = options?.programme_pid
-    this.programme_type = options?.programme_type
   }
 
   /**
@@ -68,8 +71,7 @@ export class Cohort {
       created_user_uid: user.uid,
       yearGroup,
       record_nhsns,
-      programme_pid: programme.pid,
-      programme_type: programme.type
+      programme_pid: programme.pid
     })
   }
 
@@ -85,12 +87,43 @@ export class Cohort {
   }
 
   /**
+   * Get programme
+   *
+   * @returns {Programme} - Programme
+   */
+  get programme() {
+    try {
+      const programme = this.context?.programmes[this.programme_pid]
+      if (programme) {
+        return new Programme(programme)
+      }
+    } catch (error) {
+      console.error('Cohort.programme', error.message)
+    }
+  }
+
+  /**
+   * Get cohort records
+   *
+   * @returns {Array<Record>} - Records
+   */
+  get records() {
+    if (this.context?.records && this.record_nhsns) {
+      return this.record_nhsns.map(
+        (nhsn) => new Record(this.context?.records[nhsn])
+      )
+    }
+
+    return []
+  }
+
+  /**
    * Get name
    *
    * @returns {string} - Name
    */
   get name() {
-    const type = ProgrammeType[this.programme_type]
+    const type = ProgrammeType[this.programme.type]
 
     return `${type} ${this.formatted.yearGroup} (${this.year})`
   }

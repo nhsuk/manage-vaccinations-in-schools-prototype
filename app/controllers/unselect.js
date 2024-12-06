@@ -8,11 +8,14 @@ export const unselectController = {
     const { __, patient } = response.locals
 
     // Get cohort details
-    const cohort = new Cohort({
-      ...data.cohorts[uid],
-      ...{ created: getToday() },
-      ...(data.token && { created_user_uid: data.token?.uid })
-    })
+    const cohort = new Cohort(
+      {
+        ...data.cohorts[uid],
+        ...{ created: getToday() },
+        ...(data.token && { created_user_uid: data.token?.uid })
+      },
+      data
+    )
 
     // Remove patient from cohort
     patient.removeFromCohort(cohort)
