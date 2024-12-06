@@ -28,7 +28,7 @@ export class ImportStatus {
  * @property {Date} created - Created date
  * @property {string} [created_user_uid] - User who created import
  * @property {string} [programme_pid] - Programme ID
- * @property {Array<string>} [records] - Record NHS numbers
+ * @property {Array<string>} [record_nhsns] - Record NHS numbers
  * @property {number} [devoid] - Exact duplicate records found
  * @property {number} [duplicate] - Inexact duplicate records found
  * @property {number} [incomplete] - Incomplete records (no NHS number)
@@ -44,7 +44,7 @@ export class Import {
     this.created_user_uid = options?.created_user_uid
     this.programme_pid = options?.programme_pid
     this.validations = options?.validations || []
-    this.records = options?.records || []
+    this.record_nhsns = options?.record_nhsns || []
     this.devoid = options?.devoid || 0
     this.duplicate = options?.duplicate || 0
     this.incomplete = options?.incomplete || 0
@@ -56,19 +56,19 @@ export class Import {
    * Generate fake import
    *
    * @param {import('./programme.js').Programme} programme - Programme
-   * @param {Array|boolean|undefined} records - Records
+   * @param {Array<string>|boolean|undefined} record_nhsns - Records
    * @param {import('./user.js').User} user - User
    * @param {ImportType} [type] - Import type
    * @returns {Import} - Import
    * @static
    */
-  static generate(programme, records, user, type) {
+  static generate(programme, record_nhsns, user, type) {
     const created = faker.date.recent({ days: 14, refDate: programme.start })
 
     let validations
     let status = ImportStatus.Complete
 
-    if (records === false) {
+    if (record_nhsns === false) {
       // Simulate invalid file
       status = ImportStatus.Invalid
       validations = {
@@ -92,7 +92,7 @@ export class Import {
       status,
       type,
       validations,
-      records,
+      record_nhsns,
       devoid: 99,
       invalid: 99
     })

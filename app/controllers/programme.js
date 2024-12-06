@@ -62,7 +62,7 @@ export const programmeController = {
 
       // Only mock issues with imported records if there are imports
       if (programme.imports.length) {
-        programme.reviews = programme.imports[0].records
+        programme.reviews = programme.imports[0].record_nhsns
           .slice(0, 3)
           .map((record) => new Record(record))
       }
