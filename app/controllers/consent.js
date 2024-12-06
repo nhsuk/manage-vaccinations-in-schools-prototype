@@ -258,7 +258,7 @@ export const consentController = {
     response.render('consent/match')
   },
 
-  showLink(request, response) {
+  readLink(request, response, next) {
     const { uuid } = request.params
     const { nhsn } = request.query
     const { data } = request.session
@@ -268,6 +268,10 @@ export const consentController = {
       .map((patient) => new Patient(patient))
       .find((patient) => patient.nhsn === nhsn)
 
+    next()
+  },
+
+  showLink(request, response) {
     response.render('consent/link')
   },
 
@@ -290,35 +294,35 @@ export const consentController = {
     response.redirect('/consents')
   },
 
-  showAdd(request, response) {
+  readAdd(request, response, next) {
     const { uuid } = request.params
     const { data } = request.session
 
-    request.app.locals.consent = new Reply(data.consents[uuid], data)
+    response.locals.consent = new Reply(data.consents[uuid], data)
 
+    next()
+  },
+
+  showAdd(request, response) {
     response.render('consent/add')
   },
 
   updateAdd(request, response) {
-    const { consent } = request.app.locals
     const { uuid } = request.params
     const { data } = request.session
-    const { __ } = response.locals
+    const { __, consent } = response.locals
 
-    let newPatient = Object.values(data.patients).find(
+    let patient = Object.values(data.patients).find(
       (patient) => patient.record.nhsn === consent.child.nhsn
     )
 
-    newPatient = new Patient(newPatient)
-    newPatient.addReply(consent)
+    patient = new Patient(patient)
+    patient.addReply(consent)
 
     // Update session data
     delete data.consents[uuid]
 
-    request.flash(
-      'success',
-      __(`consent.success.add`, { consent, patient: newPatient })
-    )
+    request.flash('success', __(`consent.success.add`, { consent, patient }))
 
     response.redirect('/consents')
   }
