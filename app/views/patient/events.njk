@@ -17,13 +17,7 @@
     }, {
       text: __("session.activity." + activity + ".title"),
       href: "/sessions/" + session.id + "/" + activity
-    } if activity] if patient.session_id else [{
-      text: __("cohort.list.title"),
-      href: "/cohorts"
-    }, {
-      text: data.cohorts[cohort.uid].type,
-      href: "/cohorts/" + cohort.uid
-    }]
+    } if activity]
   }) if inSession else breadcrumb({
     items: [{
       text: __("home.show.title"),
