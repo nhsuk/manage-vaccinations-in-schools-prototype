@@ -24,7 +24,7 @@ import {
 import { Clinic } from './clinic.js'
 import { OrganisationDefaults } from './organisation.js'
 import { Patient } from './patient.js'
-import { Programme, ProgrammeStatus, programmeTypes } from './programme.js'
+import { Programme } from './programme.js'
 import { School } from './school.js'
 
 export class ConsentWindow {
@@ -93,19 +93,22 @@ export class Session {
   /**
    * Generate fake session
    *
-   * @param {string} urn - School URN
-   * @param {import('./programme.js').Programme} programme - Programme
+   * @param {object} term - Term dates
    * @param {import('./user.js').User} user - User
-   * @param {object} [options] - Options
+   * @param {Array<string>} programme_pids - Programme PIDs
+   * @param {object} options - Options
+   * @param {string} [options.clinic_id] - Clinic ID
+   * @param {string} [options.school_urn] - School URN
    * @returns {Session} - Session
    * @static
    */
-  static generate(urn, programme, user, options = {}) {
+  static generate(programme_pids, term, user, options) {
+    const { clinic_id, school_urn } = options
+    const consentPeriod = OrganisationDefaults.SessionOpenWeeks * 7
+
     let status
-    if (programme.status === ProgrammeStatus.Completed) {
+    if (isAfter(getToday(), term.to)) {
       status = SessionStatus.Completed
-    } else if (programme.status === ProgrammeStatus.Planned) {
-      status = SessionStatus.Planned
     } else {
       status = faker.helpers.arrayElement([
         SessionStatus.Completed,
@@ -116,26 +119,27 @@ export class Session {
 
     const dates = []
     let firstSessionDate
+    const tomorrow = addDays(getToday(), 1)
     switch (status) {
       case SessionStatus.Planned:
-        // Session will take place according programme schedule
-        // Sessions start after first content window closes
+        // Earliest date is tomorrow
+        // Latest date is the last day of term
         firstSessionDate = faker.date.between({
-          from: getToday(),
-          to: programmeTypes[programme.type].schedule.to
+          from: tomorrow,
+          to: term.to
+        })
+        break
+      case SessionStatus.Completed:
+        // Earliest date is first day of term plus the consent window
+        // Latest date is the last day of term
+        firstSessionDate = faker.date.between({
+          from: addDays(term.from, consentPeriod),
+          to: term.to
         })
         break
       case SessionStatus.Unplanned:
-        firstSessionDate = undefined
-        break
       default:
-        // Session took place about 7 days before today
-        firstSessionDate = faker.date.recent({ days: 28, refDate: getToday() })
-    }
-
-    // Set first session as taking place today
-    if (options.isToday) {
-      firstSessionDate = getToday()
+        firstSessionDate = undefined
     }
 
     if (firstSessionDate) {
@@ -161,9 +165,10 @@ export class Session {
     return new Session({
       created: removeDays(getToday(), 70),
       created_user_uid: user.uid,
-      school_urn: urn,
       dates,
-      programme_pids: [programme.pid]
+      programme_pids,
+      ...(clinic_id && { clinic_id }),
+      ...(school_urn && { school_urn })
     })
   }
 
@@ -403,6 +408,8 @@ export class Session {
     if (this[type]) {
       return this[type].location
     }
+
+    return 'Unknown location'
   }
 
   /**
