@@ -124,6 +124,10 @@
               html: link(session.uri + "/" + patient.nhsn, session.location.name)
             },
             {
+              header: __("session.programmes.label"),
+              html: session.formatted.programmes
+            },
+            {
               header: __("session.dates.label"),
               html: session.formatted.dates if session.dates.length else session.status
             }
@@ -136,6 +140,7 @@
           responsive: true,
           head: [
             { text: __("session.location.label") },
+            { text: __("session.programmes.label") },
             { text: __("session.dates.label") }
           ],
           rows: sessionRows
