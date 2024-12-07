@@ -131,7 +131,7 @@ export class Record {
     }
 
     // Add examples of children who are home-schooled or at an unknown school
-    if (faker.datatype.boolean(0.05)) {
+    if (faker.datatype.boolean(0.01)) {
       urn = faker.helpers.arrayElement([888888, 999999])
     }
 
