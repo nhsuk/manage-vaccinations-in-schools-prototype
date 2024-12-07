@@ -4,6 +4,7 @@ import vaccines from '../datasets/vaccines.js'
 import { isBetweenDates, getToday } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 
+import { SchoolTerm } from './school.js'
 import { Vaccine } from './vaccine.js'
 
 export class ProgrammeStatus {
@@ -24,7 +25,7 @@ export const programmeTypes = {
     pid: 'flu',
     name: 'Flu',
     longName: 'Flu',
-    schedule: { from: '2024-09-03', to: '2024-12-13' }, // Autumn 2024
+    term: SchoolTerm.Autumn,
     seasonal: true,
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
     vaccines: ['05000456078276', '5000123114115']
@@ -33,7 +34,7 @@ export const programmeTypes = {
     pid: 'hpv',
     name: 'HPV',
     longName: 'Human papillomavirus (HPV)',
-    schedule: { from: '2025-01-06', to: '2025-04-11' }, // Spring 2025
+    term: SchoolTerm.Spring,
     yearGroups: [8, 9, 10, 11],
     vaccines: ['00191778001693']
   },
@@ -41,7 +42,7 @@ export const programmeTypes = {
     pid: 'td-ipv',
     name: 'Td/IPV',
     longName: 'Td/IPV (3-in-1 teenage booster)',
-    schedule: { from: '2025-04-28', to: '2025-07-21' }, // Summer 2025
+    term: SchoolTerm.Summer,
     yearGroups: [9, 10, 11],
     vaccines: ['3664798042948']
   },
@@ -49,7 +50,7 @@ export const programmeTypes = {
     pid: 'menacwy',
     name: 'MenACWY',
     longName: 'MenACWY',
-    schedule: { from: '2025-04-28', to: '2025-07-21' }, // Summer 2025
+    term: SchoolTerm.Summer,
     yearGroups: [9, 10, 11],
     vaccines: ['5415062370568']
   }
@@ -60,6 +61,7 @@ export const programmeTypes = {
  * @property {string} name - Name
  * @property {boolean} seasonal - Seasonal programme
  * @property {ProgrammeStatus} status - Status
+ * @property {SchoolTerm} term - School term administered in
  * @property {ProgrammeType} type - Programme type
  * @property {Array[string]} cohort_uids - Cohort UIDs
  * @property {Array[number]} yearGroups - Year groups available to
@@ -72,6 +74,7 @@ export class Programme {
   constructor(options) {
     this.name = options?.type && programmeTypes[options.type]?.name
     this.seasonal = options?.type && programmeTypes[options.type]?.seasonal
+    this.term = options?.type && programmeTypes[options.type]?.term
     this.type = options?.type
     this.cohort_uids = options?.cohort_uids || []
     this.yearGroups = options?.type && programmeTypes[options.type]?.yearGroups
