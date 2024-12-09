@@ -161,7 +161,7 @@ export default () => {
 
     // Build list of reply relationships
     for (const reply of replies) {
-      relationships.push(reply.relationship)
+      relationships.push(reply.relationship || 'Parent or guardian')
     }
 
     if (outcome.value === PatientOutcome.NoOutcomeYet) {
