@@ -26,6 +26,7 @@ import { OrganisationDefaults } from './organisation.js'
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
 import { School } from './school.js'
+import { Vaccine } from './vaccine.js'
 
 export class ConsentWindow {
   static Opening = 'Opening'
@@ -382,6 +383,27 @@ export class Session {
       return this.programme_pids.map(
         (pid) => new Programme(this.context?.programmes[pid])
       )
+    }
+
+    return []
+  }
+
+  /**
+   * Get session vaccines
+   *
+   * @returns {Array<Vaccine>} - Vaccines
+   */
+  get vaccines() {
+    if (this.context?.vaccines && this.programmes) {
+      const gtins = new Set()
+
+      for (const programme of this.programmes) {
+        for (const vaccine_gtin of programme.vaccines) {
+          gtins.add(vaccine_gtin)
+        }
+      }
+
+      return [...gtins].map((gtin) => new Vaccine(this.context?.vaccines[gtin]))
     }
 
     return []
