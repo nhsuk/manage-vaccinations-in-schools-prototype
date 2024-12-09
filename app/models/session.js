@@ -104,7 +104,6 @@ export class Session {
    */
   static generate(programme_pids, term, user, options) {
     const { clinic_id, school_urn } = options
-    const consentPeriod = OrganisationDefaults.SessionOpenWeeks * 7
 
     let status
     if (isAfter(getToday(), term.to)) {
@@ -130,10 +129,10 @@ export class Session {
         })
         break
       case SessionStatus.Completed:
-        // Earliest date is first day of term plus the consent window
+        // Earliest date is first day of term
         // Latest date is the last day of term
         firstSessionDate = faker.date.between({
-          from: addDays(term.from, consentPeriod),
+          from: term.from,
           to: term.to
         })
         break
