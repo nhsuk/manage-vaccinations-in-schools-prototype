@@ -21,7 +21,7 @@ export const consentController = {
     const { data } = request.session
 
     const consents = Object.values(data.consents).map(
-      (consent) => new Consent(consent)
+      (consent) => new Consent(consent, data)
     )
     response.locals.consents = consents
 
@@ -53,38 +53,9 @@ export const consentController = {
     response.redirect(`/consents/${session.id}/${consent.uuid}/new/child`)
   },
 
-  show(request, response) {
-    const { session } = request.app.locals
-    const { view } = request.params
-
-    // Service homepage should show closed message if deadline has passed
-    if (!view) {
-      return response.render(
-        session.consentWindow.value === ConsentWindow.Closed
-          ? `consent/closed`
-          : `consent/start`
-      )
-    }
-
-    // Text and email messages
-    if (view === 'emails' || view === 'texts') {
-      const record = Record.generate()
-      const child = Child.generate(record)
-      const parent = Parent.generate(child.lastName)
-
-      response.locals.consent = new Consent({
-        child,
-        parent,
-        session_id: session.id
-      })
-    }
-
-    response.render(`consent/${view}`)
-  },
-
   read(request, response, next) {
     const { data } = request.session
-    const { id } = request.params
+    const { id, view } = request.params
 
     const session = new Session(data.sessions[id], data)
     const programme = new Programme(data.programmes[session.programme_pids[0]])
@@ -99,7 +70,39 @@ export const consentController = {
     }
     response.locals.public = true
 
+    // Text and email messages
+    if (view === 'emails' || view === 'texts') {
+      const record = Record.generate()
+      const child = Child.generate(record)
+      const parent = Parent.generate(child.lastName)
+
+      response.locals.consent = new Consent(
+        {
+          child,
+          parent,
+          session_id: session.id
+        },
+        data
+      )
+    }
+
     next()
+  },
+
+  show(request, response) {
+    const { session } = request.app.locals
+    const { view } = request.params
+
+    // Service homepage should show closed message if deadline has passed
+    if (!view) {
+      return response.render(
+        session.consentWindow.value === ConsentWindow.Closed
+          ? `consent/closed`
+          : `consent/start`
+      )
+    }
+
+    response.render(`consent/${view}`)
   },
 
   update(request, response) {
@@ -107,10 +110,12 @@ export const consentController = {
     const { id, uuid } = request.params
     const { data } = request.session
 
-    data.consents[uuid] = new Consent({
+    const updatedConsent = new Consent({
       ...consent,
       ...request.body.consent
     })
+
+    data.consents[uuid] = updatedConsent
 
     response.redirect(`/consents/${id}/confirmation`)
   },
@@ -123,10 +128,13 @@ export const consentController = {
     const session = new Session(data.sessions[id], data)
 
     request.app.locals.session = session
-    request.app.locals.consent = new Consent({
-      ...(form === 'edit' && consent), // Previous values
-      ...data?.wizard?.consent // Wizard values,
-    })
+    request.app.locals.consent = new Consent(
+      {
+        ...(form === 'edit' && consent), // Previous values
+        ...data?.wizard?.consent // Wizard values,
+      },
+      data
+    )
 
     const journey = {
       [`/${id}`]: {},
@@ -238,7 +246,7 @@ export const consentController = {
     let { page, limit } = request.query
     const { data } = request.session
 
-    const consent = new Consent(data.consents[uuid])
+    const consent = new Consent(data.consents[uuid], data)
     let patients = Object.values(data.patients).map(
       (patient) => new Patient(patient)
     )
@@ -263,7 +271,7 @@ export const consentController = {
     const { nhsn } = request.query
     const { data } = request.session
 
-    response.locals.consent = new Consent(data.consents[uuid])
+    response.locals.consent = new Consent(data.consents[uuid], data)
     response.locals.patient = Object.values(data.patients)
       .map((patient) => new Patient(patient))
       .find((patient) => patient.nhsn === nhsn)
