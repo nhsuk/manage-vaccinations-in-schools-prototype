@@ -1,52 +1,16 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { formatDate, getToday } from '../utils/date.js'
 import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
-import { formatMarkdown, formatOther } from '../utils/string.js'
 
 import { Child } from './child.js'
 import { Parent } from './parent.js'
-import { ReplyDecision, ReplyMethod, ReplyRefusal } from './reply.js'
+import { Reply, ReplyDecision, ReplyMethod, ReplyRefusal } from './reply.js'
 
 /**
  * @class Consent
- * @property {string} uuid - UUID
- * @property {Date} created - Created date
- * @property {import('./child.js').Child} child - Child
- * @property {import('./parent.js').Parent} parent - Parent or guardian
- * @property {ReplyDecision} decision - Consent decision
- * @property {boolean} given - Consent given
- * @property {ReplyMethod} [method] - Reply method
- * @property {object} [healthAnswers] - Answers to health questions
- * @property {ReplyRefusal} [refusalReason] - Refusal reason
- * @property {string} [refusalReasonOther] - Other refusal reason
- * @property {string} [refusalReasonDetails] - Refusal reason details
- * @property {string} [patient_uuid] - Patient UUID
- * @property {string} session_id - Session ID
+ * @augments Reply
  */
-export class Consent {
-  constructor(options) {
-    this.uuid = options?.uuid || faker.string.uuid()
-    this.created = options?.created ? new Date(options.created) : getToday()
-    this.child = options?.child && new Child(options.child)
-    this.parent = options?.parent && new Parent(options.parent)
-    this.decision = options?.decision || ''
-    this.given = this.decision === ReplyDecision.Given
-    this.method = options?.method || ReplyMethod.Website
-    this.healthAnswers = options?.healthAnswers
-    this.refusalReason = !this.given ? options?.refusalReason || '' : undefined
-    this.refusalReasonOther =
-      this.refusalReason === ReplyRefusal.Other
-        ? options?.refusalReasonOther || ''
-        : undefined
-    this.refusalReasonDetails =
-      !this.given && this.refusalReason !== ReplyRefusal.Personal
-        ? options?.refusalReasonDetails || ''
-        : undefined
-    this.patient_uuid = options?.patient_uuid
-    this.session_id = options.session_id
-  }
-
+export class Consent extends Reply {
   /**
    * Generate fake consent
    *
@@ -102,19 +66,6 @@ export class Consent {
       }),
       session_id: session.id
     })
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} - Formatted values
-   */
-  get formatted() {
-    return {
-      created: formatDate(this.created, { dateStyle: 'long' }),
-      refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
-      refusalReasonDetails: formatMarkdown(this.refusalReasonDetails)
-    }
   }
 
   /**
