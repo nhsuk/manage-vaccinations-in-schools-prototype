@@ -104,11 +104,11 @@ export const navigation = (request, response, next) => {
             [
               {
                 URL: `/consents/${fluSession.id}`,
-                label: 'Flu consent journey'
+                label: 'Flu consent'
               },
               {
                 URL: `/consents/${fluClinic.id}`,
-                label: 'Flu consent journey (clinic)'
+                label: 'Flu consent (clinic)'
               },
               {
                 URL: `/consents/${fluSession.id}/emails`,
@@ -126,11 +126,11 @@ export const navigation = (request, response, next) => {
             [
               {
                 URL: `/consents/${hpvSession.id}`,
-                label: 'HPV consent journey'
+                label: 'HPV consent'
               },
               {
                 URL: `/consents/${hpvClinic.id}`,
-                label: 'HPV consent journey (clinic)'
+                label: 'HPV consent (clinic)'
               },
               {
                 URL: `/consents/${hpvSession.id}/emails`,
@@ -148,19 +148,19 @@ export const navigation = (request, response, next) => {
             [
               {
                 URL: `/consents/${tioSession.id}`,
-                label: '3-in-1 consent journey'
+                label: '‘Doubles’ consent'
               },
               {
                 URL: `/consents/${tioClinic.id}`,
-                label: '3-in-1 consent journey (clinic)'
+                label: '‘Doubles’ consent (clinic)'
               },
               {
                 URL: `/consents/${tioSession.id}/emails`,
-                label: '3-in-1 consent emails'
+                label: '‘Doubles’ consent emails'
               },
               {
                 URL: `/consents/${tioSession.id}/texts`,
-                label: '3-in-1 consent texts'
+                label: '‘Doubles’ consent texts'
               }
             ]
           ]
