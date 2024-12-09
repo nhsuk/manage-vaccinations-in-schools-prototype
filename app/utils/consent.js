@@ -11,17 +11,23 @@ export const getHealthQuestionKey = (view) => {
 }
 
 /**
- * Get health question paths for a given vaccine
+ * Get health question paths for given vaccines
  *
  * @param {string} pathPrefix - Path prefix
- * @param {import('../models/vaccine.js').Vaccine} vaccine - Vaccine
+ * @param {Array<import('../models/vaccine.js').Vaccine>} vaccines - Vaccines
  * @returns {object} Health question paths
  */
-export const getHealthQuestionPaths = (pathPrefix, vaccine) => {
-  const { healthQuestionKeys } = vaccine
+export const getHealthQuestionPaths = (pathPrefix, vaccines) => {
+  // Merge health question keys across all vaccines
+  const healthQuestionKeys = new Set()
+  for (const vaccine of vaccines) {
+    for (const key of vaccine.healthQuestionKeys) {
+      healthQuestionKeys.add(key)
+    }
+  }
 
   const paths = {}
-  for (const key of healthQuestionKeys) {
+  for (const key of [...healthQuestionKeys]) {
     const slug = pascalToKebabCase(key)
     paths[`${pathPrefix}health-question-${slug}`] = {}
   }

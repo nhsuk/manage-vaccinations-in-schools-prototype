@@ -485,17 +485,20 @@
       }
     },
     "decision": {
-      "summary": "Consent for the {{programme.name}} vaccination",
-      "title": "Do you agree to them having a {{programme.name}} vaccination?",
+      "summary": "Consent for the {{session.vaccination}}",
+      "title": "Do you agree to them having the {{session.vaccination}}?",
       "label": "Decision",
       "hint": {
         "Flu": "The nasal flu spray contains gelatine which comes from pigs."
       },
       "yes": {
-        "Flu": "Yes, I agree to them having a nasal vaccine",
-        "HPV": "Yes, I agree",
-        "TdIPV": "Yes, I agree to them having the 3-in-1 teenage booster",
-        "MenACWY": "Yes, I agree to them having the MenACWY vaccine"
+        "single": "Yes, I agree",
+        "double": "Yes, I agree to them having both vaccinations",
+        "multiple": "Yes, I agree to them having all vaccinations"
+      },
+      "some": {
+        "double": "I agree to them having one of the vaccinations",
+        "multiple": "I agree to them having some of the vaccinations"
       },
       "no": "No"
     },

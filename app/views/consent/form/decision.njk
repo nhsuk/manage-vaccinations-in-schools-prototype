@@ -1,6 +1,16 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("consent.decision.title", { programme: programme }) %}
+{% set title = __("consent.decision.title", { session: session }) %}
+
+{% if programmeItems.length == 1 %}
+  {% set yesLabelText = __("consent.decision.yes.single") %}
+{% elif programmeItems.length == 2 %}
+  {% set yesLabelText = __("consent.decision.yes.double") %}
+  {% set someLabelText = __("consent.decision.some.double") %}
+{% else %}
+  {% set yesLabelText = __("consent.decision.yes.multiple") %}
+  {% set someLabelText = __("consent.decision.some.multiple") %}
+{% endif %}
 
 {% block form %}
   {{ radios({
@@ -12,14 +22,30 @@
         })
       }
     },
-    hint: { text: __("consent.decision.hint.Flu") if programme.vaccine.type == ProgrammeType.Flu and programme.vaccine.method == VaccinationMethod.Nasal },
-    items: [{
-      text: __("consent.decision.yes." + programme.vaccine.type),
-      value: ReplyDecision.Given
-    }, {
-      text: __("consent.decision.no"),
-      value: ReplyDecision.Refused
-    }],
+    hint: { text: __("consent.decision.hint.Flu") } if programmeIsFlu,
+    items: [
+      {
+        text: yesLabelText,
+        value: ReplyDecision.Given
+      },
+      {
+        text: someLabelText,
+        conditional: {
+          html: checkboxes({
+            fieldset: {
+              legend: {
+                text: "Which vaccinations do you give consent for?"
+              }
+            },
+            items: programmeItems
+          })
+        }
+      } if programmeItems.length > 1,
+      {
+        text: __("consent.decision.no"),
+        value: ReplyDecision.Refused
+      }
+    ],
     decorate: "consent.decision"
   }) }}
 {% endblock %}

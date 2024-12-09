@@ -5,7 +5,7 @@ import { Child } from '../models/child.js'
 import { Consent } from '../models/consent.js'
 import { Parent } from '../models/parent.js'
 import { Patient } from '../models/patient.js'
-import { Programme } from '../models/programme.js'
+import { ProgrammeType } from '../models/programme.js'
 import { Record } from '../models/record.js'
 import { Reply, ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { School } from '../models/school.js'
@@ -58,9 +58,7 @@ export const consentController = {
     const { id, view } = request.params
 
     const session = new Session(data.sessions[id], data)
-    const programme = new Programme(data.programmes[session.programme_pids[0]])
 
-    request.app.locals.programme = programme
     request.app.locals.session = session
 
     // Transactional service details
@@ -121,7 +119,7 @@ export const consentController = {
   },
 
   readForm(request, response, next) {
-    const { programme, consent } = request.app.locals
+    const { consent } = request.app.locals
     const { form, id, uuid, view } = request.params
     const { data } = request.session
 
@@ -162,7 +160,7 @@ export const consentController = {
         }
       },
       [`/${id}/${uuid}/${form}/address`]: {},
-      ...getHealthQuestionPaths(`/${id}/${uuid}/${form}/`, programme.vaccine),
+      ...getHealthQuestionPaths(`/${id}/${uuid}/${form}/`, session.vaccines),
       [`/${id}/${uuid}/${form}/check-answers`]: {},
       [`/${id}/${uuid}/new/confirmation`]: {},
       [`/${id}/${uuid}/${form}/refusal-reason`]: {
@@ -190,6 +188,15 @@ export const consentController = {
           next: `/consents/${id}/${uuid}/${form}/check-answers`
         })
     }
+
+    response.locals.programmeIsFlu = session.programmes
+      .map(({ type }) => type)
+      .includes(ProgrammeType.Flu)
+
+    response.locals.programmeItems = session.programmes.map((programme) => ({
+      text: programme.name,
+      value: programme.pid
+    }))
 
     response.locals.urnItems = Object.values(data.schools)
       .map((school) => new School(school))
