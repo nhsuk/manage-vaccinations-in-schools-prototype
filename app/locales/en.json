@@ -346,21 +346,21 @@
       "confirm": "Create a new record from response"
     },
     "start": {
+      "title": {
+        "single": "Give or refuse consent for a %s",
+        "multiple": "Give or refuse consent for the %s"
+      },
       "Flu": {
-        "title": "Give or refuse consent for a flu vaccination",
         "description": "The vaccination helps to protect children against flu. It also protects others who are vulnerable to flu, such as babies and older people."
       },
       "HPV": {
-        "title": "Give or refuse consent for an HPV vaccination",
         "description": "The HPV vaccine helps to prevent HPV related cancers from developing in boys and girls.\n\nThe number of doses you need depends on your age and how well your immune system works. Young people usually only need 1 dose."
       },
       "TdIPV": {
-        "title": "Give or refuse consent for the 3-in-1 teenage booster vaccination",
         "description": "The 3-in-1 teenage booster, also known as the Td/IPV vaccine, boosts protection against 3 diseases: tetanus, diphtheria and polio.\n\nIt is offered to all young people aged 13 to 15 (in school Years 9 and 10) and given as an injection into the upper arm."
       },
       "MenACWY": {
-        "title": "Give or refuse consent for the MenACWY vaccine",
-        "description": "The MenACWY vaccine, which helps to prevent meningitis and septicaemia.\n\nIt is offered to all young people aged 13 to 15 (in school Years 9 and 10) and given as an injection into the upper arm."
+        "description": "The MenACWY vaccine helps to prevent meningitis and septicaemia.\n\nIt is offered to all young people aged 13 to 15 (in school Years 9 and 10) and given as an injection into the upper arm."
       },
       "confirm": "Start now",
       "language": {
@@ -592,11 +592,11 @@
     "consent": {
       "invite": {
         "label": "Invitation",
-        "name": "{{programme.name}} vaccination on {{session.summary.dates}}"
+        "name": "{{session.vaccinationTitle}} on {{session.summary.dates}}"
       },
       "invite-catch-up": {
         "label": "Invitation (catch-up)",
-        "name": "{{programme.name}} vaccination on {{session.summary.dates}}"
+        "name": "{{session.vaccinationTitle}} on {{session.summary.dates}}"
       },
       "invite-reminder": {
         "label": "Reminder",
@@ -604,71 +604,71 @@
       },
       "invite-subsequent-reminder": {
         "label": "Subsequent reminder",
-        "name": "There’s still time for your child to be vaccinated against {{programme.name}}"
+        "name": "There’s still time for your child to be vaccinated against {{session.immunisation}}"
       },
       "invite-clinic": {
         "label": "Clinic booking",
-        "name": "Booking a clinic appointment for your child’s {{programme.name}} vaccination"
+        "name": "Booking a clinic appointment for your child’s {{session.vaccination}}"
       },
       "invite-clinic-reminder": {
         "label": "Clinic booking reminder",
-        "name": "Your child can still get their {{programme.name}} vaccination at a clinic"
+        "name": "Your child can still get their {{session.vaccination}} at a clinic"
       },
       "invite-clinic-consent": {
         "label": "Clinic invitation",
-        "name": "We still need consent for your child’s HPV vaccination"
+        "name": "We still need consent for your child’s {{session.vaccination}}"
       },
       "consent-given": {
         "label": "Consent given",
-        "name": "{{programme.name}} vaccination on {{session.summary.dates}}"
+        "name": "{{session.vaccinationTitle}} on {{session.summary.dates}}"
       },
       "consent-given-changed-school": {
         "label": "Consent given (changed school)",
-        "name": "Your child’s {{programme.name}} vaccination"
+        "name": "Your child’s {{session.vaccination}}"
       },
       "consent-conflicts": {
         "label": "Consent conflicts",
-        "name": "Your child will not have their {{programme.name}} vaccination"
+        "name": "Your child will not have their {{session.vaccination}}"
       },
       "consent-refused": {
         "label": "Consent refused",
-        "name": "{{programme.name}} vaccination on {{session.summary.dates}}"
+        "name": "{{session.vaccinationTitle}} on {{session.summary.dates}}"
       },
       "consent-refused-injection": {
         "label": "Consent refused (flu injection)",
-        "name": "Flu vaccination on {{session.summary.dates}}"
+        "name": "{{session.vaccinationTitle}} on {{session.summary.dates}}"
       },
       "consent-needs-triage": {
         "label": "Consent needs triage",
-        "name": "{{programme.name}} vaccination on {{session.summary.dates}}"
+        "name": "{{session.vaccinationTitle}} on {{session.summary.dates}}"
       },
       "triage-vaccinate": {
         "label": "Vaccinate",
-        "name": "Your child can have the {{programme.name}} vaccination on {{session.summary.dates}}"
+        "name": "Your child can have the {{session.vaccination}} on {{session.summary.dates}}"
       },
       "triage-delay-vaccination": {
         "label": "Delay vaccination",
-        "name": "Please book a clinic appointment for your child’s {{programme.name}} vaccination"
+        "name": "Please book a clinic appointment for your child’s {{session.vaccination}}"
       },
       "triage-do-not-vaccinate": {
         "label": "Do not vaccinate",
-        "name": "Your child will not have the {{programme.name}} vaccination in school"
+        "name": "Your child will not have the {{session.vaccination}} in school"
       },
       "capture-reminder": {
         "label": "Reminder",
-        "name": "{{consent.child.fullName}} will get their {{programme.name}} vaccination on {{session.summary.dates}}"
+        "name": "{{consent.child.fullName}} will get their {{session.vaccination}} on {{session.summary.dates}}"
       },
       "capture-vaccinated": {
         "label": "Vaccinated",
-        "name": "Your child had their {{programme.type}} vaccination today"
+        "name": "Your child had their {{session.vaccination}} today"
       },
       "capture-could-not-vaccinate": {
         "label": "Could not vaccinate",
-        "name": "Your child did not have their {{programme.type}} vaccination today"
+        "name": "Your child did not have their {{session.vaccination}} today"
       },
       "information-child": {
         "label": "Information for students",
-        "name": "You can get an {{programme.type}} vaccination on {{session.summary.dates}}"
+        "name": "You can get an {{session.vaccination}} on {{session.summary.dates}}"
       }
     }
   },
@@ -1718,62 +1718,62 @@
       "invite": {
         "label": "Invitation",
         "name": "Inviting parent to give or refuse consent",
-        "text": "Give or refuse consent for your child’s {{programme.name}} vaccination by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}). You need to do this by {{session.formatted.open}}.\n\nResponding will take less than 5 minutes."
+        "text": "Give or refuse consent for your child’s {{session.vaccination}} by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}). You need to do this by {{session.formatted.open}}.\n\nResponding will take less than 5 minutes."
       },
       "invite-clinic": {
         "label": "Clinic booking",
         "name": "Inviting parent to book a clinic appointment",
-        "text": "Our records show that {{consent.child.fullAndPreferredNames}} has not been vaccinated against HPV.\n\nTo book this vaccination in a clinic, go to https://www.swiftqueue.co.uk/userlogin.php\n\nYou’ll need to register for a Swiftqueue account first."
+        "text": "Our records show that {{consent.child.fullAndPreferredNames}} has not been vaccinated against {{session.immunisation}}.\n\nTo book this vaccination in a clinic, go to https://www.swiftqueue.co.uk/userlogin.php\n\nYou’ll need to register for a Swiftqueue account first."
       },
       "invite-clinic-reminder": {
         "label": "Clinic booking reminder",
         "name": "Reminding parent to book a clinic appointment",
-        "text": "It’s not too late for {{consent.child.fullAndPreferredNames}} to get their HPV vaccination.\n\nBook a clinic slot by going to https://www.swiftqueue.co.uk/userlogin.php\n\nYou'll need to register for a Swiftqueue account first."
+        "text": "It’s not too late for {{consent.child.fullAndPreferredNames}} to get their {{session.vaccination}}.\n\nBook a clinic slot by going to https://www.swiftqueue.co.uk/userlogin.php\n\nYou'll need to register for a Swiftqueue account first."
       },
       "invite-clinic-consent": {
         "label": "Clinic invitation",
         "name": "Inviting parent to give consent for a clinic appointment",
-        "text": "You recently booked a clinic appointment for {{consent.child.fullAndPreferredNames}}.\n\nPlease give consent for them to get the HPV vaccination by going to https://give-or-refuse-consent.nhs.uk/{{session.id}}."
+        "text": "You recently booked a clinic appointment for {{consent.child.fullAndPreferredNames}}.\n\nPlease give consent for them to get the {{session.vaccination}} by going to https://give-or-refuse-consent.nhs.uk/{{session.id}}."
       },
       "invite-reminder": {
         "label": "Reminder",
         "name": "Reminding parent to give or refuse consent",
-        "text": "We recently asked for your consent to vaccinate your child against {{programme.name}}.\n\nGo to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}) to submit a response. This will take less than 5 minutes."
+        "text": "We recently asked for your consent to vaccinate your child against {{session.immunisation}}.\n\nGo to [https://give-or-refuse-consent.nhs.uk/{{session.id}}](/consents/{{session.id}}) to submit a response. This will take less than 5 minutes."
       },
       "consent-given": {
         "label": "Consent given",
         "name": "Confirmation that consent has been given",
-        "text": "You’ve given consent for {{consent.child.firstName}} to get their {{programme.name}} vaccination at school on {{session.summary.remainingDates}}. Please let them know what to expect."
+        "text": "You’ve given consent for {{consent.child.firstName}} to get their {{session.vaccination}} at school on {{session.summary.remainingDates}}. Please let them know what to expect."
       },
       "consent-given-child": {
         "label": "Consent given (child)",
         "name": "Confirmation that consent has been given",
-        "text": "Your parent or guardian has agreed for you to have the {{programme.name}} vaccination at school on {{session.summary.remainingDates}}."
+        "text": "Your parent or guardian has agreed for you to have the {{session.vaccination}} at school on {{session.summary.remainingDates}}."
       },
       "consent-refused": {
         "label": "Consent refused",
         "name": "Confirmation that consent has been refused",
-        "text": "You’ve refused to give consent for {{consent.child.fullName}} to have their {{programme.name}} vaccination."
+        "text": "You’ve refused to give consent for {{consent.child.fullName}} to have their {{session.vaccination}}."
       },
       "capture-reminder": {
         "label": "Reminder",
         "name": "Reminder (to go out the day before the vaccination)",
-        "text": "{{consent.child.firstName}} will get their {{programme.name}} vaccination at school tomorrow ({{session.formatted.nextDate}}). Please make sure they have breakfast and encourage them to wear a short-sleeved shirt."
+        "text": "{{consent.child.firstName}} will get their {{session.vaccination}} at school tomorrow ({{session.formatted.nextDate}}). Please make sure they have breakfast and encourage them to wear a short-sleeved shirt."
       },
       "capture-reminder-child": {
         "label": "Reminder (child)",
         "name": "Reminder (to go out the day before the vaccination)",
-        "text": "You’re due to get your {{programme.name}} vaccination at school tomorrow ({{session.formatted.nextDate}}). Please wear a short-sleeved shirt and make sure you eat something before the session."
+        "text": "You’re due to get your {{session.vaccination}} at school tomorrow ({{session.formatted.nextDate}}). Please wear a short-sleeved shirt and make sure you eat something before the session."
       },
       "capture-vaccinated": {
         "label": "Vaccinated",
         "name": "Child has been vaccinated",
-        "text": "{{consent.child.firstName}} had their {{programme.name}} vaccination at school today. They might have some side effects, including bruising or itching at the injection site, a high temperature, nausea, or pain in the arms, hands, or fingers.\n\nIf you’re concerned, contact your GP in the usual way."
+        "text": "{{consent.child.firstName}} had their {{session.vaccination}} at school today. They might have some side effects, including bruising or itching at the injection site, a high temperature, nausea, or pain in the arms, hands, or fingers.\n\nIf you’re concerned, contact your GP in the usual way."
       },
       "capture-could-not-vaccinate": {
         "label": "Could not vaccinate",
         "name": "Child did not get their vaccination despite having consent",
-        "text": "{{consent.child.firstName}} did not have their {{programme.name}} vaccination at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact the local health team by calling [{{organisation.tel}}](#), or email [{{organisation.email}}](#)."
+        "text": "{{consent.child.firstName}} did not have their {{session.vaccination}} at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact the local health team by calling [{{organisation.tel}}](#), or email [{{organisation.email}}](#)."
       }
     }
   },

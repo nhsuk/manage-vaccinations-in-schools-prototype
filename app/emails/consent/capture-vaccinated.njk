@@ -1,13 +1,17 @@
 Dear {{ consent.parent.fullName }},
 
-{{ consent.child.fullAndPreferredNames }} had their {{ programme.name | replace("Flu", "flu") }} vaccination at {{ session.location.name }} today.{% if data.schools[session.school_urn].phase == "Primary" %} They were very brave.{% endif %}
+{{ consent.child.fullAndPreferredNames }} had their {{ session.vaccination }} at {{ session.location.name }} today.{% if data.schools[session.school_urn].phase == "Primary" %} They were very brave.{% endif %}
 
 We suggest you record the following details {% if data.schools[session.school_urn].phase == "Primary" %}in their red book (also known as their personal child health record){% else %}somewhere{% endif %}:
 
-- Vaccination: {{ programme.vaccine.name }}
+{% for programme in session.programmes %}
+## {{ programme.name }}
+
+- Vaccination: {{ programme.name }}
 - Vaccine: {{ programme.vaccine.brand }}
-- Date of vaccination: {{ session.formatted.date }}
+- Date of vaccination: {{ session.formatted.firstDate }}
 - Batch number: AB1234
+{% endfor %}
 
 ## Your child might have some side effects
 

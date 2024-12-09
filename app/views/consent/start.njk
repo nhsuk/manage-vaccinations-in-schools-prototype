@@ -1,6 +1,10 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = __("consent.start." + programme.type + ".title") %}
+{% if session.programmes.length == 1 %}
+  {% set title = __("consent.start.title.single", session.vaccination) %}
+{% else %}
+  {% set title = __("consent.start.title.multiple", session.vaccination) %}
+{% endif %}
 
 {% block content %}
   <div class="nhsuk-grid-row">
@@ -10,7 +14,14 @@
         title: title
       }) }}
 
-      {{ __("consent.start." + programme.type + ".description") | nhsukMarkdown }}
+      {% for programme in session.programmes %}
+        {% if session.programmes.length != 1 %}
+          <h2 class="nhsuk-heading-s">{{ programme.information.title }}</h2>
+        {% endif %}
+        {{ __("consent.start." + programme.type + ".description") | nhsukMarkdown }}
+      {% endfor %}
+
+      <hr class="nhsuk-section-break nhsuk-section-break--m">
 
       {{ button({
         text: __("consent.start.confirm"),

@@ -1,45 +1,39 @@
-Your local health team are coming to {{ session.location.name }} on {{ session.summary.dates }} to give {% if programme.type == ProgrammeType.Flu %} this year’s flu vaccine{% elif programme.type == ProgrammeType.HPV %}the human papillomavirus (HPV) vaccine to pupils in Year 8{% elif programme.type == ProgrammeType.TdIPV %}the Td/IPV (3-in-1 teenage booster) vaccines{% endif %}.
+{% if session.programmes.length == 1 %}
+Your local health team are coming to {{ session.location.name }} on {{ session.summary.dates }} to give the {{ session.programmes[0].information.title }} vaccine.
+{% else %}
+Your local health team are coming to {{ session.location.name }} on {{ session.summary.dates }} to give the following vaccines:
 
-## What the vaccine is for
-
-{% if programme.type == ProgrammeType.Flu %}
-The vaccine protects against flu, which can cause serious health problems.
-
-By preventing the spread of flu, the vaccine also protects others who are vulnerable, such as babies and older people.
-
-The vaccination is a quick and painless spray up the nose. Even if your child had the vaccine last year, the type of flu can vary each winter, so it is recommended to have it again this year.
-
-{% elif programme.type == ProgrammeType.HPV %}
-The HPV vaccine helps protect boys and girls against cancers caused by HPV, including:
-
-- cervical cancer
-- some mouth and throat (head and neck) cancers
-- some cancers of the anal and genital areas
-
-It also helps protect against genital warts.
-
-The HPV vaccine works best if it’s given before young people become sexually active.
-
-{% elif programme.type == ProgrammeType.TdIPV %}
-The 3-in-1 teenage booster, also known as the Td/IPV vaccine, boosts protection against 3 diseases: tetanus, diptheria and polio.
-
-The MenACWY vaccine, which helps to prevent meningitis and septicaemia, is normally given at the same time as the 3-in-1.
-
-Both vaccines are offered to all young people aged 13 to 15 (in school Years 9 and 10). They’re given as injections into the upper arm.
-
+{% for programme in session.programmes %}
+- {{ programme.information.title }}
+{%- endfor %}
 {% endif %}
+
+## What the {{vaccine__n}} {{is__n}} for
+
+{% for programme in session.programmes %}
+{{ programme.information.description }}
+{% endfor %}
 
 ## Please give or refuse consent
 
-If you want your child to get this vaccine at school, you need to give consent by {{ session.formatted.firstDate }}.
+If you want your child to get {% if session.programmes.length == 1 %}this vaccine{% else %}these vaccines{% endif %} at school, you need to give consent by {{ session.formatted.firstDate }}.
 
-[Give or refuse consent for the {{ programme.name | replace("Flu", "flu") }} vaccination](/consents/{{ session.id }})
+[Give or refuse consent for the {{ session.vaccination }}](/consents/{{ session.id }})
 
 Responding will take less than 5 minutes. If you do not give consent, it’s still important for you to let us know.
 
-{% if programme.type == ProgrammeType.Flu %}
-## About the flu vaccine
+{% for programme in session.programmes %}
+## About the {{ programme.name | replace("Flu", "flu") }} vaccine
 
+{{ programme.information.audience }}
+
+[Find out more about the {{ programme.name | replace("Flu", "flu") }} vaccine on NHS.UK]({{programme.information.url}})
+
+{% if programme.information.leaflet %}
+[Read the patient information leaflet]({{programme.information.leaflet}})
+{% endif %}
+
+{% if programme.type == ProgrammeType.Flu %}
 The nasal spray contains gelatine. If your child does not use gelatine products, or the nasal spray is not suitable for medical reasons, they could have an injection instead.
 
 The nasal spray gives children the best protection against flu. However, the injected vaccine is a good alternative if the nasal spray vaccine cannot be used.
@@ -47,23 +41,13 @@ The nasal spray gives children the best protection against flu. However, the inj
 [Find out more about protecting your child against flu](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1165161/UKHSA-12652-protecting-your-child-against-flu-information-for-parents-and-carers.pdf)
 
 [Find out more about the use of gelatine in the flu vaccine (including the views of faith communities)](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1107767/UKHSA-12462-vaccines-porcine-gelatine-English.pdf)
-
-{% elif programme.type == ProgrammeType.HPV %}
-## About the HPV vaccine
-
-Girls and boys in England are offered the HPV vaccination when they’re in Year 8.
-
-The HPV vaccine has been given to girls since 2008. Following its success at helping prevent cervical cancers, it was introduced to boys in 2019 to help prevent HPV-related cancers that affect them – including head and neck, anal and genital cancers.
-
-The number of doses you need depends on your age and how well your immune system works. Young people usually only need 1 dose.
-
-[Find out more about the HPV vaccine on NHS.UK](https://www.nhs.uk/conditions/vaccinations/hpv-human-papillomavirus-vaccine/)
 {% endif %}
+{% endfor %}
 
 {% if programme.type != ProgrammeType.Flu %}
 ## Talk to your child about what they want
 
-We suggest you talk to your child about the vaccine before you respond to us.
+We suggest you talk to your child about the {{vaccine__n}} before you respond to us.
 {% endif %}
 
 ## If you have trouble using the online form

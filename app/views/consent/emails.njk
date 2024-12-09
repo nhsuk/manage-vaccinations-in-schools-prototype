@@ -1,6 +1,14 @@
 {% extends "_layouts/emails.njk" %}
 
-{% set caption = __("consent.start." + programme.type + ".title") %}
+{% if session.programmes.length == 1 %}
+  {% set caption = __("consent.start.title.single", session.vaccination) %}
+  {% set vaccine__n = "vaccine" %}
+  {% set is__n = "is" %}
+{% else %}
+  {% set caption = __("consent.start.title.multiple", session.vaccination) %}
+  {% set vaccine__n = "vaccines" %}
+  {% set is__n = "are" %}
+{% endif %}
 
 {% set placeholders = {
   from: {

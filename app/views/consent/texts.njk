@@ -1,6 +1,10 @@
 {% extends "_layouts/texts.njk" %}
 
-{% set caption = __("consent.start." + programme.type + ".title") %}
+{% if session.programmes.length == 1 %}
+  {% set caption = __("consent.start.title.single", session.vaccination) %}
+{% else %}
+  {% set caption = __("consent.start.title.multiple", session.vaccination) %}
+{% endif %}
 
 {% set placeholders = {
   programme: programme,

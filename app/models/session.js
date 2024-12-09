@@ -388,6 +388,58 @@ export class Session {
   }
 
   /**
+   * Get vaccination name (sentence case)
+   *
+   * @returns {string} - Vaccination name
+   * @example flu vaccination
+   * @example flu and HPV vaccinations
+   */
+  get vaccination() {
+    const pluralisation =
+      this.programmes.length === 1 ? 'vaccination' : 'vaccinations'
+
+    return `${this.immunisation} ${pluralisation}`
+  }
+
+  /**
+   * Get vaccination title (Title case)
+   *
+   * @returns {string} - Vaccination title
+   * @example Flu vaccination
+   * @example Flu and HPV vaccinations
+   */
+  get vaccinationTitle() {
+    const pluralisation =
+      this.programmes.length === 1 ? 'vaccination' : 'vaccinations'
+
+    return `${this.immunisation.replace('flu', 'Flu')} ${pluralisation}`
+  }
+
+  /**
+   * Get programme immunisation
+   *
+   * @returns {string} - Programme immunisation
+   * @example flu
+   * @example flu and HPV
+   */
+  get immunisation() {
+    return prototypeFilters.formatList(
+      this.programmes.map(({ name }) => name.replace('Flu', 'flu'))
+    )
+  }
+
+  /**
+   * Get programme title
+   *
+   * @returns {string} - Programme title
+   */
+  get programmeTitle() {
+    return prototypeFilters.formatList(
+      this.programmes.map(({ information }) => information.title)
+    )
+  }
+
+  /**
    * Get type
    *
    * @returns {string} - Status

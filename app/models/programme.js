@@ -24,7 +24,13 @@ export const programmeTypes = {
   [ProgrammeType.Flu]: {
     pid: 'flu',
     name: 'Flu',
-    longName: 'Flu',
+    information: {
+      title: 'Flu',
+      description: `The vaccine protects against flu, which can cause serious health problems.`,
+      audience:
+        'By preventing the spread of flu, the vaccine also protects others who are vulnerable, such as babies and older people. The vaccination is a quick and painless spray up the nose. Even if your child had the vaccine last year, the type of flu can vary each winter, so it is recommended to have it again this year.',
+      url: 'https://www.nhs.uk/vaccinations/child-flu-vaccine/'
+    },
     term: SchoolTerm.Autumn,
     seasonal: true,
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -33,7 +39,14 @@ export const programmeTypes = {
   [ProgrammeType.HPV]: {
     pid: 'hpv',
     name: 'HPV',
-    longName: 'Human papillomavirus (HPV)',
+    information: {
+      title: 'Human papillomavirus (HPV)',
+      description: `The HPV vaccine helps protect boys and girls against cancers caused by HPV, including:\n- cervical cancer\n- some mouth and throat (head and neck) cancers\n- some cancers of the anal and genital areas`,
+      audience:
+        'The HPV vaccine has been given to girls since 2008. Following its success at helping prevent cervical cancers, it was introduced to boys in 2019 to help prevent HPV-related cancers that affect them.\n\nYoung people usually only need 1 dose.',
+      url: 'https://www.nhs.uk/conditions/vaccinations/hpv-human-papillomavirus-vaccine/',
+      leaflet: 'https://www.medicines.org.uk/emc/files/pil.7330.pdf'
+    },
     term: SchoolTerm.Spring,
     yearGroups: [8, 9, 10, 11],
     vaccines: ['00191778001693']
@@ -41,7 +54,14 @@ export const programmeTypes = {
   [ProgrammeType.TdIPV]: {
     pid: 'td-ipv',
     name: 'Td/IPV',
-    longName: 'Td/IPV (3-in-1 teenage booster)',
+    information: {
+      title: 'Td/IPV (3-in-1 teenage booster)',
+      description:
+        'The Td/IPV vaccine helps protect against:\n- tetanus\n - diptheria\n- polio',
+      audience:
+        'The Td/IPV vaccine (3-in-1 teenage booster) is offered at around 13 or 14 years old (school year 9 or 10). It boosts the protection provided by the [6-in-1 vaccine](https://www.nhs.uk/vaccinations/6-in-1-vaccine/) and [4-in-1 pre-school booster vaccine](https://www.nhs.uk/vaccinations/4-in-1-preschool-booster-vaccine/).',
+      url: 'https://www.nhs.uk/vaccinations/td-ipv-vaccine-3-in-1-teenage-booster/'
+    },
     term: SchoolTerm.Summer,
     yearGroups: [9, 10, 11],
     vaccines: ['3664798042948']
@@ -49,7 +69,14 @@ export const programmeTypes = {
   [ProgrammeType.MenACWY]: {
     pid: 'menacwy',
     name: 'MenACWY',
-    longName: 'MenACWY',
+    information: {
+      title: 'MenACWY',
+      description:
+        'The MenACWY vaccine helps protect against life-threatening illnesses including:\n - meningitis\n- sepsis\n- septicaemia (blood poisoning)',
+      audience:
+        'The MenACWY vaccine is recommended for all teenagers. Most people only need 1 dose of the vaccine.',
+      url: 'https://www.nhs.uk/vaccinations/menacwy-vaccine/'
+    },
     term: SchoolTerm.Summer,
     yearGroups: [9, 10, 11],
     vaccines: ['5415062370568']
@@ -73,6 +100,8 @@ export const programmeTypes = {
 export class Programme {
   constructor(options) {
     this.name = options?.type && programmeTypes[options.type]?.name
+    this.information =
+      options?.type && programmeTypes[options.type]?.information
     this.seasonal = options?.type && programmeTypes[options.type]?.seasonal
     this.term = options?.type && programmeTypes[options.type]?.term
     this.type = options?.type
