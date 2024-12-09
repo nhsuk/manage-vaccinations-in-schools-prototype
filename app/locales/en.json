@@ -1229,7 +1229,8 @@
       "title": "What is the child’s gender?"
     },
     "address": {
-      "label": "Address"
+      "label": "Address",
+      "title": "What is the child’s home address?"
     },
     "postalCode": {
       "label": "Postcode"
