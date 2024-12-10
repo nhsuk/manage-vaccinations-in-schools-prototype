@@ -23,7 +23,7 @@
     })
   }) }}
 
-  {% for yearGroup, records in school.records %}
+  {% for yearGroup, records in school.recordsByYearGroup %}
     {% set recordRows = [] %}
     {% for record in records | sort(false, false, "created") %}
       {% set recordRows = recordRows | push([

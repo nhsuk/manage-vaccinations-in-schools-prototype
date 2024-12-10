@@ -4,6 +4,7 @@ import schoolsData from '../datasets/schools.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Address } from './address.js'
+import { Record } from './record.js'
 
 export class SchoolPhase {
   static Primary = 'Primary'
@@ -24,6 +25,9 @@ export const schoolTerms = {
 
 /**
  * @class School
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} urn - URN
  * @property {string} name - Name
  * @property {SchoolPhase} [phase] - Phase
@@ -31,7 +35,8 @@ export const schoolTerms = {
  * @property {object} terms - Term dates
  */
 export class School {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.urn = (options.urn && Number(options.urn)) || faker.string.numeric(6)
     this.name = options?.name
     this.phase = options?.phase
@@ -63,6 +68,34 @@ export class School {
       name: this.name,
       ...this.address
     }
+  }
+
+  /**
+   * Get school pupils
+   *
+   * @returns {Array<Record>} - Records
+   */
+  get records() {
+    if (this.context?.records && this.urn) {
+      return Object.values(this.context?.records)
+        .filter((record) => record.urn === this.urn)
+        .map((record) => new Record(record))
+    }
+
+    return []
+  }
+
+  /**
+   * Get school pupils
+   *
+   * @returns {object} - Records by year group
+   */
+  get recordsByYearGroup() {
+    if (this.context?.records && this.records) {
+      return Object.groupBy(this.records, ({ yearGroup }) => yearGroup)
+    }
+
+    return []
   }
 
   /**

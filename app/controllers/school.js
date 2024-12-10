@@ -1,22 +1,12 @@
-import { Record } from '../models/record.js'
 import { School } from '../models/school.js'
 
 export const schoolController = {
   readAll(request, response, next) {
     const { data } = request.session
 
-    const schools = Object.values(data.schools).map((school) => {
-      school = new School(school)
-
-      school.records = Object.groupBy(
-        Object.values(data.records)
-          .filter((record) => record.urn === school.urn)
-          .map((record) => new Record(record)),
-        ({ yearGroup }) => yearGroup
-      )
-
-      return school
-    })
+    const schools = Object.values(data.schools).map(
+      (school) => (school = new School(school, data))
+    )
 
     response.locals.schools = schools
 
