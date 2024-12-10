@@ -249,11 +249,6 @@
     },
     "parent": {
       "label": "Parent"
-    },
-    "record": {
-      "postalCode": {
-        "label": "child.record.postalCode.label"
-      }
     }
   },
   "consent": {

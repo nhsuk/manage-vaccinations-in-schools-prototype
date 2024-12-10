@@ -10,18 +10,18 @@
   }) }}
 
   {{ card({
-    heading: __("consent.decision.summary"),
+    heading: __("consent.decision.summary", { session: session }),
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(consent, {
         decision: {
-          href: "edit/decision"
+          href: consent.uri + "/edit/decision"
         },
         refusalReason: {
-          href: "edit/refusal-reason"
+          href: consent.uri + "/edit/refusal-reason"
         },
         refusalReasonDetails: {
-          href: "edit/refusal-reason-details"
+          href: consent.uri + "/edit/refusal-reason-details"
         }
       })
     })
@@ -33,24 +33,24 @@
     descriptionHtml: summaryList({
       rows: summaryRows(consent.child, {
         fullName: {
-          href: "edit/child"
+          href: consent.uri + "/edit/child"
         },
         preferredName: {
-          href: "edit/child"
+          href: consent.uri + "/edit/child"
         },
         dob: {
-          href: "edit/dob"
+          href: consent.uri + "/edit/dob"
         },
         address: {
-          href: "edit/address"
+          href: consent.uri + "/edit/address"
         } if consent.given,
         gpSurgery: {
           changeLabel: "GP surgery",
-          href: "edit/gp-registered"
+          href: consent.uri + "/edit/gp-registered"
         } if consent.given,
         school: {
           value: consent.child.formatted.school or session.location.name,
-          href: "edit/school"
+          href: consent.uri + "/edit/school"
         } if session.type === SessionType.School
       })
     })
@@ -62,25 +62,25 @@
     descriptionHtml: summaryList({
       rows: summaryRows(consent.parent, {
         fullName: {
-          href: "edit/parent"
+          href: consent.uri + "/edit/parent"
         },
         relationship: {
-          href: "edit/parent"
+          href: consent.uri + "/edit/parent"
         },
         hasParentalResponsibility: {
-          href: "edit/parent"
+          href: consent.uri + "/edit/parent"
         },
         email: {
-          href: "edit/parent"
+          href: consent.uri + "/edit/parent"
         },
         tel: {
-          href: "edit/parent"
+          href: consent.uri + "/edit/parent"
         },
         sms: {
-          href: "edit/parent"
+          href: consent.uri + "/edit/parent"
         },
         contactPreference: {
-          href: "edit/contact-preference"
+          href: consent.uri + "/edit/contact-preference"
         }
       })
     })
@@ -93,7 +93,7 @@
       classes: "app-summary-list--full-width",
       rows: healthAnswerRows(
         consent.healthAnswers,
-        "edit/health-question-{{key}}"
+        consent.uri + "/edit/health-question-{{key}}"
       )
     })
   }) if consent.given }}

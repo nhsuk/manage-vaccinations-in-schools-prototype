@@ -83,6 +83,6 @@ export class Consent extends Reply {
    * @returns {string} - URI
    */
   get uri() {
-    return `/consents/${this.uuid}`
+    return `/consents/${this.session_id}/${this.uuid}`
   }
 }
