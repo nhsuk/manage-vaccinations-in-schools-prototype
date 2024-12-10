@@ -1,3 +1,4 @@
+import { Gender } from '../models/child.js'
 import { AcademicYear } from '../models/cohort.js'
 import { DownloadFormat } from '../models/download.js'
 import { EventType } from '../models/event.js'
@@ -14,7 +15,6 @@ import {
   TriageOutcome
 } from '../models/patient.js'
 import { ProgrammeType } from '../models/programme.js'
-import { Gender } from '../models/record.js'
 import { RegistrationOutcome } from '../models/registration.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { SchoolPhase } from '../models/school.js'

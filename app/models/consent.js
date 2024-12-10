@@ -21,7 +21,7 @@ export class Consent extends Reply {
    * @static
    */
   static generate(programme, session, patient) {
-    const child = Child.generate(patient.record)
+    const child = Child.generate()
     const parent = Parent.generate(patient.record.lastName)
     const decision = faker.helpers.weightedArrayElement([
       { value: ReplyDecision.Given, weight: 3 },

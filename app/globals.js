@@ -2,12 +2,12 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
 import exampleUsers from './datasets/users.js'
+import { Gender } from './models/child.js'
 import {
   ConsentOutcome,
   PatientOutcome,
   ScreenOutcome
 } from './models/patient.js'
-import { Gender } from './models/record.js'
 import { Reply, ReplyDecision } from './models/reply.js'
 import { User } from './models/user.js'
 import { Vaccination } from './models/vaccination.js'
