@@ -57,11 +57,11 @@
         },
         {
           header: __("record.dob.label"),
-          html: vaccination.record.formatted.dob
+          html: vaccination.record.formatted.dob or "Not provided"
         },
         {
           header: __("record.postalCode.label"),
-          html: vaccination.record.postalCode
+          html: vaccination.record.postalCode or "Not provided"
         },
         {
           header: __("vaccination.created.label"),
