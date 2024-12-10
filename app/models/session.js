@@ -530,7 +530,7 @@ export class Session {
   get details() {
     return `<div>
       <p>${this.link.nameAndAddress}</p>
-      </p>${this.dateSummary}</p>
+      <p>${this.dateSummary}</p>
     </div>`
   }
 
