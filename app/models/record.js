@@ -80,10 +80,10 @@ export class Record extends Child {
 
       // Move school
       const newUrn =
-        schools[child.urn]?.phase === 'Primary'
+        schools[child.school_urn]?.phase === 'Primary'
           ? faker.helpers.arrayElement(primarySchools).urn
           : faker.helpers.arrayElement(secondarySchools).urn
-      pendingChanges.urn = newUrn
+      pendingChanges.school_urn = newUrn
     }
 
     return new Record({
@@ -154,7 +154,9 @@ export class Record extends Child {
     return {
       ...super.formatted,
       nhsn: formatNhsNumber(this.nhsn),
-      newUrn: this.pendingChanges?.urn && schools[this.pendingChanges.urn].name,
+      newUrn:
+        this.pendingChanges?.school_urn &&
+        schools[this.pendingChanges.school_urn].name,
       parent1: this.parent1 && formatParent(this.parent1),
       parent2: this.parent2 && formatParent(this.parent2),
       parents: formatList(formattedParents)

@@ -367,7 +367,7 @@ export class Session {
       return Object.values(this.context.patients)
         .map((patient) => new Patient(patient))
         .filter(({ session_ids }) => session_ids.includes(this.id))
-        .filter(({ record }) => !record?.pendingChanges?.urn)
+        .filter(({ record }) => !record?.pendingChanges?.school_urn)
     }
 
     return []

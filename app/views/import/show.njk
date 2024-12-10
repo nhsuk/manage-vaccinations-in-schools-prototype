@@ -136,8 +136,8 @@
         header: __("record.postalCode.label"),
         text: record.postalCode
       }, {
-        header: __("record.urn.label"),
-        text: record.formatted.urn
+        header: __("record.school.label"),
+        text: record.formatted.school
       } if import.type == ImportType.School, {
         header: __("vaccination.created.label"),
         text: record.vaccination.formatted.created_date
@@ -157,7 +157,7 @@
       { text: __("record.nhsn.label") },
       { text: __("record.dob.label") },
       { text: __("record.postalCode.label") },
-      { text: __("record.urn.label") } if import.type == ImportType.School,
+      { text: __("record.school.label") } if import.type == ImportType.School,
       { text: __("vaccination.created.label") } if import.type == ImportType.Report
     ],
     rows: recordRows

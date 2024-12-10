@@ -6,7 +6,6 @@ import { Consent } from '../models/consent.js'
 import { Parent } from '../models/parent.js'
 import { Patient } from '../models/patient.js'
 import { ProgrammeType } from '../models/programme.js'
-import { Record } from '../models/record.js'
 import { Reply, ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { School } from '../models/school.js'
 import { ConsentWindow, Session, SessionType } from '../models/session.js'
@@ -138,12 +137,11 @@ export const consentController = {
       [`/${id}/${uuid}/${form}/child`]: {},
       [`/${id}/${uuid}/${form}/dob`]: {},
       ...(session.type === SessionType.School
-        ? { [`/${id}/${uuid}/${form}/school`]: {} }
+        ? { [`/${id}/${uuid}/${form}/confirm-school`]: {} }
         : {}),
-      ...(session.type === SessionType.School &&
-      data.consent?.child?.school !== 'yes'
+      ...(session.type === SessionType.School && data.confirmSchool !== 'yes'
         ? {
-            [`/${id}/${uuid}/${form}/urn`]: {}
+            [`/${id}/${uuid}/${form}/school`]: {}
           }
         : {}),
       [`/${id}/${uuid}/${form}/parent`]: {},
@@ -225,6 +223,7 @@ export const consentController = {
     const { data } = request.session
     const { paths } = response.locals
 
+    delete data.confirmSchool
     delete data.healthAnswers
 
     data.wizard.consent = new Consent({

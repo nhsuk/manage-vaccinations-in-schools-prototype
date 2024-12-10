@@ -61,7 +61,7 @@ export const moveController = {
       request.flash('success', __(`move.success.ignore`, { move }))
     } else {
       // Update session data
-      data.records[move.record_nhsn].urn = updatedMove.to
+      data.records[move.record_nhsn].school_urn = updatedMove.to
       delete data.moves[move.uuid]
 
       request.flash('success', __(`move.success.update`, { move }))

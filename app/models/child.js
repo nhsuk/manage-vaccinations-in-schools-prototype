@@ -41,7 +41,7 @@ export class Gender {
  * @property {Address} [address] - Address
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} [registrationGroup] - Registration group
- * @property {string} [urn] - School
+ * @property {string} [school_urn] - School
  */
 export class Child {
   constructor(options) {
@@ -56,7 +56,7 @@ export class Child {
     this.address = options?.address
     this.gpSurgery = options?.gpSurgery
     this.registrationGroup = options?.registrationGroup
-    this.urn = options?.urn
+    this.school_urn = options?.school_urn
   }
 
   /**
@@ -91,10 +91,10 @@ export class Child {
 
     // Date of birth and school
     const phase = faker.helpers.arrayElement(['Primary', 'Secondary'])
-    let dob, urn
+    let dob, school_urn
     if (phase === 'Primary') {
       dob = faker.date.birthdate({ min: 4, max: 11, mode: 'age' })
-      urn = faker.helpers.arrayElement(primarySchools).urn
+      school_urn = faker.helpers.arrayElement(primarySchools).urn
     } else {
       // Children generally receive adolescent vaccinations when younger
       // Note: This means flu cohorts will skew more towards younger children
@@ -106,12 +106,12 @@ export class Child {
         { value: 16, weight: 1 }
       ])
       dob = faker.date.birthdate({ min: 11, max, mode: 'age' })
-      urn = faker.helpers.arrayElement(secondarySchools).urn
+      school_urn = faker.helpers.arrayElement(secondarySchools).urn
     }
 
     // Add examples of children who are home-schooled or at an unknown school
     if (faker.datatype.boolean(0.01)) {
-      urn = faker.helpers.arrayElement([888888, 999999])
+      school_urn = faker.helpers.arrayElement([888888, 999999])
     }
 
     // GP surgery
@@ -125,7 +125,7 @@ export class Child {
 
     // Registration group
     let registrationGroup
-    const hasRegistrationGroup = String(urn).startsWith('13')
+    const hasRegistrationGroup = String(school_urn).startsWith('13')
     if (hasRegistrationGroup) {
       const yearGroup = getYearGroup(dob)
       const registration = faker.string.alpha({
@@ -146,7 +146,7 @@ export class Child {
       address: Address.generate(),
       gpSurgery,
       registrationGroup,
-      urn
+      school_urn
     })
   }
 
@@ -265,6 +265,17 @@ export class Child {
   }
 
   /**
+   * Get school
+   *
+   * @returns {object|undefined} - School
+   */
+  get school() {
+    if (this.school_urn) {
+      return schools[this.school_urn]
+    }
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values
@@ -278,7 +289,7 @@ export class Child {
         ? `${this.yearGroup} (${this.registrationGroup})`
         : this.yearGroup,
       address: this?.address && new Address(this.address).formatted.multiline,
-      urn: schools[this.urn]?.name
+      school: this?.school && this.school.name
     }
   }
 

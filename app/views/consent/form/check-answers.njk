@@ -48,9 +48,9 @@
           changeLabel: "GP surgery",
           href: "edit/gp-registered"
         } if consent.given,
-        urn: {
-          value: consent.child.formatted.urn or session.location.name,
-          href: "edit/urn"
+        school: {
+          value: consent.child.formatted.school or session.location.name,
+          href: "edit/school"
         } if session.type === SessionType.School
       })
     })

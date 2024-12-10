@@ -1,12 +1,12 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("record.urn.title") %}
+{% set title = __("record.school.title") %}
 
 {% block form %}
   {{ xGovukAutocomplete({
-    id: "urn",
-    name: "[record][urn]",
-    value: consent.child.urn,
+    id: "school-urn",
+    name: "[record][school_urn]",
+    value: consent.child.school_urn,
     allowEmpty: false,
     label: {
       classes: "nhsuk-label--l",

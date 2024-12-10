@@ -159,7 +159,7 @@ export class Download {
           date: vaccination.created,
           time: vaccination.created,
           location_type: 'SC',
-          location_urn: vaccination.urn,
+          location_urn: vaccination.school_urn,
           user_role: '',
           user_code: '',
           attended: vaccination.given ? 'Y' : 'N',

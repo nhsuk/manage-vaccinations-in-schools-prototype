@@ -78,7 +78,7 @@ export class School {
   get records() {
     if (this.context?.records && this.urn) {
       return Object.values(this.context?.records)
-        .filter((record) => record.urn === this.urn)
+        .filter((record) => record.school_urn === this.urn)
         .map((record) => new Record(record))
     }
 

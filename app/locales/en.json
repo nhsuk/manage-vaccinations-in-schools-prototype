@@ -241,7 +241,7 @@
     "address": {
       "label": "Home address"
     },
-    "urn": {
+    "school": {
       "label": "School"
     },
     "gpSurgery": {
@@ -418,7 +418,7 @@
         "label": "Child’s date of birth",
         "hint": "For example, 27 3 2017"
       },
-      "school": {
+      "confirm-school": {
         "title": "Confirm your child’s school",
         "label": "Is this their school?",
         "yes": "Yes, they go to this school",
@@ -429,7 +429,7 @@
         "yes": "Yes",
         "no": "No, they go to a school"
       },
-      "urn": {
+      "school": {
         "title": "What school does your child go to?",
         "label": "Select a school",
         "description": "You can only use this service if your child’s school is listed here. If it’s not, contact {{organisation.email}}. If you’ve moved recently, it’s important to mention this."
@@ -1242,7 +1242,7 @@
       "label": "GP surgery",
       "title": "Who is the child’s GP?"
     },
-    "urn": {
+    "school": {
       "label": "School",
       "title": "What school does the child go to?"
     },
@@ -1645,7 +1645,7 @@
     "dates": {
       "label": "Session dates"
     },
-    "urn": {
+    "school": {
       "label": "School"
     },
     "location": {

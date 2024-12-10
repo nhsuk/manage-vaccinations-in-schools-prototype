@@ -62,7 +62,7 @@ export const registrationController = {
       )
       const absentVaccination = new Vaccination({
         location: session.location.name,
-        urn: session.urn,
+        school_urn: session.school_urn,
         outcome: VaccinationOutcome.AbsentSession,
         patient_uuid: patient.uuid,
         programme_pid: programme.pid,
