@@ -1939,9 +1939,6 @@
       "label": "Batch ID",
       "default": "Default to this batch for this session"
     },
-    "batch_expiry": {
-      "label": "Batch expiry date"
-    },
     "note": {
       "label": "Notes",
       "hint": "For example, if the child had a reaction to the vaccine",

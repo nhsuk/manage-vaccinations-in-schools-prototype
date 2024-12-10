@@ -144,8 +144,6 @@ export const vaccinationController = {
       ...data?.wizard?.vaccination, // Wizard values (new flow)
       ...request.body.vaccination, // New values (edit flow)
       vaccine_gtin: programme.vaccine.gtin,
-      batch_expiry:
-        vaccination.batch_expiry || data.batches[vaccination.batch_id]?.expiry,
       created_user_uid: data.vaccination?.created_user_uid || data.token?.uid
     })
 
@@ -184,10 +182,13 @@ export const vaccinationController = {
     const { __ } = response.locals
 
     request.app.locals.referrer = referrer || back
-    request.app.locals.vaccination = new Vaccination({
-      ...(form === 'edit' && vaccination), // Previous values
-      ...data?.wizard?.vaccination // Wizard values,
-    })
+    request.app.locals.vaccination = new Vaccination(
+      {
+        ...(form === 'edit' && vaccination), // Previous values
+        ...data?.wizard?.vaccination // Wizard values,
+      },
+      data
+    )
 
     const journey = {
       [`/`]: {},
@@ -205,7 +206,7 @@ export const vaccinationController = {
             [`/${uuid}/${form}/batch-id`]: () => {
               return !defaultBatchId
             },
-            ...(!session.address && {
+            ...(!session?.address && {
               [`/${uuid}/${form}/location`]: {}
             }),
             [`/${uuid}/${form}/check-answers`]: {}

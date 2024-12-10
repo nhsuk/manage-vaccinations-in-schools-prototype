@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import { isBefore } from 'date-fns'
 
 import vaccines from '../datasets/vaccines.js'
 import {
@@ -41,10 +42,11 @@ export class Batch {
    * Generate fake batch
    *
    * @param {string} [vaccine_gtin] - Vaccine GTIN
+   * @param {string} [id] - Batch ID
    * @returns {Batch} - Batch
    * @static
    */
-  static generate(vaccine_gtin) {
+  static generate(vaccine_gtin, id) {
     const created = faker.date.recent({ days: 30 })
     const expiry = addDays(created, 120)
     vaccine_gtin =
@@ -57,6 +59,7 @@ export class Batch {
     }
 
     return new Batch({
+      id,
       created,
       ...(isArchived && { archived }),
       expiry,
@@ -91,6 +94,17 @@ export class Batch {
    */
   get name() {
     return `${this.formatted.id} (${this.formatted.expiry})`
+  }
+
+  /**
+   * Get summary (name and expiry)
+   *
+   * @returns {string} - Name
+   */
+  get summary() {
+    const prefix = isBefore(this.archived, getToday()) ? 'Expired' : 'Expires'
+
+    return `${this.formatted.id}<br>\n<span class="nhsuk-u-secondary-text-color">${prefix} ${this.formatted.expiry}</span>`
   }
 
   /**

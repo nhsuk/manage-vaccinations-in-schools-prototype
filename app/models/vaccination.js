@@ -17,7 +17,7 @@ import {
 
 import { Batch } from './batch.js'
 import { ConsentOutcome, Patient } from './patient.js'
-import { Programme, ProgrammeType } from './programme.js'
+import { Programme } from './programme.js'
 import { School } from './school.js'
 import { Session } from './session.js'
 import { User } from './user.js'
@@ -86,8 +86,6 @@ export class VaccinationProtocol {
  * @property {string} [patient_uuid] - Patient UUID
  * @property {string} [programme_pid] - Programme ID
  * @property {string} [batch_id] - Batch ID
- * @property {Date} [batch_expiry] - Batch expiry date
- * @property {object} [batch_expiry_] - Batch expiry date (from `dateInput`)
  * @property {string} [vaccine_gtin] - Vaccine GTIN
  */
 export class Vaccination {
@@ -115,11 +113,6 @@ export class Vaccination {
     this.patient_uuid = options?.patient_uuid
     this.programme_pid = options?.programme_pid
     this.batch_id = this.given ? options?.batch_id || '' : undefined
-    this.batch_expiry = this.given
-      ? options?.batch_expiry
-        ? new Date(options.batch_expiry)
-        : undefined
-      : undefined
     this.vaccine_gtin = options?.vaccine_gtin
   }
 
@@ -129,40 +122,17 @@ export class Vaccination {
    * @param {import('./patient.js').Patient} patient - Patient
    * @param {import('./programme.js').Programme} programme - Programme
    * @param {import('./session.js').Session} session - Session
-   * @param {string} location - Location name
+   * @param {import('./batch.js').Batch} batch - Batch
    * @param {Array<import('./user.js').User>} users - Users
    * @returns {Vaccination} - Vaccination
    * @static
    */
-  static generate(patient, programme, session, location, users) {
+  static generate(patient, programme, session, batch, users) {
     const user = faker.helpers.arrayElement(users)
 
     let injectionMethod
     let injectionSite
     let sequence
-    let vaccine_gtin
-    switch (programme.type) {
-      case ProgrammeType.HPV:
-        injectionMethod = VaccinationMethod.Subcutaneous
-        injectionSite = VaccinationSite.ArmRightUpper
-        sequence = VaccinationSequence.P1
-        vaccine_gtin = '00191778001693'
-        break
-      case ProgrammeType.MenACWY:
-        injectionMethod = VaccinationMethod.Subcutaneous
-        injectionSite = VaccinationSite.ArmRightUpper
-        vaccine_gtin = '5415062370568'
-        break
-      case ProgrammeType.TdIPV:
-        injectionMethod = VaccinationMethod.Subcutaneous
-        injectionSite = VaccinationSite.ArmRightUpper
-        vaccine_gtin = '3664798042948'
-        break
-      case ProgrammeType.Flu:
-      default:
-        vaccine_gtin = '05000456078276'
-        break
-    }
 
     let outcome
     if (patient.consent.value === ConsentOutcome.Given) {
@@ -179,21 +149,18 @@ export class Vaccination {
       outcome === VaccinationOutcome.Vaccinated ||
       outcome === VaccinationOutcome.PartVaccinated
 
-    const batch = Batch.generate(vaccine_gtin)
-
     return new Vaccination({
       created: session.firstDate,
       created_user_uid: user.uid,
       outcome,
-      location,
+      location: session.location.name,
       programme_pid: programme.pid,
       session_id: session.id,
       patient_uuid: patient.uuid,
-      vaccine_gtin,
+      vaccine_gtin: batch.vaccine_gtin,
       ...(vaccinated && {
         batch_id: batch.id,
-        batch_expiry: batch.expiry,
-        dose: vaccines[vaccine_gtin].dose,
+        dose: vaccines[batch.vaccine_gtin].dose,
         sequence,
         injectionMethod,
         injectionSite
@@ -222,12 +189,28 @@ export class Vaccination {
   }
 
   /**
+   * Get batch
+   *
+   * @returns {Batch} - Batch
+   */
+  get batch() {
+    try {
+      const batch = this.context?.batches[this.batch_id]
+      if (batch) {
+        return new Batch(batch)
+      }
+    } catch (error) {
+      console.error('Vaccination.batch', error.message)
+    }
+  }
+
+  /**
    * Get batch expiry date for `dateInput`
    *
    * @returns {object|undefined} - `dateInput` object
    */
   get batch_expiry_() {
-    return convertIsoDateToObject(this.batch_expiry)
+    return convertIsoDateToObject(this.batch.expiry)
   }
 
   /**
@@ -237,7 +220,8 @@ export class Vaccination {
    */
   set batch_expiry_(object) {
     if (object) {
-      this.batch_expiry = convertObjectToIsoDate(object)
+      this.context.batches[this.batch_id].expiry =
+        convertObjectToIsoDate(object)
     }
   }
 
@@ -384,10 +368,8 @@ export class Vaccination {
         minute: '2-digit',
         hour12: true
       }),
+      batch: this.batch?.summary,
       batch_id: formatMonospace(this.batch_id),
-      batch_expiry: this.batch_expiry
-        ? formatDate(this.batch_expiry, { dateStyle: 'long' })
-        : '',
       dose: formatMillilitres(this.dose),
       vaccine_gtin: this.vaccine?.brandWithType,
       note: formatMarkdown(this.note),
