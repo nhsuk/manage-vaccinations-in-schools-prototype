@@ -3,7 +3,9 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { formatDate, getToday } from '../utils/date.js'
 
 import { Programme } from './programme.js'
+import { Record } from './record.js'
 import { User } from './user.js'
+import { Vaccination } from './vaccination.js'
 
 export class ImportType {
   static Cohort = 'Child records'
@@ -128,6 +130,26 @@ export class Import {
     } catch (error) {
       console.error('Import.programme', error.message)
     }
+  }
+
+  /**
+   * Get imported records
+   *
+   * @returns {Array<Programme>} - Programmes
+   */
+  get records() {
+    if (this.context?.records && this.record_nhsns) {
+      return this.record_nhsns
+        .map((nhsn) => new Record(this.context?.records[nhsn]))
+        .map((record) => {
+          record.vaccination = record.vaccination_uuids.map(
+            (uuid) => new Vaccination(this.context.vaccinations[uuid])
+          )[0]
+          return record
+        })
+    }
+
+    return []
   }
 
   /**

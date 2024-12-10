@@ -2,7 +2,6 @@ import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { Import, ImportType } from '../models/import.js'
 import { Record } from '../models/record.js'
-import { Vaccination } from '../models/vaccination.js'
 import { formatList } from '../utils/string.js'
 
 export const importController = {
@@ -20,24 +19,14 @@ export const importController = {
 
     _import = new Import(data.imports[id] || _import, data)
 
-    const records = _import.records.map((record) => {
-      record = new Record(record)
-      // TODO: Review multiple vaccination programmes in a single import
-      record.vaccination = record.vaccination_uuids.map(
-        (uuid) => new Vaccination(data.vaccinations[uuid])
-      )[0]
-
-      return record
-    })
-
-    _import.records = records
-
     // Count and show duplicate records
-    const duplicates = records.filter((record) => record.hasPendingChanges)
+    const duplicates = _import.records.filter(
+      (record) => record.hasPendingChanges
+    )
     _import.duplicate = duplicates.length
 
     // Count incomplete records (those missing an NHS number)
-    _import.incomplete = records.filter(
+    _import.incomplete = _import.records.filter(
       (record) => record.hasMissingNhsNumber
     ).length
 
