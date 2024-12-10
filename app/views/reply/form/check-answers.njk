@@ -6,7 +6,7 @@
 
 {% block form %}
   {{ heading({
-    caption: patient.record.fullName,
+    caption: patient.fullName,
     title: title
   }) }}
 
@@ -90,7 +90,7 @@
   }) if reply.healthAnswers }}
 
   {{ card({
-    heading: __("triage.label", patient.record.firstName),
+    heading: __("triage.label", patient.firstName),
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(triage, {

@@ -32,11 +32,11 @@
 
   {% if programme.reviews.length %}
     {% set reviewRows = [] %}
-    {% for record in programme.reviews %}
+    {% for patient in programme.reviews %}
       {% set reviewRows = reviewRows | push([
         {
-          header: __("record.fullName.label"),
-          html: record.fullName
+          header: __("patient.fullName.label"),
+          html: patient.fullName
         },
         {
           header: __("import.issue.label"),
@@ -62,7 +62,7 @@
       responsive: true,
       head: [
         {
-          text: __("record.label"),
+          text: __("patient.label"),
           attributes: { "no-sort": "no-sort" }
         },
         {

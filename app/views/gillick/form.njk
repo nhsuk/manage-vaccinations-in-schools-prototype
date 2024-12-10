@@ -5,12 +5,12 @@
 
 {% block form %}
   {{ heading({
-    caption: patient.record.fullName,
+    caption: patient.fullName,
     title: title
   }) }}
 
   {{ insetText({
-    html: __("gillick.text", { patient: patient.record }) | nhsukMarkdown
+    html: __("gillick.text", { patient: patient }) | nhsukMarkdown
   }) }}
 
   {{ radios({

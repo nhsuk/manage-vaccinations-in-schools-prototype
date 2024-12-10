@@ -1,29 +1,29 @@
 import { formatLink, formatYearGroup } from '../utils/string.js'
 
+import { Patient } from './patient.js'
 import { Programme, ProgrammeType } from './programme.js'
-import { Record } from './record.js'
 
 export class AcademicYear {
   static Y2024 = '2024/25'
 }
 
 /**
- * Get NHS Numbers of CHIS records within year group
+ * Get NHS Numbers of patients within year group
  *
- * @param {Map<import('./record.js').Record>} records - CHIS records
+ * @param {Map<import('./patient.js').Patient>} patients - Patient records
  * @param {number} yearGroup - Year group
  * @returns {Array} NHS numbers of selected cohort
  */
-export function getRecordsFromYearGroup(records, yearGroup) {
-  const yearGroupRecords = new Set()
+export function getPatientsFromYearGroup(patients, yearGroup) {
+  const yearGroupPatients = new Set()
 
-  records.forEach((record) => {
-    if (record.yearGroup === yearGroup) {
-      yearGroupRecords.add(record.nhsn)
+  patients.forEach((patient) => {
+    if (patient.yearGroup === yearGroup) {
+      yearGroupPatients.add(patient.nhsn)
     }
   })
 
-  return [...yearGroupRecords]
+  return [...yearGroupPatients]
 }
 
 /**
@@ -36,7 +36,7 @@ export function getRecordsFromYearGroup(records, yearGroup) {
  * @property {string} [created_user_uid] - User who created cohort
  * @property {AcademicYear} year - Academic year
  * @property {number} yearGroup - Year group
- * @property {Array<string>} record_nhsns - Records NHS numbers
+ * @property {Array<string>} patient_nhsns - Patient NHS numbers
  * @property {string} [programme_pid] - Programme ID
  * @function ns - Namespace
  * @function uri - URL
@@ -50,7 +50,7 @@ export class Cohort {
     this.created_user_uid = options?.created_user_uid
     this.year = year
     this.yearGroup = options?.yearGroup
-    this.record_nhsns = options?.record_nhsns || []
+    this.patient_nhsns = options?.patient_nhsns || []
     this.programme_pid = options?.programme_pid
   }
 
@@ -58,19 +58,19 @@ export class Cohort {
    * Generate fake cohort
    *
    * @param {import('./programme.js').Programme} programme - Programme
-   * @param {Map<import('./record.js').Record>} recordsMap - Records
+   * @param {Map<import('./patient.js').Patient>} patientsMap - Patients
    * @param {number} yearGroup - Year group
    * @param {import('./user.js').User} user - User
    * @returns {Cohort} - Cohort
    * @static
    */
-  static generate(programme, recordsMap, yearGroup, user) {
-    const record_nhsns = getRecordsFromYearGroup(recordsMap, yearGroup)
+  static generate(programme, patientsMap, yearGroup, user) {
+    const patient_nhsns = getPatientsFromYearGroup(patientsMap, yearGroup)
 
     return new Cohort({
       created_user_uid: user.uid,
       yearGroup,
-      record_nhsns,
+      patient_nhsns,
       programme_pid: programme.pid
     })
   }
@@ -103,15 +103,15 @@ export class Cohort {
   }
 
   /**
-   * Get cohort records
+   * Get cohort patient records
    *
-   * @returns {Array<Record>} - Records
+   * @returns {Array<Patient>} - Patients
    */
-  get records() {
-    if (this.context?.records && this.record_nhsns) {
-      return this.record_nhsns.map(
-        (nhsn) => new Record(this.context?.records[nhsn])
-      )
+  get patients() {
+    if (this.context?.patients && this.patient_nhsns) {
+      return Object.values(this.context?.patients)
+        .map((patient) => new Patient(patient))
+        .filter(({ nhsn }) => this.patient_nhsns.includes(nhsn))
     }
 
     return []

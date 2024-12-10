@@ -55,23 +55,23 @@
   }) }}
 
   {% set patientRows = [] %}
-  {% for patient in results.page | sort(false, false, "record.lastName") %}
+  {% for patient in results.page | sort(false, false, "patient.lastName") %}
     {% set patientRows = patientRows | push([
       {
-        header: __("record.fullName.label"),
+        header: __("patient.fullName.label"),
         html: patient.link.fullName
       },
       {
-        header: __("record.postalCode.label"),
-        html: patient.record.postalCode
+        header: __("patient.postalCode.label"),
+        html: patient.postalCode
       },
       {
-        header: __("record.school.label"),
-        html: patient.record.formatted.school
+        header: __("patient.school.label"),
+        html: patient.formatted.urn
       },
       {
-        header: __("record.dob.label"),
-        html: patient.record.formatted.dob or "Not provided"
+        header: __("patient.dob.label"),
+        html: patient.formatted.dob or "Not provided"
       }
     ]) %}
   {% endfor %}
@@ -89,10 +89,10 @@
       panel: true,
       responsive: true,
       head: [
-        { text: __("record.fullName.label") },
-        { text: __("record.postalCode.label") },
-        { text: __("record.school.label") },
-        { text: __("record.dob.label") }
+        { text: __("patient.fullName.label") },
+        { text: __("patient.postalCode.label") },
+        { text: __("patient.school.label") },
+        { text: __("patient.dob.label") }
       ],
       rows: patientRows
     }) }}

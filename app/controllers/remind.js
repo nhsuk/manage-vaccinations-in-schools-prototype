@@ -16,7 +16,7 @@ export const remindController = {
     const { paths, patient } = response.locals
 
     patient.sendReminder({
-      fullName: patient.record.parent1.fullName,
+      fullName: patient.parent1.fullName,
       ...(data.token && { user_uid: data.token?.uid })
     })
 

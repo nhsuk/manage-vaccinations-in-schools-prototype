@@ -21,13 +21,13 @@ export const programmeController = {
         .map((cohort) => new Cohort(cohort, data))
 
       // Patients in programme
-      let record_nhsns = []
+      let patient_nhsns = []
       for (const cohort of programme.cohorts) {
-        record_nhsns = [...record_nhsns, ...cohort.record_nhsns]
+        patient_nhsns = [...patient_nhsns, ...cohort.patient_nhsns]
       }
 
       programme.patients = Object.values(data.patients)
-        .filter((patient) => record_nhsns.includes(patient.record.nhsn))
+        .filter((patient) => patient_nhsns.includes(patient.nhsn))
         .map((patient) => new Patient(patient))
 
       // Sessions in programme
@@ -50,7 +50,7 @@ export const programmeController = {
 
           // Add record to vaccination
           vaccination.record = new Record(
-            data.patients[vaccination.patient_uuid].record
+            data.patients[vaccination.patient_uuid]
           )
 
           return vaccination

@@ -1,10 +1,10 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("triage.label", patient.record.firstName) %}
+{% set title = __("triage.label", patient.firstName) %}
 
 {% block form %}
   {{ heading({
-    caption: patient.record.fullName,
+    caption: patient.fullName,
     title: title
   }) }}
 

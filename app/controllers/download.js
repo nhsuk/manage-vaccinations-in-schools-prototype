@@ -26,9 +26,7 @@ export const downloadController = {
       .filter((vaccination) => vaccination.programme_pid === pid)
       .map((vaccination) => {
         vaccination = new Vaccination(vaccination)
-        vaccination.record = new Record(
-          data.patients[vaccination.patient_uuid].record
-        )
+        vaccination.record = new Record(data.patients[vaccination.patient_uuid])
         return vaccination
       })
 

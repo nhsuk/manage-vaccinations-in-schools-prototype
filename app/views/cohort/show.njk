@@ -26,29 +26,29 @@
     title: title
   }) }}
 
-  {% if cohort.records.length %}
-    {% set recordRows = [] %}
-    {% for record in cohort.records %}
-      {% set recordRows = recordRows | push([
+  {% if cohort.patients.length %}
+    {% set patientRows = [] %}
+    {% for patient in cohort.patients %}
+      {% set patientRows = patientRows | push([
         {
-          header: __("record.fullName.label"),
-          html: record.fullName
+          header: __("patient.fullName.label"),
+          html: patient.fullName
         },
         {
-          header: __("record.nhsn.label"),
-          html: record.formatted.nhsn or "Not provided"
+          header: __("patient.nhsn.label"),
+          html: patient.formatted.nhsn or "Not provided"
         },
         {
-          header: __("record.dob.label"),
-          text: record.formatted.dob
+          header: __("patient.dob.label"),
+          text: patient.formatted.dob
         },
         {
-          header: __("record.postalCode.label"),
-          text: record.postalCode
+          header: __("patient.postalCode.label"),
+          text: patient.postalCode
         },
         {
-          header: __("record.school.label"),
-          text: record.formatted.school
+          header: __("patient.school.label"),
+          text: patient.formatted.urn
         }
       ]) %}
     {% endfor %}
@@ -56,19 +56,19 @@
     {{ actionTable({
       tableClasses: "app-table--small",
       id: "cohort",
-      heading: __n("cohort.records.count", cohort.records.length),
+      heading: __n("cohort.patients.count", cohort.patients.length),
       panel: true,
       responsive: true,
       head: [
-        { text: __("record.fullName.label") },
-        { text: __("record.nhsn.label") },
-        { text: __("record.dob.label") },
-        { text: __("record.postalCode.label") },
-        { text: __("record.school.label") }
+        { text: __("patient.fullName.label") },
+        { text: __("patient.nhsn.label") },
+        { text: __("patient.dob.label") },
+        { text: __("patient.postalCode.label") },
+        { text: __("patient.school.label") }
       ],
-      rows: recordRows
+      rows: patientRows
     }) }}
   {% else %}
-    {{ __n("cohort.records.count", cohort.records.length) | nhsukMarkdown }}
+    {{ __n("cohort.patients.count", cohort.patients.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

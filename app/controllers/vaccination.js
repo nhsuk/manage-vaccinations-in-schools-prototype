@@ -23,7 +23,7 @@ export const vaccinationController = {
 
     const vaccination = new Vaccination(data.vaccinations[uuid], data)
     const patient_uuid = vaccination?.patient_uuid || patient?.uuid
-    const record = new Record(data.patients[patient_uuid].record)
+    const record = new Record(data.patients[patient_uuid])
 
     // Get default batch for vaccination, if set
     const defaultBatch = data.token?.batch?.[session?.id]

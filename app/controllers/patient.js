@@ -13,7 +13,6 @@ import {
   ProgrammeType,
   programmeTypes
 } from '../models/programme.js'
-import { Record } from '../models/record.js'
 import { Reply } from '../models/reply.js'
 import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
@@ -39,9 +38,7 @@ export const patientController = {
 
     // Filter
     if (hasMissingNhsNumber) {
-      patients = patients.filter(
-        (patient) => patient.record.hasMissingNhsNumber
-      )
+      patients = patients.filter((patient) => patient.hasMissingNhsNumber)
     }
 
     if (q) {
@@ -91,14 +88,13 @@ export const patientController = {
     const { data } = request.session
     const { patients } = response.locals
 
-    let patient = patients.find((patient) => patient.record.nhsn === nhsn)
+    let patient = patients.find((patient) => patient.nhsn === nhsn)
 
     // If no patient found, use CHIS record (patient not imported yet)
     if (!patient) {
-      const record = Object.values(data.records).find(
+      patient = Object.values(data.records).find(
         (record) => record.nhsn === nhsn
       )
-      patient = { record }
     }
 
     patient = new Patient(patient)
@@ -187,13 +183,12 @@ export const patientController = {
     }
 
     response.locals.inSession = inSession
-    response.locals.patient = patient
     response.locals.replies = replies
     response.locals.cohorts = cohorts
     response.locals.sessions = sessions
     response.locals.vaccinations = vaccinations
 
-    request.app.locals.record = patient.record
+    request.app.locals.patient = patient
 
     next()
   },
@@ -210,62 +205,50 @@ export const patientController = {
   },
 
   edit(request, response) {
-    const { back, record } = request.app.locals
-    const { referrer } = request.query
+    const { patient } = request.app.locals
     const { data } = request.session
-    const { patient } = response.locals
 
-    request.app.locals.back = referrer || back || patient.uri
-    request.app.locals.record = new Record({
-      ...record, // Previous values
-      ...data?.wizard?.record // Wizard values
+    request.app.locals.patient = new Patient({
+      ...patient, // Previous values
+      ...data?.wizard?.patient // Wizard values
     })
 
     response.render('patient/edit')
   },
 
   update(request, response) {
-    const { back, record } = request.app.locals
+    const { patient } = request.app.locals
     const { data } = request.session
-    const { __, patient } = response.locals
-
-    const updatedRecord = new Record(
-      Object.assign(
-        record, // Previous values
-        data?.wizard?.record, // Wizard values
-        request.body.record // New values
-      )
-    )
+    const { __ } = response.locals
 
     const updatedPatient = new Patient(
-      Object.assign(patient, { record: updatedRecord })
+      Object.assign(
+        patient, // Previous values
+        data?.wizard?.patient, // Wizard values
+        request.body.patient // New values
+      )
     )
 
     data.patients[updatedPatient.uuid] = updatedPatient
 
     // Clean up
-    delete data?.wizard?.record
-    delete request.app.locals.back
-    delete request.app.locals.record
+    delete data?.wizard?.patient
+    delete request.app.locals.patient
 
     request.flash('success', __('patient.success.update'))
 
-    const redirect = back || updatedPatient.uri
-    response.redirect(redirect)
+    response.redirect(updatedPatient.uri)
   },
 
   readForm(request, response, next) {
-    const { back, record } = request.app.locals
+    const { patient } = request.app.locals
     const { form } = request.params
-    const { referrer } = request.query
     const { data } = request.session
-    const { patient } = response.locals
 
-    request.app.locals.referrer = referrer || back
-    request.app.locals.record = new Record({
-      ...record,
-      ...(form === 'edit' && record), // Previous values
-      ...data?.wizard?.record // Wizard values
+    request.app.locals.patient = new Patient({
+      ...patient,
+      ...(form === 'edit' && patient), // Previous values
+      ...data?.wizard?.patient // Wizard values
     })
 
     response.locals.paths = {
@@ -303,14 +286,14 @@ export const patientController = {
   },
 
   updateForm(request, response) {
-    const { record } = request.app.locals
+    const { patient } = request.app.locals
     const { data } = request.session
     const { paths } = response.locals
 
-    data.wizard.record = new Record(
+    data.wizard.patient = new Patient(
       Object.assign(
-        record, // Previous values
-        request.body.record // New value
+        patient, // Previous values
+        request.body.patient // New value
       )
     )
 

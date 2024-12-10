@@ -65,7 +65,8 @@ export class PatientMovement {
 }
 
 /**
- * @class Patient in-session record
+ * @class Patient record
+ * @augments Record
  * @property {string} uuid - UUID
  * @property {Array<import('./event.js').Event>} events - Logged events
  * @property {object} replies - Consent replies
@@ -76,58 +77,18 @@ export class PatientMovement {
  * @property {Array<string>} [cohort_uids] - Cohort UIDs
  * @property {Array<string>} [session_ids] - Session IDs
  */
-export class Patient {
+export class Patient extends Record {
   constructor(options) {
+    super(options)
+
     this.uuid = options?.uuid || faker.string.uuid()
     this.events = options?.events || []
     this.replies = options?.replies || {}
-    this.record = options?.record && new Record(options.record)
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.vaccinations = options?.vaccinations || {}
     this.cohort_uids = options?.cohort_uids || []
     this.session_ids = options?.session_ids || []
-  }
-
-  /**
-   * Generate fake patient
-   *
-   * @param {Record} record - Record
-   * @returns {Patient} Patient
-   * @static
-   */
-  static generate(record) {
-    return new Patient({
-      nhsn: record.nhsn,
-      record
-    })
-  }
-
-  /**
-   * Get NHS number
-   *
-   * @returns {string} - NHS Number
-   */
-  get nhsn() {
-    return this.record.nhsn
-  }
-
-  /**
-   * Get first name
-   *
-   * @returns {string} - First name
-   */
-  get firstName() {
-    return this.record.firstName
-  }
-
-  /**
-   * Get full name
-   *
-   * @returns {string} - Full name
-   */
-  get fullName() {
-    return [this.record.firstName, this.record.lastName].join(' ')
   }
 
   /**
@@ -140,16 +101,24 @@ export class Patient {
   }
 
   /**
-   * Get parents (from record and replies)
+   * Update parents with those from replies
    *
    * @returns {Array<Parent>} - Parents
    */
   get parents() {
-    const replies = Object.values(this.replies)
-    if (replies.length > 0) {
-      return replies.map((reply) => new Parent(reply.parent))
-    }
-    return [this.record.parent1]
+    const parents = new Map()
+    super.parents.forEach((parent) =>
+      parents.set(parent.uuid, new Parent(parent))
+    )
+
+    // Add any new parents found in consent replies
+    Object.values(this.replies).forEach(({ parent }) => {
+      if (!parents.has(parent.uuid)) {
+        parents.set(parent.uuid, new Parent(parent))
+      }
+    })
+
+    return [...parents.values()]
   }
 
   /**
@@ -521,7 +490,7 @@ export class Patient {
     switch (notice.type) {
       case NoticeType.Deceased:
         // Update patient record with date of death
-        this.record.dod = removeDays(getToday(), 5)
+        this.dod = removeDays(getToday(), 5)
         name = `Record updated with child’s date of death`
         break
       case NoticeType.Hidden:
@@ -530,12 +499,12 @@ export class Patient {
         break
       case NoticeType.Invalid:
         // Update patient record with temporary NHS number
-        this.record.nhsn = faker.string.alpha(10)
+        this.nhsn = faker.string.alpha(10)
         name = `Record flagged as invalid`
         break
       case NoticeType.Sensitive:
         // Flag record as sensitive
-        this.record.sensitive = true
+        this.sensitive = true
         name = `Record flagged as sensitive`
         break
       default:
@@ -566,10 +535,10 @@ export class Patient {
    */
   get summary() {
     return {
-      dob: `${this.record.formatted.dob}</br>
-            <span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">
-              ${this.record.formatted.yearGroup}
-            </span>`
+      dob: `${this.formatted.dob}</br>
+        <span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">
+          ${this.formatted.yearGroup}
+        </span>`
     }
   }
 

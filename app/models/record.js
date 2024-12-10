@@ -123,7 +123,7 @@ export class Record extends Child {
   /**
    * Get parents
    *
-   * @returns {Array<Parent>|undefined} - Parents
+   * @returns {Array<Parent>} - Parents
    */
   get parents() {
     if (this.parent1 && this.parent2) {
@@ -131,6 +131,8 @@ export class Record extends Child {
     } else if (this.parent1) {
       return [this.parent1]
     }
+
+    return []
   }
 
   /**

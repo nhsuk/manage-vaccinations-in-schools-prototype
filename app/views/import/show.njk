@@ -71,12 +71,12 @@
     })
   }) }}
 
-  {% set duplicateRecordRows = [] %}
-  {% for record in duplicates %}
-    {% set duplicateRecordRows = duplicateRecordRows | push([
+  {% set duplicatePatientRows = [] %}
+  {% for patient in duplicates %}
+    {% set duplicatePatientRows = duplicatePatientRows | push([
       {
-        header: __("record.fullName.label"),
-        html: record.fullName
+        header: __("patient.fullName.label"),
+        html: patient.fullName
       },
       {
         header: __("import.issue.label"),
@@ -102,7 +102,7 @@
     responsive: true,
     head: [
       {
-        text: __("record.label"),
+        text: __("patient.label"),
         attributes: { "no-sort": "no-sort" }
       },
       {
@@ -114,33 +114,33 @@
         attributes: { "no-sort": "no-sort" }
       }
     ],
-    rows: duplicateRecordRows
+    rows: duplicatePatientRows
   }) if duplicates.length }}
 
   {% set recordRows = [] %}
-  {% for record in import.records %}
+  {% for patient in import.records %}
     {% set recordRows = recordRows | push([
       {
-        header: __("record.fullName.label"),
-        html: link(record.vaccination.uri, record.fullName) if import.type == ImportType.Report else record.fullName
+        header: __("patient.fullName.label"),
+        html: link(patient.vaccination.uri, patient.fullName) if import.type == ImportType.Report else patient.fullName
       },
       {
-        header: __("record.nhsn.label"),
-        html: record.formatted.nhsn or "Not provided"
+        header: __("patient.nhsn.label"),
+        html: patient.formatted.nhsn or "Not provided"
       },
       {
-        header: __("record.dob.label"),
-        html: record.formatted.dob
+        header: __("patient.dob.label"),
+        html: patient.formatted.dob
       },
       {
-        header: __("record.postalCode.label"),
+        header: __("patient.postalCode.label"),
         text: record.postalCode
       }, {
-        header: __("record.school.label"),
-        text: record.formatted.school
+        header: __("patient.school.label"),
+        text: patient.formatted.urn
       } if import.type == ImportType.School, {
         header: __("vaccination.created.label"),
-        text: record.vaccination.formatted.created_date
+        text: patient.vaccination.formatted.created_date
       } if import.type == ImportType.Report
     ]) %}
   {% endfor %}
@@ -153,14 +153,14 @@
     heading: __n("import.records.count", import.records.length),
     responsive: true,
     head: [
-      { text: __("record.fullName.label") },
-      { text: __("record.nhsn.label") },
-      { text: __("record.dob.label") },
-      { text: __("record.postalCode.label") },
-      { text: __("record.school.label") } if import.type == ImportType.School,
+      { text: __("patient.fullName.label") },
+      { text: __("patient.nhsn.label") },
+      { text: __("patient.dob.label") },
+      { text: __("patient.postalCode.label") },
+      { text: __("patient.school.label") } if import.type == ImportType.School,
       { text: __("vaccination.created.label") } if import.type == ImportType.Report
     ],
-    rows: recordRows
+    rows: patientRows
   }) if import.records.length }}
 
   {{ card({

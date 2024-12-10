@@ -161,7 +161,7 @@ export const importController = {
     const { nhsn } = request.params
     const { referrer } = request.query
 
-    const record = _import.records.find((record) => record.nhsn === nhsn)
+    const record = _import.records.find((patient) => patient.nhsn === nhsn)
 
     response.locals.back = referrer || back || _import.uri
     response.locals.record = new Record(record)

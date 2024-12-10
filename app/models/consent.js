@@ -22,7 +22,7 @@ export class Consent extends Reply {
    */
   static generate(programme, session, patient) {
     const child = Child.generate()
-    const parent = Parent.generate(patient.record.lastName)
+    const parent = Parent.generate(patient.lastName)
     const decision = faker.helpers.weightedArrayElement([
       { value: ReplyDecision.Given, weight: 3 },
       { value: ReplyDecision.Refused, weight: 1 }

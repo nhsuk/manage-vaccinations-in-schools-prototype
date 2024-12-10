@@ -195,7 +195,7 @@
       "confirm": "Remove from cohort",
       "success": "{{patient.fullName}} removed from {{cohort.name}} cohort"
     },
-    "records": {
+    "patients": {
       "count": {
         "one": "%s child",
         "other": "[0] No children|%s children"
@@ -1062,6 +1062,10 @@
     "show": {
       "title": "Child record"
     },
+    "edit": {
+      "title": "Edit child record",
+      "summary": "Child’s details"
+    },
     "events": {
       "title": "Activity log"
     },
@@ -1087,6 +1091,99 @@
       "hasMissingNhsNumber": "Missing NHS number",
       "confirm": "Update children",
       "clear": "Clear filters"
+    },
+    "nhsn": {
+      "label": "NHS number",
+      "title": "What is the child’s NHS number?"
+    },
+    "hasMissingNhsNumber": {
+      "label": "Missing NHS number",
+      "count": {
+        "one": "%s record is without an NHS number",
+        "other": "[0] No records without an NHS number|%s records without an NHS number"
+      }
+    },
+    "firstName": {
+      "label": "First name"
+    },
+    "lastName": {
+      "label": "Last name"
+    },
+    "fullName": {
+      "label": "Full name",
+      "title": "What is the child’s name?"
+    },
+    "preferredNames": {
+      "label": "Known as"
+    },
+    "dob": {
+      "label": "Date of birth",
+      "title": "What is the child’s date of birth?",
+      "hint": "For example, 27 3 2017"
+    },
+    "dod": {
+      "label": "Date of death"
+    },
+    "postalCode": {
+      "label": "Postcode"
+    },
+    "urn": {
+      "label": "School",
+      "title": "What school does the child go to?"
+    },
+    "gender": {
+      "label": "Gender",
+      "title": "What is the child’s gender?"
+    },
+    "address": {
+      "label": "Address",
+      "title": "What is the child’s home address?"
+    },
+    "yearGroup": {
+      "label": "Year group"
+    },
+    "yearGroupWithRegistration": {
+      "label": "Year group"
+    },
+    "gpSurgery": {
+      "label": "GP surgery",
+      "title": "Who is the child’s GP?"
+    },
+    "parents": {
+      "label": "Parents or guardians"
+    },
+    "vaccinations": {
+      "label": "Vaccinations"
+    },
+    "parent1": {
+      "label": "First parent or guardian",
+      "title": "Details for first parent or guardian"
+    },
+    "parent2": {
+      "label": "Second parent or guardian",
+      "title": "Details for second parent or guardian"
+    },
+    "parent": {
+      "label": "Parent or guardian",
+      "fullName": {
+        "label": "Name"
+      },
+      "relationship": {
+        "label": "Relationship to child"
+      },
+      "notify": {
+        "label": "Send notifications"
+      },
+      "email": {
+        "label": "Email address"
+      },
+      "tel": {
+        "label": "Phone number"
+      },
+      "relationshipOther": {
+        "label": "Relationship to the child",
+        "hint": "For example, carer"
+      }
     }
   },
   "preScreen": {
@@ -1174,7 +1271,6 @@
     }
   },
   "record": {
-    "label": "Child record",
     "list": {
       "title": "Records",
       "caption": "Child Health Information Service"
@@ -1182,115 +1278,40 @@
     "show": {
       "summary": "Child’s details"
     },
-    "edit": {
-      "title": "Edit child record",
-      "summary": "Record details"
-    },
-    "results": "Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> records",
     "count": {
       "one": "%s record",
       "other": "%s records"
     },
+    "results": "Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> records",
     "nhsn": {
-      "label": "NHS number",
-      "title": "What is the child’s NHS number?"
+      "label": "NHS number"
     },
     "fullName": {
-      "label": "Full name",
-      "title": "What is the child’s name?"
-    },
-    "firstName": {
-      "label": "First name"
-    },
-    "lastName": {
-      "label": "Last name"
+      "label": "Full name"
     },
     "dob": {
-      "label": "Date of birth",
-      "title": "What is the child’s date of birth?",
-      "hint": "For example, 27 3 2017"
-    },
-    "dobWithAge": {
       "label": "Date of birth"
     },
-    "dod": {
-      "label": "Date of death"
-    },
-    "yearGroup": {
-      "label": "Year group"
-    },
-    "yearGroupWithRegistration": {
-      "label": "Year group"
-    },
     "gender": {
-      "label": "Gender",
-      "title": "What is the child’s gender?"
+      "label": "Gender"
     },
     "address": {
-      "label": "Address",
-      "title": "What is the child’s home address?"
+      "label": "Address"
     },
     "postalCode": {
       "label": "Postcode"
     },
     "gpSurgery": {
-      "label": "GP surgery",
-      "title": "Who is the child’s GP?"
+      "label": "GP surgery"
     },
     "school": {
-      "label": "School",
-      "title": "What school does the child go to?"
-    },
-    "parent": {
-      "label": "Parent or guardian",
-      "fullName": {
-        "label": "Name"
-      },
-      "relationship": {
-        "label": "Relationship to child"
-      },
-      "notify": {
-        "label": "Send notifications"
-      },
-      "email": {
-        "label": "Email address"
-      },
-      "tel": {
-        "label": "Phone number"
-      },
-      "relationshipOther": {
-        "label": "Relationship to the child",
-        "hint": "For example, carer"
-      }
-    },
-    "preferredNames": {
-      "label": "Known as"
-    },
-    "vaccinations": {
-      "label": "Vaccinations"
-    },
-    "hasMissingNhsNumber": {
-      "label": "Missing NHS number",
-      "count": {
-        "one": "%s record is without an NHS number",
-        "other": "[0] No records without an NHS number|%s records without an NHS number"
-      }
-    },
-    "issue": {
-      "label": "Issue to review",
-      "title": "This record needs reviewing",
-      "text": "A field in a duplicate record does not match that in an existing record"
+      "label": "School"
     },
     "parents": {
       "label": "Parents or guardians"
     },
-    "parent1": {
-      "label": "First parent or guardian",
-      "title": "Details for first parent or guardian"
-    },
-    "parent2": {
-      "label": "Second parent or guardian",
-      "title": "Details for second parent or guardian"
+    "vaccinations": {
+      "label": "Vaccinations"
     }
   },
   "registration": {
