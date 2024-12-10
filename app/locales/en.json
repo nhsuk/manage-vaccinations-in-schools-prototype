@@ -87,7 +87,7 @@
     "success": {
       "create": "Batch {{batch.id}} added",
       "update": "Batch {{batch.id}} updated",
-      "delete": "Batch {{batch.id}} archived"
+      "archive": "Batch {{batch.id}} archived"
     },
     "created": {
       "label": "Entered date"

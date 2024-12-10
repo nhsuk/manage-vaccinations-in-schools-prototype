@@ -20,6 +20,7 @@ import { Vaccine } from './vaccine.js'
  * @property {string} id - Batch ID
  * @property {Date} [created] - Created date
  * @property {Date} [updated] - Updated date
+ * @property {Date} [archived] - Archived date
  * @property {Date} [expiry] - Expiry date
  * @property {object} [expiry_] - Expiry date (from `dateInput`)
  * @property {string} [vaccine_gtin] - Vaccine GTIN
@@ -30,6 +31,7 @@ export class Batch {
     this.id = options?.id || faker.helpers.replaceSymbols('??####')
     this.created = options?.created ? new Date(options.created) : getToday()
     this.updated = options?.updated ? new Date(options.updated) : undefined
+    this.archived = options?.archived && new Date(options.archived)
     this.expiry = options?.expiry ? new Date(options.expiry) : undefined
     this.expiry_ = options?.expiry_
     this.vaccine_gtin = options?.vaccine_gtin
@@ -48,8 +50,15 @@ export class Batch {
     vaccine_gtin =
       vaccine_gtin || faker.helpers.arrayElement(Object.keys(vaccines))
 
+    let archived
+    const isArchived = faker.datatype.boolean(0.5)
+    if (isArchived) {
+      archived = addDays(created, 60)
+    }
+
     return new Batch({
       created,
+      ...(isArchived && { archived }),
       expiry,
       vaccine_gtin
     })

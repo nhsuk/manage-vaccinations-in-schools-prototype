@@ -9,6 +9,7 @@ export const batchController = {
 
   create(request, response) {
     const { gtin } = request.params
+    const { data } = request.session
     const { __ } = response.locals
 
     const batch = new Batch({
@@ -17,7 +18,7 @@ export const batchController = {
     })
 
     // Add to session data
-    request.session.data.batches[batch.id] = batch
+    data.batches[batch.id] = batch
 
     request.flash('success', __(`batch.success.create`, { batch }))
 
@@ -70,7 +71,7 @@ export const batchController = {
     }
   },
 
-  delete(request, response) {
+  archive(request, response) {
     const { id } = request.params
     const { data } = request.session
     const { __, batch } = response.locals
@@ -88,10 +89,15 @@ export const batchController = {
       }
     }
 
-    // Remove from session data
-    delete data.batches[id]
+    const archivedBatch = new Batch({
+      ...batch,
+      archived: new Date()
+    })
 
-    request.flash('success', __(`batch.success.delete`))
+    // Update session data
+    data.batches[archivedBatch.id] = archivedBatch
+
+    request.flash('success', __(`batch.success.archive`, { batch }))
     response.redirect('/vaccines')
   }
 }

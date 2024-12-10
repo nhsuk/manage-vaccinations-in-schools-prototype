@@ -13,6 +13,6 @@ router.get('/:id/:form(edit)', batchController.show)
 router.post('/:id/:form(edit)', batchController.update)
 
 router.get('/:id/archive', batchController.action('archive'))
-router.post('/:id/archive', batchController.delete)
+router.post('/:id/archive', batchController.archive)
 
 export const batchRoutes = router
