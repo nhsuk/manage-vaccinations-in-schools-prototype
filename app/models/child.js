@@ -281,13 +281,15 @@ export class Child {
    * @returns {object} - Formatted values
    */
   get formatted() {
+    const yearGroup = formatYearGroup(this.yearGroup)
+
     return {
       dob: formatDate(this.dob, { dateStyle: 'long' }),
       dod: formatDate(this.dod, { dateStyle: 'long' }),
       yearGroup: formatYearGroup(this.yearGroup),
       yearGroupWithRegistration: this.registrationGroup
-        ? `${this.yearGroup} (${this.registrationGroup})`
-        : this.yearGroup,
+        ? `${yearGroup} (${this.registrationGroup})`
+        : yearGroup,
       address: this?.address && new Address(this.address).formatted.multiline,
       school: this?.school && this.school.name
     }
