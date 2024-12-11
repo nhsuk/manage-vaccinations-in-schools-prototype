@@ -29,6 +29,7 @@
 {% from "_macros/action-table.njk" import actionTable %}
 {% from "_macros/add-another.njk" import addAnother %}
 {% from "_macros/count.njk" import count %}
+{% from "_macros/env.njk" import env %}
 {% from "_macros/event.njk" import event %}
 {% from "_macros/header.njk" import serviceheader %}
 {% from "_macros/heading.njk" import heading %}
@@ -50,6 +51,11 @@
 {% set bodyClasses = "app-signed-in" if not public %}
 
 {% block header %}
+  {{ env({
+    colour: "grey",
+    name: "Prototype",
+    text: "This is a prototype of a new service. Some parts may not work yet."
+  }) }}
   {{ serviceheader({
     service: {
       name: serviceName,
