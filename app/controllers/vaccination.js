@@ -52,11 +52,12 @@ export const vaccinationController = {
   },
 
   edit(request, response) {
-    const { back, vaccination } = request.app.locals
-    const { referrer } = request.query
-    const { data } = request.session
+    const { vaccination } = request.app.locals
+    const { data, referrer } = request.session
 
-    request.app.locals.back = referrer || back || vaccination.uri
+    // Show back link to referring page, else vaccination page
+    request.app.locals.back = referrer || vaccination.uri
+
     request.app.locals.vaccination = new Vaccination(
       {
         ...vaccination, // Previous values
@@ -131,9 +132,9 @@ export const vaccinationController = {
   },
 
   update(request, response) {
-    const { back, programme, vaccination } = request.app.locals
+    const { programme, vaccination } = request.app.locals
     const { form } = request.params
-    const { data } = request.session
+    const { data, referrer } = request.session
     const { __ } = response.locals
 
     const patient = new Patient(data.patients[vaccination.patient_uuid])
@@ -163,25 +164,22 @@ export const vaccinationController = {
 
     // Clean up
     delete data?.wizard?.vaccination
-    delete request.app.locals.back
+    delete request.session.referrer
     delete request.app.locals.vaccination
 
     const action = form === 'edit' ? 'update' : 'create'
     request.flash('success', __(`vaccination.success.${action}`))
 
-    const redirect = back || updatedVaccination.uri
-    response.redirect(redirect)
+    response.redirect(referrer || updatedVaccination.uri)
   },
 
   readForm(request, response, next) {
-    const { back, defaultBatchId, programme, session, startPath, vaccination } =
+    const { defaultBatchId, programme, session, startPath, vaccination } =
       request.app.locals
     const { form, uuid } = request.params
-    const { referrer } = request.query
-    const { data } = request.session
+    const { data, referrer } = request.session
     const { __ } = response.locals
 
-    request.app.locals.referrer = referrer || back
     request.app.locals.vaccination = new Vaccination(
       {
         ...(form === 'edit' && vaccination), // Previous values
@@ -226,7 +224,7 @@ export const vaccinationController = {
     const currentPath = request.path.split('/').at(-1)
     if (currentPath === startPath) {
       response.locals.paths = {
-        back: referrer || back || vaccination.uri
+        back: referrer || vaccination.uri
       }
     }
 

@@ -136,8 +136,7 @@ export const replyController = {
   readForm(request, response, next) {
     let { reply, session, triage } = request.app.locals
     const { form, uuid, nhsn } = request.params
-    const { referrer } = request.query
-    const { data } = request.session
+    const { data, referrer } = request.session
 
     const patient = Object.values(data.patients).find(
       (patient) => patient.record.nhsn === nhsn

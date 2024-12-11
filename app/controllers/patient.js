@@ -210,12 +210,13 @@ export const patientController = {
   },
 
   edit(request, response) {
-    const { back, record } = request.app.locals
-    const { referrer } = request.query
-    const { data } = request.session
+    const { record } = request.app.locals
+    const { data, referrer } = request.session
     const { patient } = response.locals
 
-    request.app.locals.back = referrer || back || patient.uri
+    // Show back link to referring page, else patient page
+    request.app.locals.back = referrer || patient.uri
+
     request.app.locals.record = new Record({
       ...record, // Previous values
       ...data?.wizard?.record // Wizard values
@@ -225,8 +226,8 @@ export const patientController = {
   },
 
   update(request, response) {
-    const { back, record } = request.app.locals
-    const { data } = request.session
+    const { record } = request.app.locals
+    const { data, referrer } = request.session
     const { __, patient } = response.locals
 
     const updatedRecord = new Record(
@@ -245,23 +246,20 @@ export const patientController = {
 
     // Clean up
     delete data?.wizard?.record
-    delete request.app.locals.back
+    delete request.session.referrer
     delete request.app.locals.record
 
     request.flash('success', __('patient.success.update'))
 
-    const redirect = back || updatedPatient.uri
-    response.redirect(redirect)
+    response.redirect(referrer || updatedPatient.uri)
   },
 
   readForm(request, response, next) {
-    const { back, record } = request.app.locals
+    const { record } = request.app.locals
     const { form } = request.params
-    const { referrer } = request.query
     const { data } = request.session
     const { patient } = response.locals
 
-    request.app.locals.referrer = referrer || back
     request.app.locals.record = new Record({
       ...record,
       ...(form === 'edit' && record), // Previous values

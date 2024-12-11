@@ -125,7 +125,7 @@
         {{ button({
           classes: "app-button--secondary nhsuk-u-margin-0",
           text: __("record.edit.title"),
-          href: sessionPatientPath + "/edit"
+          href: patient.uri + "/edit?referrer=" + sessionPatientPath
         }) }}
       </p>
     {% endset %}
