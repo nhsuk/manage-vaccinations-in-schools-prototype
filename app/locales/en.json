@@ -195,7 +195,7 @@
       "confirm": "Remove from cohort",
       "success": "{{patient.fullName}} removed from {{cohort.name}} cohort"
     },
-    "records": {
+    "patients": {
       "count": {
         "one": "%s child",
         "other": "[0] No children|%s children"

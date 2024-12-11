@@ -26,29 +26,29 @@
     title: title
   }) }}
 
-  {% if cohort.records.length %}
-    {% set recordRows = [] %}
-    {% for record in cohort.records %}
-      {% set recordRows = recordRows | push([
+  {% if cohort.patients.length %}
+    {% set patientRows = [] %}
+    {% for patient in cohort.patients %}
+      {% set patientRows = patientRows | push([
         {
           header: __("record.fullName.label"),
-          html: record.fullName
+          html: patient.fullName
         },
         {
           header: __("record.nhsn.label"),
-          html: record.formatted.nhsn or "Not provided"
+          html: patient.formatted.nhsn or "Not provided"
         },
         {
           header: __("record.dob.label"),
-          text: record.formatted.dob
+          text: patient.formatted.dob
         },
         {
           header: __("record.postalCode.label"),
-          text: record.postalCode
+          text: patient.postalCode
         },
         {
           header: __("record.school.label"),
-          text: record.formatted.school
+          text: patient.formatted.school
         }
       ]) %}
     {% endfor %}
@@ -56,7 +56,7 @@
     {{ actionTable({
       tableClasses: "app-table--small",
       id: "cohort",
-      heading: __n("cohort.records.count", cohort.records.length),
+      heading: __n("cohort.patients.count", cohort.patients.length),
       panel: true,
       responsive: true,
       head: [
@@ -66,9 +66,9 @@
         { text: __("record.postalCode.label") },
         { text: __("record.school.label") }
       ],
-      rows: recordRows
+      rows: patientRows
     }) }}
   {% else %}
-    {{ __n("cohort.records.count", cohort.records.length) | nhsukMarkdown }}
+    {{ __n("cohort.patients.count", cohort.patients.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

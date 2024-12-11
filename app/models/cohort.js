@@ -1,7 +1,7 @@
 import { formatLink, formatYearGroup } from '../utils/string.js'
 
+import { Patient } from './patient.js'
 import { Programme, ProgrammeType } from './programme.js'
-import { Record } from './record.js'
 
 export class AcademicYear {
   static Y2024 = '2024/25'
@@ -10,14 +10,14 @@ export class AcademicYear {
 /**
  * Get NHS Numbers of CHIS records within year group
  *
- * @param {Map<import('./record.js').Record>} records - CHIS records
+ * @param {Map<import('./record.js').Record>} recordsMap - CHIS records
  * @param {number} yearGroup - Year group
  * @returns {Array} NHS numbers of selected cohort
  */
-export function getRecordsFromYearGroup(records, yearGroup) {
+export function getRecordsFromYearGroup(recordsMap, yearGroup) {
   const yearGroupRecords = new Set()
 
-  records.forEach((record) => {
+  recordsMap.forEach((record) => {
     if (record.yearGroup === yearGroup) {
       yearGroupRecords.add(record.nhsn)
     }
@@ -36,7 +36,7 @@ export function getRecordsFromYearGroup(records, yearGroup) {
  * @property {string} [created_user_uid] - User who created cohort
  * @property {AcademicYear} year - Academic year
  * @property {number} yearGroup - Year group
- * @property {Array<string>} record_nhsns - Records NHS numbers
+ * @property {Array<string>} record_nhsns - CHIS record NHS numbers
  * @property {string} [programme_pid] - Programme ID
  * @function ns - Namespace
  * @function uri - URL
@@ -103,14 +103,14 @@ export class Cohort {
   }
 
   /**
-   * Get cohort records
+   * Get patients from cohort records
    *
-   * @returns {Array<Record>} - Records
+   * @returns {Array<Patient>} - Records
    */
-  get records() {
+  get patients() {
     if (this.context?.records && this.record_nhsns) {
       return this.record_nhsns.map(
-        (nhsn) => new Record(this.context?.records[nhsn])
+        (nhsn) => new Patient(this.context?.records[nhsn])
       )
     }
 
