@@ -25,16 +25,16 @@
               value: consent.child.fullName | highlightDifference(patient.fullName)
             },
             dob: {
-              value: consent.child.formatted.dob | highlightDifference(patient.record.formatted.dob)
+              value: consent.child.formatted.dob | highlightDifference(patient.formatted.dob)
             },
             address: {
-              value: consent.child.formatted.address | highlightDifference(patient.record.formatted.address)
+              value: consent.child.formatted.address | highlightDifference(patient.formatted.address)
             },
             school: {
-              value: consent.child.formatted.school | highlightDifference(patient.record.formatted.school)
+              value: consent.child.formatted.school | highlightDifference(patient.formatted.school)
             },
             gpSurgery: {
-              value: consent.child.formatted.gpSurgery | highlightDifference(patient.record.formatted.gpSurgery)
+              value: consent.child.formatted.gpSurgery | highlightDifference(patient.formatted.gpSurgery)
             },
             parent: {
               value: parent(consent.parent)
@@ -49,7 +49,7 @@
         heading: __("record.label"),
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: summaryList({
-          rows: summaryRows(patient.record, {
+          rows: summaryRows(patient, {
             fullName: {},
             dob: {},
             address: {},

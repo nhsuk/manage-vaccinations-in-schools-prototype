@@ -46,14 +46,14 @@
         },
         {
           header: __("record.dob.label"),
-          html: patient.record.formatted.dob or "Not provided"
+          html: patient.formatted.dob or "Not provided"
         },
         {
           header: __("record.yearGroup.label"),
-          html: patient.record.formatted.yearGroupWithRegistration,
+          html: patient.formatted.yearGroupWithRegistration,
           attributes: {
-            "data-filter": patient.record.yearGroup,
-            "data-sort": patient.record.yearGroup
+            "data-filter": patient.yearGroup,
+            "data-sort": patient.yearGroup
           }
         },
         {

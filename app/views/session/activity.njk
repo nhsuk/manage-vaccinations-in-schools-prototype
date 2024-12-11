@@ -87,10 +87,10 @@
       },
       {
         header: __("record.yearGroup.label"),
-        html: patient.record.formatted.yearGroupWithRegistration or "Not provided",
+        html: patient.formatted.yearGroupWithRegistration or "Not provided",
         attributes: {
-          "data-filter": patient.record.yearGroup,
-          "data-sort": patient.record.yearGroup
+          "data-filter": patient.yearGroup,
+          "data-sort": patient.yearGroup
         }
       },
       {

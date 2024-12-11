@@ -358,7 +358,7 @@ export class Session {
   }
 
   /**
-   * Get session patients
+   * Get patients
    *
    * @returns {Array<Patient>} - Patients
    */
@@ -367,7 +367,7 @@ export class Session {
       return Object.values(this.context.patients)
         .map((patient) => new Patient(patient))
         .filter(({ session_ids }) => session_ids.includes(this.id))
-        .filter(({ record }) => !record?.pendingChanges?.school_urn)
+        .filter((patient) => !patient?.pendingChanges?.school_urn)
     }
 
     return []

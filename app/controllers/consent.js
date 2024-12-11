@@ -326,7 +326,7 @@ export const consentController = {
     const { __, consent } = response.locals
 
     let patient = Object.values(data.patients).find(
-      (patient) => patient.record.nhsn === consent.child.nhsn
+      ({ nhsn }) => nhsn === consent.child.nhsn
     )
 
     patient = new Patient(patient)

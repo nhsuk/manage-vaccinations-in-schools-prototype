@@ -15,27 +15,27 @@
     {{ input({
       label: { text: __("address.addressLine1.label") },
       autocomplete: "address-line1",
-      decorate: "record.address.addressLine1"
+      decorate: "patient.address.addressLine1"
     }) }}
 
     {{ input({
       label: { text: __("address.addressLine2.label") },
       autocomplete: "address-line2",
-      decorate: "record.address.addressLine2"
+      decorate: "patient.address.addressLine2"
     }) }}
 
     {{ input({
       classes: "nhsuk-u-width-two-thirds",
       label: { text: __("address.addressLevel1.label") },
       autocomplete: "address-level1",
-      decorate: "record.address.addressLevel1"
+      decorate: "patient.address.addressLevel1"
     }) }}
 
     {{ input({
       classes: "nhsuk-input--width-10",
       label: { text: __("address.postalCode.label") },
       autocomplete: "postal-code",
-      decorate: "record.address.postalCode"
+      decorate: "patient.address.postalCode"
     }) }}
   {% endcall %}
 {% endblock %}

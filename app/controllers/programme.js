@@ -27,7 +27,7 @@ export const programmeController = {
       }
 
       programme.patients = Object.values(data.patients)
-        .filter((patient) => record_nhsns.includes(patient.record.nhsn))
+        .filter((patient) => record_nhsns.includes(patient.nhsn))
         .map((patient) => new Patient(patient))
 
       // Sessions in programme

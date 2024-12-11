@@ -56,7 +56,7 @@ export const replyController = {
       patient.gillick?.competent?.value === GillickCompetent.True
 
     const reply = new Reply({
-      child: patient.record,
+      child: patient,
       patient_uuid: patient.uuid,
       session_id: session.id,
       selfConsent,
@@ -139,7 +139,7 @@ export const replyController = {
     const { data, referrer } = request.session
 
     const patient = Object.values(data.patients).find(
-      (patient) => patient.record.nhsn === nhsn
+      (patient) => patient.nhsn === nhsn
     )
 
     reply = new Reply(
@@ -272,10 +272,10 @@ export const replyController = {
           reply.parent = false
           break
         case 'parent-1': // Consent response is from CHIS record
-          reply.parent = patient.record.parents[0]
+          reply.parent = patient.parents[0]
           break
         case 'parent-2': // Consent response is from CHIS record
-          reply.parent = patient.record.parents[1]
+          reply.parent = patient.parents[1]
           break
         default: // Consent response is an existing respondent
           // Store reply that needs marked as invalid
@@ -346,7 +346,7 @@ export const replyController = {
       request.app.locals.invalidUuid = reply.uuid
 
       const newReply = new Reply({
-        child: patient.record,
+        child: patient,
         parent: patient.replies[reply.uuid].parent,
         patient_uuid: patient.uuid,
         session_id: session.id,
@@ -363,7 +363,7 @@ export const replyController = {
     const { data } = request.session
     const { __, patient } = response.locals
 
-    const parent = patient.record.parent1
+    const parent = patient.parent1
 
     const session = new Session(
       {

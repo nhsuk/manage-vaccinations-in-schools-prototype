@@ -1,6 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = patient.record.initials %}
+{% set title = patient.initials %}
 {% set view = "show" %}
 
 {% block beforeContent %}
@@ -20,7 +20,7 @@
     {{ super() }}
 
     {{ heading({
-      title: patient.record.fullName
+      title: patient.fullName
     }) }}
 
     {% include "patient/_secondary-navigation.njk" %}
@@ -33,14 +33,14 @@
       {{ status(patient.notice.name, "warning", "blue") if patient.notice }}
 
       {{ summaryList({
-        rows: summaryRows(patient.record, {
+        rows: summaryRows(patient, {
           nhsn: {
             changeLabel: "the child’s NHS number",
-            href: patient.uri + "/edit/nhsn" if patient.record.hasMissingNhsNumber
+            href: patient.uri + "/edit/nhsn" if patient.hasMissingNhsNumber
           },
           fullName: {},
           preferredNames: { value: patient.preferredNames },
-          dob: { value: patient.record.dobWithAge },
+          dob: { value: patient.dobWithAge },
           dod: {},
           gender: {},
           address: {},

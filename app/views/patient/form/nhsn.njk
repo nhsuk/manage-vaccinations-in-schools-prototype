@@ -11,7 +11,7 @@
         title: title
       })
     },
-    value: "" if record.hasMissingNhsNumber else record.nhsn,
-    decorate: "record.nhsn"
+    value: "" if patient.hasMissingNhsNumber else patient.nhsn,
+    decorate: "patient.nhsn"
   }) }}
 {% endblock %}

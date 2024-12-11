@@ -264,10 +264,8 @@ export default () => {
     }
 
     const { preScreenQuestionKeys } = programme.vaccine
-    const { gender } = patient.record
-
     return preScreenQuestionKeys.filter((value) =>
-      gender === Gender.Male ? value !== 'isPregnant' : value
+      patient.gender === Gender.Male ? value !== 'isPregnant' : value
     )
   }
 

@@ -40,18 +40,18 @@
     {% set patientRows = patientRows | push([
       {
         header: __("child.fullName.label"),
-        html: link("/consents/" + consent.uuid + "/link?nhsn=" + patient.nhsn, patient.record.fullName) + ('<br><span class="nhsuk-u-font-size-16">Known as: ' + patient.preferredNames + "</span>" if patient.preferredNames)
+        html: link("/consents/" + consent.uuid + "/link?nhsn=" + patient.nhsn, patient.fullName) + ('<br><span class="nhsuk-u-font-size-16">Known as: ' + patient.preferredNames + "</span>" if patient.preferredNames)
       },
       {
         header: __("record.postalCode.label"),
-        text: patient.record.postalCode or "Not provided"
+        text: patient.postalCode or "Not provided"
       },
       {
         header: __("child.dob.label"),
-        text: patient.record.formatted.dob or "Not provided",
+        text: patient.formatted.dob or "Not provided",
         attributes: {
-          "data-filter": patient.record.dob | date({ dateStyle: "short" }),
-          "data-sort": patient.record.dob
+          "data-filter": patient.dob | date({ dateStyle: "short" }),
+          "data-sort": patient.dob
         }
       }
     ]) %}

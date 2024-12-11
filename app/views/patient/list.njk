@@ -55,7 +55,7 @@
   }) }}
 
   {% set patientRows = [] %}
-  {% for patient in results.page | sort(false, false, "record.lastName") %}
+  {% for patient in results.page %}
     {% set patientRows = patientRows | push([
       {
         header: __("record.fullName.label"),
@@ -63,15 +63,15 @@
       },
       {
         header: __("record.postalCode.label"),
-        html: patient.record.postalCode
+        html: patient.postalCode or "Not provided"
       },
       {
         header: __("record.school.label"),
-        html: patient.record.formatted.school
+        html: patient.formatted.school or "Not provided"
       },
       {
         header: __("record.dob.label"),
-        html: patient.record.formatted.dob or "Not provided"
+        html: patient.formatted.dob or "Not provided"
       }
     ]) %}
   {% endfor %}

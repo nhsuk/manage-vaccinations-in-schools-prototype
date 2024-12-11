@@ -11,7 +11,7 @@
 
   {{ input({
     label: { text: __("record.parent.fullName.label") },
-    decorate: "record." + parent + ".fullName"
+    decorate: "patient." + parent + ".fullName"
   }) }}
 
   {{ radios({
@@ -30,20 +30,20 @@
         html: input({
           label: { text: __("record.parent.relationshipOther.label") },
           hint: { text: __("record.parent.relationshipOther.hint") },
-          decorate: "record." + parent + ".relationshipOther"
+          decorate: "patient." + parent + ".relationshipOther"
         })
       }
     }],
-    decorate: "record." + parent + ".relationship"
+    decorate: "patient." + parent + ".relationship"
   }) }}
 
   {{ input({
     label: { text: __("record.parent.email.label") },
-    decorate: "record." + parent + ".email"
+    decorate: "patient." + parent + ".email"
   }) }}
 
   {{ input({
     label: { text: __("record.parent.tel.label") },
-    decorate: "record." + parent + ".tel"
+    decorate: "patient." + parent + ".tel"
   }) }}
 {% endblock %}
