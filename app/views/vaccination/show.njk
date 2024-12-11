@@ -1,6 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = record.fullName %}
+{% set title = vaccination.patient.fullName %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -29,10 +29,10 @@
 
     {% set recordDescriptionHtml %}
       {{ summaryList({
-        rows: summaryRows(record, {
+        rows: summaryRows(vaccination.patient, {
           nhsn: {
             changeLabel: "the child’s NHS number",
-            href: vaccination.uri + "/patients/" + record.nhsn + "/edit/nhsn" if record.hasMissingNhsNumber
+            href: vaccination.uri + "/patients/" + vaccination.patient.nhsn + "/edit/nhsn" if vaccination.patient.hasMissingNhsNumber
           },
           fullName: {},
           dobWithAge: {},
@@ -46,7 +46,7 @@
         {{ button({
           classes: "app-button--secondary nhsuk-u-margin-0",
           text: __("record.edit.title"),
-          href: vaccination.uri + "/patients/" + record.nhsn + "/edit?referrer=" + vaccination.uri
+          href: vaccination.patient.uri + "/edit?referrer=" + vaccination.uri
         }) }}
       </p>
     {% endset %}

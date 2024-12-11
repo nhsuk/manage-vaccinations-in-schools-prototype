@@ -49,19 +49,19 @@
       {% set resultRows = resultRows | push([
         {
           header: __("record.fullName.label"),
-          html: link(vaccination.uri, vaccination.record.fullName)
+          html: link(vaccination.uri, vaccination.patient.fullName)
         },
         {
           header: __("record.nhsn.label"),
-          html: vaccination.record.formatted.nhsn or "Not provided"
+          html: vaccination.patient.formatted.nhsn or "Not provided"
         },
         {
           header: __("record.dob.label"),
-          html: vaccination.record.formatted.dob or "Not provided"
+          html: vaccination.patient.formatted.dob or "Not provided"
         },
         {
           header: __("record.postalCode.label"),
-          html: vaccination.record.postalCode or "Not provided"
+          html: vaccination.patient.postalCode or "Not provided"
         },
         {
           header: __("vaccination.created.label"),

@@ -2,7 +2,6 @@ import wizard from '@x-govuk/govuk-prototype-wizard'
 import xlsx from 'json-as-xlsx'
 
 import { Download } from '../models/download.js'
-import { Record } from '../models/record.js'
 import { UserRole } from '../models/user.js'
 import { Vaccination } from '../models/vaccination.js'
 
@@ -24,13 +23,7 @@ export const downloadController = {
     // Get vaccinations from programme
     const vaccinations = Object.values(data.vaccinations)
       .filter((vaccination) => vaccination.programme_pid === pid)
-      .map((vaccination) => {
-        vaccination = new Vaccination(vaccination)
-        vaccination.record = new Record(
-          data.patients[vaccination.patient_uuid].record
-        )
-        return vaccination
-      })
+      .map((vaccination) => new Vaccination(vaccination))
 
     const download = new Download({
       programme_pid: pid,

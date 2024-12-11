@@ -2,7 +2,6 @@ import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { Batch } from '../models/batch.js'
 import { Patient } from '../models/patient.js'
-import { Record } from '../models/record.js'
 import { Session } from '../models/session.js'
 import { User } from '../models/user.js'
 import {
@@ -17,13 +16,11 @@ import { getSessionPatientPath } from '../utils/session.js'
 
 export const vaccinationController = {
   read(request, response, next) {
-    const { patient, programme, session } = request.app.locals
+    const { programme, session } = request.app.locals
     const { uuid } = request.params
     const { data } = request.session
 
     const vaccination = new Vaccination(data.vaccinations[uuid], data)
-    const patient_uuid = vaccination?.patient_uuid || patient?.uuid
-    const record = new Record(data.patients[patient_uuid].record)
 
     // Get default batch for vaccination, if set
     const defaultBatch = data.token?.batch?.[session?.id]
@@ -36,7 +33,6 @@ export const vaccinationController = {
     }
 
     request.app.locals.vaccination = vaccination
-    request.app.locals.record = record
 
     next()
   },
@@ -82,7 +78,8 @@ export const vaccinationController = {
     const injectionSiteGiven =
       injectionSite === VaccinationSite.ArmLeftUpper ||
       injectionSite === VaccinationSite.ArmRightUpper
-    const defaultBatchSet = defaultBatchId !== undefined
+    const defaultBatchSet =
+      defaultBatchId !== undefined && defaultBatchId !== '_unchecked'
 
     let startPath
     switch (true) {
@@ -99,7 +96,6 @@ export const vaccinationController = {
         startPath = 'decline'
     }
 
-    request.app.locals.patient = patient
     request.app.locals.back = getSessionPatientPath(session, patient)
     request.app.locals.startPath = startPath
 
@@ -231,6 +227,7 @@ export const vaccinationController = {
     response.locals.batchItems = Object.values(data.batches)
       .map((batch) => new Batch(batch, data))
       .filter((batch) => batch.vaccine.type === programme.type)
+      .filter((batch) => !batch.archived)
 
     response.locals.injectionMethodItems = Object.entries(VaccinationMethod)
       .filter(([, value]) => value !== VaccinationMethod.Nasal)

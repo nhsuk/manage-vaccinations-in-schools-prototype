@@ -45,16 +45,7 @@ export const programmeController = {
       // Recorded vaccinations in programme
       programme.vaccinations = Object.values(data.vaccinations)
         .filter((vaccination) => vaccination.programme_pid === programme.pid)
-        .map((vaccination) => {
-          vaccination = new Vaccination(vaccination, data)
-
-          // Add record to vaccination
-          vaccination.record = new Record(
-            data.patients[vaccination.patient_uuid].record
-          )
-
-          return vaccination
-        })
+        .map((vaccination) => new Vaccination(vaccination, data))
 
       programme.imports = Object.values(data.imports)
         .filter((_import) => _import.programme_pid === programme.pid)

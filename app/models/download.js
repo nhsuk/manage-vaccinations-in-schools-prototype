@@ -149,12 +149,12 @@ export class Download {
           { label: 'BatchNO1', value: 'batch_id' }
         ],
         content: this.vaccinations.map((vaccination) => ({
-          nhsn: vaccination.record.nhsn,
-          lastName: vaccination.record.lastName,
-          firstName: vaccination.record.firstName,
-          dob: vaccination.record.dob,
-          address_line1: vaccination.record.address.addressLine1,
-          parent: vaccination.record.parent1.fullName,
+          nhsn: vaccination.patient.nhsn,
+          lastName: vaccination.patient.lastName,
+          firstName: vaccination.patient.firstName,
+          dob: vaccination.patient.dob,
+          address_line1: vaccination.patient.address.addressLine1,
+          parent: vaccination.patient.parent1.fullName,
           ethnicity: '',
           date: vaccination.created,
           time: vaccination.created,
