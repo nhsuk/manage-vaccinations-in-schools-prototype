@@ -1614,7 +1614,7 @@
     "edit": {
       "title": "Edit session",
       "summary": "Session details",
-      "programmes": {
+      "programme": {
         "title": "Which programmes is this session part of?"
       },
       "dates": {
