@@ -138,9 +138,11 @@ export const replyController = {
     const { form, uuid, nhsn } = request.params
     const { data, referrer } = request.session
 
-    const patient = Object.values(data.patients).find(
+    let patient = Object.values(data.patients).find(
       (patient) => patient.nhsn === nhsn
     )
+
+    patient = new Patient(patient)
 
     reply = new Reply(
       {
@@ -232,8 +234,7 @@ export const replyController = {
         value: uuid
       }))
     } else {
-      const { record } = new Patient(patient)
-      response.locals.uuidItems = record.parents.map((parent, index) => ({
+      response.locals.uuidItems = patient.parents.map((parent, index) => ({
         text: formatParent(parent, false),
         hint: { text: parent.tel },
         value: `parent-${index + 1}`
