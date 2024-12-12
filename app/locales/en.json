@@ -1121,6 +1121,9 @@
       "title": "What is the child’s date of birth?",
       "hint": "For example, 27 3 2017"
     },
+    "dobWithAge": {
+      "label": "Date of birth"
+    },
     "dod": {
       "label": "Date of death"
     },
