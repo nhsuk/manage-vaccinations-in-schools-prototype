@@ -285,8 +285,8 @@ export default () => {
       return __(`screen.${patient.screen.key}.status`)
     } else if (patient?.consent?.value !== ConsentOutcome.Given) {
       return __(`consent.${patient.consent.key}.status`)
-    } else if (patient.vaccinations) {
-      const vaccinations = Object.keys(patient.vaccinations).map(
+    } else if (patient.vaccinationOutcomes) {
+      const vaccinations = Object.keys(patient.vaccinationOutcomes).map(
         (uuid) => new Vaccination(data.vaccinations[uuid])
       )
       return vaccinations[0].outcome

@@ -72,7 +72,7 @@ export class PatientMovement {
  * @property {object} replies - Consent replies
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
- * @property {object} [vaccinations] - Vaccination UUIDs with given boolean
+ * @property {object} [vaccinationOutcomes] - Vaccination UUID: Given?
  * @property {Array<string>} [cohort_uids] - Cohort UIDs
  * @property {Array<string>} [session_ids] - Session IDs
  */
@@ -85,7 +85,7 @@ export class Patient extends Record {
     this.replies = options?.replies || {}
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
-    this.vaccinations = options?.vaccinations || {}
+    this.vaccinationOutcomes = options?.vaccinationOutcomes || {}
     this.cohort_uids = options?.cohort_uids || []
     this.session_ids = options?.session_ids || []
   }
@@ -468,7 +468,7 @@ export class Patient extends Record {
     }
 
     // Providing a boolean for vaccination enables patient outcome calculation
-    this.vaccinations[vaccination.uuid] = vaccination.given
+    this.vaccinationOutcomes[vaccination.uuid] = vaccination.given
 
     this.addEvent({
       type: EventType.Capture,

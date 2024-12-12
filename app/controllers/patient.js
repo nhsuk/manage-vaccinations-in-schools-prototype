@@ -109,7 +109,7 @@ export const patientController = {
       (id) => new Session(data.sessions[id], data)
     )
 
-    let vaccinations = Object.keys(patient.vaccinations).map(
+    let vaccinations = Object.keys(patient.vaccinationOutcomes).map(
       (uuid) => new Vaccination(data.vaccinations[uuid])
     )
 

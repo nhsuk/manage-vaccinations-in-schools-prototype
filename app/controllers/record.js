@@ -1,7 +1,6 @@
 import _ from 'lodash'
 
 import { Record } from '../models/record.js'
-import { Vaccination } from '../models/vaccination.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const recordController = {
@@ -9,16 +8,9 @@ export const recordController = {
     let { page, limit } = request.query
     const { data } = request.session
 
-    let records = Object.values(data.records).map((record) => {
-      record = new Record(record)
-
-      // Add complete vaccination record
-      record.vaccinations = record.vaccination_uuids.map(
-        (uuid) => new Vaccination(data.vaccinations[uuid])
-      )
-
-      return record
-    })
+    let records = Object.values(data.records).map(
+      (record) => new Record(record, data)
+    )
 
     // Sort
     records = _.sortBy(records, 'lastName')

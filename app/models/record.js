@@ -10,6 +10,7 @@ import {
 
 import { Child } from './child.js'
 import { Parent } from './parent.js'
+import { Vaccination } from './vaccination.js'
 
 const primarySchools = Object.values(schools).filter(
   (school) => school.phase === 'Primary'
@@ -21,6 +22,9 @@ const secondarySchools = Object.values(schools).filter(
 /**
  * @class Child Health Information Service (CHIS) record
  * @augments Child
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} nhsn - NHS number
  * @property {Parent} [parent1] - Parent 1
  * @property {Parent} [parent2] - Parent 2
@@ -29,11 +33,12 @@ const secondarySchools = Object.values(schools).filter(
  * @property {boolean} sensitive - Flagged as sensitive
  */
 export class Record extends Child {
-  constructor(options) {
+  constructor(options, context) {
     super(options)
 
     const sensitive = stringToBoolean(options?.sensitive)
 
+    this.context = context
     this.nhsn = options?.nhsn || this.nhsNumber
     this.address = !sensitive && options?.address ? options.address : undefined
     this.parent1 =
@@ -130,6 +135,21 @@ export class Record extends Child {
       return [this.parent1, this.parent2]
     } else if (this.parent1) {
       return [this.parent1]
+    }
+
+    return []
+  }
+
+  /**
+   * Get vaccinations
+   *
+   * @returns {Array<Vaccination>} - Vaccinations
+   */
+  get vaccinations() {
+    if (this.context?.vaccinations && this.vaccination_uuids) {
+      return this.vaccination_uuids.map(
+        (uuid) => new Vaccination(this.context?.vaccinations[uuid])
+      )
     }
 
     return []
