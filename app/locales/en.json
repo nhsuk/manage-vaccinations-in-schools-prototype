@@ -896,8 +896,8 @@
       "label": "Move"
     },
     "success": {
-      "ignore": "{{move.record.fullName}}’s school move ignored",
-      "update": "{{move.record.fullName}}’s record updated with new school"
+      "ignore": "{{move.patient.fullName}}’s school move ignored",
+      "update": "{{move.patient.fullName}}’s record updated with new school"
     }
   },
   "notice": {

@@ -20,7 +20,7 @@
   {{ super() }}
 
   {{ heading({
-    caption: move.record.fullName,
+    caption: move.patient.fullName,
     title: title
   }) }}
 
@@ -31,7 +31,7 @@
         heading: move.source,
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: summaryList({
-          rows: summaryRows(move.record, {
+          rows: summaryRows(move.patient, {
             nhsn: {},
             fullName: {},
             dob: {},
@@ -50,7 +50,7 @@
         heading: __("record.label"),
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: summaryList({
-          rows: summaryRows(move.record, {
+          rows: summaryRows(move.patient, {
             nhsn: {},
             fullName: {},
             dob: {},
@@ -79,7 +79,9 @@
       conditional: {
         html: radios({
           fieldset: {
-            legend: { text: __("move.show.session.label", { firstName: move.record.firstName }) }
+            legend: { text: __("move.show.session.label", {
+              firstName: move.patient.firstName
+            }) }
           },
           hint: {
             text: __("move.show.session.hint", {

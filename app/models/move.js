@@ -1,7 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import schools from '../datasets/schools.js'
-import { Record } from '../models/record.js'
+import { Patient } from '../models/patient.js'
 import { formatDate, getToday } from '../utils/date.js'
 
 export class MoveSource {
@@ -22,7 +22,7 @@ export class MoveSource {
  * @property {string} to - Proposed school URN (moving to)
  * @property {MoveSource} source - Reporting source
  * @property {boolean} ignore - Ignore report
- * @property {string} record_nhsn - Child’s NHS number
+ * @property {string} patient_uuid - Patient UUID
  */
 export class Move {
   constructor(options, context) {
@@ -33,22 +33,22 @@ export class Move {
     this.to = options?.to
     this.source = options?.source
     this.ignore = options?.ignore || false
-    this.record_nhsn = options?.record_nhsn
+    this.patient_uuid = options?.patient_uuid
   }
 
   /**
-   * Get record
+   * Get patient
    *
-   * @returns {Record|undefined} - Record
+   * @returns {Patient|undefined} - Patient
    */
-  get record() {
+  get patient() {
     try {
-      const record = this.context?.records[this.record_nhsn]
-      if (record) {
-        return new Record(record)
+      const patient = this.context?.patients[this.patient_uuid]
+      if (patient) {
+        return new Patient(patient)
       }
     } catch (error) {
-      console.error('Move.record', error.message)
+      console.error('Move.patient', error.message)
     }
   }
 
