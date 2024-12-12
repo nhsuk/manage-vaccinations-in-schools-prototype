@@ -82,11 +82,11 @@
     {% endset %}
     {% set patientRows = patientRows | push([
       {
-        header: __("record.fullName.label"),
+        header: __("patient.fullName.label"),
         html: link(session.uri + "/" + patient.nhsn, patient.fullName)
       },
       {
-        header: __("record.yearGroup.label"),
+        header: __("patient.yearGroup.label"),
         html: patient.formatted.yearGroupWithRegistration or "Not provided",
         attributes: {
           "data-filter": patient.yearGroup,
@@ -127,13 +127,13 @@
       responsive: true,
       head: [
         {
-          text: __("record.fullName.label"),
+          text: __("patient.fullName.label"),
           attributes: {
             "data-col": "name"
           }
         },
         {
-          text: __("record.yearGroup.label"),
+          text: __("patient.yearGroup.label"),
           attributes: {
             "data-col": "yearGroup"
           }

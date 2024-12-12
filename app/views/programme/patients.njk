@@ -38,18 +38,18 @@
 
   {% if programme.patients.length %}
     {% set resultRows = [] %}
-    {% for patient in results.page | sort(false, false, "record.lastName") %}
+    {% for patient in results.page | sort(false, false, "patient.lastName") %}
       {% set resultRows = resultRows | push([
         {
-          header: __("record.fullName.label"),
+          header: __("patient.fullName.label"),
           html: patient.link.fullName
         },
         {
-          header: __("record.dob.label"),
+          header: __("patient.dob.label"),
           html: patient.formatted.dob or "Not provided"
         },
         {
-          header: __("record.yearGroup.label"),
+          header: __("patient.yearGroup.label"),
           html: patient.formatted.yearGroupWithRegistration,
           attributes: {
             "data-filter": patient.yearGroup,
@@ -72,10 +72,10 @@
       captionClasses: "nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal nhsuk-u-font-size-19",
       responsive: true,
       head: [
-        { text: __("record.fullName.label") },
-        { text: __("record.dob.label") },
+        { text: __("patient.fullName.label") },
+        { text: __("patient.dob.label") },
         {
-          text: __("record.yearGroup.label"),
+          text: __("patient.yearGroup.label"),
           attributes: {
             "data-col": "yearGroup"
           }

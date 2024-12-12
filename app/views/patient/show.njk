@@ -54,14 +54,14 @@
       <p class="nhsuk-body">
         {{ button({
           classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("record.edit.title"),
+          text: __("patient.edit.title"),
           href: patient.uri + "/edit"
         }) }}
       </p>
     {% endset %}
 
     {{ card({
-      heading: __("record.label"),
+      heading: __("patient.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: recordDescriptionHtml
     }) }}
@@ -198,7 +198,7 @@
     {% endset %}
 
     {{ card({
-      heading: __("record.vaccinations.label"),
+      heading: __("patient.vaccinations.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: vaccinationsDescriptionHtml
     }) }}

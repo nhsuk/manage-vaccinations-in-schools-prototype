@@ -31,23 +31,23 @@
     {% for patient in cohort.patients %}
       {% set patientRows = patientRows | push([
         {
-          header: __("record.fullName.label"),
+          header: __("patient.fullName.label"),
           html: patient.fullName
         },
         {
-          header: __("record.nhsn.label"),
+          header: __("patient.nhsn.label"),
           html: patient.formatted.nhsn or "Not provided"
         },
         {
-          header: __("record.dob.label"),
+          header: __("patient.dob.label"),
           text: patient.formatted.dob
         },
         {
-          header: __("record.postalCode.label"),
+          header: __("patient.postalCode.label"),
           text: patient.postalCode
         },
         {
-          header: __("record.school.label"),
+          header: __("patient.school.label"),
           text: patient.formatted.school
         }
       ]) %}
@@ -60,11 +60,11 @@
       panel: true,
       responsive: true,
       head: [
-        { text: __("record.fullName.label") },
-        { text: __("record.nhsn.label") },
-        { text: __("record.dob.label") },
-        { text: __("record.postalCode.label") },
-        { text: __("record.school.label") }
+        { text: __("patient.fullName.label") },
+        { text: __("patient.nhsn.label") },
+        { text: __("patient.dob.label") },
+        { text: __("patient.postalCode.label") },
+        { text: __("patient.school.label") }
       ],
       rows: patientRows
     }) }}

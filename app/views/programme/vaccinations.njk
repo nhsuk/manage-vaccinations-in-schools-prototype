@@ -36,11 +36,11 @@
     href: programme.uri + "/imports/new?type=" + ImportType.Report
   }) }}
 
-  {% set hasMissingNhsNumber = programme.vaccinations | where("record.hasMissingNhsNumber", true) %}
+  {% set hasMissingNhsNumber = programme.vaccinations | where("patient.hasMissingNhsNumber", true) %}
 
   {{ insetText({
     classes: "nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-4",
-    html: __n("record.hasMissingNhsNumber.count", hasMissingNhsNumber | length) | nhsukMarkdown
+    html: __n("patient.hasMissingNhsNumber.count", hasMissingNhsNumber | length) | nhsukMarkdown
   }) if hasMissingNhsNumber.length }}
 
   {% if programme.vaccinations.length %}
@@ -48,19 +48,19 @@
     {% for vaccination in results.page %}
       {% set resultRows = resultRows | push([
         {
-          header: __("record.fullName.label"),
+          header: __("patient.fullName.label"),
           html: link(vaccination.uri, vaccination.patient.fullName)
         },
         {
-          header: __("record.nhsn.label"),
+          header: __("patient.nhsn.label"),
           html: vaccination.patient.formatted.nhsn or "Not provided"
         },
         {
-          header: __("record.dob.label"),
+          header: __("patient.dob.label"),
           html: vaccination.patient.formatted.dob or "Not provided"
         },
         {
-          header: __("record.postalCode.label"),
+          header: __("patient.postalCode.label"),
           html: vaccination.patient.postalCode or "Not provided"
         },
         {
@@ -78,10 +78,10 @@
       panel: true,
       responsive: true,
       head: [
-        { text: __("record.fullName.label") },
-        { text: __("record.nhsn.label") },
-        { text: __("record.dob.label") },
-        { text: __("record.postalCode.label") },
+        { text: __("patient.fullName.label") },
+        { text: __("patient.nhsn.label") },
+        { text: __("patient.dob.label") },
+        { text: __("patient.postalCode.label") },
         { text: __("vaccination.created.label") }
       ],
       rows: resultRows

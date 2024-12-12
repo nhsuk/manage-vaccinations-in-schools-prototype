@@ -39,15 +39,15 @@
   {% for patient in results.page %}
     {% set patientRows = patientRows | push([
       {
-        header: __("child.fullName.label"),
+        header: __("patient.fullName.label"),
         html: link("/consents/" + consent.uuid + "/link?nhsn=" + patient.nhsn, patient.fullName) + ('<br><span class="nhsuk-u-font-size-16">Known as: ' + patient.preferredNames + "</span>" if patient.preferredNames)
       },
       {
-        header: __("record.postalCode.label"),
+        header: __("patient.postalCode.label"),
         text: patient.postalCode or "Not provided"
       },
       {
-        header: __("child.dob.label"),
+        header: __("patient.dob.label"),
         text: patient.formatted.dob or "Not provided",
         attributes: {
           "data-filter": patient.dob | date({ dateStyle: "short" }),
@@ -68,19 +68,19 @@
       responsive: true,
       head: [
         {
-          text: __("child.fullName.label"),
+          text: __("patient.fullName.label"),
           attributes: {
             "data-col": "name"
           }
         },
         {
-          text: __("record.postalCode.label"),
+          text: __("patient.postalCode.label"),
           attributes: {
             "data-col": "postalCode"
           }
         },
         {
-          text: __("child.dob.label"),
+          text: __("patient.dob.label"),
           attributes: {
             "data-col": "dob"
           }

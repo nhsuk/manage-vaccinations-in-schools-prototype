@@ -1,7 +1,7 @@
 {% extends "_layouts/form.njk" %}
 
 {% set parent = "parent" + parentId %}
-{% set title = __("record." + parent + ".title") %}
+{% set title = __("patient." + parent + ".title") %}
 
 {% block form %}
   {{ heading({
@@ -10,13 +10,13 @@
   }) }}
 
   {{ input({
-    label: { text: __("record.parent.fullName.label") },
+    label: { text: __("patient.parent.fullName.label") },
     decorate: "patient." + parent + ".fullName"
   }) }}
 
   {{ radios({
     fieldset: {
-      legend: { text: __("record.parent.relationship.label") }
+      legend: { text: __("patient.parent.relationship.label") }
     },
     items: [{
       text: ParentalRelationship.Mum
@@ -28,8 +28,8 @@
       text: ParentalRelationship.Other,
       conditional: {
         html: input({
-          label: { text: __("record.parent.relationshipOther.label") },
-          hint: { text: __("record.parent.relationshipOther.hint") },
+          label: { text: __("patient.parent.relationshipOther.label") },
+          hint: { text: __("patient.parent.relationshipOther.hint") },
           decorate: "patient." + parent + ".relationshipOther"
         })
       }
@@ -38,12 +38,12 @@
   }) }}
 
   {{ input({
-    label: { text: __("record.parent.email.label") },
+    label: { text: __("patient.parent.email.label") },
     decorate: "patient." + parent + ".email"
   }) }}
 
   {{ input({
-    label: { text: __("record.parent.tel.label") },
+    label: { text: __("patient.parent.tel.label") },
     decorate: "patient." + parent + ".tel"
   }) }}
 {% endblock %}

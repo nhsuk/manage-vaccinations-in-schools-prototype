@@ -546,9 +546,9 @@ export class Patient extends Record {
    *
    * @returns {string} - Namespace
    */
-  // get ns() {
-  //   return 'patient'
-  // }
+  get ns() {
+    return 'patient'
+  }
 
   /**
    * Get URI

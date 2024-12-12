@@ -1,7 +1,7 @@
 {% extends "_layouts/form.njk" %}
 
 {% set confirmButtonText = __("form.confirm") %}
-{% set title = __("record.edit.title") %}
+{% set title = __("patient.edit.title") %}
 
 {% block form %}
   {{ super() }}
@@ -12,7 +12,7 @@
   }) }}
 
   {{ card({
-    heading: __("record.edit.summary"),
+    heading: __("patient.edit.summary"),
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(patient, {

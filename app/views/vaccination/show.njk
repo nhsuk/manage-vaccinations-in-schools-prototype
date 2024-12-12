@@ -45,14 +45,14 @@
       <p class="nhsuk-body">
         {{ button({
           classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("record.edit.title"),
+          text: __("patient.edit.title"),
           href: vaccination.patient.uri + "/edit?referrer=" + vaccination.uri
         }) }}
       </p>
     {% endset %}
 
     {{ card({
-      heading: __("record.label"),
+      heading: __("patient.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: recordDescriptionHtml
     }) }}
