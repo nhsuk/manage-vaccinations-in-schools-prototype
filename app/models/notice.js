@@ -32,13 +32,6 @@ export class Notice {
     this.patient_uuid = options.patient_uuid
   }
 
-  static generate(patient, type) {
-    return new Notice({
-      type,
-      patient_uuid: patient.uuid
-    })
-  }
-
   /**
    * Get patient
    *

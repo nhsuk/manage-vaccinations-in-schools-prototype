@@ -1,5 +1,3 @@
-import { fakerEN_GB as faker } from '@faker-js/faker'
-
 /**
  * @class Address
  * @property {string} [addressLine1] - Address line 1
@@ -13,20 +11,6 @@ export class Address {
     this.addressLine2 = options?.addressLine2
     this.addressLevel1 = options?.addressLevel1
     this.postalCode = options?.postalCode
-  }
-
-  /**
-   * Generate fake address
-   *
-   * @returns {Address} - Address
-   * @static
-   */
-  static generate() {
-    return new Address({
-      addressLine1: faker.location.streetAddress(),
-      addressLevel1: faker.location.city(),
-      postalCode: faker.location.zipCode({ format: 'CV## #??' })
-    })
   }
 
   /**

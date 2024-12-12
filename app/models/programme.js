@@ -111,17 +111,6 @@ export class Programme {
   }
 
   /**
-   * Generate fake programme
-   *
-   * @param {string} type - Type
-   * @returns {Programme} - Programme
-   * @static
-   */
-  static generate(type) {
-    return new Programme({ type })
-  }
-
-  /**
    * Get status
    *
    * @returns {string} - Status

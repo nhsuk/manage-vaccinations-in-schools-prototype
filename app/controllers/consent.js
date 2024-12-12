@@ -1,9 +1,9 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 import _ from 'lodash'
 
-import { Child } from '../models/child.js'
+import { generateChild } from '../generators/child.js'
+import { generateParent } from '../generators/parent.js'
 import { Consent } from '../models/consent.js'
-import { Parent } from '../models/parent.js'
 import { Patient } from '../models/patient.js'
 import { ProgrammeType } from '../models/programme.js'
 import { Reply, ReplyDecision, ReplyRefusal } from '../models/reply.js'
@@ -69,8 +69,8 @@ export const consentController = {
 
     // Text and email messages
     if (view === 'emails' || view === 'texts') {
-      const child = Child.generate()
-      const parent = Parent.generate(child.lastName)
+      const child = generateChild()
+      const parent = generateParent(child.lastName)
 
       response.locals.consent = new Consent(
         {

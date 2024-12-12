@@ -28,30 +28,6 @@ export class User {
   }
 
   /**
-   * Generate fake user
-   *
-   * @returns {User} - User
-   * @static
-   */
-  static generate() {
-    const firstName = faker.person.firstName()
-    const lastName = faker.person.lastName()
-
-    return new User({
-      firstName,
-      lastName,
-      email: faker.internet
-        .email({
-          firstName,
-          lastName,
-          provider: 'example.nhs.net'
-        })
-        .toLowerCase(),
-      role: faker.helpers.arrayElement(Object.values(UserRole))
-    })
-  }
-
-  /**
    * Get full name
    *
    * @returns {string} - Full name

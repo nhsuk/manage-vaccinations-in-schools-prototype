@@ -16,7 +16,7 @@ import {
 } from '../utils/string.js'
 
 import { Batch } from './batch.js'
-import { ConsentOutcome, Patient } from './patient.js'
+import { Patient } from './patient.js'
 import { Programme } from './programme.js'
 import { School } from './school.js'
 import { Session } from './session.js'
@@ -114,58 +114,6 @@ export class Vaccination {
     this.programme_pid = options?.programme_pid
     this.batch_id = this.given ? options?.batch_id || '' : undefined
     this.vaccine_gtin = options?.vaccine_gtin
-  }
-
-  /**
-   * Generate fake vaccination
-   *
-   * @param {import('./patient.js').Patient} patient - Patient
-   * @param {import('./programme.js').Programme} programme - Programme
-   * @param {import('./session.js').Session} session - Session
-   * @param {import('./batch.js').Batch} batch - Batch
-   * @param {Array<import('./user.js').User>} users - Users
-   * @returns {Vaccination} - Vaccination
-   * @static
-   */
-  static generate(patient, programme, session, batch, users) {
-    const user = faker.helpers.arrayElement(users)
-
-    let injectionMethod
-    let injectionSite
-    let sequence
-
-    let outcome
-    if (patient.consent.value === ConsentOutcome.Given) {
-      outcome = faker.helpers.weightedArrayElement([
-        { value: VaccinationOutcome.Vaccinated, weight: 7 },
-        { value: VaccinationOutcome.PartVaccinated, weight: 1 },
-        { value: VaccinationOutcome.Refused, weight: 1 }
-      ])
-    } else {
-      outcome = VaccinationOutcome.NoConsent
-    }
-
-    const vaccinated =
-      outcome === VaccinationOutcome.Vaccinated ||
-      outcome === VaccinationOutcome.PartVaccinated
-
-    return new Vaccination({
-      created: session.firstDate,
-      created_user_uid: user.uid,
-      outcome,
-      location: session.location.name,
-      programme_pid: programme.pid,
-      session_id: session.id,
-      patient_uuid: patient.uuid,
-      vaccine_gtin: batch.vaccine_gtin,
-      ...(vaccinated && {
-        batch_id: batch.id,
-        dose: vaccines[batch.vaccine_gtin].dose,
-        sequence,
-        injectionMethod,
-        injectionSite
-      })
-    })
   }
 
   /**

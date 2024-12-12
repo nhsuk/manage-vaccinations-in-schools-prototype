@@ -12,13 +12,6 @@ import { Child } from './child.js'
 import { Parent } from './parent.js'
 import { Vaccination } from './vaccination.js'
 
-const primarySchools = Object.values(schools).filter(
-  (school) => school.phase === 'Primary'
-)
-const secondarySchools = Object.values(schools).filter(
-  (school) => school.phase === 'Secondary'
-)
-
 /**
  * @class Child Health Information Service (CHIS) record
  * @augments Child
@@ -48,55 +41,6 @@ export class Record extends Child {
     this.vaccination_uuids = options?.vaccination_uuids || []
     this.pendingChanges = options?.pendingChanges || {}
     this.sensitive = sensitive
-  }
-
-  /**
-   * Generate fake record
-   *
-   * @returns {Record} - Record
-   * @static
-   */
-  static generate() {
-    const child = Child.generate()
-
-    // Parents
-    const parent1 = Parent.generate(child.lastName, true)
-
-    let parent2
-    const addSecondParent = faker.datatype.boolean(0.5)
-    if (addSecondParent) {
-      parent2 = Parent.generate(child.lastName)
-    }
-
-    // CHIS records provide only a subset of parent data
-    delete parent1.email
-    delete parent1.sms
-    delete parent1.contactPreference
-    delete parent1.contactPreferenceOther
-
-    // Pending changes
-    const pendingChanges = {}
-    const hasPendingChanges = faker.datatype.boolean(0.1)
-    if (hasPendingChanges) {
-      // Adjust date of birth
-      const newDob = new Date(child.dob)
-      newDob.setFullYear(newDob.getFullYear() - 2)
-      pendingChanges.dob = newDob
-
-      // Move school
-      const newUrn =
-        schools[child.school_urn]?.phase === 'Primary'
-          ? faker.helpers.arrayElement(primarySchools).urn
-          : faker.helpers.arrayElement(secondarySchools).urn
-      pendingChanges.school_urn = newUrn
-    }
-
-    return new Record({
-      ...child,
-      parent1,
-      parent2,
-      pendingChanges
-    })
   }
 
   /**

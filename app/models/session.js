@@ -3,7 +3,6 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import { isAfter } from 'date-fns'
 
 import {
-  addDays,
   removeDays,
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -89,87 +88,6 @@ export class Session {
     this.dates_ = options?.dates_
     this.open_ = options?.open_
     this.reminder_ = options?.reminder_
-  }
-
-  /**
-   * Generate fake session
-   *
-   * @param {object} term - Term dates
-   * @param {import('./user.js').User} user - User
-   * @param {Array<string>} programme_pids - Programme PIDs
-   * @param {object} options - Options
-   * @param {string} [options.clinic_id] - Clinic ID
-   * @param {string} [options.school_urn] - School URN
-   * @returns {Session} - Session
-   * @static
-   */
-  static generate(programme_pids, term, user, options) {
-    const { clinic_id, school_urn } = options
-
-    let status
-    if (isAfter(getToday(), term.to)) {
-      status = SessionStatus.Completed
-    } else {
-      status = faker.helpers.arrayElement([
-        SessionStatus.Completed,
-        SessionStatus.Planned,
-        SessionStatus.Unplanned
-      ])
-    }
-
-    const dates = []
-    let firstSessionDate
-    const tomorrow = addDays(getToday(), 1)
-    switch (status) {
-      case SessionStatus.Planned:
-        // Earliest date is tomorrow
-        // Latest date is the last day of term
-        firstSessionDate = faker.date.between({
-          from: tomorrow,
-          to: term.to
-        })
-        break
-      case SessionStatus.Completed:
-        // Earliest date is first day of term
-        // Latest date is the last day of term
-        firstSessionDate = faker.date.between({
-          from: term.from,
-          to: term.to
-        })
-        break
-      case SessionStatus.Unplanned:
-      default:
-        firstSessionDate = undefined
-    }
-
-    if (firstSessionDate) {
-      firstSessionDate = setMidday(firstSessionDate)
-
-      // Don’t create sessions during weekends
-      if ([0, 6].includes(firstSessionDate.getDay())) {
-        firstSessionDate = removeDays(firstSessionDate, 2)
-      }
-
-      dates.push(firstSessionDate)
-
-      // Add additional session dates
-      for (const _index of [1, 2]) {
-        if (_index !== 0) {
-          const previousDate = dates[_index - 1]
-          const subsequentDate = setMidday(addDays(previousDate, 7))
-          dates.push(subsequentDate)
-        }
-      }
-    }
-
-    return new Session({
-      created: removeDays(getToday(), 70),
-      created_user_uid: user.uid,
-      dates,
-      programme_pids,
-      ...(clinic_id && { clinic_id }),
-      ...(school_urn && { school_urn })
-    })
   }
 
   /**

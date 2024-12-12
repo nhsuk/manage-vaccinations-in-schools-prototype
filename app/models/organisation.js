@@ -1,4 +1,3 @@
-import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { Clinic } from './clinic.js'
@@ -35,38 +34,9 @@ export class Organisation {
       options?.sessionOpenWeeks || OrganisationDefaults.SessionOpenWeeks
     this.sessionReminderWeeks =
       options?.sessionReminderWeeks || OrganisationDefaults.SessionReminderWeeks
-    this.password =
-      options?.password ||
-      faker.internet.password({
-        memorable: true,
-        length: 16
-      })
+    this.password = options?.password
     this.clinic_ids = options?.clinic_ids || []
     this.school_urns = options?.school_urns || []
-  }
-
-  /**
-   * Generate fake organisation
-   *
-   * @returns {Organisation} - Organisation
-   * @static
-   */
-  static generate() {
-    const code = faker.helpers.replaceSymbols('???')
-    const name = `${faker.location.county()} Child Immunisation Service`
-
-    return new Organisation({
-      code,
-      name,
-      email: faker.internet
-        .email({
-          firstName: code,
-          lastName: 'sais',
-          provider: 'example.nhs.net'
-        })
-        .toLowerCase(),
-      tel: '01### ######'.replace(/#+/g, (m) => faker.string.numeric(m.length))
-    })
   }
 
   /**

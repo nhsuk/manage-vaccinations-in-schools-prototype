@@ -1,6 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import schoolsData from '../datasets/schools.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Address } from './address.js'
@@ -42,20 +41,6 @@ export class School {
     this.phase = options?.phase
     this.address = options?.address && new Address(options.address)
     this.terms = options?.terms || schoolTerms
-  }
-
-  /**
-   * Generate school
-   *
-   * @param {number} urn - School URN
-   * @returns {School} - School
-   * @static
-   */
-  static generate(urn) {
-    return new School({
-      ...schoolsData[urn],
-      address: schoolsData[urn]
-    })
   }
 
   /**
