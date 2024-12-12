@@ -9,6 +9,7 @@ import notices from '../.data/notices.json' with { type: 'json' }
 import organisations from '../.data/organisations.json' with { type: 'json' }
 import patients from '../.data/patients.json' with { type: 'json' }
 import programmes from '../.data/programmes.json' with { type: 'json' }
+import replies from '../.data/replies.json' with { type: 'json' }
 import records from '../.data/records.json' with { type: 'json' }
 import schools from '../.data/schools.json' with { type: 'json' }
 import sessions from '../.data/sessions.json' with { type: 'json' }
@@ -40,6 +41,7 @@ export default {
   patients,
   programmes,
   records,
+  replies,
   schools,
   sessions,
   users,

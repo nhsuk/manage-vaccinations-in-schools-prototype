@@ -12,7 +12,6 @@ import {
   ProgrammeType,
   programmeTypes
 } from '../models/programme.js'
-import { Reply } from '../models/reply.js'
 import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
 import { VaccinationSite } from '../models/vaccination.js'
@@ -101,9 +100,6 @@ export const patientController = {
     patient = new Patient(patient, data)
 
     const inSession = request.originalUrl.includes('sessions')
-    const replies = Object.values(patient.replies).map(
-      (reply) => new Reply(reply, data)
-    )
 
     // Patient in session
     if (inSession) {
@@ -150,10 +146,6 @@ export const patientController = {
           patient.outcome?.value !== PatientOutcome.CouldNotVaccinate
       }
 
-      patient.vaccinations.filter(
-        (vaccination) => vaccination.session_id === id
-      )
-
       response.locals.injectionSiteItems = Object.entries(VaccinationSite)
         .filter(([, value]) =>
           [
@@ -167,13 +159,18 @@ export const patientController = {
           value
         }))
 
+      response.locals.replies = patient.replies.filter(
+        ({ session_id }) => session_id === id
+      )
+      response.locals.vaccinations = patient.vaccinations.filter(
+        ({ session_id }) => session_id === id
+      )
       response.locals.programme = programme
       response.locals.session = session
     }
 
     response.locals.inSession = inSession
     response.locals.patient = patient
-    response.locals.replies = replies
 
     next()
   },

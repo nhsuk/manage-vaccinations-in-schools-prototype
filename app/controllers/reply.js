@@ -20,7 +20,7 @@ export const replyController = {
     const { data } = request.session
     const { patient, session } = response.locals
 
-    const reply = patient.replies[uuid] || data.consents[uuid]
+    const reply = data.replies[uuid] || data.consents[uuid]
 
     request.app.locals.reply = new Reply(reply, data)
 

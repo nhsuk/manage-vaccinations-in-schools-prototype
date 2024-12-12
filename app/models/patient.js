@@ -74,10 +74,10 @@ export class PatientMovement {
  * @property {object} [context] - Global context
  * @property {string} uuid - UUID
  * @property {Array<import('./event.js').Event>} events - Logged events
- * @property {object} replies - Consent replies
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {Array<string>} [cohort_uids] - Cohort UIDs
+ * @property {Array<string>} [reply_uuids] - Reply IDs
  * @property {Array<string>} [session_ids] - Session IDs
  */
 export class Patient extends Record {
@@ -87,10 +87,10 @@ export class Patient extends Record {
     this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
     this.events = options?.events || []
-    this.replies = options?.replies || {}
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.cohort_uids = options?.cohort_uids || []
+    this.reply_uuids = options?.reply_uuids || []
     this.session_ids = options?.session_ids || []
   }
 
@@ -202,6 +202,21 @@ export class Patient extends Record {
     if (this.context?.cohorts && this.cohort_uids) {
       return this.cohort_uids.map(
         (uid) => new Cohort(this.context?.cohorts[uid], this.context)
+      )
+    }
+
+    return []
+  }
+
+  /**
+   * Get replies
+   *
+   * @returns {Array<Reply>} - Replies
+   */
+  get replies() {
+    if (this.context?.replies && this.reply_uuids) {
+      return this.reply_uuids.map(
+        (uuid) => new Reply(this.context?.replies[uuid], this.context)
       )
     }
 
@@ -424,7 +439,7 @@ export class Patient extends Record {
       name = `${decision} in updated response from ${formattedParent}`
     }
 
-    this.replies[uuid] = new Reply(reply)
+    this.reply_uuids.push(reply.uuid)
     this.addEvent({
       type: EventType.Consent,
       name,
