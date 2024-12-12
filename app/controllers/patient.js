@@ -111,6 +111,10 @@ export const patientController = {
       const programme = new Programme(data.programmes[programme_pid], data)
       const fluPid = programmeTypes[ProgrammeType.Flu].pid
 
+      const consentHealthAnswers = patient.consentHealthAnswers(session.id)
+
+      response.locals.consentHealthAnswers = consentHealthAnswers
+
       response.locals.sessionPatientPath = getSessionPatientPath(
         session,
         patient
@@ -133,7 +137,7 @@ export const patientController = {
           patient.triage?.value === TriageOutcome.Completed &&
           patient.outcome?.value !== PatientOutcome.Vaccinated,
         showTriage:
-          patient.consentHealthAnswers &&
+          consentHealthAnswers &&
           patient.triage?.value === TriageOutcome.Needed &&
           patient.outcome?.value === PatientOutcome.NoOutcomeYet,
         editRegistration:

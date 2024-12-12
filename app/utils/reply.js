@@ -48,14 +48,15 @@ export function getRepliesWithHealthAnswers(replies) {
  * Get combined answers to health questions
  *
  * @param {Array<import('../models/reply.js').Reply>} replies - Consent replies
+ * @param {string} session_id - Session ID
  * @returns {object|boolean} Combined answers to health questions
  */
-export function getConsentHealthAnswers(replies) {
+export function getConsentHealthAnswers(replies, session_id) {
   const answers = {}
 
-  const repliesWithHealthAnswers = Object.values(replies).filter(
-    (reply) => reply.healthAnswers
-  )
+  const repliesWithHealthAnswers = Object.values(replies)
+    .filter((reply) => reply.healthAnswers)
+    .filter((reply) => reply.session_id === session_id)
 
   if (repliesWithHealthAnswers.length === 0) {
     return false

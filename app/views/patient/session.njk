@@ -254,9 +254,9 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         classes: "app-summary-list--full-width",
-        rows: healthAnswerRows(patient.consentHealthAnswers)
+        rows: healthAnswerRows(consentHealthAnswers)
       })
-    }) if patient.consentHealthAnswers }}
+    }) if consentHealthAnswers }}
 
     {% set triageNotesDescriptionHtml %}
       {% for note in patient.triageNotes | reverse %}

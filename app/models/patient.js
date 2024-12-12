@@ -248,13 +248,14 @@ export class Patient extends Record {
   }
 
   /**
-   * Get consent health answers (from replies)
+   * Get consent health answers (from replies, for a given session)
    *
+   * @param {string} session_id - Session ID
    * @returns {object|boolean} - Consent health answers
    */
-  get consentHealthAnswers() {
-    return this.session_ids.length > 0
-      ? getConsentHealthAnswers(this.replies)
+  consentHealthAnswers(session_id) {
+    return session_id
+      ? getConsentHealthAnswers(this.replies, session_id)
       : false
   }
 
