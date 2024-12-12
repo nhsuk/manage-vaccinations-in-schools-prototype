@@ -92,7 +92,7 @@ export const patientController = {
     // If no patient found, use CHIS record (patient not imported yet)
     if (!patient) {
       const record = Object.values(data.records).find(
-        ({ record }) => record.nhsn === nhsn
+        (record) => record.nhsn === nhsn
       )
       patient = { record }
     }
