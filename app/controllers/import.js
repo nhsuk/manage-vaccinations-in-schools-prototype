@@ -159,19 +159,22 @@ export const importController = {
   readReview(request, response, next) {
     const { _import } = request.app.locals
     const { nhsn } = request.params
-    const { referrer } = request.session
+    const { data, referrer } = request.session
 
     const record = _import.records.find((record) => record.nhsn === nhsn)
 
     // Show back link to referring page, else import page
     response.locals.back = referrer || _import.uri
 
-    response.locals.record = new Record(record)
+    response.locals.record = new Record(record, data)
 
-    response.locals.duplicateRecord = new Record({
-      ...record,
-      ...record?.pendingChanges
-    })
+    response.locals.duplicateRecord = new Record(
+      {
+        ...record,
+        ...record?.pendingChanges
+      },
+      data
+    )
 
     next()
   },
