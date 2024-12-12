@@ -225,10 +225,10 @@
         {{ __("consent.NoResponse.description") | nhsukMarkdown }}
       {% endif %}
       {% if options.getReply %}
-        <form action="{{ sessionPatientPath }}/replies/send" method="post">
+        <form action="{{ sessionPatientPath }}/invite" method="post">
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-bottom-4",
-            text: __("reply.send.title")
+            text: __("invite.label")
           }) }}
         </form>
       {% endif %}

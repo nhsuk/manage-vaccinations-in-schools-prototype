@@ -8,7 +8,6 @@ import {
   ReplyMethod,
   ReplyRefusal
 } from '../models/reply.js'
-import { Session } from '../models/session.js'
 import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
 import { getToday } from '../utils/date.js'
 import { getSessionPatientPath } from '../utils/session.js'
@@ -358,26 +357,6 @@ export const replyController = {
 
       response.redirect(`${newReply.uri}/new/decision?referrer=${reply.uri}`)
     }
-  },
-
-  updateSend(request, response) {
-    const { data } = request.session
-    const { __, patient } = response.locals
-
-    const parent = patient.parent1
-
-    const session = new Session(
-      {
-        ...response.locals.session,
-        ...(data.token && { created_user_uid: data.token?.uid })
-      },
-      data
-    )
-
-    patient.inviteToSession(session)
-
-    request.flash('success', __('reply.send.success', { parent }))
-    response.redirect(getSessionPatientPath(session, patient))
   },
 
   showInvalidate(request, response) {

@@ -17,6 +17,7 @@ import { downloadRoutes } from './routes/download.js'
 import { gillickRoutes } from './routes/gillick.js'
 import { homeRoutes } from './routes/home.js'
 import { importRoutes } from './routes/import.js'
+import { inviteRoutes } from './routes/invite.js'
 import { moveRoutes } from './routes/move.js'
 import { noticeRoutes } from './routes/notice.js'
 import { organisationRoutes } from './routes/organisation.js'
@@ -66,6 +67,7 @@ router.use('/sessions', sessionRoutes)
 router.use('/sessions/:id/default-batch', defaultBatchRoutes)
 router.use('/sessions/:id', patientRoutes)
 router.use('/sessions/:id/:nhsn/gillick', gillickRoutes)
+router.use('/sessions/:id/:nhsn/invite', inviteRoutes)
 router.use('/sessions/:id/:nhsn/pre-screen', preScreenRoutes)
 router.use('/sessions/:id/:nhsn/registration', registrationRoutes)
 router.use('/sessions/:id/:nhsn/remind', remindRoutes)

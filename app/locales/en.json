@@ -724,6 +724,10 @@
       "title": "Home"
     }
   },
+  "invite": {
+    "label": "Send consent request",
+    "success": "Consent request sent to {{parent.nameAndRelationship}}"
+  },
   "import": {
     "label": "Record import",
     "success": {
@@ -1488,10 +1492,6 @@
     },
     "confirmed": {
       "label": "Confirm consent refusal?"
-    },
-    "send": {
-      "title": "Send consent request",
-      "success": "Consent request sent to {{parent.nameAndRelationship}}"
     }
   },
   "school": {
