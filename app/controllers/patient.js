@@ -1,6 +1,5 @@
 import _ from 'lodash'
 
-import { Cohort } from '../models/cohort.js'
 import {
   CaptureOutcome,
   ConsentOutcome,
@@ -16,7 +15,7 @@ import {
 import { Reply } from '../models/reply.js'
 import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
-import { Vaccination, VaccinationSite } from '../models/vaccination.js'
+import { VaccinationSite } from '../models/vaccination.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { getSessionPatientPath } from '../utils/session.js'
 
@@ -99,19 +98,7 @@ export const patientController = {
       patient = { record }
     }
 
-    patient = new Patient(patient)
-
-    const cohorts = Object.values(patient.cohort_uids).map(
-      (uid) => new Cohort(data.cohorts[uid], data)
-    )
-
-    const sessions = Object.values(patient.session_ids).map(
-      (id) => new Session(data.sessions[id], data)
-    )
-
-    let vaccinations = Object.keys(patient.vaccinationOutcomes).map(
-      (uuid) => new Vaccination(data.vaccinations[uuid])
-    )
+    patient = new Patient(patient, data)
 
     const inSession = request.originalUrl.includes('sessions')
     const replies = Object.values(patient.replies).map(
@@ -163,7 +150,7 @@ export const patientController = {
           patient.outcome?.value !== PatientOutcome.CouldNotVaccinate
       }
 
-      vaccinations = vaccinations.filter(
+      patient.vaccinations.filter(
         (vaccination) => vaccination.session_id === id
       )
 
@@ -187,9 +174,6 @@ export const patientController = {
     response.locals.inSession = inSession
     response.locals.patient = patient
     response.locals.replies = replies
-    response.locals.cohorts = cohorts
-    response.locals.sessions = sessions
-    response.locals.vaccinations = vaccinations
 
     next()
   },

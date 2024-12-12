@@ -16,11 +16,8 @@ import { getEnumKeyAndValue } from './enum.js'
  * @returns {object} Patient outcome
  */
 export const getPatientOutcome = (patient) => {
-  // Vaccination outcome
-  const vaccinations = Object.values(patient.vaccinationOutcomes)
-
-  if (vaccinations.length === 1) {
-    if (vaccinations[0] === true) {
+  if (patient.vaccinations.length === 1) {
+    if (patient.vaccinations[0].given === true) {
       return getEnumKeyAndValue(PatientOutcome, PatientOutcome.Vaccinated)
     }
   }

@@ -15,12 +15,14 @@ import {
 import { formatLink, formatParent, stringToBoolean } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 
+import { Cohort } from './cohort.js'
 import { Event, EventType } from './event.js'
 import { Gillick } from './gillick.js'
 import { NoticeType } from './notice.js'
 import { Parent } from './parent.js'
 import { Record } from './record.js'
 import { Reply } from './reply.js'
+import { Session } from './session.js'
 import { Vaccination } from './vaccination.js'
 
 export class ConsentOutcome {
@@ -67,25 +69,27 @@ export class PatientMovement {
 /**
  * @class Patient in-session record
  * @augments Record
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} uuid - UUID
  * @property {Array<import('./event.js').Event>} events - Logged events
  * @property {object} replies - Consent replies
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
- * @property {object} [vaccinationOutcomes] - Vaccination UUID: Given?
  * @property {Array<string>} [cohort_uids] - Cohort UIDs
  * @property {Array<string>} [session_ids] - Session IDs
  */
 export class Patient extends Record {
-  constructor(options) {
-    super(options)
+  constructor(options, context) {
+    super(options, context)
 
+    this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
     this.events = options?.events || []
     this.replies = options?.replies || {}
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
-    this.vaccinationOutcomes = options?.vaccinationOutcomes || {}
     this.cohort_uids = options?.cohort_uids || []
     this.session_ids = options?.session_ids || []
   }
@@ -187,6 +191,36 @@ export class Patient extends Record {
     if (lastReminder) {
       return lastReminder.formatted.date
     }
+  }
+
+  /**
+   * Get cohorts
+   *
+   * @returns {Array<Cohort>} - Cohorts
+   */
+  get cohorts() {
+    if (this.context?.cohorts && this.cohort_uids) {
+      return this.cohort_uids.map(
+        (uid) => new Cohort(this.context?.cohorts[uid], this.context)
+      )
+    }
+
+    return []
+  }
+
+  /**
+   * Get sessions
+   *
+   * @returns {Array<Session>} - Sessions
+   */
+  get sessions() {
+    if (this.context?.sessions && this.session_ids) {
+      return this.session_ids.map(
+        (id) => new Session(this.context?.sessions[id], this.context)
+      )
+    }
+
+    return []
   }
 
   /**
@@ -456,8 +490,9 @@ export class Patient extends Record {
    * @param {import('./vaccination.js').Vaccination} vaccination - Vaccination
    */
   captureVaccination(vaccination) {
-    vaccination = new Vaccination(vaccination)
+    this.vaccination_uuids.push(vaccination.uuid)
 
+    vaccination = new Vaccination(vaccination)
     let name
     if (vaccination.given) {
       name = vaccination.updated
@@ -466,9 +501,6 @@ export class Patient extends Record {
     } else {
       name = `Unable to vaccinate: ${vaccination.outcome}`
     }
-
-    // Providing a boolean for vaccination enables patient outcome calculation
-    this.vaccinationOutcomes[vaccination.uuid] = vaccination.given
 
     this.addEvent({
       type: EventType.Capture,

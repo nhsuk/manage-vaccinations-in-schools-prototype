@@ -78,9 +78,9 @@
         </form>
       {% endmacro %}
 
-      {% if cohorts.length %}
+      {% if patient.cohorts.length %}
         {% set cohortRows = [] %}
-        {% for cohort in cohorts | sort(false, false, "created") %}
+        {% for cohort in patient.cohorts | sort(false, false, "created") %}
           {% set cohortRows = cohortRows | push([
             {
               header: __("cohort.name.label"),
@@ -115,9 +115,9 @@
     }) }}
 
     {% set sessionsDescriptionHtml %}
-      {% if sessions.length %}
+      {% if patient.sessions.length %}
         {% set sessionRows = [] %}
-        {% for session in sessions | sort(false, false, "created") %}
+        {% for session in patient.sessions | sort(false, false, "created") %}
           {% set sessionRows = sessionRows | push([
             {
               header: __("session.location.label"),
@@ -157,9 +157,9 @@
     }) }}
 
     {% set vaccinationsDescriptionHtml %}
-      {% if vaccinations.length %}
+      {% if patient.vaccinations.length %}
         {% set vaccinationRows = [] %}
-        {% for vaccination in vaccinations | sort(false, false, "created") %}
+        {% for vaccination in patient.vaccinations | sort(false, false, "created") %}
           {% set vaccinationRows = vaccinationRows | push([
             {
               header: __("vaccination.vaccine_gtin.label"),

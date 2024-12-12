@@ -276,7 +276,7 @@ export default () => {
    * @returns {string|undefined} Reason could not vaccinate
    */
   globals.couldNotVaccinateReason = function (patient) {
-    const { __, data } = this.ctx
+    const { __ } = this.ctx
 
     if (
       patient?.screen?.value &&
@@ -285,11 +285,8 @@ export default () => {
       return __(`screen.${patient.screen.key}.status`)
     } else if (patient?.consent?.value !== ConsentOutcome.Given) {
       return __(`consent.${patient.consent.key}.status`)
-    } else if (patient.vaccinationOutcomes) {
-      const vaccinations = Object.keys(patient.vaccinationOutcomes).map(
-        (uuid) => new Vaccination(data.vaccinations[uuid])
-      )
-      return vaccinations[0].outcome
+    } else if (patient.vaccinations.length) {
+      return patient.vaccinations[0].outcome
     }
   }
 
