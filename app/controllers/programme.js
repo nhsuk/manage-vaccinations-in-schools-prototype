@@ -12,54 +12,9 @@ export const programmeController = {
   readAll(request, response, next) {
     const { data } = request.session
 
-    const programmes = Object.values(data.programmes).map((programme) => {
-      programme = new Programme(programme)
-
-      // Cohorts in programme
-      programme.cohorts = Object.values(data.cohorts)
-        .filter((cohort) => cohort.programme_pid === programme.pid)
-        .map((cohort) => new Cohort(cohort, data))
-
-      // Patients in programme
-      let record_nhsns = []
-      for (const cohort of programme.cohorts) {
-        record_nhsns = [...record_nhsns, ...cohort.record_nhsns]
-      }
-
-      programme.patients = Object.values(data.patients)
-        .filter((patient) => record_nhsns.includes(patient.nhsn))
-        .map((patient) => new Patient(patient))
-
-      // Sessions in programme
-      programme.sessions = Object.values(data.sessions)
-        .map((session) => new Session(session, data))
-        .filter((session) => session.programme_pids.includes(programme.pid))
-        .filter((session) => session.patients.length > 0)
-
-      // Sessions in programme (grouped by status)
-      programme.sessionsByStatus = Object.groupBy(
-        programme.sessions,
-        ({ status }) => status
-      )
-
-      // Recorded vaccinations in programme
-      programme.vaccinations = Object.values(data.vaccinations)
-        .filter((vaccination) => vaccination.programme_pid === programme.pid)
-        .map((vaccination) => new Vaccination(vaccination, data))
-
-      programme.imports = Object.values(data.imports)
-        .filter((_import) => _import.programme_pid === programme.pid)
-        .map((_import) => new Import(_import, data))
-
-      // Only mock issues with imported records if there are imports
-      if (programme.imports.length) {
-        programme.reviews = programme.imports[0].record_nhsns
-          .slice(0, 3)
-          .map((record) => new Record(record))
-      }
-
-      return programme
-    })
+    const programmes = Object.values(data.programmes).map(
+      (programme) => new Programme(programme, data)
+    )
 
     response.locals.programmes = programmes
 

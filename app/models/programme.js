@@ -4,7 +4,13 @@ import vaccines from '../datasets/vaccines.js'
 import { isBetweenDates, getToday } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 
+import { Cohort } from './cohort.js'
+import { Import } from './import.js'
+import { Patient } from './patient.js'
+import { Record } from './record.js'
 import { SchoolTerm } from './school.js'
+import { Session } from './session.js'
+import { Vaccination } from './vaccination.js'
 import { Vaccine } from './vaccine.js'
 
 export class ProgrammeStatus {
@@ -85,6 +91,9 @@ export const programmeTypes = {
 
 /**
  * @class Programme
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} name - Name
  * @property {boolean} seasonal - Seasonal programme
  * @property {ProgrammeStatus} status - Status
@@ -98,7 +107,8 @@ export const programmeTypes = {
  * @property {string} uri - URL
  */
 export class Programme {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.name = options?.type && programmeTypes[options.type]?.name
     this.information =
       options?.type && programmeTypes[options.type]?.information
@@ -156,6 +166,103 @@ export class Programme {
    */
   get vaccine() {
     return new Vaccine(vaccines[this.vaccines[0]])
+  }
+
+  /**
+   * Get cohorts
+   *
+   * @returns {Array<Cohort>} - Cohorts
+   */
+  get cohorts() {
+    if (this.context?.cohorts && this.cohort_uids) {
+      return this.cohort_uids.map(
+        (uid) => new Cohort(this.context?.cohorts[uid])
+      )
+    }
+
+    return []
+  }
+
+  /**
+   * Get imports
+   *
+   * @returns {Array<Import>} - Imports
+   */
+  get imports() {
+    if (this.context?.imports && this.pid) {
+      return Object.values(this.context.imports)
+        .filter((_import) => _import.programme_pid === this.pid)
+        .map((_import) => new Import(_import, this.context))
+    }
+
+    return []
+  }
+
+  /**
+   * Get patients
+   *
+   * @returns {Array<Patient>} - Patients
+   */
+  get patients() {
+    if (this.context?.imports && this.cohorts) {
+      let record_nhsns = []
+      for (const cohort of this.cohorts) {
+        record_nhsns = [...record_nhsns, ...cohort.record_nhsns]
+      }
+
+      return Object.values(this.context.patients)
+        .filter((patient) => record_nhsns.includes(patient.nhsn))
+        .map((patient) => new Patient(patient))
+    }
+
+    return []
+  }
+
+  /**
+   * Get sessions
+   *
+   * @returns {Array<Session>} - Sessions
+   */
+  get sessions() {
+    if (this.context?.sessions && this.pid) {
+      return Object.values(this.context.sessions)
+        .map((session) => new Session(session, this.context))
+        .filter((session) => session.programme_pids.includes(this.pid))
+        .filter((session) => session.patients.length > 0)
+    }
+
+    return []
+  }
+
+  /**
+   * Get import reviews
+   *
+   * @returns {Array<Session>} - Sessions
+   */
+  get reviews() {
+    // Only mock issues with imported records if there are imports
+    if (this.context?.sessions && this.imports.length) {
+      return this.imports[0].record_nhsns
+        .slice(0, 3)
+        .map((record) => new Record(record))
+    }
+
+    return []
+  }
+
+  /**
+   * Get vaccinations
+   *
+   * @returns {Array<Vaccination>} - Vaccinations
+   */
+  get vaccinations() {
+    if (this.context?.vaccinations && this.pid) {
+      return Object.values(this.context.vaccinations)
+        .filter((vaccination) => vaccination.programme_pid === this.pid)
+        .map((vaccination) => new Vaccination(vaccination, this.context))
+    }
+
+    return []
   }
 
   /**

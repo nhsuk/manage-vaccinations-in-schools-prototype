@@ -125,7 +125,7 @@ export const patientController = {
       // Select first programme in session to show pre-screening questions
       // TODO: Make pre-screening questions pull from all session programmes
       const programme_pid = session.programme_pids[0]
-      const programme = new Programme(data.programmes[programme_pid])
+      const programme = new Programme(data.programmes[programme_pid], data)
       const fluPid = programmeTypes[ProgrammeType.Flu].pid
 
       response.locals.sessionPatientPath = getSessionPatientPath(
