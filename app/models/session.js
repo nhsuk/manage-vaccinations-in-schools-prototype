@@ -423,7 +423,7 @@ export class Session {
    */
   get name() {
     if (this.location) {
-      return `${this.type} at ${this.location.name}`
+      return `${this.immunisation} session at ${this.location.name}`
     }
   }
 

@@ -363,7 +363,7 @@ export class Patient extends Record {
     this.session_ids.push(session.id)
     this.addEvent({
       type: EventType.Invite,
-      name: `Invited to session at ${session.location.name}`,
+      name: `Invited to the ${session.name}`,
       date: session.created,
       user_uid: session.created_user_uid
     })
@@ -378,7 +378,7 @@ export class Patient extends Record {
     this.session_ids = this.session_ids.filter((id) => id !== session.id)
     this.addEvent({
       type: EventType.Select,
-      name: `Removed from the ${session.name} cohort`,
+      name: `Removed from the ${session.name}`,
       date: session.created,
       user_uid: session.created_user_uid
     })
