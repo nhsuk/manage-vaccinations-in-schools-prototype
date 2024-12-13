@@ -227,4 +227,24 @@ export class Reply {
   get uri() {
     return `/sessions/${this.session_id}/${this.patient.nhsn}/replies/${this.uuid}`
   }
+
+  /**
+   * Link consent with patient record
+   *
+   * @param {import('./patient.js').Patient} patient - Patient
+   * @param {object} context - Global context
+   */
+  linkToPatient(patient, context) {
+    // Link reply to patient, and patient to reply
+    this.patient_uuid = patient.uuid
+    patient.addReply(this)
+
+    // Remove context to prevent circular dependencies
+    delete this.context
+    delete patient.context
+
+    // Update context with updated values
+    context.replies[this.uuid] = this
+    context.patients[patient.uuid] = patient
+  }
 }

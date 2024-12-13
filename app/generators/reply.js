@@ -72,7 +72,6 @@ export function generateReply(programme, session, patient) {
         refusalReasonOther: 'My family rejects vaccinations on principle.'
       })
     }),
-    patient_uuid: patient.uuid,
     session_id: session.id
   })
 }
