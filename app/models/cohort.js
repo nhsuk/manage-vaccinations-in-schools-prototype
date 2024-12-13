@@ -1,3 +1,4 @@
+import { createMap } from '../utils/object.js'
 import { formatLink, formatYearGroup } from '../utils/string.js'
 
 import { Patient } from './patient.js'
@@ -126,5 +127,40 @@ export class Cohort {
    */
   get uri() {
     return `/programmes/${this.programme_pid}/cohorts/${this.uid}`
+  }
+
+  /**
+   * Select records for cohort
+   *
+   * @param {object} context - Global context
+   */
+  select(context) {
+    // Select records
+    const selectedRecords = new Set()
+    const records = createMap(context.records)
+    records.forEach((record) => {
+      if (record.yearGroup === this.yearGroup) {
+        selectedRecords.add(record.nhsn)
+      }
+    })
+
+    // Add selected records to cohort
+    this.record_nhsns = [...selectedRecords]
+
+    // Create or update patient record
+    const patients = createMap(context.patients)
+    for (const nhsn of this.record_nhsns) {
+      let patient = [...patients.values()].find(
+        (patient) => patient.nhsn === nhsn
+      )
+
+      if (!patient) {
+        const record = records.get(nhsn)
+        patient = new Patient(structuredClone(record))
+        patients.set(patient.uuid, patient)
+      }
+
+      patient.selectForCohort(this)
+    }
   }
 }

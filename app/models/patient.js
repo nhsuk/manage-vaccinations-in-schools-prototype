@@ -329,7 +329,7 @@ export class Patient extends Record {
    *
    * @param {import('./cohort.js').Cohort} cohort - Cohort
    */
-  addToCohort(cohort) {
+  selectForCohort(cohort) {
     this.cohort_uids.push(cohort.uid)
     this.addEvent({
       type: EventType.Select,
@@ -340,11 +340,11 @@ export class Patient extends Record {
   }
 
   /**
-   * Remove patient from cohort
+   * Reject patient from cohort
    *
    * @param {import('./cohort.js').Cohort} cohort - Cohort
    */
-  removeFromCohort(cohort) {
+  rejectFromCohort(cohort) {
     this.cohort_uids = this.cohort_uids.filter((uid) => uid !== cohort.uid)
     this.addEvent({
       type: EventType.Select,

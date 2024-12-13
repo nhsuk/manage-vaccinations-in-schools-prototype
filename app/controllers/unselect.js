@@ -17,8 +17,8 @@ export const unselectController = {
       data
     )
 
-    // Remove patient from cohort
-    patient.removeFromCohort(cohort)
+    // Reject patient from cohort
+    patient.rejectFromCohort(cohort)
 
     // Update patient record
     data.patients[patient.uuid] = patient
