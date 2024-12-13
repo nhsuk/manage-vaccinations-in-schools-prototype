@@ -333,7 +333,7 @@ export class Patient extends Record {
     this.cohort_uids.push(cohort.uid)
     this.addEvent({
       type: EventType.Select,
-      name: `Selected for the ${cohort.name} cohort`,
+      name: `Selected for the ${cohort.name.replace('Flu', 'flu')} cohort`,
       date: cohort.created,
       user_uid: cohort.created_user_uid
     })
@@ -348,7 +348,7 @@ export class Patient extends Record {
     this.cohort_uids = this.cohort_uids.filter((uid) => uid !== cohort.uid)
     this.addEvent({
       type: EventType.Select,
-      name: `Removed from the ${cohort.name} cohort`,
+      name: `Removed from the ${cohort.name.replace('Flu', 'flu')} cohort`,
       date: cohort.created,
       user_uid: cohort.created_user_uid
     })
