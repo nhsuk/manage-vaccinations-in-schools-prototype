@@ -4,11 +4,7 @@ export const cohortController = {
   readAll(request, response, next) {
     const { data } = request.session
 
-    const cohorts = Object.values(data.cohorts).map(
-      (cohort) => new Cohort(cohort, data)
-    )
-
-    response.locals.cohorts = cohorts
+    response.locals.cohorts = Cohort.readAll(data)
 
     next()
   },
@@ -19,11 +15,9 @@ export const cohortController = {
 
   read(request, response, next) {
     const { uid } = request.params
-    const { cohorts } = response.locals
+    const { data } = request.session
 
-    const cohort = cohorts.find((cohort) => cohort.uid === uid)
-
-    request.app.locals.cohort = cohort
+    response.locals.cohort = Cohort.read(uid, data)
 
     next()
   },
