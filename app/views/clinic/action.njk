@@ -15,7 +15,7 @@
       classes: "nhsuk-button--warning",
       text: __("clinic.action.confirm", type),
       attributes: {
-        formAction: organisation.uri + "/clinics/" + clinic.id + "/" + type
+        formAction: clinic.uri + "/" + type
       }
     }) }}
     <a class="nhsuk-link" href="{{ paths.back }}">
