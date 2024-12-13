@@ -14,8 +14,8 @@ import { Vaccine } from './vaccine.js'
 /**
  * @class Batch
  * @param {object} options - Options
- * @param {object} [context] - Global context
- * @property {object} [context] - Global context
+ * @param {object} [context] - Context
+ * @property {object} [context] - Context
  * @property {string} id - Batch ID
  * @property {Date} [created] - Created date
  * @property {Date} [updated] - Updated date
@@ -122,5 +122,80 @@ export class Batch {
    */
   get uri() {
     return `/vaccines/${this.vaccine_gtin}/${this.id}`
+  }
+
+  /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Batch>|undefined} Batches
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.batches).map(
+      (batch) => new Batch(batch, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} id - Batch ID
+   * @param {object} context - Context
+   * @returns {Batch|undefined} Batch
+   * @static
+   */
+  static read(id, context) {
+    if (context?.batches) {
+      return new Batch(context.batches[id], context)
+    }
+  }
+
+  /**
+   * Create
+   *
+   * @param {Batch} batch - Batch
+   * @param {object} context - Context
+   */
+  create(batch, context) {
+    batch = new Batch(batch)
+
+    // Update context
+    context.batches[batch.id] = batch
+  }
+
+  /**
+   * Archive
+   *
+   * @param {object} context - Context
+   */
+  archive(context) {
+    this.archived = new Date()
+
+    // Remove batch context
+    delete this.context
+
+    // Update context
+    context.batches[this.id] = this
+  }
+
+  /**
+   * Update
+   *
+   * @param {object} updates - Updates
+   * @param {object} context - Context
+   */
+  update(updates, context) {
+    this.updated = new Date()
+
+    // Remove batch context
+    delete this.context
+
+    // Delete original batch (with previous ID)
+    delete context.batches[this.id]
+
+    // Update context
+    const updatedBatch = Object.assign(this, updates)
+    context.batches[updatedBatch.id] = updatedBatch
   }
 }

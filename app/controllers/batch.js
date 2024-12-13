@@ -17,10 +17,9 @@ export const batchController = {
       vaccine_gtin: gtin
     })
 
-    // Add to session data
-    data.batches[batch.id] = batch
-
     request.flash('success', __(`batch.success.create`, { batch }))
+
+    batch.create(batch, data)
 
     response.redirect('/vaccines')
   },
@@ -29,8 +28,7 @@ export const batchController = {
     const { id } = request.params
     const { data } = request.session
 
-    response.locals.batch = new Batch(data.batches[id], data)
-
+    response.locals.batch = Batch.read(id, data)
     response.locals.paths = {
       back: `/vaccines`,
       next: `/vaccines`
@@ -40,27 +38,15 @@ export const batchController = {
   },
 
   update(request, response) {
-    const { id } = request.params
     const { data } = request.session
     const { __, batch, paths } = response.locals
 
-    const updatedBatch = new Batch({
-      ...batch,
-      ...request.body.batch,
-      updated: new Date()
-    })
+    request.flash('success', __(`batch.success.update`, { batch }))
 
-    // Update session data
-    delete data.batches[id]
-    data.batches[updatedBatch.id] = updatedBatch
+    batch.update(request.body.batch, data)
 
     // Clean up session data
     delete data.batch
-
-    request.flash(
-      'success',
-      __(`batch.success.update`, { batch: updatedBatch })
-    )
 
     response.redirect(paths.next)
   },
@@ -76,6 +62,10 @@ export const batchController = {
     const { data } = request.session
     const { __, batch } = response.locals
 
+    request.flash('success', __(`batch.success.archive`, { batch }))
+
+    batch.archive(data)
+
     // Remove from default batches
     if (data.token?.batch) {
       for (const [session_id, gtins] of Object.entries(data.token.batch)) {
@@ -89,15 +79,6 @@ export const batchController = {
       }
     }
 
-    const archivedBatch = new Batch({
-      ...batch,
-      archived: new Date()
-    })
-
-    // Update session data
-    data.batches[archivedBatch.id] = archivedBatch
-
-    request.flash('success', __(`batch.success.archive`, { batch }))
     response.redirect('/vaccines')
   }
 }
