@@ -238,6 +238,9 @@
     "dobWithAge": {
       "label": "Date of birth"
     },
+    "gender": {
+      "label": "Gender"
+    },
     "address": {
       "label": "Home address"
     },
