@@ -248,18 +248,6 @@ export class Patient extends Record {
   }
 
   /**
-   * Get consent health answers (from replies, for a given session)
-   *
-   * @param {string} session_id - Session ID
-   * @returns {object|boolean} - Consent health answers
-   */
-  consentHealthAnswers(session_id) {
-    return session_id
-      ? getConsentHealthAnswers(this.replies, session_id)
-      : false
-  }
-
-  /**
    * Get consent refusal reasons (from replies)
    *
    * @returns {object|boolean} - Consent refusal reasons
@@ -313,6 +301,61 @@ export class Patient extends Record {
    */
   get outcome() {
     return getPatientOutcome(this)
+  }
+
+  /**
+   * Get formatted links
+   *
+   * @returns {object} - Formatted links
+   */
+  get link() {
+    return {
+      fullName: formatLink(this.uri, this.fullName)
+    }
+  }
+
+  /**
+   * Get formatted summary
+   *
+   * @returns {object} - Formatted summaries
+   */
+  get summary() {
+    return {
+      dob: `${this.formatted.dob}</br>
+          <span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">
+            ${this.formatted.yearGroup}
+          </span>`
+    }
+  }
+
+  /**
+   * Get namespace
+   *
+   * @returns {string} - Namespace
+   */
+  get ns() {
+    return 'patient'
+  }
+
+  /**
+   * Get URI
+   *
+   * @returns {string} - URI
+   */
+  get uri() {
+    return `/patients/${this.nhsn}`
+  }
+
+  /**
+   * Get consent health answers (from replies, for a given session)
+   *
+   * @param {string} session_id - Session ID
+   * @returns {object|boolean} - Consent health answers
+   */
+  consentHealthAnswers(session_id) {
+    return session_id
+      ? getConsentHealthAnswers(this.replies, session_id)
+      : false
   }
 
   /**
@@ -562,48 +605,5 @@ export class Patient extends Record {
       name,
       date: notice.created
     })
-  }
-
-  /**
-   * Get formatted links
-   *
-   * @returns {object} - Formatted links
-   */
-  get link() {
-    return {
-      fullName: formatLink(this.uri, this.fullName)
-    }
-  }
-
-  /**
-   * Get formatted summary
-   *
-   * @returns {object} - Formatted summaries
-   */
-  get summary() {
-    return {
-      dob: `${this.formatted.dob}</br>
-        <span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">
-          ${this.formatted.yearGroup}
-        </span>`
-    }
-  }
-
-  /**
-   * Get namespace
-   *
-   * @returns {string} - Namespace
-   */
-  get ns() {
-    return 'patient'
-  }
-
-  /**
-   * Get URI
-   *
-   * @returns {string} - URI
-   */
-  get uri() {
-    return `/patients/${this.nhsn}`
   }
 }
