@@ -1,5 +1,4 @@
 import { Clinic } from '../models/clinic.js'
-import { Organisation } from '../models/organisation.js'
 
 export const clinicController = {
   new(request, response) {
@@ -17,16 +16,13 @@ export const clinicController = {
 
     const clinic = new Clinic({
       ...request.body.clinic,
-      ...{ id }
+      ...{ id },
+      organisation_code: code
     })
 
-    // Add to session data
-    data.clinics[clinic.id] = clinic
-
-    // Add to organisation
-    data.organisations[code].clinic_ids.push(clinic.id)
-
     request.flash('success', __(`clinic.success.create`, { clinic }))
+
+    clinic.create(clinic, data)
 
     response.redirect(paths.next)
   },
@@ -35,9 +31,7 @@ export const clinicController = {
     const { code, id } = request.params
     const { data } = request.session
 
-    response.locals.clinic = new Clinic(data.clinics[id])
-    response.locals.organisation = new Organisation(data.organisations[code])
-
+    response.locals.clinic = Clinic.read(id, data)
     response.locals.paths = {
       back: `/organisations/${code}/clinics`,
       next: `/organisations/${code}/clinics`
@@ -53,25 +47,15 @@ export const clinicController = {
   },
 
   update(request, response) {
-    const { id } = request.params
     const { data } = request.session
     const { __, clinic, paths } = response.locals
 
-    const updatedClinic = new Clinic({
-      ...clinic,
-      ...request.body.clinic
-    })
+    request.flash('success', __(`clinic.success.update`, { clinic }))
 
-    // Update session data
-    data.clinics[id] = updatedClinic
+    clinic.update(request.body.clinic, data)
 
     // Clean up session data
     delete data.clinic
-
-    request.flash(
-      'success',
-      __(`clinic.success.update`, { clinic: updatedClinic })
-    )
 
     response.redirect(paths.next)
   },
@@ -83,19 +67,12 @@ export const clinicController = {
   },
 
   delete(request, response) {
-    const { code, id } = request.params
     const { data } = request.session
-    const { __, organisation, paths } = response.locals
-
-    // Remove from session data
-    delete data.clinics[id]
-
-    // Remove from organisation
-    data.organisations[code].clinic_ids = organisation.clinic_ids.filter(
-      (item) => item !== id
-    )
+    const { __, clinic, paths } = response.locals
 
     request.flash('success', __(`clinic.success.delete`))
+
+    clinic.delete(data)
 
     response.redirect(paths.next)
   }
