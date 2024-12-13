@@ -11,8 +11,8 @@ export class AcademicYear {
 /**
  * @class Cohort
  * @param {object} options - Options
- * @param {object} [context] - Global context
- * @property {object} [context] - Global context
+ * @param {object} [context] - Context
+ * @property {object} [context] - Context
  * @property {string} uid - UID
  * @property {string} created - Created date
  * @property {string} [created_user_uid] - User who created cohort
@@ -130,12 +130,38 @@ export class Cohort {
   }
 
   /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Cohort>|undefined} Cohorts
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.cohorts).map(
+      (cohort) => new Cohort(cohort, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} uid - Cohort UID
+   * @param {object} context - Context
+   * @returns {Cohort|undefined} Cohort
+   * @static
+   */
+  static read(uid, context) {
+    if (context?.cohorts) {
+      return new Cohort(context.cohorts[uid], context)
+    }
+  }
+
+  /**
    * Select records for cohort
    *
-   * @param {object} context - Global context
+   * @param {object} context - Context
    */
   select(context) {
-    // Select records
     const selectedRecords = new Set()
     const records = createMap(context.records)
     records.forEach((record) => {
