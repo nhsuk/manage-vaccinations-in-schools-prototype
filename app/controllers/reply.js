@@ -82,9 +82,9 @@ export const replyController = {
       delete request.app.locals.invalidUuid
     }
 
-    // Record vaccination that has already been given
+    // Capture and flow vaccination that has already been given
     if (vaccination) {
-      patient.captureVaccination(vaccination)
+      vaccination.captureAndFlow(data)
       delete request.app.locals.vaccination
     }
 
@@ -418,7 +418,7 @@ export const replyController = {
         ...(data.reply?.note && { note }),
         ...(data.token && { created_user_uid: data.token?.uid })
       })
-      patient.captureVaccination(vaccination)
+      vaccination.captureAndFlow(data)
     }
 
     delete data.reply

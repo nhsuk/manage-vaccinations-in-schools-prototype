@@ -71,11 +71,8 @@ export const registrationController = {
         ...(data.token && { created_user_uid: data.token?.uid })
       })
 
-      // Add vaccination
-      data.vaccinations[absentVaccination.uuid] = absentVaccination
-
-      // Add vaccination outcome to patient
-      patient.captureVaccination(absentVaccination)
+      // Capture and flow vaccination
+      absentVaccination.captureAndFlow(data)
     } else {
       delete patient.registered
     }

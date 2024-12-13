@@ -149,14 +149,8 @@ export const vaccinationController = {
       updatedVaccination.updated = getToday()
     }
 
-    // Add vaccination
-    data.vaccinations[updatedVaccination.uuid] = updatedVaccination
-
-    // Add vaccination outcome to patient
-    patient.captureVaccination(updatedVaccination)
-
-    // Add vaccination directly to CHIS record
-    data.records[patient.nhsn].vaccination_uuids.push(updatedVaccination.uuid)
+    // Capture and flow vaccination
+    updatedVaccination.captureAndFlow(data)
 
     // Clean up
     delete data?.wizard?.vaccination

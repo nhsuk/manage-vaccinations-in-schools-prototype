@@ -8,6 +8,7 @@ import {
   formatDate,
   getToday
 } from '../utils/date.js'
+import { createMap } from '../utils/object.js'
 import {
   formatLink,
   formatMillilitres,
@@ -352,5 +353,30 @@ export class Vaccination {
    */
   get uri() {
     return `/programmes/${this.programme_pid}/vaccinations/${this.uuid}`
+  }
+
+  /**
+   * Capture and flow vaccination
+   *
+   * @param {object} context - Global context
+   */
+  captureAndFlow(context) {
+    if (context) {
+      // Capture vaccination
+      const vaccinations = createMap(context.vaccinations)
+      vaccinations.set(this.uuid, this)
+
+      // Update patient record
+      const patients = createMap(context.patients)
+      const patient = patients.get(this.patient_uuid)
+      patient.captureVaccination(this)
+
+      // Flow vaccination to CHIS record
+      if (this.given) {
+        const records = createMap(context.records)
+        const record = records.get(patient.nhsn)
+        record.vaccination_uuids.push(this.uuid)
+      }
+    }
   }
 }
