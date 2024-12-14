@@ -22,7 +22,9 @@ router.get('/:id/new', consentController.new)
 router.all(['/:id', '/:id/*'], consentController.read)
 router.get('/:id/:view?', consentController.show)
 
+router.all('/:id/:uuid/?:form(new)/check-answers', consentController.readForm)
 router.post('/:id/:uuid/?:form(new)/check-answers', consentController.update)
+
 router.all('/:id/:uuid/?:form(new|edit)/:view', consentController.readForm)
 router.get('/:id/:uuid/?:form(new|edit)/:view', consentController.showForm)
 router.post('/:id/:uuid/?:form(new|edit)/:view', consentController.updateForm)

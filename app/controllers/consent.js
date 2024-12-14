@@ -6,7 +6,7 @@ import { generateParent } from '../generators/parent.js'
 import { Consent } from '../models/consent.js'
 import { Patient } from '../models/patient.js'
 import { ProgrammeType } from '../models/programme.js'
-import { Reply, ReplyDecision, ReplyRefusal } from '../models/reply.js'
+import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { School } from '../models/school.js'
 import { ConsentWindow, Session, SessionType } from '../models/session.js'
 import {
@@ -19,10 +19,7 @@ export const consentController = {
   readAll(request, response, next) {
     const { data } = request.session
 
-    const consents = Object.values(data.replies)
-      .map((consent) => new Consent(consent, data))
-      .filter((consent) => !consent.patient_uuid)
-    response.locals.consents = consents
+    response.locals.consents = Consent.readAll(data)
 
     next()
   },
@@ -39,17 +36,13 @@ export const consentController = {
     const { session } = request.app.locals
     const { data } = request.session
 
-    // Delete previous data
-    delete data.consent
-    delete data?.wizard?.consent
-
     const consent = new Consent({
       session_id: session.id
     })
 
-    data.wizard = { consent }
+    consent.create(consent, data.wizard)
 
-    response.redirect(`/consents/${session.id}/${consent.uuid}/new/child`)
+    response.redirect(`${consent.uri}/new/child`)
   },
 
   read(request, response, next) {
@@ -102,50 +95,37 @@ export const consentController = {
   },
 
   update(request, response) {
-    const { consent } = request.app.locals
-    const { id, uuid } = request.params
+    const { id } = request.params
     const { data } = request.session
+    const { consent } = response.locals
 
-    const updatedConsent = new Consent({
-      ...consent,
-      ...request.body.consent
-    })
-
-    data.consents[uuid] = updatedConsent
+    consent.update(request.body.consent, data)
 
     response.redirect(`/consents/${id}/confirmation`)
   },
 
   readForm(request, response, next) {
-    const { consent } = request.app.locals
     const { form, id, uuid, view } = request.params
     const { data } = request.session
 
-    const session = new Session(data.sessions[id], data)
-
-    request.app.locals.session = session
-    request.app.locals.consent = new Consent(
-      {
-        ...(form === 'edit' && consent), // Previous values
-        ...data?.wizard?.consent // Wizard values,
-      },
-      data
-    )
+    const consent = new Consent(Consent.read(uuid, data?.wizard), data)
+    response.locals.consent = consent
 
     const journey = {
       [`/${id}`]: {},
       [`/${id}/${uuid}/${form}/child`]: {},
       [`/${id}/${uuid}/${form}/dob`]: {},
-      ...(session.type === SessionType.School
+      ...(consent.session.type === SessionType.School
         ? { [`/${id}/${uuid}/${form}/confirm-school`]: {} }
         : {}),
-      ...(session.type === SessionType.School && data.confirmSchool !== 'yes'
+      ...(consent.session.type === SessionType.School &&
+      data.confirmSchool !== 'yes'
         ? {
             [`/${id}/${uuid}/${form}/school`]: {}
           }
         : {}),
       [`/${id}/${uuid}/${form}/parent`]: {},
-      ...(data.consent?.parent?.tel !== ''
+      ...(consent?.parent?.tel !== ''
         ? {
             [`/${id}/${uuid}/${form}/contact-preference`]: {}
           }
@@ -157,7 +137,10 @@ export const consentController = {
         }
       },
       [`/${id}/${uuid}/${form}/address`]: {},
-      ...getHealthQuestionPaths(`/${id}/${uuid}/${form}/`, session.vaccines),
+      ...getHealthQuestionPaths(
+        `/${id}/${uuid}/${form}/`,
+        consent.session.vaccines
+      ),
       [`/${id}/${uuid}/${form}/check-answers`]: {},
       [`/${id}/${uuid}/new/confirmation`]: {},
       [`/${id}/${uuid}/${form}/refusal-reason`]: {
@@ -181,19 +164,21 @@ export const consentController = {
       ...wizard(journey, request),
       ...(form === 'edit' &&
         view !== 'check-answers' && {
-          back: `/consents/${id}/${uuid}/${form}/check-answers`,
-          next: `/consents/${id}/${uuid}/${form}/check-answers`
+          back: `${consent.uri}/${form}/check-answers`,
+          next: `${consent.uri}/${form}/check-answers`
         })
     }
 
-    response.locals.programmeIsFlu = session.programmes
+    response.locals.programmeIsFlu = consent.session.programmes
       .map(({ type }) => type)
       .includes(ProgrammeType.Flu)
 
-    response.locals.programmeItems = session.programmes.map((programme) => ({
-      text: programme.name,
-      value: programme.pid
-    }))
+    response.locals.programmeItems = consent.session.programmes.map(
+      (programme) => ({
+        text: programme.name,
+        value: programme.pid
+      })
+    )
 
     response.locals.urnItems = Object.values(data.schools)
       .map((school) => new School(school))
@@ -219,29 +204,10 @@ export const consentController = {
   },
 
   updateForm(request, response) {
-    const { consent } = request.app.locals
     const { data } = request.session
-    const { paths } = response.locals
+    const { paths, consent } = response.locals
 
-    delete data.confirmSchool
-    delete data.healthAnswers
-
-    data.wizard.consent = new Consent({
-      ...consent, // Previous values
-      ...request.body.consent, // New value
-      child: {
-        ...consent?.child,
-        ...request.body.consent?.child
-      },
-      parent: {
-        ...consent?.parent,
-        ...request.body.consent?.parent
-      },
-      healthAnswers: {
-        ...consent?.healthAnswers,
-        ...request.body.consent?.healthAnswers
-      }
-    })
+    consent.update(request.body.consent, data.wizard)
 
     response.redirect(paths.next)
   },
@@ -251,7 +217,6 @@ export const consentController = {
     let { page, limit } = request.query
     const { data } = request.session
 
-    const consent = new Consent(data.replies[uuid], data)
     let patients = Object.values(data.patients).map(
       (patient) => new Patient(patient)
     )
@@ -263,7 +228,7 @@ export const consentController = {
     page = parseInt(page) || 1
     limit = parseInt(limit) || 200
 
-    response.locals.consent = consent
+    response.locals.consent = Consent.read(uuid, data)
     response.locals.patients = patients
     response.locals.results = getResults(patients, page, limit)
     response.locals.pages = getPagination(patients, page, limit)
@@ -276,7 +241,7 @@ export const consentController = {
     const { nhsn } = request.query
     const { data } = request.session
 
-    response.locals.consent = new Consent(data.replies[uuid], data)
+    response.locals.consent = Consent.read(uuid, data)
     response.locals.patient = Object.values(data.patients)
       .map((patient) => new Patient(patient))
       .find((patient) => patient.nhsn === nhsn)
@@ -304,7 +269,7 @@ export const consentController = {
     const { uuid } = request.params
     const { data } = request.session
 
-    response.locals.consent = new Reply(data.replies[uuid], data)
+    response.locals.consent = Consent.read(uuid, data)
 
     next()
   },
