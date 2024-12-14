@@ -9,11 +9,10 @@ import { Organisation } from '../models/organisation.js'
  */
 export function generateOrganisation() {
   const code = faker.helpers.replaceSymbols('???')
-  const name = `${faker.location.county()} Child Immunisation Service`
 
   return new Organisation({
     code,
-    name,
+    name: `${faker.location.county()} Child Immunisation Service`,
     email: faker.internet
       .email({
         firstName: code,
