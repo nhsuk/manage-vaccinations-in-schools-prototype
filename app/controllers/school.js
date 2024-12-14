@@ -4,11 +4,7 @@ export const schoolController = {
   readAll(request, response, next) {
     const { data } = request.session
 
-    const schools = Object.values(data.schools).map(
-      (school) => (school = new School(school, data))
-    )
-
-    response.locals.schools = schools
+    response.locals.schools = School.readAll(data)
 
     next()
   },
@@ -19,18 +15,14 @@ export const schoolController = {
 
   read(request, response, next) {
     const { urn } = request.params
-    const { schools } = response.locals
+    const { data } = request.session
 
-    const school = schools.find((school) => school.urn === Number(urn))
-
-    response.locals.school = school
+    response.locals.school = School.read(urn, data)
 
     next()
   },
 
   show(request, response) {
-    const view = request.params.view || 'show'
-
-    response.render(`school/${view}`)
+    response.render(`school/show`)
   }
 }
