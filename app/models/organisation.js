@@ -11,8 +11,8 @@ export class OrganisationDefaults {
 /**
  * @class Organisation
  * @param {object} options - Options
- * @param {object} [context] - Global context
- * @property {object} [context] - Global context
+ * @param {object} [context] - Context
+ * @property {object} [context] - Context
  * @property {string} [code] - ODS code
  * @property {string} [name] - Full name
  * @property {string} [email] - Email address
@@ -104,5 +104,52 @@ export class Organisation {
    */
   get uri() {
     return `/organisations/${this.code}`
+  }
+
+  /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Organisation>|undefined} Organisations
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.organisations).map(
+      (organisation) => new Organisation(organisation, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} code - ODS code
+   * @param {object} context - Context
+   * @returns {Organisation|undefined} Organisation
+   * @static
+   */
+  static read(code, context) {
+    if (context?.organisation) {
+      return new Organisation(context.organisations[code], context)
+    }
+  }
+
+  /**
+   * Update
+   *
+   * @param {object} updates - Updates
+   * @param {object} context - Context
+   */
+  update(updates, context) {
+    this.updated = new Date()
+
+    // Remove organisation context
+    delete this.context
+
+    // Delete original organisation (with previous code)
+    delete context.organisations[this.code]
+
+    // Update context
+    const updatedOrganisation = Object.assign(this, updates)
+    context.organisations[updatedOrganisation.code] = updatedOrganisation
   }
 }

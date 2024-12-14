@@ -12,32 +12,15 @@ export const organisationController = {
     const { data } = request.session
     const { __ } = response.locals
 
-    const organisation = new Organisation(data.organisations[code], data)
+    const organisation = Organisation.read(code, data)
+    response.locals.organisation = organisation
 
-    request.app.locals.organisation = organisation
-
-    response.locals.navigationItems = [
-      {
-        text: __('organisation.contact.title'),
-        href: `${organisation.uri}/contact`,
-        current: view.includes('contact')
-      },
-      {
-        text: __('organisation.clinics.title'),
-        href: `${organisation.uri}/clinics`,
-        current: view.includes('clinics')
-      },
-      {
-        text: __('organisation.schools.title'),
-        href: `${organisation.uri}/schools`,
-        current: view.includes('schools')
-      },
-      {
-        text: __('organisation.sessions.title'),
-        href: `${organisation.uri}/sessions`,
-        current: view.includes('sessions')
-      }
-    ]
+    const sections = ['contact', 'clinics', 'schools', 'sessions']
+    response.locals.navigationItems = sections.map((item) => ({
+      text: __(`organisation.${item}.title`),
+      href: `${organisation.uri}/${item}`,
+      current: view.includes(item)
+    }))
 
     next()
   },
@@ -49,20 +32,14 @@ export const organisationController = {
   },
 
   readForm(request, response, next) {
-    const { organisation } = request.app.locals
     const { view } = request.params
-    const { data } = request.session
+    const { organisation } = response.locals
 
     const referrers = {
       contact: `${organisation.uri}/contact`,
       sessions: `${organisation.uri}/sessions`,
       password: `${organisation.uri}/sessions`
     }
-
-    request.app.locals.organisation = new Organisation({
-      ...organisation,
-      ...data?.wizard?.organisation // Wizard values
-    })
 
     response.locals.paths = {
       back: referrers[view],
@@ -79,20 +56,15 @@ export const organisationController = {
   },
 
   updateForm(request, response) {
-    const { organisation } = request.app.locals
     const { data } = request.session
-    const { __, paths } = response.locals
-
-    const updatedOrganisation = new Organisation(
-      Object.assign(
-        organisation, // Previous values
-        request.body.organisation // New values
-      )
-    )
-
-    data.organisations[updatedOrganisation.code] = updatedOrganisation
+    const { __, paths, organisation } = response.locals
 
     request.flash('success', __(`organisation.success.update`))
+
+    organisation.update(request.body.organisation, data)
+
+    // Clean up session data
+    delete data.organisation
 
     response.redirect(paths.next)
   }
