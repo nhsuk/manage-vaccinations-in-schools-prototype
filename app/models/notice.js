@@ -14,13 +14,11 @@ export class NoticeType {
 /**
  * @class Notice
  * @param {object} options - Options
- * @param {object} [context] - Global context
- * @property {object} [context] - Global context
+ * @param {object} [context] - Context
+ * @property {object} [context] - Context
  * @property {string} uuid - UUID
- * @property {Date} date - Creation date
+ * @property {Date} [created] - Created date
  * @property {NoticeType} type - Notice type
- * @property {string} name - Name
- * @property {string} [note] - Note
  * @property {string} patient_uuid - Patient notice applies to
  */
 export class Notice {
@@ -77,5 +75,41 @@ export class Notice {
    */
   get uri() {
     return `/notices/${this.uuid}`
+  }
+
+  /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Notice>|undefined} Notices
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.notices).map(
+      (notice) => new Notice(notice, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} uuid - Notice UUID
+   * @param {object} context - Context
+   * @returns {Notice|undefined} Notice
+   * @static
+   */
+  static read(uuid, context) {
+    if (context?.notices) {
+      return new Notice(context.notices[uuid], context)
+    }
+  }
+
+  /**
+   * Delete
+   *
+   * @param {object} context - Context
+   */
+  delete(context) {
+    delete context.notices[this.uuid]
   }
 }
