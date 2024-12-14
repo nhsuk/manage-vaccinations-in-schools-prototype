@@ -8,9 +8,7 @@ export const moveController = {
     let { page, limit } = request.query
     const { data } = request.session
 
-    let moves = Object.values(data.moves)
-      .map((move) => new Move(move, data))
-      .filter((move) => !move.ignore)
+    let moves = Move.readAll(data)
 
     // Sort
     moves = _.sortBy(moves, 'created')
@@ -32,11 +30,9 @@ export const moveController = {
 
   read(request, response, next) {
     const { uuid } = request.params
-    const { moves } = response.locals
+    const { data } = request.session
 
-    const move = moves.find((move) => move.uuid === uuid)
-
-    response.locals.move = move
+    response.locals.move = Move.read(uuid, data)
 
     next()
   },
@@ -50,22 +46,12 @@ export const moveController = {
     const { data } = request.session
     const { __, move } = response.locals
 
-    const updatedMove = new Move(move)
+    request.flash('success', __(`move.success.${decision}`, { move }))
 
-    if (decision === 'ignore') {
-      updatedMove.ignore = true
+    decision === 'ignore' ? move.ignore(data) : move.switch(data)
 
-      // Update session data
-      data.moves[move.uuid] = updatedMove
-
-      request.flash('success', __(`move.success.ignore`, { move }))
-    } else {
-      // Update session data
-      data.patients[move.patient_uuid].school_urn = updatedMove.to
-      delete data.moves[move.uuid]
-
-      request.flash('success', __(`move.success.update`, { move }))
-    }
+    // Clean up session data
+    delete data.decision
 
     response.redirect('/moves')
   }

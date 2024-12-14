@@ -873,7 +873,7 @@
       "decision": {
         "label": "Update the child’s record with this new information?",
         "ignore": "Ignore new information",
-        "update": "Update record with new school"
+        "switch": "Update record with new school"
       },
       "session": {
         "label": "Move {{firstName}} to the upcoming school session?",
@@ -904,7 +904,7 @@
     },
     "success": {
       "ignore": "{{move.patient.fullName}}’s school move ignored",
-      "update": "{{move.patient.fullName}}’s record updated with new school"
+      "switch": "{{move.patient.fullName}}’s record updated with new school"
     }
   },
   "notice": {
