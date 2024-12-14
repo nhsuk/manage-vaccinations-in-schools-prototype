@@ -75,4 +75,29 @@ export class User {
   get uri() {
     return `/users/${this.uid}`
   }
+
+  /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<User>|undefined} Users
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.users).map((user) => new User(user))
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} uid - User UID
+   * @param {object} context - Context
+   * @returns {User|undefined} User
+   * @static
+   */
+  static read(uid, context) {
+    if (context?.users) {
+      return new User(context.users[uid])
+    }
+  }
 }
