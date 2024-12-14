@@ -16,8 +16,8 @@ import { Vaccination } from './vaccination.js'
  * @class Child Health Information Service (CHIS) record
  * @augments Child
  * @param {object} options - Options
- * @param {object} [context] - Global context
- * @property {object} [context] - Global context
+ * @param {object} [context] - Context
+ * @property {object} [context] - Context
  * @property {string} nhsn - NHS number
  * @property {Parent} [parent1] - Parent 1
  * @property {Parent} [parent2] - Parent 2
@@ -146,5 +146,32 @@ export class Record extends Child {
    */
   get uri() {
     return `/records/${this.nhsn}`
+  }
+
+  /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Record>|undefined} Records
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.records).map(
+      (record) => new Record(record, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} nhsn - NHS number
+   * @param {object} context - Context
+   * @returns {Record|undefined} Record
+   * @static
+   */
+  static read(nhsn, context) {
+    if (context?.records) {
+      return new Record(context.records[nhsn], context)
+    }
   }
 }

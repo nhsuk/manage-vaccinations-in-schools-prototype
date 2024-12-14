@@ -8,9 +8,7 @@ export const recordController = {
     let { page, limit } = request.query
     const { data } = request.session
 
-    let records = Object.values(data.records).map(
-      (record) => new Record(record, data)
-    )
+    let records = Record.readAll(data)
 
     // Sort
     records = _.sortBy(records, 'lastName')
@@ -32,11 +30,9 @@ export const recordController = {
 
   read(request, response, next) {
     const { nhsn } = request.params
-    const { records } = response.locals
+    const { data } = request.session
 
-    const record = records.find((record) => record.nhsn === nhsn)
-
-    response.locals.record = record
+    response.locals.record = Record.read(nhsn, data)
 
     next()
   },
