@@ -58,8 +58,8 @@ export class VaccineMethod {
 /**
  * @class Vaccine
  * @param {object} options - Options
- * @param {object} [context] - Global context
- * @property {object} [context] - Global context
+ * @param {object} [context] - Context
+ * @property {object} [context] - Context
  * @property {string} gtin - GTIN
  * @property {string} type - Type
  * @property {string} brand - Brand
@@ -160,5 +160,41 @@ export class Vaccine {
    */
   get uri() {
     return `/vaccines/${this.gtin}`
+  }
+
+  /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Vaccine>|undefined} Vaccines
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.vaccines).map(
+      (vaccine) => new Vaccine(vaccine, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} gtin - GTIN
+   * @param {object} context - Context
+   * @returns {Vaccine|undefined} Vaccine
+   * @static
+   */
+  static read(gtin, context) {
+    if (context?.vaccines) {
+      return new Vaccine(context.vaccines[gtin], context)
+    }
+  }
+
+  /**
+   * Delete
+   *
+   * @param {object} context - Context
+   */
+  delete(context) {
+    delete context.vaccines[this.gtin]
   }
 }
