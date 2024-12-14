@@ -4,11 +4,7 @@ export const vaccineController = {
   readAll(request, response, next) {
     const { data } = request.session
 
-    const vaccines = Object.values(data.vaccines).map(
-      (vaccine) => new Vaccine(vaccine, data)
-    )
-
-    response.locals.vaccines = vaccines
+    response.locals.vaccines = Vaccine.readAll(data)
 
     next()
   },
@@ -19,11 +15,9 @@ export const vaccineController = {
 
   read(request, response, next) {
     const { gtin } = request.params
-    const { vaccines } = response.locals
+    const { data } = request.session
 
-    const vaccine = vaccines.find((vaccine) => vaccine.gtin === gtin)
-
-    response.locals.vaccine = vaccine
+    response.locals.vaccine = Vaccine.read(gtin, data)
 
     next()
   },
@@ -39,13 +33,13 @@ export const vaccineController = {
   },
 
   delete(request, response) {
-    const { gtin } = request.params
     const { data } = request.session
-    const { __ } = response.locals
-
-    delete data.vaccines[gtin]
+    const { __, vaccine } = response.locals
 
     request.flash('success', __(`vaccine.success.delete`))
+
+    vaccine.delete(data)
+
     response.redirect('/vaccines')
   }
 }
