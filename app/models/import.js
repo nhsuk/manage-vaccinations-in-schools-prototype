@@ -167,4 +167,31 @@ export class Import {
   get uri() {
     return `/programmes/${this.programme_pid}/imports/${this.id}`
   }
+
+  /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Import>|undefined} Imports
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.imports).map(
+      (_import) => new Import(_import, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} id - Import ID
+   * @param {object} context - Context
+   * @returns {Import|undefined} Import
+   * @static
+   */
+  static read(id, context) {
+    if (context.imports) {
+      return new Import(context.imports[id], context)
+    }
+  }
 }

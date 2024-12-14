@@ -92,8 +92,8 @@ export const programmeTypes = {
 /**
  * @class Programme
  * @param {object} options - Options
- * @param {object} [context] - Global context
- * @property {object} [context] - Global context
+ * @param {object} [context] - Context
+ * @property {object} [context] - Context
  * @property {string} name - Name
  * @property {boolean} seasonal - Seasonal programme
  * @property {ProgrammeStatus} status - Status
@@ -174,13 +174,7 @@ export class Programme {
    * @returns {Array<Cohort>} - Cohorts
    */
   get cohorts() {
-    if (this.context?.cohorts && this.cohort_uids) {
-      return this.cohort_uids.map(
-        (uid) => new Cohort(this.context?.cohorts[uid])
-      )
-    }
-
-    return []
+    return this.cohort_uids.map((uid) => Cohort.read(uid, this.context))
   }
 
   /**
@@ -189,13 +183,9 @@ export class Programme {
    * @returns {Array<Import>} - Imports
    */
   get imports() {
-    if (this.context?.imports && this.pid) {
-      return Object.values(this.context.imports)
-        .filter((_import) => _import.programme_pid === this.pid)
-        .map((_import) => new Import(_import, this.context))
-    }
-
-    return []
+    return Import.readAll(this.context).filter(
+      ({ programme_pid }) => programme_pid === this.pid
+    )
   }
 
   /**
@@ -307,5 +297,32 @@ export class Programme {
    */
   get uri() {
     return `/programmes/${this.pid}`
+  }
+
+  /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Programme>|undefined} Programmes
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.programmes).map(
+      (programme) => new Programme(programme, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} pid - Programme PID
+   * @param {object} context - Context
+   * @returns {Programme|undefined} Programme
+   * @static
+   */
+  static read(pid, context) {
+    if (context?.programmes) {
+      return new Programme(context.programmes[pid], context)
+    }
   }
 }
