@@ -200,9 +200,9 @@ export class Programme {
         record_nhsns = [...record_nhsns, ...cohort.record_nhsns]
       }
 
-      return Object.values(this.context.patients)
-        .filter((patient) => record_nhsns.includes(patient.nhsn))
-        .map((patient) => new Patient(patient))
+      return Patient.readAll(this.context).filter(({ nhsn }) =>
+        record_nhsns.includes(nhsn)
+      )
     }
 
     return []
