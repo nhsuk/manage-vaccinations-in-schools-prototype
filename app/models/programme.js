@@ -214,14 +214,9 @@ export class Programme {
    * @returns {Array<Session>} - Sessions
    */
   get sessions() {
-    if (this.context?.sessions && this.pid) {
-      return Object.values(this.context.sessions)
-        .map((session) => new Session(session, this.context))
-        .filter((session) => session.programme_pids.includes(this.pid))
-        .filter((session) => session.patients.length > 0)
-    }
-
-    return []
+    return Session.readAll(this.context)
+      .filter(({ programme_pids }) => programme_pids.includes(this.pid))
+      .filter(({ patients }) => patients.length > 0)
   }
 
   /**

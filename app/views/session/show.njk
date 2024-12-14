@@ -35,7 +35,7 @@
       href: session.uri + "/offline"
     } if session.status == SessionStatus.Planned, {
       text: __("session.import-class-list.title"),
-      href: programme.uri + "/imports/new?type=" + ImportType.School
+      href: session.programmes[0].uri + "/imports/new?type=" + ImportType.School
     } if session.type == SessionType.School]
   }) }}
 
@@ -46,10 +46,10 @@
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {{ card({
               clickable: true,
-              heading: __("session.new.title"),
+              heading: __("session.schedule.title"),
               headingClasses: "nhsuk-heading-m",
               href: session.uri + "/edit",
-              description: __("session.new.description")
+              description: __("session.schedule.description")
             }) }}
           </li>
         {% endif %}
