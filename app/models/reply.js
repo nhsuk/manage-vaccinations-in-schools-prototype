@@ -46,10 +46,12 @@ export class ReplyRefusal {
  * @property {string} uuid - UUID
  * @property {Date} created - Created date
  * @property {string} [created_user_uid] - User who created reply
+ * @property {Date} [updated] - Updated date
  * @property {import('./child.js').Child} [child] - Child
  * @property {import('./parent.js').Parent} [parent] - Parent or guardian
  * @property {ReplyDecision} [decision] - Consent decision
  * @property {boolean} [confirmed] - Decision confirmed
+ * @property {boolean} given - Reply gives consent
  * @property {boolean} invalid - Reply is invalid
  * @property {ReplyMethod} [method] - Reply method
  * @property {object} [healthAnswers] - Answers to health questions
@@ -67,10 +69,14 @@ export class Reply {
     this.uuid = options?.uuid || faker.string.uuid()
     this.created = options?.created ? new Date(options.created) : getToday()
     this.created_user_uid = options?.created_user_uid
+    this.updated = options?.updated ? new Date(options.updated) : undefined
     this.child = options?.child && new Child(options.child)
     this.parent = options?.parent && new Parent(options.parent)
     this.decision = options?.decision
     this.confirmed = stringToBoolean(options?.confirmed)
+    this.given =
+      this.decision !== ReplyDecision.Refused ||
+      this.decision !== ReplyDecision.NoResponse
     this.invalid =
       this?.decision === ReplyDecision.NoResponse
         ? false // Don’t show non response as invalid
@@ -153,7 +159,7 @@ export class Reply {
     try {
       const session = this.context?.sessions[this.session_id]
       if (session) {
-        return new Session(session)
+        return new Session(session, this.context)
       }
     } catch (error) {
       console.error('Reply.session', error.message)
