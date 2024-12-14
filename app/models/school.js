@@ -25,8 +25,8 @@ export const schoolTerms = {
 /**
  * @class School
  * @param {object} options - Options
- * @param {object} [context] - Global context
- * @property {object} [context] - Global context
+ * @param {object} [context] - Context
+ * @property {object} [context] - Context
  * @property {string} urn - URN
  * @property {string} name - Name
  * @property {SchoolPhase} [phase] - Phase
@@ -130,5 +130,32 @@ export class School {
    */
   get uri() {
     return `/schools/${this.urn}`
+  }
+
+  /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<School>|undefined} Schools
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.schools).map(
+      (school) => new School(school, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} urn - URN
+   * @param {object} context - Context
+   * @returns {School|undefined} School
+   * @static
+   */
+  static read(urn, context) {
+    if (context?.schools) {
+      return new School(context.schools[urn], context)
+    }
   }
 }
