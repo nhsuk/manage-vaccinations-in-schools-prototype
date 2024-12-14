@@ -1,6 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import xlsx from 'json-as-xlsx'
 
-import { VaccinationSequence } from '../models/vaccination.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -10,6 +10,10 @@ import {
 import { getEnumKeyAndValue } from '../utils/enum.js'
 import { formatList } from '../utils/string.js'
 
+import { Organisation } from './organisation.js'
+import { Programme } from './programme.js'
+import { Vaccination, VaccinationSequence } from './vaccination.js'
+
 export class DownloadFormat {
   static CSV = 'CSV'
   static CarePlus = 'XLSX for CarePlus (System C)'
@@ -18,33 +22,37 @@ export class DownloadFormat {
 
 /**
  * @class Vaccination report download
+ * @param {object} options - Options
+ * @param {object} [context] - Context
+ * @property {object} [context] - Context
  * @property {string} id - Download ID
- * @property {Date} created - Created date
+ * @property {Date} [created] - Created date
  * @property {string} [created_user_uid] - User who created download
- * @property {string} [programme_pid] - Programme ID
- * @property {Array<string>} [vaccinations] - Vaccination UUIDs
- * @property {Array<string>} [providers] - Vaccination UUIDs
- * @property {string} from - Date from
+ * @property {Date} [updated] - Updated date
+ * @property {Date} from - Date from
  * @property {object} [from_] - Date from (from `dateInput`)
- * @property {string} until - Date until
+ * @property {Date} until - Date until
  * @property {object} [until_] - Date until (from `dateInput`)
  * @property {DownloadFormat} [format] - Downloaded file format
- * @property {string} [fileName] - Downloaded file name
+ * @property {string} [programme_pid] - Programme PID
+ * @property {Array<string>} [organisation_codes] - Organisation ODC codes
+ * @property {Array<string>} [vaccination_uuids] - Vaccination UUIDs
  */
 export class Download {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
     this.created = options?.created ? new Date(options.created) : getToday()
     this.created_user_uid = options?.created_user_uid
-    this.programme_pid = options?.programme_pid
-    this.vaccinations = options?.vaccinations || []
-    this.providers = options?.providers
-    this.from = options?.from
+    this.updated = options?.updated ? new Date(options.updated) : undefined
+    this.from = options?.from ? new Date(options.from) : undefined
     this.from_ = options?.from_
-    this.until = options?.until
+    this.until = options?.until ? new Date(options.until) : undefined
     this.until_ = options?.until_
     this.format = options?.format || DownloadFormat.CSV
-    this.fileName = options?.fileName || 'download'
+    this.programme_pid = options?.programme_pid
+    this.organisation_codes = options?.organisation_codes
+    this.vaccination_uuids = options?.vaccination_uuids || []
   }
 
   /**
@@ -88,9 +96,72 @@ export class Download {
   }
 
   /**
-   * Get CarePlus XSL definition
+   * Get name
    *
-   * @returns {Array} - XSL definition
+   * @returns {string} - Name
+   */
+  get name() {
+    if (this.programme) {
+      return this.programme.name
+    }
+
+    return 'Download'
+  }
+
+  /**
+   * Get programme
+   *
+   * @returns {Programme} - Programme
+   */
+  get programme() {
+    try {
+      const programme = this.context?.programmes[this.programme_pid]
+      if (programme) {
+        return new Programme(programme)
+      }
+    } catch (error) {
+      console.error('Download.programme', error.message)
+    }
+  }
+
+  /**
+   * Get organisations
+   *
+   * @returns {Array<Organisation>} - Organisations
+   */
+  get organisations() {
+    if (this.context?.organisations && this.organisation_codes) {
+      return this.organisation_codes
+        .filter((code) => code !== '_unchecked')
+        .map(
+          (code) =>
+            new Organisation(this.context?.organisations[code], this.context)
+        )
+    }
+
+    return []
+  }
+
+  /**
+   * Get vaccinations
+   *
+   * @returns {Array<Vaccination>} - Vaccinations
+   */
+  get vaccinations() {
+    if (this.context?.vaccinations && this.vaccination_uuids) {
+      return this.vaccination_uuids.map(
+        (uuid) =>
+          new Vaccination(this.context?.vaccinations[uuid], this.context)
+      )
+    }
+
+    return []
+  }
+
+  /**
+   * Get CarePlus XLSX data
+   *
+   * @returns {Array} - XLSX data
    */
   get carePlus() {
     return [
@@ -149,12 +220,12 @@ export class Download {
           { label: 'BatchNO1', value: 'batch_id' }
         ],
         content: this.vaccinations.map((vaccination) => ({
-          nhsn: vaccination.patient.nhsn,
-          lastName: vaccination.patient.lastName,
-          firstName: vaccination.patient.firstName,
-          dob: vaccination.patient.dob,
-          address_line1: vaccination.patient.address.addressLine1,
-          parent: vaccination.patient.parent1.fullName,
+          nhsn: vaccination.patient?.nhsn,
+          lastName: vaccination.patient?.lastName,
+          firstName: vaccination.patient?.firstName,
+          dob: vaccination.patient?.dob,
+          address_line1: vaccination.patient?.address?.addressLine1,
+          parent: vaccination.patient?.parent1?.fullName,
           ethnicity: '',
           date: vaccination.created,
           time: vaccination.created,
@@ -164,17 +235,74 @@ export class Download {
           user_code: '',
           attended: vaccination.given ? 'Y' : 'N',
           non_attendance: '',
-          batch_expiry: vaccination.batch.expiry,
+          batch_expiry: vaccination.batch?.expiry,
           sequence: vaccination.sequence,
           refusal: !vaccination.given ? vaccination.outcome : '',
           batch_id: vaccination.batch_id,
           // FIX: Resolve Getters from Vaccination model
-          site: vaccination.site,
+          site: vaccination.injectionSite,
           vaccine_type: vaccination.vaccine?.type,
           vaccine_manufacturer: vaccination.vaccine?.manufacturer
         }))
       }
     ]
+  }
+
+  /**
+   * Get CSV definition
+   *
+   * @returns {string} - CSV data
+   * @todo Use Mavis CSV export headers
+   */
+  get csv() {
+    const headers = [
+      'NHS_NUMBER',
+      'PERSON_FORENAME',
+      'PERSON_SURNAME',
+      'PERSON_DOB',
+      'PERSON_GENDER_CODE',
+      'PERSON_POSTCODE',
+      'SCHOOL_NAME',
+      'SCHOOL_URN',
+      'REASON_NOT_VACCINATED',
+      'DATE_OF_VACCINATION',
+      'VACCINE_GIVEN',
+      'BATCH_NUMBER',
+      'BATCH_EXPIRY_DATE',
+      'ANATOMICAL_SITE',
+      'VACCINATED',
+      'PERFORMING_PROFESSIONAL'
+    ]
+    const rows = this.vaccinations.map((vaccination) =>
+      headers
+        .map((header) => {
+          const value = {
+            NHS_NUMBER: vaccination.patient?.nhsn,
+            PERSON_FORENAME: vaccination.patient?.firstName,
+            PERSON_SURNAME: vaccination.patient?.lastName,
+            PERSON_DOB: vaccination.patient?.dob,
+            PERSON_GENDER_CODE: vaccination.patient?.gender,
+            PERSON_POSTCODE: vaccination.patient?.postalCode,
+            SCHOOL_NAME: vaccination.location,
+            SCHOOL_URN: vaccination.school_urn,
+            REASON_NOT_VACCINATED: !vaccination.given
+              ? vaccination.outcome
+              : '',
+            DATE_OF_VACCINATION: vaccination.created,
+            VACCINE_GIVEN: vaccination.vaccine?.brand,
+            BATCH_NUMBER: vaccination.batch_id,
+            BATCH_EXPIRY_DATE: vaccination.batch?.expiry,
+            ANATOMICAL_SITE: vaccination.injectionSite,
+            VACCINATED: vaccination.given ? 'Y' : 'N',
+            PERFORMING_PROFESSIONAL: vaccination.created_user?.fullName
+          }[header]
+
+          return `"${(value || '').toString().replace(/"/g, '""')}"`
+        })
+        .join(',')
+    )
+
+    return [headers.join(','), ...rows].join('\n')
   }
 
   /**
@@ -190,7 +318,10 @@ export class Download {
       until: this.until
         ? formatDate(this.until, { dateStyle: 'long' })
         : 'Latest recorded vaccination',
-      providers: formatList(this.providers),
+      organisations:
+        this.organisations.length > 0
+          ? formatList(this.organisations.map(({ name }) => name))
+          : this.organisations.length,
       vaccinations: `${this.vaccinations.length} records`
     }
   }
@@ -211,5 +342,82 @@ export class Download {
    */
   get uri() {
     return `/programmes/${this.programme_pid}/download/${this.id}`
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} id - Download ID
+   * @param {object} context - Context
+   * @returns {Download|undefined} Download
+   * @static
+   */
+  static read(id, context) {
+    if (context?.downloads) {
+      return new Download(context.downloads[id], context)
+    }
+  }
+
+  /**
+   * Create
+   *
+   * @param {Download} download - Download
+   * @param {object} context - Context
+   */
+  create(download, context) {
+    download = new Download(download)
+
+    // Update context
+    context.downloads = context.downloads || {}
+    context.downloads[download.id] = download
+  }
+
+  /**
+   * Create file
+   *
+   * @param {object} context - Context
+   * @returns {object} - File buffer, name and mime type
+   */
+  createFile(context) {
+    const { name } = new Download(this, context)
+
+    const format = getEnumKeyAndValue(DownloadFormat, this.format).key
+
+    let buffer
+    let extension
+    let mimetype
+    switch (format) {
+      case 'CarePlus':
+        buffer = xlsx(this.carePlus, { name, writeOptions: { type: 'buffer' } })
+        extension = 'xlsx'
+        mimetype = 'application/octet-stream'
+        break
+      default:
+        buffer = Buffer.from(this.csv)
+        extension = 'csv'
+        mimetype = 'text/csv'
+    }
+
+    return { buffer, fileName: `${name}.${extension}`, mimetype }
+  }
+
+  /**
+   * Update
+   *
+   * @param {object} updates - Updates
+   * @param {object} context - Context
+   */
+  update(updates, context) {
+    this.updated = new Date()
+
+    // Remove download context
+    delete this.context
+
+    // Delete original download (with previous ID)
+    delete context.downloads[this.id]
+
+    // Update context
+    const updatedDownload = Object.assign(this, updates)
+    context.downloads[updatedDownload.id] = updatedDownload
   }
 }

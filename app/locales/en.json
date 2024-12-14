@@ -581,7 +581,7 @@
       "title": "Select file format",
       "label": "File format"
     },
-    "providers": {
+    "organisations": {
       "title": "Select providers",
       "label": "Providers"
     },
