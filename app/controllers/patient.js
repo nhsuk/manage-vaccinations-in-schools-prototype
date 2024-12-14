@@ -12,6 +12,7 @@ import {
   ProgrammeType,
   programmeTypes
 } from '../models/programme.js'
+import { Record } from '../models/record.js'
 import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
 import { VaccinationSite } from '../models/vaccination.js'
@@ -23,9 +24,7 @@ export const patientController = {
     let { page, limit, q, hasMissingNhsNumber } = request.query
     const { data } = request.session
 
-    let patients = Object.values(data.patients).map(
-      (patient) => new Patient(patient)
-    )
+    let patients = Patient.readAll(data)
 
     // Sort
     patients = _.sortBy(patients, 'lastName')
@@ -85,19 +84,14 @@ export const patientController = {
   read(request, response, next) {
     const { id, nhsn } = request.params
     const { data } = request.session
-    const { patients } = response.locals
 
-    let patient = patients.find((patient) => patient.nhsn === nhsn)
+    let patient = Patient.read(nhsn, data)
 
     // If no patient found, use CHIS record (patient not imported yet)
     if (!patient) {
-      const record = Object.values(data.records).find(
-        (record) => record.nhsn === nhsn
-      )
-      patient = { record }
+      const record = Record.readAll(data).find((record) => record.nhsn === nhsn)
+      patient = new Patient(record, data)
     }
-
-    patient = new Patient(patient, data)
 
     const inSession = request.originalUrl.includes('sessions')
 
@@ -191,53 +185,44 @@ export const patientController = {
   },
 
   edit(request, response) {
+    const { nhsn } = request.params
     const { data, referrer } = request.session
     const { patient } = response.locals
 
+    // Setup wizard if not already setup
+    if (!Patient.read(nhsn, data.wizard)) {
+      patient.create(patient, data.wizard)
+    }
+
     // Show back link to referring page, else patient page
     response.locals.back = referrer || patient.uri
-
-    response.locals.patient = new Patient({
-      ...patient, // Previous values
-      ...data?.wizard?.patient // Wizard values
-    })
+    response.locals.patient = new Patient(Patient.read(nhsn, data.wizard), data)
 
     response.render('patient/edit')
   },
 
   update(request, response) {
+    const { nhsn } = request.params
     const { data, referrer } = request.session
-    const { __, patient } = response.locals
+    const { __ } = response.locals
 
-    const updatedPatient = new Patient(
-      Object.assign(
-        patient, // Previous values
-        data?.wizard?.patient, // Wizard values
-        request.body.patient // New values
-      )
-    )
-
-    data.patients[updatedPatient.uuid] = updatedPatient
-
-    // Clean up
-    delete request.session.referrer
-    delete data?.wizard?.patient
-
+    const patient = new Patient(Patient.read(nhsn, data.wizard), data)
     request.flash('success', __('patient.success.update'))
 
-    response.redirect(referrer || updatedPatient.uri)
+    patient.update(patient, data)
+
+    // Clean up session data
+    delete data.patient
+
+    response.redirect(referrer || patient.uri)
   },
 
   readForm(request, response, next) {
-    const { form } = request.params
+    const { form, nhsn } = request.params
     const { data } = request.session
-    const { patient } = response.locals
 
-    response.locals.patient = new Patient({
-      ...patient,
-      ...(form === 'edit' && patient), // Previous values
-      ...data?.wizard?.patient // Wizard values
-    })
+    const patient = Patient.read(nhsn, data.wizard)
+    response.locals.patient = patient
 
     response.locals.paths = {
       ...(form === 'edit' && {
@@ -264,7 +249,7 @@ export const patientController = {
   showForm(request, response) {
     let { form, view } = request.params
 
-    // Edit each parent using the same view
+    // Parent forms share same view
     if (view.includes('parent')) {
       response.locals.parentId = view.split('-')[1]
       view = 'parent'
@@ -277,12 +262,7 @@ export const patientController = {
     const { data } = request.session
     const { paths, patient } = response.locals
 
-    data.wizard.patient = new Patient(
-      Object.assign(
-        patient, // Previous values
-        request.body.patient // New value
-      )
-    )
+    patient.update(request.body.patient, data.wizard)
 
     response.redirect(paths.next)
   }

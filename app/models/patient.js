@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import _ from 'lodash'
 
 import {
   getCaptureOutcome,
@@ -73,6 +74,7 @@ export class PatientMovement {
  * @param {object} [context] - Global context
  * @property {object} [context] - Global context
  * @property {string} uuid - UUID
+ * @property {Date} [updated] - Updated date
  * @property {Array<import('./event.js').Event>} events - Logged events
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
@@ -86,6 +88,7 @@ export class Patient extends Record {
 
     this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
+    this.updated = options?.updated ? new Date(options.updated) : undefined
     this.events = options?.events || []
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
@@ -605,5 +608,78 @@ export class Patient extends Record {
       name,
       date: notice.created
     })
+  }
+
+  /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Patient>|undefined} Patients
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.patients).map(
+      (patient) => new Patient(patient, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} nhsn - Patient NHS number
+   * @param {object} context - Context
+   * @returns {Patient|undefined} Patient
+   * @static
+   */
+  static read(nhsn, context) {
+    if (context?.patients) {
+      const patient = Object.values(context.patients).find(
+        (patient) => patient.nhsn === nhsn
+      )
+      return new Patient(patient, context)
+    }
+  }
+
+  /**
+   * Create
+   *
+   * @param {Patient} patient - Patient
+   * @param {object} context - Context
+   */
+  create(patient, context) {
+    patient = new Patient(patient)
+
+    // Update context
+    context.patients = context.patients || {}
+    context.patients[patient.uuid] = patient
+  }
+
+  /**
+   * Update
+   *
+   * @param {object} updates - Updates
+   * @param {object} context - Context
+   */
+  update(updates, context) {
+    this.updated = new Date()
+
+    // Remove patient context
+    delete this.context
+
+    // Delete original patient (with previous UUID)
+    delete context.patients[this.uuid]
+
+    // Update context
+    const updatedPatient = _.merge(this, updates)
+    context.patients[updatedPatient.uuid] = updatedPatient
+  }
+
+  /**
+   * Delete
+   *
+   * @param {object} context - Context
+   */
+  delete(context) {
+    delete context.patients[this.uuid]
   }
 }

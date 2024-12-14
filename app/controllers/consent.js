@@ -217,9 +217,7 @@ export const consentController = {
     let { page, limit } = request.query
     const { data } = request.session
 
-    let patients = Object.values(data.patients).map(
-      (patient) => new Patient(patient)
-    )
+    let patients = Patient.readAll(data)
 
     // Sort
     patients = _.sortBy(patients, 'lastName')

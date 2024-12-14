@@ -282,8 +282,7 @@ export class Session {
    */
   get patients() {
     if (this.context?.patients && this.id) {
-      return Object.values(this.context.patients)
-        .map((patient) => new Patient(patient))
+      return Patient.readAll(this.context)
         .filter(({ session_ids }) => session_ids.includes(this.id))
         .filter((patient) => !patient?.pendingChanges?.school_urn)
     }
