@@ -4,11 +4,7 @@ export const noticeController = {
   readAll(request, response, next) {
     const { data } = request.session
 
-    const notices = Object.values(data.notices).map(
-      (notice) => new Notice(notice, data)
-    )
-
-    response.locals.notices = notices
+    response.locals.notices = Notice.readAll(data)
 
     next()
   },
@@ -19,12 +15,9 @@ export const noticeController = {
 
   read(request, response, next) {
     const { uuid } = request.params
-    const { notices } = response.locals
+    const { data } = request.session
 
-    const notice = notices.find((notice) => notice.uuid === uuid)
-
-    response.locals.notice = notice
-
+    response.locals.notice = Notice.read(uuid, data)
     response.locals.paths = {
       back: `/notices`,
       next: `/notices`
@@ -40,13 +33,13 @@ export const noticeController = {
   },
 
   delete(request, response) {
-    const { uuid } = request.params
     const { data } = request.session
-    const { __ } = response.locals
-
-    delete data.notices[uuid]
+    const { __, notice, paths } = response.locals
 
     request.flash('success', __(`notice.success.delete`))
-    response.redirect('/notices')
+
+    notice.delete(data)
+
+    response.redirect(paths.next)
   }
 }
