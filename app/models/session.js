@@ -52,7 +52,7 @@ export class SessionType {
  * @param {object} [context] - Global context
  * @property {object} [context] - Global context
  * @property {string} id - ID
- * @property {Date} created - Created date
+ * @property {Date} [created] - Created date
  * @property {string} [created_user_uid] - User who created session
  * @property {string} [clinic_id] - Clinic ID
  * @property {string} [school_urn] - School URN
@@ -252,7 +252,7 @@ export class Session {
     try {
       const clinic = this.context?.clinics[this.clinic_id]
       if (clinic) {
-        return new Clinic(clinic)
+        return new Clinic(clinic, this.context)
       }
     } catch (error) {
       console.error('Session.clinic', error.message)
@@ -268,7 +268,7 @@ export class Session {
     try {
       const school = this.context?.schools[this.school_urn]
       if (school) {
-        return new School(school)
+        return new School(school, this.context)
       }
     } catch (error) {
       console.error('Session.school', error.message)
@@ -298,7 +298,7 @@ export class Session {
   get programmes() {
     if (this.context?.programmes && this.programme_pids) {
       return this.programme_pids.map(
-        (pid) => new Programme(this.context?.programmes[pid])
+        (pid) => new Programme(this.context?.programmes[pid], this.context)
       )
     }
 
@@ -622,5 +622,92 @@ export class Session {
    */
   get uri() {
     return `/sessions/${this.id}`
+  }
+
+  /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Session>|undefined} Sessions
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.sessions).map(
+      (session) => new Session(session, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} id - Session ID
+   * @param {object} context - Context
+   * @returns {Session|undefined} Session
+   * @static
+   */
+  static read(id, context) {
+    if (context?.sessions) {
+      return new Session(context.sessions[id], context)
+    }
+  }
+
+  /**
+   * Create
+   *
+   * @param {Session} session - Session
+   * @param {object} context - Context
+   */
+  create(session, context) {
+    session = new Session(session)
+
+    // Update context
+    context.sessions = context.sessions || {}
+    context.sessions[session.id] = session
+  }
+
+  /**
+   * Create file
+   *
+   * @param {object} context - Context
+   * @returns {object} - File buffer, name and mime type
+   * @todo Create download using Mavis offline XLSX schema
+   */
+  createFile(context) {
+    const { name } = new Session(this, context)
+
+    return {
+      buffer: Buffer.from(''),
+      fileName: `${name}.csv`,
+      mimetype: 'text/csv'
+    }
+  }
+
+  /**
+   * Update
+   *
+   * @param {object} updates - Updates
+   * @param {object} context - Context
+   */
+  update(updates, context) {
+    this.updated = new Date()
+
+    // Remove session context
+    delete this.context
+
+    // Delete original session (with previous ID)
+    delete context.sessions[this.id]
+
+    // Update context
+    const updatedSession = Object.assign(this, updates)
+    context.sessions[updatedSession.id] = updatedSession
+  }
+
+  /**
+   * Delete
+   *
+   * @param {object} context - Context
+   */
+  delete(context) {
+    delete context.sessions[this.id]
   }
 }

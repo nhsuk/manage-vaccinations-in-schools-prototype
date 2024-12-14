@@ -3,9 +3,23 @@
 {% set title = __("session.offline.title") %}
 {% set confirmButtonText = __("session.offline.confirm") %}
 
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("session.list.title"),
+      href: "/sessions"
+    }, {
+      text: session.location.name,
+      href: "/sessions/" + session.id
+    }]
+  }) }}
+{% endblock %}
+
 {% block form %}
   {{ heading({
-    caption: session.location.name,
     title: title
   }) }}
 

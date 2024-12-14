@@ -1634,13 +1634,9 @@
         }
       }
     },
-    "new": {
+    "schedule": {
       "title": "Schedule sessions",
-      "description": "Add dates for this school.",
-      "check-answers": {
-        "title": "Check and confirm",
-        "summary": "Session details"
-      }
+      "description": "Add dates for this school."
     },
     "edit": {
       "title": "Edit session",

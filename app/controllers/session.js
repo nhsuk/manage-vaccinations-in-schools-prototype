@@ -1,8 +1,5 @@
-import wizard from '@x-govuk/govuk-prototype-wizard'
-
 import { Batch } from '../models/batch.js'
 import { ConsentOutcome, Patient, PatientOutcome } from '../models/patient.js'
-import { Programme } from '../models/programme.js'
 import { programmeTypes } from '../models/programme.js'
 import { Session, SessionStatus, SessionType } from '../models/session.js'
 
@@ -29,9 +26,7 @@ export const sessionController = {
       unplanned: SessionStatus.Unplanned
     }
 
-    let sessions = Object.values(data.sessions).map(
-      (session) => new Session(session, data)
-    )
+    let sessions = Session.readAll(data)
 
     if (view === 'active') {
       sessions = sessions.filter((session) => session.isActive)
@@ -43,14 +38,15 @@ export const sessionController = {
   },
 
   show(request, response) {
-    response.render('session/show')
+    const view = request.params.view || 'show'
+
+    response.render(`session/${view}`)
   },
 
   activity(request, response) {
-    const { session } = request.app.locals
     const { activity } = request.params
     let { tab } = request.query
-    const { __ } = response.locals
+    const { __, session } = response.locals
 
     let tabs = []
     switch (activity) {
@@ -78,7 +74,7 @@ export const sessionController = {
         break
     }
 
-    request.app.locals.activity = activity
+    response.locals.activity = activity
 
     response.locals.patients = getPatientsForKey(
       session.patients,
@@ -99,12 +95,7 @@ export const sessionController = {
     const { id } = request.params
     const { data } = request.session
 
-    const session = new Session(data.sessions[id], data)
-
-    request.app.locals.session = session
-    request.app.locals.programme = new Programme(
-      data.programmes[session.programme_pids[0]]
-    )
+    const session = Session.read(id, data)
 
     // Get default batches selected for vaccines in this session
     const defaultBatches = []
@@ -123,81 +114,66 @@ export const sessionController = {
 
     response.locals.defaultBatches = defaultBatches
 
+    response.locals.couldNotVaccinate = Patient.readAll(session)
+      .filter(({ consent }) => consent.value !== ConsentOutcome.NoResponse)
+      .filter(
+        ({ outcome }) => outcome.value === PatientOutcome.CouldNotVaccinate
+      )
+
+    response.locals.noResponse = Patient.readAll(session).filter(
+      ({ consent }) => consent.value === ConsentOutcome.NoResponse
+    )
+
+    response.locals.session = session
+
     next()
   },
 
   edit(request, response) {
-    const { session } = request.app.locals
+    const { id } = request.params
     const { data } = request.session
+    const { session } = response.locals
 
-    request.app.locals.session = new Session(
-      {
-        ...session, // Previous values
-        ...data?.wizard?.session // Wizard values
-      },
-      data
-    )
+    // Setup wizard if not already setup
+    if (!Session.read(id, data.wizard)) {
+      session.create(session, data.wizard)
+    }
+
+    // Show back link to session page
+    response.locals.back = session.uri
+    response.locals.session = new Session(Session.read(id, data.wizard), data)
 
     response.render('session/edit')
   },
 
-  new(request, response) {
-    const { data } = request.session
-
-    // Delete previous data
-    delete data.session
-    delete data?.wizard?.session
-
-    const session = new Session()
-
-    data.wizard = { session }
-
-    response.redirect(`/sessions/${session.id}/new/programmes`)
-  },
-
   update(request, response) {
-    const { session } = request.app.locals
     const { form, id } = request.params
     const { data } = request.session
     const { __ } = response.locals
 
-    data.sessions[id] = new Session({
-      ...session, // Previous values
-      ...data?.wizard?.session, // Wizard values
-      ...(data.token && { created_user_uid: data.token?.uid })
-    })
-
-    delete data?.wizard?.session
-
+    const session = new Session(Session.read(id, data.wizard), data)
     const action = form === 'edit' ? 'update' : 'create'
     request.flash('success', __(`session.success.${action}`, { session }))
+
+    session.update(session, data)
+
+    // Clean up session data
+    delete data.session
 
     response.redirect(`/sessions/${id}`)
   },
 
   readForm(request, response, next) {
-    const { session } = request.app.locals
     const { form, id } = request.params
     const { data } = request.session
 
-    request.app.locals.session = new Session({
-      ...(form === 'edit' && session), // Previous values
-      ...data?.wizard?.session // Wizard values,
-    })
-
-    const journey = {
-      [`/`]: {},
-      [`/${id}/${form}/programmes`]: {},
-      [`/${id}/${form}/dates`]: {},
-      [`/${id}/${form}/check-answers`]: {},
-      [`/${id}`]: {}
-    }
+    const session = Session.read(id, data.wizard)
+    response.locals.session = session
 
     response.locals.paths = {
-      ...wizard(journey, request),
       ...(form === 'edit' && {
-        back: `/sessions/${id}/edit`,
-        next: `/sessions/${id}/edit`
+        back: `${session.uri}/edit`,
+        next: `${session.uri}/edit`
       })
     }
 
@@ -218,94 +194,55 @@ export const sessionController = {
   },
 
   updateForm(request, response) {
-    const { session } = request.app.locals
     const { data } = request.session
-    const { paths } = response.locals
+    const { paths, session } = response.locals
 
-    data.wizard.session = new Session({
-      ...session, // Previous values
-      ...request.body.session // New value
-    })
+    session.update(request.body.session, data.wizard)
 
     response.redirect(paths.next)
   },
 
-  readOffline(request, response, next) {
-    const { session } = request.app.locals
-
-    response.locals.paths = {
-      back: session.uri,
-      next: session.uri
-    }
-
-    next()
-  },
-
-  showOffline(request, response) {
-    response.render('session/offline')
-  },
-
-  updateOffline(request, response) {
-    const { paths } = response.locals
-
-    response.redirect(paths.next)
-  },
-
-  readClose(request, response, next) {
-    const { patients, session } = request.app.locals
-
-    response.locals.paths = {
-      back: session.uri,
-      next: session.uri
-    }
-
-    response.locals.couldNotVaccinate = patients
-      .map((patient) => new Patient(patient))
-      .filter(({ consent }) => consent.value !== ConsentOutcome.NoResponse)
-      .filter(
-        ({ outcome }) => outcome.value === PatientOutcome.CouldNotVaccinate
-      )
-
-    response.locals.noResponse = patients
-      .map((patient) => new Patient(patient))
-      .filter(({ consent }) => consent.value === ConsentOutcome.NoResponse)
-
-    next()
-  },
-
-  showClose(request, response) {
-    response.render('session/close')
-  },
-
-  updateClose(request, response) {
-    const { programme, session } = request.app.locals
+  downloadFile(request, response) {
     const { data } = request.session
-    const { __, paths, couldNotVaccinate, noResponse } = response.locals
+    const { session } = response.locals
 
-    const updatedSession = new Session(session)
-    updatedSession.closed = true
+    const { buffer, fileName, mimetype } = session.createFile(data)
 
-    // Update session data
-    data.sessions[updatedSession.id] = updatedSession
+    response.header('Content-Type', mimetype)
+    response.header('Content-disposition', `attachment; filename=${fileName}`)
 
-    // Find clinics
-    const clinic = Object.values(data.sessions)
-      .map((session) => new Session(session, data))
-      .filter((session) => session.programme_pids.includes(programme.pid))
-      .filter((session) => session.type === SessionType.Clinic)
+    response.end(buffer)
+  },
 
-    // Move patients to clinic
-    const patientsToMove = couldNotVaccinate.concat(noResponse)
-    for (const patient of patientsToMove) {
-      const updatedPatient = new Patient(patient)
-      updatedPatient.inviteToSession(clinic[0])
-
-      // Update session data
-      data.patients[patient.uuid] = updatedPatient
-    }
+  close(request, response) {
+    const { data } = request.session
+    const { __, couldNotVaccinate, noResponse, session } = response.locals
 
     request.flash('success', __(`session.success.close`, { session }))
 
-    response.redirect(paths.next)
+    // Update session as closed
+    session.update({ closed: true }, data)
+
+    // Find a clinic
+    const clinic = Session.readAll(data)
+      .filter(({ type }) => type === SessionType.Clinic)
+      .find(({ programme_pids }) =>
+        programme_pids.some((pid) => session.programme_pids.includes(pid))
+      )
+
+    // Move patients to clinic
+    if (clinic) {
+      const patientsToMove = couldNotVaccinate
+        .concat(noResponse)
+        .map((patient) => patient.nhsn)
+      for (const nhsn of patientsToMove) {
+        const patient = Patient.read(nhsn, data)
+        patient.removeFromSession(session)
+        patient.inviteToSession(clinic)
+        patient.update({}, data)
+      }
+    }
+
+    response.redirect(session.uri)
   }
 }
