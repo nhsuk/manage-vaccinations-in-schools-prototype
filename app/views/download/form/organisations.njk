@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("download.providers.title") %}
+{% set title = __("download.organisations.title") %}
 
 {% block form %}
   {{ checkboxes({
@@ -13,7 +13,7 @@
         })
       }
     },
-    items: providerItems,
-    decorate: "download.providers"
+    items: organisationItems,
+    decorate: "download.organisation_codes"
   }) }}
 {% endblock %}

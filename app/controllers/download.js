@@ -1,9 +1,9 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
-import xlsx from 'json-as-xlsx'
 
 import { Download } from '../models/download.js'
+import { Organisation } from '../models/organisation.js'
+import { Programme } from '../models/programme.js'
 import { UserRole } from '../models/user.js'
-import { Vaccination } from '../models/vaccination.js'
 
 export const downloadController = {
   redirect(request, response) {
@@ -16,57 +16,22 @@ export const downloadController = {
     const { pid } = request.params
     const { data } = request.session
 
-    // Delete previous data
-    delete data.download
-    delete data?.wizard?.download
-
-    // Get vaccinations from programme
-    const vaccinations = Object.values(data.vaccinations)
-      .filter((vaccination) => vaccination.programme_pid === pid)
-      .map((vaccination) => new Vaccination(vaccination))
-
+    const programme = Programme.read(pid, data)
     const download = new Download({
       programme_pid: pid,
-      vaccinations,
+      vaccination_uuids: programme.vaccinations.map(({ uuid }) => uuid),
       ...(data.token && { created_user_uid: data.token?.uid })
     })
 
-    data.wizard = { download }
+    download.create(download, data.wizard)
 
     response.redirect(`${download.uri}/new/dates`)
   },
 
-  update(request, response) {
-    const { download } = request.app.locals
-
-    // TODO: Support other file formats
-    const { carePlus, fileName } = download
-    const buffer = xlsx(carePlus, {
-      fileName,
-      writeOptions: {
-        type: 'buffer',
-        bookType: 'xlsx'
-      }
-    })
-
-    response.header('Content-Type', 'application/octet-stream')
-    response.header(
-      'Content-disposition',
-      `attachment; filename=${fileName}.xlsx`
-    )
-
-    response.end(buffer)
-  },
-
   readForm(request, response, next) {
-    const { download } = request.app.locals
     const { form, id } = request.params
     const { data } = request.session
-
-    request.app.locals.download = new Download({
-      ...(form === 'edit' && download), // Previous values
-      ...data?.wizard?.download // Wizard values,
-    })
+    const { download } = response.locals
 
     const journey = {
       [`/`]: {},
@@ -74,16 +39,21 @@ export const downloadController = {
         [`/${id}/${form}/format`]: () =>
           data.token?.role !== UserRole.DataConsumer
       },
-      [`/${id}/${form}/providers`]: {},
+      [`/${id}/${form}/organisations`]: {},
       [`/${id}/${form}/format`]: {},
       [`/${id}/${form}/check-answers`]: {},
       [`/${id}`]: {}
     }
 
-    response.locals.providerItems = Object.values(data.organisations).map(
+    response.locals.download = new Download(
+      Download.read(id, data?.wizard),
+      data
+    )
+
+    response.locals.organisationItems = Organisation.readAll(data).map(
       (organisation) => ({
         text: organisation.name,
-        value: organisation.name
+        value: organisation.code
       })
     )
 
@@ -105,15 +75,23 @@ export const downloadController = {
   },
 
   updateForm(request, response) {
-    const { download } = request.app.locals
     const { data } = request.session
-    const { paths } = response.locals
+    const { paths, download } = response.locals
 
-    data.wizard.download = new Download({
-      ...download, // Previous values
-      ...request.body.download // New value
-    })
+    download.update(request.body.download, data.wizard)
 
     response.redirect(paths.next)
+  },
+
+  downloadFile(request, response) {
+    const { data } = request.session
+    const { download } = response.locals
+
+    const { buffer, fileName, mimetype } = download.createFile(data)
+
+    response.header('Content-Type', mimetype)
+    response.header('Content-disposition', `attachment; filename=${fileName}`)
+
+    response.end(buffer)
   }
 }
