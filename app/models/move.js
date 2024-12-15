@@ -18,7 +18,7 @@ export class MoveSource {
  * @property {object} [context] - Context
  * @property {string} uuid - UUID
  * @property {Date} [created] - Reported date
- * @property {Date} [updated] - Updated date
+ * @property {Date} [updatedAt] - Updated date
  * @property {string} from - Current school URN (moving from)
  * @property {string} to - Proposed school URN (moving to)
  * @property {MoveSource} source - Reporting source
@@ -30,7 +30,9 @@ export class Move {
     this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
     this.created = options?.created ? new Date(options.created) : getToday()
-    this.updated = options?.updated ? new Date(options.updated) : undefined
+    this.updatedAt = options?.updatedAt
+      ? new Date(options.updatedAt)
+      : undefined
     this.from = options?.from
     this.to = options?.to
     this.source = options?.source
@@ -123,7 +125,7 @@ export class Move {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updated = new Date()
+    this.updatedAt = new Date()
 
     // Remove move context
     delete this.context

@@ -12,7 +12,7 @@ import { Organisation } from './organisation.js'
  * @property {object} [context] - Context
  * @property {string} id - Organisation code
  * @property {Date} [created] - Created date
- * @property {Date} [updated] - Updated date
+ * @property {Date} [updatedAt] - Updated date
  * @property {string} [name] - Name
  * @property {Address} [address] - Address
  * @property {string} [organisation_code] - Organisation code
@@ -22,7 +22,7 @@ export class Clinic {
     this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('?#####')
     this.created = options?.created ? new Date(options.created) : getToday()
-    this.updated = options?.updated ? new Date(options.updated) : undefined
+    this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.name = options?.name
     this.address = options?.address && new Address(options.address)
     this.organisation_code = options?.organisation_code
@@ -130,7 +130,7 @@ export class Clinic {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updated = new Date()
+    this.updatedAt = new Date()
 
     // Remove clinic context
     delete this.context

@@ -73,7 +73,7 @@ export class Consent extends Reply {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updated = new Date()
+    this.updatedAt = new Date()
 
     // Remove consent context
     delete this.context

@@ -74,7 +74,7 @@ export class PatientMovement {
  * @param {object} [context] - Global context
  * @property {object} [context] - Global context
  * @property {string} uuid - UUID
- * @property {Date} [updated] - Updated date
+ * @property {Date} [updatedAt] - Updated date
  * @property {Array<import('./event.js').Event>} events - Logged events
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
@@ -88,7 +88,7 @@ export class Patient extends Record {
 
     this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
-    this.updated = options?.updated ? new Date(options.updated) : undefined
+    this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.events = options?.events || []
     this.registered = stringToBoolean(options?.registered)
     this.gillick = options?.gillick && new Gillick(options.gillick)
@@ -557,7 +557,7 @@ export class Patient extends Record {
     vaccination = new Vaccination(vaccination)
     let name
     if (vaccination.given) {
-      name = vaccination.updated
+      name = vaccination.updatedAt
         ? `Vaccination record for ${vaccination.formatted.vaccine_gtin} updated`
         : `Vaccinated with ${vaccination.formatted.vaccine_gtin}`
     } else {
@@ -568,7 +568,7 @@ export class Patient extends Record {
       type: EventType.Capture,
       name,
       note: vaccination.note,
-      date: vaccination.updated || vaccination.created,
+      date: vaccination.updatedAt || vaccination.created,
       createdBy_uid: vaccination.createdBy_uid
     })
   }
@@ -661,7 +661,7 @@ export class Patient extends Record {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updated = new Date()
+    this.updatedAt = new Date()
 
     // Remove patient context
     delete this.context
