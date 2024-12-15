@@ -70,10 +70,10 @@ export class VaccinationProtocol {
  * @param {object} [context] - Global context
  * @property {object} [context] - Global context
  * @property {string} uuid - UUID
- * @property {Date} created - Vaccination date
- * @property {object} [created_] - Vaccination date (from `dateInput`)
+ * @property {Date} created - Created date
+ * @property {object} [created_] - Created date (from `dateInput`)
  * @property {string} [createdBy_uid] - User who performed vaccination
- * @property {Date} [updated] - Vaccination updated date
+ * @property {Date} [updatedAt] - Updated date
  * @property {string} [location] - Location
  * @property {VaccinationOutcome} [outcome] - Outcome
  * @property {VaccinationMethod} [injectionMethod] - Injection method
@@ -96,7 +96,7 @@ export class Vaccination {
     this.created = options?.created ? new Date(options.created) : getToday()
     this.created_ = options?.created_
     this.createdBy_uid = options?.createdBy_uid
-    this.updated = options?.updated ? new Date(options.updated) : undefined
+    this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.location = options?.location
     this.outcome = options?.outcome
     this.given =
@@ -309,7 +309,7 @@ export class Vaccination {
         dateStyle: 'long'
       }),
       createdBy: this.createdBy?.fullName || '',
-      updated: formatDate(this.updated, {
+      updatedAt: formatDate(this.updatedAt, {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
@@ -403,7 +403,7 @@ export class Vaccination {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updated = new Date()
+    this.updatedAt = new Date()
 
     // Remove patient context
     delete this.context

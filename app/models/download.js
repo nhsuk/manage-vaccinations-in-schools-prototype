@@ -28,7 +28,7 @@ export class DownloadFormat {
  * @property {string} id - Download ID
  * @property {Date} [created] - Created date
  * @property {string} [createdBy_uid] - User who created download
- * @property {Date} [updated] - Updated date
+ * @property {Date} [updatedAt] - Updated date
  * @property {Date} from - Date from
  * @property {object} [from_] - Date from (from `dateInput`)
  * @property {Date} until - Date until
@@ -44,7 +44,7 @@ export class Download {
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
     this.created = options?.created ? new Date(options.created) : getToday()
     this.createdBy_uid = options?.createdBy_uid
-    this.updated = options?.updated ? new Date(options.updated) : undefined
+    this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.from = options?.from ? new Date(options.from) : undefined
     this.from_ = options?.from_
     this.until = options?.until ? new Date(options.until) : undefined
@@ -403,7 +403,7 @@ export class Download {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updated = new Date()
+    this.updatedAt = new Date()
 
     // Remove download context
     delete this.context

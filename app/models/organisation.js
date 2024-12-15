@@ -14,6 +14,7 @@ export class OrganisationDefaults {
  * @param {object} [context] - Context
  * @property {object} [context] - Context
  * @property {string} [code] - ODS code
+ * @property {Date} [updatedAt] - Updated date
  * @property {string} [name] - Full name
  * @property {string} [email] - Email address
  * @property {string} [tel] - Phone number
@@ -27,6 +28,7 @@ export class Organisation {
   constructor(options, context) {
     this.context = context
     this.code = options?.code
+    this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.name = options?.name
     this.email = options?.email
     this.tel = options?.tel
@@ -140,7 +142,7 @@ export class Organisation {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updated = new Date()
+    this.updatedAt = new Date()
 
     // Remove organisation context
     delete this.context

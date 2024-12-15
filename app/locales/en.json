@@ -96,7 +96,7 @@
     "created": {
       "label": "Entered date"
     },
-    "updated": {
+    "updatedAt": {
       "label": "Updated date"
     },
     "expiry": {
@@ -1904,7 +1904,7 @@
       "label": "Nurse",
       "title": "Which nurse gave the vaccination?"
     },
-    "updated": {
+    "updatedAt": {
       "label": "Record updated"
     },
     "location": {

@@ -46,7 +46,7 @@ export class ReplyRefusal {
  * @property {string} uuid - UUID
  * @property {Date} created - Created date
  * @property {string} [createdBy_uid] - User who created reply
- * @property {Date} [updated] - Updated date
+ * @property {Date} [updatedAt] - Updated date
  * @property {import('./child.js').Child} [child] - Child
  * @property {import('./parent.js').Parent} [parent] - Parent or guardian
  * @property {ReplyDecision} [decision] - Consent decision
@@ -69,7 +69,7 @@ export class Reply {
     this.uuid = options?.uuid || faker.string.uuid()
     this.created = options?.created ? new Date(options.created) : getToday()
     this.createdBy_uid = options?.createdBy_uid
-    this.updated = options?.updated ? new Date(options.updated) : undefined
+    this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.child = options?.child && new Child(options.child)
     this.parent = options?.parent && new Parent(options.parent)
     this.decision = options?.decision
