@@ -96,8 +96,8 @@ export class Import {
       return this.record_nhsns
         .map((nhsn) => new Record(this.context?.records[nhsn]))
         .map((record) => {
-          record.vaccination = record.vaccination_uuids.map(
-            (uuid) => new Vaccination(this.context.vaccinations[uuid])
+          record.vaccination = record.vaccination_uuids.map((uuid) =>
+            Vaccination.read(uuid, this.context)
           )[0]
           return record
         })

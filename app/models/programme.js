@@ -241,13 +241,9 @@ export class Programme {
    * @returns {Array<Vaccination>} - Vaccinations
    */
   get vaccinations() {
-    if (this.context?.vaccinations && this.pid) {
-      return Object.values(this.context.vaccinations)
-        .filter((vaccination) => vaccination.programme_pid === this.pid)
-        .map((vaccination) => new Vaccination(vaccination, this.context))
-    }
-
-    return []
+    return Vaccination.readAll(this.context).filter(
+      ({ programme_pid }) => programme_pid === this.pid
+    )
   }
 
   /**

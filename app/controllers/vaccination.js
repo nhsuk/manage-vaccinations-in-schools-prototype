@@ -2,6 +2,7 @@ import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { Batch } from '../models/batch.js'
 import { Patient } from '../models/patient.js'
+import { Programme } from '../models/programme.js'
 import { Session } from '../models/session.js'
 import { User } from '../models/user.js'
 import {
@@ -11,28 +12,30 @@ import {
   VaccinationSite
 } from '../models/vaccination.js'
 import { Vaccine } from '../models/vaccine.js'
-import { getToday } from '../utils/date.js'
 import { getSessionPatientPath } from '../utils/session.js'
 
 export const vaccinationController = {
   read(request, response, next) {
-    const { programme, session } = request.app.locals
-    const { uuid } = request.params
+    const { pid, uuid } = request.params
     const { data } = request.session
 
-    const vaccination = new Vaccination(data.vaccinations[uuid], data)
+    const programme = Programme.read(pid, data)
+    const vaccination = Vaccination.read(uuid, data)
+    const { session } = vaccination
 
     // Get default batch for vaccination, if set
     const defaultBatch = data.token?.batch?.[session?.id]
     if (defaultBatch) {
       const batchId = defaultBatch[programme.vaccine.gtin]
       // Default batch ID may be saved in FormData as an array
-      request.app.locals.defaultBatchId = Array.isArray(batchId)
+      response.locals.defaultBatchId = Array.isArray(batchId)
         ? batchId.at(-1)
         : batchId
     }
 
-    request.app.locals.vaccination = vaccination
+    response.locals.vaccination = vaccination
+    response.locals.programme = programme
+    response.locals.session = session
 
     next()
   },
@@ -48,17 +51,19 @@ export const vaccinationController = {
   },
 
   edit(request, response) {
-    const { vaccination } = request.app.locals
+    const { uuid } = request.params
     const { data, referrer } = request.session
+    const { vaccination } = response.locals
+
+    // Setup wizard if not already setup
+    if (!Vaccination.read(uuid, data.wizard)) {
+      vaccination.create(vaccination, data.wizard)
+    }
 
     // Show back link to referring page, else vaccination page
-    request.app.locals.back = referrer || vaccination.uri
-
-    request.app.locals.vaccination = new Vaccination(
-      {
-        ...vaccination, // Previous values
-        ...data?.wizard?.vaccination // Wizard values,
-      },
+    response.locals.back = referrer || vaccination.uri
+    response.locals.vaccination = new Vaccination(
+      Vaccination.read(uuid, data.wizard),
       data
     )
 
@@ -66,18 +71,19 @@ export const vaccinationController = {
   },
 
   new(request, response) {
-    const { defaultBatchId, programme } = request.app.locals
-    const { data } = request.session
     const { patient_uuid, session_id } = request.query
+    const { data } = request.session
+    const { defaultBatchId, programme } = response.locals
 
-    const patient = new Patient(data.patients[patient_uuid])
-    const session = new Session(data.sessions[session_id], data)
+    const patient = Patient.read(patient_uuid, data)
+    const session = Session.read(session_id, data)
     const { injectionSite, ready } = data.preScreen
 
     const readyToVaccine = ready === 'true'
-    const injectionSiteGiven =
-      injectionSite === VaccinationSite.ArmLeftUpper ||
-      injectionSite === VaccinationSite.ArmRightUpper
+    const injectionSiteGiven = [
+      VaccinationSite.ArmLeftUpper,
+      VaccinationSite.ArmRightUpper
+    ].includes(injectionSite)
     const defaultBatchSet =
       defaultBatchId !== undefined && defaultBatchId !== '_unchecked'
 
@@ -96,12 +102,8 @@ export const vaccinationController = {
         startPath = 'decline'
     }
 
-    request.app.locals.back = getSessionPatientPath(session, patient)
-    request.app.locals.startPath = startPath
-
-    delete data.preScreen
-    delete data.vaccination
-    delete data?.wizard?.vaccination
+    response.locals.back = getSessionPatientPath(session, patient)
+    response.locals.startPath = startPath
 
     const vaccination = new Vaccination({
       location: session.formatted.location,
@@ -122,61 +124,44 @@ export const vaccinationController = {
       })
     })
 
-    data.wizard = { vaccination }
+    vaccination.create(vaccination, data.wizard)
 
     response.redirect(`${vaccination.uri}/new/${startPath}`)
   },
 
   update(request, response) {
-    const { programme, vaccination } = request.app.locals
-    const { form } = request.params
-    const { data, referrer } = request.session
-    const { __ } = response.locals
-
-    const patient = new Patient(data.patients[vaccination.patient_uuid])
-
-    // Capture vaccination
-    const updatedVaccination = new Vaccination({
-      ...vaccination, // Previous values
-      ...data?.wizard?.vaccination, // Wizard values (new flow)
-      ...request.body.vaccination, // New values (edit flow)
-      vaccine_gtin: programme.vaccine.gtin,
-      created_user_uid: data.vaccination?.created_user_uid || data.token?.uid
-    })
-
-    // Check if new vaccination record or updating an existing one
-    if (Object.keys(data.vaccinations).includes(updatedVaccination.uuid)) {
-      updatedVaccination.updated = getToday()
-    }
-
-    // Capture and flow vaccination
-    updatedVaccination.captureAndFlow(data)
-
-    // Clean up
-    delete data?.wizard?.vaccination
-    delete request.session.referrer
-    delete request.app.locals.vaccination
-
-    const action = form === 'edit' ? 'update' : 'create'
-    request.flash('success', __(`vaccination.success.${action}`))
-
-    response.redirect(referrer || updatedVaccination.uri)
-  },
-
-  readForm(request, response, next) {
-    const { defaultBatchId, programme, session, startPath, vaccination } =
-      request.app.locals
     const { form, uuid } = request.params
     const { data, referrer } = request.session
     const { __ } = response.locals
 
-    request.app.locals.vaccination = new Vaccination(
-      {
-        ...(form === 'edit' && vaccination), // Previous values
-        ...data?.wizard?.vaccination // Wizard values,
-      },
+    const vaccination = new Vaccination(
+      Vaccination.read(uuid, data.wizard),
       data
     )
+    const action = form === 'edit' ? 'update' : 'create'
+    request.flash('success', __(`vaccination.success.${action}`))
+
+    vaccination.update(vaccination, data)
+
+    // TODO: Decide if this is still the right approach
+    // vaccination.captureAndFlow(data)
+
+    // Clean up session data
+    delete data.preScreen
+    delete data.vaccination
+
+    response.redirect(referrer || vaccination.uri)
+  },
+
+  readForm(request, response, next) {
+    const { form, uuid } = request.params
+    const { data, referrer } = request.session
+    const { __, defaultBatchId, startPath, programme, session } =
+      response.locals
+
+    const vaccination = Vaccination.read(uuid, data.wizard)
+
+    response.locals.vaccination = vaccination
 
     const journey = {
       [`/`]: {},
@@ -218,8 +203,7 @@ export const vaccinationController = {
       }
     }
 
-    response.locals.batchItems = Object.values(data.batches)
-      .map((batch) => new Batch(batch, data))
+    response.locals.batchItems = Batch.readAll(data)
       .filter((batch) => batch.vaccine.type === programme.type)
       .filter((batch) => !batch.archived)
 
@@ -237,22 +221,11 @@ export const vaccinationController = {
         value
       }))
 
-    response.locals.locationItems = Object.entries(data.schools).map(
-      ([, school]) => ({
-        text: school.name,
-        value: school.name
-      })
-    )
-
-    response.locals.userItems = Object.entries(data.users)
-      .map(([key, value]) => {
-        const user = new User(value)
-
-        return {
-          text: user.fullName,
-          value: key
-        }
-      })
+    response.locals.userItems = User.readAll(data)
+      .map((user) => ({
+        text: user.fullName,
+        value: user.uid
+      }))
       .sort((a, b) => {
         const textA = a.text.toUpperCase()
         const textB = b.text.toUpperCase()
@@ -261,9 +234,8 @@ export const vaccinationController = {
         return 0
       })
 
-    response.locals.vaccineItems = Object.values(data.vaccines)
+    response.locals.vaccineItems = Vaccine.readAll(data)
       .filter((vaccine) => programme.type.includes(vaccine.type))
-      .map((vaccine) => (vaccine = new Vaccine(vaccine, data)))
       .map((vaccine) => ({
         text: vaccine.brandWithType,
         value: vaccine.gtin
@@ -292,34 +264,26 @@ export const vaccinationController = {
   },
 
   updateForm(request, response) {
-    const { defaultBatchId, programme, vaccination } = request.app.locals
     const { data } = request.session
-    const { paths } = response.locals
+    const { defaultBatchId, paths, programme, vaccination } = response.locals
 
     // Add dose amount and vaccination outcome based on dosage answer
-    if (request.body.vaccination.dosage) {
-      vaccination.dose =
-        request.body.vaccination.dosage === 'half'
-          ? programme.vaccine.dose / 2
-          : programme.vaccine.dose
-      vaccination.outcome =
-        request.body.vaccination.dosage === 'half'
+    const { dosage } = request.body.vaccination
+    if (dosage) {
+      request.body.vaccination.dose =
+        dosage === 'half' ? programme.vaccine.dose / 2 : programme.vaccine.dose
+      request.body.vaccination.outcome =
+        dosage === 'half'
           ? VaccinationOutcome.PartVaccinated
           : VaccinationOutcome.Vaccinated
     }
 
     // Use default batch, if set
     if (defaultBatchId) {
-      vaccination.batch_id = defaultBatchId
+      request.body.vaccination.batch_id = defaultBatchId
     }
 
-    data.wizard.vaccination = new Vaccination(
-      Object.assign(
-        vaccination, // Previous values
-        data.wizard.vaccination, // Wizard values
-        request.body.vaccination // New value
-      )
-    )
+    vaccination.update(request.body.vaccination, data.wizard)
 
     const redirect = paths.next || `${vaccination.uri}/new/check-answers`
 
