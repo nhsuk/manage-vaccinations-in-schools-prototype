@@ -60,9 +60,10 @@ export function convertObjectToIsoDate(object, namePrefix) {
     if (!day) {
       return new Date(year, month)
     }
+    const seconds = new Date().getSeconds()
     const ms = new Date().getMilliseconds()
 
-    return new Date(year, month, day, hour, minute, ms)
+    return new Date(year, month, day, hour, minute, seconds, ms)
   } catch (error) {
     console.error(error.message.split(':')[0])
   }
