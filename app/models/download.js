@@ -148,14 +148,9 @@ export class Download {
    * @returns {Array<Vaccination>} - Vaccinations
    */
   get vaccinations() {
-    if (this.context?.vaccinations && this.vaccination_uuids) {
-      return this.vaccination_uuids.map(
-        (uuid) =>
-          new Vaccination(this.context?.vaccinations[uuid], this.context)
-      )
-    }
-
-    return []
+    return this.vaccination_uuids.map((uuid) =>
+      Vaccination.read(uuid, this.context)
+    )
   }
 
   /**

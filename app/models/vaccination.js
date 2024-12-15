@@ -224,7 +224,7 @@ export class Vaccination {
     try {
       const patient = this.context?.patients[this.patient_uuid]
       if (patient) {
-        return new Patient(patient)
+        return new Patient(patient, this.context)
       }
     } catch (error) {
       console.error('Vaccination.patient', error.message)
@@ -356,9 +356,70 @@ export class Vaccination {
   }
 
   /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Vaccination>|undefined} Vaccinations
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.vaccinations).map(
+      (vaccination) => new Vaccination(vaccination, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} uuid - Vaccination UUID
+   * @param {object} context - Context
+   * @returns {Vaccination|undefined} Vaccination
+   * @static
+   */
+  static read(uuid, context) {
+    if (context?.vaccinations) {
+      return new Vaccination(context.vaccinations[uuid], context)
+    }
+  }
+
+  /**
+   * Create
+   *
+   * @param {Vaccination} vaccination - Vaccination
+   * @param {object} context - Context
+   */
+  create(vaccination, context) {
+    vaccination = new Vaccination(vaccination)
+
+    // Update context
+    context.vaccinations = context.vaccinations || {}
+    context.vaccinations[vaccination.uuid] = vaccination
+  }
+
+  /**
+   * Update
+   *
+   * @param {object} updates - Updates
+   * @param {object} context - Context
+   */
+  update(updates, context) {
+    this.updated = new Date()
+
+    // Remove patient context
+    delete this.context
+
+    // Delete original patient (with previous UUID)
+    delete context.vaccinations[this.uuid]
+
+    // Update context
+    const updatedVaccination = Object.assign(this, updates)
+    context.vaccinations[updatedVaccination.uuid] = updatedVaccination
+  }
+
+  /**
    * Capture and flow vaccination
    *
-   * @param {object} context - Global context
+   * @param {object} context - Context
    */
   captureAndFlow(context) {
     if (context) {

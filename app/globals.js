@@ -10,7 +10,6 @@ import {
 } from './models/patient.js'
 import { Reply, ReplyDecision } from './models/reply.js'
 import { User } from './models/user.js'
-import { Vaccination } from './models/vaccination.js'
 import { HealthQuestion } from './models/vaccine.js'
 import { getEnumKeyAndValue } from './utils/enum.js'
 import { formatLink, formatParent, pascalToKebabCase } from './utils/string.js'
