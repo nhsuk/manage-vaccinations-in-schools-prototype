@@ -11,7 +11,7 @@ export const triageController = {
     const updatedPatient = new Patient(patient)
     updatedPatient.recordTriage({
       ...data.triage,
-      ...(data.token && { created_user_uid: data.token?.uid })
+      ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
     data.patients[patient.uuid] = updatedPatient

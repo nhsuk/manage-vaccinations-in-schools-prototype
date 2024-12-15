@@ -13,8 +13,8 @@
       minute: "2-digit",
       hour12: true
     }) }}
-    {% if item.user_uid %}&middot;
-      {{ link(users[item.user_uid].uri, users[item.user_uid].fullName) | safe }}
+    {% if item.createdBy_uid %}&middot;
+      {{ link(users[item.createdBy_uid].uri, users[item.createdBy_uid].fullName) | safe }}
     {% endif %}
   </p>
 {%- endmacro %}

@@ -11,7 +11,7 @@ export const inviteController = {
     const session = new Session(
       {
         ...response.locals.session,
-        ...(data.token && { created_user_uid: data.token?.uid })
+        ...(data.token && { createdBy_uid: data.token?.uid })
       },
       data
     )

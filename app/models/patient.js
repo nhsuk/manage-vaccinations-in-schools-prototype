@@ -381,7 +381,7 @@ export class Patient extends Record {
       type: EventType.Select,
       name: `Selected for the ${cohort.name.replace('Flu', 'flu')} cohort`,
       date: cohort.created,
-      user_uid: cohort.created_user_uid
+      createdBy_uid: cohort.createdBy_uid
     })
   }
 
@@ -396,7 +396,7 @@ export class Patient extends Record {
       type: EventType.Select,
       name: `Removed from the ${cohort.name.replace('Flu', 'flu')} cohort`,
       date: cohort.created,
-      user_uid: cohort.created_user_uid
+      createdBy_uid: cohort.createdBy_uid
     })
   }
 
@@ -411,7 +411,7 @@ export class Patient extends Record {
       type: EventType.Invite,
       name: `Invited to the ${session.name}`,
       date: session.created,
-      user_uid: session.created_user_uid
+      createdBy_uid: session.createdBy_uid
     })
   }
 
@@ -426,7 +426,7 @@ export class Patient extends Record {
       type: EventType.Select,
       name: `Removed from the ${session.name}`,
       date: session.created,
-      user_uid: session.created_user_uid
+      createdBy_uid: session.createdBy_uid
     })
   }
 
@@ -440,7 +440,7 @@ export class Patient extends Record {
       type: EventType.Remind,
       name: `Reminder to give consent sent to ${target.fullName}`,
       date: getToday(),
-      user_uid: target.created_user_uid
+      createdBy_uid: target.createdBy_uid
     })
   }
 
@@ -458,7 +458,7 @@ export class Patient extends Record {
       name: `${created ? 'Completed' : 'Updated'} Gillick assessment`,
       note: gillick.note,
       date: created ? gillick.created : getToday(),
-      user_uid: gillick.created_user_uid
+      createdBy_uid: gillick.createdBy_uid
     })
   }
 
@@ -491,7 +491,7 @@ export class Patient extends Record {
       type: EventType.Consent,
       name,
       date: created ? reply.created : getToday(),
-      user_uid: reply.created_user_uid
+      createdBy_uid: reply.createdBy_uid
     })
   }
 
@@ -511,7 +511,7 @@ export class Patient extends Record {
       name: `Triaged decision: ${outcome}`,
       note: triage.note,
       date: getToday(),
-      user_uid: triage.created_user_uid,
+      createdBy_uid: triage.createdBy_uid,
       info_: triage
     })
   }
@@ -527,7 +527,7 @@ export class Patient extends Record {
       type: EventType.Capture,
       name: registration.name,
       date: getToday(),
-      user_uid: registration.created_user_uid
+      createdBy_uid: registration.createdBy_uid
     })
   }
 
@@ -542,7 +542,7 @@ export class Patient extends Record {
       name: 'Completed pre-screening checks',
       note: interview.note,
       date: getToday(),
-      user_uid: interview.user_uid
+      createdBy_uid: interview.createdBy_uid
     })
   }
 
@@ -569,7 +569,7 @@ export class Patient extends Record {
       name,
       note: vaccination.note,
       date: vaccination.updated || vaccination.created,
-      user_uid: vaccination.created_user_uid
+      createdBy_uid: vaccination.createdBy_uid
     })
   }
 

@@ -72,7 +72,7 @@ export class VaccinationProtocol {
  * @property {string} uuid - UUID
  * @property {Date} created - Vaccination date
  * @property {object} [created_] - Vaccination date (from `dateInput`)
- * @property {string} [created_user_uid] - User who performed vaccination
+ * @property {string} [createdBy_uid] - User who performed vaccination
  * @property {Date} [updated] - Vaccination updated date
  * @property {string} [location] - Location
  * @property {VaccinationOutcome} [outcome] - Outcome
@@ -95,7 +95,7 @@ export class Vaccination {
     this.uuid = options?.uuid || faker.string.uuid()
     this.created = options?.created ? new Date(options.created) : getToday()
     this.created_ = options?.created_
-    this.created_user_uid = options?.created_user_uid
+    this.createdBy_uid = options?.createdBy_uid
     this.updated = options?.updated ? new Date(options.updated) : undefined
     this.location = options?.location
     this.outcome = options?.outcome
@@ -236,14 +236,14 @@ export class Vaccination {
    *
    * @returns {User} - User
    */
-  get created_user() {
+  get createdBy() {
     try {
-      const user = this.context?.users[this.created_user_uid]
+      const user = this.context?.users[this.createdBy_uid]
       if (user) {
         return new User(user)
       }
     } catch (error) {
-      console.error('Vaccination.created_user', error.message)
+      console.error('Vaccination.createdBy', error.message)
     }
   }
 
@@ -308,7 +308,7 @@ export class Vaccination {
       created_date: formatDate(this.created, {
         dateStyle: 'long'
       }),
-      created_user: this.created_user?.fullName || '',
+      createdBy: this.createdBy?.fullName || '',
       updated: formatDate(this.updated, {
         day: 'numeric',
         month: 'long',

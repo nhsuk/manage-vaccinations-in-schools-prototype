@@ -17,7 +17,7 @@ export const remindController = {
 
     patient.sendReminder({
       fullName: patient.parent1.fullName,
-      ...(data.token && { user_uid: data.token?.uid })
+      ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
     response.redirect(paths.next)

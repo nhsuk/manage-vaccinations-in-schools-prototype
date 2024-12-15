@@ -20,7 +20,7 @@ export const downloadController = {
     const download = new Download({
       programme_pid: pid,
       vaccination_uuids: programme.vaccinations.map(({ uuid }) => uuid),
-      ...(data.token && { created_user_uid: data.token?.uid })
+      ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
     download.create(download, data.wizard)

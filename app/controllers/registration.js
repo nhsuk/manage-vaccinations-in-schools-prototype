@@ -49,7 +49,7 @@ export const registrationController = {
       const registration = new Registration({
         name: __(`registration.${key}.name`, { location: session.location }),
         registered,
-        ...(data.token && { created_user_uid: data.token?.uid })
+        ...(data.token && { createdBy_uid: data.token?.uid })
       })
       patient.registerAttendance(registration)
     } else if (
@@ -68,7 +68,7 @@ export const registrationController = {
         programme_pid: programme.pid,
         session_id: session.id,
         vaccine_gtin: programme.vaccine.gtin,
-        ...(data.token && { created_user_uid: data.token?.uid })
+        ...(data.token && { createdBy_uid: data.token?.uid })
       })
 
       // Capture and flow vaccination
