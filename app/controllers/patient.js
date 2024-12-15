@@ -207,7 +207,7 @@ export const patientController = {
     const { __ } = response.locals
 
     const patient = new Patient(Patient.read(nhsn, data.wizard), data)
-    request.flash('success', __('patient.success.update'))
+    request.flash('success', __('patient.edit.success'))
 
     patient.update(patient, data)
 

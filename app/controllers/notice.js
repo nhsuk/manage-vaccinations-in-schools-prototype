@@ -36,7 +36,7 @@ export const noticeController = {
     const { data } = request.session
     const { __, notice, paths } = response.locals
 
-    request.flash('success', __(`notice.success.delete`))
+    request.flash('success', __(`notice.delete.success`))
 
     notice.delete(data)
 

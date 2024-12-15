@@ -20,7 +20,7 @@ export const clinicController = {
       organisation_code: code
     })
 
-    request.flash('success', __(`clinic.success.create`, { clinic }))
+    request.flash('success', __(`clinic.new.success`, { clinic }))
 
     clinic.create(clinic, data)
 
@@ -50,7 +50,7 @@ export const clinicController = {
     const { data } = request.session
     const { __, clinic, paths } = response.locals
 
-    request.flash('success', __(`clinic.success.update`, { clinic }))
+    request.flash('success', __(`clinic.edit.success`, { clinic }))
 
     clinic.update(request.body.clinic, data)
 
@@ -70,7 +70,7 @@ export const clinicController = {
     const { data } = request.session
     const { __, clinic, paths } = response.locals
 
-    request.flash('success', __(`clinic.success.delete`))
+    request.flash('success', __(`clinic.delete.success`))
 
     clinic.delete(data)
 

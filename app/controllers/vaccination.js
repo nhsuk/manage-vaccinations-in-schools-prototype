@@ -138,8 +138,7 @@ export const vaccinationController = {
       Vaccination.read(uuid, data.wizard),
       data
     )
-    const action = form === 'edit' ? 'update' : 'create'
-    request.flash('success', __(`vaccination.success.${action}`))
+    request.flash('success', __(`vaccination.${form}.success`))
 
     vaccination.update(vaccination, data)
 

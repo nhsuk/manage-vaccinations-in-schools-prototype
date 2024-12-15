@@ -258,7 +258,7 @@ export const consentController = {
     // Link consent with patient record
     consent.linkToPatient(patient, data)
 
-    request.flash('success', __(`consent.success.link`, { consent, patient }))
+    request.flash('success', __(`consent.link.success`, { consent, patient }))
 
     response.redirect('/consents')
   },
@@ -295,7 +295,7 @@ export const consentController = {
     // Link consent with patient record
     consent.linkToPatient(patient, data)
 
-    request.flash('success', __(`consent.success.add`, { consent, patient }))
+    request.flash('success', __(`consent.add.success`, { consent, patient }))
 
     response.redirect('/consents')
   }

@@ -148,7 +148,7 @@ export const importController = {
       // Clean up
       delete data?.wizard?._import
 
-      request.flash('success', __('import.success.create'))
+      request.flash('success', __('import.new.success'))
 
       response.redirect(updatedImport.uri)
     } else {
@@ -189,7 +189,7 @@ export const importController = {
 
     // Doesn’t change any values, but shows a confirmation message
     if (decision === 'duplicate') {
-      request.flash('success', __('import.success.update'))
+      request.flash('success', __('import.review.success'))
     }
 
     response.redirect(back)

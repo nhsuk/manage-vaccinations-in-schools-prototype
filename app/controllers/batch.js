@@ -17,7 +17,7 @@ export const batchController = {
       vaccine_gtin: gtin
     })
 
-    request.flash('success', __(`batch.success.create`, { batch }))
+    request.flash('success', __(`batch.new.success`, { batch }))
 
     batch.create(batch, data)
 
@@ -41,7 +41,7 @@ export const batchController = {
     const { data } = request.session
     const { __, batch, paths } = response.locals
 
-    request.flash('success', __(`batch.success.update`, { batch }))
+    request.flash('success', __(`batch.edit.success`, { batch }))
 
     batch.update(request.body.batch, data)
 
@@ -62,7 +62,7 @@ export const batchController = {
     const { data } = request.session
     const { __, batch } = response.locals
 
-    request.flash('success', __(`batch.success.archive`, { batch }))
+    request.flash('success', __(`batch.archive.success`, { batch }))
 
     batch.archive(data)
 

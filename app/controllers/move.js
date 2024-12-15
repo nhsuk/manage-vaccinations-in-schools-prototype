@@ -46,7 +46,7 @@ export const moveController = {
     const { data } = request.session
     const { __, move } = response.locals
 
-    request.flash('success', __(`move.success.${decision}`, { move }))
+    request.flash('success', __(`move.${decision}.success`, { move }))
 
     decision === 'ignore' ? move.ignore(data) : move.switch(data)
 

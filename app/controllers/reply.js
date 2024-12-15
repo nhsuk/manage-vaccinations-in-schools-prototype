@@ -118,10 +118,9 @@ export const replyController = {
     delete request.app.locals.reply
     delete request.app.locals.triage
 
-    const action = form === 'edit' ? 'update' : 'create'
     request.flash(
       'success',
-      __(`reply.success.${action}`, { reply: updatedReply, patient, session })
+      __(`reply.${form}.success`, { reply: updatedReply, patient, session })
     )
 
     const next =
@@ -378,7 +377,7 @@ export const replyController = {
 
     delete data.reply
 
-    request.flash('success', __(`reply.success.invalidate`, { reply }))
+    request.flash('success', __(`reply.invalidate.success`, { reply }))
     response.redirect(getSessionPatientPath(session, patient))
   },
 
@@ -423,7 +422,7 @@ export const replyController = {
 
     delete data.reply
 
-    request.flash('success', __(`reply.success.withdraw`, { reply }))
+    request.flash('success', __(`reply.withdraw.success`, { reply }))
     response.redirect(getSessionPatientPath(session, patient))
   }
 }
