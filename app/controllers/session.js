@@ -147,13 +147,12 @@ export const sessionController = {
   },
 
   update(request, response) {
-    const { form, id } = request.params
+    const { id } = request.params
     const { data } = request.session
     const { __ } = response.locals
 
     const session = new Session(Session.read(id, data.wizard), data)
-    const action = form === 'edit' ? 'update' : 'create'
-    request.flash('success', __(`session.success.${action}`, { session }))
+    request.flash('success', __(`session.edit.success`, { session }))
 
     session.update(session, data)
 
@@ -218,7 +217,7 @@ export const sessionController = {
     const { data } = request.session
     const { __, couldNotVaccinate, noResponse, session } = response.locals
 
-    request.flash('success', __(`session.success.close`, { session }))
+    request.flash('success', __(`session.close.success`, { session }))
 
     // Update session as closed
     session.update({ closed: true }, data)

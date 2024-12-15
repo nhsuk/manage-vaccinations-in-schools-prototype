@@ -37,8 +37,7 @@ export const gillickController = {
 
     delete data.gillick
 
-    const action = form === 'edit' ? 'update' : 'create'
-    request.flash('success', __(`gillick.success.${action}`))
+    request.flash('success', __(`gillick.${form}.success`))
 
     response.redirect(paths.next)
   }

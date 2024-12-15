@@ -59,7 +59,7 @@ export const organisationController = {
     const { data } = request.session
     const { __, paths, organisation } = response.locals
 
-    request.flash('success', __(`organisation.success.update`))
+    request.flash('success', __(`organisation.edit.success`))
 
     organisation.update(request.body.organisation, data)
 

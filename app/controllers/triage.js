@@ -4,7 +4,7 @@ import { getSessionPatientPath } from '../utils/session.js'
 export const triageController = {
   update(request, response) {
     const { activity, session } = request.app.locals
-    const { form, id } = request.params
+    const { id } = request.params
     const { data } = request.session
     const { __, patient } = response.locals
 
@@ -18,10 +18,9 @@ export const triageController = {
 
     delete data.triage
 
-    const action = form === 'edit' ? 'update' : 'create'
     request.flash(
       'success',
-      __(`triage.success.${action}`, { patient: updatedPatient, session })
+      __(`triage.edit.success`, { patient: updatedPatient, session })
     )
 
     if (session.isActive) {

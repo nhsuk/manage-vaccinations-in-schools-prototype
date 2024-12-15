@@ -78,16 +78,20 @@
     "new": {
       "label": "Add a new batch",
       "title": "Add batch",
-      "confirm": "Add batch"
+      "confirm": "Add batch",
+      "success": "Batch {{batch.id}} added"
     },
     "edit": {
       "title": "Edit batch {{batch.id}}",
-      "confirm": "Save changes"
+      "confirm": "Save changes",
+      "success": "Batch {{batch.id}} updated"
     },
-    "success": {
-      "create": "Batch {{batch.id}} added",
-      "update": "Batch {{batch.id}} updated",
-      "archive": "Batch {{batch.id}} archived"
+    "action": {
+      "title": "Are you sure you want to %s this batch?",
+      "description": "This operation cannot be undone.",
+      "cancel": "No, return to vaccines",
+      "confirm": "Yes, %s this batch",
+      "success": "Batch {{batch.id}} archived"
     },
     "created": {
       "label": "Entered date"
@@ -101,12 +105,6 @@
     },
     "id": {
       "label": "Batch ID"
-    },
-    "action": {
-      "title": "Are you sure you want to %s this batch?",
-      "description": "This operation cannot be undone.",
-      "confirm": "Yes, %s this batch",
-      "cancel": "No, return to vaccines"
     }
   },
   "capture": {
@@ -149,20 +147,16 @@
     }
   },
   "clinic": {
-    "name": {
-      "label": "Name"
-    },
     "new": {
       "title": "Add a new clinic",
-      "confirm": "Add clinic"
+      "confirm": "Add clinic",
+      "success": "{{clinic.name}} created"
     },
     "edit": {
       "label": "Edit",
       "title": "Edit clinic",
-      "confirm": "Save changes"
-    },
-    "delete": {
-      "label": "Delete"
+      "confirm": "Save changes",
+      "success": "{{clinic.name}} updated"
     },
     "action": {
       "title": "Are you sure you want to %s this clinic?",
@@ -170,10 +164,12 @@
       "confirm": "Yes, %s this clinic",
       "cancel": "No, return to clinics"
     },
-    "success": {
-      "create": "{{clinic.name}} created",
-      "update": "{{clinic.name}} updated",
-      "delete": "Clinic deleted"
+    "delete": {
+      "label": "Delete",
+      "success": "Clinic deleted"
+    },
+    "name": {
+      "label": "Name"
     },
     "address": {
       "label": "Address"
@@ -334,14 +330,16 @@
     "link": {
       "title": "Link consent response with child record?",
       "caption": "Consent response from {{parent.fullName}}",
+      "summary": "Compare child details",
       "confirm": "Link response with record",
-      "summary": "Compare child details"
+      "success": "Consent response from {{consent.parent.fullName}} linked to [{{patient.fullName}}]({{patient.uri}})’s record"
     },
     "add": {
       "label": "Create record",
       "title": "Create a new child record from this consent response?",
       "caption": "Consent response from {{parent.fullName}}",
-      "confirm": "Create a new record from response"
+      "confirm": "Create a new record from response",
+      "success": "[{{patient.fullName}}]({{patient.uri}})’s record created from a consent response from {{consent.parent.fullName}}"
     },
     "start": {
       "title": {
@@ -375,10 +373,6 @@
         "confirm": "Confirm",
         "title": "Check and confirm"
       }
-    },
-    "success": {
-      "link": "Consent response from {{consent.parent.fullName}} linked to [{{patient.fullName}}]({{patient.uri}})’s record",
-      "add": "[{{patient.fullName}}]({{patient.uri}})’s record created from a consent response from {{consent.parent.fullName}}"
     },
     "created": {
       "label": "Response date"
@@ -678,15 +672,13 @@
     "text": "Before you make your assessment, you should give {{patient.firstName}} a chance to ask questions.",
     "new": {
       "title": "Assess Gillick competence",
-      "confirm": "Complete your assessment"
+      "confirm": "Complete your assessment",
+      "success": "Gillick assessment added"
     },
     "edit": {
       "title": "Edit Gillick competence",
-      "confirm": "Update assessment"
-    },
-    "success": {
-      "create": "Gillick assessment added",
-      "update": "Gillick assessment updated"
+      "confirm": "Update assessment",
+      "success": "Gillick assessment updated"
     },
     "q1": {
       "label": "The child knows which vaccination they will have"
@@ -733,16 +725,13 @@
   },
   "import": {
     "label": "Record import",
-    "success": {
-      "create": "Records imported for processing",
-      "update": "Record updated with values from duplicate record"
-    },
     "show": {
       "title": "Import ({{import.formatted.created}})",
       "summary": "Details"
     },
     "new": {
-      "label": "Import records"
+      "label": "Import records",
+      "success": "Records imported for processing"
     },
     "review": {
       "title": "Review duplicate child record",
@@ -768,6 +757,7 @@
         }
       },
       "confirm": "Resolve duplicate",
+      "success": "Record updated with values from duplicate record",
       "issue": {
         "label": "Issue to review",
         "title": "This record needs reviewing",
@@ -882,6 +872,12 @@
         "school": "Yes, move them to the upcoming school session"
       }
     },
+    "ignore": {
+      "success": "{{move.patient.fullName}}’s school move ignored"
+    },
+    "switch": {
+      "success": "{{move.patient.fullName}}’s record updated with new school"
+    },
     "count": {
       "one": "%s school move",
       "other": "[0] No school moves|%s school moves"
@@ -901,10 +897,6 @@
     },
     "movement": {
       "label": "Move"
-    },
-    "success": {
-      "ignore": "{{move.patient.fullName}}’s school move ignored",
-      "switch": "{{move.patient.fullName}}’s record updated with new school"
     }
   },
   "notice": {
@@ -913,6 +905,9 @@
       "label": "Notices",
       "title": "Important notices",
       "description": "View notices about important updates to patient records"
+    },
+    "delete": {
+      "success": "Notice archived"
     },
     "count": {
       "one": "%s notice",
@@ -926,9 +921,6 @@
       "description": "This operation cannot be undone.",
       "confirm": "Yes, %s this notice",
       "cancel": "No, return to notices"
-    },
-    "success": {
-      "delete": "Notice archived"
     }
   },
   "organisation": {
@@ -936,6 +928,9 @@
       "label": "Your organisation",
       "title": "Your organisation",
       "description": "Manage your organisation’s settings"
+    },
+    "edit": {
+      "success": "Organisation settings updated"
     },
     "contact": {
       "title": "Contact details",
@@ -963,9 +958,6 @@
     },
     "reminders": {
       "title": "Consent reminders"
-    },
-    "success": {
-      "update": "Organisation settings updated"
     },
     "name": {
       "label": "Name"
@@ -1071,13 +1063,11 @@
     },
     "edit": {
       "title": "Edit child record",
-      "summary": "Child’s details"
+      "summary": "Child’s details",
+      "success": "Child record updated"
     },
     "events": {
       "title": "Activity log"
-    },
-    "success": {
-      "update": "Child record updated"
     },
     "lastReminderDate": {
       "label": "Last reminder sent",
@@ -1402,13 +1392,34 @@
       "title": "Get consent response",
       "check-answers": {
         "title": "Check and confirm"
+      },
+      "success": "Consent response from {{reply.fullName}} added to [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})’s record"
+    },
+    "edit": {
+      "success": "Consent response from {{reply.fullName}} updated on [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})’s record"
+    },
+    "follow-up": {
+      "label": "Follow up",
+      "caption": "Consent response from {{reply.fullName}}",
+      "title": "Follow up refusal",
+      "decision": {
+        "label": "Does their original decision still stand?"
       }
     },
-    "success": {
-      "create": "Consent response from {{reply.fullName}} added to [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})’s record",
-      "update": "Consent response from {{reply.fullName}} updated on [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})’s record",
-      "invalidate": "Consent response from {{reply.fullName}} marked as invalid",
-      "withdraw": "Consent response from {{reply.fullName}} withdrawn"
+    "invalidate": {
+      "label": "Mark as invalid",
+      "caption": "Consent response from {{reply.fullName}}",
+      "title": "Mark response as invalid",
+      "description": "This operation cannot be undone.",
+      "confirm": "Mark response as invalid",
+      "success": "Consent response from {{reply.fullName}} marked as invalid"
+    },
+    "withdraw": {
+      "label": "Withdraw consent",
+      "caption": "Consent response from {{reply.fullName}}",
+      "title": "Withdraw consent",
+      "confirm": "Withdraw consent",
+      "success": "Consent response from {{reply.fullName}} withdrawn"
     },
     "created": {
       "label": "Date"
@@ -1468,27 +1479,6 @@
     "note": {
       "title": "Notes",
       "label": "Notes"
-    },
-    "follow-up": {
-      "caption": "Consent response from {{reply.fullName}}",
-      "title": "Follow up refusal",
-      "label": "Follow up",
-      "decision": {
-        "label": "Does their original decision still stand?"
-      }
-    },
-    "invalidate": {
-      "caption": "Consent response from {{reply.fullName}}",
-      "title": "Mark response as invalid",
-      "label": "Mark as invalid",
-      "confirm": "Mark response as invalid",
-      "description": "This operation cannot be undone."
-    },
-    "withdraw": {
-      "caption": "Consent response from {{reply.fullName}}",
-      "title": "Withdraw consent",
-      "label": "Withdraw consent",
-      "confirm": "Withdraw consent"
     },
     "outcome": {
       "title": "Update consent response"
@@ -1646,12 +1636,8 @@
       },
       "dates": {
         "title": "When will sessions be held?"
-      }
-    },
-    "success": {
-      "create": "{{session.name}} created",
-      "update": "{{session.name}} updated",
-      "close": "{{session.name}} has been closed"
+      },
+      "success": "{{session.name}} updated"
     },
     "patients": {
       "label": "Cohort",
@@ -1722,8 +1708,9 @@
     },
     "close": {
       "title": "Close session",
-      "confirm": "Close session",
       "description": "All sessions for this school have been completed.\n\nWhen you close this session, the following children will be invited to community clinics:",
+      "confirm": "Close session",
+      "success": "{{session.name}} has been closed",
       "couldNotVaccinate": {
         "count": {
           "one": "%s child who could not be vaccinated",
@@ -1807,11 +1794,8 @@
     "label": "Is it safe to vaccinate {{patient.firstName}}?",
     "confirm": "Save triage",
     "edit": {
-      "title": "Update triage outcome"
-    },
-    "success": {
-      "create": "Triage outcome updated for [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})",
-      "update": "Triage outcome updated for [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})"
+      "title": "Update triage outcome",
+      "success": "Triage outcome updated for [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})"
     },
     "note": {
       "label": "Triage notes"
@@ -1896,15 +1880,13 @@
         "title": "Check and confirm",
         "summary": "Vaccination details",
         "callout": "Vaccination was not given"
-      }
+      },
+      "success": "Vaccination recorded"
     },
     "edit": {
       "title": "Edit vaccination record",
-      "summary": "Vaccination details"
-    },
-    "success": {
-      "create": "Vaccination recorded",
-      "update": "Vaccination record updated"
+      "summary": "Vaccination details",
+      "success": "Vaccination record updated"
     },
     "created": {
       "label": "Vaccination date",
