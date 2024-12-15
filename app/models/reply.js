@@ -45,7 +45,7 @@ export class ReplyRefusal {
  * @property {object} [context] - Global context
  * @property {string} uuid - UUID
  * @property {Date} created - Created date
- * @property {string} [created_user_uid] - User who created reply
+ * @property {string} [createdBy_uid] - User who created reply
  * @property {Date} [updated] - Updated date
  * @property {import('./child.js').Child} [child] - Child
  * @property {import('./parent.js').Parent} [parent] - Parent or guardian
@@ -68,7 +68,7 @@ export class Reply {
     this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
     this.created = options?.created ? new Date(options.created) : getToday()
-    this.created_user_uid = options?.created_user_uid
+    this.createdBy_uid = options?.createdBy_uid
     this.updated = options?.updated ? new Date(options.updated) : undefined
     this.child = options?.child && new Child(options.child)
     this.parent = options?.parent && new Parent(options.parent)
@@ -123,14 +123,14 @@ export class Reply {
    *
    * @returns {User} - User
    */
-  get created_user() {
+  get createdBy() {
     try {
-      const user = this.context?.users[this.created_user_uid]
+      const user = this.context?.users[this.createdBy_uid]
       if (user) {
         return new User(user)
       }
     } catch (error) {
-      console.error('Reply.created_user', error.message)
+      console.error('Reply.createdBy', error.message)
     }
   }
 
@@ -191,7 +191,7 @@ export class Reply {
         minute: '2-digit',
         hour12: true
       }),
-      created_user: this.created_user?.fullName || '',
+      createdBy: this.createdBy?.fullName || '',
       decision: decision(),
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
       refusalReasonDetails: formatMarkdown(this.refusalReasonDetails),

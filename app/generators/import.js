@@ -35,7 +35,7 @@ export function generateImport(programme, record_nhsns, user, type) {
 
   return new Import({
     created,
-    created_user_uid: user.uid,
+    createdBy_uid: user.uid,
     programme_pid: programme.pid,
     status,
     type,

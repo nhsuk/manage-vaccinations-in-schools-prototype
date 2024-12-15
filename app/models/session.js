@@ -53,7 +53,7 @@ export class SessionType {
  * @property {object} [context] - Global context
  * @property {string} id - ID
  * @property {Date} [created] - Created date
- * @property {string} [created_user_uid] - User who created session
+ * @property {string} [createdBy_uid] - User who created session
  * @property {string} [clinic_id] - Clinic ID
  * @property {string} [school_urn] - School URN
  * @property {Array<Date>} [dates] - Dates
@@ -69,7 +69,7 @@ export class Session {
     this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('###')
     this.created = options?.created ? new Date(options.created) : getToday()
-    this.created_user_uid = options?.created_user_uid
+    this.createdBy_uid = options?.createdBy_uid
     this.clinic_id = options?.clinic_id
     this.school_urn = options?.school_urn
     this.dates = options?.dates

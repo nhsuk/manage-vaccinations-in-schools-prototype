@@ -28,7 +28,7 @@ export class ImportStatus {
  * @property {ImportStatus} status - Import status
  * @property {ImportType} type - Import type
  * @property {Date} created - Created date
- * @property {string} [created_user_uid] - User who created import
+ * @property {string} [createdBy_uid] - User who created import
  * @property {string} [programme_pid] - Programme ID
  * @property {Array<string>} [record_nhsns] - Record NHS numbers
  * @property {number} [devoid] - Exact duplicate records found
@@ -43,7 +43,7 @@ export class Import {
     this.status = options?.status || ImportStatus.Processing
     this.type = options?.type || ImportType.Cohort
     this.created = options?.created ? new Date(options.created) : getToday()
-    this.created_user_uid = options?.created_user_uid
+    this.createdBy_uid = options?.createdBy_uid
     this.programme_pid = options?.programme_pid
     this.validations = options?.validations || []
     this.record_nhsns = options?.record_nhsns || []
@@ -59,14 +59,14 @@ export class Import {
    *
    * @returns {User} - User
    */
-  get created_user() {
+  get createdBy() {
     try {
-      const user = this.context?.users[this.created_user_uid]
+      const user = this.context?.users[this.createdBy_uid]
       if (user) {
         return new User(user)
       }
     } catch (error) {
-      console.error('Import.created_user', error.message)
+      console.error('Import.createdBy', error.message)
     }
   }
 
@@ -121,7 +121,7 @@ export class Import {
         minute: '2-digit',
         hour12: true
       }),
-      created_user: this.created_user?.fullName || '',
+      createdBy: this.createdBy?.fullName || '',
       programme: this.programme.type
     }
   }

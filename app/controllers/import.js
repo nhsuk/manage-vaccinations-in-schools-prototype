@@ -67,7 +67,7 @@ export const importController = {
     const _import = new Import({
       programme_pid: pid,
       type,
-      ...(data.token && { created_user_uid: data.token?.uid })
+      ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
     data.wizard = { _import }

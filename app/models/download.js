@@ -27,7 +27,7 @@ export class DownloadFormat {
  * @property {object} [context] - Context
  * @property {string} id - Download ID
  * @property {Date} [created] - Created date
- * @property {string} [created_user_uid] - User who created download
+ * @property {string} [createdBy_uid] - User who created download
  * @property {Date} [updated] - Updated date
  * @property {Date} from - Date from
  * @property {object} [from_] - Date from (from `dateInput`)
@@ -43,7 +43,7 @@ export class Download {
     this.context = context
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
     this.created = options?.created ? new Date(options.created) : getToday()
-    this.created_user_uid = options?.created_user_uid
+    this.createdBy_uid = options?.createdBy_uid
     this.updated = options?.updated ? new Date(options.updated) : undefined
     this.from = options?.from ? new Date(options.from) : undefined
     this.from_ = options?.from_
@@ -289,7 +289,7 @@ export class Download {
             BATCH_EXPIRY_DATE: vaccination.batch?.expiry,
             ANATOMICAL_SITE: vaccination.injectionSite,
             VACCINATED: vaccination.given ? 'Y' : 'N',
-            PERFORMING_PROFESSIONAL: vaccination.created_user?.fullName
+            PERFORMING_PROFESSIONAL: vaccination.createdBy?.fullName
           }[header]
 
           return `"${(value || '').toString().replace(/"/g, '""')}"`

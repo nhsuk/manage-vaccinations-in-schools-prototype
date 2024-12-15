@@ -811,7 +811,7 @@
     "created": {
       "label": "Imported on"
     },
-    "created_user": {
+    "createdBy": {
       "label": "Imported by"
     },
     "programme": {
@@ -1424,7 +1424,7 @@
     "created": {
       "label": "Date"
     },
-    "created_user": {
+    "createdBy": {
       "label": "Recorded by"
     },
     "uuid": {
@@ -1900,12 +1900,9 @@
       "label": "Time",
       "hint": "For example, 13 15"
     },
-    "created_user_uid": {
+    "createdBy": {
       "label": "Nurse",
       "title": "Which nurse gave the vaccination?"
-    },
-    "created_user": {
-      "label": "Nurse"
     },
     "updated": {
       "label": "Record updated"

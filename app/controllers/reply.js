@@ -60,7 +60,7 @@ export const replyController = {
       session_id: session.id,
       selfConsent,
       ...(!selfConsent && { method: ReplyMethod.Phone }),
-      ...(data.token && { created_user_uid: data.token?.uid })
+      ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
     data.wizard = { reply }
@@ -106,7 +106,7 @@ export const replyController = {
       patient.recordTriage({
         ...triage,
         ...data?.wizard?.triage, // Wizard values
-        ...(data.token && { created_user_uid: data.token?.uid })
+        ...(data.token && { createdBy_uid: data.token?.uid })
       })
     }
 
@@ -292,7 +292,7 @@ export const replyController = {
         patient_uuid: patient.uuid,
         session_id: session.id,
         ...(data.reply?.note && { note: data.reply.note }),
-        ...(data.token && { created_user_uid: data.token?.uid })
+        ...(data.token && { createdBy_uid: data.token?.uid })
       }
     }
 
@@ -371,7 +371,7 @@ export const replyController = {
     patient.addReply({
       ...reply,
       ...(data.reply?.note && { note: data.reply.note }),
-      ...(data.token && { created_user_uid: data.token?.uid }),
+      ...(data.token && { createdBy_uid: data.token?.uid }),
       invalid: true
     })
 
@@ -405,7 +405,7 @@ export const replyController = {
       refusalReason,
       ...(refusalReason === ReplyRefusal.Other && { refusalReasonOther }),
       ...(data.reply?.note && { note }),
-      ...(data.token && { created_user_uid: data.token?.uid })
+      ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
     if (request.body.reply?.refusalReason === ReplyRefusal.AlreadyGiven) {
@@ -415,7 +415,7 @@ export const replyController = {
         programme_pid: programme.pid,
         session_id: session.id,
         ...(data.reply?.note && { note }),
-        ...(data.token && { created_user_uid: data.token?.uid })
+        ...(data.token && { createdBy_uid: data.token?.uid })
       })
       vaccination.captureAndFlow(data)
     }

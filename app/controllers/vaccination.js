@@ -112,7 +112,7 @@ export const vaccinationController = {
       programme_pid: programme.pid,
       session_id: session.id,
       vaccine_gtin: programme.vaccine.gtin,
-      ...(data.token && { created_user_uid: data.token?.uid }),
+      ...(data.token && { createdBy_uid: data.token?.uid }),
       ...(injectionSite && {
         dose: programme.vaccine.dose,
         injectionMethod: VaccinationMethod.Subcutaneous,

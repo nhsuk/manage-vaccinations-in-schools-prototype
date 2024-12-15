@@ -30,7 +30,7 @@ export const gillickController = {
     const updatedPatient = new Patient(patient)
     updatedPatient.assessGillick({
       ...request.body.gillick,
-      ...(data.token && { created_user_uid: data.token?.uid })
+      ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
     data.patients[patient.uuid] = updatedPatient
