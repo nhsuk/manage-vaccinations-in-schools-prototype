@@ -6,7 +6,7 @@ import {
   getRegistrationOutcome,
   getPatientOutcome
 } from '../utils/capture.js'
-import { removeDays, today } from '../utils/date.js'
+import { getDateValueDifference, removeDays, today } from '../utils/date.js'
 import {
   getConsentHealthAnswers,
   getConsentOutcome,
@@ -133,8 +133,8 @@ export class Patient extends Record {
    * @returns {object} - Events grouped by date
    */
   get groupedEvents() {
-    const events = this.events.sort(
-      (a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf()
+    const events = this.events.sort((a, b) =>
+      getDateValueDifference(b.createdAt, a.createdAt)
     )
 
     return Object.groupBy(events, (event) => {
