@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 import { Reply } from './reply.js'
 
 /**
@@ -26,63 +24,22 @@ export class Consent extends Reply {
   }
 
   /**
-   * Read all
+   * Link consent with patient record
    *
-   * @param {object} context - Context
-   * @returns {Array<Consent>|undefined} Consents
-   * @static
-   */
-  static readAll(context) {
-    return Object.values(context.replies)
-      .map((consent) => new Consent(consent, context))
-      .filter((consent) => !consent.patient_uuid)
-  }
-
-  /**
-   * Read
-   *
-   * @param {string} uuid - Consent UUID
-   * @param {object} context - Context
-   * @returns {Consent|undefined} Consent
-   * @static
-   */
-  static read(uuid, context) {
-    if (context?.replies) {
-      return new Consent(context.replies[uuid], context)
-    }
-  }
-
-  /**
-   * Create
-   *
-   * @param {Consent} consent - Consent
+   * @param {import('./patient.js').Patient} patient - Patient
    * @param {object} context - Context
    */
-  create(consent, context) {
-    consent = new Consent(consent)
+  linkToPatient(patient, context) {
+    // Link consent to patient, and patient to consent
+    this.patient_uuid = patient.uuid
+    patient.addReply(this)
 
-    // Update context
-    context.replies = context.replies || {}
-    context.replies[consent.uuid] = consent
-  }
-
-  /**
-   * Update
-   *
-   * @param {object} updates - Updates
-   * @param {object} context - Context
-   */
-  update(updates, context) {
-    this.updatedAt = new Date()
-
-    // Remove consent context
+    // Remove context to prevent circular dependencies
     delete this.context
+    delete patient.context
 
-    // Delete original download (with previous ID)
-    delete context.replies[this.uuid]
-
-    // Update context
-    const updatedConsent = _.merge(this, updates)
-    context.replies[updatedConsent.uuid] = updatedConsent
+    // Update context with updated values
+    context.replies[this.uuid] = this
+    context.patients[patient.uuid] = patient
   }
 }

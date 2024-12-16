@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import _ from 'lodash'
 
 import { formatDate, today } from '../utils/date.js'
 import {
@@ -235,22 +236,63 @@ export class Reply {
   }
 
   /**
-   * Link consent with patient record
+   * Read all
    *
-   * @param {import('./patient.js').Patient} patient - Patient
-   * @param {object} context - Global context
+   * @param {object} context - Context
+   * @returns {Array<Reply>|undefined} Replies
+   * @static
    */
-  linkToPatient(patient, context) {
-    // Link reply to patient, and patient to reply
-    this.patient_uuid = patient.uuid
-    patient.addReply(this)
+  static readAll(context) {
+    return Object.values(context.replies)
+      .map((reply) => new Reply(reply, context))
+      .filter((reply) => !reply.patient_uuid)
+  }
 
-    // Remove context to prevent circular dependencies
+  /**
+   * Read
+   *
+   * @param {string} uuid - Reply UUID
+   * @param {object} context - Context
+   * @returns {Reply|undefined} Reply
+   * @static
+   */
+  static read(uuid, context) {
+    if (context?.replies) {
+      return new Reply(context.replies[uuid], context)
+    }
+  }
+
+  /**
+   * Create
+   *
+   * @param {Reply} reply - Consent
+   * @param {object} context - Context
+   */
+  create(reply, context) {
+    reply = new Reply(reply)
+
+    // Update context
+    context.replies = context.replies || {}
+    context.replies[reply.uuid] = reply
+  }
+
+  /**
+   * Update
+   *
+   * @param {object} updates - Updates
+   * @param {object} context - Context
+   */
+  update(updates, context) {
+    this.updatedAt = new Date()
+
+    // Remove reply context
     delete this.context
-    delete patient.context
 
-    // Update context with updated values
-    context.replies[this.uuid] = this
-    context.patients[patient.uuid] = patient
+    // Delete original download (with previous ID)
+    delete context.replies[this.uuid]
+
+    // Update context
+    const updatedReply = _.merge(this, updates)
+    context.replies[updatedReply.uuid] = updatedReply
   }
 }
