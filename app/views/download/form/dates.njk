@@ -15,21 +15,21 @@
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--m",
-        text: __("download.from.label") + " (optional)"
+        text: __("download.startAt.label") + " (optional)"
       }
     },
-    hint: { text: __("download.from.hint") },
-    decorate: "download.from_"
+    hint: { text: __("download.startAt.hint") },
+    decorate: "download.startAt_"
   }) }}
 
   {{ dateInput({
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--m",
-        text: __("download.until.label") + " (optional)"
+        text: __("download.endAt.label") + " (optional)"
       }
     },
-    hint: { text: __("download.until.hint") },
-    decorate: "download.until_"
+    hint: { text: __("download.endAt.hint") },
+    decorate: "download.endAt_"
   }) }}
 {% endblock %}

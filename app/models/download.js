@@ -29,10 +29,10 @@ export class DownloadFormat {
  * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created download
  * @property {Date} [updatedAt] - Updated date
- * @property {Date} from - Date from
- * @property {object} [from_] - Date from (from `dateInput`)
- * @property {Date} until - Date until
- * @property {object} [until_] - Date until (from `dateInput`)
+ * @property {Date} [startAt] - Date to start report
+ * @property {object} [startAt_] - Date to start report from (from `dateInput`)
+ * @property {Date} [endAt] - Date to end report
+ * @property {object} [endAt_] - Date to end report (from `dateInput`)
  * @property {DownloadFormat} [format] - Downloaded file format
  * @property {string} [programme_pid] - Programme PID
  * @property {Array<string>} [organisation_codes] - Organisation ODC codes
@@ -47,10 +47,10 @@ export class Download {
       : getToday()
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
-    this.from = options?.from ? new Date(options.from) : undefined
-    this.from_ = options?.from_
-    this.until = options?.until ? new Date(options.until) : undefined
-    this.until_ = options?.until_
+    this.startAt = options?.startAt && new Date(options.startAt)
+    this.startAt_ = options?.startAt_
+    this.endAt = options?.endAt && new Date(options.endAt)
+    this.endAt_ = options?.endAt_
     this.format = options?.format || DownloadFormat.CSV
     this.programme_pid = options?.programme_pid
     this.organisation_codes = options?.organisation_codes
@@ -58,42 +58,42 @@ export class Download {
   }
 
   /**
-   * Get date from for `dateInput`
+   * Get start date for `dateInput`
    *
    * @returns {object|undefined} - `dateInput` object
    */
-  get from_() {
-    return convertIsoDateToObject(this.from)
+  get startAt_() {
+    return convertIsoDateToObject(this.startAt)
   }
 
   /**
-   * Set date from from `dateInput`
+   * Set start date from `dateInput`
    *
    * @param {object} object - dateInput object
    */
-  set from_(object) {
+  set startAt_(object) {
     if (object) {
-      this.from = convertObjectToIsoDate(object)
+      this.startAt = convertObjectToIsoDate(object)
     }
   }
 
   /**
-   * Get date until for `dateInput`
+   * Get end date for `dateInput`
    *
    * @returns {object|undefined} - `dateInput` object
    */
-  get until_() {
-    return convertIsoDateToObject(this.until)
+  get endAt_() {
+    return convertIsoDateToObject(this.endAt)
   }
 
   /**
-   * Set date until from `dateInput`
+   * Set end date from `dateInput`
    *
    * @param {object} object - dateInput object
    */
-  set until_(object) {
+  set endAt_(object) {
     if (object) {
-      this.until = convertObjectToIsoDate(object)
+      this.endAt = convertObjectToIsoDate(object)
     }
   }
 
@@ -309,11 +309,11 @@ export class Download {
    */
   get formatted() {
     return {
-      from: this.from
-        ? formatDate(this.from, { dateStyle: 'long' })
+      startAt: this.startAt
+        ? formatDate(this.startAt, { dateStyle: 'long' })
         : 'Earliest recorded vaccination',
-      until: this.until
-        ? formatDate(this.until, { dateStyle: 'long' })
+      endAt: this.endAt
+        ? formatDate(this.endAt, { dateStyle: 'long' })
         : 'Latest recorded vaccination',
       organisations:
         this.organisations.length > 0
