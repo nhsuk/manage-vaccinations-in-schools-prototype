@@ -17,16 +17,16 @@ export function generateBatch(vaccine_gtin, id) {
   vaccine_gtin =
     vaccine_gtin || faker.helpers.arrayElement(Object.keys(vaccines))
 
-  let archived
+  let archivedAt
   const isArchived = faker.datatype.boolean(0.5)
   if (isArchived) {
-    archived = addDays(createdAt, 60)
+    archivedAt = addDays(createdAt, 60)
   }
 
   return new Batch({
     id,
     createdAt,
-    ...(isArchived && { archived }),
+    ...(isArchived && { archivedAt }),
     expiry,
     vaccine_gtin
   })

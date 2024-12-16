@@ -204,7 +204,7 @@ export const vaccinationController = {
 
     response.locals.batchItems = Batch.readAll(data)
       .filter((batch) => batch.vaccine.type === programme.type)
-      .filter((batch) => !batch.archived)
+      .filter((batch) => !batch.archivedAt)
 
     response.locals.injectionMethodItems = Object.entries(VaccinationMethod)
       .filter(([, value]) => value !== VaccinationMethod.Nasal)
