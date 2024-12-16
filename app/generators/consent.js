@@ -1,25 +1,21 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import {
-  Reply,
-  ReplyDecision,
-  ReplyMethod,
-  ReplyRefusal
-} from '../models/reply.js'
+import { Consent } from '../models/consent.js'
+import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { today } from '../utils/date.js'
 import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
 
 import { generateParent } from './parent.js'
 
 /**
- * Generate fake reply
+ * Generate fake consent
  *
  * @param {import('../models/programme.js').Programme} programme - Programme
  * @param {import('../models/session.js').Session} session - Session
  * @param {import('../models/patient.js').Patient} patient - Patient
- * @returns {Reply|undefined} - Reply
+ * @returns {Consent|undefined} - Consent
  */
-export function generateReply(programme, session, patient) {
+export function generateConsent(programme, session, patient) {
   const firstReply = Object.entries(patient.replies).length === 0
   const child = patient
   const parent = firstReply ? patient.parent1 : generateParent(patient.lastName)
@@ -40,12 +36,12 @@ export function generateReply(programme, session, patient) {
   const sessionClosedBeforeToday = session.closeAt.valueOf() < nowAt.valueOf()
   const sessionOpensAfterToday = session.openAt.valueOf() > nowAt.valueOf()
 
-  // If session hasn’t opened yet, don’t generate a reply
+  // If session hasn’t opened yet, don’t generate a consent
   if (sessionOpensAfterToday) {
     return
   }
 
-  return new Reply({
+  return new Consent({
     createdAt: faker.date.between({
       from: session.openAt,
       to: sessionClosedBeforeToday ? session.closeAt : nowAt
