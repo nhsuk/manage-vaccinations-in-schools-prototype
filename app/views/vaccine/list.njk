@@ -23,7 +23,7 @@
       }) }}
 
       {% set batchRows = [] %}
-      {% for batch in vaccine.batches | rejectattr("archived") | sort(false, false, "id") %}
+      {% for batch in vaccine.batches | rejectattr("archivedAt") | sort(false, false, "id") %}
         {% set batchRows = batchRows | push([
           {
             header: __("batch.id.label"),

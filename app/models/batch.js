@@ -19,7 +19,7 @@ import { Vaccine } from './vaccine.js'
  * @property {string} id - Batch ID
  * @property {Date} [createdAt] - Created date
  * @property {Date} [updatedAt] - Updated date
- * @property {Date} [archived] - Archived date
+ * @property {Date} [archivedAt] - Archived date
  * @property {Date} [expiry] - Expiry date
  * @property {object} [expiry_] - Expiry date (from `dateInput`)
  * @property {string} [vaccine_gtin] - Vaccine GTIN
@@ -32,7 +32,7 @@ export class Batch {
       ? new Date(options.createdAt)
       : getToday()
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
-    this.archived = options?.archived && new Date(options.archived)
+    this.archivedAt = options?.archivedAt && new Date(options.archivedAt)
     this.expiry = options?.expiry ? new Date(options.expiry) : undefined
     this.expiry_ = options?.expiry_
     this.vaccine_gtin = options?.vaccine_gtin
@@ -73,7 +73,7 @@ export class Batch {
    * @returns {string} - Name
    */
   get summary() {
-    const prefix = isBefore(this.archived, getToday()) ? 'Expired' : 'Expires'
+    const prefix = isBefore(this.archivedAt, getToday()) ? 'Expired' : 'Expires'
 
     return `${this.formatted.id}<br>\n<span class="nhsuk-u-secondary-text-color">${prefix} ${this.formatted.expiry}</span>`
   }
@@ -172,7 +172,7 @@ export class Batch {
    * @param {object} context - Context
    */
   archive(context) {
-    this.archived = new Date()
+    this.archivedAt = new Date()
 
     // Remove batch context
     delete this.context
