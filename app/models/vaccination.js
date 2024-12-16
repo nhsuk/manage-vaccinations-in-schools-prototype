@@ -8,7 +8,6 @@ import {
   formatDate,
   today
 } from '../utils/date.js'
-import { createMap } from '../utils/object.js'
 import {
   formatLink,
   formatMillilitres,
@@ -414,30 +413,5 @@ export class Vaccination {
     // Update context
     const updatedVaccination = Object.assign(this, updates)
     context.vaccinations[updatedVaccination.uuid] = updatedVaccination
-  }
-
-  /**
-   * Capture and flow vaccination
-   *
-   * @param {object} context - Context
-   */
-  captureAndFlow(context) {
-    if (context) {
-      // Capture vaccination
-      const vaccinations = createMap(context.vaccinations)
-      vaccinations.set(this.uuid, this)
-
-      // Update patient record
-      const patients = createMap(context.patients)
-      const patient = patients.get(this.patient_uuid)
-      patient.captureVaccination(this)
-
-      // Flow vaccination to CHIS record
-      if (this.given) {
-        const records = createMap(context.records)
-        const record = records.get(patient.nhsn)
-        record.vaccination_uuids.push(this.uuid)
-      }
-    }
   }
 }

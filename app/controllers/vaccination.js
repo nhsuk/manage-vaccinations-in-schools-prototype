@@ -142,9 +142,6 @@ export const vaccinationController = {
 
     vaccination.update(vaccination, data)
 
-    // TODO: Decide if this is still the right approach
-    // vaccination.captureAndFlow(data)
-
     // Clean up session data
     delete data.preScreen
     delete data.vaccination
