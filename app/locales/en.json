@@ -529,7 +529,7 @@
     },
     "confirmation": {
       "title": {
-        "Given": "{{consent.child.fullName}} is due to get the {{programme.vaccine.name}} vaccination at school on {{session.formatted.date}}",
+        "Given": "{{consent.child.fullName}} is due to get the {{programme.vaccine.name}} vaccination at school on {{session.summary.dates}}",
         "Refused": "You’ve told us that you do not want your child to get the {{programme.vaccine.name}} vaccine at school"
       },
       "description": {
