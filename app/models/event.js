@@ -16,21 +16,23 @@ export class EventType {
 /**
  * @class Audit event
  * @property {string} uuid - UUID
- * @property {Date} date - Creation date
+ * @property {Date} [createdAt] - Created date
+ * @property {string} [createdBy_uid] - User who created event
  * @property {EventType} type - Activity type
  * @property {string} name - Name
  * @property {string} [note] - Note
- * @property {string} [user_uid] - User UUID
  * @property {object} [info_] - Temporary information storage object
  */
 export class Event {
   constructor(options) {
     this.uuid = options.uuid || faker.string.uuid()
-    this.date = new Date(options.date) || getToday()
+    this.createdAt = options?.createdAt
+      ? new Date(options.createdAt)
+      : getToday()
+    this.createdBy_uid = options?.createdBy_uid
     this.type = options.type
     this.name = options.name
     this.note = options.note
-    this.user_uid = options?.user_uid
     this.info_ = options?.info_
   }
 
@@ -41,10 +43,10 @@ export class Event {
    */
   get formatted() {
     return {
-      date: formatDate(this.date, {
+      createdAt: formatDate(this.createdAt, {
         dateStyle: 'long'
       }),
-      datetime: formatDate(this.date, {
+      datetime: formatDate(this.createdAt, {
         day: 'numeric',
         month: 'long',
         year: 'numeric',

@@ -8,7 +8,7 @@ export const preScreenController = {
     // Pre-screen interview
     patient.preScreen({
       note: data.preScreen.note,
-      ...(data.token && { user_uid: data.token?.uid })
+      ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
     const referrer = getSessionPatientPath(session, patient)

@@ -138,7 +138,7 @@ export class Patient extends Record {
     )
 
     return Object.groupBy(events, (event) => {
-      return new Event(event).formatted.date
+      return new Event(event).formatted.createdAt
     })
   }
 
@@ -380,8 +380,8 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Select,
       name: `Selected for the ${cohort.name.replace('Flu', 'flu')} cohort`,
-      date: cohort.createdAt,
-      user_uid: cohort.createdBy_uid
+      createdAt: cohort.createdAt,
+      createdBy_uid: cohort.createdBy_uid
     })
   }
 
@@ -395,8 +395,8 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Select,
       name: `Removed from the ${cohort.name.replace('Flu', 'flu')} cohort`,
-      date: cohort.createdAt,
-      user_uid: cohort.createdBy_uid
+      createdAt: cohort.createdAt,
+      createdBy_uid: cohort.createdBy_uid
     })
   }
 
@@ -410,8 +410,8 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Invite,
       name: `Invited to the ${session.name}`,
-      date: session.createdAt,
-      user_uid: session.createdBy_uid
+      createdAt: session.createdAt,
+      createdBy_uid: session.createdBy_uid
     })
   }
 
@@ -425,8 +425,8 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Select,
       name: `Removed from the ${session.name}`,
-      date: session.createdAt,
-      user_uid: session.createdBy_uid
+      createdAt: session.createdAt,
+      createdBy_uid: session.createdBy_uid
     })
   }
 
@@ -439,8 +439,7 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Remind,
       name: `Reminder to give consent sent to ${target.fullName}`,
-      date: getToday(),
-      user_uid: target.createdBy_uid
+      createdBy_uid: target.createdBy_uid
     })
   }
 
@@ -457,8 +456,8 @@ export class Patient extends Record {
       type: EventType.Consent,
       name: `${isNew ? 'Completed' : 'Updated'} Gillick assessment`,
       note: gillick.note,
-      date: isNew ? gillick.createdAt : getToday(),
-      user_uid: gillick.createdBy_uid
+      createdAt: isNew ? gillick.createdAt : getToday(),
+      createdBy_uid: gillick.createdBy_uid
     })
   }
 
@@ -490,8 +489,8 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Consent,
       name,
-      date: isNew ? reply.createdAt : getToday(),
-      user_uid: reply.createdBy_uid
+      createdAt: isNew ? reply.createdAt : getToday(),
+      createdBy_uid: reply.createdBy_uid
     })
   }
 
@@ -510,8 +509,7 @@ export class Patient extends Record {
       type: EventType.Screen,
       name: `Triaged decision: ${outcome}`,
       note: triage.note,
-      date: getToday(),
-      user_uid: triage.createdBy_uid,
+      createdBy_uid: triage.createdBy_uid,
       info_: triage
     })
   }
@@ -526,8 +524,7 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Capture,
       name: registration.name,
-      date: getToday(),
-      user_uid: registration.createdBy_uid
+      createdBy_uid: registration.createdBy_uid
     })
   }
 
@@ -541,8 +538,7 @@ export class Patient extends Record {
       type: EventType.Screen,
       name: 'Completed pre-screening checks',
       note: interview.note,
-      date: getToday(),
-      user_uid: interview.user_uid
+      createdBy_uid: interview.createdBy_uid
     })
   }
 
@@ -568,8 +564,8 @@ export class Patient extends Record {
       type: EventType.Capture,
       name,
       note: vaccination.note,
-      date: vaccination.updatedAt || vaccination.createdAt,
-      user_uid: vaccination.createdBy_uid
+      createdAt: vaccination.updatedAt || vaccination.createdAt,
+      createdBy_uid: vaccination.createdBy_uid
     })
   }
 
@@ -606,7 +602,7 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Notice,
       name,
-      date: notice.createdAt
+      createdAt: notice.createdAt
     })
   }
 
