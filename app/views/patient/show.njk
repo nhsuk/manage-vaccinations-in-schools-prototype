@@ -80,7 +80,7 @@
 
       {% if patient.cohorts.length %}
         {% set cohortRows = [] %}
-        {% for cohort in patient.cohorts | sort(false, false, "created") %}
+        {% for cohort in patient.cohorts | sort(false, false, "createdAt") %}
           {% set cohortRows = cohortRows | push([
             {
               header: __("cohort.name.label"),
@@ -117,7 +117,7 @@
     {% set sessionsDescriptionHtml %}
       {% if patient.sessions.length %}
         {% set sessionRows = [] %}
-        {% for session in patient.sessions | sort(false, false, "created") %}
+        {% for session in patient.sessions | sort(false, false, "createdAt") %}
           {% set sessionRows = sessionRows | push([
             {
               header: __("session.location.label"),
@@ -159,18 +159,18 @@
     {% set vaccinationsDescriptionHtml %}
       {% if patient.vaccinations.length %}
         {% set vaccinationRows = [] %}
-        {% for vaccination in patient.vaccinations | sort(false, false, "created") %}
+        {% for vaccination in patient.vaccinations | sort(false, false, "createdAt") %}
           {% set vaccinationRows = vaccinationRows | push([
             {
               header: __("vaccination.vaccine_gtin.label"),
               html: vaccination.link.vaccine_gtin
             },
             {
-              header: __("vaccination.created.label"),
-              text: vaccination.formatted.created_date,
+              header: __("vaccination.createdAt.label"),
+              text: vaccination.formatted.createdAt_date,
               attributes: {
-                "data-col": "created",
-                "data-sort": vaccination.created
+                "data-col": "createdAt",
+                "data-sort": vaccination.createdAt
               }
             },
             {
@@ -183,11 +183,11 @@
         {{ actionTable({
           id: "vaccinations",
           classes: "nhsuk-u-margin-bottom-4",
-          sort: "created",
+          sort: "createdAt",
           responsive: true,
           head: [
             { text: __("vaccination.vaccine_gtin.label") },
-            { text: __("vaccination.created.label") },
+            { text: __("vaccination.createdAt.label") },
             { text: __("vaccination.location.label") }
           ],
           rows: vaccinationRows

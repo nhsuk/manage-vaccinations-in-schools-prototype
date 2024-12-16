@@ -11,7 +11,7 @@ export const moveController = {
     let moves = Move.readAll(data)
 
     // Sort
-    moves = _.sortBy(moves, 'created')
+    moves = _.sortBy(moves, 'createdAt')
 
     // Paginate
     page = parseInt(page) || 1

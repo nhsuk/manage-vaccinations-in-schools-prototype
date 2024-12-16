@@ -17,7 +17,7 @@ import { Vaccine } from './vaccine.js'
  * @param {object} [context] - Context
  * @property {object} [context] - Context
  * @property {string} id - Batch ID
- * @property {Date} [created] - Created date
+ * @property {Date} [createdAt] - Created date
  * @property {Date} [updatedAt] - Updated date
  * @property {Date} [archived] - Archived date
  * @property {Date} [expiry] - Expiry date
@@ -28,7 +28,9 @@ export class Batch {
   constructor(options, context) {
     this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('??####')
-    this.created = options?.created ? new Date(options.created) : getToday()
+    this.createdAt = options?.createdAt
+      ? new Date(options.createdAt)
+      : getToday()
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.archived = options?.archived && new Date(options.archived)
     this.expiry = options?.expiry ? new Date(options.expiry) : undefined
@@ -98,12 +100,12 @@ export class Batch {
    * @returns {object} - Formatted values
    */
   get formatted() {
-    const created = formatDate(this.created, { dateStyle: 'long' })
+    const createdAt = formatDate(this.createdAt, { dateStyle: 'long' })
     const updatedAt = formatDate(this.updatedAt, { dateStyle: 'long' })
     const expiry = formatDate(this.expiry, { dateStyle: 'long' })
     const id = formatMonospace(this.id)
 
-    return { created, updatedAt, expiry, id }
+    return { createdAt, updatedAt, expiry, id }
   }
 
   /**

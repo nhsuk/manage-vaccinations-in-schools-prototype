@@ -30,10 +30,10 @@
             html: batch.formatted.id
           },
           {
-            header: __("batch.created.label"),
-            html: batch.formatted.created or "Not provided",
+            header: __("batch.createdAt.label"),
+            html: batch.formatted.createdAt or "Not provided",
             attributes: {
-              "data-sort": batch.created
+              "data-sort": batch.createdAt
             }
           },
           {
@@ -64,7 +64,7 @@
         responsive: true,
         head: [
           { text: __("batch.id.label") },
-          { text: __("batch.created.label") },
+          { text: __("batch.createdAt.label") },
           { text: __("batch.expiry.label") },
           { text: __("actions.label") }
         ],

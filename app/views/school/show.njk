@@ -25,7 +25,7 @@
 
   {% for yearGroup, records in school.recordsByYearGroup %}
     {% set recordRows = [] %}
-    {% for record in records | sort(false, false, "created") %}
+    {% for record in records | sort(false, false, "createdAt") %}
       {% set recordRows = recordRows | push([
         {
           header: __("record.fullName.label"),

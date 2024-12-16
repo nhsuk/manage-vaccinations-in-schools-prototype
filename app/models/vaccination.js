@@ -70,8 +70,8 @@ export class VaccinationProtocol {
  * @param {object} [context] - Global context
  * @property {object} [context] - Global context
  * @property {string} uuid - UUID
- * @property {Date} created - Created date
- * @property {object} [created_] - Created date (from `dateInput`)
+ * @property {Date} [createdAt] - Created date
+ * @property {object} [createdAt_] - Created date (from `dateInput`)
  * @property {string} [createdBy_uid] - User who performed vaccination
  * @property {Date} [updatedAt] - Updated date
  * @property {string} [location] - Location
@@ -93,8 +93,10 @@ export class Vaccination {
   constructor(options, context) {
     this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
-    this.created = options?.created ? new Date(options.created) : getToday()
-    this.created_ = options?.created_
+    this.createdAt = options?.createdAt
+      ? new Date(options.createdAt)
+      : getToday()
+    this.createdAt_ = options?.createdAt_
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.location = options?.location
@@ -122,8 +124,8 @@ export class Vaccination {
    *
    * @returns {object|undefined} - `dateInput` object
    */
-  get created_() {
-    return convertIsoDateToObject(this.created)
+  get createdAt_() {
+    return convertIsoDateToObject(this.createdAt)
   }
 
   /**
@@ -131,9 +133,9 @@ export class Vaccination {
    *
    * @param {object} object - dateInput object
    */
-  set created_(object) {
+  set createdAt_(object) {
     if (object) {
-      this.created = convertObjectToIsoDate(object)
+      this.createdAt = convertObjectToIsoDate(object)
     }
   }
 
@@ -297,7 +299,7 @@ export class Vaccination {
    */
   get formatted() {
     return {
-      created: formatDate(this.created, {
+      createdAt: formatDate(this.createdAt, {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
@@ -305,7 +307,7 @@ export class Vaccination {
         minute: '2-digit',
         hour12: true
       }),
-      created_date: formatDate(this.created, {
+      createdAt_date: formatDate(this.createdAt, {
         dateStyle: 'long'
       }),
       createdBy: this.createdBy?.fullName || '',

@@ -17,7 +17,7 @@ export class NoticeType {
  * @param {object} [context] - Context
  * @property {object} [context] - Context
  * @property {string} uuid - UUID
- * @property {Date} [created] - Created date
+ * @property {Date} [createdAt] - Created date
  * @property {NoticeType} type - Notice type
  * @property {string} patient_uuid - Patient notice applies to
  */
@@ -25,7 +25,9 @@ export class Notice {
   constructor(options, context) {
     this.context = context
     this.uuid = options.uuid || faker.string.uuid()
-    this.created = options?.created ? new Date(options.created) : getToday()
+    this.createdAt = options?.createdAt
+      ? new Date(options.createdAt)
+      : getToday()
     this.type = options.type
     this.patient_uuid = options.patient_uuid
   }
@@ -53,9 +55,7 @@ export class Notice {
    */
   get formatted() {
     return {
-      created: formatDate(this.created, {
-        dateStyle: 'long'
-      })
+      createdAt: formatDate(this.createdAt, { dateStyle: 'long' })
     }
   }
 

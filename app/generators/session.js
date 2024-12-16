@@ -75,7 +75,7 @@ export function generateSession(programme_pids, term, user, options) {
   }
 
   return new Session({
-    created: removeDays(getToday(), 70),
+    createdAt: removeDays(getToday(), 70),
     createdBy_uid: user.uid,
     dates,
     programme_pids,

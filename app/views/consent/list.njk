@@ -11,11 +11,11 @@
   }) }}
 
   {% set consentRows = [] %}
-  {% for consent in consents | sort(false, false, "created") %}
+  {% for consent in consents | sort(false, false, "createdAt") %}
     {% set consentRows = consentRows | push([
       {
-        header: __("consent.created.label"),
-        text: consent.formatted.created
+        header: __("consent.createdAt.label"),
+        text: consent.formatted.createdAt
       },
       {
         header: __("consent.child.label"),
@@ -43,13 +43,13 @@
   {% if consents.length %}
     {{ actionTable({
       id: "consents",
-      sort: "created",
+      sort: "createdAt",
       heading: __n("consent.count", consents.length),
       panel: true,
       responsive: true,
       head: [
         {
-          text: __("consent.created.label") or "Not provided"
+          text: __("consent.createdAt.label") or "Not provided"
         },
         {
           text: __("consent.child.label") or "Not provided"

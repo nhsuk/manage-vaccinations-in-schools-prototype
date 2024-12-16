@@ -17,7 +17,7 @@ export class MoveSource {
  * @param {object} [context] - Context
  * @property {object} [context] - Context
  * @property {string} uuid - UUID
- * @property {Date} [created] - Reported date
+ * @property {Date} [createdAt] - Reported date
  * @property {Date} [updatedAt] - Updated date
  * @property {string} from - Current school URN (moving from)
  * @property {string} to - Proposed school URN (moving to)
@@ -29,7 +29,9 @@ export class Move {
   constructor(options, context) {
     this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
-    this.created = options?.created ? new Date(options.created) : getToday()
+    this.createdAt = options?.createdAt
+      ? new Date(options.createdAt)
+      : getToday()
     this.updatedAt = options?.updatedAt
       ? new Date(options.updatedAt)
       : undefined
@@ -67,7 +69,7 @@ export class Move {
    */
   get formatted() {
     return {
-      created: formatDate(this.created, { dateStyle: 'long' }),
+      createdAt: formatDate(this.createdAt, { dateStyle: 'long' }),
       from: schools[this.from].name,
       to: schools[this.to].name
     }

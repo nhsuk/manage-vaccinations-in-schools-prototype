@@ -44,7 +44,7 @@ export class ReplyRefusal {
  * @param {object} [context] - Global context
  * @property {object} [context] - Global context
  * @property {string} uuid - UUID
- * @property {Date} created - Created date
+ * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created reply
  * @property {Date} [updatedAt] - Updated date
  * @property {import('./child.js').Child} [child] - Child
@@ -67,7 +67,9 @@ export class Reply {
   constructor(options, context) {
     this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
-    this.created = options?.created ? new Date(options.created) : getToday()
+    this.createdAt = options?.createdAt
+      ? new Date(options.createdAt)
+      : getToday()
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.child = options?.child && new Child(options.child)
@@ -183,7 +185,7 @@ export class Reply {
     }
 
     return {
-      created: formatDate(this.created, {
+      createdAt: formatDate(this.createdAt, {
         day: 'numeric',
         month: 'long',
         year: 'numeric',

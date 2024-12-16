@@ -49,9 +49,9 @@
             dose: {},
             sequence: {},
             batch_id: {},
-            created: {},
-            updatedAt: {},
+            createdAt: {},
             createdBy: {},
+            updatedAt: {},
             location: {},
             protocol: {},
             note: {}
@@ -177,7 +177,7 @@
           __("consent." + patient.consent.key + ".colour")
         ) }}
         {% set replyRows = [] %}
-        {% for reply in replies | sort(false, false, "created") %}
+        {% for reply in replies | sort(false, false, "createdAt") %}
           {% set replyColour = replyStatus(reply).colour %}
           {% set replyModifier = "grey" if reply.invalid else replyColour %}
           {% set replyRows = replyRows | push([
@@ -188,10 +188,10 @@
             },
             {
               classes: "app-table__cell-status--" + replyModifier,
-              header: __("reply.created.label"),
-              html: reply.formatted.created or "Not provided",
+              header: __("reply.createdAt.label"),
+              html: reply.formatted.createdAt or "Not provided",
               attributes: {
-                "data-sort": reply.created
+                "data-sort": reply.createdAt
               }
             },
             {
@@ -205,11 +205,11 @@
         {{ actionTable({
           id: "consents",
           classes: "nhsuk-u-margin-bottom-4",
-          sort: "created",
+          sort: "createdAt",
           responsive: true,
           head: [
             { text: __("parent.fullName.label") },
-            { text: __("reply.created.label") },
+            { text: __("reply.createdAt.label") },
             { text: __("reply.decision.label") }
           ],
           rows: replyRows

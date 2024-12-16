@@ -1,0 +1,44 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("vaccination.createdAt.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: vaccination.patient.fullName,
+    title: title
+  }) }}
+
+  {{ dateInput({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("vaccination.createdAt_date.label")
+      }
+    },
+    hint: { text: __("vaccination.createdAt_date.hint") },
+    decorate: "vaccination.createdAt_"
+  }) }}
+
+  {{ dateInput({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("vaccination.createdAt_time.label")
+      }
+    },
+    hint: { text: __("vaccination.createdAt_time.hint") },
+    items: [{
+      classes: "nhsuk-input--width-2",
+      label: "Hour",
+      id: "vaccination-createdAt_-hour",
+      name: "[vaccination][createdAt_][hour]",
+      value: vaccination.createdAt_.hour
+    }, {
+      classes: "nhsuk-input--width-2",
+      label: "Minute",
+      id: "vaccination-createdAt_-minute",
+      name: "[vaccination][createdAt_][minute]",
+      value: vaccination.createdAt_.minute
+    }]
+  }) }}
+{% endblock %}

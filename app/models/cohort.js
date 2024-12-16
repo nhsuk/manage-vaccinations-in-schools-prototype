@@ -14,7 +14,7 @@ export class AcademicYear {
  * @param {object} [context] - Context
  * @property {object} [context] - Context
  * @property {string} uid - UID
- * @property {string} created - Created date
+ * @property {string} createdAt - Created date
  * @property {string} [createdBy_uid] - User who created cohort
  * @property {AcademicYear} year - Academic year
  * @property {number} yearGroup - Year group
@@ -28,7 +28,7 @@ export class Cohort {
     const year = options?.year || AcademicYear.Y2024
 
     this.context = context
-    this.created = options?.created || `${year.split('/')[0]}-08-01`
+    this.createdAt = options?.createdAt || `${year.split('/')[0]}-08-01`
     this.createdBy_uid = options?.createdBy_uid
     this.year = year
     this.yearGroup = options?.yearGroup

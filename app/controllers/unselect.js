@@ -11,7 +11,7 @@ export const unselectController = {
     const cohort = new Cohort(
       {
         ...data.cohorts[uid],
-        ...{ created: getToday() },
+        ...{ createdAt: getToday() },
         ...(data.token && { createdBy_uid: data.token?.uid })
       },
       data

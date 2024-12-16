@@ -54,7 +54,7 @@
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(import, {
-        created: {},
+        createdAt: {},
         createdBy: {},
         programme: {},
         type: {},
@@ -139,8 +139,8 @@
         header: __("record.school.label"),
         text: record.formatted.school
       } if import.type == ImportType.School, {
-        header: __("vaccination.created.label"),
-        text: record.vaccination.formatted.created_date
+        header: __("vaccination.createdAt.label"),
+        text: record.vaccination.formatted.createdAt_date
       } if import.type == ImportType.Report
     ]) %}
   {% endfor %}
@@ -158,7 +158,7 @@
       { text: __("record.dob.label") },
       { text: __("record.postalCode.label") },
       { text: __("record.school.label") } if import.type == ImportType.School,
-      { text: __("vaccination.created.label") } if import.type == ImportType.Report
+      { text: __("vaccination.createdAt.label") } if import.type == ImportType.Report
     ],
     rows: recordRows
   }) if import.records.length }}

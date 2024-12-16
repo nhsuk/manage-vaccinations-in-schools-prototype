@@ -27,14 +27,14 @@
 
   {% set vaccinationDescriptionHtml %}
     {% set vaccinationRows = [] %}
-    {% for vaccination in record.vaccinations | sort(false, false, "created") %}
+    {% for vaccination in record.vaccinations | sort(false, false, "createdAt") %}
       {% set vaccinationRows = vaccinationRows | push([
         {
-          header: __("vaccination.created.label"),
-          text: vaccination.formatted.created_date,
+          header: __("vaccination.createdAt.label"),
+          text: vaccination.formatted.createdAt_date,
           attributes: {
-            "data-col": "created",
-            "data-sort": vaccination.created
+            "data-col": "createdAt",
+            "data-sort": vaccination.createdAt
           }
         },
         {
@@ -51,9 +51,9 @@
     {{ actionTable({
       tableClasses: "nhsuk-u-margin-0",
       id: "vaccinations",
-      sort: "created",
+      sort: "createdAt",
       head: [
-        { text: __("vaccination.created.label") },
+        { text: __("vaccination.createdAt.label") },
         { text: __("vaccination.vaccine_gtin.label") },
         { text: __("vaccination.location.label") }
       ],

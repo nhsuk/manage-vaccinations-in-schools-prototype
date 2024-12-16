@@ -14,8 +14,8 @@
   {% for move in results.page %}
     {% set resultRows = resultRows | push([
       {
-        header: __("move.created.label"),
-        text: move.formatted.created
+        header: __("move.createdAt.label"),
+        text: move.formatted.createdAt
       },
       {
         header: __("child.label"),
@@ -45,7 +45,7 @@
       panel: true,
       responsive: true,
       head: [
-        { text: __("move.created.label") },
+        { text: __("move.createdAt.label") },
         { text: __("child.label") },
         {
           text: __("move.movement.label"),
