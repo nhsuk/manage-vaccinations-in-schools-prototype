@@ -52,7 +52,7 @@ export class SessionType {
  * @param {object} [context] - Global context
  * @property {object} [context] - Global context
  * @property {string} id - ID
- * @property {Date} [created] - Created date
+ * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created session
  * @property {string} [clinic_id] - Clinic ID
  * @property {string} [school_urn] - School URN
@@ -68,7 +68,9 @@ export class Session {
   constructor(options, context) {
     this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('###')
-    this.created = options?.created ? new Date(options.created) : getToday()
+    this.createdAt = options?.createdAt
+      ? new Date(options.createdAt)
+      : getToday()
     this.createdBy_uid = options?.createdBy_uid
     this.clinic_id = options?.clinic_id
     this.school_urn = options?.school_urn

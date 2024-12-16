@@ -12,13 +12,13 @@
 
   {% if notices.length %}
     {% set noticeRows = [] %}
-    {% for notice in notices | sort(false, false, "created") %}
+    {% for notice in notices | sort(false, false, "createdAt") %}
       {% set noticeRows = noticeRows | push([
         {
-          header: __("notice.created.label"),
-          html: notice.formatted.created,
+          header: __("notice.createdAt.label"),
+          html: notice.formatted.createdAt,
           attributes: {
-            "data-sort": notice.created
+            "data-sort": notice.createdAt
           }
         },
         {
@@ -48,7 +48,7 @@
       panel: true,
       responsive: true,
       head: [
-        { text: __("notice.created.label") },
+        { text: __("notice.createdAt.label") },
         { text: __("patient.label") },
         { text: __("patient.notice.label") },
         { text: __("actions.label") }

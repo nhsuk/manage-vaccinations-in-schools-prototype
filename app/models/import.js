@@ -27,7 +27,7 @@ export class ImportStatus {
  * @property {string} id - Import ID
  * @property {ImportStatus} status - Import status
  * @property {ImportType} type - Import type
- * @property {Date} created - Created date
+ * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created import
  * @property {string} [programme_pid] - Programme ID
  * @property {Array<string>} [record_nhsns] - Record NHS numbers
@@ -42,7 +42,9 @@ export class Import {
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
     this.status = options?.status || ImportStatus.Processing
     this.type = options?.type || ImportType.Cohort
-    this.created = options?.created ? new Date(options.created) : getToday()
+    this.createdAt = options?.createdAt
+      ? new Date(options.createdAt)
+      : getToday()
     this.createdBy_uid = options?.createdBy_uid
     this.programme_pid = options?.programme_pid
     this.validations = options?.validations || []
@@ -113,7 +115,7 @@ export class Import {
    */
   get formatted() {
     return {
-      created: formatDate(this.created, {
+      createdAt: formatDate(this.createdAt, {
         day: 'numeric',
         month: 'long',
         year: 'numeric',

@@ -380,7 +380,7 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Select,
       name: `Selected for the ${cohort.name.replace('Flu', 'flu')} cohort`,
-      date: cohort.created,
+      date: cohort.createdAt,
       createdBy_uid: cohort.createdBy_uid
     })
   }
@@ -395,7 +395,7 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Select,
       name: `Removed from the ${cohort.name.replace('Flu', 'flu')} cohort`,
-      date: cohort.created,
+      date: cohort.createdAt,
       createdBy_uid: cohort.createdBy_uid
     })
   }
@@ -410,7 +410,7 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Invite,
       name: `Invited to the ${session.name}`,
-      date: session.created,
+      date: session.createdAt,
       createdBy_uid: session.createdBy_uid
     })
   }
@@ -425,7 +425,7 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Select,
       name: `Removed from the ${session.name}`,
-      date: session.created,
+      date: session.createdAt,
       createdBy_uid: session.createdBy_uid
     })
   }
@@ -450,14 +450,14 @@ export class Patient extends Record {
    * @param {object} gillick - Gillick
    */
   assessGillick(gillick) {
-    const created = this.gillick && !Object.entries(this.gillick).length
+    const isNew = this.gillick && !Object.entries(this.gillick).length
 
     this.gillick = gillick
     this.addEvent({
       type: EventType.Consent,
-      name: `${created ? 'Completed' : 'Updated'} Gillick assessment`,
+      name: `${isNew ? 'Completed' : 'Updated'} Gillick assessment`,
       note: gillick.note,
-      date: created ? gillick.created : getToday(),
+      date: isNew ? gillick.createdAt : getToday(),
       createdBy_uid: gillick.createdBy_uid
     })
   }
@@ -473,14 +473,14 @@ export class Patient extends Record {
     }
 
     const { decision, fullName, invalid, relationship, uuid } = reply
-    const created = !this.replies[uuid]
+    const isNew = !this.replies[uuid]
     const parent = new Parent({ fullName, relationship })
     const formattedParent = formatParent(parent, false)
 
     let name = `${decision} by ${formattedParent}`
     if (invalid) {
       name = `${decision} by ${formattedParent} marked as invalid`
-    } else if (created) {
+    } else if (isNew) {
       name = `${decision} in response from ${formattedParent}`
     } else {
       name = `${decision} in updated response from ${formattedParent}`
@@ -490,7 +490,7 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Consent,
       name,
-      date: created ? reply.created : getToday(),
+      date: isNew ? reply.createdAt : getToday(),
       createdBy_uid: reply.createdBy_uid
     })
   }
@@ -568,7 +568,7 @@ export class Patient extends Record {
       type: EventType.Capture,
       name,
       note: vaccination.note,
-      date: vaccination.updatedAt || vaccination.created,
+      date: vaccination.updatedAt || vaccination.createdAt,
       createdBy_uid: vaccination.createdBy_uid
     })
   }
@@ -606,7 +606,7 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Notice,
       name,
-      date: notice.created
+      date: notice.createdAt
     })
   }
 

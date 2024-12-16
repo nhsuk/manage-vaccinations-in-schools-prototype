@@ -400,7 +400,7 @@ export const replyController = {
     patient.addReply({
       ...reply,
       uuid: false,
-      created: getToday(),
+      createdAt: getToday(),
       decision: ReplyDecision.Refused,
       refusalReason,
       ...(refusalReason === ReplyRefusal.Other && { refusalReasonOther }),

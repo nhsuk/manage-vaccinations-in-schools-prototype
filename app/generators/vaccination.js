@@ -37,7 +37,7 @@ export function generateVaccination(patient, programme, session, batch, users) {
     outcome === VaccinationOutcome.PartVaccinated
 
   return new Vaccination({
-    created: session.firstDate,
+    createdAt: session.firstDate,
     createdBy_uid: user.uid,
     outcome,
     location: session.location.name,

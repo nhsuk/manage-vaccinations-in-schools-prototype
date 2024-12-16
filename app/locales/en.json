@@ -93,7 +93,7 @@
       "confirm": "Yes, %s this batch",
       "success": "Batch {{batch.id}} archived"
     },
-    "created": {
+    "createdAt": {
       "label": "Entered date"
     },
     "updatedAt": {
@@ -374,7 +374,7 @@
         "title": "Check and confirm"
       }
     },
-    "created": {
+    "createdAt": {
       "label": "Response date"
     },
     "child": {
@@ -726,7 +726,7 @@
   "import": {
     "label": "Record import",
     "show": {
-      "title": "Import ({{import.formatted.created}})",
+      "title": "Import ({{import.formatted.createdAt}})",
       "summary": "Details"
     },
     "new": {
@@ -808,7 +808,7 @@
     "id": {
       "label": "ID"
     },
-    "created": {
+    "createdAt": {
       "label": "Imported on"
     },
     "createdBy": {
@@ -883,7 +883,7 @@
       "other": "[0] No school moves|%s school moves"
     },
     "results": "Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> school moves",
-    "created": {
+    "createdAt": {
       "label": "Updated"
     },
     "from": {
@@ -913,7 +913,7 @@
       "one": "%s notice",
       "other": "[0] No notices|%s notices"
     },
-    "created": {
+    "createdAt": {
       "label": "Date"
     },
     "action": {
@@ -1421,7 +1421,7 @@
       "confirm": "Withdraw consent",
       "success": "Consent response from {{reply.fullName}} withdrawn"
     },
-    "created": {
+    "createdAt": {
       "label": "Date"
     },
     "createdBy": {
@@ -1888,15 +1888,15 @@
       "summary": "Vaccination details",
       "success": "Vaccination record updated"
     },
-    "created": {
+    "createdAt": {
       "label": "Vaccination date",
       "title": "When was the vaccination given?"
     },
-    "created_date": {
+    "createdAt_date": {
       "label": "Date",
       "hint": "For example, 27 10 2025"
     },
-    "created_time": {
+    "createdAt_time": {
       "label": "Time",
       "hint": "For example, 13 15"
     },
@@ -2018,7 +2018,7 @@
     "id": {
       "label": "Batch"
     },
-    "created": {
+    "createdAt": {
       "label": "Entered date"
     },
     "gtin": {

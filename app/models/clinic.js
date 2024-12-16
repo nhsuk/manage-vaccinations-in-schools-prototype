@@ -11,7 +11,7 @@ import { Organisation } from './organisation.js'
  * @param {object} [context] - Context
  * @property {object} [context] - Context
  * @property {string} id - Organisation code
- * @property {Date} [created] - Created date
+ * @property {Date} [createdAt] - Created date
  * @property {Date} [updatedAt] - Updated date
  * @property {string} [name] - Name
  * @property {Address} [address] - Address
@@ -21,7 +21,9 @@ export class Clinic {
   constructor(options, context) {
     this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('?#####')
-    this.created = options?.created ? new Date(options.created) : getToday()
+    this.createdAt = options?.createdAt
+      ? new Date(options.createdAt)
+      : getToday()
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.name = options?.name
     this.address = options?.address && new Address(options.address)

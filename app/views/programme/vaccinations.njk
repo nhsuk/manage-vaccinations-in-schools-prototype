@@ -64,8 +64,8 @@
           html: vaccination.patient.postalCode or "Not provided"
         },
         {
-          header: __("vaccination.created.label"),
-          html: vaccination.formatted.created_date
+          header: __("vaccination.createdAt.label"),
+          html: vaccination.formatted.createdAt_date
         }
       ]) %}
     {% endfor %}
@@ -82,7 +82,7 @@
         { text: __("patient.nhsn.label") },
         { text: __("patient.dob.label") },
         { text: __("patient.postalCode.label") },
-        { text: __("vaccination.created.label") }
+        { text: __("vaccination.createdAt.label") }
       ],
       rows: resultRows
     }) }}

@@ -38,14 +38,14 @@
 
   {% if programme.imports.length %}
     {% set importRows = [] %}
-    {% for import in programme.imports | sort(false, false, "created") %}
+    {% for import in programme.imports | sort(false, false, "createdAt") %}
       {% set importRows = importRows | push([
         {
-          header: __("import.created.label"),
-          html: link(import.uri, import.formatted.created),
+          header: __("import.createdAt.label"),
+          html: link(import.uri, import.formatted.createdAt),
           attributes: {
-            "data-col": "created",
-            "data-sort": import.created
+            "data-col": "createdAt",
+            "data-sort": import.createdAt
           }
         },
         {
@@ -70,12 +70,12 @@
 
     {{ actionTable({
       id: "imports",
-      sort: "created",
+      sort: "createdAt",
       heading: __n("programme.imports.count", programme.imports.length) ,
       panel: true,
       responsive: true,
       head: [
-        { text: __("import.created.label") },
+        { text: __("import.createdAt.label") },
         { text: __("import.createdBy.label") },
         { text: __("import.type.label") },
         { text: __("import.status.label") },

@@ -46,7 +46,7 @@ export function generateReply(programme, session, patient) {
   }
 
   return new Reply({
-    created: faker.date.between({
+    createdAt: faker.date.between({
       from: session.open,
       to: sessionClosedBeforeToday ? session.close : today
     }),

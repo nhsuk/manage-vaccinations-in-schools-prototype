@@ -12,7 +12,7 @@ import { Import, ImportStatus } from '../models/import.js'
  * @returns {Import} - Import
  */
 export function generateImport(programme, record_nhsns, user, type) {
-  const created = faker.date.recent({ days: 14, refDate: programme.start })
+  const createdAt = faker.date.recent({ days: 14, refDate: programme.start })
 
   let validations
   let status = ImportStatus.Complete
@@ -34,7 +34,7 @@ export function generateImport(programme, record_nhsns, user, type) {
   }
 
   return new Import({
-    created,
+    createdAt,
     createdBy_uid: user.uid,
     programme_pid: programme.pid,
     status,

@@ -26,7 +26,7 @@ export class DownloadFormat {
  * @param {object} [context] - Context
  * @property {object} [context] - Context
  * @property {string} id - Download ID
- * @property {Date} [created] - Created date
+ * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created download
  * @property {Date} [updatedAt] - Updated date
  * @property {Date} from - Date from
@@ -42,7 +42,9 @@ export class Download {
   constructor(options, context) {
     this.context = context
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
-    this.created = options?.created ? new Date(options.created) : getToday()
+    this.createdAt = options?.createdAt
+      ? new Date(options.createdAt)
+      : getToday()
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.from = options?.from ? new Date(options.from) : undefined
@@ -222,8 +224,8 @@ export class Download {
           address_line1: vaccination.patient?.address?.addressLine1,
           parent: vaccination.patient?.parent1?.fullName,
           ethnicity: '',
-          date: vaccination.created,
-          time: vaccination.created,
+          date: vaccination.createdAt,
+          time: vaccination.createdAt,
           location_type: 'SC',
           location_urn: vaccination.school_urn,
           user_role: '',
@@ -283,7 +285,7 @@ export class Download {
             REASON_NOT_VACCINATED: !vaccination.given
               ? vaccination.outcome
               : '',
-            DATE_OF_VACCINATION: vaccination.created,
+            DATE_OF_VACCINATION: vaccination.createdAt,
             VACCINE_GIVEN: vaccination.vaccine?.brand,
             BATCH_NUMBER: vaccination.batch_id,
             BATCH_EXPIRY_DATE: vaccination.batch?.expiry,
