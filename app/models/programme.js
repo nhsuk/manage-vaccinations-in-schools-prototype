@@ -1,7 +1,7 @@
 import { isAfter } from 'date-fns'
 
 import vaccines from '../datasets/vaccines.js'
-import { isBetweenDates, getToday } from '../utils/date.js'
+import { isBetweenDates, today } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 
 import { Cohort } from './cohort.js'
@@ -128,9 +128,9 @@ export class Programme {
   get status() {
     const { from, to } = programmeTypes[this.type].schedule
 
-    if (isBetweenDates(getToday(), from, to)) {
+    if (isBetweenDates(today(), from, to)) {
       return ProgrammeStatus.Current
-    } else if (isAfter(getToday(), to)) {
+    } else if (isAfter(today(), to)) {
       return ProgrammeStatus.Completed
     }
     return ProgrammeStatus.Planned

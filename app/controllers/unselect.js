@@ -1,5 +1,5 @@
 import { Cohort } from '../models/cohort.js'
-import { getToday } from '../utils/date.js'
+import { today } from '../utils/date.js'
 
 export const unselectController = {
   update(request, response) {
@@ -11,7 +11,7 @@ export const unselectController = {
     const cohort = new Cohort(
       {
         ...data.cohorts[uid],
-        ...{ createdAt: getToday() },
+        ...{ createdAt: today() },
         ...(data.token && { createdBy_uid: data.token?.uid })
       },
       data

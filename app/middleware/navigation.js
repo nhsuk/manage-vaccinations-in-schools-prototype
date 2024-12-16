@@ -1,7 +1,7 @@
 import { Organisation } from '../models/organisation.js'
 import { ProgrammeType } from '../models/programme.js'
 import { User, UserRole } from '../models/user.js'
-import { formatDate, getToday } from '../utils/date.js'
+import { formatDate, today } from '../utils/date.js'
 import { getProgrammeSession } from '../utils/session.js'
 
 export const navigation = (request, response, next) => {
@@ -169,7 +169,7 @@ export const navigation = (request, response, next) => {
   }
 
   // Show environment date in footer
-  response.locals.today = formatDate(getToday(), { dateStyle: 'long' })
+  response.locals.today = formatDate(today(), { dateStyle: 'long' })
 
   next()
 }

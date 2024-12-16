@@ -1,6 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { formatDate, getToday } from '../utils/date.js'
+import { formatDate, today } from '../utils/date.js'
 
 import { Patient } from './patient.js'
 
@@ -25,9 +25,7 @@ export class Notice {
   constructor(options, context) {
     this.context = context
     this.uuid = options.uuid || faker.string.uuid()
-    this.createdAt = options?.createdAt
-      ? new Date(options.createdAt)
-      : getToday()
+    this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.type = options.type
     this.patient_uuid = options.patient_uuid
   }

@@ -1,4 +1,4 @@
-import { getToday } from '../utils/date.js'
+import { today } from '../utils/date.js'
 import { stringToBoolean } from '../utils/string.js'
 
 export class RegistrationOutcome {
@@ -17,9 +17,7 @@ export class RegistrationOutcome {
  */
 export class Registration {
   constructor(options) {
-    this.createdAt = options?.createdAt
-      ? new Date(options.createdAt)
-      : getToday()
+    this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
     this.name = options?.name
     this.registered = stringToBoolean(options?.registered)

@@ -7,9 +7,9 @@ import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
-  getToday,
   includesDate,
-  setMidday
+  setMidday,
+  today
 } from '../utils/date.js'
 import { getConsentWindow } from '../utils/session.js'
 import {
@@ -68,9 +68,7 @@ export class Session {
   constructor(options, context) {
     this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('###')
-    this.createdAt = options?.createdAt
-      ? new Date(options.createdAt)
-      : getToday()
+    this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
     this.clinic_id = options?.clinic_id
     this.school_urn = options?.school_urn
@@ -220,8 +218,7 @@ export class Session {
    * @returns {boolean} - Is active session
    */
   get isActive() {
-    const today = setMidday(getToday())
-    return includesDate(this.dates, today)
+    return includesDate(this.dates, setMidday(today()))
   }
 
   /**
@@ -230,13 +227,12 @@ export class Session {
    * @returns {string} - Status
    */
   get status() {
-    const today = setMidday(getToday())
     switch (true) {
       case this.closed:
         return SessionStatus.Closed
       case this.dates.length === 0:
         return SessionStatus.Unplanned
-      case isAfter(today, this.lastDate):
+      case isAfter(setMidday(today()), this.lastDate):
         return SessionStatus.Completed
       default:
         return SessionStatus.Planned

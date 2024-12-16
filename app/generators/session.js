@@ -2,7 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { isAfter } from 'date-fns'
 
 import { Session, SessionStatus } from '../models/session.js'
-import { addDays, removeDays, getToday, setMidday } from '../utils/date.js'
+import { addDays, removeDays, setMidday, today } from '../utils/date.js'
 
 /**
  * Generate fake session
@@ -19,7 +19,7 @@ export function generateSession(programme_pids, term, user, options) {
   const { clinic_id, school_urn } = options
 
   let status
-  if (isAfter(getToday(), term.to)) {
+  if (isAfter(today(), term.to)) {
     status = SessionStatus.Completed
   } else {
     status = faker.helpers.arrayElement([
@@ -31,7 +31,7 @@ export function generateSession(programme_pids, term, user, options) {
 
   const dates = []
   let firstSessionDate
-  const tomorrow = addDays(getToday(), 1)
+  const tomorrow = addDays(today(), 1)
   switch (status) {
     case SessionStatus.Planned:
       // Earliest date is tomorrow
@@ -75,7 +75,7 @@ export function generateSession(programme_pids, term, user, options) {
   }
 
   return new Session({
-    createdAt: removeDays(getToday(), 70),
+    createdAt: removeDays(today(), 70),
     createdBy_uid: user.uid,
     dates,
     programme_pids,

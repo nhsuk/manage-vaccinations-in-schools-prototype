@@ -6,7 +6,7 @@ import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
-  getToday
+  today
 } from '../utils/date.js'
 import { createMap } from '../utils/object.js'
 import {
@@ -93,9 +93,7 @@ export class Vaccination {
   constructor(options, context) {
     this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
-    this.createdAt = options?.createdAt
-      ? new Date(options.createdAt)
-      : getToday()
+    this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdAt_ = options?.createdAt_
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)

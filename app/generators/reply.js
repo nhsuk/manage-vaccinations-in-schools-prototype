@@ -6,7 +6,7 @@ import {
   ReplyMethod,
   ReplyRefusal
 } from '../models/reply.js'
-import { getToday } from '../utils/date.js'
+import { today } from '../utils/date.js'
 import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
 
 import { generateParent } from './parent.js'
@@ -36,9 +36,9 @@ export function generateReply(programme, session, patient) {
   const healthAnswers = getHealthAnswers(programme.vaccine)
   const refusalReason = getRefusalReason(programme.type)
 
-  const today = getToday()
-  const sessionClosedBeforeToday = session.closeAt.valueOf() < today.valueOf()
-  const sessionOpensAfterToday = session.openAt.valueOf() > today.valueOf()
+  const nowAt = today()
+  const sessionClosedBeforeToday = session.closeAt.valueOf() < nowAt.valueOf()
+  const sessionOpensAfterToday = session.openAt.valueOf() > nowAt.valueOf()
 
   // If session hasn’t opened yet, don’t generate a reply
   if (sessionOpensAfterToday) {
@@ -48,7 +48,7 @@ export function generateReply(programme, session, patient) {
   return new Reply({
     createdAt: faker.date.between({
       from: session.openAt,
-      to: sessionClosedBeforeToday ? session.closeAt : today
+      to: sessionClosedBeforeToday ? session.closeAt : nowAt
     }),
     child,
     parent,

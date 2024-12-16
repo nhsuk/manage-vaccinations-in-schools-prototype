@@ -9,7 +9,7 @@ import {
   ReplyRefusal
 } from '../models/reply.js'
 import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
-import { getToday } from '../utils/date.js'
+import { today } from '../utils/date.js'
 import { getSessionPatientPath } from '../utils/session.js'
 import { formatParent } from '../utils/string.js'
 
@@ -400,7 +400,7 @@ export const replyController = {
     patient.addReply({
       ...reply,
       uuid: false,
-      createdAt: getToday(),
+      createdAt: today(),
       decision: ReplyDecision.Refused,
       refusalReason,
       ...(refusalReason === ReplyRefusal.Other && { refusalReasonOther }),

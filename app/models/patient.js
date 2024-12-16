@@ -6,7 +6,7 @@ import {
   getRegistrationOutcome,
   getPatientOutcome
 } from '../utils/capture.js'
-import { getToday, removeDays } from '../utils/date.js'
+import { removeDays, today } from '../utils/date.js'
 import {
   getConsentHealthAnswers,
   getConsentOutcome,
@@ -456,7 +456,7 @@ export class Patient extends Record {
       type: EventType.Consent,
       name: `${isNew ? 'Completed' : 'Updated'} Gillick assessment`,
       note: gillick.note,
-      createdAt: isNew ? gillick.createdAt : getToday(),
+      createdAt: isNew ? gillick.createdAt : today(),
       createdBy_uid: gillick.createdBy_uid
     })
   }
@@ -489,7 +489,7 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Consent,
       name,
-      createdAt: isNew ? reply.createdAt : getToday(),
+      createdAt: isNew ? reply.createdAt : today(),
       createdBy_uid: reply.createdBy_uid
     })
   }
@@ -579,7 +579,7 @@ export class Patient extends Record {
     switch (notice.type) {
       case NoticeType.Deceased:
         // Update patient record with date of death
-        this.dod = removeDays(getToday(), 5)
+        this.dod = removeDays(today(), 5)
         name = `Record updated with child’s date of death`
         break
       case NoticeType.Hidden:

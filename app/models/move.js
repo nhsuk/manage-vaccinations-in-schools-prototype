@@ -2,7 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import schools from '../datasets/schools.js'
 import { Patient } from '../models/patient.js'
-import { formatDate, getToday } from '../utils/date.js'
+import { formatDate, today } from '../utils/date.js'
 
 export class MoveSource {
   static Cohort = 'Cohort record'
@@ -29,9 +29,7 @@ export class Move {
   constructor(options, context) {
     this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
-    this.createdAt = options?.createdAt
-      ? new Date(options.createdAt)
-      : getToday()
+    this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.updatedAt = options?.updatedAt
       ? new Date(options.updatedAt)
       : undefined

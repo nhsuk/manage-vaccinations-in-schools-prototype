@@ -1,6 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { formatDate, getToday } from '../utils/date.js'
+import { formatDate, today } from '../utils/date.js'
 
 import { Programme } from './programme.js'
 import { Record } from './record.js'
@@ -42,9 +42,7 @@ export class Import {
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
     this.status = options?.status || ImportStatus.Processing
     this.type = options?.type || ImportType.Cohort
-    this.createdAt = options?.createdAt
-      ? new Date(options.createdAt)
-      : getToday()
+    this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
     this.programme_pid = options?.programme_pid
     this.validations = options?.validations || []

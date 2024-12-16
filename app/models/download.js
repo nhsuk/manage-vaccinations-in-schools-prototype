@@ -5,7 +5,7 @@ import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
-  getToday
+  today
 } from '../utils/date.js'
 import { getEnumKeyAndValue } from '../utils/enum.js'
 import { formatList } from '../utils/string.js'
@@ -42,9 +42,7 @@ export class Download {
   constructor(options, context) {
     this.context = context
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
-    this.createdAt = options?.createdAt
-      ? new Date(options.createdAt)
-      : getToday()
+    this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.startAt = options?.startAt && new Date(options.startAt)
