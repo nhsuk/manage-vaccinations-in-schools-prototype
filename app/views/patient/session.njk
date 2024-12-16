@@ -216,7 +216,7 @@
         }) }}
       {% elif session.consentWindow.value == ConsentWindow.Opening %}
         {{ __("session.consentWindow." + session.consentWindow.key + ".text", {
-          open: session.open | date({
+          openAt: session.openAt | date({
             day: "numeric",
             month: "long"
           })

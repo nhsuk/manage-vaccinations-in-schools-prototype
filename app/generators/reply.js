@@ -37,8 +37,8 @@ export function generateReply(programme, session, patient) {
   const refusalReason = getRefusalReason(programme.type)
 
   const today = getToday()
-  const sessionClosedBeforeToday = session.close.valueOf() < today.valueOf()
-  const sessionOpensAfterToday = session.open.valueOf() > today.valueOf()
+  const sessionClosedBeforeToday = session.closeAt.valueOf() < today.valueOf()
+  const sessionOpensAfterToday = session.openAt.valueOf() > today.valueOf()
 
   // If session hasn’t opened yet, don’t generate a reply
   if (sessionOpensAfterToday) {
@@ -47,8 +47,8 @@ export function generateReply(programme, session, patient) {
 
   return new Reply({
     createdAt: faker.date.between({
-      from: session.open,
-      to: sessionClosedBeforeToday ? session.close : today
+      from: session.openAt,
+      to: sessionClosedBeforeToday ? session.closeAt : today
     }),
     child,
     parent,
