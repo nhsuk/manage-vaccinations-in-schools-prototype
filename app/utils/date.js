@@ -159,6 +159,17 @@ export function getAge(date) {
 }
 
 /**
+ * Get difference between two date values
+ *
+ * @param {Date} a - First date
+ * @param {Date} b - Second date
+ * @returns {number} School year group
+ */
+export function getDateValueDifference(a, b) {
+  return new Date(a).valueOf() - new Date(b).valueOf()
+}
+
+/**
  * Set time to midday
  *
  * @param {Date} date - Date
