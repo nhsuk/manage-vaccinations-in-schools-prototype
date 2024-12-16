@@ -71,8 +71,8 @@ export const registrationController = {
         ...(data.token && { createdBy_uid: data.token?.uid })
       })
 
-      // Capture and flow vaccination
-      absentVaccination.captureAndFlow(data)
+      // Update vaccination record
+      absentVaccination.update(absentVaccination, data)
     } else {
       delete patient.registered
     }

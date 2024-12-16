@@ -84,7 +84,7 @@ export const replyController = {
 
     // Capture and flow vaccination that has already been given
     if (vaccination) {
-      vaccination.captureAndFlow(data)
+      vaccination.update(vaccination, data)
       delete request.app.locals.vaccination
     }
 
@@ -417,7 +417,7 @@ export const replyController = {
         ...(data.reply?.note && { note }),
         ...(data.token && { createdBy_uid: data.token?.uid })
       })
-      vaccination.captureAndFlow(data)
+      vaccination.update(vaccination, data)
     }
 
     delete data.reply
