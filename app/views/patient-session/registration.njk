@@ -1,0 +1,30 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("patientSession.registration.label", { patient: patient }) %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: session.location.name,
+          title: title
+        })
+      }
+    },
+    items: [{
+      text: __("patientSession.registration.present"),
+      value: RegistrationOutcome.Present
+    }, {
+      text: __("patientSession.registration.absent"),
+      value: RegistrationOutcome.Absent
+    }, {
+      divider: "or"
+    }, {
+      text: __("patientSession.registration.pending"),
+      value: RegistrationOutcome.Pending
+    }],
+    decorate: "patientSession.registration"
+  }) }}
+{% endblock %}

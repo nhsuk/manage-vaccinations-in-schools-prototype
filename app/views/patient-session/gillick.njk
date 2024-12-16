@@ -1,0 +1,66 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("patientSession.gillick." + form + ".title") %}
+{% set confirmButtonText = __("patientSession.gillick." + form + ".confirm") %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.fullName,
+    title: title
+  }) }}
+
+  {{ insetText({
+    html: __("patientSession.gillick.text", { patient: patient }) | nhsukMarkdown
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("patientSession.gillick.q1.label") }
+    },
+    items: booleanItems,
+    decorate: "patientSession.gillick.q1"
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("patientSession.gillick.q2.label") }
+    },
+    items: booleanItems,
+    decorate: "patientSession.gillick.q2"
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("patientSession.gillick.q3.label") }
+    },
+    items: booleanItems,
+    decorate: "patientSession.gillick.q3"
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("patientSession.gillick.q4.label") }
+    },
+    items: booleanItems,
+    decorate: "patientSession.gillick.q4"
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("patientSession.gillick.q5.label") }
+    },
+    items: booleanItems,
+    decorate: "patientSession.gillick.q5"
+  }) }}
+
+  {{ textarea({
+    label: { text: __("patientSession.gillick.note.label") + " (Optional)" },
+    rows: 3,
+    decorate: "patientSession.gillick.note"
+  }) }}
+{% endblock %}

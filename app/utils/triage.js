@@ -1,8 +1,5 @@
-import {
-  ConsentOutcome,
-  ScreenOutcome,
-  TriageOutcome
-} from '../models/patient.js'
+import { TriageOutcome } from '../models/patient-session.js'
+import { ConsentOutcome, ScreenOutcome } from '../models/patient.js'
 
 import { getEnumKeyAndValue } from './enum.js'
 import { getRepliesWithHealthAnswers } from './reply.js'
@@ -10,15 +7,15 @@ import { getRepliesWithHealthAnswers } from './reply.js'
 /**
  * Get screen outcome (what was the triage decision)
  *
- * @param {import('../models/patient.js').Patient} patient - Patient
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @returns {object} Screen outcome key and value
  */
-export const getScreenOutcome = (patient) => {
-  if (patient.consent.value !== ConsentOutcome.Given) {
+export const getScreenOutcome = (patientSession) => {
+  if (patientSession.consent.value !== ConsentOutcome.Given) {
     return false
   }
 
-  const replies = Object.values(patient.replies)
+  const replies = Object.values(patientSession.replies)
   const repliesToTriage = getRepliesWithHealthAnswers(replies)
 
   if (repliesToTriage.length === 0) {
@@ -26,15 +23,12 @@ export const getScreenOutcome = (patient) => {
   }
 
   if (repliesToTriage.length > 0) {
-    const lastTriageNoteWithOutcome = patient.triageNotes
-      .filter((event) => event.info_?.outcome)
+    const lastTriageNoteWithOutcome = patientSession.patient.triageNotes
+      .filter((event) => event.info_)
       .at(-1)
 
     if (lastTriageNoteWithOutcome) {
-      return getEnumKeyAndValue(
-        ScreenOutcome,
-        lastTriageNoteWithOutcome.info_.outcome
-      )
+      return getEnumKeyAndValue(ScreenOutcome, lastTriageNoteWithOutcome.info_)
     }
 
     return getEnumKeyAndValue(ScreenOutcome, ScreenOutcome.NeedsTriage)
@@ -46,13 +40,16 @@ export const getScreenOutcome = (patient) => {
 /**
  * Get triage outcome (has triage taken place)
  *
- * @param {import('../models/patient.js').Patient} patient - Patient
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @returns {object} Outcome key and value
  */
-export const getTriageOutcome = (patient) => {
-  if (patient.screen && patient.screen.value === ScreenOutcome.NeedsTriage) {
+export const getTriageOutcome = (patientSession) => {
+  if (
+    patientSession.screen &&
+    patientSession.screen.value === ScreenOutcome.NeedsTriage
+  ) {
     return getEnumKeyAndValue(TriageOutcome, TriageOutcome.Needed)
-  } else if (patient.screen) {
+  } else if (patientSession.screen) {
     return getEnumKeyAndValue(TriageOutcome, TriageOutcome.Completed)
   }
   return getEnumKeyAndValue(TriageOutcome, TriageOutcome.NotNeeded)

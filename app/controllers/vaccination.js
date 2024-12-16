@@ -71,13 +71,13 @@ export const vaccinationController = {
   },
 
   new(request, response) {
-    const { patient_uuid, session_id } = request.query
+    const { patient_nhsn, session_id } = request.query
     const { data } = request.session
     const { defaultBatchId, programme } = response.locals
 
-    const patient = Patient.read(patient_uuid, data)
+    const patient = Patient.read(patient_nhsn, data)
     const session = Session.read(session_id, data)
-    const { injectionSite, ready } = data.preScreen
+    const { injectionSite, ready } = data.patientSession.preScreen
 
     const readyToVaccine = ready === 'true'
     const injectionSiteGiven = [
@@ -108,7 +108,7 @@ export const vaccinationController = {
     const vaccination = new Vaccination({
       location: session.formatted.location,
       urn: session.uri,
-      patient_uuid,
+      patient_uuid: patient.uuid,
       programme_pid: programme.pid,
       session_id: session.id,
       vaccine_gtin: programme.vaccine.gtin,
@@ -143,7 +143,7 @@ export const vaccinationController = {
     vaccination.update(vaccination, data)
 
     // Clean up session data
-    delete data.preScreen
+    delete data.patientSession?.preScreen
     delete data.vaccination
 
     response.redirect(referrer || vaccination.uri)

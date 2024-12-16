@@ -6,7 +6,7 @@ import { Child } from '../models/child.js'
 import { ParentalRelationship } from '../models/parent.js'
 import { ConsentOutcome } from '../models/patient.js'
 import { ProgrammeType } from '../models/programme.js'
-import { Reply, ReplyDecision, ReplyRefusal } from '../models/reply.js'
+import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 
 import { getEnumKeyAndValue } from './enum.js'
 import { formatParentalRelationship } from './string.js'
@@ -47,24 +47,22 @@ export function getRepliesWithHealthAnswers(replies) {
 /**
  * Get combined answers to health questions
  *
- * @param {Array<import('../models/reply.js').Reply>} replies - Consent replies
- * @param {string} session_id - Session ID
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @returns {object|boolean} Combined answers to health questions
  */
-export function getConsentHealthAnswers(replies, session_id) {
+export function getConsentHealthAnswers(patientSession) {
   const answers = {}
 
-  const repliesWithHealthAnswers = Object.values(replies)
-    .filter((reply) => reply.healthAnswers)
-    .filter((reply) => reply.session_id === session_id)
+  // Get consent responses with health answers
+  const repliesWithHealthAnswers = Object.values(patientSession.replies).filter(
+    (reply) => reply.healthAnswers
+  )
 
   if (repliesWithHealthAnswers.length === 0) {
     return false
   }
 
-  for (let reply of repliesWithHealthAnswers) {
-    reply = new Reply(reply)
-
+  for (const reply of repliesWithHealthAnswers) {
     for (const [key, value] of Object.entries(reply.healthAnswers)) {
       if (!answers[key]) {
         answers[key] = {}
@@ -112,14 +110,16 @@ export const getConfirmedConsentOutcome = (reply) => {
 /**
  * Get consent outcome
  *
- * @param {import('../models/patient.js').Patient} patient - Patient
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @returns {object} Consent outcome
  */
-export const getConsentOutcome = (patient) => {
+export const getConsentOutcome = (patientSession) => {
   const parentalRelationships = Object.values(ParentalRelationship)
-  const replies = Object.values(patient.replies)
-    .map((reply) => new Reply(reply))
-    .filter((reply) => !reply.invalid)
+
+  // Get valid consent responses
+  const replies = Object.values(patientSession.replies).filter(
+    (reply) => !reply.invalid
+  )
 
   if (replies.length === 1) {
     // Reply decision value matches consent outcome key
@@ -147,13 +147,18 @@ export const getConsentOutcome = (patient) => {
 /**
  * Get combined refusal reasons
  *
- * @param {Array<import('../models/reply.js').Reply>} replies - Consent replies
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @returns {Array} Refusal reasons
  */
-export const getConsentRefusalReasons = (replies) => {
+export const getConsentRefusalReasons = (patientSession) => {
   const reasons = []
 
-  for (const reply of Object.values(replies)) {
+  // Get consent responses with a refusal reason
+  const repliesWithRefusalReasons = Object.values(
+    patientSession.replies
+  ).filter((reply) => reply.refusalReason)
+
+  for (const reply of repliesWithRefusalReasons) {
     if (reply.refusalReason && !reply.invalid) {
       // Indicate confirmed refusal reason
       const refusalReason = reply.confirmed

@@ -10,7 +10,7 @@
       href: "/"
     }, {
       text: __("patient.list.title"),
-      href: "/sessions"
+      href: "/patients"
     }]
   }) }}
 {% endblock %}
@@ -119,27 +119,27 @@
     }) }}
 
     {% set sessionsDescriptionHtml %}
-      {% if patient.sessions.length %}
-        {% set sessionRows = [] %}
-        {% for session in patient.sessions | sort(false, false, "createdAt") %}
-          {% set sessionRows = sessionRows | push([
+      {% if patient.patientSessions.length %}
+        {% set patientSessionRows = [] %}
+        {% for patientSession in patient.patientSessions %}
+          {% set patientSessionRows = patientSessionRows | push([
             {
               header: __("session.location.label"),
-              html: link(session.uri + "/" + patient.nhsn, session.location.name)
+              html: link(patientSession.uri, patientSession.session.location.name)
             },
             {
               header: __("session.programmes.label"),
-              html: session.formatted.programmes
+              html: patientSession.session.formatted.programmes
             },
             {
               header: __("session.dates.label"),
-              html: session.formatted.dates if session.dates.length else session.status
+              html: patientSession.session.formatted.dates if patientSession.session.dates.length else patientSession.session.status
             }
           ]) %}
         {% endfor %}
 
         {{ actionTable({
-          id: "sessions",
+          id: "patient-sessions",
           sort: "name",
           responsive: true,
           head: [
@@ -147,7 +147,7 @@
             { text: __("session.programmes.label") },
             { text: __("session.dates.label") }
           ],
-          rows: sessionRows
+          rows: patientSessionRows
         }) }}
       {% else %}
         {{ __n("session.count", 0) | nhsukMarkdown }}

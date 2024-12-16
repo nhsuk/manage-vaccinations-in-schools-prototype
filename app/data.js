@@ -7,6 +7,7 @@ import moves from '../.data/moves.json' with { type: 'json' }
 import notices from '../.data/notices.json' with { type: 'json' }
 import organisations from '../.data/organisations.json' with { type: 'json' }
 import patients from '../.data/patients.json' with { type: 'json' }
+import patientSessions from '../.data/patient-sessions.json' with { type: 'json' }
 import programmes from '../.data/programmes.json' with { type: 'json' }
 import replies from '../.data/replies.json' with { type: 'json' }
 import records from '../.data/records.json' with { type: 'json' }
@@ -37,6 +38,7 @@ export default {
   organisation,
   organisations,
   patients,
+  patientSessions,
   programmes,
   records,
   replies,

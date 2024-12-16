@@ -1,5 +1,6 @@
 import { Batch } from '../models/batch.js'
-import { ConsentOutcome, Patient, PatientOutcome } from '../models/patient.js'
+import { PatientSession } from '../models/patient-session.js'
+import { ConsentOutcome, PatientOutcome, Patient } from '../models/patient.js'
 import { programmeTypes } from '../models/programme.js'
 import { Session, SessionStatus, SessionType } from '../models/session.js'
 
@@ -46,7 +47,7 @@ export const sessionController = {
   activity(request, response) {
     const { activity } = request.params
     let { tab } = request.query
-    const { __, session } = response.locals
+    const { __, patientSessions } = response.locals
 
     let tabs = []
     switch (activity) {
@@ -76,14 +77,15 @@ export const sessionController = {
 
     response.locals.activity = activity
 
-    response.locals.patients = getPatientsForKey(
-      session.patients,
+    response.locals.patientSessions = getPatientsForKey(
+      patientSessions,
       activity,
       tab
     )
+
     response.locals.navigationItems = tabs.map((key) => ({
       text: __(`${activity}.${key}.label`),
-      count: getPatientsForKey(session.patients, activity, key).length,
+      count: getPatientsForKey(patientSessions, activity, key).length,
       href: `?tab=${key}`,
       current: key === tab
     }))
@@ -96,6 +98,9 @@ export const sessionController = {
     const { data } = request.session
 
     const session = Session.read(id, data)
+    const patientSessions = PatientSession.readAll(data).filter(
+      ({ session_id }) => session_id === id
+    )
 
     // Get default batches selected for vaccines in this session
     const defaultBatches = []
@@ -114,13 +119,15 @@ export const sessionController = {
 
     response.locals.defaultBatches = defaultBatches
 
-    response.locals.couldNotVaccinate = Patient.readAll(session)
+    response.locals.patientSessions = patientSessions
+
+    response.locals.couldNotVaccinate = patientSessions
       .filter(({ consent }) => consent.value !== ConsentOutcome.NoResponse)
       .filter(
         ({ outcome }) => outcome.value === PatientOutcome.CouldNotVaccinate
       )
 
-    response.locals.noResponse = Patient.readAll(session).filter(
+    response.locals.noResponse = patientSessions.filter(
       ({ consent }) => consent.value === ConsentOutcome.NoResponse
     )
 
