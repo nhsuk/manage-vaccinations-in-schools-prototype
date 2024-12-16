@@ -155,7 +155,7 @@ export function formatDate(date, options) {
 export function getAge(date) {
   if (!date || isNaN(date.valueOf())) return 0
 
-  return Math.floor((getToday().valueOf() - date.getTime()) / 3.15576e10)
+  return Math.floor((today().valueOf() - date.getTime()) / 3.15576e10)
 }
 
 /**
@@ -187,7 +187,7 @@ export function includesDate(dates, date) {
  * @param {number} [secondsToAdd] - Seconds to add
  * @returns {Date} ‘Today’s’ date
  */
-export function getToday(secondsToAdd) {
+export function today(secondsToAdd) {
   const now = new Date()
 
   if (process.env.TODAY) {
@@ -217,8 +217,7 @@ export function getToday(secondsToAdd) {
 export function getYearGroup(date) {
   if (!date || isNaN(date.valueOf())) return 0
 
-  const today = getToday()
-  const currentYear = today.getFullYear()
+  const currentYear = today().getFullYear()
 
   const birthYear = date.getFullYear()
   const birthMonth = date.getMonth()

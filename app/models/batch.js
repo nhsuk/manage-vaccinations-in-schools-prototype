@@ -5,7 +5,7 @@ import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
-  getToday
+  today
 } from '../utils/date.js'
 import { formatMonospace } from '../utils/string.js'
 
@@ -28,9 +28,7 @@ export class Batch {
   constructor(options, context) {
     this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('??####')
-    this.createdAt = options?.createdAt
-      ? new Date(options.createdAt)
-      : getToday()
+    this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.archivedAt = options?.archivedAt && new Date(options.archivedAt)
     this.expiry = options?.expiry ? new Date(options.expiry) : undefined
@@ -73,7 +71,7 @@ export class Batch {
    * @returns {string} - Name
    */
   get summary() {
-    const prefix = isBefore(this.archivedAt, getToday()) ? 'Expired' : 'Expires'
+    const prefix = isBefore(this.archivedAt, today()) ? 'Expired' : 'Expires'
 
     return `${this.formatted.id}<br>\n<span class="nhsuk-u-secondary-text-color">${prefix} ${this.formatted.expiry}</span>`
   }

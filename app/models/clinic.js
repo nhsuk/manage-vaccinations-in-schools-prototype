@@ -1,6 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { getToday } from '../utils/date.js'
+import { today } from '../utils/date.js'
 
 import { Address } from './address.js'
 import { Organisation } from './organisation.js'
@@ -21,9 +21,7 @@ export class Clinic {
   constructor(options, context) {
     this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('?#####')
-    this.createdAt = options?.createdAt
-      ? new Date(options.createdAt)
-      : getToday()
+    this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.name = options?.name
     this.address = options?.address && new Address(options.address)
