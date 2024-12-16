@@ -1,5 +1,4 @@
 import { today } from '../utils/date.js'
-import { getEnumKeyAndValue } from '../utils/enum.js'
 import { stringToBoolean } from '../utils/string.js'
 
 export class GillickCompetent {
@@ -11,6 +10,7 @@ export class GillickCompetent {
  * @class Gillick assessment
  * @property {string} createdAt - Created date
  * @property {string} [createdBy_uid] - User who created session
+ * @property {Date} [updatedAt] - Updated date
  * @property {boolean} [q1] - Question 1
  * @property {boolean} [q2] - Question 2
  * @property {boolean} [q3] - Question 3
@@ -22,6 +22,7 @@ export class Gillick {
   constructor(options) {
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
+    this.updatedAt = options?.createdAt && new Date(options.updatedAt)
     this.q1 = stringToBoolean(options?.q1)
     this.q2 = stringToBoolean(options?.q2)
     this.q3 = stringToBoolean(options?.q3)
@@ -38,9 +39,23 @@ export class Gillick {
   get competent() {
     const questions = [this.q1, this.q2, this.q3, this.q4, this.q5]
     if (questions.includes(false)) {
-      return getEnumKeyAndValue(GillickCompetent, GillickCompetent.False)
+      return GillickCompetent.False
     } else if (questions.every((answer) => answer === true)) {
-      return getEnumKeyAndValue(GillickCompetent, GillickCompetent.True)
+      return GillickCompetent.True
+    }
+  }
+
+  /**
+   * Get status properties
+   *
+   * @returns {object} - Status properties
+   */
+  get status() {
+    return {
+      colour: this.competent === GillickCompetent.True ? 'aqua-green' : 'red',
+      description: `${this.updatedAt ? 'Updated' : 'Created'} Gillick assessment`,
+      icon: this.competent === GillickCompetent.True ? 'tick' : 'cross',
+      text: this.competent
     }
   }
 

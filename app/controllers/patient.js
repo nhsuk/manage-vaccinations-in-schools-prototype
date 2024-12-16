@@ -1,23 +1,9 @@
 import _ from 'lodash'
 
-import {
-  CaptureOutcome,
-  ConsentOutcome,
-  Patient,
-  PatientOutcome,
-  TriageOutcome
-} from '../models/patient.js'
-import {
-  Programme,
-  ProgrammeType,
-  programmeTypes
-} from '../models/programme.js'
+import { Patient } from '../models/patient.js'
 import { Record } from '../models/record.js'
 import { School } from '../models/school.js'
-import { Session } from '../models/session.js'
-import { VaccinationSite } from '../models/vaccination.js'
 import { getResults, getPagination } from '../utils/pagination.js'
-import { getSessionPatientPath } from '../utils/session.js'
 
 export const patientController = {
   readAll(request, response, next) {
@@ -82,7 +68,7 @@ export const patientController = {
   },
 
   read(request, response, next) {
-    const { id, nhsn } = request.params
+    const { nhsn } = request.params
     const { data } = request.session
 
     let patient = Patient.read(nhsn, data)
@@ -93,93 +79,13 @@ export const patientController = {
       patient = new Patient(record, data)
     }
 
-    const inSession = request.originalUrl.includes('sessions')
-
-    // Patient in session
-    if (inSession) {
-      const session = new Session(data.sessions[id], data)
-
-      // Select first programme in session to show pre-screening questions
-      // TODO: Make pre-screening questions pull from all session programmes
-      const programme_pid = session.programme_pids[0]
-      const programme = new Programme(data.programmes[programme_pid], data)
-      const fluPid = programmeTypes[ProgrammeType.Flu].pid
-
-      const consentHealthAnswers = patient.consentHealthAnswers(session.id)
-
-      response.locals.consentHealthAnswers = consentHealthAnswers
-
-      response.locals.sessionPatientPath = getSessionPatientPath(
-        session,
-        patient
-      )
-
-      response.locals.options = {
-        editGillick:
-          patient.consent?.value !== ConsentOutcome.Given &&
-          patient.outcome?.value !== PatientOutcome.Vaccinated,
-        showGillick:
-          !session.programme_pids?.includes(fluPid) &&
-          session.isActive &&
-          patient.consent?.value !== ConsentOutcome.Given,
-        showReminder: patient.consent?.value === ConsentOutcome.NoResponse,
-        getReply: Object.values(patient.replies).length === 0,
-        editReplies:
-          patient.consent?.value !== ConsentOutcome.Given &&
-          patient.outcome?.value !== PatientOutcome.Vaccinated,
-        editTriage:
-          patient.triage?.value === TriageOutcome.Completed &&
-          patient.outcome?.value !== PatientOutcome.Vaccinated,
-        showTriage:
-          consentHealthAnswers &&
-          patient.triage?.value === TriageOutcome.Needed &&
-          patient.outcome?.value === PatientOutcome.NoOutcomeYet,
-        editRegistration:
-          patient.consent?.value === ConsentOutcome.Given &&
-          patient.triage?.value !== TriageOutcome.Needed &&
-          patient.outcome?.value !== PatientOutcome.Vaccinated,
-        showPreScreen:
-          patient.capture?.value === CaptureOutcome.Vaccinate &&
-          patient.outcome?.value !== PatientOutcome.Vaccinated &&
-          patient.outcome?.value !== PatientOutcome.CouldNotVaccinate
-      }
-
-      response.locals.injectionSiteItems = Object.entries(VaccinationSite)
-        .filter(([, value]) =>
-          [
-            VaccinationSite.ArmLeftUpper,
-            VaccinationSite.ArmRightUpper,
-            VaccinationSite.Other
-          ].includes(value)
-        )
-        .map(([key, value]) => ({
-          text: VaccinationSite[key],
-          value
-        }))
-
-      response.locals.replies = patient.replies.filter(
-        ({ session_id }) => session_id === id
-      )
-      response.locals.vaccinations = patient.vaccinations.filter(
-        ({ session_id }) => session_id === id
-      )
-      response.locals.programme = programme
-      response.locals.session = session
-    }
-
-    response.locals.inSession = inSession
     response.locals.patient = patient
 
     next()
   },
 
   show(request, response) {
-    let { view } = request.params
-    const { inSession } = response.locals
-
-    if (!view) {
-      view = inSession ? 'session' : 'show'
-    }
+    const view = request.params.view || 'show'
 
     response.render(`patient/${view}`)
   },

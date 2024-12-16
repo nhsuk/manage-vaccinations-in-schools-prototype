@@ -667,50 +667,6 @@
       }
     }
   },
-  "gillick": {
-    "label": "Gillick assessment",
-    "text": "Before you make your assessment, you should give {{patient.firstName}} a chance to ask questions.",
-    "new": {
-      "title": "Assess Gillick competence",
-      "confirm": "Complete your assessment",
-      "success": "Gillick assessment added"
-    },
-    "edit": {
-      "title": "Edit Gillick competence",
-      "confirm": "Update assessment",
-      "success": "Gillick assessment updated"
-    },
-    "q1": {
-      "label": "The child knows which vaccination they will have"
-    },
-    "q2": {
-      "label": "The child knows which disease the vaccination protects against"
-    },
-    "q3": {
-      "label": "The child knows what could happen if they got the disease"
-    },
-    "q4": {
-      "label": "The child knows how the injection will be given"
-    },
-    "q5": {
-      "label": "The child knows which side effects they might experience"
-    },
-    "note": {
-      "label": "Assessment notes"
-    },
-    "competent": {
-      "True": {
-        "colour": "aqua-green",
-        "icon": "tick",
-        "status": "Child assessed as Gillick competent"
-      },
-      "False": {
-        "colour": "red",
-        "icon": "cross",
-        "status": "Child assessed as not Gillick competent"
-      }
-    }
-  },
   "healthAnswers": {
     "label": "All answers to health questions"
   },
@@ -718,10 +674,6 @@
     "show": {
       "title": "Home"
     }
-  },
-  "invite": {
-    "label": "Send consent request",
-    "success": "Consent request sent to {{parent.nameAndRelationship}}"
   },
   "import": {
     "label": "Record import",
@@ -1186,22 +1138,86 @@
       "title": "Details for second parent or guardian"
     }
   },
-  "preScreen": {
-    "label": "Pre-screening questions",
-    "questions": {
-      "label": "Have you asked {{patient.firstName}} if:"
+  "patientSession": {
+    "gillick": {
+      "label": "Gillick assessment",
+      "text": "Before you make your assessment, you should give {{patient.firstName}} a chance to ask questions.",
+      "new": {
+        "title": "Assess Gillick competence",
+        "confirm": "Complete your assessment",
+        "success": "Gillick assessment added"
+      },
+      "edit": {
+        "title": "Edit Gillick competence",
+        "confirm": "Update your assessment",
+        "success": "Gillick assessment updated"
+      },
+      "q1": {
+        "label": "The child knows which vaccination they will have"
+      },
+      "q2": {
+        "label": "The child knows which disease the vaccination protects against"
+      },
+      "q3": {
+        "label": "The child knows what could happen if they got the disease"
+      },
+      "q4": {
+        "label": "The child knows how the injection will be given"
+      },
+      "q5": {
+        "label": "The child knows which side effects they might experience"
+      },
+      "note": {
+        "label": "Assessment notes"
+      }
     },
-    "ready": {
-      "label": "Is {{patient.firstName}} ready to vaccinate in this session?",
-      "yes": "Yes",
-      "no": "No"
+    "invite": {
+      "label": "Send consent request",
+      "success": "Consent request sent to {{parent.formatted.fullNameAndRelationship}}"
     },
-    "injectionSite": {
-      "label": "Where will the injection be given?"
+    "preScreen": {
+      "label": "Pre-screening questions",
+      "questions": {
+        "label": "Have you asked {{patient.firstName}} if:"
+      },
+      "ready": {
+        "label": "Is {{patient.firstName}} ready to vaccinate in this session?",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "injectionSite": {
+        "label": "Where will the injection be given?"
+      },
+      "confirm": "Continue",
+      "note": {
+        "label": "Pre-screening notes"
+      }
     },
-    "confirm": "Continue",
-    "note": {
-      "label": "Pre-screening notes"
+    "registration": {
+      "label": "Is {{patient.fullName}} attending today’s session?",
+      "title": "Update attendance",
+      "present": "Yes, they are attending today’s session",
+      "absent": "No, they are absent from today’s session",
+      "pending": "They have not been registered yet",
+      "actions": {
+        "label": "Today’s attendance",
+        "Present": {
+          "label": "Attending",
+          "visuallyHiddenLabel": "Register {{patient.fullName}} as attending"
+        },
+        "Absent": {
+          "label": "Absent",
+          "visuallyHiddenLabel": "Register {{patient.fullName}} as absent"
+        }
+      },
+      "success": {
+        "GetConsent": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. They still need consent to vaccinate.",
+        "CheckRefusal": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) needs to leave the session because their parent or guardian refused to give consent.",
+        "NeedsTriage": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. A nurse needs to triage their record.",
+        "Vaccinate": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. They are ready for the nurse.",
+        "Register": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is absent from today’s session.",
+        "Absent": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is absent from today’s session."
+      }
     }
   },
   "programme": {
@@ -1220,7 +1236,7 @@
       "label": "Cohorts",
       "title": "Cohorts"
     },
-    "patients": {
+    "patientSessions": {
       "label": "Children",
       "title": "Children",
       "count": {
@@ -1316,57 +1332,6 @@
     },
     "vaccinations": {
       "label": "Vaccinations"
-    }
-  },
-  "registration": {
-    "label": "Today’s attendance",
-    "edit": {
-      "title": "Update attendance",
-      "label": "Is {{patient.fullName}} attending today’s session?",
-      "true": "Yes, they are attending today’s session",
-      "false": "No, they are absent from today’s session",
-      "undefined": "They have not been registered yet"
-    },
-    "update": {
-      "true": {
-        "confirm": "Attending",
-        "label": "Register {{patient.fullName}} as attending"
-      },
-      "false": {
-        "confirm": "Absent",
-        "label": "Register {{patient.fullName}} as absent"
-      },
-      "success": {
-        "GetConsent": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. They still need consent to vaccinate.",
-        "CheckRefusal": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) needs to leave the session because their parent or guardian refused to give consent.",
-        "NeedsTriage": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. A nurse needs to triage their record.",
-        "Vaccinate": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. They are ready for the nurse.",
-        "Register": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is absent from today’s session.",
-        "Absent": "[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is absent from today’s session."
-      }
-    },
-    "Present": {
-      "label": "Attending today",
-      "count": {
-        "one": "%s child attending today’s session",
-        "other": "[0] No children attending today’s session|%s children attending today’s session"
-      },
-      "name": "Registered as attending today’s session at {{location.name}}"
-    },
-    "Absent": {
-      "label": "Absent",
-      "count": {
-        "one": "%s child absent from today’s session",
-        "other": "[0] No children absent from today’s session|%s children absent from today’s session"
-      },
-      "name": "Registered as absent from today’s session at {{location.name}}"
-    },
-    "Pending": {
-      "label": "Not registered yet",
-      "count": {
-        "one": "%s child still to register",
-        "other": "[0] No children still to register|%s children still to register"
-      }
     }
   },
   "remind": {

@@ -1,9 +1,8 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { Batch } from '../models/batch.js'
-import { Patient } from '../models/patient.js'
+import { PatientSession } from '../models/patient-session.js'
 import { Programme } from '../models/programme.js'
-import { Session } from '../models/session.js'
 import { User } from '../models/user.js'
 import {
   Vaccination,
@@ -12,7 +11,6 @@ import {
   VaccinationSite
 } from '../models/vaccination.js'
 import { Vaccine } from '../models/vaccine.js'
-import { getSessionPatientPath } from '../utils/session.js'
 
 export const vaccinationController = {
   read(request, response, next) {
@@ -71,13 +69,12 @@ export const vaccinationController = {
   },
 
   new(request, response) {
-    const { patient_uuid, session_id } = request.query
+    const { patientSession_uuid } = request.query
     const { data } = request.session
     const { defaultBatchId, programme } = response.locals
 
-    const patient = Patient.read(patient_uuid, data)
-    const session = Session.read(session_id, data)
-    const { injectionSite, ready } = data.preScreen
+    const patientSession = PatientSession.read(patientSession_uuid, data)
+    const { injectionSite, ready } = data.patientSession.preScreen
 
     const readyToVaccine = ready === 'true'
     const injectionSiteGiven = [
@@ -102,15 +99,15 @@ export const vaccinationController = {
         startPath = 'decline'
     }
 
-    response.locals.back = getSessionPatientPath(session, patient)
+    response.locals.back = patientSession.uri
     response.locals.startPath = startPath
 
     const vaccination = new Vaccination({
-      location: session.formatted.location,
-      urn: session.uri,
-      patient_uuid,
+      location: patientSession.session.formatted.location,
+      patient_uuid: patientSession.patient.uuid,
       programme_pid: programme.pid,
-      session_id: session.id,
+      school_urn: patientSession.session.school_urn,
+      session_id: patientSession.session.id,
       vaccine_gtin: programme.vaccine.gtin,
       ...(data.token && { createdBy_uid: data.token?.uid }),
       ...(injectionSite && {
@@ -125,6 +122,7 @@ export const vaccinationController = {
     })
 
     vaccination.create(vaccination, data.wizard)
+    patientSession.patient.captureVaccination(vaccination)
 
     response.redirect(`${vaccination.uri}/new/${startPath}`)
   },
@@ -143,7 +141,7 @@ export const vaccinationController = {
     vaccination.update(vaccination, data)
 
     // Clean up session data
-    delete data.preScreen
+    delete data.patientSession?.preScreen
     delete data.vaccination
 
     response.redirect(referrer || vaccination.uri)

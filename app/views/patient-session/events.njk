@@ -9,9 +9,15 @@
       text: __("home.show.title"),
       href: "/"
     }, {
-      text: __("patient.list.title"),
-      href: "/patients"
-    }]
+      text: __("session.list.title"),
+      href: "/sessions"
+    }, {
+      text: session.location.name,
+      href: "/sessions/" + session.id
+    }, {
+      text: __("session.activity." + activity + ".title"),
+      href: "/sessions/" + session.id + "/" + activity
+    } if activity]
   }) }}
 {% endblock %}
 
@@ -20,11 +26,11 @@
     {{ super() }}
 
     {{ heading({
-      caption: session.location.name if inSession,
+      caption: session.location.name,
       title: patient.fullName
     }) }}
 
-    {% include "patient/_secondary-navigation.njk" %}
+    {% include "patient-session/_secondary-navigation.njk" %}
 
     <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
       {{ __("patient.events.title") }}

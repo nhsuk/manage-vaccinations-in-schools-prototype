@@ -30,16 +30,16 @@
       title: patient.fullName
     }) }}
 
-    {% include "patient/_secondary-navigation.njk" %}
+    {% include "patient-session/_secondary-navigation.njk" %}
 
     <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
       {{ __("patient.show.title") }}
     </h2>
 
     {% set statusDescriptionHtml %}
-      {{ patientStatus(patient).description | nhsukMarkdown }}
+      {{ patientStatus(patientSession).description | nhsukMarkdown }}
 
-      {% for vaccination in vaccinations %}
+      {% for vaccination in patientSession.vaccinations %}
         {{ summaryList({
           rows: summaryRows(vaccination, {
             vaccine_gtin: {},
@@ -57,12 +57,11 @@
             note: {}
           })
         }) }}
-
         <p class="nhsuk-body">
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-0",
             text: __("vaccination.edit.title"),
-            href: vaccination.uri + "/edit?referrer=" + sessionPatientPath
+            href: vaccination.uri + "/edit?referrer=" + patientSession.uri
           }) }}
         </p>
       {% endfor %}
@@ -72,20 +71,20 @@
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-0",
             text: __("triage.edit.title"),
-            href: sessionPatientPath + "/triage/edit/outcome"
+            href: patientSession.uri + "/edit/triage"
           }) }}
         </p>
       {% endif %}
 
       {% if options.showReminder %}
-        <form class="app-button-group" action="{{ sessionPatientPath }}/remind" method="post">
+        <form class="app-button-group" action="{{ patientSession.uri }}/new/remind" method="post">
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-0",
             text: __("remind.new.title")
           }) }}
-          {% if patient.lastReminderDate %}
+          {% if patientSession.patient.lastReminderDate %}
             <p class="nhsuk-u-secondary-text-color nhsuk-u-margin-0">
-              {{ __("patient.lastReminderDate.title", patient.lastReminderDate) }}
+              {{ __("patient.lastReminderDate.title", patientSession.patient.lastReminderDate) }}
             </p>
           {% endif %}
         </form>
@@ -93,8 +92,8 @@
     {% endset %}
 
     {{ card({
-      classes: "app-card--" + patientStatus(patient).colour,
-      heading: patientStatus(patient).title,
+      classes: "app-card--" + patientStatus(patientSession).colour,
+      heading: patientStatus(patientSession).title,
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: statusDescriptionHtml,
       feature: true
@@ -111,7 +110,7 @@
         rows: summaryRows(patient, {
           nhsn: {
             changeLabel: "the child’s NHS number",
-            href: sessionPatientPath + "/edit/nhsn" if patient.hasMissingNhsNumber
+            href: patient.uri + "/edit/nhsn?referrer=" + patientSession.uri if patient.hasMissingNhsNumber
           },
           fullName: {},
           preferredNames: { value: patient.preferredNames },
@@ -129,7 +128,7 @@
         {{ button({
           classes: "app-button--secondary nhsuk-u-margin-0",
           text: __("patient.edit.title"),
-          href: patient.uri + "/edit?referrer=" + sessionPatientPath
+          href: patient.uri + "/edit?referrer=" + patientSession.uri
         }) }}
       </p>
     {% endset %}
@@ -141,19 +140,15 @@
     }) }}
 
     {% set gillickDescriptionHtml %}
-      {{ status({
-        text: __("gillick.competent." + patient.gillick.competent.key + ".status"),
-        icon: __("gillick.competent." + patient.gillick.competent.key + ".icon"),
-        colour: __("gillick.competent." + patient.gillick.competent.key + ".colour")
-      }) }}
+      {% if patientSession.gillick.competent %}
+        {{ status(patientSession.gillick.status) }}
 
-      {% if patient.gillick.competent %}
         {% if options.editGillick %}
           <p class="nhsuk-body">
             {{ button({
               classes: "app-button--secondary nhsuk-u-margin-0",
-              text: __("gillick.edit.title"),
-              href: sessionPatientPath + "/gillick/edit"
+              text: __("patientSession.gillick.edit.title"),
+              href: patientSession.uri + "/edit/gillick"
             }) }}
           </p>
         {% endif %}
@@ -161,15 +156,15 @@
         <p class="nhsuk-body">
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-0",
-            text: __("gillick.new.title"),
-            href: sessionPatientPath + "/gillick/new"
+            text: __("patientSession.gillick.new.title"),
+            href: patientSession.uri + "/new/gillick"
           }) }}
         </p>
       {% endif %}
     {% endset %}
 
     {{ card({
-      heading: __("gillick.label"),
+      heading: __("patientSession.gillick.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: gillickDescriptionHtml
     }) if options.showGillick }}
@@ -177,13 +172,13 @@
     {% set consentDescriptionHtml %}
       {% if patientSession.replies.length %}
         {{ status({
-          text: __("consent." + patient.consent.key + ".status"),
-          icon: __("consent." + patient.consent.key + ".icon"),
-          colour: __("consent." + patient.consent.key + ".colour")
+          text: __("consent." + patientSession.consent.key + ".status"),
+          icon: __("consent." + patientSession.consent.key + ".icon"),
+          colour: __("consent." + patientSession.consent.key + ".colour")
         }) }}
 
         {% set replyRows = [] %}
-        {% for reply in replies | sort(false, false, "createdAt") %}
+        {% for reply in patientSession.replies %}
           {% set replyColour = replyStatus(reply).colour %}
           {% set replyModifier = "grey" if reply.invalid else replyColour %}
           {% set replyRows = replyRows | push([
@@ -231,10 +226,10 @@
         {{ __("consent.NoResponse.description") | nhsukMarkdown }}
       {% endif %}
       {% if options.getReply %}
-        <form action="{{ sessionPatientPath }}/invite" method="post">
+        <form action="{{ patientSession.uri }}/new/invite" method="post">
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-bottom-4",
-            text: __("invite.label")
+            text: __("patientSession.invite.label")
           }) }}
         </form>
       {% endif %}
@@ -243,7 +238,7 @@
           {{ button({
             classes: "app-button--secondary nhsuk-u-margin-0",
             text: __("reply.new.title"),
-            href: sessionPatientPath + "/replies/new"
+            href: patientSession.uri + "/replies/new"
           }) }}
         </p>
       {% endif %}
@@ -260,12 +255,12 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         classes: "app-summary-list--full-width",
-        rows: healthAnswerRows(consentHealthAnswers)
+        rows: healthAnswerRows(patientSession.consentHealthAnswers)
       })
-    }) if consentHealthAnswers }}
+    }) if patientSession.consentHealthAnswers }}
 
     {% set triageNotesDescriptionHtml %}
-      {% for note in patient.triageNotes | reverse %}
+      {% for note in patientSession.triageNotes | reverse %}
         <h3 class="nhsuk-heading-s nhsuk-u-margin-bottom-2">{{ note.name }}</h3>
         {{ event(note, users) }}
         {% if not loop.last -%}
@@ -278,7 +273,7 @@
       heading: __("triage.note.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: triageNotesDescriptionHtml
-    }) if patient.triageNotes.length }}
+    }) if patientSession.triageNotes.length }}
 
     {% set triageDescriptionHtml %}
       {{ radios({
@@ -318,7 +313,7 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: triageDescriptionHtml,
       attributes: {
-        action: sessionPatientPath + "/triage/new"
+        action: patientSession.uri + "/new/triage"
       }
     }) | formCard if options.showTriage }}
 
@@ -330,14 +325,14 @@
             legend: { text: PreScreenQuestion[key] }
           },
           items: booleanItems,
-          decorate: ["preScreen", key]
+          decorate: ["patientSession", "preScreen", key]
         }) }}
       {% endfor %}
 
       {{ textarea({
-        label: { text: __("preScreen.note.label") + " (Optional)" },
+        label: { text: __("patientSession.preScreen.note.label") + " (Optional)" },
         rows: 3,
-        decorate: "preScreen.note"
+        decorate: "patientSession.preScreen.note"
       }) }}
 
       <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
@@ -346,42 +341,42 @@
         fieldset: {
           legend: {
             classes: "nhsuk-fieldset__legend--m",
-            text: __("preScreen.ready.label", { patient: patient })
+            text: __("patientSession.preScreen.ready.label", { patient: patient })
           }
         },
         items: [
           {
-            text: __("preScreen.ready.yes"),
+            text: __("patientSession.preScreen.ready.yes"),
             value: true,
             conditional: {
               html: radios({
                 fieldset: {
-                  legend: { text: __("preScreen.injectionSite.label") }
+                  legend: { text: __("patientSession.preScreen.injectionSite.label") }
                 },
                 items: injectionSiteItems,
-                decorate: "preScreen.injectionSite"
+                decorate: "patientSession.preScreen.injectionSite"
               })
             }
           },
           {
-            text: __("preScreen.ready.no"),
+            text: __("patientSession.preScreen.ready.no"),
             value: false
           }
         ],
-        decorate: "preScreen.ready"
+        decorate: "patientSession.preScreen.ready"
       }) }}
 
       {{ button({
-        text: __("preScreen.confirm")
+        text: __("patientSession.preScreen.confirm")
       }) }}
     {% endset %}
 
     {{ card({
-      heading: __("preScreen.label"),
+      heading: __("patientSession.preScreen.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: preScreenDescriptionHtml,
       attributes: {
-        action: sessionPatientPath + "/pre-screen"
+        action: patientSession.uri + "/new/pre-screen"
       }
     }) | formCard if options.showPreScreen }}
   </div>

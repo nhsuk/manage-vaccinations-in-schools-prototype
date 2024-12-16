@@ -1,5 +1,3 @@
-import path from 'node:path'
-
 import { isAfter, isBefore } from 'date-fns'
 
 import { ProgrammeType, programmeTypes } from '../models/programme.js'
@@ -30,22 +28,6 @@ export const getConsentWindow = (session) => {
     default:
       return getEnumKeyAndValue(ConsentWindow, ConsentWindow.None)
   }
-}
-
-/**
- * Get path for patient in session
- *
- * @param {import('../models/session.js').Session} session - Session
- * @param {import('../models/patient.js').Patient} patient - Patient
- * @param {string} [subpath] - Sub path
- * @returns {string} Path
- */
-export const getSessionPatientPath = (session, patient, subpath) => {
-  if (subpath) {
-    return path.join(session.uri, patient.nhsn, subpath)
-  }
-
-  return path.join(session.uri, patient.nhsn)
 }
 
 export const getProgrammeSession = (sessions, type, isSchool = true) => {

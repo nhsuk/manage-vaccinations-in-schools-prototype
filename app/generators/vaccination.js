@@ -7,14 +7,20 @@ import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
 /**
  * Generate fake vaccination
  *
- * @param {import('../models/patient.js').Patient} patient - Patient
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @param {import('../models/programme.js').Programme} programme - Programme
  * @param {import('../models/session.js').Session} session - Session
  * @param {import('../models/batch.js').Batch} batch - Batch
  * @param {Array<import('../models/user.js').User>} users - Users
  * @returns {Vaccination} - Vaccination
  */
-export function generateVaccination(patient, programme, session, batch, users) {
+export function generateVaccination(
+  patientSession,
+  programme,
+  session,
+  batch,
+  users
+) {
   const user = faker.helpers.arrayElement(users)
 
   let injectionMethod
@@ -22,7 +28,7 @@ export function generateVaccination(patient, programme, session, batch, users) {
   let sequence
 
   let outcome
-  if (patient.consent.value === ConsentOutcome.Given) {
+  if (patientSession.consent.value === ConsentOutcome.Given) {
     outcome = faker.helpers.weightedArrayElement([
       { value: VaccinationOutcome.Vaccinated, weight: 7 },
       { value: VaccinationOutcome.PartVaccinated, weight: 1 },
@@ -43,7 +49,7 @@ export function generateVaccination(patient, programme, session, batch, users) {
     location: session.location.name,
     programme_pid: programme.pid,
     session_id: session.id,
-    patient_uuid: patient.uuid,
+    patient_uuid: patientSession.patient.uuid,
     vaccine_gtin: batch.vaccine_gtin,
     ...(vaccinated && {
       batch_id: batch.id,

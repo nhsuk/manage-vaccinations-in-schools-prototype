@@ -138,18 +138,18 @@ export default () => {
   /**
    * Get status details for a patient
    *
-   * @param {import('./models/patient.js').Patient} patient - Patient
+   * @param {import('./models/patient-session.js').PatientSession} patientSession - Patient session
    * @returns {object} Patient status
    */
-  globals.patientStatus = function (patient) {
+  globals.patientStatus = function (patientSession) {
     const { __, data } = this.ctx
-    const { consent, screen, outcome } = patient
+    const { consent, screen, outcome, patient } = patientSession
 
     // Get logged in user, else use placeholder
     const user = new User(data.token ? data.token : exampleUsers[0])
 
     // Get replies
-    const replies = Object.values(patient.replies)
+    const replies = Object.values(patientSession.replies)
       .map((reply) => new Reply(reply))
       .filter((reply) => !reply.invalid)
 
@@ -271,21 +271,21 @@ export default () => {
   /**
    * Show reason could not vaccinate
    *
-   * @param {import('./models/patient.js').Patient} patient - Patient
+   * @param {import('./models/patient-session.js').PatientSession} patientSession - Patient session
    * @returns {string|undefined} Reason could not vaccinate
    */
-  globals.couldNotVaccinateReason = function (patient) {
+  globals.couldNotVaccinateReason = function (patientSession) {
     const { __ } = this.ctx
 
     if (
-      patient?.screen?.value &&
-      patient?.screen?.value !== ScreenOutcome.Vaccinate
+      patientSession?.screen?.value &&
+      patientSession?.screen?.value !== ScreenOutcome.Vaccinate
     ) {
-      return __(`screen.${patient.screen.key}.status`)
-    } else if (patient?.consent?.value !== ConsentOutcome.Given) {
-      return __(`consent.${patient.consent.key}.status`)
-    } else if (patient.vaccinations.length) {
-      return patient.vaccinations[0].outcome
+      return __(`screen.${patientSession.screen.key}.status`)
+    } else if (patientSession?.consent?.value !== ConsentOutcome.Given) {
+      return __(`consent.${patientSession.consent.key}.status`)
+    } else if (patientSession.vaccinations.length) {
+      return patientSession.vaccinations[0].outcome
     }
   }
 

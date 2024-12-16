@@ -1,29 +1,17 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import _ from 'lodash'
 
-import {
-  getCaptureOutcome,
-  getRegistrationOutcome,
-  getPatientOutcome
-} from '../utils/capture.js'
 import { getDateValueDifference, removeDays, today } from '../utils/date.js'
-import {
-  getConsentHealthAnswers,
-  getConsentOutcome,
-  getConsentRefusalReasons,
-  getPreferredNames
-} from '../utils/reply.js'
-import { formatLink, formatParent, stringToBoolean } from '../utils/string.js'
-import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
+import { getPreferredNames } from '../utils/reply.js'
+import { formatLink, formatParent } from '../utils/string.js'
 
 import { AuditEvent, EventType } from './audit-event.js'
 import { Cohort } from './cohort.js'
-import { Gillick } from './gillick.js'
 import { NoticeType } from './notice.js'
 import { Parent } from './parent.js'
+import { PatientSession } from './patient-session.js'
 import { Record } from './record.js'
 import { Reply } from './reply.js'
-import { Session } from './session.js'
 import { Vaccination } from './vaccination.js'
 
 export class ConsentOutcome {
@@ -39,12 +27,6 @@ export class ScreenOutcome {
   static DelayVaccination = 'Delay vaccination'
   static DoNotVaccinate = 'Do not vaccinate'
   static Vaccinate = 'Safe to vaccinate'
-}
-
-export class TriageOutcome {
-  static Needed = 'Triage needed'
-  static Completed = 'Triage completed'
-  static NotNeeded = 'No triage needed'
 }
 
 export class CaptureOutcome {
@@ -72,29 +54,23 @@ export class PatientMovement {
  * @augments Record
  * @param {object} options - Options
  * @param {object} [context] - Global context
- * @property {object} [context] - Global context
  * @property {string} uuid - UUID
  * @property {Date} [updatedAt] - Updated date
  * @property {Array<import('./audit-event.js').AuditEvent>} events - Events
- * @property {boolean} [registered] - Checked in?
- * @property {Gillick} [gillick] - Gillick assessment
  * @property {Array<string>} [cohort_uids] - Cohort UIDs
  * @property {Array<string>} [reply_uuids] - Reply IDs
- * @property {Array<string>} [session_ids] - Session IDs
+ * @property {Array<string>} [patientSession_uuids] - Patient session IDs
  */
 export class Patient extends Record {
   constructor(options, context) {
     super(options, context)
 
-    this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.events = options?.events || []
-    this.registered = stringToBoolean(options?.registered)
-    this.gillick = options?.gillick && new Gillick(options.gillick)
     this.cohort_uids = options?.cohort_uids || []
     this.reply_uuids = options?.reply_uuids || []
-    this.session_ids = options?.session_ids || []
+    this.patientSession_uuids = options?.patientSession_uuids || []
   }
 
   /**
@@ -192,7 +168,7 @@ export class Patient extends Record {
   get lastReminderDate() {
     const lastReminder = this.reminders.at(-1)
     if (lastReminder) {
-      return lastReminder.formatted.date
+      return lastReminder.formatted.createdAt
     }
   }
 
@@ -203,9 +179,7 @@ export class Patient extends Record {
    */
   get cohorts() {
     if (this.context?.cohorts && this.cohort_uids) {
-      return this.cohort_uids.map(
-        (uid) => new Cohort(this.context?.cohorts[uid], this.context)
-      )
+      return this.cohort_uids.map((uid) => Cohort.read(uid, this.context))
     }
 
     return []
@@ -217,93 +191,29 @@ export class Patient extends Record {
    * @returns {Array<Reply>} - Replies
    */
   get replies() {
-    if (this.context?.replies && this.reply_uuids) {
-      return this.reply_uuids.map(
-        (uuid) => new Reply(this.context?.replies[uuid], this.context)
-      )
+    try {
+      return this.reply_uuids
+        .map((uuid) => Reply.read(uuid, this.context))
+        .filter((reply) => reply?.patient_uuid === this.uuid)
+    } catch (error) {
+      console.error('Patient.replies', error.message)
+      return []
+    }
+  }
+
+  /**
+   * Get patient sessions
+   *
+   * @returns {Array<PatientSession>} - Patient sessions
+   */
+  get patientSessions() {
+    if (this.context?.patientSessions && this.patientSession_uuids) {
+      return this.patientSession_uuids
+        .map((uuid) => PatientSession.read(uuid, this.context))
+        .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
     }
 
     return []
-  }
-
-  /**
-   * Get sessions
-   *
-   * @returns {Array<Session>} - Sessions
-   */
-  get sessions() {
-    if (this.context?.sessions && this.session_ids) {
-      return this.session_ids.map(
-        (id) => new Session(this.context?.sessions[id], this.context)
-      )
-    }
-
-    return []
-  }
-
-  /**
-   * Get consent outcome
-   *
-   * @returns {object} - Consent outcome
-   */
-  get consent() {
-    return getConsentOutcome(this)
-  }
-
-  /**
-   * Get consent refusal reasons (from replies)
-   *
-   * @returns {object|boolean} - Consent refusal reasons
-   */
-  get consentRefusalReasons() {
-    return this.session_ids.length > 0
-      ? getConsentRefusalReasons(this.replies)
-      : false
-  }
-
-  /**
-   * Get screening outcome
-   *
-   * @returns {object} - Screening outcome
-   */
-  get screen() {
-    return getScreenOutcome(this)
-  }
-
-  /**
-   * Get triage outcome
-   *
-   * @returns {object} - Triage outcome
-   */
-  get triage() {
-    return getTriageOutcome(this)
-  }
-
-  /**
-   * Get registration outcome
-   *
-   * @returns {object} - Registration outcome
-   */
-  get registration() {
-    return getRegistrationOutcome(this)
-  }
-
-  /**
-   * Get capture outcome
-   *
-   * @returns {object} - Capture outcome
-   */
-  get capture() {
-    return getCaptureOutcome(this)
-  }
-
-  /**
-   * Get overall patient outcome
-   *
-   * @returns {object} - Overall patient outcome
-   */
-  get outcome() {
-    return getPatientOutcome(this)
   }
 
   /**
@@ -350,18 +260,6 @@ export class Patient extends Record {
   }
 
   /**
-   * Get consent health answers (from replies, for a given session)
-   *
-   * @param {string} session_id - Session ID
-   * @returns {object|boolean} - Consent health answers
-   */
-  consentHealthAnswers(session_id) {
-    return session_id
-      ? getConsentHealthAnswers(this.replies, session_id)
-      : false
-  }
-
-  /**
    * Add event to activity log
    *
    * @param {object} event - Event
@@ -403,61 +301,15 @@ export class Patient extends Record {
   /**
    * Invite patient to session
    *
-   * @param {import('./session.js').Session} session - Session
+   * @param {import('./patient-session.js').PatientSession} patientSession - Patient session
    */
-  inviteToSession(session) {
-    this.session_ids.push(session.id)
+  inviteToSession(patientSession) {
+    this.patientSession_uuids.push(patientSession.uuid)
     this.addEvent({
       type: EventType.Invite,
-      name: `Invited to the ${session.name}`,
-      createdAt: session.createdAt,
-      createdBy_uid: session.createdBy_uid
-    })
-  }
-
-  /**
-   * Remove patient from session
-   *
-   * @param {import('./session.js').Session} session - Session
-   */
-  removeFromSession(session) {
-    this.session_ids = this.session_ids.filter((id) => id !== session.id)
-    this.addEvent({
-      type: EventType.Select,
-      name: `Removed from the ${session.name}`,
-      createdAt: session.createdAt,
-      createdBy_uid: session.createdBy_uid
-    })
-  }
-
-  /**
-   * Record sent reminder
-   *
-   * @param {object} target - Target of reminder
-   */
-  sendReminder(target) {
-    this.addEvent({
-      type: EventType.Remind,
-      name: `Reminder to give consent sent to ${target.fullName}`,
-      createdBy_uid: target.createdBy_uid
-    })
-  }
-
-  /**
-   * Assess Gillick competence
-   *
-   * @param {object} gillick - Gillick
-   */
-  assessGillick(gillick) {
-    const isNew = this.gillick && !Object.entries(this.gillick).length
-
-    this.gillick = gillick
-    this.addEvent({
-      type: EventType.Consent,
-      name: `${isNew ? 'Completed' : 'Updated'} Gillick assessment`,
-      note: gillick.note,
-      createdAt: isNew ? gillick.createdAt : today(),
-      createdBy_uid: gillick.createdBy_uid
+      name: `Invited to the ${patientSession.session.name}`,
+      createdAt: patientSession.createdAt,
+      createdBy_uid: patientSession.createdBy_uid
     })
   }
 
@@ -495,54 +347,6 @@ export class Patient extends Record {
   }
 
   /**
-   * Record triage
-   *
-   * @param {object} triage - Triage
-   */
-  recordTriage(triage) {
-    const outcome =
-      triage.outcome === ScreenOutcome.NeedsTriage
-        ? 'Keep in triage'
-        : triage.outcome
-
-    this.addEvent({
-      type: EventType.Screen,
-      name: `Triaged decision: ${outcome}`,
-      note: triage.note,
-      createdBy_uid: triage.createdBy_uid,
-      info_: triage
-    })
-  }
-
-  /**
-   * Register attendance
-   *
-   * @param {import('./registration.js').Registration} registration - Registration
-   */
-  registerAttendance(registration) {
-    this.registered = registration.registered
-    this.addEvent({
-      type: EventType.Capture,
-      name: registration.name,
-      createdBy_uid: registration.createdBy_uid
-    })
-  }
-
-  /**
-   * Record pre-screening interview
-   *
-   * @param {object} interview - Interview
-   */
-  preScreen(interview) {
-    this.addEvent({
-      type: EventType.Screen,
-      name: 'Completed pre-screening checks',
-      note: interview.note,
-      createdBy_uid: interview.createdBy_uid
-    })
-  }
-
-  /**
    * Capture vaccination
    *
    * @param {import('./vaccination.js').Vaccination} vaccination - Vaccination
@@ -550,8 +354,8 @@ export class Patient extends Record {
   captureVaccination(vaccination) {
     this.vaccination_uuids.push(vaccination.uuid)
 
-    vaccination = new Vaccination(vaccination)
     let name
+    vaccination = new Vaccination(vaccination)
     if (vaccination.given) {
       name = vaccination.updatedAt
         ? `Vaccination record for ${vaccination.formatted.vaccine_gtin} updated`
@@ -629,10 +433,7 @@ export class Patient extends Record {
    */
   static read(nhsn, context) {
     if (context?.patients) {
-      const patient = Object.values(context.patients).find(
-        (patient) => patient.nhsn === nhsn
-      )
-      return new Patient(patient, context)
+      return this.readAll(context).find((patient) => patient.nhsn === nhsn)
     }
   }
 

@@ -10,22 +10,21 @@ import {
 } from '../models/reply.js'
 import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
 import { today } from '../utils/date.js'
-import { getSessionPatientPath } from '../utils/session.js'
 import { formatParent } from '../utils/string.js'
 
 export const replyController = {
   read(request, response, next) {
     const { uuid } = request.params
     const { data } = request.session
-    const { patient, session } = response.locals
+    const { patientSession } = response.locals
 
     const reply = data.replies[uuid] || data.consents[uuid]
 
     request.app.locals.reply = new Reply(reply, data)
 
     response.locals.paths = {
-      back: getSessionPatientPath(session, patient),
-      next: getSessionPatientPath(session, patient)
+      back: patientSession.uri,
+      next: patientSession.uri
     }
 
     next()
@@ -44,7 +43,7 @@ export const replyController = {
   new(request, response) {
     const { id, nhsn } = request.params
     const { data } = request.session
-    const { patient, session } = response.locals
+    const { patient, patientSession, session } = response.locals
 
     delete data.reply
     delete data.triage
@@ -52,7 +51,7 @@ export const replyController = {
     delete data?.wizard?.triage
 
     const selfConsent =
-      patient.gillick?.competent?.value === GillickCompetent.True
+      patientSession.gillick?.competent === GillickCompetent.True
 
     const reply = new Reply({
       child: patient,
@@ -73,7 +72,7 @@ export const replyController = {
       request.app.locals
     const { form, id } = request.params
     const { data } = request.session
-    const { __ } = response.locals
+    const { __, patientSession } = response.locals
     const patient = new Patient(response.locals.patient)
 
     // Mark previous reply as invalid when following up on a refusal
@@ -103,7 +102,7 @@ export const replyController = {
     patient.addReply(updatedReply)
 
     if (triage.outcome) {
-      patient.recordTriage({
+      patientSession.recordTriage({
         ...triage,
         ...data?.wizard?.triage, // Wizard values
         ...(data.token && { createdBy_uid: data.token?.uid })
@@ -132,9 +131,10 @@ export const replyController = {
   },
 
   readForm(request, response, next) {
-    let { reply, session, triage } = request.app.locals
+    let { reply, triage } = request.app.locals
     const { form, uuid, nhsn } = request.params
     const { data, referrer } = request.session
+    const { patientSession } = response.locals
 
     let patient = Object.values(data.patients).find(
       (patient) => patient.nhsn === nhsn
@@ -215,8 +215,8 @@ export const replyController = {
     response.locals.paths = {
       ...wizard(journey, request),
       ...(form === 'edit' && {
-        back: getSessionPatientPath(session, patient, `replies/${uuid}/edit`),
-        next: getSessionPatientPath(session, patient, `replies/${uuid}/edit`)
+        back: `${patientSession.uri}/replies/${uuid}/edit`,
+        next: `${patientSession.uri}/replies/${uuid}/edit`
       }),
       ...(referrer && { back: referrer })
     }
@@ -259,7 +259,7 @@ export const replyController = {
     const { reply, triage } = request.app.locals
     const { uuid } = request.params
     const { data } = request.session
-    const { paths, patient, session } = response.locals
+    const { paths, patient, patientSession, session } = response.locals
 
     // Create parent based on choice of respondent
     if (request.body.uuid) {
@@ -318,12 +318,7 @@ export const replyController = {
     }
 
     response.redirect(
-      paths.next ||
-        getSessionPatientPath(
-          session,
-          patient,
-          `replies/${uuid}/new/check-answers`
-        )
+      paths.next || `${patientSession.uri}/replies/${uuid}/new/check-answers`
     )
   },
 
@@ -365,8 +360,7 @@ export const replyController = {
   updateInvalidate(request, response) {
     const { reply } = request.app.locals
     const { data } = request.session
-    const { patient, session } = response.locals
-    const { __ } = response.locals
+    const { __, patient, patientSession } = response.locals
 
     patient.addReply({
       ...reply,
@@ -378,7 +372,7 @@ export const replyController = {
     delete data.reply
 
     request.flash('success', __(`reply.invalidate.success`, { reply }))
-    response.redirect(getSessionPatientPath(session, patient))
+    response.redirect(patientSession.uri)
   },
 
   showWithdraw(request, response) {
@@ -388,8 +382,7 @@ export const replyController = {
   updateWithdraw(request, response) {
     const { reply } = request.app.locals
     const { data } = request.session
-    const { programme, patient, session } = response.locals
-    const { __ } = response.locals
+    const { __, programme, patient, patientSession, session } = response.locals
 
     const { refusalReason, refusalReasonOther, note } = data.reply
 
@@ -423,6 +416,6 @@ export const replyController = {
     delete data.reply
 
     request.flash('success', __(`reply.withdraw.success`, { reply }))
-    response.redirect(getSessionPatientPath(session, patient))
+    response.redirect(patientSession.uri)
   }
 }

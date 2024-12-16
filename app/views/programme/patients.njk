@@ -1,6 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = programme.name + " – " + __("programme.patients.title") %}
+{% set title = programme.name + " – " + __("programme.patientSessions.title") %}
 {% set view = "patients" %}
 
 {% block beforeContent %}
@@ -27,7 +27,7 @@
   {% include "programme/_secondary-navigation.njk" %}
 
   <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("programme.patients.title") }}
+    {{ __("programme.patientSessions.title") }}
   </h2>
 
   {{ button({
@@ -36,29 +36,29 @@
     href: programme.uri + "/imports/new?type=" + ImportType.Cohort
   }) }}
 
-  {% if programme.patients.length %}
+  {% if programme.patientSessions.length %}
     {% set resultRows = [] %}
-    {% for patient in results.page | sort(false, false, "patient.lastName") %}
+    {% for patientSession in results.page %}
       {% set resultRows = resultRows | push([
         {
           header: __("patient.fullName.label"),
-          html: patient.link.fullName
+          html: patientSession.link.fullName
         },
         {
           header: __("patient.dob.label"),
-          html: patient.formatted.dob or "Not provided"
+          html: patientSession.patient.formatted.dob or "Not provided"
         },
         {
           header: __("patient.yearGroup.label"),
-          html: patient.formatted.yearGroupWithRegistration,
+          html: patientSession.patient.formatted.yearGroupWithRegistration,
           attributes: {
-            "data-filter": patient.yearGroup,
-            "data-sort": patient.yearGroup
+            "data-filter": patientSession.patient.yearGroup,
+            "data-sort": patientSession.patient.yearGroup
           }
         },
         {
           header: __("session.status.label"),
-          text: patientStatus(patient).title
+          text: patientStatus(patientSession).title
         }
       ]) %}
     {% endfor %}
@@ -68,7 +68,7 @@
       classes: "app-patients nhsuk-u-margin-bottom-6",
       tableClasses: "app-patients__table",
       sort: "name",
-      caption: __n("patient.count", programme.patients.length),
+      caption: __n("patient.count", programme.patientSessions.length),
       captionClasses: "nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal nhsuk-u-font-size-19",
       responsive: true,
       head: [
@@ -94,7 +94,7 @@
     {{ __("patient.results", { results: results }) | nhsukMarkdown }}
   {% else %}
     <div class="app-patients">
-      <p class="app-patients__no-results nhsuk-caption-m">{{ __n("patient.count", programme.patients.length) }}</p>
+      <p class="app-patients__no-results nhsuk-caption-m">{{ __n("patient.count", programme.patientSessions.length) }}</p>
     </div>
   {% endif %}
 {% endblock %}

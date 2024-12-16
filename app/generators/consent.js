@@ -12,13 +12,15 @@ import { generateParent } from './parent.js'
  *
  * @param {import('../models/programme.js').Programme} programme - Programme
  * @param {import('../models/session.js').Session} session - Session
- * @param {import('../models/patient.js').Patient} patient - Patient
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @returns {Consent|undefined} - Consent
  */
-export function generateConsent(programme, session, patient) {
-  const firstReply = Object.entries(patient.replies).length === 0
-  const child = patient
-  const parent = firstReply ? patient.parent1 : generateParent(patient.lastName)
+export function generateConsent(programme, session, patientSession) {
+  const firstReply = Object.entries(patientSession.replies).length === 0
+  const child = patientSession
+  const parent = firstReply
+    ? patientSession.patient.parent1
+    : generateParent(patientSession.patient.lastName)
   const decision = faker.helpers.weightedArrayElement([
     { value: ReplyDecision.Given, weight: 5 },
     { value: ReplyDecision.Refused, weight: 1 }

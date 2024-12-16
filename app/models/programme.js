@@ -6,7 +6,7 @@ import { formatLink } from '../utils/string.js'
 
 import { Cohort } from './cohort.js'
 import { Import } from './import.js'
-import { Patient } from './patient.js'
+import { PatientSession } from './patient-session.js'
 import { Record } from './record.js'
 import { SchoolTerm } from './school.js'
 import { Session } from './session.js'
@@ -189,23 +189,14 @@ export class Programme {
   }
 
   /**
-   * Get patients
+   * Get patient sessions
    *
-   * @returns {Array<Patient>} - Patients
+   * @returns {Array<PatientSession>} - Patient sessions
    */
-  get patients() {
-    if (this.context?.imports && this.cohorts) {
-      let record_nhsns = []
-      for (const cohort of this.cohorts) {
-        record_nhsns = [...record_nhsns, ...cohort.record_nhsns]
-      }
-
-      return Patient.readAll(this.context).filter(({ nhsn }) =>
-        record_nhsns.includes(nhsn)
-      )
-    }
-
-    return []
+  get patientSessions() {
+    return PatientSession.readAll(this.context).filter(({ session }) =>
+      session.programme_pids.includes(this.pid)
+    )
   }
 
   /**

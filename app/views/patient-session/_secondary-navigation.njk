@@ -1,0 +1,20 @@
+{{ actionList({
+  items: [{
+    tag: statusTag(patientSession.registrationStatus)
+  }, {
+    text: __("patientSession.registration.title"),
+    href: patientSession.uri + "/edit/registration"
+  } if patientSession.registration != RegistrationOutcome.Complete]
+}) if session.isActive }}
+
+{{ xGovukSecondaryNavigation({
+  items: [{
+    text: __("patient.show.title"),
+    href: patientSession.uri,
+    current: view == "show"
+  }, {
+    text: __("patient.events.title"),
+    href: patientSession.uri + "/events",
+    current: view == "events"
+  }]
+}) }}

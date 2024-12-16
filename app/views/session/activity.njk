@@ -57,25 +57,25 @@
   {% include "session/_activity-navigation.njk" %}
 
   {% set patientRows = [] %}
-  {% for patient in patients | sort(false, false, "firstName") %}
-    {% set registerButtonHtml %}
-      <form class="app-button-group app-button-group--table" action="{{session.uri}}/{{patient.nhsn}}/registration/edit?tab={{tab}}" method="post">
+  {% for patientSession in patientSessions | sort(false, false, "firstName") %}
+    {% set registrationButtonHtml %}
+      <form class="app-button-group app-button-group--table" action="{{ patientSession.uri }}/edit/registration?referrer={{ session.uri }}/capture" method="post">
         {{ button({
           classes: "app-button--secondary app-button--small",
-          text: __("registration.update.true.confirm"),
-          decorate: "patient.registered",
-          value: "true",
+          text: __("patientSession.registration.actions.Present.label"),
+          decorate: "patientSession.registration",
+          value: RegistrationOutcome.Present,
           attributes: {
-            "aria-label": __("registration.update.true.label", { patient: patient })
+            "aria-label": __("patientSession.registration.actions.Present.visuallyHiddenLabel", { patient: patientSession.patient })
           }
         }) }}
         {{ button({
           classes: "app-button--secondary-warning app-button--small",
-          text: __("registration.update.false.confirm"),
-          decorate: "patient.registered",
-          value: "false",
+          text: __("patientSession.registration.actions.Absent.label"),
+          decorate: "patientSession.registration",
+          value: RegistrationOutcome.Absent,
           attributes: {
-            "aria-label": __("registration.update.false.label", { patient: patient })
+            "aria-label": __("patientSession.registration.actions.Absent.visuallyHiddenLabel", { patient: patientSession.patient })
           }
         }) }}
       </form>
@@ -83,11 +83,11 @@
     {% set patientRows = patientRows | push([
       {
         header: __("patient.fullName.label"),
-        html: link(session.uri + "/" + patient.nhsn, patient.fullName)
+        html: patientSession.link.fullName
       },
       {
         header: __("patient.yearGroup.label"),
-        html: patient.formatted.yearGroupWithRegistration or "Not provided",
+        html: patientSession.patient.formatted.yearGroupWithRegistration or "Not provided",
         attributes: {
           "data-filter": patient.yearGroup,
           "data-sort": patient.yearGroup
@@ -95,34 +95,34 @@
       },
       {
         header: __("patient.lastReminderDate.label"),
-        html: patient.lastReminderDate or "No reminders sent"
+        html: patientSession.patient.lastReminderDate or "No reminders sent"
       } if showLastReminderDate,
       {
         header: __("reply.refusalReason.label"),
-        html: patient.consentRefusalReasons | join("<br>")
+        html: patientSession.consentRefusalReasons | join("<br>")
       } if showRefusalReasons,
       {
         header: "Reason",
-        html: couldNotVaccinateReason(patient)
+        html: couldNotVaccinateReason(patientSession.patient)
       } if showCouldNotVaccinateReason,
       {
         header: __("capture.label"),
-        html: patientStatus(patient).title
+        html: patientStatus(patientSession).title
       } if showStatus,
       {
-        header: __("registration.label"),
-        html: registerButtonHtml
+        header: __("patientSession.registration.actions.label"),
+        html: registrationButtonHtml
       } if showRegistration
     ]) %}
   {% endfor %}
 
-  {% if patients.length %}
+  {% if patientSessions.length %}
     {% call actionTable({
-      id: "patients",
+      id: "patient-sessions",
       classes: "app-patients",
       tableClasses: "app-patients__table",
       sort: "name",
-      caption: __n(activity + "." + tab + ".count", patients.length),
+      caption: __n(activity + "." + tab + ".count", patientSessions.length),
       captionClasses: "nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal nhsuk-u-font-size-19",
       responsive: true,
       head: [
@@ -157,7 +157,7 @@
           }
         } if showStatus,
         {
-          text: __("registration.label"),
+          text: __("patientSession.registration.actions.label"),
           attributes: {
             "no-sort": "no-sort"
           }
@@ -171,7 +171,7 @@
     {% endcall %}
   {% else %}
     <div class="app-patients">
-      <p class="app-patients__no-results nhsuk-caption-m">{{ __n(activity + "." + tab + ".count", patients.length) }}</p>
+      <p class="app-patients__no-results nhsuk-caption-m">{{ __n(activity + "." + tab + ".count", patientSessions.length) }}</p>
     </div>
   {% endif %}
 {% endblock %}

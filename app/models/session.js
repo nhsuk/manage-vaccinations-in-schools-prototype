@@ -22,7 +22,7 @@ import {
 
 import { Clinic } from './clinic.js'
 import { OrganisationDefaults } from './organisation.js'
-import { Patient } from './patient.js'
+import { PatientSession } from './patient-session.js'
 import { Programme } from './programme.js'
 import { School } from './school.js'
 import { Vaccine } from './vaccine.js'
@@ -274,13 +274,13 @@ export class Session {
   /**
    * Get patients
    *
-   * @returns {Array<Patient>} - Patients
+   * @returns {Array<PatientSession>} - Patients
    */
   get patients() {
     if (this.context?.patients && this.id) {
-      return Patient.readAll(this.context)
-        .filter(({ session_ids }) => session_ids.includes(this.id))
-        .filter((patient) => !patient?.pendingChanges?.school_urn)
+      return PatientSession.readAll(this.context)
+        .filter(({ session }) => session.id === this.id)
+        .filter(({ patient }) => !patient?.pendingChanges?.school_urn)
     }
 
     return []

@@ -1,31 +1,11 @@
-{% if inSession %}
-  {% if patient.registration.value == RegistrationOutcome.Pending %}
-    {% set tagColor = "blue" %}
-  {% elif patient.registration.value == RegistrationOutcome.Complete %}
-    {% set tagColor = "white" %}
-  {% endif %}
-  {{ actionList({
-    items: [{
-      tag: {
-        classes: "nhsuk-tag--" + tagColor if tagColor,
-        text: patient.registration.value
-      }
-    } if session.isActive, {
-      text: __("registration.edit.title"),
-      href: sessionPatientPath + "/registration/edit"
-    } if session.isActive and patient.registration.value != RegistrationOutcome.Complete]
-  }) }}
-{% endif %}
-
-{% set uri = sessionPatientPath if inSession else patient.uri %}
 {{ xGovukSecondaryNavigation({
   items: [{
     text: __("patient.show.title"),
-    href: uri,
+    href: patient.uri,
     current: view == "show"
   }, {
     text: __("patient.events.title"),
-    href: uri + "/events",
+    href: patient.uri + "/events",
     current: view == "events"
   }]
 }) }}

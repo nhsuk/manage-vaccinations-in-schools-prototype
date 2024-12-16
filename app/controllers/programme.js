@@ -1,4 +1,5 @@
-import { Cohort } from '../models/cohort.js'
+import _ from 'lodash'
+
 import { Programme } from '../models/programme.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
@@ -38,14 +39,15 @@ export const programmeController = {
       response.locals.results = getResults(programme.vaccinations, page, limit)
       response.locals.pages = getPagination(programme.vaccinations, page, limit)
     } else if (view === 'patients') {
-      response.locals.cohortItems = programme.cohorts
-        .map((cohort) => new Cohort(cohort))
-        .map((cohort) => ({
-          text: formatYearGroup(cohort.yearGroup),
-          value: cohort.yearGroup
-        }))
-      response.locals.results = getResults(programme.patients, page, limit)
-      response.locals.pages = getPagination(programme.patients, page, limit)
+      // Sort
+      const patientSessions = _.sortBy(programme.patientSessions, 'lastName')
+
+      response.locals.cohortItems = programme.cohorts.map((cohort) => ({
+        text: formatYearGroup(cohort.yearGroup),
+        value: cohort.yearGroup
+      }))
+      response.locals.results = getResults(patientSessions, page, limit)
+      response.locals.pages = getPagination(patientSessions, page, limit)
     }
 
     response.render(`programme/${view}`)
