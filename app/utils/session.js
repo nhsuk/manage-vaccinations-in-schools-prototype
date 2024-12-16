@@ -19,13 +19,13 @@ export const getConsentWindow = (session) => {
 
   switch (true) {
     // Opening (open date is after today)
-    case isAfter(session.open, today):
+    case isAfter(session.openAt, today):
       return getEnumKeyAndValue(ConsentWindow, ConsentWindow.Opening)
     // Open (open date is before today, and close date after today)
-    case isBefore(session.open, today) && isAfter(session.close, today):
+    case isBefore(session.openAt, today) && isAfter(session.closeAt, today):
       return getEnumKeyAndValue(ConsentWindow, ConsentWindow.Open)
     // Closed (close date is before today)
-    case isBefore(session.close, today):
+    case isBefore(session.closeAt, today):
       return getEnumKeyAndValue(ConsentWindow, ConsentWindow.Closed)
     default:
       return getEnumKeyAndValue(ConsentWindow, ConsentWindow.None)

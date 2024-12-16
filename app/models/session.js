@@ -58,8 +58,8 @@ export class SessionType {
  * @property {string} [school_urn] - School URN
  * @property {Array<Date>} [dates] - Dates
  * @property {Array<object>} [dates_] - Dates (from `dateInput`s)
- * @property {Date} [open] - Date consent window opens
- * @property {object} [open_] - Date consent window opens (from `dateInput`)
+ * @property {Date} [openAt] - Date consent window opens
+ * @property {object} [openAt_] - Date consent window opens (from `dateInput`)
  * @property {boolean} [closed] - Session closed
  * @property {number} [reminderWeeks] - Weeks before session to send reminders
  * @property {Array<string>} [programme_pids] - Programme PIDs
@@ -77,19 +77,17 @@ export class Session {
     this.dates = options?.dates
       ? options.dates.map((date) => new Date(date))
       : []
-    this.open = options?.open
-      ? new Date(options.open)
+    this.dates_ = options?.dates_
+    this.openAt = options?.openAt
+      ? new Date(options.openAt)
       : this.firstDate
         ? removeDays(this.firstDate, OrganisationDefaults.SessionOpenWeeks * 7)
         : undefined
+    this.openAt_ = options?.openAt_
     this.closed = options?.closed || false
     this.reminderWeeks =
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
     this.programme_pids = options?.programme_pids || []
-    // dateInput objects
-    this.dates_ = options?.dates_
-    this.open_ = options?.open_
-    this.reminder_ = options?.reminder_
   }
 
   /**
@@ -119,8 +117,8 @@ export class Session {
    *
    * @returns {object|undefined} - `dateInput` object
    */
-  get open_() {
-    return convertIsoDateToObject(this.open)
+  get openAt_() {
+    return convertIsoDateToObject(this.openAt)
   }
 
   /**
@@ -128,9 +126,9 @@ export class Session {
    *
    * @param {object} object - dateInput object
    */
-  set open_(object) {
+  set openAt_(object) {
     if (object) {
-      this.open = convertObjectToIsoDate(object)
+      this.openAt = convertObjectToIsoDate(object)
     }
   }
 
@@ -189,7 +187,7 @@ export class Session {
    *
    * @returns {Date|undefined} - Consent close date
    */
-  get close() {
+  get closeAt() {
     // Always close consent for school sessions one day before final session
     if (this.lastDate) {
       return removeDays(this.lastDate, 1)
@@ -463,13 +461,13 @@ export class Session {
     const consentDateStyle = { day: 'numeric', month: 'long' }
     switch (this.consentWindow.value) {
       case ConsentWindow.Opening:
-        consentWindow = `Opens ${formatDate(this.open, consentDateStyle)}`
+        consentWindow = `Opens ${formatDate(this.openAt, consentDateStyle)}`
         break
       case ConsentWindow.Closed:
-        consentWindow = `Closed ${formatDate(this.close, consentDateStyle)}`
+        consentWindow = `Closed ${formatDate(this.closeAt, consentDateStyle)}`
         break
       case ConsentWindow.Open:
-        consentWindow = `Open until ${formatDate(this.close, consentDateStyle)}`
+        consentWindow = `Open until ${formatDate(this.closeAt, consentDateStyle)}`
         break
       default:
         consentWindow = ''
@@ -497,10 +495,10 @@ export class Session {
         month: 'long',
         day: 'numeric'
       }),
-      open: formatDate(this.open, { dateStyle: 'full' }),
+      openAt: formatDate(this.openAt, { dateStyle: 'full' }),
       reminderWeeks: `Send ${reminderWeeks} before each session</br>
       <span class="nhsuk-u-secondary-text-color">First: ${formattedNextReminderDate}</span>`,
-      close: formatDate(this.close, { dateStyle: 'full' }),
+      closeAt: formatDate(this.closeAt, { dateStyle: 'full' }),
       programmes: this.programmes.map(({ name }) => name).join('<br>'),
       consentUrl:
         this.consentUrl &&

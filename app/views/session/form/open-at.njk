@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("session.open.title") %}
+{% set title = __("session.openAt.title") %}
 
 {% block form %}
   {{ dateInput({
@@ -13,7 +13,7 @@
         })
       }
     },
-    hint: { text: __("session.open.hint") },
-    decorate: "session.open_"
+    hint: { text: __("session.openAt.hint") },
+    decorate: "session.openAt_"
   }) }}
 {% endblock %}
