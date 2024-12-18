@@ -58,7 +58,7 @@
         },
         {
           header: __("import.status.label"),
-          html: tag(import.statusTag) + ("<br><span class=\"nhsuk-u-secondary-text-color nhsuk-u-font-size-16\">5 hours 13 minutes remaining</span>" if import.status == ImportStatus.Processing)
+          html: tag(statusTag(import.importStatus)) + ("<br><span class=\"nhsuk-u-secondary-text-color nhsuk-u-font-size-16\">5 hours 13 minutes remaining</span>" if import.status == ImportStatus.Processing)
         },
         {
           header: __("import.records.label"),

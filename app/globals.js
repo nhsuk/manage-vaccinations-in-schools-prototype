@@ -290,6 +290,21 @@ export default () => {
   }
 
   /**
+   * Get tag parameters
+   *
+   * @param {object} status - Status
+   * @param {string} status.text - Status text
+   * @param {string} [status.colour] - Status colour
+   * @returns {object} Parameters
+   */
+  globals.statusTag = function ({ text, colour }) {
+    return {
+      text,
+      ...(colour && { classes: `nhsuk-tag--${colour}` })
+    }
+  }
+
+  /**
    * Get summaryList `rows` parameters
    *
    * @param {object} data - Data

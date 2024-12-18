@@ -572,11 +572,11 @@ export class Session {
   }
 
   /**
-   * Get status for `tag`
+   * Get status properties
    *
-   * @returns {object} - `tag` object
+   * @returns {object} - Status properties
    */
-  get statusTag() {
+  get sessionStatus() {
     let colour
     switch (this.status) {
       case SessionStatus.Closed:
@@ -592,14 +592,10 @@ export class Session {
         colour = 'blue'
     }
 
-    return this.isActive
-      ? {
-          text: 'Session in progress'
-        }
-      : {
-          classes: `nhsuk-tag--${colour}`,
-          text: this.status
-        }
+    return {
+      colour,
+      text: this.isActive ? 'Session in progress' : this.status
+    }
   }
 
   /**

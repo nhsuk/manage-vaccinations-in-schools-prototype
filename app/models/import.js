@@ -127,11 +127,11 @@ export class Import {
   }
 
   /**
-   * Get status for `tag`
+   * Get status properties
    *
-   * @returns {object} - `tag` object
+   * @returns {object} - Status properties
    */
-  get statusTag() {
+  get importStatus() {
     let colour
     switch (this.status) {
       case ImportStatus.Complete:
@@ -145,7 +145,7 @@ export class Import {
     }
 
     return {
-      classes: `nhsuk-tag--${colour}`,
+      colour,
       text: this.status
     }
   }
