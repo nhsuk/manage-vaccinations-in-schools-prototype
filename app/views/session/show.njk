@@ -23,7 +23,7 @@
 
   {{ actionList({
     items: [{
-      tag: session.statusTag
+      tag: statusTag(session.sessionStatus)
     }, {
       text: __("session.download-consent-form.title"),
       href: "/public/downloads/hpv-consent-form.pdf",

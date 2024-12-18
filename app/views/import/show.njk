@@ -42,7 +42,7 @@
   }) }}
 
   <p class="nhsuk-body">
-    {{ tag(import.statusTag) -}}
+    {{ tag(statusTag(import.importStatus)) -}}
 
     {%- if import.status == ImportStatus.Processing -%}
       <span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16 nhsuk-u-margin-left-2">5 hours 13 minutes remaining</span>
