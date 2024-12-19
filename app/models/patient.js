@@ -16,8 +16,8 @@ import {
 import { formatLink, formatParent, stringToBoolean } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 
+import { AuditEvent, EventType } from './audit-event.js'
 import { Cohort } from './cohort.js'
-import { Event, EventType } from './event.js'
 import { Gillick } from './gillick.js'
 import { NoticeType } from './notice.js'
 import { Parent } from './parent.js'
@@ -75,7 +75,7 @@ export class PatientMovement {
  * @property {object} [context] - Global context
  * @property {string} uuid - UUID
  * @property {Date} [updatedAt] - Updated date
- * @property {Array<import('./event.js').Event>} events - Logged events
+ * @property {Array<import('./audit-event.js').AuditEvent>} events - Events
  * @property {boolean} [registered] - Checked in?
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {Array<string>} [cohort_uids] - Cohort UIDs
@@ -138,7 +138,7 @@ export class Patient extends Record {
     )
 
     return Object.groupBy(events, (event) => {
-      return new Event(event).formatted.createdAt
+      return new AuditEvent(event).formatted.createdAt
     })
   }
 
@@ -149,7 +149,7 @@ export class Patient extends Record {
    */
   get triageNotes() {
     return this.events
-      .map((event) => new Event(event))
+      .map((event) => new AuditEvent(event))
       .filter((event) => event.type === EventType.Screen)
   }
 
@@ -160,25 +160,25 @@ export class Patient extends Record {
    */
   get reminders() {
     return this.events
-      .map((event) => new Event(event))
+      .map((event) => new AuditEvent(event))
       .filter((event) => event.type === EventType.Remind)
   }
 
   /**
    * Get all notices
    *
-   * @returns {Array<Event>} - Notice events
+   * @returns {Array<AuditEvent>} - Notice events
    */
   get notices() {
     return this.events
-      .map((event) => new Event(event))
+      .map((event) => new AuditEvent(event))
       .filter((event) => event.type === EventType.Notice)
   }
 
   /**
    * Get most recent notice
    *
-   * @returns {Event} - Notice event
+   * @returns {AuditEvent} - Notice event
    */
   get notice() {
     return this.notices && this.notices[0]
@@ -367,7 +367,7 @@ export class Patient extends Record {
    * @param {object} event - Event
    */
   addEvent(event) {
-    this.events.push(new Event(event))
+    this.events.push(new AuditEvent(event))
   }
 
   /**
