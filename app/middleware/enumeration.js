@@ -1,7 +1,7 @@
+import { EventType } from '../models/audit-event.js'
 import { Gender } from '../models/child.js'
 import { AcademicYear } from '../models/cohort.js'
 import { DownloadFormat } from '../models/download.js'
-import { EventType } from '../models/event.js'
 import { GillickCompetent } from '../models/gillick.js'
 import { ImportStatus, ImportType } from '../models/import.js'
 import { MoveSource } from '../models/move.js'

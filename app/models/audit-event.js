@@ -23,7 +23,7 @@ export class EventType {
  * @property {string} [note] - Note
  * @property {object} [info_] - Temporary information storage object
  */
-export class Event {
+export class AuditEvent {
   constructor(options) {
     this.uuid = options.uuid || faker.string.uuid()
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
