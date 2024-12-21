@@ -144,7 +144,7 @@ export class Reply {
     try {
       const patient = this.context?.patients[this.patient_uuid]
       if (patient) {
-        return new Patient(patient)
+        return new Patient(patient, this.context)
       }
     } catch (error) {
       console.error('Reply.patient', error.message)

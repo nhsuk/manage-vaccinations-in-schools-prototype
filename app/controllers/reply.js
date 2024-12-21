@@ -1,7 +1,6 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { GillickCompetent } from '../models/gillick.js'
-import { Patient } from '../models/patient.js'
 import {
   Reply,
   ReplyDecision,
@@ -16,16 +15,8 @@ export const replyController = {
   read(request, response, next) {
     const { uuid } = request.params
     const { data } = request.session
-    const { patientSession } = response.locals
 
-    const reply = data.replies[uuid] || data.consents[uuid]
-
-    request.app.locals.reply = new Reply(reply, data)
-
-    response.locals.paths = {
-      back: patientSession.uri,
-      next: patientSession.uri
-    }
+    response.locals.reply = Reply.read(uuid, data)
 
     next()
   },
@@ -41,122 +32,95 @@ export const replyController = {
   },
 
   new(request, response) {
-    const { id, nhsn } = request.params
     const { data } = request.session
     const { patient, patientSession, session } = response.locals
-
-    delete data.reply
-    delete data.triage
-    delete data?.wizard?.reply
-    delete data?.wizard?.triage
 
     const selfConsent =
       patientSession.gillick?.competent === GillickCompetent.True
 
-    const reply = new Reply({
-      child: patient,
-      patient_uuid: patient.uuid,
-      session_id: session.id,
-      selfConsent,
-      ...(!selfConsent && { method: ReplyMethod.Phone }),
-      ...(data.token && { createdBy_uid: data.token?.uid })
-    })
+    const reply = new Reply(
+      {
+        child: patient,
+        patient_uuid: patient.uuid,
+        session_id: session.id,
+        selfConsent,
+        ...(!selfConsent && { method: ReplyMethod.Phone }),
+        ...(data.token && { createdBy_uid: data.token?.uid })
+      },
+      data
+    )
 
-    data.wizard = { reply }
+    reply.create(reply, data.wizard)
 
-    response.redirect(`/sessions/${id}/${nhsn}/replies/${reply.uuid}/new/uuid`)
+    response.redirect(`${reply.uri}/new/respondent`)
   },
 
   update(request, response) {
-    const { activity, invalidUuid, reply, session, triage, vaccination } =
-      request.app.locals
-    const { form, id } = request.params
+    const { form, uuid } = request.params
     const { data } = request.session
-    const { __, patientSession } = response.locals
-    const patient = new Patient(response.locals.patient)
+    const { __, activity, patientSession, triage } = response.locals
 
-    // Mark previous reply as invalid when following up on a refusal
-    if (invalidUuid) {
-      patient.replies[invalidUuid].invalid = true
-      delete request.app.locals.invalidUuid
+    const { patient, session } = patientSession
+
+    let reply
+    let next
+    if (form === 'edit') {
+      reply = Reply.read(uuid, data)
+      next = reply.uri
+
+      reply.update(request.body.reply, data)
+    } else {
+      reply = new Reply(Reply.read(uuid, data.wizard), data)
+      next = `${session.uri}/${activity || 'consent'}`
+
+      // Remove any parent details in reply if self consent
+      if (reply.selfConsent) {
+        delete reply.parent
+      }
+
+      if (triage?.outcome) {
+        patientSession.recordTriage({
+          ...triage,
+          ...data?.wizard?.triage, // Wizard values
+          ...(data.token && { createdBy_uid: data.token?.uid })
+        })
+      }
+
+      patientSession.patient.addReply(reply)
+
+      reply.update(reply, data)
     }
 
-    // Capture and flow vaccination that has already been given
-    if (vaccination) {
-      vaccination.update(vaccination, data)
-      delete request.app.locals.vaccination
-    }
-
-    // Add new reply
-    const updatedReply = new Reply({
-      ...reply, // Previous values
-      ...data?.wizard?.reply, // Wizard values
-      ...request.body.reply // New value
-    })
-
-    // Remove any parent details in reply if self consent
-    if (updatedReply.selfConsent) {
-      delete updatedReply.parent
-    }
-
-    patient.addReply(updatedReply)
-
-    if (triage.outcome) {
-      patientSession.recordTriage({
-        ...triage,
-        ...data?.wizard?.triage, // Wizard values
-        ...(data.token && { createdBy_uid: data.token?.uid })
-      })
-    }
-
-    // Clean up
+    // Clean up session data
     delete data.reply
     delete data.triage
-    delete data?.wizard?.reply
-    delete data?.wizard?.triage
-    delete request.app.locals.reply
-    delete request.app.locals.triage
 
     request.flash(
       'success',
-      __(`reply.${form}.success`, { reply: updatedReply, patient, session })
+      __(`reply.new.success`, { reply, patient, session })
     )
-
-    const next =
-      form === 'edit'
-        ? updatedReply.uri
-        : `/sessions/${id}/${activity || 'consent'}`
 
     response.redirect(next)
   },
 
   readForm(request, response, next) {
-    let { reply, triage } = request.app.locals
-    const { form, uuid, nhsn } = request.params
+    const { form, uuid } = request.params
     const { data, referrer } = request.session
-    const { patientSession } = response.locals
+    const { patientSession, triage } = response.locals
 
-    let patient = Object.values(data.patients).find(
-      (patient) => patient.nhsn === nhsn
-    )
+    let reply
+    if (form === 'edit') {
+      reply = Reply.read(uuid, data)
+    } else {
+      reply = new Reply(Reply.read(uuid, data.wizard), data)
+    }
 
-    patient = new Patient(patient)
+    response.locals.reply = reply
 
-    reply = new Reply(
-      {
-        ...(form === 'edit' && reply), // Previous values
-        ...data?.wizard?.reply // Wizard values
-      },
-      data
-    )
-
-    triage = {
+    response.locals.triage = {
       ...(form === 'edit' && triage), // Previous values
       ...data?.wizard?.triage // Wizard values
     }
-
-    request.app.locals.reply = reply
-    request.app.locals.triage = triage
 
     const replyNeedsTriage = (reply) => {
       return reply?.healthAnswers
@@ -166,12 +130,12 @@ export const replyController = {
 
     const journey = {
       [`/`]: {},
-      [`/${uuid}/${form}/uuid`]: {},
-      ...(!reply.selfConsent && {
+      [`/${uuid}/${form}/respondent`]: {},
+      ...(!reply?.selfConsent && {
         [`/${uuid}/${form}/parent`]: {}
       }),
       [`/${uuid}/${form}/decision`]: {
-        [`/${uuid}/${form}/${reply.selfConsent ? 'notify-parent' : 'health-answers'}`]:
+        [`/${uuid}/${form}/${reply?.selfConsent ? 'notify-parent' : 'health-answers'}`]:
           {
             data: 'reply.decision',
             value: ReplyDecision.Given
@@ -221,26 +185,30 @@ export const replyController = {
       ...(referrer && { back: referrer })
     }
 
-    const consentRefusals = Object.values(patient.replies).filter(
+    const consentRefusals = Object.values(patientSession.replies).filter(
       (reply) => reply.decision === ReplyDecision.Refused
     )
 
     if (Object.values(consentRefusals).length > 0) {
-      response.locals.uuidItems = consentRefusals.map(({ parent, uuid }) => ({
-        text: `${parent.fullName} (${parent.relationship})`,
-        hint: { text: parent.tel },
-        value: uuid
-      }))
+      response.locals.respondentItems = consentRefusals.map(
+        ({ parent, uuid }) => ({
+          text: `${parent.fullName} (${parent.relationship})`,
+          hint: { text: parent.tel },
+          value: uuid
+        })
+      )
     } else {
-      response.locals.uuidItems = patient.parents.map((parent, index) => ({
-        text: formatParent(parent, false),
-        hint: { text: parent.tel },
-        value: `parent-${index + 1}`
-      }))
+      response.locals.respondentItems = patientSession.patient.parents.map(
+        (parent, index) => ({
+          text: formatParent(parent, false),
+          hint: { text: parent.tel },
+          value: `parent-${index + 1}`
+        })
+      )
     }
 
-    if (reply.selfConsent) {
-      response.locals.uuidItems.unshift({
+    if (reply?.selfConsent) {
+      response.locals.respondentItems.unshift({
         text: reply.relationship,
         value: 'self'
       })
@@ -256,38 +224,41 @@ export const replyController = {
   },
 
   updateForm(request, response) {
-    const { reply, triage } = request.app.locals
+    const { respondent } = request.body
     const { uuid } = request.params
     const { data } = request.session
-    const { paths, patient, patientSession, session } = response.locals
+    const { paths, patient, patientSession, reply, session, triage } =
+      response.locals
+
+    const newReply = request.body?.reply || {}
 
     // Create parent based on choice of respondent
-    if (request.body.uuid) {
-      switch (data.uuid) {
+    if (respondent) {
+      switch (respondent) {
         case 'new': // Consent response is from a new contact
-          reply.parent = {}
+          newReply.parent = {}
           break
         case 'self':
-          reply.parent = false
+          newReply.parent = false
           break
         case 'parent-1': // Consent response is from CHIS record
-          reply.parent = patient.parents[0]
+          newReply.parent = patient.parents[0]
           break
         case 'parent-2': // Consent response is from CHIS record
-          reply.parent = patient.parents[1]
+          newReply.parent = patient.parents[1]
           break
         default: // Consent response is an existing respondent
           // Store reply that needs marked as invalid
           // We only want to do this when submitting replacement reply
-          request.app.locals.invalidUuid = data.uuid
+          response.locals.invalidUuid = request.body.uuid
 
-          reply.parent = patient.replies[data.uuid].parent
+          newReply.parent = Reply.read(respondent, data).parent
       }
     }
 
     // Store vaccination if refusal reason is vaccination already given
     if (request.body.reply?.refusalReason === ReplyRefusal.AlreadyGiven) {
-      request.app.locals.vaccination = {
+      response.locals.vaccination = {
         outcome: VaccinationOutcome.AlreadyVaccinated,
         patient_uuid: patient.uuid,
         session_id: session.id,
@@ -297,20 +268,9 @@ export const replyController = {
     }
 
     delete data.healthAnswers
-    delete data.uuid
+    delete data.respondent
 
-    data.wizard.reply = new Reply({
-      ...reply, // Previous values
-      ...request.body?.reply, // New value
-      child: {
-        ...reply?.child,
-        ...request.body.reply?.child
-      },
-      parent: {
-        ...reply?.parent,
-        ...request.body?.reply?.parent
-      }
-    })
+    reply.update(newReply, data.wizard)
 
     data.wizard.triage = {
       ...triage, // Previous values
@@ -322,75 +282,63 @@ export const replyController = {
     )
   },
 
-  showFollowUp(request, response) {
-    response.render('reply/follow-up')
-  },
-
-  updateFollowUp(request, response) {
-    const { reply } = request.app.locals
+  followUp(request, response) {
+    const { decision } = request.body
     const { data } = request.session
-    const { patient, session } = response.locals
+    const { patient, reply, session } = response.locals
 
-    if (request.body.decision === 'true') {
+    if (decision === 'true') {
       response.locals.paths = { back: `${reply.uri}/follow-up` }
       response.redirect(`${reply.uri}/edit/outcome`)
     } else {
       // Store reply that needs marked as invalid
       // We only want to do this when submitting replacement reply
-      request.app.locals.invalidUuid = reply.uuid
+      response.locals.invalidUuid = reply.uuid
 
-      const newReply = new Reply({
-        child: patient,
-        parent: patient.replies[reply.uuid].parent,
-        patient_uuid: patient.uuid,
-        session_id: session.id,
-        method: ReplyMethod.Phone
-      })
+      const newReply = new Reply(
+        {
+          child: patient,
+          parent: reply.parent,
+          patient_uuid: patient.uuid,
+          session_id: session.id,
+          method: ReplyMethod.Phone
+        },
+        data
+      )
 
-      data.wizard = { reply: newReply }
+      patient.addReply(newReply)
+      newReply.create(newReply, data.wizard)
+
+      // Clean up session data
+      delete data.decision
 
       response.redirect(`${newReply.uri}/new/decision?referrer=${reply.uri}`)
     }
   },
 
-  showInvalidate(request, response) {
-    response.render('reply/invalidate')
-  },
-
-  updateInvalidate(request, response) {
-    const { reply } = request.app.locals
+  invalidate(request, response) {
+    const { note } = request.body.reply
     const { data } = request.session
-    const { __, patient, patientSession } = response.locals
+    const { __, patientSession, reply } = response.locals
 
-    patient.addReply({
-      ...reply,
-      ...(data.reply?.note && { note: data.reply.note }),
-      ...(data.token && { createdBy_uid: data.token?.uid }),
-      invalid: true
-    })
+    reply.update({ invalid: true, note }, data)
 
+    // Clean up session data
     delete data.reply
 
     request.flash('success', __(`reply.invalidate.success`, { reply }))
+
     response.redirect(patientSession.uri)
   },
 
-  showWithdraw(request, response) {
-    response.render('reply/withdraw')
-  },
-
-  updateWithdraw(request, response) {
-    const { reply } = request.app.locals
+  withdraw(request, response) {
+    const { refusalReason, refusalReasonOther, note } = request.body.reply
     const { data } = request.session
-    const { __, programme, patient, patientSession, session } = response.locals
-
-    const { refusalReason, refusalReasonOther, note } = data.reply
-
-    // Invalidate existing reply
-    patient.replies[reply.uuid].invalid = true
+    const { __, programme, patient, patientSession, reply, session } =
+      response.locals
 
     // Create a new reply
-    patient.addReply({
+    const newReply = new Reply({
       ...reply,
       uuid: false,
       createdAt: today(),
@@ -401,7 +349,11 @@ export const replyController = {
       ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
-    if (request.body.reply?.refusalReason === ReplyRefusal.AlreadyGiven) {
+    patient.addReply(newReply)
+    newReply.create(newReply, data)
+
+    // Add vaccination if refusal reason is already given
+    if (refusalReason === ReplyRefusal.AlreadyGiven) {
       const vaccination = new Vaccination({
         outcome: VaccinationOutcome.AlreadyVaccinated,
         patient_uuid: patient.uuid,
@@ -410,12 +362,18 @@ export const replyController = {
         ...(data.reply?.note && { note }),
         ...(data.token && { createdBy_uid: data.token?.uid })
       })
+      patientSession.patient.captureVaccination(vaccination)
       vaccination.update(vaccination, data)
     }
 
+    // Invalidate existing reply
+    reply.update({ invalid: true }, data)
+
+    // Clean up session data
     delete data.reply
 
     request.flash('success', __(`reply.withdraw.success`, { reply }))
+
     response.redirect(patientSession.uri)
   }
 }

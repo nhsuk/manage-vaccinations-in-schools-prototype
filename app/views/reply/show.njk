@@ -14,15 +14,15 @@
       items: [
         {
           text: __("reply.withdraw.label"),
-          href: reply.uri + "/withdraw"
+          href: reply.uri + "/edit/withdraw"
         } if not reply.invalid and reply.decision == ReplyDecision.Given,
         {
           text: __("reply.follow-up.label"),
-          href: reply.uri + "/follow-up"
+          href: reply.uri + "/edit/follow-up"
         } if not reply.invalid and not reply.confirmed and reply.decision == ReplyDecision.Refused,
         {
           text: __("reply.invalidate.label"),
-          href: reply.uri + "/invalidate"
+          href: reply.uri + "/edit/invalidate"
         } if not reply.invalid
       ]
     }) }}

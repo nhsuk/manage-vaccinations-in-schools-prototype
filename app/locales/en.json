@@ -1392,7 +1392,7 @@
     "createdBy": {
       "label": "Recorded by"
     },
-    "uuid": {
+    "respondent": {
       "title": "Who are you trying to get consent from?",
       "label": "Parent or guardian",
       "new": "Add a new parental contact"
@@ -1403,7 +1403,7 @@
     "parent": {
       "title": {
         "new": "Details for parent or guardian",
-        "edit": "Details for {{parent.nameAndRelationship}}"
+        "edit": "Details for {{parent.formatted.fullNameAndRelationship}}"
       },
       "label": "Parent"
     },

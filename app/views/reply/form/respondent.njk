@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("reply.uuid.title") %}
+{% set title = __("reply.respondent.title") %}
 
 {% block form %}
   {{ radios({
@@ -13,12 +13,12 @@
         })
       }
     },
-    items: uuidItems | push({
+    items: respondentItems | push({
       divider: "or"
     }) | push({
-      text: __("reply.uuid.new"),
+      text: __("reply.respondent.new"),
       value: "new"
     }),
-    decorate: "uuid"
+    decorate: "respondent"
   }) }}
 {% endblock %}
