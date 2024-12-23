@@ -45,14 +45,14 @@
     }) | nhsukMarkdown
   }) if activity == "consent" }}
 
-  {% set defaultBatchesHtml %}
-    {% include "default-batch/_session.njk" %}
+  {% set defaultBatchHtml %}
+    {% include "session/_default-batch.njk" %}
   {% endset %}
 
   {{ insetText({
     classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4",
-    html: defaultBatchesHtml
-  }) if activity == "capture" and defaultBatches.length }}
+    html: defaultBatchHtml
+  }) if activity == "capture" and session.defaultBatch.length }}
 
   {% include "session/_activity-navigation.njk" %}
 

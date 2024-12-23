@@ -10,7 +10,10 @@ router.get(
 )
 
 router.all('/:id*', sessionController.read)
-router.get(['/:id', '/:id/?:view(offline|close)'], sessionController.show)
+router.get(
+  ['/:id', '/:id/?:view(offline|close|default-batch)'],
+  sessionController.show
+)
 router.get(
   '/:id/:activity(consent|triage|capture|outcome)',
   sessionController.activity
@@ -26,5 +29,6 @@ router.get('/:id/?:form(new|edit)/:view', sessionController.showForm)
 router.post('/:id/?:form(new|edit)/:view', sessionController.updateForm)
 
 router.post('/:id/close', sessionController.close)
+router.post('/:id/default-batch', sessionController.updateDefaultBatch)
 
 export const sessionRoutes = router

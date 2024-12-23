@@ -21,16 +21,6 @@ export const vaccinationController = {
     const vaccination = Vaccination.read(uuid, data)
     const { session } = vaccination
 
-    // Get default batch for vaccination, if set
-    const defaultBatch = data.token?.batch?.[session?.id]
-    if (defaultBatch) {
-      const batchId = defaultBatch[programme.vaccine.gtin]
-      // Default batch ID may be saved in FormData as an array
-      response.locals.defaultBatchId = Array.isArray(batchId)
-        ? batchId.at(-1)
-        : batchId
-    }
-
     response.locals.vaccination = vaccination
     response.locals.programme = programme
     response.locals.session = session
@@ -71,22 +61,24 @@ export const vaccinationController = {
   new(request, response) {
     const { patientSession_uuid } = request.query
     const { data } = request.session
-    const { defaultBatchId, programme } = response.locals
+    const { programme } = response.locals
 
     const patientSession = PatientSession.read(patientSession_uuid, data)
     const { injectionSite, ready } = data.patientSession.preScreen
+
+    // Check for default batch
+    const { defaultBatch_ids } = patientSession.session
+    const defaultBatchId = defaultBatch_ids?.[programme.vaccine.gtin]
 
     const readyToVaccine = ready === 'true'
     const injectionSiteGiven = [
       VaccinationSite.ArmLeftUpper,
       VaccinationSite.ArmRightUpper
     ].includes(injectionSite)
-    const defaultBatchSet =
-      defaultBatchId !== undefined && defaultBatchId !== '_unchecked'
 
     let startPath
     switch (true) {
-      case readyToVaccine && injectionSiteGiven && defaultBatchSet:
+      case readyToVaccine && injectionSiteGiven && defaultBatchId:
         startPath = 'check-answers'
         break
       case readyToVaccine && injectionSiteGiven:
@@ -100,7 +92,9 @@ export const vaccinationController = {
     }
 
     response.locals.back = patientSession.uri
-    response.locals.startPath = startPath
+    request.app.locals.defaultBatchId = defaultBatchId
+    request.app.locals.patientSession = patientSession
+    request.app.locals.startPath = startPath
 
     const vaccination = new Vaccination({
       location: patientSession.session.formatted.location,
@@ -141,6 +135,7 @@ export const vaccinationController = {
     vaccination.update(vaccination, data)
 
     // Clean up session data
+    delete data.batch_id
     delete data.patientSession?.preScreen
     delete data.vaccination
 
@@ -148,10 +143,10 @@ export const vaccinationController = {
   },
 
   readForm(request, response, next) {
+    const { defaultBatchId, startPath, patientSession } = request.app.locals
     const { form, uuid } = request.params
     const { data, referrer } = request.session
-    const { __, defaultBatchId, startPath, programme, session } =
-      response.locals
+    const { __, programme } = response.locals
 
     const vaccination = Vaccination.read(uuid, data.wizard)
 
@@ -173,7 +168,7 @@ export const vaccinationController = {
             [`/${uuid}/${form}/batch-id`]: () => {
               return !defaultBatchId
             },
-            ...(!session?.address && {
+            ...(!patientSession?.session?.address && {
               [`/${uuid}/${form}/location`]: {}
             }),
             [`/${uuid}/${form}/check-answers`]: {}
@@ -258,8 +253,9 @@ export const vaccinationController = {
   },
 
   updateForm(request, response) {
+    const { defaultBatchId, patientSession } = request.app.locals
     const { data } = request.session
-    const { defaultBatchId, paths, programme, vaccination } = response.locals
+    const { paths, programme, vaccination } = response.locals
 
     // Add dose amount and vaccination outcome based on dosage answer
     const { dosage } = request.body.vaccination
@@ -272,9 +268,22 @@ export const vaccinationController = {
           : VaccinationOutcome.Vaccinated
     }
 
-    // Use default batch, if set
+    // Get default batch, if saved
     if (defaultBatchId) {
       request.body.vaccination.batch_id = defaultBatchId
+    }
+
+    // Set default batch, if checked
+    let { batch_id } = request.body
+    if (batch_id) {
+      // Checkbox submits ['_unchecked', BATCH_ID]
+      batch_id = Array.isArray(batch_id) ? batch_id.at(-1) : batch_id
+      const { gtin } = programme.vaccine
+
+      patientSession.session.update(
+        { defaultBatch_ids: { [gtin]: batch_id } },
+        data
+      )
     }
 
     vaccination.update(request.body.vaccination, data.wizard)

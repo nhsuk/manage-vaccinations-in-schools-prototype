@@ -116,6 +116,7 @@ export const sessionController = {
 
   read(request, response, next) {
     const { id } = request.params
+    const { gtin } = request.query
     const { data } = request.session
 
     const session = Session.read(id, data)
@@ -123,22 +124,12 @@ export const sessionController = {
       ({ session_id }) => session_id === id
     )
 
-    // Get default batches selected for vaccines in this session
-    const defaultBatches = []
-    if (data.token?.batch[id]) {
-      const sessionBatches = Object.entries(data.token.batch[id])
-      if (sessionBatches.length > 0) {
-        for (let [, batch_id] of sessionBatches) {
-          // Default batch ID may be saved in FormData as an array
-          batch_id = Array.isArray(batch_id) ? batch_id.at(-1) : batch_id
-          if (batch_id) {
-            defaultBatches.push(new Batch(data.batches[batch_id], data))
-          }
-        }
-      }
+    // Used when updating the default batch
+    if (gtin) {
+      response.locals.batchItems = Batch.readAll(data).filter(
+        (batch) => batch.vaccine.gtin === gtin
+      )
     }
-
-    response.locals.defaultBatches = defaultBatches
 
     response.locals.patientSessions = patientSessions
 
@@ -272,5 +263,19 @@ export const sessionController = {
     }
 
     response.redirect(session.uri)
+  },
+
+  updateDefaultBatch(request, response) {
+    const { data } = request.session
+    const { __, session } = response.locals
+
+    session.update(request.body.session, data)
+
+    // Clean up session date
+    delete data.session
+
+    request.flash('success', __('session.defaultBatch.success'))
+
+    response.redirect(`${session.uri}/capture`)
   }
 }

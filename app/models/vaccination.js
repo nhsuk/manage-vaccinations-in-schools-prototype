@@ -143,9 +143,8 @@ export class Vaccination {
    */
   get batch() {
     try {
-      const batch = this.context?.batches[this.batch_id]
-      if (batch) {
-        return new Batch(batch)
+      if (this.batch_id) {
+        return new Batch(this.batch_id, this.context)
       }
     } catch (error) {
       console.error('Vaccination.batch', error.message)
@@ -221,9 +220,8 @@ export class Vaccination {
    */
   get patient() {
     try {
-      const patient = this.context?.patients[this.patient_uuid]
-      if (patient) {
-        return new Patient(patient, this.context)
+      if (this.patient_uuid) {
+        return Patient.read(this.patient_uuid, this.context)
       }
     } catch (error) {
       console.error('Vaccination.patient', error.message)
@@ -237,9 +235,8 @@ export class Vaccination {
    */
   get createdBy() {
     try {
-      const user = this.context?.users[this.createdBy_uid]
-      if (user) {
-        return new User(user)
+      if (this.createdBy_uid) {
+        return User.read(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Vaccination.createdBy', error.message)

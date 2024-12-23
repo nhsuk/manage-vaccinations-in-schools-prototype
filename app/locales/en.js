@@ -104,7 +104,9 @@ export const en = {
       title: 'Are you sure you want to %s this batch?',
       description: 'This operation cannot be undone.',
       cancel: 'No, return to vaccines',
-      confirm: 'Yes, %s this batch',
+      confirm: 'Yes, %s this batch'
+    },
+    archive: {
       success: 'Batch {{batch.id}} archived'
     },
     createdAt: {
@@ -578,17 +580,6 @@ export const en = {
     },
     actions: {
       label: 'Actions'
-    }
-  },
-  'default-batch': {
-    edit: {
-      label:
-        'Change default batch<span class="nhsuk-u-visually-hidden"> for {{vaccine.brand}}</span> ',
-      title: 'Select a default batch for this session'
-    },
-    count: {
-      one: 'Default batch',
-      other: 'Default batches'
     }
   },
   download: {
@@ -1769,6 +1760,16 @@ export const en = {
           other:
             '[0] No children whose parents did not give a consent response|%s children whose parents did not give a consent response'
         }
+      }
+    },
+    defaultBatch: {
+      label:
+        'Change default batch<span class="nhsuk-u-visually-hidden"> for {{vaccine.brand}}</span> ',
+      title: 'Select a default batch for this session',
+      success: 'Default batch updated',
+      count: {
+        one: 'Default batch',
+        other: 'Default batches'
       }
     }
   },

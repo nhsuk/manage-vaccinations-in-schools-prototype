@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import { isAfter } from 'date-fns'
+import _ from 'lodash'
 
 import {
   removeDays,
@@ -20,6 +21,7 @@ import {
   lowerCaseFirst
 } from '../utils/string.js'
 
+import { Batch } from './batch.js'
 import { Clinic } from './clinic.js'
 import { OrganisationDefaults } from './organisation.js'
 import { PatientSession } from './patient-session.js'
@@ -62,6 +64,7 @@ export class SessionType {
  * @property {object} [openAt_] - Date consent window opens (from `dateInput`)
  * @property {boolean} [closed] - Session closed
  * @property {number} [reminderWeeks] - Weeks before session to send reminders
+ * @property {object} [defaultBatch_ids] - Vaccine GTIN: Default batch ID
  * @property {Array<string>} [programme_pids] - Programme PIDs
  */
 export class Session {
@@ -85,6 +88,7 @@ export class Session {
     this.closed = options?.closed || false
     this.reminderWeeks =
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
+    this.defaultBatch_ids = options?.defaultBatch_ids || {}
     this.programme_pids = options?.programme_pids || []
   }
 
@@ -320,6 +324,17 @@ export class Session {
     }
 
     return []
+  }
+
+  /**
+   * Get default batches
+   *
+   * @returns {Array<Batch>} - Default batches
+   */
+  get defaultBatch() {
+    return Object.entries(this.defaultBatch_ids).map(([, id]) =>
+      Batch.read(id, this.context)
+    )
   }
 
   /**
@@ -690,7 +705,8 @@ export class Session {
     delete context.sessions[this.id]
 
     // Update context
-    const updatedSession = Object.assign(this, updates)
+    const updatedSession = _.merge(this, updates)
+
     context.sessions[updatedSession.id] = updatedSession
   }
 

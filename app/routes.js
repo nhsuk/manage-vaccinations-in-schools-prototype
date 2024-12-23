@@ -12,7 +12,6 @@ import { batchRoutes } from './routes/batch.js'
 import { clinicRoutes } from './routes/clinic.js'
 import { cohortRoutes } from './routes/cohort.js'
 import { consentRoutes } from './routes/consent.js'
-import { defaultBatchRoutes } from './routes/default-batch.js'
 import { downloadRoutes } from './routes/download.js'
 import { homeRoutes } from './routes/home.js'
 import { importRoutes } from './routes/import.js'
@@ -57,7 +56,6 @@ router.use('/programmes/:pid/vaccinations/:uuid/patients', patientRoutes)
 router.use('/records', recordRoutes)
 router.use('/schools', schoolRoutes)
 router.use('/sessions', sessionRoutes)
-router.use('/sessions/:id/default-batch', defaultBatchRoutes)
 router.use('/sessions/:id', patientSessionRoutes)
 router.use('/sessions/:id/:nhsn/replies', replyRoutes)
 router.use('/users', userRoutes)

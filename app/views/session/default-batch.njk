@@ -1,6 +1,7 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("default-batch.edit.title") %}
+{% set title = __("session.defaultBatch.title") %}
+{% set vaccine = batchItems[0].vaccine %}
 
 {% block form %}
   {{ heading({
@@ -24,6 +25,6 @@
       }
     },
     items: batches,
-    decorate: "data.token.batch." + session.id + "." + vaccine.gtin
+    decorate: "session.defaultBatch_ids[" + vaccine.gtin + "]"
   }) }}
 {% endblock %}
