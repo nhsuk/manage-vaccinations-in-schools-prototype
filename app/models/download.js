@@ -12,7 +12,7 @@ import { formatList } from '../utils/string.js'
 
 import { Organisation } from './organisation.js'
 import { Programme } from './programme.js'
-import { Vaccination, VaccinationSequence } from './vaccination.js'
+import { Vaccination } from './vaccination.js'
 
 export class DownloadFormat {
   static CSV = 'CSV'
@@ -204,11 +204,7 @@ export class Download {
               })
           },
           { label: 'Vaccine1', value: 'vaccine_type' },
-          {
-            label: 'Dose1',
-            value: (row) =>
-              getEnumKeyAndValue(VaccinationSequence, row.sequence).key
-          },
+          { label: 'Dose1', value: 'sequence' },
           { label: 'ReasonNOTGiven1', value: 'refusal' },
           { label: 'Site1', value: 'site' },
           { label: 'Manufacture', value: 'vaccine_manufacturer' },
