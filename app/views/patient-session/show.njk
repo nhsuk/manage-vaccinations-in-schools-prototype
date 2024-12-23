@@ -97,7 +97,7 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: statusDescriptionHtml,
       feature: true
-    }) if session.consentWindow.value != ConsentWindow.Opening }}
+    }) if session.consentWindow != ConsentWindow.Opening }}
 
     {% set recordDescriptionHtml %}
       {{ status({
@@ -215,8 +215,8 @@
           ],
           rows: replyRows
         }) }}
-      {% elif session.consentWindow.value == ConsentWindow.Opening %}
-        {{ __("session.consentWindow." + session.consentWindow.key + ".text", {
+      {% elif session.consentWindow == ConsentWindow.Opening %}
+        {{ __("session.consentWindow." + session.consentWindow + ".text", {
           openAt: session.openAt | date({
             day: "numeric",
             month: "long"

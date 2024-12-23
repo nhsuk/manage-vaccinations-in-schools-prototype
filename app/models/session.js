@@ -198,7 +198,7 @@ export class Session {
    * @returns {object|undefined} - Consent window
    */
   get consentUrl() {
-    if (this.firstDate && this.consentWindow.value !== ConsentWindow.Closed) {
+    if (this.firstDate && this.consentWindow !== ConsentWindow.Closed) {
       return `/consents/${this.id}`
     }
   }
@@ -455,7 +455,7 @@ export class Session {
   get formatted() {
     let consentWindow
     const consentDateStyle = { day: 'numeric', month: 'long' }
-    switch (this.consentWindow.value) {
+    switch (this.consentWindow) {
       case ConsentWindow.Opening:
         consentWindow = `Opens ${formatDate(this.openAt, consentDateStyle)}`
         break

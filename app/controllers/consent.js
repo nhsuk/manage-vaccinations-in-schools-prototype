@@ -85,7 +85,7 @@ export const consentController = {
     // Service homepage should show closed message if deadline has passed
     if (!view) {
       return response.render(
-        session.consentWindow.value === ConsentWindow.Closed
+        session.consentWindow === ConsentWindow.Closed
           ? `consent/closed`
           : `consent/start`
       )

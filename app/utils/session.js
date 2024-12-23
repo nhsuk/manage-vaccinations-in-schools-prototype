@@ -4,8 +4,6 @@ import { ProgrammeType, programmeTypes } from '../models/programme.js'
 import { ConsentWindow, Session, SessionType } from '../models/session.js'
 import { today } from '../utils/date.js'
 
-import { getEnumKeyAndValue } from './enum.js'
-
 /**
  * Get consent window (is it open, opening or closed)
  *
@@ -18,15 +16,15 @@ export const getConsentWindow = (session) => {
   switch (true) {
     // Opening (open date is after today)
     case isAfter(session.openAt, nowAt):
-      return getEnumKeyAndValue(ConsentWindow, ConsentWindow.Opening)
+      return ConsentWindow.Opening
     // Open (open date is before today, and close date after today)
     case isBefore(session.openAt, nowAt) && isAfter(session.closeAt, nowAt):
-      return getEnumKeyAndValue(ConsentWindow, ConsentWindow.Open)
+      return ConsentWindow.Open
     // Closed (close date is before today)
     case isBefore(session.closeAt, nowAt):
-      return getEnumKeyAndValue(ConsentWindow, ConsentWindow.Closed)
+      return ConsentWindow.Closed
     default:
-      return getEnumKeyAndValue(ConsentWindow, ConsentWindow.None)
+      return ConsentWindow.None
   }
 }
 

@@ -1,3 +1,5 @@
+import { ConsentWindow } from '../models/session.js'
+
 /**
  * @returns {import("i18n").LocaleCatalog}
  */
@@ -1698,13 +1700,13 @@ export const en = {
     },
     consentWindow: {
       label: 'Consent period',
-      Opening: {
+      [ConsentWindow.Opening]: {
         text: 'Consent period opens on {{openAt}}'
       },
-      Open: {
+      [ConsentWindow.Open]: {
         text: 'Consent period is open from {{openAt}} until {{closeAt}}'
       },
-      Closed: {
+      [ConsentWindow.Closed]: {
         text: 'Consent period closed on {{closeAt}}'
       }
     },
