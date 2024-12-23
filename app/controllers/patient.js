@@ -1,5 +1,6 @@
 import _ from 'lodash'
 
+import { Cohort } from '../models/cohort.js'
 import { Patient } from '../models/patient.js'
 import { Record } from '../models/record.js'
 import { School } from '../models/school.js'
@@ -171,5 +172,19 @@ export const patientController = {
     patient.update(request.body.patient, data.wizard)
 
     response.redirect(paths.next)
+  },
+
+  reject(request, response) {
+    const { data } = request.session
+    const { uid } = request.body
+    const { __, patient } = response.locals
+
+    // Reject patient from cohort
+    const cohort = Cohort.read(uid, data)
+    patient.rejectFromCohort(cohort, data)
+
+    request.flash('success', __(`cohort.unselect.success`, { cohort, patient }))
+
+    response.redirect(patient.uri)
   }
 }

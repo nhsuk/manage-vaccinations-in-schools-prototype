@@ -72,7 +72,7 @@
 
     {% set cohortsDescriptionHtml %}
       {% macro unselectButtonHtml(uid) %}
-        <form class="app-button-group app-button-group--table" action="{{ patient.uri }}/unselect" method="post">
+        <form class="app-button-group app-button-group--table" action="{{ patient.uri }}/reject" method="post">
           {{ button({
             classes: "app-button--secondary-warning app-button--small",
             text: __("cohort.unselect.confirm"),

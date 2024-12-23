@@ -26,7 +26,6 @@ import { recordRoutes } from './routes/record.js'
 import { replyRoutes } from './routes/reply.js'
 import { schoolRoutes } from './routes/school.js'
 import { sessionRoutes } from './routes/session.js'
-import { unselectRoutes } from './routes/unselect.js'
 import { userRoutes } from './routes/user.js'
 import { vaccinationRoutes } from './routes/vaccination.js'
 import { vaccineRoutes } from './routes/vaccine.js'
@@ -47,7 +46,6 @@ router.use('/notices', noticeRoutes)
 router.use('/organisations', organisationRoutes)
 router.use('/organisations/:code/clinics', clinicRoutes)
 router.use('/patients', patientRoutes)
-router.use('/patients/:nhsn/unselect', unselectRoutes)
 router.use('/programmes', programmeRoutes)
 router.use('/programmes/:pid/cohorts', cohortRoutes)
 router.use('/programmes/:pid/download', downloadRoutes)

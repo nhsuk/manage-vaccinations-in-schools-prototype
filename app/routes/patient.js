@@ -18,4 +18,6 @@ router.all('/:nhsn/?:form(new|edit)/:view', patientController.readForm)
 router.get('/:nhsn/?:form(new|edit)/:view', patientController.showForm)
 router.post('/:nhsn/?:form(new|edit)/:view', patientController.updateForm)
 
+router.post('/:nhsn/reject', patientController.reject)
+
 export const patientRoutes = router

@@ -252,9 +252,12 @@ export class Patient extends Record {
    * Reject patient from cohort
    *
    * @param {import('./cohort.js').Cohort} cohort - Cohort
+   * @param {object} context - Context
    */
-  rejectFromCohort(cohort) {
+  rejectFromCohort(cohort, context) {
     this.cohort_uids = this.cohort_uids.filter((uid) => uid !== cohort.uid)
+    this.update({}, context)
+
     this.addEvent({
       type: EventType.Select,
       name: `Removed from the ${cohort.name.replace('Flu', 'flu')} cohort`,
