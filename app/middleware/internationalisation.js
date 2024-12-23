@@ -1,15 +1,14 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
 import i18n from 'i18n'
 
-export const internationalisation = (request, response, next) => {
+import { en } from '../locales/en.js'
+
+export const internationalisation = async (request, response, next) => {
   i18n.configure({
     cookie: 'locale',
     defaultLocale: 'en',
-    indent: '  ',
     objectNotation: true,
-    directory: fileURLToPath(path.join(import.meta.url, '../../locales'))
+    // @ts-ignore
+    staticCatalog: { en }
   })
 
   i18n.init(request, response)
