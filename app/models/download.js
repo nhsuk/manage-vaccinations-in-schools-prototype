@@ -7,7 +7,6 @@ import {
   formatDate,
   today
 } from '../utils/date.js'
-import { getEnumKeyAndValue } from '../utils/enum.js'
 import { formatList } from '../utils/string.js'
 
 import { Organisation } from './organisation.js'
@@ -372,13 +371,11 @@ export class Download {
   createFile(context) {
     const { name } = new Download(this, context)
 
-    const format = getEnumKeyAndValue(DownloadFormat, this.format).key
-
     let buffer
     let extension
     let mimetype
-    switch (format) {
-      case 'CarePlus':
+    switch (this.format) {
+      case DownloadFormat.CarePlus:
         buffer = xlsx(this.carePlus, { name, writeOptions: { type: 'buffer' } })
         extension = 'xlsx'
         mimetype = 'application/octet-stream'
