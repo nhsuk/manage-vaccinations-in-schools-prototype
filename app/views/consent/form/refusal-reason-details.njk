@@ -1,7 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set refusal = enumKeyAndValue(ReplyRefusal, consent.refusalReason) %}
-{% set title = __("consent.refusalReasonDetails.title." + refusal.key) %}
+{% set title = __("consent.refusalReasonDetails.title." + consent.refusalReason) %}
 
 {% block form %}
   {{ textarea({

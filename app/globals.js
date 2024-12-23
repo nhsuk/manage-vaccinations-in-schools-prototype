@@ -45,8 +45,6 @@ export default () => {
     }))
   }
 
-  globals.enumKeyAndValue = getEnumKeyAndValue
-
   /**
    * Convert errors object to array for errorSummary component
    *

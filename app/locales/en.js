@@ -1,3 +1,4 @@
+import { ReplyRefusal } from '../models/reply.js'
 import { ConsentWindow } from '../models/session.js'
 
 /**
@@ -524,9 +525,12 @@ export const en = {
     refusalReasonDetails: {
       label: 'Refusal details',
       title: {
-        AlreadyGiven: 'Where did the child get their vaccination?',
-        GettingElsewhere: 'Where will the child get their vaccination?',
-        Medical: 'What medical reasons prevent the child from being vaccinated?'
+        [ReplyRefusal.AlreadyGiven]:
+          'Where did the child get their vaccination?',
+        [ReplyRefusal.GettingElsewhere]:
+          'Where will the child get their vaccination?',
+        [ReplyRefusal.Medical]:
+          'What medical reasons prevent the child from being vaccinated?'
       }
     },
     healthAnswers: {
@@ -1490,9 +1494,12 @@ export const en = {
     refusalReasonDetails: {
       label: 'Refusal details',
       title: {
-        AlreadyGiven: 'Where did the child get their vaccination?',
-        GettingElsewhere: 'Where will the child get their vaccination?',
-        Medical: 'What medical reasons prevent the child from being vaccinated?'
+        [ReplyRefusal.AlreadyGiven]:
+          'Where did the child get their vaccination?',
+        [ReplyRefusal.GettingElsewhere]:
+          'Where will the child get their vaccination?',
+        [ReplyRefusal.Medical]:
+          'What medical reasons prevent the child from being vaccinated?'
       }
     },
     note: {
