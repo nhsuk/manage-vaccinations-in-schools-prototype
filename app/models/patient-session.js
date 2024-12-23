@@ -77,14 +77,9 @@ export class PatientSession {
    * @returns {Array<import('./reply.js').Reply>} - Replies
    */
   get replies() {
-    try {
-      return this.patient.replies
-        .filter(({ session_id }) => session_id === this.session_id)
-        .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
-    } catch (error) {
-      console.error('PatientSession.replies', error.message)
-      return []
-    }
+    return this.patient.replies
+      .filter(({ session_id }) => session_id === this.session_id)
+      .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
   }
 
   /**

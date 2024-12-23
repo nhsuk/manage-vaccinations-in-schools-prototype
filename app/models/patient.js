@@ -191,14 +191,9 @@ export class Patient extends Record {
    * @returns {Array<Reply>} - Replies
    */
   get replies() {
-    try {
-      return this.reply_uuids
-        .map((uuid) => Reply.read(uuid, this.context))
-        .filter((reply) => reply?.patient_uuid === this.uuid)
-    } catch (error) {
-      console.error('Patient.replies', error.message)
-      return []
-    }
+    return this.reply_uuids
+      .map((uuid) => Reply.read(uuid, this.context))
+      .filter((reply) => reply?.patient_uuid === this.uuid)
   }
 
   /**
@@ -293,7 +288,6 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Select,
       name: `Removed from the ${cohort.name.replace('Flu', 'flu')} cohort`,
-      createdAt: cohort.createdAt,
       createdBy_uid: cohort.createdBy_uid
     })
   }
