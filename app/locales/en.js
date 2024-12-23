@@ -1,4 +1,12 @@
-import { ReplyRefusal } from '../models/reply.js'
+import {
+  CaptureOutcome,
+  ConsentOutcome,
+  RegistrationOutcome,
+  PatientOutcome,
+  ScreenOutcome,
+  TriageOutcome
+} from '../models/patient-session.js'
+import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { ConsentWindow } from '../models/session.js'
 
 /**
@@ -116,14 +124,14 @@ export const en = {
   capture: {
     label: 'Status',
     title: 'Record vaccinations',
-    Register: {
+    [CaptureOutcome.Register]: {
       label: 'Register',
       count: {
         one: '%s child still to register',
         other: '[0] No children still to register|%s children still to register'
       }
     },
-    GetConsent: {
+    [CaptureOutcome.GetConsent]: {
       label: 'Get consent',
       count: {
         one: '%s child without a consent response',
@@ -131,7 +139,7 @@ export const en = {
           '[0] No children without a response|%s children without a response'
       }
     },
-    CheckRefusal: {
+    [CaptureOutcome.CheckRefusal]: {
       label: 'Check refusal',
       count: {
         one: '%s child with refused consent',
@@ -139,14 +147,14 @@ export const en = {
           '[0] No children with refused consent|%s children with refused consent'
       }
     },
-    NeedsTriage: {
+    [CaptureOutcome.NeedsTriage]: {
       label: 'Triage',
       count: {
         one: '%s child needing triage',
         other: '[0] No children needing triage|%s children needing triage'
       }
     },
-    Vaccinate: {
+    [CaptureOutcome.Vaccinate]: {
       label: 'Vaccinate',
       count: {
         one: '%s child ready to vaccinate',
@@ -266,7 +274,7 @@ export const en = {
       other: '[0] No consent responses|%s consent responses'
     },
     summary: 'Details of child given in consent response',
-    NoResponse: {
+    [ConsentOutcome.NoResponse]: {
       colour: 'grey',
       description: 'No-one responded to our requests for consent.',
       icon: false,
@@ -279,7 +287,7 @@ export const en = {
           '[0] No children without a response|%s children without a response'
       }
     },
-    Inconsistent: {
+    [ConsentOutcome.Inconsistent]: {
       colour: 'dark-orange',
       description: 'You can only vaccinate if all respondents give consent.',
       icon: 'cross',
@@ -292,7 +300,7 @@ export const en = {
           '[0] No children with conflicting consent|%s children with conflicting consent'
       }
     },
-    Given: {
+    [ConsentOutcome.Given]: {
       colour: 'aqua-green',
       description: '{{patient.fullName}} is ready for the nurse.',
       icon: 'tick',
@@ -305,7 +313,7 @@ export const en = {
           '[0] No children with consent given|%s children with consent given'
       }
     },
-    Refused: {
+    [ConsentOutcome.Refused]: {
       colour: 'red',
       description: '{{relationships}} refused to give consent.',
       icon: 'cross',
@@ -318,7 +326,7 @@ export const en = {
           '[0] No children with consent refused|%s children with consent refused'
       }
     },
-    FinalRefusal: {
+    [ConsentOutcome.FinalRefusal]: {
       colour: 'red',
       description: 'Refusal to give consent confirmed by {{relationships}}.',
       icon: 'cross',
@@ -556,15 +564,16 @@ export const en = {
     },
     confirmation: {
       title: {
-        Given:
+        [ReplyDecision.Given]:
           '{{consent.child.fullName}} is due to get the {{programme.vaccine.name}} vaccination at school on {{session.summary.dates}}',
-        Refused:
+        [ReplyDecision.Refused]:
           'You’ve told us that you do not want your child to get the {{programme.vaccine.name}} vaccine at school'
       },
       description: {
-        Given:
+        [ReplyDecision.Given]:
           'We’ll send a confirmation once the vaccination has been given.\n\nIf the vaccination does not take place due to illness or absence, we’ll contact you about a catch-up session.',
-        Refused: 'We’ve sent a confirmation to {{consent.parent.email}}.'
+        [ReplyDecision.Refused]:
+          'We’ve sent a confirmation to {{consent.parent.email}}.'
       }
     },
     actions: {
@@ -980,7 +989,7 @@ export const en = {
   },
   outcome: {
     label: 'Outcome',
-    NoOutcomeYet: {
+    [PatientOutcome.NoOutcomeYet]: {
       colour: 'grey',
       label: 'No outcome yet',
       count: {
@@ -989,7 +998,7 @@ export const en = {
           '[0] No children without an outcome|%s children without an outcome yet'
       }
     },
-    Vaccinated: {
+    [PatientOutcome.Vaccinated]: {
       colour: 'green',
       label: 'Vaccinated',
       title: 'Vaccinated',
@@ -998,7 +1007,7 @@ export const en = {
         other: '[0] No children vaccinated|%s children vaccinated'
       }
     },
-    CouldNotVaccinate: {
+    [PatientOutcome.CouldNotVaccinate]: {
       colour: 'red',
       label: 'Not vaccinated',
       title: 'Do not vaccinate',
@@ -1247,27 +1256,27 @@ export const en = {
       pending: 'They have not been registered yet',
       actions: {
         label: 'Today’s attendance',
-        Present: {
+        present: {
           label: 'Attending',
           visuallyHiddenLabel: 'Register {{patient.fullName}} as attending'
         },
-        Absent: {
+        absent: {
           label: 'Absent',
           visuallyHiddenLabel: 'Register {{patient.fullName}} as absent'
         }
       },
       success: {
-        GetConsent:
+        [CaptureOutcome.GetConsent]:
           '[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. They still need consent to vaccinate.',
-        CheckRefusal:
+        [CaptureOutcome.CheckRefusal]:
           '[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) needs to leave the session because their parent or guardian refused to give consent.',
-        NeedsTriage:
+        [CaptureOutcome.NeedsTriage]:
           '[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. A nurse needs to triage their record.',
-        Vaccinate:
+        [CaptureOutcome.Vaccinate]:
           '[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. They are ready for the nurse.',
-        Register:
+        [CaptureOutcome.Register]:
           '[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is absent from today’s session.',
-        Absent:
+        [RegistrationOutcome.Absent]:
           '[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is absent from today’s session.'
       }
     }
@@ -1396,15 +1405,6 @@ export const en = {
   },
   reply: {
     label: 'Response',
-    Given: {
-      colour: 'aqua-green'
-    },
-    Refused: {
-      colour: 'red'
-    },
-    NoResponse: {
-      colour: 'grey'
-    },
     show: {
       title: 'Consent response from %s'
     },
@@ -1474,6 +1474,15 @@ export const en = {
         Child: 'Does the child agree to having the {{programme.name}} vaccine?',
         Parent:
           'Do they agree to {{patient.firstName}} having the {{programme.name}} vaccine?'
+      },
+      [ReplyDecision.Given]: {
+        colour: 'aqua-green'
+      },
+      [ReplyDecision.Refused]: {
+        colour: 'red'
+      },
+      [ReplyDecision.NoResponse]: {
+        colour: 'grey'
       }
     },
     invalid: {
@@ -1559,27 +1568,27 @@ export const en = {
   },
   screen: {
     label: 'Triage',
-    NeedsTriage: {
+    [ScreenOutcome.NeedsTriage]: {
       colour: 'blue',
       description: 'You need to decide if it’s safe to vaccinate.',
       status: 'Needs triage',
       title: 'Needs triage'
     },
-    DelayVaccination: {
+    [ScreenOutcome.DelayVaccination]: {
       colour: 'red',
       description:
         '{{user.fullName}} decided that {{patient.fullName}}’s vaccination should be delayed.',
       status: 'Vaccination delayed',
       title: 'Delay vaccination to a later date'
     },
-    DoNotVaccinate: {
+    [ScreenOutcome.DoNotVaccinate]: {
       colour: 'red',
       description:
         '{{user.fullName}} decided that {{patient.fullName}} should not be vaccinated.',
       status: 'Do not vaccinate in this year’s programme',
       title: 'Do not vaccinate in year’s programme'
     },
-    Vaccinate: {
+    [ScreenOutcome.Vaccinate]: {
       colour: 'aqua-green',
       description:
         '{{user.fullName}} decided that {{patient.fullName}} is safe to vaccinate.',
@@ -1841,19 +1850,20 @@ export const en = {
     },
     outcome: {
       label: 'Outcome',
-      Vaccinate: 'Yes, it’s safe to vaccinate',
-      DoNotVaccinate: 'No, do not vaccinate',
-      DelayVaccination: 'No, delay vaccination (and invite to clinic)',
-      NeedsTriage: 'No, keep in triage'
+      [ScreenOutcome.Vaccinate]: 'Yes, it’s safe to vaccinate',
+      [ScreenOutcome.DoNotVaccinate]: 'No, do not vaccinate',
+      [ScreenOutcome.DelayVaccination]:
+        'No, delay vaccination (and invite to clinic)',
+      [ScreenOutcome.NeedsTriage]: 'No, keep in triage'
     },
-    Needed: {
+    [TriageOutcome.Needed]: {
       label: 'Triage needed',
       count: {
         one: '%s child needing triage',
         other: '[0] No children needing triage|%s children needing triage'
       }
     },
-    Completed: {
+    [TriageOutcome.Completed]: {
       label: 'Triage completed',
       count: {
         one: '%s child with triage completed',
@@ -1861,7 +1871,7 @@ export const en = {
           '[0] No children with triage completed|%s children with triage completed'
       }
     },
-    NotNeeded: {
+    [TriageOutcome.NotNeeded]: {
       label: 'No triage needed',
       count: {
         one: '%s child with no triage needed',

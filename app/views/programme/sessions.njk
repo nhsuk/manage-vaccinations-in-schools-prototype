@@ -41,10 +41,10 @@
 
   {% set sessionRows = [] %}
   {% for session in programme.sessions | sort(false, false, "date") %}
-    {% set noResponse = session.patients | where("consent.value", ConsentOutcome.NoResponse) | length %}
+    {% set noResponse = session.patients | where("consent", ConsentOutcome.NoResponse) | length %}
     {% set percentageNoResponse = percentage(noResponse, session.patients.length) %}
-    {% set triageNeeded = session.patients | where("triage.value", TriageOutcome.Needed) | length %}
-    {% set vaccinated = session.patients | where("outcome.value", PatientOutcome.Vaccinated) | length %}
+    {% set triageNeeded = session.patients | where("triage", TriageOutcome.Needed) | length %}
+    {% set vaccinated = session.patients | where("outcome", PatientOutcome.Vaccinated) | length %}
     {% set percentageVaccinated = percentage(vaccinated, session.patients.length) %}
     {% set sessionRows = sessionRows | push([
       {
@@ -59,21 +59,21 @@
         }
       },
       {
-        header: __("consent.NoResponse.label"),
+        header: __("consent." + ConsentOutcome.NoResponse + ".label"),
         text: count(noResponse, percentageNoResponse),
         attributes: {
           "data-sort": noResponse
         }
       },
       {
-        header: __("triage.Needed.label"),
+        header: __("triage." + + TriageOutcome.Needed + ".label"),
         text: count(triageNeeded),
         attributes: {
           "data-sort": triageNeeded
         }
       },
       {
-        header: __("outcome.Vaccinated.label"),
+        header: __("outcome." + PatientOutcome.Vaccinated + ".label"),
         text: count(vaccinated, percentageVaccinated),
         attributes: {
           "data-sort": vaccinated
@@ -102,19 +102,19 @@
         }
       },
       {
-        text: __("consent.NoResponse.label"),
+        text: __("consent." + ConsentOutcome.NoResponse + ".label"),
         attributes: {
           "style": "width: 15%"
         }
       },
       {
-        text: __("triage.Needed.label"),
+        text: __("triage." + TriageOutcome.Needed + ".label"),
         attributes: {
           "style": "width: 15"
         }
       },
       {
-        text: __("outcome.Vaccinated.label"),
+        text: __("outcome." + PatientOutcome.Vaccinated + ".label"),
         attributes: {
           "style": "width: 15%"
         }

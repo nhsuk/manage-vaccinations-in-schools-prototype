@@ -1,17 +1,25 @@
 import { Batch } from '../models/batch.js'
-import { PatientSession } from '../models/patient-session.js'
-import { ConsentOutcome, PatientOutcome, Patient } from '../models/patient.js'
+import {
+  CaptureOutcome,
+  ConsentOutcome,
+  PatientOutcome,
+  PatientSession,
+  TriageOutcome
+} from '../models/patient-session.js'
+import { Patient } from '../models/patient.js'
 import { programmeTypes } from '../models/programme.js'
 import { Session, SessionStatus, SessionType } from '../models/session.js'
 
 const getPatientsForKey = (patients, activity, tab) => {
   return patients.filter((patient) => {
     // Show FinalRefusal outcome in Refusal tab
-    if (tab === 'Refused') {
-      return ['Refused', 'FinalRefusal'].includes(patient[activity]?.key)
+    if (tab === ConsentOutcome.Refused) {
+      return [ConsentOutcome.Refused, ConsentOutcome.FinalRefusal].includes(
+        patient[activity]
+      )
     }
 
-    return patient[activity]?.key === tab
+    return patient[activity] === tab
   })
 }
 
@@ -52,26 +60,39 @@ export const sessionController = {
     let tabs = []
     switch (activity) {
       case 'consent':
-        tab = tab || 'NoResponse'
-        tabs = ['NoResponse', 'Given', 'Refused', 'Inconsistent']
+        tab = tab || ConsentOutcome.NoResponse
+        tabs = [
+          ConsentOutcome.NoResponse,
+          ConsentOutcome.Given,
+          ConsentOutcome.Refused,
+          ConsentOutcome.Inconsistent
+        ]
         break
       case 'triage':
-        tab = tab || 'Needed'
-        tabs = ['Needed', 'Completed', 'NotNeeded']
+        tab = tab || TriageOutcome.Needed
+        tabs = [
+          TriageOutcome.Needed,
+          TriageOutcome.Completed,
+          TriageOutcome.NotNeeded
+        ]
         break
       case 'capture':
-        tab = tab || 'Register'
+        tab = tab || CaptureOutcome.Register
         tabs = [
-          'Register',
-          'GetConsent',
-          'CheckRefusal',
-          'NeedsTriage',
-          'Vaccinate'
+          CaptureOutcome.Register,
+          CaptureOutcome.GetConsent,
+          CaptureOutcome.CheckRefusal,
+          CaptureOutcome.NeedsTriage,
+          CaptureOutcome.Vaccinate
         ]
         break
       case 'outcome':
-        tab = tab || 'Vaccinated'
-        tabs = ['Vaccinated', 'CouldNotVaccinate', 'NoOutcomeYet']
+        tab = tab || PatientOutcome.Vaccinated
+        tabs = [
+          PatientOutcome.Vaccinated,
+          PatientOutcome.CouldNotVaccinate,
+          PatientOutcome.NoOutcomeYet
+        ]
         break
     }
 
@@ -122,13 +143,11 @@ export const sessionController = {
     response.locals.patientSessions = patientSessions
 
     response.locals.couldNotVaccinate = patientSessions
-      .filter(({ consent }) => consent.value !== ConsentOutcome.NoResponse)
-      .filter(
-        ({ outcome }) => outcome.value === PatientOutcome.CouldNotVaccinate
-      )
+      .filter(({ consent }) => consent !== ConsentOutcome.NoResponse)
+      .filter(({ outcome }) => outcome === PatientOutcome.CouldNotVaccinate)
 
     response.locals.noResponse = patientSessions.filter(
-      ({ consent }) => consent.value === ConsentOutcome.NoResponse
+      ({ consent }) => consent === ConsentOutcome.NoResponse
     )
 
     response.locals.session = session

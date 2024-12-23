@@ -7,11 +7,10 @@ import {
   ConsentOutcome,
   PatientOutcome,
   ScreenOutcome
-} from './models/patient.js'
-import { Reply, ReplyDecision } from './models/reply.js'
+} from './models/patient-session.js'
+import { Reply } from './models/reply.js'
 import { User } from './models/user.js'
 import { HealthQuestion } from './models/vaccine.js'
-import { getEnumKeyAndValue } from './utils/enum.js'
 import { formatLink, formatParent, pascalToKebabCase } from './utils/string.js'
 
 /**
@@ -161,56 +160,56 @@ export default () => {
       relationships.push(reply.relationship || 'Parent or guardian')
     }
 
-    if (outcome.value === PatientOutcome.NoOutcomeYet) {
+    if (outcome === PatientOutcome.NoOutcomeYet) {
       // If no outcome, use status colour and title for consent/triage outcome
 
-      if (screen.value === ScreenOutcome.NeedsTriage) {
+      if (screen === ScreenOutcome.NeedsTriage) {
         // Patient needs triage
-        colour = __(`screen.${screen.key}.colour`)
-        description = __(`screen.${screen.key}.description`, {
+        colour = __(`screen.${screen}.colour`)
+        description = __(`screen.${screen}.description`, {
           patient,
           user
         })
-        title = __(`screen.${screen.key}.title`)
-      } else if (screen.value === ScreenOutcome.Vaccinate) {
+        title = __(`screen.${screen}.title`)
+      } else if (screen === ScreenOutcome.Vaccinate) {
         // Patient needs triage
-        colour = __(`screen.${screen.key}.colour`)
-        description = __(`screen.${screen.key}.description`, {
+        colour = __(`screen.${screen}.colour`)
+        description = __(`screen.${screen}.description`, {
           patient,
           user
         })
-        title = __(`screen.${screen.key}.title`)
+        title = __(`screen.${screen}.title`)
       } else {
         // Patient requires consent
-        colour = __(`consent.${consent.key}.colour`)
-        description = __(`consent.${consent.key}.description`, {
+        colour = __(`consent.${consent}.colour`)
+        description = __(`consent.${consent}.description`, {
           patient,
           relationships: prototypeFilters.formatList(relationships)
         })
-        title = __(`consent.${consent.key}.title`)
+        title = __(`consent.${consent}.title`)
       }
     } else {
       // If outcome, use status colour and title for that outcome
-      colour = __(`outcome.${outcome.key}.colour`)
-      title = __(`outcome.${outcome.key}.title`)
+      colour = __(`outcome.${outcome}.colour`)
+      title = __(`outcome.${outcome}.title`)
 
       // If could not vaccinate, provide a description for why
-      if (outcome.value === PatientOutcome.CouldNotVaccinate) {
+      if (outcome === PatientOutcome.CouldNotVaccinate) {
         if (
-          screen.value === ScreenOutcome.DelayVaccination ||
-          screen.value === ScreenOutcome.DoNotVaccinate
+          screen === ScreenOutcome.DelayVaccination ||
+          screen === ScreenOutcome.DoNotVaccinate
         ) {
           // Patient had a triage outcome that prevented vaccination
-          description = __(`screen.${screen.key}.description`, {
+          description = __(`screen.${screen}.description`, {
             patient,
             user
           })
         } else if (
           // Patient wasn’t able to get consent for vaccination
-          consent.value === ConsentOutcome.Inconsistent ||
-          consent.value === ConsentOutcome.Refused
+          consent === ConsentOutcome.Inconsistent ||
+          consent === ConsentOutcome.Refused
         ) {
-          description = __(`consent.${consent.key}.description`, {
+          description = __(`consent.${consent}.description`, {
             patient,
             relationships: prototypeFilters.formatList(relationships)
           })
@@ -231,21 +230,6 @@ export default () => {
   globals.percentage = function (total, number) {
     const percentage = (total / number) * 100
     return Math.round(percentage)
-  }
-
-  /**
-   * Get status details for a reply
-   *
-   * @param {import('./models/reply.js').Reply} reply - Reply
-   * @returns {object} Reply status
-   */
-  globals.replyStatus = function (reply) {
-    const { __ } = this.ctx
-    const { key } = getEnumKeyAndValue(ReplyDecision, reply.decision)
-
-    return {
-      colour: __(`reply.${key}.colour`)
-    }
   }
 
   /**
@@ -275,13 +259,10 @@ export default () => {
   globals.couldNotVaccinateReason = function (patientSession) {
     const { __ } = this.ctx
 
-    if (
-      patientSession?.screen?.value &&
-      patientSession?.screen?.value !== ScreenOutcome.Vaccinate
-    ) {
-      return __(`screen.${patientSession.screen.key}.status`)
-    } else if (patientSession?.consent?.value !== ConsentOutcome.Given) {
-      return __(`consent.${patientSession.consent.key}.status`)
+    if (patientSession?.screen !== ScreenOutcome.Vaccinate) {
+      return __(`screen.${patientSession.screen}.status`)
+    } else if (patientSession?.consent !== ConsentOutcome.Given) {
+      return __(`consent.${patientSession.consent}.status`)
     } else if (patientSession.vaccinations.length) {
       return patientSession.vaccinations[0].outcome
     }

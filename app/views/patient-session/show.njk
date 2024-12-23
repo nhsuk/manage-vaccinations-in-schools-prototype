@@ -172,14 +172,14 @@
     {% set consentDescriptionHtml %}
       {% if patientSession.replies.length %}
         {{ status({
-          text: __("consent." + patientSession.consent.key + ".status"),
-          icon: __("consent." + patientSession.consent.key + ".icon"),
-          colour: __("consent." + patientSession.consent.key + ".colour")
+          text: __("consent." + patientSession.consent + ".status"),
+          icon: __("consent." + patientSession.consent + ".icon"),
+          colour: __("consent." + patientSession.consent + ".colour")
         }) }}
 
         {% set replyRows = [] %}
         {% for reply in patientSession.replies %}
-          {% set replyColour = replyStatus(reply).colour %}
+          {% set replyColour = __("reply.decision." + reply.decision + ".colour") %}
           {% set replyModifier = "grey" if reply.invalid else replyColour %}
           {% set replyRows = replyRows | push([
             {
@@ -223,7 +223,7 @@
           })
         }) | nhsukMarkdown }}
       {% else %}
-        {{ __("consent.NoResponse.description") | nhsukMarkdown }}
+        {{ __("consent."+ ReplyDecision.NoResponse + ".description") | nhsukMarkdown }}
       {% endif %}
       {% if options.getReply %}
         <form action="{{ patientSession.uri }}/new/invite" method="post">
@@ -278,18 +278,18 @@
     {% set triageDescriptionHtml %}
       {{ radios({
         items: [{
-          text: __("triage.outcome.Vaccinate"),
+          text: __("triage.outcome." + ScreenOutcome.Vaccinate),
           value: ScreenOutcome.Vaccinate
         }, {
           divider: "or"
         }, {
-          text: __("triage.outcome.DoNotVaccinate"),
+          text: __("triage.outcome." + ScreenOutcome.DoNotVaccinate),
           value: ScreenOutcome.DoNotVaccinate
         }, {
-          text: __("triage.outcome.DelayVaccination"),
+          text: __("triage.outcome." + ScreenOutcome.DelayVaccination),
           value: ScreenOutcome.DelayVaccination
         }, {
-          text: __("triage.outcome.NeedsTriage"),
+          text: __("triage.outcome." + ScreenOutcome.NeedsTriage),
           value: ScreenOutcome.NeedsTriage
         }],
         decorate: "triage.outcome"

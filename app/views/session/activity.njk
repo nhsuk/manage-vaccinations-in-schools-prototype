@@ -62,20 +62,20 @@
       <form class="app-button-group app-button-group--table" action="{{ patientSession.uri }}/edit/registration?referrer={{ session.uri }}/capture" method="post">
         {{ button({
           classes: "app-button--secondary app-button--small",
-          text: __("patientSession.registration.actions.Present.label"),
+          text: __("patientSession.registration.actions.present.label"),
           decorate: "patientSession.registration",
           value: RegistrationOutcome.Present,
           attributes: {
-            "aria-label": __("patientSession.registration.actions.Present.visuallyHiddenLabel", { patient: patientSession.patient })
+            "aria-label": __("patientSession.registration.actions.present.visuallyHiddenLabel", { patient: patientSession.patient })
           }
         }) }}
         {{ button({
           classes: "app-button--secondary-warning app-button--small",
-          text: __("patientSession.registration.actions.Absent.label"),
+          text: __("patientSession.registration.actions.absent.label"),
           decorate: "patientSession.registration",
           value: RegistrationOutcome.Absent,
           attributes: {
-            "aria-label": __("patientSession.registration.actions.Absent.visuallyHiddenLabel", { patient: patientSession.patient })
+            "aria-label": __("patientSession.registration.actions.absent.visuallyHiddenLabel", { patient: patientSession.patient })
           }
         }) }}
       </form>

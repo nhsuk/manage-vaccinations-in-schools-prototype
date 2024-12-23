@@ -95,13 +95,12 @@ export const consentController = {
   },
 
   update(request, response) {
-    const { id } = request.params
     const { data } = request.session
-    const { consent } = response.locals
+    const { consent, paths } = response.locals
 
     consent.update(request.body.consent, data)
 
-    response.redirect(`/consents/${id}/confirmation`)
+    response.redirect(paths.next)
   },
 
   readForm(request, response, next) {
@@ -157,7 +156,8 @@ export const consentController = {
       [`/${id}/${uuid}/${form}/refusal-reason-details`]: {
         [`/${id}/${uuid}/${form}/check-answers`]: true
       },
-      [`/${id}/${uuid}/${form}/check-answers`]: {}
+      [`/${id}/${uuid}/${form}/check-answers`]: {},
+      [`/${id}/${uuid}/${form}/confirmation`]: {}
     }
 
     response.locals.paths = {

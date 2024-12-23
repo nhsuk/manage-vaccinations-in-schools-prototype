@@ -1,15 +1,13 @@
 import { Gillick } from '../models/gillick.js'
 import {
-  PatientSession,
-  RegistrationOutcome,
-  TriageOutcome
-} from '../models/patient-session.js'
-import {
   CaptureOutcome,
   ConsentOutcome,
   PatientOutcome,
-  ScreenOutcome
-} from '../models/patient.js'
+  PatientSession,
+  ScreenOutcome,
+  RegistrationOutcome,
+  TriageOutcome
+} from '../models/patient-session.js'
 import {
   Programme,
   ProgrammeType,
@@ -39,32 +37,32 @@ export const patientSessionController = {
 
     response.locals.options = {
       editGillick:
-        patientSession.consent?.value !== ConsentOutcome.Given &&
-        patientSession.outcome?.value !== PatientOutcome.Vaccinated,
+        patientSession.consent !== ConsentOutcome.Given &&
+        patientSession.outcome !== PatientOutcome.Vaccinated,
       showGillick:
         !patientSession.session.programme_pids?.includes(fluPid) &&
         patientSession.session.isActive &&
-        patientSession.consent?.value !== ConsentOutcome.Given,
-      showReminder: patientSession.consent?.value === ConsentOutcome.NoResponse,
+        patientSession.consent !== ConsentOutcome.Given,
+      showReminder: patientSession.consent === ConsentOutcome.NoResponse,
       getReply: Object.values(patientSession.replies).length === 0,
       editReplies:
-        patientSession.consent?.value !== ConsentOutcome.Given &&
-        patientSession.outcome?.value !== PatientOutcome.Vaccinated,
+        patientSession.consent !== ConsentOutcome.Given &&
+        patientSession.outcome !== PatientOutcome.Vaccinated,
       editTriage:
-        patientSession.triage?.value === TriageOutcome.Completed &&
-        patientSession.outcome?.value !== PatientOutcome.Vaccinated,
+        patientSession.triage === TriageOutcome.Completed &&
+        patientSession.outcome !== PatientOutcome.Vaccinated,
       showTriage:
         patientSession.consentHealthAnswers &&
-        patientSession.triage?.value === TriageOutcome.Needed &&
-        patientSession.outcome?.value === PatientOutcome.NoOutcomeYet,
+        patientSession.triage === TriageOutcome.Needed &&
+        patientSession.outcome === PatientOutcome.NoOutcomeYet,
       editRegistration:
-        patientSession.consent?.value === ConsentOutcome.Given &&
-        patientSession.triage?.value !== TriageOutcome.Needed &&
-        patientSession.outcome?.value !== PatientOutcome.Vaccinated,
+        patientSession.consent === ConsentOutcome.Given &&
+        patientSession.triage !== TriageOutcome.Needed &&
+        patientSession.outcome !== PatientOutcome.Vaccinated,
       showPreScreen:
-        patientSession.capture?.value === CaptureOutcome.Vaccinate &&
-        patientSession.outcome?.value !== PatientOutcome.Vaccinated &&
-        patientSession.outcome?.value !== PatientOutcome.CouldNotVaccinate
+        patientSession.capture === CaptureOutcome.Vaccinate &&
+        patientSession.outcome !== PatientOutcome.Vaccinated &&
+        patientSession.outcome !== PatientOutcome.CouldNotVaccinate
     }
 
     response.locals.injectionSiteItems = Object.entries(VaccinationSite)
@@ -126,7 +124,7 @@ export const patientSessionController = {
 
     if (
       registration === RegistrationOutcome.Absent &&
-      patientSession.outcome?.value !== PatientOutcome.CouldNotVaccinate
+      patientSession.outcome !== PatientOutcome.CouldNotVaccinate
     ) {
       // Capture vaccination outcome as absent from session if safe to vaccinate
       const programme = Programme.read(session.programme_pids[0], data)
@@ -150,7 +148,7 @@ export const patientSessionController = {
 
     request.flash(
       'message',
-      __(`patientSession.registration.success.${patientSession.capture.key}`, {
+      __(`patientSession.registration.success.${patientSession.capture}`, {
         patient,
         session
       })

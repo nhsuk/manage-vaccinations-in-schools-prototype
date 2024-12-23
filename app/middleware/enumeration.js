@@ -8,15 +8,13 @@ import { MoveSource } from '../models/move.js'
 import { NoticeType } from '../models/notice.js'
 import { ContactPreference, ParentalRelationship } from '../models/parent.js'
 import {
-  RegistrationOutcome,
-  TriageOutcome
-} from '../models/patient-session.js'
-import {
   CaptureOutcome,
   ConsentOutcome,
   PatientOutcome,
-  ScreenOutcome
-} from '../models/patient.js'
+  RegistrationOutcome,
+  ScreenOutcome,
+  TriageOutcome
+} from '../models/patient-session.js'
 import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { SchoolPhase } from '../models/school.js'

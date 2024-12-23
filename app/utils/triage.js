@@ -1,17 +1,19 @@
-import { TriageOutcome } from '../models/patient-session.js'
-import { ConsentOutcome, ScreenOutcome } from '../models/patient.js'
+import {
+  ConsentOutcome,
+  ScreenOutcome,
+  TriageOutcome
+} from '../models/patient-session.js'
 
-import { getEnumKeyAndValue } from './enum.js'
 import { getRepliesWithHealthAnswers } from './reply.js'
 
 /**
  * Get screen outcome (what was the triage decision)
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} Screen outcome key and value
+ * @returns {ScreenOutcome|boolean} Screen outcome
  */
 export const getScreenOutcome = (patientSession) => {
-  if (patientSession.consent.value !== ConsentOutcome.Given) {
+  if (patientSession.consent !== ConsentOutcome.Given) {
     return false
   }
 
@@ -28,10 +30,10 @@ export const getScreenOutcome = (patientSession) => {
       .at(-1)
 
     if (lastTriageNoteWithOutcome) {
-      return getEnumKeyAndValue(ScreenOutcome, lastTriageNoteWithOutcome.info_)
+      return lastTriageNoteWithOutcome.info_
     }
 
-    return getEnumKeyAndValue(ScreenOutcome, ScreenOutcome.NeedsTriage)
+    return ScreenOutcome.NeedsTriage
   }
 
   return false
@@ -41,16 +43,13 @@ export const getScreenOutcome = (patientSession) => {
  * Get triage outcome (has triage taken place)
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} Outcome key and value
+ * @returns {TriageOutcome} Outcome key and value
  */
 export const getTriageOutcome = (patientSession) => {
-  if (
-    patientSession.screen &&
-    patientSession.screen.value === ScreenOutcome.NeedsTriage
-  ) {
-    return getEnumKeyAndValue(TriageOutcome, TriageOutcome.Needed)
+  if (patientSession.screen === ScreenOutcome.NeedsTriage) {
+    return TriageOutcome.Needed
   } else if (patientSession.screen) {
-    return getEnumKeyAndValue(TriageOutcome, TriageOutcome.Completed)
+    return TriageOutcome.Completed
   }
-  return getEnumKeyAndValue(TriageOutcome, TriageOutcome.NotNeeded)
+  return TriageOutcome.NotNeeded
 }

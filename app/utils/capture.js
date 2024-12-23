@@ -1,84 +1,80 @@
 import {
-  RegistrationOutcome,
-  TriageOutcome
-} from '../models/patient-session.js'
-import {
   CaptureOutcome,
   ConsentOutcome,
   PatientOutcome,
-  ScreenOutcome
-} from '../models/patient.js'
-
-import { getEnumKeyAndValue } from './enum.js'
+  RegistrationOutcome,
+  ScreenOutcome,
+  TriageOutcome
+} from '../models/patient-session.js'
 
 /**
  * Get patient outcome
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} Patient outcome
+ * @returns {PatientOutcome} Patient outcome
  */
 export const getPatientOutcome = (patientSession) => {
   if (patientSession.vaccinations.length === 1) {
     if (patientSession.vaccinations[0].given === true) {
-      return getEnumKeyAndValue(PatientOutcome, PatientOutcome.Vaccinated)
+      return PatientOutcome.Vaccinated
     }
   }
 
   // Consent outcome
   if (
-    patientSession.consent.value === ConsentOutcome.Refused ||
-    patientSession.consent.value === ConsentOutcome.Inconsistent
+    patientSession.consent === ConsentOutcome.Refused ||
+    patientSession.consent === ConsentOutcome.Inconsistent
   ) {
-    return getEnumKeyAndValue(PatientOutcome, PatientOutcome.CouldNotVaccinate)
+    return PatientOutcome.CouldNotVaccinate
   }
 
   // Screen outcome
   if (
-    patientSession.screen.value === ScreenOutcome.DelayVaccination ||
-    patientSession.screen.value === ScreenOutcome.DoNotVaccinate
+    patientSession.screen === ScreenOutcome.DelayVaccination ||
+    patientSession.screen === ScreenOutcome.DoNotVaccinate
   ) {
-    return getEnumKeyAndValue(PatientOutcome, PatientOutcome.CouldNotVaccinate)
+    return PatientOutcome.CouldNotVaccinate
   }
 
-  return getEnumKeyAndValue(PatientOutcome, PatientOutcome.NoOutcomeYet)
+  return PatientOutcome.NoOutcomeYet
 }
 
 /**
  * Get capture outcome (what capture activity needs to be performed)
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} Outcome key and value
+ * @returns {CaptureOutcome|RegistrationOutcome} Capture outcome
  */
 export const getCaptureOutcome = (patientSession) => {
   if (patientSession.registration === RegistrationOutcome.Present) {
-    if (patientSession.consent.value === ConsentOutcome.NoResponse) {
-      return getEnumKeyAndValue(CaptureOutcome, CaptureOutcome.GetConsent)
+    if (patientSession.consent === ConsentOutcome.NoResponse) {
+      return CaptureOutcome.GetConsent
     } else if (
-      patientSession.consent.value === ConsentOutcome.Refused ||
-      patientSession.consent.value === ConsentOutcome.Inconsistent
+      patientSession.consent === ConsentOutcome.Refused ||
+      patientSession.consent === ConsentOutcome.Inconsistent
     ) {
-      return getEnumKeyAndValue(CaptureOutcome, CaptureOutcome.CheckRefusal)
+      return CaptureOutcome.CheckRefusal
     }
 
-    if (patientSession.triage.value === TriageOutcome.Needed) {
-      return getEnumKeyAndValue(CaptureOutcome, CaptureOutcome.NeedsTriage)
+    if (patientSession.triage === TriageOutcome.Needed) {
+      return CaptureOutcome.NeedsTriage
     }
 
     if (
-      patientSession.triage.value !== TriageOutcome.Needed &&
-      patientSession.outcome.value !== PatientOutcome.Vaccinated
+      patientSession.triage !== TriageOutcome.Needed &&
+      patientSession.outcome !== PatientOutcome.Vaccinated
     ) {
-      return getEnumKeyAndValue(CaptureOutcome, CaptureOutcome.Vaccinate)
+      return CaptureOutcome.Vaccinate
     }
 
-    if (patientSession.outcome.value === PatientOutcome.Vaccinated) {
+    if (patientSession.outcome === PatientOutcome.Vaccinated) {
       return
     }
   }
 
   if (patientSession.registration === RegistrationOutcome.Absent) {
-    return getEnumKeyAndValue(RegistrationOutcome, RegistrationOutcome.Absent)
+    return RegistrationOutcome.Absent
   }
 
-  return getEnumKeyAndValue(CaptureOutcome, CaptureOutcome.Register)
+  return CaptureOutcome.Register
 }

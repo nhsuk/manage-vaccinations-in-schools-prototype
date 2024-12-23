@@ -57,11 +57,11 @@
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {% set captureCardDescriptionHtml %}
               <p>
-                {{ __n("capture.Register.count", patientSessions | where("capture.value", CaptureOutcome.Register) | length) }}<br>
-                {{ __n("capture.GetConsent.count", patientSessions | where("capture.value", CaptureOutcome.Given) | length) }}<br>
-                {{ __n("capture.CheckRefusal.count", patientSessions | where("capture.value", CaptureOutcome.CheckRefusal) | length) }}<br>
-                {{ __n("capture.NeedsTriage.count", patientSessions | where("capture.value", CaptureOutcome.NeedsTriage) | length) }}<br>
-                {{ __n("capture.Vaccinate.count", patientSessions | where("capture.value", CaptureOutcome.Vaccinate) | length) }}
+                {{ __n("capture." + CaptureOutcome.Register + ".count", patientSessions | where("capture", CaptureOutcome.Register) | length) }}<br>
+                {{ __n("capture." + CaptureOutcome.GetConsent + ".count", patientSessions | where("capture", CaptureOutcome.Given) | length) }}<br>
+                {{ __n("capture." + CaptureOutcome.CheckRefusal + ".count", patientSessions | where("capture", CaptureOutcome.CheckRefusal) | length) }}<br>
+                {{ __n("capture." + CaptureOutcome.NeedsTriage + ".count", patientSessions | where("capture", CaptureOutcome.NeedsTriage) | length) }}<br>
+                {{ __n("capture." + CaptureOutcome.Vaccinate + ".count", patientSessions | where("capture", CaptureOutcome.Vaccinate) | length) }}
               </p>
             {% endset %}
             {{ card({
@@ -81,9 +81,9 @@
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {% set outcomeCardDescriptionHtml %}
               <p>
-                {{ __n("outcome.Vaccinated.count", patientSessions | where("outcome.value", PatientOutcome.Vaccinated) | length) }}<br>
-                {{ __n("outcome.CouldNotVaccinate.count", patientSessions | where("outcome.value", PatientOutcome.CouldNotVaccinate) | length) }}<br>
-                {{ __n("outcome.NoOutcomeYet.count", patientSessions | where("outcome.value", PatientOutcome.NoOutcomeYet) | length) }}
+                {{ __n("outcome." + PatientOutcome.Vaccinated + ".count", patientSessions | where("outcome", PatientOutcome.Vaccinated) | length) }}<br>
+                {{ __n("outcome." + PatientOutcome.CouldNotVaccinate + ".count", patientSessions | where("outcome", PatientOutcome.CouldNotVaccinate) | length) }}<br>
+                {{ __n("outcome." + PatientOutcome.NoOutcomeYet + ".count", patientSessions | where("outcome", PatientOutcome.NoOutcomeYet) | length) }}
               </p>
             {% endset %}
             {{ card({
@@ -99,10 +99,10 @@
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {% set consentCardDescriptionHtml %}
               <p>
-                {{ __n("consent.NoResponse.count", patientSessions | where("consent.value", ConsentOutcome.NoResponse) | length) }}<br>
-                {{ __n("consent.Given.count", patientSessions | where("consent.value", ConsentOutcome.Given) | length) }}<br>
-                {{ __n("consent.Refused.count", patientSessions | where("consent.value", ConsentOutcome.Refused) | length) }}<br>
-                {{ __n("consent.Inconsistent.count", patientSessions | where("consent.value", ConsentOutcome.Inconsistent) | length) }}
+                {{ __n("consent." + ConsentOutcome.NoResponse + ".count", patientSessions | where("consent", ConsentOutcome.NoResponse) | length) }}<br>
+                {{ __n("consent." + ConsentOutcome.Given + ".count", patientSessions | where("consent", ConsentOutcome.Given) | length) }}<br>
+                {{ __n("consent." + ConsentOutcome.Refused + ".count", patientSessions | where("consent", ConsentOutcome.Refused) | length) }}<br>
+                {{ __n("consent." + ConsentOutcome.Inconsistent + ".count", patientSessions | where("consent", ConsentOutcome.Inconsistent) | length) }}
               </p>
             {% endset %}
             {{ card({
@@ -119,7 +119,7 @@
               heading: __("session.activity.triage.title"),
               headingClasses: "nhsuk-heading-m",
               href:  session.uri + "/triage",
-              description: __n("triage.Needed.count", patientSessions | where("triage.value", TriageOutcome.Needed) | length)
+              description: __n("triage." + TriageOutcome.Needed + ".count", patientSessions | where("triage", TriageOutcome.Needed) | length)
             }) }}
           </li>
         {% endif %}

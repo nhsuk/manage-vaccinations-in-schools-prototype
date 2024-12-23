@@ -15,6 +15,14 @@ import { Gillick } from './gillick.js'
 import { Patient } from './patient.js'
 import { Session } from './session.js'
 
+export class ConsentOutcome {
+  static NoResponse = 'No response'
+  static Inconsistent = 'Conflicting consent'
+  static Given = 'Consent given'
+  static Refused = 'Consent refused'
+  static FinalRefusal = 'Refusal confirmed'
+}
+
 export class RegistrationOutcome {
   static Pending = 'Not registered yet'
   static Present = 'Attending today’s session'
@@ -26,6 +34,28 @@ export class TriageOutcome {
   static Needed = 'Triage needed'
   static Completed = 'Triage completed'
   static NotNeeded = 'No triage needed'
+}
+
+export class ScreenOutcome {
+  static NeedsTriage = 'Needs triage'
+  static DelayVaccination = 'Delay vaccination'
+  static DoNotVaccinate = 'Do not vaccinate'
+  static Vaccinate = 'Safe to vaccinate'
+}
+
+export class CaptureOutcome {
+  static Register = 'Register attendance'
+  static GetConsent = 'Get consent'
+  static CheckRefusal = 'Check refusal'
+  static NeedsTriage = 'Triage'
+  static DoNotVaccinate = 'Do not vaccinate'
+  static Vaccinate = 'Vaccinate'
+}
+
+export class PatientOutcome {
+  static NoOutcomeYet = 'No outcome yet'
+  static Vaccinated = 'Vaccinated'
+  static CouldNotVaccinate = 'Could not vaccinate'
 }
 
 /**
@@ -115,7 +145,7 @@ export class PatientSession {
   /**
    * Get consent outcome
    *
-   * @returns {object} - Consent outcome
+   * @returns {ConsentOutcome} - Consent outcome
    */
   get consent() {
     return getConsentOutcome(this)
@@ -142,7 +172,7 @@ export class PatientSession {
   /**
    * Get screening outcome
    *
-   * @returns {object} - Screening outcome
+   * @returns {ScreenOutcome} - Screening outcome
    */
   get screen() {
     return getScreenOutcome(this)
@@ -151,7 +181,7 @@ export class PatientSession {
   /**
    * Get triage outcome
    *
-   * @returns {object} - Triage outcome
+   * @returns {TriageOutcome} - Triage outcome
    */
   get triage() {
     return getTriageOutcome(this)
@@ -160,7 +190,7 @@ export class PatientSession {
   /**
    * Get capture outcome
    *
-   * @returns {object} - Capture outcome
+   * @returns {CaptureOutcome|RegistrationOutcome} - Capture outcome
    */
   get capture() {
     return getCaptureOutcome(this)
@@ -169,7 +199,7 @@ export class PatientSession {
   /**
    * Get overall patient outcome
    *
-   * @returns {object} - Overall patient outcome
+   * @returns {PatientOutcome} - Overall patient outcome
    */
   get outcome() {
     return getPatientOutcome(this)

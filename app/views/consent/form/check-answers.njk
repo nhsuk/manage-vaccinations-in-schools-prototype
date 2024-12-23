@@ -96,5 +96,5 @@
         consent.uri + "/edit/health-question-{{key}}"
       )
     })
-  }) if consent.given }}
+  }) if consent.decision == ReplyDecision.Given }}
 {% endblock %}

@@ -4,11 +4,10 @@ import _ from 'lodash'
 import healthConditions from '../datasets/health-conditions.js'
 import { Child } from '../models/child.js'
 import { ParentalRelationship } from '../models/parent.js'
-import { ConsentOutcome } from '../models/patient.js'
+import { ConsentOutcome } from '../models/patient-session.js'
 import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 
-import { getEnumKeyAndValue } from './enum.js'
 import { formatParentalRelationship } from './string.js'
 
 /**
@@ -91,27 +90,25 @@ export function getConsentHealthAnswers(patientSession) {
  * Get consent outcome
  *
  * @param {import('../models/reply.js').Reply} reply - Reply
- * @returns {object} Consent outcome
+ * @returns {ConsentOutcome} Consent outcome
  */
 export const getConfirmedConsentOutcome = (reply) => {
-  const { key } = getEnumKeyAndValue(ReplyDecision, reply.decision)
-
-  if (key === 'NoResponse') {
-    return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.NoResponse)
+  if (reply.decision === ReplyDecision.NoResponse) {
+    return ConsentOutcome.NoResponse
   }
 
-  if (key === 'Refused' && reply.confirmed) {
-    return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.FinalRefusal)
+  if (reply.decision === ReplyDecision.Refused && reply.confirmed) {
+    return ConsentOutcome.FinalRefusal
   }
 
-  return getEnumKeyAndValue(ConsentOutcome, key)
+  return reply.decision
 }
 
 /**
  * Get consent outcome
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} Consent outcome
+ * @returns {ConsentOutcome} Consent outcome
  */
 export const getConsentOutcome = (patientSession) => {
   const parentalRelationships = Object.values(ParentalRelationship)
@@ -136,12 +133,12 @@ export const getConsentOutcome = (patientSession) => {
         return getConfirmedConsentOutcome(childReply)
       }
 
-      return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.Inconsistent)
+      return ConsentOutcome.Inconsistent
     }
     return getConfirmedConsentOutcome(decisions[0])
   }
 
-  return getEnumKeyAndValue(ConsentOutcome, ConsentOutcome.NoResponse)
+  return ConsentOutcome.NoResponse
 }
 
 /**

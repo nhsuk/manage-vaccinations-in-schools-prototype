@@ -14,36 +14,6 @@ import { Record } from './record.js'
 import { Reply } from './reply.js'
 import { Vaccination } from './vaccination.js'
 
-export class ConsentOutcome {
-  static NoResponse = 'No response'
-  static Inconsistent = 'Conflicts'
-  static Given = 'Given'
-  static Refused = 'Refused'
-  static FinalRefusal = 'Refusal confirmed'
-}
-
-export class ScreenOutcome {
-  static NeedsTriage = 'Needs triage'
-  static DelayVaccination = 'Delay vaccination'
-  static DoNotVaccinate = 'Do not vaccinate'
-  static Vaccinate = 'Safe to vaccinate'
-}
-
-export class CaptureOutcome {
-  static Register = 'Register attendance'
-  static GetConsent = 'Get consent'
-  static CheckRefusal = 'Check refusal'
-  static NeedsTriage = 'Triage'
-  static DoNotVaccinate = 'Do not vaccinate'
-  static Vaccinate = 'Vaccinate'
-}
-
-export class PatientOutcome {
-  static NoOutcomeYet = 'No outcome yet'
-  static Vaccinated = 'Vaccinated'
-  static CouldNotVaccinate = 'Could not vaccinate'
-}
-
 export class PatientMovement {
   static In = 'Moved in'
   static Out = 'Moved out'

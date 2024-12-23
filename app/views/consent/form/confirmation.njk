@@ -1,0 +1,27 @@
+{% extends "_layouts/default.njk" %}
+
+{% set paths = { back: false } %}
+{% set title = __("consent.confirmation.title." + consent.decision, {
+  programme: programme,
+  consent: consent,
+  session: session
+}) %}
+{% set description = __("consent.confirmation.description." + consent.decision, {
+  consent: consent
+}) %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      {{ govukPanel({
+        classes: "nhsuk-u-margin-bottom-6",
+        titleHtml: heading({
+          classes: "nhsuk-u-font-size-32",
+          title: title
+        })
+      }) }}
+
+      {{ description | nhsukMarkdown }}
+    </div>
+  </div>
+{% endblock %}
