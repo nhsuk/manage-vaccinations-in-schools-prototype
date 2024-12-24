@@ -126,9 +126,8 @@ export class Reply {
    */
   get createdBy() {
     try {
-      const user = this.context?.users[this.createdBy_uid]
-      if (user) {
-        return new User(user)
+      if (this.createdBy_uid) {
+        return User.read(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Reply.createdBy', error.message)
@@ -158,9 +157,8 @@ export class Reply {
    */
   get session() {
     try {
-      const session = this.context?.sessions[this.session_id]
-      if (session) {
-        return new Session(session, this.context)
+      if (this.session_id) {
+        return Session.read(this.session_id, this.context)
       }
     } catch (error) {
       console.error('Reply.session', error.message)
