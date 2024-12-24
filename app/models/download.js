@@ -363,6 +363,26 @@ export class Download {
   }
 
   /**
+   * Update
+   *
+   * @param {object} updates - Updates
+   * @param {object} context - Context
+   */
+  update(updates, context) {
+    this.updatedAt = new Date()
+
+    // Remove download context
+    delete this.context
+
+    // Delete original download (with previous ID)
+    delete context.downloads[this.id]
+
+    // Update context
+    const updatedDownload = Object.assign(this, updates)
+    context.downloads[updatedDownload.id] = updatedDownload
+  }
+
+  /**
    * Create file
    *
    * @param {object} context - Context
@@ -387,25 +407,5 @@ export class Download {
     }
 
     return { buffer, fileName: `${name}.${extension}`, mimetype }
-  }
-
-  /**
-   * Update
-   *
-   * @param {object} updates - Updates
-   * @param {object} context - Context
-   */
-  update(updates, context) {
-    this.updatedAt = new Date()
-
-    // Remove download context
-    delete this.context
-
-    // Delete original download (with previous ID)
-    delete context.downloads[this.id]
-
-    // Update context
-    const updatedDownload = Object.assign(this, updates)
-    context.downloads[updatedDownload.id] = updatedDownload
   }
 }

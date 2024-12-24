@@ -236,6 +236,76 @@ export class Patient extends Record {
   }
 
   /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Patient>|undefined} Patients
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.patients).map(
+      (patient) => new Patient(patient, context)
+    )
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} nhsn - Patient NHS number
+   * @param {object} context - Context
+   * @returns {Patient|undefined} Patient
+   * @static
+   */
+  static read(nhsn, context) {
+    if (context?.patients) {
+      return this.readAll(context).find((patient) => patient.nhsn === nhsn)
+    }
+  }
+
+  /**
+   * Create
+   *
+   * @param {Patient} patient - Patient
+   * @param {object} context - Context
+   */
+  create(patient, context) {
+    patient = new Patient(patient)
+
+    // Update context
+    context.patients = context.patients || {}
+    context.patients[patient.uuid] = patient
+  }
+
+  /**
+   * Update
+   *
+   * @param {object} updates - Updates
+   * @param {object} context - Context
+   */
+  update(updates, context) {
+    this.updatedAt = new Date()
+
+    // Remove patient context
+    delete this.context
+
+    // Delete original patient (with previous UUID)
+    delete context.patients[this.uuid]
+
+    // Update context
+    const updatedPatient = _.merge(this, updates)
+    context.patients[updatedPatient.uuid] = updatedPatient
+  }
+
+  /**
+   * Delete
+   *
+   * @param {object} context - Context
+   */
+  delete(context) {
+    delete context.patients[this.uuid]
+  }
+
+  /**
    * Add event to activity log
    *
    * @param {object} event - Event
@@ -391,75 +461,5 @@ export class Patient extends Record {
       name,
       createdAt: notice.createdAt
     })
-  }
-
-  /**
-   * Read all
-   *
-   * @param {object} context - Context
-   * @returns {Array<Patient>|undefined} Patients
-   * @static
-   */
-  static readAll(context) {
-    return Object.values(context.patients).map(
-      (patient) => new Patient(patient, context)
-    )
-  }
-
-  /**
-   * Read
-   *
-   * @param {string} nhsn - Patient NHS number
-   * @param {object} context - Context
-   * @returns {Patient|undefined} Patient
-   * @static
-   */
-  static read(nhsn, context) {
-    if (context?.patients) {
-      return this.readAll(context).find((patient) => patient.nhsn === nhsn)
-    }
-  }
-
-  /**
-   * Create
-   *
-   * @param {Patient} patient - Patient
-   * @param {object} context - Context
-   */
-  create(patient, context) {
-    patient = new Patient(patient)
-
-    // Update context
-    context.patients = context.patients || {}
-    context.patients[patient.uuid] = patient
-  }
-
-  /**
-   * Update
-   *
-   * @param {object} updates - Updates
-   * @param {object} context - Context
-   */
-  update(updates, context) {
-    this.updatedAt = new Date()
-
-    // Remove patient context
-    delete this.context
-
-    // Delete original patient (with previous UUID)
-    delete context.patients[this.uuid]
-
-    // Update context
-    const updatedPatient = _.merge(this, updates)
-    context.patients[updatedPatient.uuid] = updatedPatient
-  }
-
-  /**
-   * Delete
-   *
-   * @param {object} context - Context
-   */
-  delete(context) {
-    delete context.patients[this.uuid]
   }
 }
