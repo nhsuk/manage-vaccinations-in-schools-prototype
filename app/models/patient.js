@@ -74,29 +74,40 @@ export class Patient extends Record {
   }
 
   /**
-   * Get events grouped by date
+   * Get audit events
    *
-   * @returns {object} - Events grouped by date
+   * @returns {Array<AuditEvent>} - Audit events
    */
-  get groupedEvents() {
-    const events = this.events.sort((a, b) =>
+  get auditEvents() {
+    return this.events.map(
+      (auditEvent) => new AuditEvent(auditEvent, this.context)
+    )
+  }
+
+  /**
+   * Get audit events grouped by date
+   *
+   * @returns {object} - Audit events grouped by date
+   */
+  get auditEventLog() {
+    const auditEvents = this.auditEvents.sort((a, b) =>
       getDateValueDifference(b.createdAt, a.createdAt)
     )
 
-    return Object.groupBy(events, (event) => {
-      return new AuditEvent(event).formatted.createdAt
+    return Object.groupBy(auditEvents, (auditEvent) => {
+      return auditEvent.formatted.createdAt
     })
   }
 
   /**
    * Get triage notes
    *
-   * @returns {Array} - Triage notes
+   * @returns {Array<AuditEvent>} - Audit events
    */
   get triageNotes() {
-    return this.events
-      .map((event) => new AuditEvent(event))
-      .filter((event) => event.type === EventType.Screen)
+    return this.auditEvents.filter(
+      (auditEvent) => auditEvent.type === EventType.Screen
+    )
   }
 
   /**

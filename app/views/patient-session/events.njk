@@ -36,16 +36,16 @@
       {{ __("patient.events.title") }}
     </h2>
 
-    {% for group, items in patient.groupedEvents %}
+    {% for group, auditEvents in patient.auditEventLog %}
       <h3 class="nhsuk-heading-xs nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal">{{ group }}</h3>
 
-      {% for item in items %}
+      {% for auditEvent in auditEvents %}
         {{ card({
-          heading: item.name,
+          heading: auditEvent.name,
           headingClasses: "nhsuk-heading-s",
-          descriptionHtml: event(item, users, data.programmes),
+          descriptionHtml: event(auditEvent),
           attributes: {
-            id: item.uuid
+            id: auditEvent.uuid
           }
         }) }}
       {% endfor %}

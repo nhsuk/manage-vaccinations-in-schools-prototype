@@ -2,6 +2,9 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { formatDate, today } from '../utils/date.js'
 
+import { Programme } from './programme.js'
+import { User } from './user.js'
+
 export class EventType {
   static Select = 'Select'
   static Invite = 'Invite'
@@ -15,6 +18,9 @@ export class EventType {
 
 /**
  * @class Audit event
+ * @param {object} options - Options
+ * @param {object} [context] - Global context
+ * @property {object} [context] - Global context
  * @property {string} uuid - UUID
  * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created event
@@ -25,7 +31,8 @@ export class EventType {
  * @property {Array<string>} [programme_pids] - Programme PIDs
  */
 export class AuditEvent {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.uuid = options.uuid || faker.string.uuid()
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
@@ -34,6 +41,36 @@ export class AuditEvent {
     this.note = options.note
     this.info_ = options?.info_
     this.programme_pids = options?.programme_pids
+  }
+
+  /**
+   * Get user who created event
+   *
+   * @returns {User} - User
+   */
+  get createdBy() {
+    try {
+      if (this.createdBy_uid) {
+        return User.read(this.createdBy_uid, this.context)
+      }
+    } catch (error) {
+      console.error('Upload.createdBy', error.message)
+    }
+  }
+
+  /**
+   * Get programmes event relates to
+   *
+   * @returns {Array<Programme>} - Programmes
+   */
+  get programmes() {
+    if (this.context?.programmes && this.programme_pids) {
+      return this.programme_pids.map(
+        (pid) => new Programme(this.context?.programmes[pid], this.context)
+      )
+    }
+
+    return []
   }
 
   /**
