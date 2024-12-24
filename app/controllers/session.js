@@ -65,6 +65,7 @@ export const sessionController = {
       case 'consent':
         tab = tab || ConsentOutcome.NoResponse
         tabs = [
+          ConsentOutcome.NoRequest,
           ConsentOutcome.NoResponse,
           ConsentOutcome.Given,
           ConsentOutcome.Refused,

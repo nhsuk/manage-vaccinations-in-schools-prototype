@@ -1,5 +1,5 @@
 {%- from "_macros/status.njk" import status -%}
-{% macro parentEmail(parent) -%}
+{% macro parentEmail(parent, showStatus) -%}
   <p class="nhsuk-body nhsuk-u-margin-0">
     <a href="mailto:{{ parent.email }}">{{ parent.email }}</a>
   </p>
@@ -8,5 +8,5 @@
     text: parent.emailStatus,
     icon: "warning",
     colour: "red"
-  }) if parent.emailStatus and parent.emailStatus != "Delivered" }}
+  }) if showStatus and parent.emailStatus and parent.emailStatus != "Delivered" }}
 {% endmacro %}

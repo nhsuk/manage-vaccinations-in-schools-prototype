@@ -24,10 +24,8 @@ export function generateConsent(programme, session, patientSession, index) {
   let parent
   if (index === 0) {
     parent = patientSession.patient.parent1
-  } else if (index === 1) {
-    parent =
-      patientSession.patient?.parent2 ||
-      generateParent(patientSession.patient.lastName)
+  } else if (index === 1 && patientSession.patient?.parent2) {
+    parent = patientSession.patient.parent2
   } else {
     parent = generateParent(patientSession.patient.lastName)
   }

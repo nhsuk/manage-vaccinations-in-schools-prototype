@@ -10,7 +10,7 @@ import {
 } from '../utils/string.js'
 
 import { Child } from './child.js'
-import { Parent } from './parent.js'
+import { EmailStatus, Parent, SmsStatus } from './parent.js'
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
 import { Session } from './session.js'
@@ -107,6 +107,20 @@ export class Reply {
     } else if (this.child) {
       return this.child.fullName
     }
+  }
+
+  /**
+   * Was the consent response delivered?
+   *
+   * @returns {boolean} - Response was delivered
+   */
+  get delivered() {
+    const hasEmailGotEmail =
+      this.parent?.email && this.parent?.emailStatus === EmailStatus.Delivered
+    const wantsSmsGotSms =
+      this.parent.sms === true && this.parent?.smsStatus === SmsStatus.Delivered
+
+    return hasEmailGotEmail || wantsSmsGotSms
   }
 
   /**

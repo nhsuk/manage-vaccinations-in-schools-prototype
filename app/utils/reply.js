@@ -53,27 +53,27 @@ export function getConsentHealthAnswers(patientSession) {
   const answers = {}
 
   // Get consent responses with health answers
-  const repliesWithHealthAnswers = Object.values(patientSession.replies).filter(
-    (reply) => reply.healthAnswers
-  )
+  const responsesWithHealthAnswers = Object.values(
+    patientSession.responses
+  ).filter((reply) => reply.healthAnswers)
 
-  if (repliesWithHealthAnswers.length === 0) {
+  if (responsesWithHealthAnswers.length === 0) {
     return false
   }
 
-  for (const reply of repliesWithHealthAnswers) {
-    for (const [key, value] of Object.entries(reply.healthAnswers)) {
+  for (const response of responsesWithHealthAnswers) {
+    for (const [key, value] of Object.entries(response.healthAnswers)) {
       if (!answers[key]) {
         answers[key] = {}
       }
 
-      const hasSingleReply = repliesWithHealthAnswers.length === 1
-      const hasSameAnswers = repliesWithHealthAnswers.every(
+      const hasSingleResponse = responsesWithHealthAnswers.length === 1
+      const hasSameAnswers = responsesWithHealthAnswers.every(
         (reply) => reply.healthAnswers[key] === value
       )
-      const relationship = formatParentalRelationship(reply.parent)
+      const relationship = formatParentalRelationship(response.parent)
 
-      if (hasSingleReply) {
+      if (hasSingleResponse) {
         answers[key][relationship] = value
       } else if (hasSameAnswers) {
         answers[key].All = value
@@ -119,10 +119,21 @@ export const getConsentOutcome = (patientSession) => {
   )
 
   if (replies.length === 1) {
+    // Check if request was delivered
+    if (!replies[0].delivered) {
+      return ConsentOutcome.NoRequest
+    }
+
     // Reply decision value matches consent outcome key
     return getConfirmedConsentOutcome(replies[0])
   } else if (replies.length > 1) {
     const decisions = _.uniqBy(replies, 'decision')
+    const delivered = _.uniqBy(replies, 'delivered')
+
+    // Check if any requests were delivered
+    if (delivered.length === 0) {
+      return ConsentOutcome.NoRequest
+    }
 
     if (decisions.length > 1) {
       // If one of the replies is not from parent (so from child), use that

@@ -99,6 +99,7 @@
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {% set consentCardDescriptionHtml %}
               <p>
+                {{ __n("consent." + ConsentOutcome.NoRequest + ".count", patientSessions | where("consent", ConsentOutcome.NoRequest) | length) }}<br>
                 {{ __n("consent." + ConsentOutcome.NoResponse + ".count", patientSessions | where("consent", ConsentOutcome.NoResponse) | length) }}<br>
                 {{ __n("consent." + ConsentOutcome.Given + ".count", patientSessions | where("consent", ConsentOutcome.Given) | length) }}<br>
                 {{ __n("consent." + ConsentOutcome.Refused + ".count", patientSessions | where("consent", ConsentOutcome.Refused) | length) }}<br>

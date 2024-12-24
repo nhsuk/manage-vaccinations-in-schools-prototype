@@ -289,6 +289,19 @@ export const en = {
           '[0] No children without a response|%s children without a response'
       }
     },
+    [ConsentOutcome.NoRequest]: {
+      colour: 'dark-orange',
+      description: 'Consent response could not be delivered.',
+      icon: false,
+      label: 'Request failed',
+      status: 'Request failed',
+      title: 'Request failed',
+      count: {
+        one: '%s child whose request failed',
+        other:
+          '[0] No children whose request failed|%s children whose request failed'
+      }
+    },
     [ConsentOutcome.Inconsistent]: {
       colour: 'dark-orange',
       description: 'You can only vaccinate if all respondents give consent.',
@@ -1294,15 +1307,6 @@ export const en = {
         Child: 'Does the child agree to having the {{programme.name}} vaccine?',
         Parent:
           'Do they agree to {{patient.firstName}} having the {{programme.name}} vaccine?'
-      },
-      [ReplyDecision.Given]: {
-        colour: 'aqua-green'
-      },
-      [ReplyDecision.Refused]: {
-        colour: 'red'
-      },
-      [ReplyDecision.NoResponse]: {
-        colour: 'grey'
       }
     },
     invalid: {

@@ -1,9 +1,9 @@
 {%- from "_macros/status.njk" import status -%}
-{% macro parentSms(parent) -%}
+{% macro parentSms(parent, showStatus) -%}
   <p class="nhsuk-body nhsuk-u-margin-0">{{ parent.tel }}</p>
   {{ status({
     classes: "app-status--small nhsuk-u-margin-top-1",
     text: parent.smsStatus,
     colour: "red"
-  }) if parent.smsStatus and parent.smsStatus != "Delivered" }}
+  }) if showStatus and parent.smsStatus and parent.smsStatus != "Delivered" }}
 {% endmacro %}

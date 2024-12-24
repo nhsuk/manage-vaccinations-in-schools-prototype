@@ -131,13 +131,15 @@
           {{ parent.formatted.fullNameAndRelationship }}
         </h3>
 
+        {% set showDeliveryStatus = patientSession.consent != ConsentOutcome.NoResponse %}
+
         {{ summaryList({
           rows: summaryRows(parent, {
             tel: {
-              value: parentSms(parent)
+              value: parentSms(parent, showDeliveryStatus)
             } if parent.tel,
             email: {
-              value: parentEmail(parent)
+              value: parentEmail(parent, showDeliveryStatus)
             } if parent.email
           })
         }) }}
@@ -189,35 +191,35 @@
     }) if options.showGillick }}
 
     {% set consentDescriptionHtml %}
-      {% if patientSession.replies.length %}
+      {% if patientSession.responses.length %}
         {{ status({
           text: __("consent." + patientSession.consent + ".status"),
           icon: __("consent." + patientSession.consent + ".icon"),
           colour: __("consent." + patientSession.consent + ".colour")
         }) }}
 
-        {% set replyRows = [] %}
-        {% for reply in patientSession.replies %}
-          {% set replyColour = __("reply.decision." + reply.decision + ".colour") %}
-          {% set replyModifier = "grey" if reply.invalid else replyColour %}
-          {% set replyRows = replyRows | push([
+        {% set consentRows = [] %}
+        {% for consent in patientSession.responses %}
+          {% set consentColour = __("consent." + consent.decision + ".colour") %}
+          {% set consentModifier = "grey" if consent.invalid else consentColour %}
+          {% set consentRows = consentRows | push([
             {
-              classes: "app-table__cell-status--" + replyModifier,
+              classes: "app-table__cell-status--" + consentModifier,
               header: __("parent.fullName.label"),
-              html: reply.link.fullNameAndRelationship
+              html: consent.link.fullNameAndRelationship
             },
             {
-              classes: "app-table__cell-status--" + replyModifier,
-              header: __("reply.createdAt.label"),
-              html: reply.formatted.createdAt or "Not provided",
+              classes: "app-table__cell-status--" + consentModifier,
+              header: __("consent.createdAt.label"),
+              html: consent.formatted.createdAt or "Not provided",
               attributes: {
-                "data-sort": reply.createdAt
+                "data-sort": consent.createdAt
               }
             },
             {
-              classes: "app-table__cell-status--" + replyModifier,
-              header: __("reply.decision.label"),
-              html: reply.formatted.decision
+              classes: "app-table__cell-status--" + consentModifier,
+              header: __("consent.decision.label"),
+              html: consent.formatted.decision
             }
           ]) %}
         {% endfor %}
@@ -229,10 +231,10 @@
           responsive: true,
           head: [
             { text: __("parent.fullName.label") },
-            { text: __("reply.createdAt.label") },
-            { text: __("reply.decision.label") }
+            { text: __("consent.createdAt.label") },
+            { text: __("consent.decision.label") }
           ],
-          rows: replyRows
+          rows: consentRows
         }) }}
       {% elif session.consentWindow == ConsentWindow.Opening %}
         {{ __("session.consentWindow." + session.consentWindow + ".text", {

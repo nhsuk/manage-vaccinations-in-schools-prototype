@@ -16,6 +16,7 @@ import { Patient } from './patient.js'
 import { Session } from './session.js'
 
 export class ConsentOutcome {
+  static NoRequest = 'Request failed'
   static NoResponse = 'No response'
   static Inconsistent = 'Conflicting consent'
   static Given = 'Consent given'
@@ -133,11 +134,23 @@ export class PatientSession {
    * @returns {Array<import('./reply.js').Reply>} - Replies
    */
   get replies() {
-    return this.patient.replies
-      .filter(({ programme_pid }) =>
-        this.session.programme_pids.includes(programme_pid)
-      )
-      .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
+    return (
+      this.patient.replies
+        .filter(({ programme_pid }) =>
+          this.session.programme_pids.includes(programme_pid)
+        )
+        // .filter((reply) => reply.delivered)
+        .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
+    )
+  }
+
+  /**
+   * Get responses (consent requests that were delivered)
+   *
+   * @returns {Array<import('./reply.js').Reply>} - Responses
+   */
+  get responses() {
+    return this.replies.filter((reply) => reply.delivered)
   }
 
   /**

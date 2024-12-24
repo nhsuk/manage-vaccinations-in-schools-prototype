@@ -17,14 +17,14 @@ export const getScreenOutcome = (patientSession) => {
     return false
   }
 
-  const replies = Object.values(patientSession.replies)
-  const repliesToTriage = getRepliesWithHealthAnswers(replies)
+  const responses = Object.values(patientSession.responses)
+  const responsesToTriage = getRepliesWithHealthAnswers(responses)
 
-  if (repliesToTriage.length === 0) {
+  if (responsesToTriage.length === 0) {
     return false
   }
 
-  if (repliesToTriage.length > 0) {
+  if (responsesToTriage.length > 0) {
     const lastTriageNoteWithOutcome = patientSession.patient.triageNotes
       .filter((event) => event.info_)
       .at(-1)

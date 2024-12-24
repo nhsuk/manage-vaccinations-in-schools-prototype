@@ -24,7 +24,6 @@ export function generateRecord() {
   }
 
   // CHIS records provide only a subset of parent data
-  delete parent1.email
   delete parent1.sms
   delete parent1.contactPreference
   delete parent1.contactPreferenceOther

@@ -63,9 +63,9 @@ export class Parent {
     this.notify = stringToBoolean(options?.notify)
     this.tel = options.tel || ''
     this.email = options.email
-    this.emailStatus = options?.emailStatus
+    this.emailStatus = this?.email && options?.emailStatus
     this.sms = stringToBoolean(options.sms) || false
-    this.smsStatus = options?.smsStatus
+    this.smsStatus = this?.sms && options?.smsStatus
     this.contactPreference = options?.contactPreference
     this.contactPreferenceOther =
       this.contactPreference === ContactPreference.Other
