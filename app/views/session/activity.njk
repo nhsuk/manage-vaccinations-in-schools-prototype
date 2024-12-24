@@ -1,10 +1,10 @@
 {% extends "_layouts/default.njk" %}
 
-{% set showLastReminderDate = tab == "NoResponse" %}
-{% set showRefusalReasons = tab == "Refused" or tab == "Inconsistent" %}
-{% set showCouldNotVaccinateReason = tab == "CouldNotVaccinate" %}
-{% set showRegistration = tab == "Register" %}
-{% set showStatus = activity == "capture" or tab == "NoOutcomeYet" %}
+{% set showLastReminderDate = tab == ConsentOutcome.NoResponse %}
+{% set showRefusalReasons = tab == ConsentOutcome.Refused or tab == ConsentOutcome.Inconsistent %}
+{% set showCouldNotVaccinateReason = tab == PatientOutcome.CouldNotVaccinate %}
+{% set showRegistration = tab == CaptureOutcome.Register %}
+{% set showStatus = activity == "capture" or tab == PatientOutcome.NoOutcomeYet %}
 {% set showYearGroup = true %}
 {% set title = __("session.activity." + activity + ".title") %}
 
