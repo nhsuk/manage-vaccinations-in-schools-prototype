@@ -11,6 +11,8 @@ router.get('/new', uploadController.new)
 router.all('/:id*', uploadController.read)
 router.get('/:id', uploadController.show)
 
+router.post('/:id/?:form(new|edit)/summary', uploadController.update)
+
 router.all('/:id/?:form(new|edit)/:view', uploadController.readForm)
 router.get('/:id/?:form(new|edit)/:view', uploadController.showForm)
 router.post('/:id/?:form(new|edit)/:view', uploadController.updateForm)

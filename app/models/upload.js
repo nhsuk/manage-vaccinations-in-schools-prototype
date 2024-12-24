@@ -9,7 +9,7 @@ import { Vaccination } from './vaccination.js'
 
 export class UploadType {
   static Cohort = 'Child records'
-  static School = 'Class list'
+  static School = 'Class list records'
   static Report = 'Vaccination records'
 }
 
@@ -29,6 +29,7 @@ export class UploadStatus {
  * @property {UploadType} type - Upload type
  * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created upload
+ * @property {Date} [updatedAt] - Updated date
  * @property {string} [programme_pid] - Programme ID
  * @property {Array<string>} [record_nhsns] - Record NHS numbers
  * @property {number} [devoid] - Exact duplicate records found
@@ -44,6 +45,7 @@ export class Upload {
     this.type = options?.type || UploadType.Cohort
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
+    this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.programme_pid = options?.programme_pid
     this.validations = options?.validations || []
     this.record_nhsns = options?.record_nhsns || []
@@ -61,9 +63,8 @@ export class Upload {
    */
   get createdBy() {
     try {
-      const user = this.context?.users[this.createdBy_uid]
-      if (user) {
-        return new User(user)
+      if (this.createdBy_uid) {
+        return User.read(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Upload.createdBy', error.message)
@@ -77,9 +78,8 @@ export class Upload {
    */
   get programme() {
     try {
-      const programme = this.context?.programmes[this.programme_pid]
-      if (programme) {
-        return new Programme(programme)
+      if (this.programme_pid) {
+        return Programme.read(this.programme_pid, this.context)
       }
     } catch (error) {
       console.error('Upload.programme', error.message)
@@ -89,12 +89,12 @@ export class Upload {
   /**
    * Get uploaded records
    *
-   * @returns {Array<Programme>} - Programmes
+   * @returns {Array<Record>} - Records
    */
   get records() {
     if (this.context?.records && this.record_nhsns) {
       return this.record_nhsns
-        .map((nhsn) => new Record(this.context?.records[nhsn]))
+        .map((nhsn) => Record.read(nhsn, this.context))
         .map((record) => {
           record.vaccination = record.vaccination_uuids.map((uuid) =>
             Vaccination.read(uuid, this.context)
@@ -193,5 +193,39 @@ export class Upload {
     if (context.uploads) {
       return new Upload(context.uploads[id], context)
     }
+  }
+
+  /**
+   * Create
+   *
+   * @param {Upload} upload - Upload
+   * @param {object} context - Context
+   */
+  create(upload, context) {
+    upload = new Upload(upload)
+
+    // Update context
+    context.uploads = context.uploads || {}
+    context.uploads[upload.id] = upload
+  }
+
+  /**
+   * Update
+   *
+   * @param {object} updates - Updates
+   * @param {object} context - Context
+   */
+  update(updates, context) {
+    this.updatedAt = new Date()
+
+    // Remove upload context
+    delete this.context
+
+    // Delete original upload (with previous ID)
+    delete context.uploads[this.id]
+
+    // Update context
+    const updatedUpload = Object.assign(this, updates)
+    context.uploads[updatedUpload.id] = updatedUpload
   }
 }

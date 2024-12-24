@@ -7,8 +7,10 @@
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--l",
-        isPageHeading: true,
-        text: title
+        html: heading({
+          caption: programme.name,
+          title: title
+        })
       }
     },
     items: typeItems,

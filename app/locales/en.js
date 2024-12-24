@@ -1431,7 +1431,7 @@ export const en = {
       title: 'Download consent form (PDF)'
     },
     'upload-class-list': {
-      title: 'Import class list'
+      title: 'Import class list records'
     },
     list: {
       label: 'Sessions',
@@ -1749,6 +1749,12 @@ export const en = {
       errors: {
         invalid: 'The selected file must be a CSV'
       }
+    },
+    summary: {
+      title: 'Are you sure you want to import these {{type}}?',
+      description: 'The uploaded file contains {{size}} records.',
+      confirm: 'Import {{type}}',
+      cancel: 'Cancel'
     },
     errors: {
       title: 'Records could not be imported',

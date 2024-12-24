@@ -12,12 +12,11 @@ export const uploadController = {
   },
 
   read(request, response, next) {
-    let { upload } = request.app.locals
     const { id } = request.params
     const { data } = request.session
     const { __n } = response.locals
 
-    upload = new Upload(data.uploads[id] || upload, data)
+    const upload = Upload.read(id, data)
 
     // Count and show duplicate records
     const duplicates = upload.records.filter(
@@ -39,10 +38,8 @@ export const uploadController = {
     }
 
     response.locals.upload = upload
-
-    request.app.locals.upload = upload
-    request.app.locals.duplicates = duplicates
-    request.app.locals.issues = formatList(issues)
+    response.locals.duplicates = duplicates
+    response.locals.issues = formatList(issues)
 
     next()
   },
@@ -56,45 +53,62 @@ export const uploadController = {
     const { type } = request.query
     const { data } = request.session
 
-    // If type provided in query string, start journey at upload question
-    const startPath = type ? 'file' : 'type'
-    request.app.locals.startPath = startPath
-
-    // Delete previous data
-    delete data.upload
-    delete data?.wizard?.upload
-
     const upload = new Upload({
       programme_pid: pid,
       type,
       ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
-    data.wizard = { upload }
+    upload.create(upload, data.wizard)
 
-    response.redirect(`${upload.uri}/new/${startPath}`)
+    // If type provided in query string, start journey at upload question
+    data.startPath = type ? 'file' : 'type'
+
+    response.redirect(`${upload.uri}/new/${data.startPath}`)
+  },
+
+  update(request, response) {
+    const { id } = request.params
+    const { data, referrer } = request.session
+    const { __ } = response.locals
+
+    const upload = new Upload(Upload.read(id, data.wizard), data)
+
+    upload.update(upload, data)
+
+    // Clean up session data
+    delete data.upload
+    delete data.wizard
+
+    request.flash('success', __('upload.new.success'))
+
+    response.redirect(referrer || upload.uri)
   },
 
   readForm(request, response, next) {
-    const { upload, startPath } = request.app.locals
     const { form, id } = request.params
     const { data } = request.session
-    const { __ } = response.locals
+    let { __, upload } = response.locals
 
-    request.app.locals.upload = new Upload({
-      ...(form === 'edit' && upload), // Previous values
-      ...data?.wizard?.upload // Wizard values,
-    })
+    // Setup wizard if not already setup
+    if (!Upload.read(id, data.wizard)) {
+      upload.create(upload, data.wizard)
+    }
+
+    upload = new Upload(Upload.read(id, data.wizard), data)
+    response.locals.upload = upload
 
     const journey = {
       [`/`]: {},
-      ...(startPath === 'type'
+      ...(data.startPath === 'type'
         ? {
             [`/${id}/${form}/type`]: {},
-            [`/${id}/${form}/file`]: {}
+            [`/${id}/${form}/file`]: {},
+            [`/${id}/${form}/summary`]: {}
           }
         : {
-            [`/${id}/${form}/file`]: {}
+            [`/${id}/${form}/file`]: {},
+            [`/${id}/${form}/summary`]: {}
           }),
       [`/${id}`]: {}
     }
@@ -115,8 +129,6 @@ export const uploadController = {
       })
     )
 
-    response.locals.upload = request.app.locals.upload
-
     next()
   },
 
@@ -127,39 +139,18 @@ export const uploadController = {
   },
 
   updateForm(request, response) {
-    const { upload } = request.app.locals
-    const { view } = request.params
     const { data } = request.session
-    const { paths } = response.locals
-    const { __ } = response.locals
+    const { paths, upload } = response.locals
 
-    const updatedUpload = new Upload({
-      ...upload, // Previous values
-      ...request.body.upload // New value
-    })
+    upload.update(request.body.upload, data.wizard)
 
-    data.wizard.upload = updatedUpload
-
-    // No check answers screen; perform update on last page of wizard flow
-    if (view === 'file') {
-      // Add upload
-      data.uploads[upload.id] = updatedUpload
-
-      // Clean up
-      delete data?.wizard?.upload
-
-      request.flash('success', __('upload.new.success'))
-
-      response.redirect(updatedUpload.uri)
-    } else {
-      response.redirect(paths.next)
-    }
+    response.redirect(paths.next)
   },
 
   readReview(request, response, next) {
-    const { upload } = request.app.locals
     const { nhsn } = request.params
     const { data, referrer } = request.session
+    const { upload } = response.locals
 
     const record = upload.records.find((record) => record.nhsn === nhsn)
 

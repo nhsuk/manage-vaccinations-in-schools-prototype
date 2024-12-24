@@ -1,0 +1,38 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("upload.summary.title", {
+  type: upload.type | lower
+}) %}
+
+{% block form %}
+  {{ heading({
+    caption: programme.name,
+    title: title
+  }) }}
+
+  {{ __("upload.summary.description", {
+    type: upload.type | lower, size: 320
+  }) | nhsukMarkdown }}
+
+  {% if upload.type == UploadType.School %}
+  {% filter nhsukMarkdown %}
+  Importing these class lists will:
+
+  - Move 28 children out of {{ programme.sessions[0].location.name }}
+  - Move 17 children in to {{ programme.sessions[0].location.name }}
+  {% endfilter %}
+  {% endif %}
+{% endblock %}
+
+{% block afterForm %}
+  <div class="app-button-group">
+    {{ button({
+      text: __("upload.summary.confirm", {
+        type: upload.type | lower
+      })
+    }) }}
+    <a class="nhsuk-link" href="{{ batch.uri }}">
+      {{ __("upload.summary.cancel") }}
+    </a>
+  </div>
+{% endblock %}
