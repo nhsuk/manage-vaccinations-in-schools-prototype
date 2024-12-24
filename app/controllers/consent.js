@@ -17,9 +17,21 @@ import { getResults, getPagination } from '../utils/pagination.js'
 
 export const consentController = {
   readAll(request, response, next) {
+    let { page, limit } = request.query
     const { data } = request.session
 
-    response.locals.consents = Consent.readAll(data)
+    let consents = Consent.readAll(data)
+
+    // Sort
+    consents = _.sortBy(consents, 'createdAt')
+
+    // Paginate
+    page = parseInt(page) || 1
+    limit = parseInt(limit) || 100
+
+    response.locals.consents = consents
+    response.locals.results = getResults(consents, page, limit)
+    response.locals.pages = getPagination(consents, page, limit)
 
     next()
   },

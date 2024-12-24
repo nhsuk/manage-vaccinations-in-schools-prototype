@@ -11,7 +11,7 @@
   }) }}
 
   {% set consentRows = [] %}
-  {% for consent in consents | sort(false, false, "createdAt") %}
+  {% for consent in results.page %}
     {% set consentRows = consentRows | push([
       {
         header: __("consent.createdAt.label"),
@@ -63,6 +63,10 @@
       ],
       rows: consentRows
     }) }}
+
+    {{ govukPagination(pages) }}
+
+    {{ __("consent.results", { results: results }) | nhsukMarkdown }}
   {% else %}
     <div class="app-patients">
       <p class="app-patients__no-results nhsuk-caption-m">
