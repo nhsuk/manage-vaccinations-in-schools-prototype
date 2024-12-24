@@ -1,3 +1,6 @@
+{%- from "../_macros/parent-email.njk" import parentEmail -%}
+{%- from "../_macros/parent-sms.njk" import parentSms -%}
+
 {% extends "_layouts/default.njk" %}
 
 {% set title = patient.initials + " – " + session.location.name %}
@@ -128,34 +131,13 @@
           {{ parent.formatted.fullNameAndRelationship }}
         </h3>
 
-        {% set telHtml %}
-          <p class="nhsuk-body nhsuk-u-margin-0">{{ parent.tel }}</p>
-          {{ status({
-            classes: "app-status--small nhsuk-u-margin-top-1",
-            text: parent.smsStatus,
-            colour: "red"
-          }) if parent.smsStatus and parent.smsStatus != SmsStatus.Delivered }}
-        {% endset %}
-
-        {% set emailHtml %}
-          <p class="nhsuk-body nhsuk-u-margin-0">
-            <a href="mailto:{{ parent.email }}">{{ parent.email }}</a>
-          </p>
-          {{ status({
-            classes: "app-status--small nhsuk-u-margin-top-1",
-            text: parent.emailStatus,
-            icon: "warning",
-            colour: "red"
-          }) if parent.emailStatus and parent.emailStatus != EmailStatus.Delivered }}
-        {% endset %}
-
         {{ summaryList({
           rows: summaryRows(parent, {
             tel: {
-              value: telHtml
+              value: parentSms(parent)
             } if parent.tel,
             email: {
-              value: emailHtml
+              value: parentEmail(parent)
             } if parent.email
           })
         }) }}
