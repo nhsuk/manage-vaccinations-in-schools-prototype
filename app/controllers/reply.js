@@ -42,6 +42,9 @@ export const replyController = {
       {
         child: patient,
         patient_uuid: patient.uuid,
+        // TODO: Ask what programme consent response is for when a session
+        // is for multiple programmes
+        programme_pid: patientSession.session.programme_pids[0],
         session_id: session.id,
         selfConsent,
         ...(!selfConsent && { method: ReplyMethod.Phone }),
