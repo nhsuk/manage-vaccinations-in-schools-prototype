@@ -22,6 +22,7 @@ export class EventType {
  * @property {string} name - Name
  * @property {string} [note] - Note
  * @property {object} [info_] - Temporary information storage object
+ * @property {Array<string>} [programme_pids] - Programme PIDs
  */
 export class AuditEvent {
   constructor(options) {
@@ -32,6 +33,7 @@ export class AuditEvent {
     this.name = options.name
     this.note = options.note
     this.info_ = options?.info_
+    this.programme_pids = options?.programme_pids
   }
 
   /**

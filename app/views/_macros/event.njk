@@ -1,20 +1,29 @@
-{% macro event(item, users) -%}
+{%- from "components/tag/macro.njk" import tag -%}
+{% macro event(item, users, programmes) -%}
   {% if item.note -%}
   <blockquote>
     {{ item.note | nhsukMarkdown }}
   </blockquote>
   {%- endif %}
   <p class="nhsuk-body-s nhsuk-u-margin-0 nhsuk-u-secondary-text-color">
-    {{ item.createdAt | date({
+    {%- if programmes -%}
+      {%- for pid in item.programme_pids -%}
+        {{- tag({
+          classes: "nhsuk-tag--white",
+          text: programmes[pid].name
+        }) -}}
+      {%- endfor -%}&nbsp;
+    {% endif %}
+    {{- item.createdAt | date({
       day: "numeric",
       month: "long",
       year: "numeric",
       hour: "numeric",
       minute: "2-digit",
       hour12: true
-    }) }}
-    {% if item.createdBy_uid %}&middot;
-      {{ link(users[item.createdBy_uid].uri, users[item.createdBy_uid].fullName) | safe }}
-    {% endif %}
+    }) -}}
+    {%- if item.createdBy_uid %}&middot;
+      {{- link(users[item.createdBy_uid].uri, users[item.createdBy_uid].fullName) | safe -}}
+    {% endif -%}
   </p>
 {%- endmacro %}

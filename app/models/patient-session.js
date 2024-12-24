@@ -346,7 +346,8 @@ export class PatientSession {
     this.patient.addEvent({
       type: EventType.Select,
       name: `Removed from the ${this.session.name}`,
-      createdBy_uid: event.createdBy_uid
+      createdBy_uid: event.createdBy_uid,
+      programme_pids: this.session.programme_pids
     })
   }
 
@@ -362,7 +363,8 @@ export class PatientSession {
       name: gillick.status.description,
       note: gillick.note,
       createdAt: gillick.createdAt,
-      createdBy_uid: event.createdBy_uid
+      createdBy_uid: event.createdBy_uid,
+      programme_pids: this.session.programme_pids
     })
 
     const patientSession = PatientSession.read(this.uuid, this.context)
@@ -380,7 +382,8 @@ export class PatientSession {
       name: event.name,
       note: event.note,
       createdBy_uid: event.createdBy_uid,
-      info_: event.info_ // Store outcome, used to calculate screen outcome
+      info_: event.info_, // Store outcome, used to calculate screen outcome
+      programme_pids: this.session.programme_pids
     })
   }
 
@@ -396,7 +399,8 @@ export class PatientSession {
       type: EventType.Capture,
       name: this.registrationStatus.description,
       createdAt: event.createdAt,
-      createdBy_uid: event.createdBy_uid
+      createdBy_uid: event.createdBy_uid,
+      programme_pids: this.session.programme_pids
     })
 
     // Update context, so that session activity reflects updated value
@@ -415,7 +419,8 @@ export class PatientSession {
       type: EventType.Screen,
       name: 'Completed pre-screening checks',
       note: event.note,
-      createdBy_uid: event.createdBy_uid
+      createdBy_uid: event.createdBy_uid,
+      programme_pids: this.session.programme_pids
     })
   }
 
@@ -429,7 +434,8 @@ export class PatientSession {
     this.patient.addEvent({
       type: EventType.Remind,
       name: `Reminder to give consent sent to ${parent.fullName}`,
-      createdBy_uid: event.createdBy_uid
+      createdBy_uid: event.createdBy_uid,
+      programme_pids: this.session.programme_pids
     })
   }
 }

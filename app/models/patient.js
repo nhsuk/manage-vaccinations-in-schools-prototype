@@ -244,7 +244,8 @@ export class Patient extends Record {
       type: EventType.Select,
       name: `Selected for the ${cohort.name.replace('Flu', 'flu')} cohort`,
       createdAt: cohort.createdAt,
-      createdBy_uid: cohort.createdBy_uid
+      createdBy_uid: cohort.createdBy_uid,
+      programme_pids: [cohort.programme_pid]
     })
   }
 
@@ -261,7 +262,8 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Select,
       name: `Removed from the ${cohort.name.replace('Flu', 'flu')} cohort`,
-      createdBy_uid: cohort.createdBy_uid
+      createdBy_uid: cohort.createdBy_uid,
+      programme_pids: [cohort.programme_pid]
     })
   }
 
@@ -276,7 +278,8 @@ export class Patient extends Record {
       type: EventType.Invite,
       name: `Invited to the ${patientSession.session.name}`,
       createdAt: patientSession.session.createdAt,
-      createdBy_uid: patientSession.createdBy_uid
+      createdBy_uid: patientSession.createdBy_uid,
+      programme_pids: patientSession.session.programme_pids
     })
   }
 
@@ -309,7 +312,8 @@ export class Patient extends Record {
       type: EventType.Consent,
       name,
       createdAt: isNew ? reply.createdAt : today(),
-      createdBy_uid: reply.createdBy_uid
+      createdBy_uid: reply.createdBy_uid,
+      programme_pids: [reply.programme_pid]
     })
   }
 
@@ -336,7 +340,8 @@ export class Patient extends Record {
       name,
       note: vaccination.note,
       createdAt: vaccination.updatedAt || vaccination.createdAt,
-      createdBy_uid: vaccination.createdBy_uid
+      createdBy_uid: vaccination.createdBy_uid,
+      programme_pid: vaccination.programme_pid
     })
   }
 

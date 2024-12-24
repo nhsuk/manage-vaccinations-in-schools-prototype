@@ -43,7 +43,7 @@
         {{ card({
           heading: item.name,
           headingClasses: "nhsuk-heading-s",
-          descriptionHtml: event(item, users),
+          descriptionHtml: event(item, users, data.programmes),
           attributes: {
             id: item.uuid
           }

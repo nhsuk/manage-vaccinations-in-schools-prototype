@@ -70,6 +70,7 @@ export function generateConsent(programme, session, patientSession) {
         refusalReasonOther: 'My family rejects vaccinations on principle.'
       })
     }),
+    programme_pid: programme.pid,
     session_id: session.id
   })
 }

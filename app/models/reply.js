@@ -12,6 +12,7 @@ import {
 import { Child } from './child.js'
 import { Parent } from './parent.js'
 import { Patient } from './patient.js'
+import { Programme } from './programme.js'
 import { Session } from './session.js'
 import { User } from './user.js'
 
@@ -62,6 +63,7 @@ export class ReplyRefusal {
  * @property {boolean} [selfConsent] - Reply given by child
  * @property {string} [note] - Note about this response
  * @property {string} patient_uuid - Patient UUID
+ * @property {string} [programme_pid] - Programme ID
  * @property {string} session_id - Session ID
  */
 export class Reply {
@@ -90,6 +92,7 @@ export class Reply {
     this.selfConsent = options?.selfConsent
     this.note = options?.note || ''
     this.patient_uuid = options?.patient_uuid
+    this.programme_pid = options?.programme_pid
     this.session_id = options?.session_id
   }
 
@@ -147,6 +150,21 @@ export class Reply {
       }
     } catch (error) {
       console.error('Reply.patient', error.message)
+    }
+  }
+
+  /**
+   * Get programme
+   *
+   * @returns {Programme} - User
+   */
+  get programme() {
+    try {
+      if (this.programme_pid) {
+        return Programme.read(this.programme_pid, this.context)
+      }
+    } catch (error) {
+      console.error('Upload.programme', error.message)
     }
   }
 
