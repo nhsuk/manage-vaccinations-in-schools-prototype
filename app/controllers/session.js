@@ -9,6 +9,7 @@ import {
 import { Patient } from '../models/patient.js'
 import { programmeTypes } from '../models/programme.js'
 import { Session, SessionStatus, SessionType } from '../models/session.js'
+import { getDateValueDifference } from '../utils/date.js'
 
 const getPatientsForKey = (patients, activity, tab) => {
   return patients.filter((patient) => {
@@ -35,7 +36,9 @@ export const sessionController = {
       unplanned: SessionStatus.Unplanned
     }
 
-    let sessions = Session.readAll(data)
+    let sessions = Session.readAll(data).sort((a, b) =>
+      getDateValueDifference(a.firstDate, b.firstDate)
+    )
 
     if (view === 'active') {
       sessions = sessions.filter((session) => session.isActive)
