@@ -210,6 +210,7 @@ export class Reply {
       }),
       createdBy: this.createdBy?.fullName || '',
       decision: decision(),
+      programme: this.programme.name,
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
       refusalReasonDetails: formatMarkdown(this.refusalReasonDetails),
       note: formatMarkdown(this.note)
