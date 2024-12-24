@@ -36,7 +36,7 @@
       {{ __("patient.events.title") }}
     </h2>
 
-    {% for group, auditEvents in patient.auditEventLog %}
+    {% for group, auditEvents in patientSession.auditEventLog %}
       <h3 class="nhsuk-heading-xs nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal">{{ group }}</h3>
 
       {% for auditEvent in auditEvents %}

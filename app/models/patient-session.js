@@ -102,6 +102,32 @@ export class PatientSession {
   }
 
   /**
+   * Get audit events for patient session
+   *
+   * @returns {Array<import('./audit-event.js').AuditEvent>} - Audit events
+   */
+  get auditEvents() {
+    return this.patient.auditEvents.filter(({ programme_pids }) =>
+      programme_pids?.some((pid) => this.session.programme_pids.includes(pid))
+    )
+  }
+
+  /**
+   * Get audit events grouped by date
+   *
+   * @returns {object} - Events grouped by date
+   */
+  get auditEventLog() {
+    const auditEvents = this.auditEvents.sort((a, b) =>
+      getDateValueDifference(b.createdAt, a.createdAt)
+    )
+
+    return Object.groupBy(auditEvents, (auditEvent) => {
+      return auditEvent.formatted.createdAt
+    })
+  }
+
+  /**
    * Get replies for patient session
    *
    * @returns {Array<import('./reply.js').Reply>} - Replies

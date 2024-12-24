@@ -1004,6 +1004,12 @@ export const en = {
     }
   },
   patientSession: {
+    show: {
+      title: 'Child record'
+    },
+    events: {
+      title: 'Programme activity log'
+    },
     gillick: {
       label: 'Gillick assessment',
       text: 'Before you make your assessment, you should give {{patient.firstName}} a chance to ask questions.',
