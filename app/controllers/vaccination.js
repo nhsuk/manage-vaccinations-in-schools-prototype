@@ -63,12 +63,11 @@ export const vaccinationController = {
     const { data } = request.session
     const { programme } = response.locals
 
-    const patientSession = PatientSession.read(patientSession_uuid, data)
+    const { patient, session } = PatientSession.read(patientSession_uuid, data)
     const { injectionSite, ready } = data.patientSession.preScreen
 
     // Check for default batch
-    const { defaultBatch_ids } = patientSession.session
-    const defaultBatchId = defaultBatch_ids?.[programme.vaccine.gtin]
+    const defaultBatchId = session.defaultBatch_ids?.[programme.vaccine.gtin]
 
     const readyToVaccine = ready === 'true'
     const injectionSiteGiven = [
@@ -76,32 +75,30 @@ export const vaccinationController = {
       VaccinationSite.ArmRightUpper
     ].includes(injectionSite)
 
-    let startPath
     switch (true) {
       case readyToVaccine && injectionSiteGiven && defaultBatchId:
-        startPath = 'check-answers'
+        data.startPath = 'check-answers'
         break
       case readyToVaccine && injectionSiteGiven:
-        startPath = 'batch-id'
+        data.startPath = 'batch-id'
         break
       case readyToVaccine:
-        startPath = 'administer'
+        data.startPath = 'administer'
         break
       default:
-        startPath = 'decline'
+        data.startPath = 'decline'
     }
 
-    response.locals.back = patientSession.uri
-    request.app.locals.defaultBatchId = defaultBatchId
-    request.app.locals.patientSession = patientSession
-    request.app.locals.startPath = startPath
+    // Temporarily store values to use during flow
+    data.defaultBatchId = defaultBatchId
+    data.patientSession_uuid = patientSession_uuid
 
     const vaccination = new Vaccination({
-      location: patientSession.session.formatted.location,
-      patient_uuid: patientSession.patient.uuid,
+      location: session.formatted.location,
+      patient_uuid: patient.uuid,
       programme_pid: programme.pid,
-      school_urn: patientSession.session.school_urn,
-      session_id: patientSession.session.id,
+      school_urn: session.school_urn,
+      session_id: session.id,
       vaccine_gtin: programme.vaccine.gtin,
       ...(data.token && { createdBy_uid: data.token?.uid }),
       ...(injectionSite && {
@@ -116,12 +113,13 @@ export const vaccinationController = {
     })
 
     vaccination.create(vaccination, data.wizard)
-    patientSession.patient.captureVaccination(vaccination)
+    patient.captureVaccination(vaccination)
 
-    response.redirect(`${vaccination.uri}/new/${startPath}`)
+    response.redirect(`${vaccination.uri}/new/${data.startPath}`)
   },
 
   update(request, response) {
+    const { note } = request.body.vaccination
     const { form, uuid } = request.params
     const { data, referrer } = request.session
     const { __ } = response.locals
@@ -130,31 +128,41 @@ export const vaccinationController = {
       Vaccination.read(uuid, data.wizard),
       data
     )
-    request.flash('success', __(`vaccination.${form}.success`))
+
+    // Add note on check answers page
+    if (note) {
+      vaccination.note = note
+    }
 
     vaccination.update(vaccination, data)
 
     // Clean up session data
     delete data.batch_id
-    delete data.patientSession?.preScreen
+    delete data.defaultBatchId
+    delete data.patientSession_uuid
+    delete data.startPath
     delete data.vaccination
+    delete data.wizard
+
+    request.flash('success', __(`vaccination.${form}.success`))
 
     response.redirect(referrer || vaccination.uri)
   },
 
   readForm(request, response, next) {
-    const { defaultBatchId, startPath, patientSession } = request.app.locals
     const { form, uuid } = request.params
     const { data, referrer } = request.session
     const { __, programme } = response.locals
 
     const vaccination = Vaccination.read(uuid, data.wizard)
-
     response.locals.vaccination = vaccination
+
+    const patientSession = PatientSession.read(data.patientSession_uuid, data)
+    response.locals.patientSession = patientSession
 
     const journey = {
       [`/`]: {},
-      ...(startPath === 'decline'
+      ...(data.startPath === 'decline'
         ? {
             [`/${uuid}/${form}/decline`]: {},
             [`/${uuid}/${form}/check-answers`]: {}
@@ -162,13 +170,13 @@ export const vaccinationController = {
         : {
             [`/${uuid}/${form}/administer`]: {
               [`/${uuid}/${form}/check-answers`]: () => {
-                return defaultBatchId
+                return data.defaultBatchId
               }
             },
             [`/${uuid}/${form}/batch-id`]: () => {
-              return !defaultBatchId
+              return !data.defaultBatchId
             },
-            ...(!patientSession?.session?.address && {
+            ...(!patientSession.session?.address && {
               [`/${uuid}/${form}/location`]: {}
             }),
             [`/${uuid}/${form}/check-answers`]: {}
@@ -186,7 +194,7 @@ export const vaccinationController = {
 
     // If first page in journey, return to page that initiated recording
     const currentPath = request.path.split('/').at(-1)
-    if (currentPath === startPath) {
+    if (currentPath === data.startPath) {
       response.locals.paths = {
         back: referrer || vaccination.uri
       }
@@ -253,9 +261,8 @@ export const vaccinationController = {
   },
 
   updateForm(request, response) {
-    const { defaultBatchId, patientSession } = request.app.locals
     const { data } = request.session
-    const { paths, programme, vaccination } = response.locals
+    const { paths, patientSession, programme, vaccination } = response.locals
 
     // Add dose amount and vaccination outcome based on dosage answer
     const { dosage } = request.body.vaccination
@@ -269,8 +276,8 @@ export const vaccinationController = {
     }
 
     // Get default batch, if saved
-    if (defaultBatchId) {
-      request.body.vaccination.batch_id = defaultBatchId
+    if (data.defaultBatchId) {
+      request.body.vaccination.batch_id = data.defaultBatchId
     }
 
     // Set default batch, if checked

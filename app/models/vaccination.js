@@ -107,7 +107,7 @@ export class Vaccination {
     this.dose = this.given ? options?.dose || '' : undefined
     this.sequence = options?.sequence
     this.protocol = this.given ? VaccinationProtocol.PGD : undefined
-    this.note = options?.note
+    this.note = options?.note || ''
     this.school_urn = options?.school_urn
     this.session_id = options?.session_id
     this.patient_uuid = options?.patient_uuid
@@ -220,11 +220,12 @@ export class Vaccination {
    */
   get patient() {
     try {
-      if (this.patient_uuid) {
-        return Patient.read(this.patient_uuid, this.context)
+      const patient = this.context?.patients[this.patient_uuid]
+      if (patient) {
+        return new Patient(patient, this.context)
       }
     } catch (error) {
-      console.error('Vaccination.patient', error.message)
+      console.error('Vaccination.patient', error)
     }
   }
 
@@ -409,6 +410,7 @@ export class Vaccination {
 
     // Update context
     const updatedVaccination = Object.assign(this, updates)
+
     context.vaccinations[updatedVaccination.uuid] = updatedVaccination
   }
 }
