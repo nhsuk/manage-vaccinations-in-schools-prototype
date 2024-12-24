@@ -149,8 +149,7 @@ export const patientSessionController = {
     request.flash(
       'message',
       __(`patientSession.registration.success.${patientSession.capture}`, {
-        patient,
-        session
+        patientSession
       })
     )
 
@@ -232,7 +231,7 @@ export const patientSessionController = {
   triage(request, response) {
     const { triage } = request.body
     const { data } = request.session
-    const { __, back, patient, patientSession, session } = response.locals
+    const { __, back, patientSession } = response.locals
 
     patientSession.recordTriage({
       info_: triage.outcome,
@@ -247,7 +246,7 @@ export const patientSessionController = {
     // Clean up session data
     delete data.triage
 
-    request.flash('success', __(`triage.edit.success`, { patient, session }))
+    request.flash('success', __(`triage.edit.success`, { patientSession }))
 
     response.redirect(back)
   }

@@ -63,8 +63,6 @@ export const replyController = {
     const { data } = request.session
     const { __, activity, patientSession, triage } = response.locals
 
-    const { patient, session } = patientSession
-
     let reply
     let next
     if (form === 'edit') {
@@ -74,7 +72,7 @@ export const replyController = {
       reply.update(request.body.reply, data)
     } else {
       reply = new Reply(Reply.read(uuid, data.wizard), data)
-      next = `${session.uri}/${activity || 'consent'}`
+      next = `${patientSession.session.uri}/${activity || 'consent'}`
 
       // Remove any parent details in reply if self consent
       if (reply.selfConsent) {
@@ -99,10 +97,7 @@ export const replyController = {
     delete data.reply
     delete data.triage
 
-    request.flash(
-      'success',
-      __(`reply.new.success`, { reply, patient, session })
-    )
+    request.flash('success', __(`reply.new.success`, { reply, patientSession }))
 
     response.redirect(next)
   },

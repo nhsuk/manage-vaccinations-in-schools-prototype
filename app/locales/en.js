@@ -1084,17 +1084,17 @@ export const en = {
       },
       success: {
         [CaptureOutcome.GetConsent]:
-          '[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. They still need consent to vaccinate.',
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. They still need consent to vaccinate.',
         [CaptureOutcome.CheckRefusal]:
-          '[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) needs to leave the session because their parent or guardian refused to give consent.',
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) needs to leave the session because their parent or guardian refused to give consent.',
         [CaptureOutcome.NeedsTriage]:
-          '[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. A nurse needs to triage their record.',
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. A nurse needs to triage their record.',
         [CaptureOutcome.Vaccinate]:
-          '[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is attending today’s session. They are ready for the nurse.',
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. They are ready for the nurse.',
         [CaptureOutcome.Register]:
-          '[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is absent from today’s session.',
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is absent from today’s session.',
         [RegistrationOutcome.Absent]:
-          '[{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}}) is absent from today’s session.'
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is absent from today’s session.'
       }
     }
   },
@@ -1231,11 +1231,11 @@ export const en = {
         title: 'Check and confirm'
       },
       success:
-        'Consent response from {{reply.fullName}} added to [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})’s record'
+        'Consent response from {{reply.fullName}} added to [{{patientSession.patient.fullName}}]({{patientSession.uri}})’s record'
     },
     edit: {
       success:
-        'Consent response from {{reply.fullName}} updated on [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})’s record'
+        'Consent response from {{reply.fullName}} updated on [{{patientSession.patient.fullName}}]({{patientSession.uri}})’s record'
     },
     'follow-up': {
       label: 'Follow up',
@@ -1673,7 +1673,7 @@ export const en = {
     edit: {
       title: 'Update triage outcome',
       success:
-        'Triage outcome updated for [{{patient.fullName}}]({{session.uri}}/{{patient.nhsn}})'
+        'Triage outcome updated for [{{patientSession.patient.fullName}}]({{patientSession.uri}})'
     },
     note: {
       label: 'Triage notes'
