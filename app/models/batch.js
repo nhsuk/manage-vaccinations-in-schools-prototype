@@ -121,7 +121,7 @@ export class Batch {
    * @returns {string} - URI
    */
   get uri() {
-    return `/vaccines/${this.vaccine_gtin}/${this.id}`
+    return `/vaccines/${this.vaccine_gtin}/batches/${this.id}`
   }
 
   /**

@@ -262,7 +262,7 @@ export class PatientSession {
    * @returns {string} - URI
    */
   get uri() {
-    return `/sessions/${this.session_id}/${this.patient.nhsn}`
+    return `/sessions/${this.session_id}/patients/${this.patient.nhsn}`
   }
 
   /**

@@ -56,10 +56,10 @@ router.use('/programmes/:pid/vaccinations/:uuid/patients', patientRoutes)
 router.use('/records', recordRoutes)
 router.use('/schools', schoolRoutes)
 router.use('/sessions', sessionRoutes)
-router.use('/sessions/:id', patientSessionRoutes)
-router.use('/sessions/:id/:nhsn/replies', replyRoutes)
+router.use('/sessions/:id/patients', patientSessionRoutes)
+router.use('/sessions/:id/patients/:nhsn/replies', replyRoutes)
 router.use('/users', userRoutes)
 router.use('/vaccines', vaccineRoutes)
-router.use('/vaccines/:gtin', batchRoutes)
+router.use('/vaccines/:gtin/batches', batchRoutes)
 
 export default router
