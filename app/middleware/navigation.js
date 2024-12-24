@@ -102,11 +102,8 @@ export const navigation = (request, response, next) => {
       : []
 
   const fluSession = getProgrammeSession(sessions, ProgrammeType.Flu)
-  const fluClinic = getProgrammeSession(sessions, ProgrammeType.Flu, false)
   const hpvSession = getProgrammeSession(sessions, ProgrammeType.HPV)
-  const hpvClinic = getProgrammeSession(sessions, ProgrammeType.HPV, false)
   const tioSession = getProgrammeSession(sessions, ProgrammeType.TdIPV)
-  const tioClinic = getProgrammeSession(sessions, ProgrammeType.TdIPV, false)
 
   response.locals.navigation = {
     account,
@@ -118,10 +115,6 @@ export const navigation = (request, response, next) => {
               {
                 URL: `/consents/${fluSession.id}`,
                 label: 'Flu consent'
-              },
-              {
-                URL: `/consents/${fluClinic.id}`,
-                label: 'Flu consent (clinic)'
               },
               {
                 URL: `/consents/${fluSession.id}/emails`,
@@ -142,10 +135,6 @@ export const navigation = (request, response, next) => {
                 label: 'HPV consent'
               },
               {
-                URL: `/consents/${hpvClinic.id}`,
-                label: 'HPV consent (clinic)'
-              },
-              {
                 URL: `/consents/${hpvSession.id}/emails`,
                 label: 'HPV consent emails'
               },
@@ -162,10 +151,6 @@ export const navigation = (request, response, next) => {
               {
                 URL: `/consents/${tioSession.id}`,
                 label: '‘Doubles’ consent'
-              },
-              {
-                URL: `/consents/${tioClinic.id}`,
-                label: '‘Doubles’ consent (clinic)'
               },
               {
                 URL: `/consents/${tioSession.id}/emails`,
