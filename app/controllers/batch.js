@@ -73,7 +73,7 @@ export const batchController = {
         Object.entries(defaultBatch_ids).map(([, batch_id]) => batch_id === id)
     )
 
-    // Remove batch from session defauls
+    // Remove batch from session defaults
     for (const session of sessionsWithDefaultBatch) {
       delete session.defaultBatch_ids[batch.vaccine_gtin]
     }
