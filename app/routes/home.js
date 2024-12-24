@@ -1,17 +1,9 @@
 import express from 'express'
 
-import { UserRole } from '../models/user.js'
+import { homeController } from '../controllers/home.js'
 
 const router = express.Router({ strict: true })
 
-router.get('/', (request, response) => {
-  const { data } = request.session
-
-  if (data.token?.role === UserRole.DataConsumer) {
-    response.redirect('/programmes')
-  } else {
-    response.redirect('/dashboard')
-  }
-})
+router.get('/', homeController.redirect)
 
 export const homeRoutes = router
