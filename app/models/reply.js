@@ -116,7 +116,7 @@ export class Reply {
    */
   get relationship() {
     if (this.parent) {
-      return this.parent.relationship || ''
+      return this.parent.relationship
     } else if (this.child) {
       return 'Child (Gillick competent)'
     }

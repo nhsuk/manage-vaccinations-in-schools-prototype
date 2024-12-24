@@ -12,11 +12,12 @@
     decorate: "consent.parent.fullName"
   }) }}
 
+  {# `pop` removes `Other` and `Unknown` from ParentalRelationship array #}
   {{ radios({
     fieldset: {
       legend: { text: __("consent.parent.relationship.label") }
     },
-    items: enumItems(ParentalRelationship) | pop | push({
+    items: enumItems(ParentalRelationship) | pop | pop | push({
       text: ParentalRelationship.Other,
       conditional: {
         html: input({

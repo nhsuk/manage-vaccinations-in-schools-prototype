@@ -14,6 +14,7 @@ export class ParentalRelationship {
   static Dad = 'Dad'
   static Guardian = 'Guardian'
   static Other = 'Other'
+  static Unknown = 'Unknown'
 }
 
 /**
@@ -34,7 +35,7 @@ export class Parent {
   constructor(options) {
     this.uuid = options?.uuid || faker.string.uuid()
     this.fullName = options.fullName || ''
-    this.relationship = options.relationship
+    this.relationship = options.relationship || ParentalRelationship.Unknown
     this.relationshipOther =
       this?.relationship === ParentalRelationship.Other
         ? options?.relationshipOther
