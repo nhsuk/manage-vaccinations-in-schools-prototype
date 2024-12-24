@@ -17,7 +17,7 @@ import { generateParent } from './parent.js'
  */
 export function generateConsent(programme, session, patientSession) {
   const firstReply = Object.entries(patientSession.replies).length === 0
-  const child = patientSession
+  const child = patientSession.patient
   const parent = firstReply
     ? patientSession.patient.parent1
     : generateParent(patientSession.patient.lastName)
