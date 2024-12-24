@@ -272,8 +272,8 @@ export const en = {
   consent: {
     label: 'Consent response',
     count: {
-      one: '%s consent response',
-      other: '[0] No consent responses|%s consent responses'
+      one: '%s unmatched consent response',
+      other: '[0] No unmatched consent responses|%s unmatched consent responses'
     },
     summary: 'Details of child given in consent response',
     [ConsentOutcome.NoResponse]: {
@@ -349,8 +349,8 @@ export const en = {
     },
     match: {
       label: 'Match with record',
-      title: 'Search for a child record to match with',
-      caption: 'Consent response from {{parent.fullName}}'
+      title: 'Search for a child record to match with {{child.fullName}}',
+      caption: 'Consent response from {{parent.formatted.fullName}}'
     },
     link: {
       title: 'Link consent response with child record?',

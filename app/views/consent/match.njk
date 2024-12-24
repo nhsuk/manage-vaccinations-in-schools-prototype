@@ -1,7 +1,7 @@
 {% extends "_layouts/default.njk" %}
 
 {% set dateOfBirth = true %}
-{% set title = __("consent.match.title") %}
+{% set title = __("consent.match.title", { child: consent.child }) %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -21,18 +21,6 @@
   {{ heading({
     caption: __("consent.match.caption", { parent: consent.parent } ),
     title: title
-  }) }}
-
-  {{ card({
-    heading: __("consent.summary"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(consent.child, {
-        fullAndPreferredNames: {},
-        dobWithAge: {},
-        address: {}
-      })
-    })
   }) }}
 
   {% set patientRows = [] %}

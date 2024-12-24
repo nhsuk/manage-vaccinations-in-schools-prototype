@@ -251,10 +251,12 @@ export const consentController = {
     const { nhsn } = request.query
     const { data } = request.session
 
-    response.locals.consent = Consent.read(uuid, data)
-    response.locals.patient = Object.values(data.patients)
-      .map((patient) => new Patient(patient))
-      .find((patient) => patient.nhsn === nhsn)
+    const consent = Consent.read(uuid, data)
+    response.locals.consent = consent
+
+    response.locals.patient = Patient.read(nhsn, data)
+
+    response.locals.back = `/consents/${uuid}/match`
 
     next()
   },
