@@ -18,6 +18,7 @@ export class OrganisationDefaults {
  * @property {string} [name] - Full name
  * @property {string} [email] - Email address
  * @property {string} [tel] - Phone number
+ * @property {string} [privacyPolicyUrl] - Privacy policy URL
  * @property {number} [sessionOpenWeeks] - Weeks before session to request consent
  * @property {number} [SessionReminderWeeks] - Days before sending first reminder
  * @property {string} [password] - Shared password
@@ -32,6 +33,7 @@ export class Organisation {
     this.name = options?.name
     this.email = options?.email
     this.tel = options?.tel
+    this.privacyPolicyUrl = options?.privacyPolicyUrl
     this.sessionOpenWeeks =
       options?.sessionOpenWeeks || OrganisationDefaults.SessionOpenWeeks
     this.sessionReminderWeeks =

@@ -15,6 +15,14 @@
 
   {{ input({
     label: { text: __("organisation.tel.label") },
-    decorate: "organisation.tel"
+    decorate: "organisation.tel",
+    type: "tel"
+  }) }}
+
+  {{ input({
+    label: { text: __("organisation.privacyPolicyUrl.label") },
+    hint: { text: __("organisation.privacyPolicyUrl.hint") },
+    decorate: "organisation.privacyPolicyUrl",
+    type: "url"
   }) }}
 {% endblock %}

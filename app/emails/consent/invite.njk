@@ -22,15 +22,19 @@ If you want your child to get {% if session.programmes.length == 1 %}this vaccin
 
 Responding will take less than 5 minutes. If you do not give consent, it’s still important for you to let us know.
 
+## Your data
+
+By responding, you’re agreeing to your data being processed as set out in our [privacy notice]({{ data.organisation.privacyPolicyUrl }}).
+
 {% for programme in session.programmes %}
 ## About the {{ programme.name | replace("Flu", "flu") }} vaccine
 
 {{ programme.information.audience }}
 
-[Find out more about the {{ programme.name | replace("Flu", "flu") }} vaccine on NHS.UK]({{programme.information.url}})
+[Find out more about the {{ programme.name | replace("Flu", "flu") }} vaccine on NHS.UK]({{ programme.information.url }})
 
 {% if programme.information.leaflet %}
-[Read the patient information leaflet]({{programme.information.leaflet}})
+[Read the patient information leaflet]({{ programme.information.leaflet }})
 {% endif %}
 
 {% if programme.type == ProgrammeType.Flu %}
@@ -47,7 +51,7 @@ The nasal spray gives children the best protection against flu. However, the inj
 {% if programme.type != ProgrammeType.Flu %}
 ## Talk to your child about what they want
 
-We suggest you talk to your child about the {{vaccine__n}} before you respond to us.
+We suggest you talk to your child about the {{ vaccine__n }} before you respond to us.
 {% endif %}
 
 ## If you have trouble using the online form

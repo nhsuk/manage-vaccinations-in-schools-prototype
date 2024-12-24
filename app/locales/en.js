@@ -962,6 +962,10 @@ export const en = {
     email: {
       label: 'Email address'
     },
+    privacyPolicyUrl: {
+      label: 'Privacy policy',
+      hint: 'Linked to from consent forms and consent request emails'
+    },
     sessionOpenWeeks: {
       title: 'When should parents get a request to give consent?',
       label: 'Consent request',
