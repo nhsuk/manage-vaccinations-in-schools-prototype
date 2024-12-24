@@ -28,7 +28,7 @@ export class Cohort {
     const year = options?.year || AcademicYear.Y2024
 
     this.context = context
-    this.createdAt = options?.createdAt || `${year.split('/')[0]}-08-01`
+    this.createdAt = options?.createdAt || `${year.split('/')[0]}-07-01`
     this.createdBy_uid = options?.createdBy_uid
     this.year = year
     this.yearGroup = options?.yearGroup
