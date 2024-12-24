@@ -134,7 +134,7 @@ export const vaccinationController = {
       vaccination.note = note
     }
 
-    vaccination.update(vaccination, data)
+    request.flash('success', __(`vaccination.${form}.success`))
 
     // Clean up session data
     delete data.batch_id
@@ -144,7 +144,8 @@ export const vaccinationController = {
     delete data.vaccination
     delete data.wizard
 
-    request.flash('success', __(`vaccination.${form}.success`))
+    // Update session data
+    vaccination.update(vaccination, data)
 
     response.redirect(referrer || vaccination.uri)
   },

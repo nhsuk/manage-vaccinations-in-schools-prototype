@@ -42,12 +42,13 @@ export const batchController = {
     const { data } = request.session
     const { __, batch, paths } = response.locals
 
-    request.flash('success', __(`batch.edit.success`, { batch }))
-
-    batch.update(request.body.batch, data)
-
     // Clean up session data
     delete data.batch
+
+    // Update session data
+    batch.update(request.body.batch, data)
+
+    request.flash('success', __(`batch.edit.success`, { batch }))
 
     response.redirect(paths.next)
   },

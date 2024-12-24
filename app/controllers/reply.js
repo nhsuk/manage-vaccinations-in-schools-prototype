@@ -88,6 +88,7 @@ export const replyController = {
 
       patientSession.patient.addReply(reply)
 
+      // Update session data
       reply.update(reply, data)
     }
 
@@ -311,6 +312,7 @@ export const replyController = {
 
       // Clean up session data
       delete data.decision
+      delete data.wizard
 
       response.redirect(`${newReply.uri}/new/decision?referrer=${reply.uri}`)
     }

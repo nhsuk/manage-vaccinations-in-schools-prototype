@@ -59,12 +59,13 @@ export const organisationController = {
     const { data } = request.session
     const { __, paths, organisation } = response.locals
 
-    request.flash('success', __(`organisation.edit.success`))
-
-    organisation.update(request.body.organisation, data)
-
     // Clean up session data
     delete data.organisation
+
+    // Update session data
+    organisation.update(request.body.organisation, data)
+
+    request.flash('success', __(`organisation.edit.success`))
 
     response.redirect(paths.next)
   }

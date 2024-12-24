@@ -74,13 +74,14 @@ export const uploadController = {
 
     const upload = new Upload(Upload.read(id, data.wizard), data)
 
-    upload.update(upload, data)
+    request.flash('success', __('upload.new.success'))
 
     // Clean up session data
     delete data.upload
     delete data.wizard
 
-    request.flash('success', __('upload.new.success'))
+    // Update session data
+    upload.update(upload, data)
 
     response.redirect(referrer || upload.uri)
   },

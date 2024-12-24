@@ -50,12 +50,13 @@ export const clinicController = {
     const { data } = request.session
     const { __, clinic, paths } = response.locals
 
-    request.flash('success', __(`clinic.edit.success`, { clinic }))
-
-    clinic.update(request.body.clinic, data)
-
     // Clean up session data
     delete data.clinic
+
+    // Update clinic
+    clinic.update(request.body.clinic, data)
+
+    request.flash('success', __(`clinic.edit.success`, { clinic }))
 
     response.redirect(paths.next)
   },

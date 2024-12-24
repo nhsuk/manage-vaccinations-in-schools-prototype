@@ -114,12 +114,15 @@ export const patientController = {
     const { __ } = response.locals
 
     const patient = new Patient(Patient.read(nhsn, data.wizard), data)
-    request.flash('success', __('patient.edit.success'))
 
-    patient.update(patient, data)
+    request.flash('success', __('patient.edit.success'))
 
     // Clean up session data
     delete data.patient
+    delete data.wizard
+
+    // Update session data
+    patient.update(patient, data)
 
     response.redirect(referrer || patient.uri)
   },

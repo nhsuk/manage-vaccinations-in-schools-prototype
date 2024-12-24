@@ -172,12 +172,15 @@ export const sessionController = {
     const { __ } = response.locals
 
     const session = new Session(Session.read(id, data.wizard), data)
-    request.flash('success', __(`session.edit.success`, { session }))
 
-    session.update(session, data)
+    request.flash('success', __(`session.edit.success`, { session }))
 
     // Clean up session data
     delete data.session
+    delete data.wizard
+
+    // Update session data
+    session.update(session, data)
 
     response.redirect(`/sessions/${id}`)
   },
@@ -272,6 +275,7 @@ export const sessionController = {
     const { data } = request.session
     const { __, session } = response.locals
 
+    // Update session data
     session.update(request.body.session, data)
 
     // Clean up session date
