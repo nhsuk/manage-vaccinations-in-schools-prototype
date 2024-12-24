@@ -134,7 +134,9 @@ export class PatientSession {
    */
   get replies() {
     return this.patient.replies
-      .filter(({ session_id }) => session_id === this.session_id)
+      .filter(({ programme_pid }) =>
+        this.session.programme_pids.includes(programme_pid)
+      )
       .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
   }
 
