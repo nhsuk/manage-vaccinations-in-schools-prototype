@@ -45,16 +45,6 @@
       {{ card({
         clickable: true,
         secondary: true,
-        heading: __("vaccine.list.title"),
-        headingClasses: "nhsuk-heading-s",
-        href: "/vaccines",
-        descriptionHtml: __("vaccine.list.description") | nhsukMarkdown
-      }) }}
-    </li>
-    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        clickable: true,
-        secondary: true,
         heading: __("consent.list.title"),
         headingClasses: "nhsuk-heading-s",
         href: "/consents",
@@ -79,6 +69,16 @@
         headingClasses: "nhsuk-heading-s",
         href: "/notices",
         descriptionHtml: __("notice.list.description") | nhsukMarkdown
+      }) }}
+    </li>
+    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        clickable: true,
+        secondary: true,
+        heading: __("vaccine.list.title"),
+        headingClasses: "nhsuk-heading-s",
+        href: "/vaccines",
+        descriptionHtml: __("vaccine.list.description") | nhsukMarkdown
       }) }}
     </li>
     <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">

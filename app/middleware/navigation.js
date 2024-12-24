@@ -61,11 +61,6 @@ export const navigation = (request, response, next) => {
             current: current === 'patients'
           },
           {
-            url: '/vaccines',
-            label: __('vaccine.list.label'),
-            current: current === 'vaccines'
-          },
-          {
             url: '/consents',
             label: __('consent.list.label'),
             current: current === 'consents'
@@ -79,6 +74,11 @@ export const navigation = (request, response, next) => {
             url: '/notices',
             label: __('notice.list.label'),
             current: current === 'notices'
+          },
+          {
+            url: '/vaccines',
+            label: __('vaccine.list.label'),
+            current: current === 'vaccines'
           },
           {
             url: organisation.uri,
