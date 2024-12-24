@@ -32,8 +32,8 @@
 
   {{ button({
     classes: "app-button--secondary nhsuk-u-margin-bottom-0",
-    text: __("vaccination.import.label"),
-    href: programme.uri + "/imports/new?type=" + ImportType.Report
+    text: __("vaccination.upload.label"),
+    href: programme.uri + "/uploads/new?type=" + UploadType.Report
   }) }}
 
   {% set hasMissingNhsNumber = programme.vaccinations | where("patient.hasMissingNhsNumber", true) %}

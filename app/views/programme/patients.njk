@@ -32,8 +32,8 @@
 
   {{ button({
     classes: "app-button--secondary",
-    text: __("cohort.import.label"),
-    href: programme.uri + "/imports/new?type=" + ImportType.Cohort
+    text: __("cohort.upload.label"),
+    href: programme.uri + "/uploads/new?type=" + UploadType.Cohort
   }) }}
 
   {% if programme.patientSessions.length %}

@@ -1,0 +1,93 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = programme.name + " – " + __("programme.uploads.title") %}
+{% set view = "uploads" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("programme.list.title"),
+      href: "/programmes"
+    }],
+    text: programme.name,
+    href: programme.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: programme.name
+  }) }}
+
+  {% include "programme/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("programme.uploads.title") }}
+  </h2>
+
+  {{ button({
+    classes: "app-button--secondary nhsuk-u-margin-bottom-0",
+    text: __("upload.new.label"),
+    href: programme.uri + "/uploads/new"
+  }) }}
+
+  {% if programme.uploads.length %}
+    {% set uploadRows = [] %}
+    {% for upload in programme.uploads | sort(false, false, "createdAt") %}
+      {% set uploadRows = uploadRows | push([
+        {
+          header: __("upload.createdAt.label"),
+          html: link(upload.uri, upload.formatted.createdAt),
+          attributes: {
+            "data-col": "createdAt",
+            "data-sort": upload.createdAt
+          }
+        },
+        {
+          header: __("upload.createdBy.label"),
+          html: upload.formatted.createdBy or "Not provided"
+        },
+        {
+          header: __("upload.type.label"),
+          html: upload.type or "None"
+        },
+        {
+          header: __("upload.status.label"),
+          html: tag(statusTag(upload.uploadStatus)) + ("<br><span class=\"nhsuk-u-secondary-text-color nhsuk-u-font-size-16\">5 hours 13 minutes remaining</span>" if upload.status == UploadStatus.Processing)
+        },
+        {
+          header: __("upload.records.label"),
+          html: "…" if upload.status == UploadStatus.Processing else upload.records.length | string,
+          format: "numeric"
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "uploads",
+      sort: "createdAt",
+      heading: __n("programme.uploads.count", programme.uploads.length) ,
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("upload.createdAt.label") },
+        { text: __("upload.createdBy.label") },
+        { text: __("upload.type.label") },
+        { text: __("upload.status.label") },
+        {
+          text: __("upload.records.label"),
+          format: "numeric",
+          attributes: {
+            "no-sort": "no-sort"
+          }
+        }
+      ],
+      rows: uploadRows
+    }) }}
+  {% endif %}
+{% endblock %}

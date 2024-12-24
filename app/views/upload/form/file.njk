@@ -2,19 +2,19 @@
 
 {% extends "_layouts/form.njk" %}
 
-{% set programme = data.programmes[import.programme_pid] %}
-{% set title = __("import.file.title", { type: import.type | lower }) %}
+{% set programme = data.programmes[upload.programme_pid] %}
+{% set title = __("upload.file.title", { type: upload.type | lower }) %}
 
 {% set templateFormat %}
-  {% if import.type == ImportType.Cohort %}
-    {% include "import/_template-format-cohort.njk" %}
-  {% elif import.type == ImportType.School %}
-    {% include "import/_template-format-school.njk" %}
-  {% elif import.type == ImportType.Report %}
+  {% if upload.type == UploadType.Cohort %}
+    {% include "upload/_template-format-cohort.njk" %}
+  {% elif upload.type == UploadType.School %}
+    {% include "upload/_template-format-school.njk" %}
+  {% elif upload.type == UploadType.Report %}
     {% if programme.type == ProgrammeType.HPV %}
-      {% include "import/_template-format-report-hpv.njk" %}
+      {% include "upload/_template-format-report-hpv.njk" %}
     {% elif programme.type == ProgrammeType.Flu %}
-      {% include "import/_template-format-report-flu.njk" %}
+      {% include "upload/_template-format-report-flu.njk" %}
     {% endif %}
   {% endif %}
 {% endset %}
@@ -25,31 +25,31 @@
     errorList: errorList(errors)
   }) if errors }}
 
-  {% if import.type == ImportType.Report %}
+  {% if upload.type == UploadType.Report %}
     {% if programme.type == ProgrammeType.Flu %}
-      {% set hintText = __("import.file.hint", {
-        type: import.type | lower,
+      {% set hintText = __("upload.file.hint", {
+        type: upload.type | lower,
         prefix: "These will go to NHS England and GPs. "
       }) %}
     {% elif programme.type == ProgrammeType.HPV %}
-      {% set hintText = __("import.file.hint", {
-        type: import.type | lower,
+      {% set hintText = __("upload.file.hint", {
+        type: upload.type | lower,
         prefix: "These will go to NHS England. "
       }) %}
     {% else %}
-      {% set hintText = __("import.file.hint", {
-        type: import.type | lower
+      {% set hintText = __("upload.file.hint", {
+        type: upload.type | lower
       }) %}
     {% endif %}
   {% else %}
-    {% set hintText = __("import.file.hint", {
-      type: import.type | lower
+    {% set hintText = __("upload.file.hint", {
+      type: upload.type | lower
     }) %}
   {% endif %}
 
   {{ govukFileUpload({
-    id: "import",
-    name: "import",
+    id: "upload",
+    name: "upload",
     label: {
       classes: "nhsuk-label--m",
       html: heading({
@@ -61,12 +61,12 @@
       text: hintText
     },
     errorMessage: {
-      text: errors.import
-    } if errors.import
+      text: errors.upload
+    } if errors.upload
   }) | replace("govuk-", "nhsuk-") }}
 
   {{ details({
-    text: __("import.file.format", { type: import.type | lower }),
+    text: __("upload.file.format", { type: upload.type | lower }),
     HTML: templateFormat
   }) }}
 {% endblock %}

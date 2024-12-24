@@ -34,8 +34,8 @@
       text: __("session.offline.title"),
       href: session.uri + "/offline"
     } if session.status == SessionStatus.Planned, {
-      text: __("session.import-class-list.title"),
-      href: session.programmes[0].uri + "/imports/new?type=" + ImportType.School
+      text: __("session.upload-class-list.title"),
+      href: session.programmes[0].uri + "/uploads/new?type=" + UploadType.School
     } if session.type == SessionType.School]
   }) }}
 

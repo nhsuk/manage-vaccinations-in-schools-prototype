@@ -1,25 +1,25 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { Import, ImportStatus } from '../models/import.js'
+import { Upload, UploadStatus } from '../models/upload.js'
 
 /**
- * Generate fake import
+ * Generate fake upload
  *
  * @param {import('../models/programme.js').Programme} programme - Programme
  * @param {Array<string>|boolean|undefined} record_nhsns - Records
  * @param {import('../models/user.js').User} user - User
- * @param {import('../models/import.js').ImportType} [type] - Import type
- * @returns {Import} - Import
+ * @param {import('../models/upload.js').UploadType} [type] - Upload type
+ * @returns {Upload} - Upload
  */
-export function generateImport(programme, record_nhsns, user, type) {
+export function generateUpload(programme, record_nhsns, user, type) {
   const createdAt = faker.date.recent({ days: 14, refDate: programme.start })
 
   let validations
-  let status = ImportStatus.Complete
+  let status = UploadStatus.Complete
 
   if (record_nhsns === false) {
     // Simulate invalid file
-    status = ImportStatus.Invalid
+    status = UploadStatus.Invalid
     validations = {
       3: {
         CHILD_FIRST_NAME: 'is required but missing',
@@ -33,7 +33,7 @@ export function generateImport(programme, record_nhsns, user, type) {
     }
   }
 
-  return new Import({
+  return new Upload({
     createdAt,
     createdBy_uid: user.uid,
     programme_pid: programme.pid,

@@ -5,11 +5,11 @@ import { isBetweenDates, today } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 
 import { Cohort } from './cohort.js'
-import { Import } from './import.js'
 import { PatientSession } from './patient-session.js'
 import { Record } from './record.js'
 import { SchoolTerm } from './school.js'
 import { Session } from './session.js'
+import { Upload } from './upload.js'
 import { Vaccination } from './vaccination.js'
 import { Vaccine } from './vaccine.js'
 
@@ -178,12 +178,12 @@ export class Programme {
   }
 
   /**
-   * Get imports
+   * Get uploads
    *
-   * @returns {Array<Import>} - Imports
+   * @returns {Array<Upload>} - Uploads
    */
-  get imports() {
-    return Import.readAll(this.context).filter(
+  get uploads() {
+    return Upload.readAll(this.context).filter(
       ({ programme_pid }) => programme_pid === this.pid
     )
   }
@@ -211,14 +211,14 @@ export class Programme {
   }
 
   /**
-   * Get import reviews
+   * Get upload reviews
    *
    * @returns {Array<Session>} - Sessions
    */
   get reviews() {
-    // Only mock issues with imported records if there are imports
-    if (this.context?.sessions && this.imports.length) {
-      return this.imports[0].record_nhsns
+    // Only mock issues with uploaded records if there are uploads
+    if (this.context?.sessions && this.uploads.length) {
+      return this.uploads[0].record_nhsns
         .slice(0, 3)
         .map((record) => new Record(record))
     }

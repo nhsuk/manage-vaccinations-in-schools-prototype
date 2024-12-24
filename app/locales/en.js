@@ -203,7 +203,7 @@ export const en = {
     list: {
       title: 'All cohorts'
     },
-    import: {
+    upload: {
       label: 'Import child records'
     },
     unselect: {
@@ -706,190 +706,6 @@ export const en = {
       title: 'Home'
     }
   },
-  import: {
-    label: 'Record import',
-    show: {
-      title: 'Import ({{import.formatted.createdAt}})',
-      summary: 'Details'
-    },
-    new: {
-      label: 'Import records',
-      success: 'Records imported for processing'
-    },
-    review: {
-      title: 'Review duplicate child record',
-      duplicate: {
-        label: 'Duplicate record',
-        record: 'Duplicate child record',
-        vaccination: 'Duplicate vaccination record'
-      },
-      original: {
-        label: 'Existing record',
-        record: 'Existing child record',
-        vaccination: 'Existing vaccination record'
-      },
-      decision: {
-        label: 'Which record do you want to keep?',
-        duplicate: {
-          label: 'Use duplicate record',
-          hint: 'The duplicate record will replace the existing child record.'
-        },
-        original: {
-          label: 'Keep previously imported record',
-          hint: 'The existing record will be kept and the duplicate record will be discarded.'
-        }
-      },
-      confirm: 'Resolve duplicate',
-      success: 'Record updated with values from duplicate record',
-      issue: {
-        label: 'Issue to review',
-        title: 'This record needs reviewing',
-        text: 'A field in a duplicate record does not match an existing child record'
-      }
-    },
-    file: {
-      title: 'Import {{type}}',
-      hint: '{{prefix}}Make sure the CSV you import has the same format as your usual template for {{type}}.',
-      format: 'How to format your CSV for {{type}}',
-      errors: {
-        invalid: 'The selected file must be a CSV'
-      }
-    },
-    errors: {
-      title: 'Records could not be imported',
-      description:
-        'The records could not be imported due to errors in the CSV file. When fixing these errors, note that the header does not count as a row.'
-    },
-    devoid: {
-      label: 'Omitted records',
-      description: 'All records in this CSV file had already been imported.',
-      count: {
-        one: '%s previously imported record was omitted',
-        other:
-          '[0] No previously imported records were omitted|%s previously imported records were omitted'
-      }
-    },
-    duplicate: {
-      label: 'Duplicate records',
-      count: {
-        one: '%s duplicate record needs review',
-        other:
-          '[0] No duplicate records need review|%s duplicate records need review'
-      }
-    },
-    invalid: {
-      label: 'Missing vaccination',
-      count: {
-        one: '%s record for a child who was not vaccinated were omitted',
-        other:
-          '[0] No records for children who were not vaccinated were omitted|%s records for children who were not vaccinated were omitted'
-      }
-    },
-    incomplete: {
-      label: 'Incomplete',
-      count: {
-        one: '%s record without an NHS number will use information from the Personal Demographics Service (PDS)',
-        other:
-          '[0] No records without NHS numbers will use information from the Personal Demographics Service (PDS)|%s records without NHS numbers will use information from the Personal Demographics Service (PDS)'
-      }
-    },
-    id: {
-      label: 'ID'
-    },
-    createdAt: {
-      label: 'Imported on'
-    },
-    createdBy: {
-      label: 'Imported by'
-    },
-    programme: {
-      label: 'Programme'
-    },
-    type: {
-      label: 'Type',
-      title: 'What type of records are you importing?',
-      hint: {
-        Cohort:
-          'Records of children from a CHIS, local authority or school, used to create cohorts',
-        Report:
-          'Records of previous vaccinations to be reported to GPs and/or NHS England',
-        School: 'Records of children from a school, used to update cohorts'
-      }
-    },
-    status: {
-      label: 'Status'
-    },
-    vaccinations: {
-      label: 'Vaccination records'
-    },
-    records: {
-      label: 'Records',
-      count: {
-        one: '%s record imported',
-        other: '[0] No records imported|%s records imported'
-      }
-    },
-    issue: {
-      label: 'Issue to review',
-      title: 'This record needs reviewing',
-      text: 'A field in a duplicate record does not match that in a previously imported record'
-    }
-  },
-  manual: {
-    show: {
-      title: 'Service guidance',
-      description: 'How to use this service'
-    }
-  },
-  move: {
-    list: {
-      label: 'School moves',
-      title: 'School moves',
-      description: 'Review children who have moved schools'
-    },
-    show: {
-      title: 'Review school move',
-      confirm: 'Update child record',
-      decision: {
-        label: 'Update the child’s record with this new information?',
-        ignore: 'Ignore new information',
-        switch: 'Update record with new school'
-      },
-      session: {
-        label: 'Move {{firstName}} to the upcoming school session?',
-        hint: 'There are upcoming sessions at {{school}} on {{dates}}',
-        clinic: 'No, keep them in the community clinic',
-        school: 'Yes, move them to the upcoming school session'
-      }
-    },
-    ignore: {
-      success: '{{move.patient.fullName}}’s school move ignored'
-    },
-    switch: {
-      success: '{{move.patient.fullName}}’s record updated with new school'
-    },
-    count: {
-      one: '%s school move',
-      other: '[0] No school moves|%s school moves'
-    },
-    results:
-      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> school moves',
-    createdAt: {
-      label: 'Updated'
-    },
-    from: {
-      label: 'School joined from'
-    },
-    to: {
-      label: 'School moved to'
-    },
-    source: {
-      label: 'Updated in'
-    },
-    movement: {
-      label: 'Move'
-    }
-  },
   notice: {
     label: 'Notice',
     list: {
@@ -1318,7 +1134,7 @@ export const en = {
           '[0] No imported records need review|%s imported records need review'
       }
     },
-    imports: {
+    uploads: {
       label: 'Imports',
       title: 'Imports',
       count: {
@@ -1614,7 +1430,7 @@ export const en = {
     'download-consent-form': {
       title: 'Download consent form (PDF)'
     },
-    'import-class-list': {
+    'upload-class-list': {
       title: 'Import class list'
     },
     list: {
@@ -1885,6 +1701,190 @@ export const en = {
       }
     }
   },
+  upload: {
+    label: 'Record import',
+    show: {
+      title: 'Import ({{upload.formatted.createdAt}})',
+      summary: 'Details'
+    },
+    new: {
+      label: 'Import records',
+      success: 'Records imported for processing'
+    },
+    review: {
+      title: 'Review duplicate child record',
+      duplicate: {
+        label: 'Duplicate record',
+        record: 'Duplicate child record',
+        vaccination: 'Duplicate vaccination record'
+      },
+      original: {
+        label: 'Existing record',
+        record: 'Existing child record',
+        vaccination: 'Existing vaccination record'
+      },
+      decision: {
+        label: 'Which record do you want to keep?',
+        duplicate: {
+          label: 'Use duplicate record',
+          hint: 'The duplicate record will replace the existing child record.'
+        },
+        original: {
+          label: 'Keep previously imported record',
+          hint: 'The existing record will be kept and the duplicate record will be discarded.'
+        }
+      },
+      confirm: 'Resolve duplicate',
+      success: 'Record updated with values from duplicate record',
+      issue: {
+        label: 'Issue to review',
+        title: 'This record needs reviewing',
+        text: 'A field in a duplicate record does not match an existing child record'
+      }
+    },
+    file: {
+      title: 'Import {{type}}',
+      hint: '{{prefix}}Make sure the CSV you import has the same format as your usual template for {{type}}.',
+      format: 'How to format your CSV for {{type}}',
+      errors: {
+        invalid: 'The selected file must be a CSV'
+      }
+    },
+    errors: {
+      title: 'Records could not be imported',
+      description:
+        'The records could not be imported due to errors in the CSV file. When fixing these errors, note that the header does not count as a row.'
+    },
+    devoid: {
+      label: 'Omitted records',
+      description: 'All records in this CSV file had already been imported.',
+      count: {
+        one: '%s previously imported record was omitted',
+        other:
+          '[0] No previously imported records were omitted|%s previously imported records were omitted'
+      }
+    },
+    duplicate: {
+      label: 'Duplicate records',
+      count: {
+        one: '%s duplicate record needs review',
+        other:
+          '[0] No duplicate records need review|%s duplicate records need review'
+      }
+    },
+    invalid: {
+      label: 'Missing vaccination',
+      count: {
+        one: '%s record for a child who was not vaccinated were omitted',
+        other:
+          '[0] No records for children who were not vaccinated were omitted|%s records for children who were not vaccinated were omitted'
+      }
+    },
+    incomplete: {
+      label: 'Incomplete',
+      count: {
+        one: '%s record without an NHS number will use information from the Personal Demographics Service (PDS)',
+        other:
+          '[0] No records without NHS numbers will use information from the Personal Demographics Service (PDS)|%s records without NHS numbers will use information from the Personal Demographics Service (PDS)'
+      }
+    },
+    id: {
+      label: 'ID'
+    },
+    createdAt: {
+      label: 'Imported on'
+    },
+    createdBy: {
+      label: 'Imported by'
+    },
+    programme: {
+      label: 'Programme'
+    },
+    type: {
+      label: 'Type',
+      title: 'What type of records are you importing?',
+      hint: {
+        Cohort:
+          'Records of children from a CHIS, local authority or school, used to create cohorts',
+        Report:
+          'Records of previous vaccinations to be reported to GPs and/or NHS England',
+        School: 'Records of children from a school, used to update cohorts'
+      }
+    },
+    status: {
+      label: 'Status'
+    },
+    vaccinations: {
+      label: 'Vaccination records'
+    },
+    records: {
+      label: 'Records',
+      count: {
+        one: '%s record imported',
+        other: '[0] No records imported|%s records imported'
+      }
+    },
+    issue: {
+      label: 'Issue to review',
+      title: 'This record needs reviewing',
+      text: 'A field in a duplicate record does not match that in a previously imported record'
+    }
+  },
+  manual: {
+    show: {
+      title: 'Service guidance',
+      description: 'How to use this service'
+    }
+  },
+  move: {
+    list: {
+      label: 'School moves',
+      title: 'School moves',
+      description: 'Review children who have moved schools'
+    },
+    show: {
+      title: 'Review school move',
+      confirm: 'Update child record',
+      decision: {
+        label: 'Update the child’s record with this new information?',
+        ignore: 'Ignore new information',
+        switch: 'Update record with new school'
+      },
+      session: {
+        label: 'Move {{firstName}} to the upcoming school session?',
+        hint: 'There are upcoming sessions at {{school}} on {{dates}}',
+        clinic: 'No, keep them in the community clinic',
+        school: 'Yes, move them to the upcoming school session'
+      }
+    },
+    ignore: {
+      success: '{{move.patient.fullName}}’s school move ignored'
+    },
+    switch: {
+      success: '{{move.patient.fullName}}’s record updated with new school'
+    },
+    count: {
+      one: '%s school move',
+      other: '[0] No school moves|%s school moves'
+    },
+    results:
+      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> school moves',
+    createdAt: {
+      label: 'Updated'
+    },
+    from: {
+      label: 'School joined from'
+    },
+    to: {
+      label: 'School moved to'
+    },
+    source: {
+      label: 'Updated in'
+    },
+    movement: {
+      label: 'Move'
+    }
+  },
   user: {
     list: {
       title: 'Users',
@@ -1929,7 +1929,7 @@ export const en = {
     decline: {
       title: 'Why was the {{vaccine.name}} vaccine not given?'
     },
-    import: {
+    upload: {
       label: 'Import vaccination records'
     },
     new: {

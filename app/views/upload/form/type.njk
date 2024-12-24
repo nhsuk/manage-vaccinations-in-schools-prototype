@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("import.type.title") %}
+{% set title = __("upload.type.title") %}
 
 {% block form %}
   {{ radios({
@@ -12,6 +12,6 @@
       }
     },
     items: typeItems,
-    decorate: "_import.type"
+    decorate: "upload.type"
   }) }}
 {% endblock %}

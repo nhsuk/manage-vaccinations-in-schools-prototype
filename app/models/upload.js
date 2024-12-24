@@ -7,28 +7,28 @@ import { Record } from './record.js'
 import { User } from './user.js'
 import { Vaccination } from './vaccination.js'
 
-export class ImportType {
+export class UploadType {
   static Cohort = 'Child records'
   static School = 'Class list'
   static Report = 'Vaccination records'
 }
 
-export class ImportStatus {
+export class UploadStatus {
   static Processing = 'Processing'
   static Complete = 'Completed'
   static Invalid = 'Invalid'
 }
 
 /**
- * @class Import
+ * @class Upload
  * @param {object} options - Options
  * @param {object} [context] - Global context
  * @property {object} [context] - Global context
- * @property {string} id - Import ID
- * @property {ImportStatus} status - Import status
- * @property {ImportType} type - Import type
+ * @property {string} id - Upload ID
+ * @property {UploadStatus} status - Upload status
+ * @property {UploadType} type - Upload type
  * @property {Date} [createdAt] - Created date
- * @property {string} [createdBy_uid] - User who created import
+ * @property {string} [createdBy_uid] - User who created upload
  * @property {string} [programme_pid] - Programme ID
  * @property {Array<string>} [record_nhsns] - Record NHS numbers
  * @property {number} [devoid] - Exact duplicate records found
@@ -36,12 +36,12 @@ export class ImportStatus {
  * @property {number} [incomplete] - Incomplete records (no NHS number)
  * @property {number|undefined} [invalid] - Invalid records (no vaccination)
  */
-export class Import {
+export class Upload {
   constructor(options, context) {
     this.context = context
     this.id = options?.id || faker.string.hexadecimal({ length: 8, prefix: '' })
-    this.status = options?.status || ImportStatus.Processing
-    this.type = options?.type || ImportType.Cohort
+    this.status = options?.status || UploadStatus.Processing
+    this.type = options?.type || UploadType.Cohort
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
     this.programme_pid = options?.programme_pid
@@ -51,11 +51,11 @@ export class Import {
     this.duplicate = options?.duplicate || 0
     this.incomplete = options?.incomplete || 0
     this.invalid =
-      this.type === ImportType.Report ? options?.invalid || 0 : undefined
+      this.type === UploadType.Report ? options?.invalid || 0 : undefined
   }
 
   /**
-   * Get user who created import
+   * Get user who created upload
    *
    * @returns {User} - User
    */
@@ -66,7 +66,7 @@ export class Import {
         return new User(user)
       }
     } catch (error) {
-      console.error('Import.createdBy', error.message)
+      console.error('Upload.createdBy', error.message)
     }
   }
 
@@ -82,12 +82,12 @@ export class Import {
         return new Programme(programme)
       }
     } catch (error) {
-      console.error('Import.programme', error.message)
+      console.error('Upload.programme', error.message)
     }
   }
 
   /**
-   * Get imported records
+   * Get uploaded records
    *
    * @returns {Array<Programme>} - Programmes
    */
@@ -131,13 +131,13 @@ export class Import {
    *
    * @returns {object} - Status properties
    */
-  get importStatus() {
+  get uploadStatus() {
     let colour
     switch (this.status) {
-      case ImportStatus.Complete:
+      case UploadStatus.Complete:
         colour = 'green'
         break
-      case ImportStatus.Invalid:
+      case UploadStatus.Invalid:
         colour = 'red'
         break
       default:
@@ -156,7 +156,7 @@ export class Import {
    * @returns {string} - Namespace
    */
   get ns() {
-    return 'import'
+    return 'upload'
   }
 
   /**
@@ -165,33 +165,33 @@ export class Import {
    * @returns {string} - URI
    */
   get uri() {
-    return `/programmes/${this.programme_pid}/imports/${this.id}`
+    return `/programmes/${this.programme_pid}/uploads/${this.id}`
   }
 
   /**
    * Read all
    *
    * @param {object} context - Context
-   * @returns {Array<Import>|undefined} Imports
+   * @returns {Array<Upload>|undefined} Uploads
    * @static
    */
   static readAll(context) {
-    return Object.values(context.imports).map(
-      (_import) => new Import(_import, context)
+    return Object.values(context.uploads).map(
+      (upload) => new Upload(upload, context)
     )
   }
 
   /**
    * Read
    *
-   * @param {string} id - Import ID
+   * @param {string} id - Upload ID
    * @param {object} context - Context
-   * @returns {Import|undefined} Import
+   * @returns {Upload|undefined} Upload
    * @static
    */
   static read(id, context) {
-    if (context.imports) {
-      return new Import(context.imports[id], context)
+    if (context.uploads) {
+      return new Upload(context.uploads[id], context)
     }
   }
 }

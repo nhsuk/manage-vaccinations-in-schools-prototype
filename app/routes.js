@@ -14,7 +14,6 @@ import { cohortRoutes } from './routes/cohort.js'
 import { consentRoutes } from './routes/consent.js'
 import { downloadRoutes } from './routes/download.js'
 import { homeRoutes } from './routes/home.js'
-import { importRoutes } from './routes/import.js'
 import { moveRoutes } from './routes/move.js'
 import { noticeRoutes } from './routes/notice.js'
 import { organisationRoutes } from './routes/organisation.js'
@@ -25,6 +24,7 @@ import { recordRoutes } from './routes/record.js'
 import { replyRoutes } from './routes/reply.js'
 import { schoolRoutes } from './routes/school.js'
 import { sessionRoutes } from './routes/session.js'
+import { uploadRoutes } from './routes/upload.js'
 import { userRoutes } from './routes/user.js'
 import { vaccinationRoutes } from './routes/vaccination.js'
 import { vaccineRoutes } from './routes/vaccine.js'
@@ -48,9 +48,9 @@ router.use('/patients', patientRoutes)
 router.use('/programmes', programmeRoutes)
 router.use('/programmes/:pid/cohorts', cohortRoutes)
 router.use('/programmes/:pid/download', downloadRoutes)
-router.use('/programmes/:pid/imports', importRoutes)
-router.use('/programmes/:pid/imports/:id/vaccinations', vaccinationRoutes)
-router.use('/programmes/:pid/imports/:id/patients', patientRoutes)
+router.use('/programmes/:pid/uploads', uploadRoutes)
+router.use('/programmes/:pid/uploads/:id/vaccinations', vaccinationRoutes)
+router.use('/programmes/:pid/uploads/:id/patients', patientRoutes)
 router.use('/programmes/:pid/vaccinations', vaccinationRoutes)
 router.use('/programmes/:pid/vaccinations/:uuid/patients', patientRoutes)
 router.use('/records', recordRoutes)

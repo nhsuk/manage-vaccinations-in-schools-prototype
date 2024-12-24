@@ -1,46 +1,46 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
-import { Import, ImportType } from '../models/import.js'
 import { Record } from '../models/record.js'
+import { Upload, UploadType } from '../models/upload.js'
 import { formatList } from '../utils/string.js'
 
-export const importController = {
+export const uploadController = {
   redirect(request, response) {
     const { pid } = request.params
 
-    response.redirect(`/programmes/${pid}/imports`)
+    response.redirect(`/programmes/${pid}/uploads`)
   },
 
   read(request, response, next) {
-    let { _import } = request.app.locals
+    let { upload } = request.app.locals
     const { id } = request.params
     const { data } = request.session
     const { __n } = response.locals
 
-    _import = new Import(data.imports[id] || _import, data)
+    upload = new Upload(data.uploads[id] || upload, data)
 
     // Count and show duplicate records
-    const duplicates = _import.records.filter(
+    const duplicates = upload.records.filter(
       (record) => record.hasPendingChanges
     )
-    _import.duplicate = duplicates.length
+    upload.duplicate = duplicates.length
 
     // Count incomplete records (those missing an NHS number)
-    _import.incomplete = _import.records.filter(
+    upload.incomplete = upload.records.filter(
       (record) => record.hasMissingNhsNumber
     ).length
 
     // Issues to show in warning callout
     const issues = []
     for (const type of ['devoid', 'invalid', 'incomplete']) {
-      if (_import[type]) {
-        issues.push(__n(`import.${type}.count`, _import[type]))
+      if (upload[type]) {
+        issues.push(__n(`upload.${type}.count`, upload[type]))
       }
     }
 
-    response.locals.import = _import
+    response.locals.upload = upload
 
-    request.app.locals._import = _import
+    request.app.locals.upload = upload
     request.app.locals.duplicates = duplicates
     request.app.locals.issues = formatList(issues)
 
@@ -48,7 +48,7 @@ export const importController = {
   },
 
   show(request, response) {
-    response.render('import/show')
+    response.render('upload/show')
   },
 
   new(request, response) {
@@ -56,34 +56,34 @@ export const importController = {
     const { type } = request.query
     const { data } = request.session
 
-    // If type provided in query string, start journey at import question
+    // If type provided in query string, start journey at upload question
     const startPath = type ? 'file' : 'type'
     request.app.locals.startPath = startPath
 
     // Delete previous data
-    delete data._import
-    delete data?.wizard?._import
+    delete data.upload
+    delete data?.wizard?.upload
 
-    const _import = new Import({
+    const upload = new Upload({
       programme_pid: pid,
       type,
       ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
-    data.wizard = { _import }
+    data.wizard = { upload }
 
-    response.redirect(`${_import.uri}/new/${startPath}`)
+    response.redirect(`${upload.uri}/new/${startPath}`)
   },
 
   readForm(request, response, next) {
-    const { _import, startPath } = request.app.locals
+    const { upload, startPath } = request.app.locals
     const { form, id } = request.params
     const { data } = request.session
     const { __ } = response.locals
 
-    request.app.locals._import = new Import({
-      ...(form === 'edit' && _import), // Previous values
-      ...data?.wizard?._import // Wizard values,
+    request.app.locals.upload = new Upload({
+      ...(form === 'edit' && upload), // Previous values
+      ...data?.wizard?.upload // Wizard values,
     })
 
     const journey = {
@@ -102,20 +102,20 @@ export const importController = {
     response.locals.paths = {
       ...wizard(journey, request),
       ...(form === 'edit' && {
-        back: `${_import.uri}/edit`,
-        next: `${_import.uri}/edit`
+        back: `${upload.uri}/edit`,
+        next: `${upload.uri}/edit`
       })
     }
 
-    response.locals.typeItems = Object.entries(ImportType).map(
+    response.locals.typeItems = Object.entries(UploadType).map(
       ([key, value]) => ({
-        text: ImportType[key],
-        hint: { text: __(`import.type.hint.${key}`) },
+        text: UploadType[key],
+        hint: { text: __(`upload.type.hint.${key}`) },
         value
       })
     )
 
-    response.locals.import = request.app.locals._import
+    response.locals.upload = request.app.locals.upload
 
     next()
   },
@@ -123,48 +123,48 @@ export const importController = {
   showForm(request, response) {
     const { view } = request.params
 
-    response.render(`import/form/${view}`)
+    response.render(`upload/form/${view}`)
   },
 
   updateForm(request, response) {
-    const { _import } = request.app.locals
+    const { upload } = request.app.locals
     const { view } = request.params
     const { data } = request.session
     const { paths } = response.locals
     const { __ } = response.locals
 
-    const updatedImport = new Import({
-      ..._import, // Previous values
-      ...request.body._import // New value
+    const updatedUpload = new Upload({
+      ...upload, // Previous values
+      ...request.body.upload // New value
     })
 
-    data.wizard._import = updatedImport
+    data.wizard.upload = updatedUpload
 
     // No check answers screen; perform update on last page of wizard flow
     if (view === 'file') {
-      // Add import
-      data.imports[_import.id] = updatedImport
+      // Add upload
+      data.uploads[upload.id] = updatedUpload
 
       // Clean up
-      delete data?.wizard?._import
+      delete data?.wizard?.upload
 
-      request.flash('success', __('import.new.success'))
+      request.flash('success', __('upload.new.success'))
 
-      response.redirect(updatedImport.uri)
+      response.redirect(updatedUpload.uri)
     } else {
       response.redirect(paths.next)
     }
   },
 
   readReview(request, response, next) {
-    const { _import } = request.app.locals
+    const { upload } = request.app.locals
     const { nhsn } = request.params
     const { data, referrer } = request.session
 
-    const record = _import.records.find((record) => record.nhsn === nhsn)
+    const record = upload.records.find((record) => record.nhsn === nhsn)
 
-    // Show back link to referring page, else import page
-    response.locals.back = referrer || _import.uri
+    // Show back link to referring page, else upload page
+    response.locals.back = referrer || upload.uri
 
     response.locals.record = new Record(record, data)
 
@@ -180,7 +180,7 @@ export const importController = {
   },
 
   showReview(request, response) {
-    response.render('import/review')
+    response.render('upload/review')
   },
 
   updateReview(request, response) {
@@ -189,7 +189,7 @@ export const importController = {
 
     // Doesn’t change any values, but shows a confirmation message
     if (decision === 'duplicate') {
-      request.flash('success', __('import.review.success'))
+      request.flash('success', __('upload.review.success'))
     }
 
     response.redirect(back)

@@ -1,18 +1,18 @@
 {% extends "_layouts/default.njk" %}
 
-{% set programme = data.programmes[import.programme_pid] %}
-{% set title = __("import.show.title", { import: import }) %}
+{% set programme = data.programmes[upload.programme_pid] %}
+{% set title = __("upload.show.title", { upload: upload }) %}
 
 {% set templateFormat %}
-  {% if import.type == ImportType.Cohort %}
-    {% include "import/_template-format-cohort.njk" %}
-  {% elif import.type == ImportType.School %}
-    {% include "import/_template-format-school.njk" %}
-  {% elif import.type == ImportType.Report %}
+  {% if upload.type == UploadType.Cohort %}
+    {% include "upload/_template-format-cohort.njk" %}
+  {% elif upload.type == UploadType.School %}
+    {% include "upload/_template-format-school.njk" %}
+  {% elif upload.type == UploadType.Report %}
     {% if programme.type == ProgrammeType.HPV %}
-      {% include "import/_template-format-report-hpv.njk" %}
+      {% include "upload/_template-format-report-hpv.njk" %}
     {% elif programme.type == ProgrammeType.Flu %}
-      {% include "import/_template-format-report-flu.njk" %}
+      {% include "upload/_template-format-report-flu.njk" %}
     {% endif %}
   {% endif %}
 {% endset %}
@@ -27,10 +27,10 @@
       href: "/programmes"
     }, {
       text: programme.type,
-      href: "/programmes/" + import.programme_pid
+      href: "/programmes/" + upload.programme_pid
     }],
-    text: __("programme.imports.title"),
-    href: "/programmes/" + import.programme_pid + "/imports"
+    text: __("programme.uploads.title"),
+    href: "/programmes/" + upload.programme_pid + "/uploads"
   }) }}
 {% endblock %}
 
@@ -42,31 +42,31 @@
   }) }}
 
   <p class="nhsuk-body">
-    {{ tag(statusTag(import.importStatus)) -}}
+    {{ tag(statusTag(upload.uploadStatus)) -}}
 
-    {%- if import.status == ImportStatus.Processing -%}
+    {%- if upload.status == UploadStatus.Processing -%}
       <span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16 nhsuk-u-margin-left-2">5 hours 13 minutes remaining</span>
     {%- endif %}
   </p>
 
   {{ card({
-    heading: __("import.show.summary"),
+    heading: __("upload.show.summary"),
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
-      rows: summaryRows(import, {
+      rows: summaryRows(upload, {
         createdAt: {},
         createdBy: {},
         programme: {},
         type: {},
         invalid: {
-          value: __n("import.invalid.count", import.invalid)
-        } if import.status == ImportStatus.Complete and import.type == ImportType.Report,
+          value: __n("upload.invalid.count", upload.invalid)
+        } if upload.status == UploadStatus.Complete and upload.type == UploadType.Report,
         devoid: {
-          value: __n("import.devoid.count", import.devoid)
-        } if import.status == ImportStatus.Complete,
+          value: __n("upload.devoid.count", upload.devoid)
+        } if upload.status == UploadStatus.Complete,
         duplicate: {
-          value: __n("import.duplicate.count", import.duplicate)
-        } if import.status == ImportStatus.Complete
+          value: __n("upload.duplicate.count", upload.duplicate)
+        } if upload.status == UploadStatus.Complete
       })
     })
   }) }}
@@ -79,15 +79,15 @@
         html: record.fullName
       },
       {
-        header: __("import.issue.label"),
-        html: __("import.issue.text")
+        header: __("upload.issue.label"),
+        html: __("upload.issue.text")
       },
       {
         header: __("actions.label"),
         html: actionList({
           items: [{
             text: __("actions.review"),
-            href: import.uri + "/review/" + record.nhsn
+            href: upload.uri + "/review/" + record.nhsn
           }]
         })
       }
@@ -98,7 +98,7 @@
     id: "duplicate-records",
     sort: "name",
     panel: true,
-    heading: __n("import.duplicate.count", import.duplicate),
+    heading: __n("upload.duplicate.count", upload.duplicate),
     responsive: true,
     head: [
       {
@@ -106,7 +106,7 @@
         attributes: { "no-sort": "no-sort" }
       },
       {
-        text: __("import.issue.label"),
+        text: __("upload.issue.label"),
         attributes: { "no-sort": "no-sort" }
       },
       {
@@ -118,11 +118,11 @@
   }) if duplicates.length }}
 
   {% set recordRows = [] %}
-  {% for record in import.records %}
+  {% for record in upload.records %}
     {% set recordRows = recordRows | push([
       {
         header: __("record.fullName.label"),
-        html: link(record.vaccination.uri, record.fullName) if import.type == ImportType.Report else record.fullName
+        html: link(record.vaccination.uri, record.fullName) if upload.type == UploadType.Report else record.fullName
       },
       {
         header: __("record.nhsn.label"),
@@ -138,10 +138,10 @@
       }, {
         header: __("record.school.label"),
         text: record.formatted.school
-      } if import.type == ImportType.School, {
+      } if upload.type == UploadType.School, {
         header: __("vaccination.createdAt.label"),
         text: record.vaccination.formatted.createdAt_date
-      } if import.type == ImportType.Report
+      } if upload.type == UploadType.Report
     ]) %}
   {% endfor %}
 
@@ -150,38 +150,38 @@
     id: "vaccinations",
     sort: "name",
     panel: true,
-    heading: __n("import.records.count", import.records.length),
+    heading: __n("upload.records.count", upload.records.length),
     responsive: true,
     head: [
       { text: __("record.fullName.label") },
       { text: __("record.nhsn.label") },
       { text: __("record.dob.label") },
       { text: __("record.postalCode.label") },
-      { text: __("record.school.label") } if import.type == ImportType.School,
-      { text: __("vaccination.createdAt.label") } if import.type == ImportType.Report
+      { text: __("record.school.label") } if upload.type == UploadType.School,
+      { text: __("vaccination.createdAt.label") } if upload.type == UploadType.Report
     ],
     rows: recordRows
-  }) if import.records.length }}
+  }) if upload.records.length }}
 
   {{ card({
-    heading: __n("import.records.count", import.records.length),
+    heading: __n("upload.records.count", upload.records.length),
     headingClasses: "nhsuk-heading-m",
     feature: true,
-    description: __("import.devoid.description")
-  }) if import.records.length == 0 and import.status == ImportStatus.Complete }}
+    description: __("upload.devoid.description")
+  }) if upload.records.length == 0 and upload.status == UploadStatus.Complete }}
 
-  {% if import.validations | length %}
+  {% if upload.validations | length %}
     {% set cardDescriptionHtml %}
       <p class="nhsuk-body nhsuk-u-reading-width">
-        {{ __("import.errors.description") }}
+        {{ __("upload.errors.description") }}
       </p>
 
       {{ details({
-        text: __("import.file.format", { type: import.type | lower }),
+        text: __("upload.file.format", { type: upload.type | lower }),
         HTML: templateFormat
       }) }}
 
-      {% for row, validations in import.validations %}
+      {% for row, validations in upload.validations %}
         <h3 class="nhsuk-heading-s">Row {{ row }}</h3>
         <ul>
         {% for key, message in validations %}
@@ -193,7 +193,7 @@
 
     {{ card({
       classes: "app-card--red",
-      heading: __("import.errors.title"),
+      heading: __("upload.errors.title"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: cardDescriptionHtml,
       feature: true

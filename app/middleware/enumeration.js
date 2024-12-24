@@ -3,7 +3,6 @@ import { Gender } from '../models/child.js'
 import { AcademicYear } from '../models/cohort.js'
 import { DownloadFormat } from '../models/download.js'
 import { GillickCompetent } from '../models/gillick.js'
-import { ImportStatus, ImportType } from '../models/import.js'
 import { MoveSource } from '../models/move.js'
 import { NoticeType } from '../models/notice.js'
 import { ContactPreference, ParentalRelationship } from '../models/parent.js'
@@ -19,6 +18,7 @@ import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { SchoolPhase } from '../models/school.js'
 import { ConsentWindow, SessionStatus, SessionType } from '../models/session.js'
+import { UploadStatus, UploadType } from '../models/upload.js'
 import { UserRole } from '../models/user.js'
 import {
   VaccinationMethod,
@@ -44,8 +44,6 @@ export const enumeration = (request, response, next) => {
   response.locals.Gender = Gender
   response.locals.GillickCompetent = GillickCompetent
   response.locals.HealthQuestion = HealthQuestion
-  response.locals.ImportStatus = ImportStatus
-  response.locals.ImportType = ImportType
   response.locals.MoveSource = MoveSource
   response.locals.NoticeType = NoticeType
   response.locals.ParentalRelationship = ParentalRelationship
@@ -61,6 +59,8 @@ export const enumeration = (request, response, next) => {
   response.locals.SessionStatus = SessionStatus
   response.locals.SessionType = SessionType
   response.locals.TriageOutcome = TriageOutcome
+  response.locals.UploadStatus = UploadStatus
+  response.locals.UploadType = UploadType
   response.locals.UserRole = UserRole
   response.locals.VaccinationMethod = VaccinationMethod
   response.locals.VaccinationOutcome = VaccinationOutcome

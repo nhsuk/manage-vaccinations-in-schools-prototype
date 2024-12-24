@@ -2,7 +2,6 @@ import vaccines from './datasets/vaccines.js'
 import batches from '../.data/batches.json' with { type: 'json' }
 import clinics from '../.data/clinics.json' with { type: 'json' }
 import cohorts from '../.data/cohorts.json' with { type: 'json' }
-import imports from '../.data/imports.json' with { type: 'json' }
 import moves from '../.data/moves.json' with { type: 'json' }
 import notices from '../.data/notices.json' with { type: 'json' }
 import organisations from '../.data/organisations.json' with { type: 'json' }
@@ -13,6 +12,7 @@ import replies from '../.data/replies.json' with { type: 'json' }
 import records from '../.data/records.json' with { type: 'json' }
 import schools from '../.data/schools.json' with { type: 'json' }
 import sessions from '../.data/sessions.json' with { type: 'json' }
+import uploads from '../.data/uploads.json' with { type: 'json' }
 import users from '../.data/users.json' with { type: 'json' }
 import vaccinations from '../.data/vaccinations.json' with { type: 'json' }
 
@@ -32,7 +32,6 @@ export default {
   clinics,
   cohorts,
   features: {},
-  imports,
   moves,
   notices,
   organisation,
@@ -44,6 +43,7 @@ export default {
   replies,
   schools,
   sessions,
+  uploads,
   users,
   vaccinations,
   vaccines,

@@ -1,8 +1,8 @@
 {% extends "_layouts/form.njk" %}
 
 {% set gridColumns = "full" %}
-{% set title = __("import.review.title") %}
-{% set confirmButtonText = __("import.review.confirm") %}
+{% set title = __("upload.review.title") %}
+{% set confirmButtonText = __("upload.review.confirm") %}
 
 {% block form %}
   {{ super() }}
@@ -13,14 +13,14 @@
   }) }}
 
   {{ warningCallout({
-    heading: __("import.issue.title"),
-    HTML: __("import.issue.text") | nhsukMarkdown
+    heading: __("upload.issue.title"),
+    HTML: __("upload.issue.text") | nhsukMarkdown
   }) }}
 
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
       {% set descriptionHtml %}
-        <h3 class="nhsuk-heading-s">{{ __("import.review.duplicate.record") }}</h3>
+        <h3 class="nhsuk-heading-s">{{ __("upload.review.duplicate.record") }}</h3>
 
         {{ summaryList({
           rows: summaryRows(duplicateRecord, {
@@ -36,7 +36,7 @@
         }) }}
 
         {% if duplicateRecord.vaccinations[0] %}
-          <h3 class="nhsuk-heading-s">{{ __("import.review.duplicate.vaccination") }}</h3>
+          <h3 class="nhsuk-heading-s">{{ __("upload.review.duplicate.vaccination") }}</h3>
           {{ summaryList({
             rows: summaryRows(duplicateRecord.vaccinations[0], {
               outcome: {},
@@ -60,14 +60,14 @@
 
       {{ card({
         feature: true,
-        heading: __("import.review.duplicate.label"),
+        heading: __("upload.review.duplicate.label"),
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: descriptionHtml
       }) }}
     </div>
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
       {% set descriptionHtml %}
-        <h3 class="nhsuk-heading-s">{{ __("import.review.original.record") }}</h3>
+        <h3 class="nhsuk-heading-s">{{ __("upload.review.original.record") }}</h3>
 
         {{ summaryList({
           rows: summaryRows(record, {
@@ -81,7 +81,7 @@
         }) }}
 
         {% if record.vaccinations[0] %}
-          <h3 class="nhsuk-heading-s">{{ __("import.review.original.vaccination") }}</h3>
+          <h3 class="nhsuk-heading-s">{{ __("upload.review.original.vaccination") }}</h3>
           {{ summaryList({
             rows: summaryRows(record.vaccinations[0], {
               outcome: {},
@@ -103,7 +103,7 @@
 
       {{ card({
         feature: true,
-        heading: __("import.review.original.label"),
+        heading: __("upload.review.original.label"),
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: descriptionHtml
       }) }}
@@ -117,16 +117,16 @@
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--m",
-        text: __("import.review.decision.label")
+        text: __("upload.review.decision.label")
       }
     },
     items: [{
-      text: __("import.review.decision.duplicate.label"),
-      hint: { text: __("import.review.decision.duplicate.hint") },
+      text: __("upload.review.decision.duplicate.label"),
+      hint: { text: __("upload.review.decision.duplicate.hint") },
       value: "duplicate"
     }, {
-      text: __("import.review.decision.original.label"),
-      hint: { text: __("import.review.decision.original.hint") },
+      text: __("upload.review.decision.original.label"),
+      hint: { text: __("upload.review.decision.original.hint") },
       value: "original"
     }],
     decorate: "decision"
