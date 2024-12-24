@@ -1,13 +1,14 @@
+{%- from "macros/attributes.njk" import nhsukAttributes -%}
+{%- from "_macros/count.njk" import count -%}
 {% macro headerNavigation(params) %}
 <div class="nhsuk-navigation-container">
   <nav class="nhsuk-navigation" id="header-navigation" role="navigation" aria-label="Primary navigation">
     <ul class="nhsuk-header__navigation-list nhsuk-header__navigation-list--left-aligned">
     {%- for item in params %}
       {% if item %}
-      <li class="nhsuk-header__navigation-item {%- if item.classes %} {{ item.classes }}{% endif %}" {%- for attribute, value in item.attributes %} {{ attribute }}="{{ value }}"{% endfor %}>
-        <a class="nhsuk-header__navigation-link" href="{{ item.url }}"
-        {%- if item.current %} aria-current="{{ item.current or 'true' }}"{% endif %}>
-          {{ item.label }}
+      <li class="nhsuk-header__navigation-item {%- if item.active or item.current %} app-header__navigation-item--current{% endif %} {%- if item.classes %} {{ item.classes }}{% endif %}" {{- nhsukAttributes(item.attributes) }}>
+        <a class="nhsuk-header__navigation-link"  href="{{ item.url }}" {%- if item.active or item.current %} aria-current="{{ 'page' if item.current else 'true' }}"{% endif %}>
+          {{- item.label -}}{{ count(item.count) if item.count }}
         </a>
       </li>
       {% endif %}
