@@ -2,8 +2,10 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import {
   ContactPreference,
+  EmailStatus,
   Parent,
-  ParentalRelationship
+  ParentalRelationship,
+  SmsStatus
 } from '../models/parent.js'
 
 /**
@@ -22,16 +24,6 @@ export function generateParent(childLastName, isMum) {
         { value: ParentalRelationship.Guardian, weight: 1 },
         { value: ParentalRelationship.Other, weight: 1 }
       ])
-
-  // Contact details
-  const phoneNumber = '07### ######'.replace(/#+/g, (m) =>
-    faker.string.numeric(m.length)
-  )
-  const tel = faker.helpers.maybe(() => phoneNumber, { probability: 0.7 })
-
-  const contactPreference = faker.helpers.arrayElement(
-    Object.values(ContactPreference)
-  )
 
   // Name
   let firstName
@@ -54,16 +46,44 @@ export function generateParent(childLastName, isMum) {
   const hasName = faker.datatype.boolean(0.9)
   const hasRelationship = faker.datatype.boolean(0.7)
 
+  // Contact details
+  const phoneNumber = '07### ######'.replace(/#+/g, (m) =>
+    faker.string.numeric(m.length)
+  )
+  const tel = faker.helpers.maybe(() => phoneNumber, { probability: 0.9 })
+
+  const sms = faker.datatype.boolean(0.5)
+  const smsStatus = faker.helpers.weightedArrayElement([
+    { value: SmsStatus.Delivered, weight: 100 },
+    { value: SmsStatus.Permanent, weight: 10 },
+    { value: SmsStatus.Temporary, weight: 5 },
+    { value: SmsStatus.Technical, weight: 1 }
+  ])
+
+  const email = faker.internet.email({ firstName, lastName }).toLowerCase()
+  const emailStatus = faker.helpers.weightedArrayElement([
+    { value: EmailStatus.Delivered, weight: 100 },
+    { value: EmailStatus.Permanent, weight: 10 },
+    { value: EmailStatus.Temporary, weight: 5 },
+    { value: EmailStatus.Technical, weight: 1 }
+  ])
+
+  const contactPreference = faker.helpers.arrayElement(
+    Object.values(ContactPreference)
+  )
+
   return new Parent({
     ...(hasName && { fullName: `${firstName} ${lastName}` }),
     ...(hasRelationship && { relationship }),
     ...(relationship === ParentalRelationship.Other && {
       relationshipOther: 'Foster parent'
     }),
-    email: faker.internet.email({ firstName, lastName }).toLowerCase(),
+    email,
+    emailStatus,
     ...(tel && {
       tel,
-      sms: faker.datatype.boolean(0.5),
+      sms,
+      ...(sms && { smsStatus }),
       contactPreference,
       ...(contactPreference === ContactPreference.Other && {
         contactPreferenceOther:

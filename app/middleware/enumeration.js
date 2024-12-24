@@ -5,7 +5,12 @@ import { DownloadFormat } from '../models/download.js'
 import { GillickCompetent } from '../models/gillick.js'
 import { MoveSource } from '../models/move.js'
 import { NoticeType } from '../models/notice.js'
-import { ContactPreference, ParentalRelationship } from '../models/parent.js'
+import {
+  ContactPreference,
+  EmailStatus,
+  ParentalRelationship,
+  SmsStatus
+} from '../models/parent.js'
 import {
   CaptureOutcome,
   ConsentOutcome,
@@ -40,6 +45,7 @@ export const enumeration = (request, response, next) => {
   response.locals.ConsentWindow = ConsentWindow
   response.locals.ContactPreference = ContactPreference
   response.locals.DownloadFormat = DownloadFormat
+  response.locals.EmailStatus = EmailStatus
   response.locals.EventType = EventType
   response.locals.Gender = Gender
   response.locals.GillickCompetent = GillickCompetent
@@ -58,6 +64,7 @@ export const enumeration = (request, response, next) => {
   response.locals.ScreenOutcome = ScreenOutcome
   response.locals.SessionStatus = SessionStatus
   response.locals.SessionType = SessionType
+  response.locals.SmsStatus = SmsStatus
   response.locals.TriageOutcome = TriageOutcome
   response.locals.UploadStatus = UploadStatus
   response.locals.UploadType = UploadType

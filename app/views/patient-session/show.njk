@@ -119,10 +119,47 @@
           address: {},
           school: {},
           yearGroupWithRegistration: {},
-          gpSurgery: {},
-          parents: {}
+          gpSurgery: {}
         })
       }) }}
+
+      {% for parent in patient.parents %}
+        <h3 class="nhsuk-heading-s nhsuk-u-margin-bottom-2">
+          {{ parent.formatted.fullNameAndRelationship }}
+        </h3>
+
+        {% set telHtml %}
+          <p class="nhsuk-body nhsuk-u-margin-0">{{ parent.tel }}</p>
+          {{ status({
+            classes: "app-status--small nhsuk-u-margin-top-1",
+            text: parent.smsStatus,
+            colour: "red"
+          }) if parent.smsStatus and parent.smsStatus != SmsStatus.Delivered }}
+        {% endset %}
+
+        {% set emailHtml %}
+          <p class="nhsuk-body nhsuk-u-margin-0">
+            <a href="mailto:{{ parent.email }}">{{ parent.email }}</a>
+          </p>
+          {{ status({
+            classes: "app-status--small nhsuk-u-margin-top-1",
+            text: parent.emailStatus,
+            icon: "warning",
+            colour: "red"
+          }) if parent.emailStatus and parent.emailStatus != EmailStatus.Delivered }}
+        {% endset %}
+
+        {{ summaryList({
+          rows: summaryRows(parent, {
+            tel: {
+              value: telHtml
+            } if parent.tel,
+            email: {
+              value: emailHtml
+            } if parent.email
+          })
+        }) }}
+      {% endfor %}
 
       <p class="nhsuk-body">
         {{ button({

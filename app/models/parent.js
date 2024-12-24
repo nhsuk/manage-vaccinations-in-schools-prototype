@@ -17,6 +17,20 @@ export class ParentalRelationship {
   static Unknown = 'Unknown'
 }
 
+export class EmailStatus {
+  static Delivered = 'Delivered'
+  static Permanent = 'Email address does not exist'
+  static Temporary = 'Inbox not accepting messages right now'
+  static Technical = 'Technical failure'
+}
+
+export class SmsStatus {
+  static Delivered = 'Delivered'
+  static Permanent = 'Not delivered'
+  static Temporary = 'Phone not accepting messages right now'
+  static Technical = 'Technical failure'
+}
+
 /**
  * @class Parent
  * @property {string} uuid - UUID
@@ -25,9 +39,11 @@ export class ParentalRelationship {
  * @property {string} [relationshipOther] - Other relationship to child
  * @property {boolean} [hasParentalResponsibility] - Has parental responsibility
  * @property {boolean} notify - Notify about consent and vaccination events
- * @property {string} email - Email address
  * @property {string} tel - Phone number
+ * @property {string} email - Email address
+ * @property {EmailStatus} emailStatus - Email status
  * @property {boolean} sms - Update via SMS
+ * @property {SmsStatus} smsStatus - SMS status
  * @property {ContactPreference} [contactPreference] - Preferred contact method
  * @property {string} [contactPreferenceOther] - Other contact method
  */
@@ -45,9 +61,11 @@ export class Parent {
         ? stringToBoolean(options.hasParentalResponsibility)
         : undefined
     this.notify = stringToBoolean(options?.notify)
-    this.email = options.email
     this.tel = options.tel || ''
+    this.email = options.email
+    this.emailStatus = options?.emailStatus
     this.sms = stringToBoolean(options.sms) || false
+    this.smsStatus = options?.smsStatus
     this.contactPreference = options?.contactPreference
     this.contactPreferenceOther =
       this.contactPreference === ContactPreference.Other

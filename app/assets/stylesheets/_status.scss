@@ -28,3 +28,13 @@
     color: $color_nhsuk-red;
   }
 }
+
+.app-status--small {
+  @include nhsuk-font(16, $weight: bold);
+
+  .nhsuk-icon {
+    margin-left: -2px;
+    height: 1.25em;
+    width: 1.25em;
+  }
+}
