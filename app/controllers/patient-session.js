@@ -107,7 +107,7 @@ export const patientSessionController = {
   showForm(request, response) {
     const view = request.params.view || 'show'
 
-    response.render(`patient-session/${view}`)
+    response.render(`patient-session/form/${view}`)
   },
 
   register(request, response) {
