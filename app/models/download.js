@@ -13,11 +13,15 @@ import { Organisation } from './organisation.js'
 import { Programme } from './programme.js'
 import { Vaccination } from './vaccination.js'
 
-export class DownloadFormat {
-  static CSV = 'CSV'
-  static CarePlus = 'XLSX for CarePlus (System C)'
-  static SystmOne = 'XLSX for SystmOne (TPP)'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const DownloadFormat = Object.freeze({
+  CSV: 'CSV',
+  CarePlus: 'XLSX for CarePlus (System C)',
+  SystmOne: 'XLSX for SystmOne (TPP)'
+})
 
 /**
  * @class Vaccination report download

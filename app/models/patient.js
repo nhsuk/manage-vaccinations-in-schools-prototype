@@ -14,10 +14,14 @@ import { Record } from './record.js'
 import { Reply } from './reply.js'
 import { Vaccination } from './vaccination.js'
 
-export class PatientMovement {
-  static In = 'Moved in'
-  static Out = 'Moved out'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const PatientMovement = Object.freeze({
+  In: 'Moved in',
+  Out: 'Moved out'
+})
 
 /**
  * @class Patient in-session record

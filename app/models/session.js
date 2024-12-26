@@ -29,24 +29,36 @@ import { Programme } from './programme.js'
 import { School } from './school.js'
 import { Vaccine } from './vaccine.js'
 
-export class ConsentWindow {
-  static Opening = 'Opening'
-  static Open = 'Open'
-  static Closed = 'Closed'
-  static None = 'Session not scheduled'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ConsentWindow = Object.freeze({
+  Opening: 'Opening',
+  Open: 'Open',
+  Closed: 'Closed',
+  None: 'Session not scheduled'
+})
 
-export class SessionStatus {
-  static Unplanned = 'No sessions scheduled'
-  static Planned = 'Sessions scheduled'
-  static Completed = 'All sessions completed'
-  static Closed = 'Closed'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const SessionStatus = Object.freeze({
+  Unplanned: 'No sessions scheduled',
+  Planned: 'Sessions scheduled',
+  Completed: 'All sessions completed',
+  Closed: 'Closed'
+})
 
-export class SessionType {
-  static School = 'School session'
-  static Clinic = 'Community clinic'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const SessionType = Object.freeze({
+  School: 'School session',
+  Clinic: 'Community clinic'
+})
 
 /**
  * @class Session

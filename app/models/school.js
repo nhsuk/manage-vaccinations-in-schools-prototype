@@ -5,16 +5,24 @@ import { formatLink, formatMonospace } from '../utils/string.js'
 import { Address } from './address.js'
 import { Record } from './record.js'
 
-export class SchoolPhase {
-  static Primary = 'Primary'
-  static Secondary = 'Secondary'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const SchoolPhase = Object.freeze({
+  Primary: 'Primary',
+  Secondary: 'Secondary'
+})
 
-export class SchoolTerm {
-  static Autumn = 'Autumn'
-  static Spring = 'Spring'
-  static Summer = 'Summer'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const SchoolTerm = Object.freeze({
+  Autumn: 'Autumn',
+  Spring: 'Spring',
+  Summer: 'Summer'
+})
 
 export const schoolTerms = {
   [SchoolTerm.Autumn]: { from: '2024-09-03', to: '2024-12-13' },

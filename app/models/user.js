@@ -2,11 +2,15 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { formatLink, formatMonospace } from '../utils/string.js'
 
-export class UserRole {
-  static ClinicalAdmin = 'Nurse'
-  static DataAdmin = 'Data administrator'
-  static DataConsumer = 'Data consumer'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const UserRole = Object.freeze({
+  ClinicalAdmin: 'Nurse',
+  DataAdmin: 'Data administrator',
+  DataConsumer: 'Data consumer'
+})
 
 /**
  * @class User

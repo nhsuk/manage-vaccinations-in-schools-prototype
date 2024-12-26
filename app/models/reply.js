@@ -16,29 +16,41 @@ import { Programme } from './programme.js'
 import { Session } from './session.js'
 import { User } from './user.js'
 
-export class ReplyDecision {
-  static Given = 'Consent given'
-  static Refused = 'Consent refused'
-  static OnlyMenACWY = 'Consent given for MenACWY only'
-  static Only3in1 = 'Consent given for 3-in-1 only'
-  static NoResponse = 'No response'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ReplyDecision = Object.freeze({
+  Given: 'Consent given',
+  Refused: 'Consent refused',
+  OnlyMenACWY: 'Consent given for MenACWY only',
+  Only3in1: 'Consent given for 3-in-1 only',
+  NoResponse: 'No response'
+})
 
-export class ReplyMethod {
-  static Website = 'Online'
-  static Phone = 'By phone'
-  static Paper = 'Paper form'
-  static InPerson = 'In person'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ReplyMethod = Object.freeze({
+  Website: 'Online',
+  Phone: 'By phone',
+  Paper: 'Paper form',
+  InPerson: 'In person'
+})
 
-export class ReplyRefusal {
-  static Gelatine = 'Vaccine contains gelatine'
-  static AlreadyGiven = 'Vaccine already received'
-  static GettingElsewhere = 'Vaccine will be given elsewhere'
-  static Medical = 'Medical reasons'
-  static Personal = 'Personal choice'
-  static Other = 'Other'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ReplyRefusal = Object.freeze({
+  Gelatine: 'Vaccine contains gelatine',
+  AlreadyGiven: 'Vaccine already received',
+  GettingElsewhere: 'Vaccine will be given elsewhere',
+  Medical: 'Medical reasons',
+  Personal: 'Personal choice',
+  Other: 'Other'
+})
 
 /**
  * @class Reply

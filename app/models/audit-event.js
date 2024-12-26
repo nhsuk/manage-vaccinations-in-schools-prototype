@@ -5,16 +5,20 @@ import { formatDate, today } from '../utils/date.js'
 import { Programme } from './programme.js'
 import { User } from './user.js'
 
-export class EventType {
-  static Select = 'Select'
-  static Invite = 'Invite'
-  static Remind = 'Remind'
-  static Consent = 'Consent'
-  static Screen = 'Screen'
-  static Capture = 'Capture'
-  static Record = 'Record'
-  static Notice = 'Notice'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const EventType = Object.freeze({
+  Select: 'Select',
+  Invite: 'Invite',
+  Remind: 'Remind',
+  Consent: 'Consent',
+  Screen: 'Screen',
+  Capture: 'Capture',
+  Record: 'Record',
+  Notice: 'Notice'
+})
 
 /**
  * @class Audit event

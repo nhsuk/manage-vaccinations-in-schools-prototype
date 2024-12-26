@@ -10,12 +10,16 @@ import { formatYearGroup } from '../utils/string.js'
 
 import { Address } from './address.js'
 
-export class Gender {
-  static Female = 'Female'
-  static Male = 'Male'
-  static NotKnown = 'Not known'
-  static NotSpecified = 'Not specified'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const Gender = Object.freeze({
+  Female: 'Female',
+  Male: 'Male',
+  NotKnown: 'Not known',
+  NotSpecified: 'Not specified'
+})
 
 /**
  * @class Child

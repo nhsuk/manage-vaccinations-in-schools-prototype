@@ -15,49 +15,73 @@ import { Gillick } from './gillick.js'
 import { Patient } from './patient.js'
 import { Session } from './session.js'
 
-export class ConsentOutcome {
-  static NoRequest = 'Request failed'
-  static NoResponse = 'No response'
-  static Inconsistent = 'Conflicting consent'
-  static Given = 'Consent given'
-  static Refused = 'Consent refused'
-  static FinalRefusal = 'Refusal confirmed'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ConsentOutcome = Object.freeze({
+  NoRequest: 'Request failed',
+  NoResponse: 'No response',
+  Inconsistent: 'Conflicting consent',
+  Given: 'Consent given',
+  Refused: 'Consent refused',
+  FinalRefusal: 'Refusal confirmed'
+})
 
-export class RegistrationOutcome {
-  static Pending = 'Not registered yet'
-  static Present = 'Attending today’s session'
-  static Absent = 'Absent from today’s session'
-  static Complete = 'Completed today’s session'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const RegistrationOutcome = Object.freeze({
+  Pending: 'Not registered yet',
+  Present: 'Attending today’s session',
+  Absent: 'Absent from today’s session',
+  Complete: 'Completed today’s session'
+})
 
-export class TriageOutcome {
-  static Needed = 'Triage needed'
-  static Completed = 'Triage completed'
-  static NotNeeded = 'No triage needed'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const TriageOutcome = Object.freeze({
+  Needed: 'Triage needed',
+  Completed: 'Triage completed',
+  NotNeeded: 'No triage needed'
+})
 
-export class ScreenOutcome {
-  static NeedsTriage = 'Needs triage'
-  static DelayVaccination = 'Delay vaccination'
-  static DoNotVaccinate = 'Do not vaccinate'
-  static Vaccinate = 'Safe to vaccinate'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ScreenOutcome = Object.freeze({
+  NeedsTriage: 'Needs triage',
+  DelayVaccination: 'Delay vaccination',
+  DoNotVaccinate: 'Do not vaccinate',
+  Vaccinate: 'Safe to vaccinate'
+})
 
-export class CaptureOutcome {
-  static Register = 'Register attendance'
-  static GetConsent = 'Get consent'
-  static CheckRefusal = 'Check refusal'
-  static NeedsTriage = 'Triage'
-  static DoNotVaccinate = 'Do not vaccinate'
-  static Vaccinate = 'Vaccinate'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const CaptureOutcome = Object.freeze({
+  Register: 'Register attendance',
+  GetConsent: 'Get consent',
+  CheckRefusal: 'Check refusal',
+  NeedsTriage: 'Triage',
+  DoNotVaccinate: 'Do not vaccinate',
+  Vaccinate: 'Vaccinate'
+})
 
-export class PatientOutcome {
-  static NoOutcomeYet = 'No outcome yet'
-  static Vaccinated = 'Vaccinated'
-  static CouldNotVaccinate = 'Could not vaccinate'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const PatientOutcome = Object.freeze({
+  NoOutcomeYet: 'No outcome yet',
+  Vaccinated: 'Vaccinated',
+  CouldNotVaccinate: 'Could not vaccinate'
+})
 
 /**
  * @class Patient Session

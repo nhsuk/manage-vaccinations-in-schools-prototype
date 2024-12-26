@@ -3,10 +3,14 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import { Clinic } from './clinic.js'
 import { School } from './school.js'
 
-export class OrganisationDefaults {
-  static SessionOpenWeeks = 3
-  static SessionReminderWeeks = 1
-}
+/**
+ * @readonly
+ * @enum {number}
+ */
+export const OrganisationDefaults = Object.freeze({
+  SessionOpenWeeks: 3,
+  SessionReminderWeeks: 1
+})
 
 /**
  * @class Organisation

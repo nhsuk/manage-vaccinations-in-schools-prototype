@@ -23,45 +23,65 @@ import { Session } from './session.js'
 import { User } from './user.js'
 import { Vaccine, VaccineMethod } from './vaccine.js'
 
-export class VaccinationOutcome {
-  static Vaccinated = 'Vaccinated'
-  static PartVaccinated = 'Partially vaccinated'
-  static AlreadyVaccinated = 'Already had the vaccine'
-  static Contraindications = 'Had contraindications'
-  static Refused = 'Refused vaccine'
-  static AbsentSchool = 'Absent from school'
-  static AbsentSession = 'Absent from the session'
-  static Unwell = 'Unwell'
-  static NoConsent = 'Unable to contact parent'
-  static LateConsent = 'Consent received too late'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const VaccinationOutcome = Object.freeze({
+  Vaccinated: 'Vaccinated',
+  PartVaccinated: 'Partially vaccinated',
+  AlreadyVaccinated: 'Already had the vaccine',
+  Contraindications: 'Had contraindications',
+  Refused: 'Refused vaccine',
+  AbsentSchool: 'Absent from school',
+  AbsentSession: 'Absent from the session',
+  Unwell: 'Unwell',
+  NoConsent: 'Unable to contact parent',
+  LateConsent: 'Consent received too late'
+})
 
-export class VaccinationMethod {
-  static Nasal = 'Nasal spray'
-  static Intramuscular = 'Intramuscular (IM) injection'
-  static Subcutaneous = 'Subcutaneous injection'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const VaccinationMethod = Object.freeze({
+  Nasal: 'Nasal spray',
+  Intramuscular: 'Intramuscular (IM) injection',
+  Subcutaneous: 'Subcutaneous injection'
+})
 
-export class VaccinationSequence {
-  static P1 = 'First'
-  static P2 = 'Second'
-  static P3 = 'Third'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const VaccinationSequence = Object.freeze({
+  P1: 'First',
+  P2: 'Second',
+  P3: 'Third'
+})
 
-export class VaccinationSite {
-  static Nose = 'Nose'
-  static ArmLeftUpper = 'Left arm (upper position)'
-  static ArmLeftLower = 'Left arm (lower position)'
-  static ArmRightUpper = 'Right arm (upper position)'
-  static ArmRightLower = 'Right arm (lower position)'
-  static ThighLeft = 'Left thigh'
-  static ThighRight = 'Right thigh'
-  static Other = 'Other'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const VaccinationSite = Object.freeze({
+  Nose: 'Nose',
+  ArmLeftUpper: 'Left arm (upper position)',
+  ArmLeftLower: 'Left arm (lower position)',
+  ArmRightUpper: 'Right arm (upper position)',
+  ArmRightLower: 'Right arm (lower position)',
+  ThighLeft: 'Left thigh',
+  ThighRight: 'Right thigh',
+  Other: 'Other'
+})
 
-export class VaccinationProtocol {
-  static PGD = 'Patient Group Directions'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const VaccinationProtocol = Object.freeze({
+  PGD: 'Patient Group Directions'
+})
 
 /**
  * @class Vaccination

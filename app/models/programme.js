@@ -13,18 +13,26 @@ import { Upload } from './upload.js'
 import { Vaccination } from './vaccination.js'
 import { Vaccine } from './vaccine.js'
 
-export class ProgrammeStatus {
-  static Planned = 'Planned'
-  static Current = 'Current'
-  static Completed = 'Completed'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ProgrammeStatus = Object.freeze({
+  Planned: 'Planned',
+  Current: 'Current',
+  Completed: 'Completed'
+})
 
-export class ProgrammeType {
-  static Flu = 'Flu'
-  static HPV = 'HPV'
-  static TdIPV = 'TdIPV'
-  static MenACWY = 'MenACWY'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ProgrammeType = Object.freeze({
+  Flu: 'Flu',
+  HPV: 'HPV',
+  TdIPV: 'TdIPV',
+  MenACWY: 'MenACWY'
+})
 
 export const programmeTypes = {
   [ProgrammeType.Flu]: {

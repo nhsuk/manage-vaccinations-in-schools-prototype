@@ -7,17 +7,25 @@ import { Record } from './record.js'
 import { User } from './user.js'
 import { Vaccination } from './vaccination.js'
 
-export class UploadType {
-  static Cohort = 'Child records'
-  static School = 'Class list records'
-  static Report = 'Vaccination records'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const UploadType = Object.freeze({
+  Cohort: 'Child records',
+  School: 'Class list records',
+  Report: 'Vaccination records'
+})
 
-export class UploadStatus {
-  static Processing = 'Processing'
-  static Complete = 'Completed'
-  static Invalid = 'Invalid'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const UploadStatus = Object.freeze({
+  Processing: 'Processing',
+  Complete: 'Completed',
+  Invalid: 'Invalid'
+})
 
 /**
  * @class Upload

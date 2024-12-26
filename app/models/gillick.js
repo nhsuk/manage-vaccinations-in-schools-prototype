@@ -1,10 +1,14 @@
 import { today } from '../utils/date.js'
 import { stringToBoolean } from '../utils/string.js'
 
-export class GillickCompetent {
-  static True = 'Child assessed as Gillick competent'
-  static False = 'Child assessed as not Gillick competent'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const GillickCompetent = Object.freeze({
+  True: 'Child assessed as Gillick competent',
+  False: 'Child assessed as not Gillick competent'
+})
 
 /**
  * @class Gillick assessment

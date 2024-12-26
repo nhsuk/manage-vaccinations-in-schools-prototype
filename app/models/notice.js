@@ -4,12 +4,16 @@ import { formatDate, today } from '../utils/date.js'
 
 import { Patient } from './patient.js'
 
-export class NoticeType {
-  static Deceased = 'Deceased'
-  static Hidden = 'Hidden'
-  static Invalid = 'Invalid'
-  static Sensitive = 'Sensitive'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const NoticeType = Object.freeze({
+  Deceased: 'Deceased',
+  Hidden: 'Hidden',
+  Invalid: 'Invalid',
+  Sensitive: 'Sensitive'
+})
 
 /**
  * @class Notice

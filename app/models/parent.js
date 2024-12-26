@@ -2,34 +2,50 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { formatOther, formatParent, stringToBoolean } from '../utils/string.js'
 
-export class ContactPreference {
-  static None = 'No preference'
-  static Text = 'Text message'
-  static Call = 'Voice call'
-  static Other = 'Other'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ContactPreference = Object.freeze({
+  None: 'No preference',
+  Text: 'Text message',
+  Call: 'Voice call',
+  Other: 'Other'
+})
 
-export class ParentalRelationship {
-  static Mum = 'Mum'
-  static Dad = 'Dad'
-  static Guardian = 'Guardian'
-  static Other = 'Other'
-  static Unknown = 'Unknown'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ParentalRelationship = Object.freeze({
+  Mum: 'Mum',
+  Dad: 'Dad',
+  Guardian: 'Guardian',
+  Other: 'Other',
+  Unknown: 'Unknown'
+})
 
-export class EmailStatus {
-  static Delivered = 'Delivered'
-  static Permanent = 'Email address does not exist'
-  static Temporary = 'Inbox not accepting messages right now'
-  static Technical = 'Technical failure'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const EmailStatus = Object.freeze({
+  Delivered: 'Delivered',
+  Permanent: 'Email address does not exist',
+  Temporary: 'Inbox not accepting messages right now',
+  Technical: 'Technical failure'
+})
 
-export class SmsStatus {
-  static Delivered = 'Delivered'
-  static Permanent = 'Not delivered'
-  static Temporary = 'Phone not accepting messages right now'
-  static Technical = 'Technical failure'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const SmsStatus = Object.freeze({
+  Delivered: 'Delivered',
+  Permanent: 'Not delivered',
+  Temporary: 'Phone not accepting messages right now',
+  Technical: 'Technical failure'
+})
 
 /**
  * @class Parent

@@ -4,9 +4,13 @@ import { formatLink, formatYearGroup } from '../utils/string.js'
 import { Patient } from './patient.js'
 import { Programme, ProgrammeType } from './programme.js'
 
-export class AcademicYear {
-  static Y2024 = '2024/25'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const AcademicYear = Object.freeze({
+  Y2024: '2024/25'
+})
 
 /**
  * @class Cohort

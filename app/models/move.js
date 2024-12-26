@@ -4,12 +4,16 @@ import schools from '../datasets/schools.js'
 import { Patient } from '../models/patient.js'
 import { formatDate, today } from '../utils/date.js'
 
-export class MoveSource {
-  static Cohort = 'Cohort record'
-  static Consent = 'Consent response'
-  static School = 'Class list'
-  static External = 'Another SAIS team'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const MoveSource = Object.freeze({
+  Cohort: 'Cohort record',
+  Consent: 'Consent response',
+  School: 'Class list',
+  External: 'Another SAIS team'
+})
 
 /**
  * @class Move

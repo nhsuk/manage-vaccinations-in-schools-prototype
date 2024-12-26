@@ -9,51 +9,60 @@ import {
 
 import { Batch } from './batch.js'
 
-export class HealthQuestion {
-  static Aspirin = 'Does the child take regular aspirin?'
-  static Allergy = 'Does the child have any severe allergies?'
-  static Asthma = 'Has the child been diagnosed with asthma?'
-  static AsthmaAdmitted =
-    'Has the child been admitted to intensive care for their asthma?'
-  static AsthmaSteroids =
-    'Has the child taken any oral steroids for their asthma in the last 2 weeks?'
-  static EggAllergy =
-    'Has the child ever been admitted to intensive care due an allergic reaction to egg?'
-  static Immunosuppressant =
-    'Does the child take any immunosuppressant medication?'
-  static ImmuneSystem =
-    'Does the child have a disease or treatment that severely affects their immune system?'
-  static HouseholdImmuneSystem =
-    'Is anyone in the child’s household currently having treatment that severely affects their immune system?'
-  static MedicationAllergies =
-    'Does the child have any allergies to medication?'
-  static MedicalConditions =
-    'Does the child have any medical conditions for which they receive treatment?'
-  static PreviousReaction =
-    'Has the child ever had a severe reaction to any medicines, including vaccines?'
-  static RecentFluVaccination =
-    'Has the child had a flu vaccination in the last 5 months?'
-  static Support =
-    'Does the child need extra support during vaccination sessions?'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const HealthQuestion = Object.freeze({
+  Aspirin: 'Does the child take regular aspirin?',
+  Allergy: 'Does the child have any severe allergies?',
+  Asthma: 'Has the child been diagnosed with asthma?',
+  AsthmaAdmitted:
+    'Has the child been admitted to intensive care for their asthma?',
+  AsthmaSteroids:
+    'Has the child taken any oral steroids for their asthma in the last 2 weeks?',
+  EggAllergy:
+    'Has the child ever been admitted to intensive care due an allergic reaction to egg?',
+  Immunosuppressant: 'Does the child take any immunosuppressant medication?',
+  ImmuneSystem:
+    'Does the child have a disease or treatment that severely affects their immune system?',
+  HouseholdImmuneSystem:
+    'Is anyone in the child’s household currently having treatment that severely affects their immune system?',
+  MedicationAllergies: 'Does the child have any allergies to medication?',
+  MedicalConditions:
+    'Does the child have any medical conditions for which they receive treatment?',
+  PreviousReaction:
+    'Has the child ever had a severe reaction to any medicines, including vaccines?',
+  RecentFluVaccination:
+    'Has the child had a flu vaccination in the last 5 months?',
+  Support: 'Does the child need extra support during vaccination sessions?'
+})
 
-export class PreScreenQuestion {
-  static isAllergic =
-    'Has the child confirmed they have no allergies which would prevent vaccination?'
-  static isPregnant = 'Has the child confirmed they’re not pregnant?'
-  static isMedicated =
-    'Has the child confirmed they’re not taking any medication which prevents vaccination?'
-  static isVaccinated =
-    'Has the child confirmed they have not already had this vaccination?'
-  static isWell = 'Is the child is feeling well?'
-  static isHappy =
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const PreScreenQuestion = Object.freeze({
+  isAllergic:
+    'Has the child confirmed they have no allergies which would prevent vaccination?',
+  isPregnant: 'Has the child confirmed they’re not pregnant?',
+  isMedicated:
+    'Has the child confirmed they’re not taking any medication which prevents vaccination?',
+  isVaccinated:
+    'Has the child confirmed they have not already had this vaccination?',
+  isWell: 'Is the child is feeling well?',
+  isHappy:
     'Does the child know what the vaccination is for, and are they happy to have it?'
-}
+})
 
-export class VaccineMethod {
-  static Nasal = 'Nasal spray'
-  static Injection = 'Injection'
-}
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const VaccineMethod = Object.freeze({
+  Nasal: 'Nasal spray',
+  Injection: 'Injection'
+})
 
 /**
  * @class Vaccine
