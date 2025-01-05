@@ -1943,10 +1943,10 @@ export const en = {
       other: '[0] No vaccination records|%s vaccination records'
     },
     administer: {
-      title: 'Tell us how the vaccination was given'
+      title: 'How was the {{programme.name}} vaccine given?'
     },
     decline: {
-      title: 'Why was the {{vaccine.name}} vaccine not given?'
+      title: 'Why was the {{programme.name}} vaccine not given?'
     },
     upload: {
       label: 'Import vaccination records'
