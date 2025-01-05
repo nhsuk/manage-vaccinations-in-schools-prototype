@@ -569,6 +569,7 @@ export const en = {
         AsthmaAdmitted: false,
         EggAllergy: false,
         ImmuneSystem: false,
+        Immunosuppressant: false,
         HouseholdImmuneSystem: false,
         PreviousReaction: false,
         MedicalConditions: false,
