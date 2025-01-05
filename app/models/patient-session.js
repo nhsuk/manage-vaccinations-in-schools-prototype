@@ -234,7 +234,7 @@ export class PatientSession {
   /**
    * Get screening outcome
    *
-   * @returns {ScreenOutcome} - Screening outcome
+   * @returns {ScreenOutcome|boolean} - Screening outcome
    */
   get screen() {
     return getScreenOutcome(this)
