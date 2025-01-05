@@ -43,7 +43,7 @@
 
 {% block pageTitle %}
   {{- "Error: " if errors -}}
-  {{- title + " – " if title -}}
+  {{- (title + " – " if title) | safe -}}
   {{- serviceName + " – NHS.UK" -}}
 {% endblock %}
 
