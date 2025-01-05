@@ -235,17 +235,16 @@ export default () => {
   /**
    * Show relevant pre-screening questions based on gender of the patient
    *
-   * @param {import('./models/programme.js').Programme} programme - Programme
+   * @param {import('./models/session.js').Session} session - Programme
    * @param {import('./models/patient.js').Patient} patient - Patient
    * @returns {Array<string>|undefined} Pre-screening question keys
    */
-  globals.preScreenQuestionKeys = function (programme, patient) {
-    if (!programme) {
+  globals.preScreenQuestionKeys = function (session, patient) {
+    if (!session) {
       return
     }
 
-    const { preScreenQuestionKeys } = programme.vaccine
-    return preScreenQuestionKeys.filter((value) =>
+    return session.preScreenQuestionKeys.filter((value) =>
       patient.gender === Gender.Male ? value !== 'isPregnant' : value
     )
   }

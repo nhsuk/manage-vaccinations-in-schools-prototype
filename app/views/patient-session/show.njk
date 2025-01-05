@@ -339,7 +339,7 @@
     }) | formCard if options.showTriage }}
 
     {% set preScreenDescriptionHtml %}
-      {% for key in preScreenQuestionKeys(programme, patient) %}
+      {% for key in preScreenQuestionKeys(session, patient) %}
         {{ radios({
           classes: "nhsuk-radios--inline",
           fieldset: {

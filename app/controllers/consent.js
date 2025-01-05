@@ -148,10 +148,7 @@ export const consentController = {
         }
       },
       [`/${id}/${uuid}/${form}/address`]: {},
-      ...getHealthQuestionPaths(
-        `/${id}/${uuid}/${form}/`,
-        consent.session.vaccines
-      ),
+      ...getHealthQuestionPaths(`/${id}/${uuid}/${form}/`, consent.session),
       [`/${id}/${uuid}/${form}/check-answers`]: {},
       [`/${id}/${uuid}/new/confirmation`]: {},
       [`/${id}/${uuid}/${form}/refusal-reason`]: {

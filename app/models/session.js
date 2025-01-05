@@ -318,6 +318,38 @@ export class Session {
   }
 
   /**
+   * Get health questions from across all programme vaccines
+   *
+   * @returns {Array} - Programmes
+   */
+  get healthQuestionKeys() {
+    const healthQuestionKeys = new Set()
+    for (const vaccine of this.vaccines) {
+      for (const key of vaccine.healthQuestionKeys) {
+        healthQuestionKeys.add(key)
+      }
+    }
+
+    return [...healthQuestionKeys]
+  }
+
+  /**
+   * Get pre-screen questions from across all programme vaccines
+   *
+   * @returns {Array} - Programmes
+   */
+  get preScreenQuestionKeys() {
+    const preScreenQuestionKeys = new Set()
+    for (const vaccine of this.vaccines) {
+      for (const key of vaccine.preScreenQuestionKeys) {
+        preScreenQuestionKeys.add(key)
+      }
+    }
+
+    return [...preScreenQuestionKeys]
+  }
+
+  /**
    * Get session vaccines
    *
    * @returns {Array<Vaccine>} - Vaccines

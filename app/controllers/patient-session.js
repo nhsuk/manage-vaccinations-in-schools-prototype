@@ -29,10 +29,6 @@ export const patientSessionController = {
       .filter(({ session_id }) => session_id === id)
       .find(({ patient }) => patient.nhsn === nhsn)
 
-    // Select first programme in session to show pre-screening questions
-    // TODO: Make pre-screening questions pull from all session programmes
-    const programme_pid = patientSession.session.programme_pids[0]
-    const programme = new Programme(data.programmes[programme_pid], data)
     const fluPid = programmeTypes[ProgrammeType.Flu].pid
 
     response.locals.options = {
@@ -81,7 +77,6 @@ export const patientSessionController = {
     response.locals.patientSession = patientSession
     response.locals.patient = patientSession.patient
     response.locals.session = patientSession.session
-    response.locals.programme = programme
 
     next()
   },
