@@ -158,14 +158,11 @@ export class PatientSession {
    * @returns {Array<import('./reply.js').Reply>} - Replies
    */
   get replies() {
-    return (
-      this.patient.replies
-        .filter(({ programme_pid }) =>
-          this.session.programme_pids.includes(programme_pid)
-        )
-        // .filter((reply) => reply.delivered)
-        .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
-    )
+    return this.patient.replies
+      .filter(({ programme_pid }) =>
+        this.session.programme_pids.includes(programme_pid)
+      )
+      .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
   }
 
   /**
