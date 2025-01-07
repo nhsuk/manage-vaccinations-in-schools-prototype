@@ -258,7 +258,9 @@ export default () => {
   globals.couldNotVaccinateReason = function (patientSession) {
     const { __ } = this.ctx
 
-    if (
+    if (!patientSession.screen) {
+      return __(`consent.${patientSession.consent}.status`)
+    } else if (
       patientSession.screen &&
       patientSession.screen !== ScreenOutcome.Vaccinate
     ) {
