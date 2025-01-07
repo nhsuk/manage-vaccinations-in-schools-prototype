@@ -1,11 +1,32 @@
 import {
   CaptureOutcome,
   ConsentOutcome,
+  Jabs,
   PatientOutcome,
   RegistrationOutcome,
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient-session.js'
+
+/**
+ * Get jabs (completed vaccinations against those needed)
+ *
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @returns {Jabs} Jabs
+ */
+export const getJabs = (patientSession) => {
+  if (patientSession.administeredVaccinations.length === 0) {
+    return Jabs.None
+  } else if (
+    // TODO: Compare against eligible vaccinations, based on consent responses
+    patientSession.administeredVaccinations.length <
+    patientSession.session.programmes.length
+  ) {
+    return Jabs.Some
+  }
+
+  return Jabs.All
+}
 
 /**
  * Get patient outcome

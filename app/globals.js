@@ -4,7 +4,7 @@ import _ from 'lodash'
 import exampleUsers from './datasets/users.js'
 import {
   ConsentOutcome,
-  PatientOutcome,
+  Jabs,
   ScreenOutcome
 } from './models/patient-session.js'
 import { Reply } from './models/reply.js'
@@ -139,7 +139,7 @@ export default () => {
    */
   globals.patientStatus = function (patientSession) {
     const { __, data } = this.ctx
-    const { consent, screen, outcome, patient } = patientSession
+    const { consent, jabs, screen, patient } = patientSession
 
     // Get logged in user, else use placeholder
     const user = new User(data.token ? data.token : exampleUsers[0])
@@ -159,8 +159,8 @@ export default () => {
       relationships.push(reply.relationship || 'Parent or guardian')
     }
 
-    if (outcome === PatientOutcome.NoOutcomeYet) {
-      // If no outcome, use status colour and title for consent/triage outcome
+    if (jabs === Jabs.None) {
+      // If no jabs, use status colour and title for consent/triage outcome
 
       if (screen === ScreenOutcome.NeedsTriage) {
         // Patient needs triage
@@ -189,8 +189,8 @@ export default () => {
       }
     } else {
       // If outcome, use status colour and title for that outcome
-      colour = __(`outcome.${outcome}.colour`)
-      title = __(`outcome.${outcome}.title`)
+      colour = __(`jabs.${jabs}.colour`)
+      title = __(`jabs.${jabs}.title`)
 
       const administeredVaccinations =
         patientSession.administeredVaccinations.map(
@@ -198,28 +198,28 @@ export default () => {
         )
       description = `Vaccinated with ${prototypeFilters.formatList(administeredVaccinations)}`
 
-      // If could not vaccinate, provide a description for why
-      if (outcome === PatientOutcome.CouldNotVaccinate) {
-        if (
-          screen === ScreenOutcome.DelayVaccination ||
-          screen === ScreenOutcome.DoNotVaccinate
-        ) {
-          // Patient had a triage outcome that prevented vaccination
-          description = __(`screen.${screen}.description`, {
-            patient,
-            user
-          })
-        } else if (
-          // Patient wasn’t able to get consent for vaccination
-          consent === ConsentOutcome.Inconsistent ||
-          consent === ConsentOutcome.Refused
-        ) {
-          description = __(`consent.${consent}.description`, {
-            patient,
-            relationships: prototypeFilters.formatList(relationships)
-          })
-        }
-      }
+      // // If could not vaccinate, provide a description for why
+      // if (outcome === PatientOutcome.CouldNotVaccinate) {
+      //   if (
+      //     screen === ScreenOutcome.DelayVaccination ||
+      //     screen === ScreenOutcome.DoNotVaccinate
+      //   ) {
+      //     // Patient had a triage outcome that prevented vaccination
+      //     description = __(`screen.${screen}.description`, {
+      //       patient,
+      //       user
+      //     })
+      //   } else if (
+      //     // Patient wasn’t able to get consent for vaccination
+      //     consent === ConsentOutcome.Inconsistent ||
+      //     consent === ConsentOutcome.Refused
+      //   ) {
+      //     description = __(`consent.${consent}.description`, {
+      //       patient,
+      //       relationships: prototypeFilters.formatList(relationships)
+      //     })
+      //   }
+      // }
     }
 
     return { colour, description, title }

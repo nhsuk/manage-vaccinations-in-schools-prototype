@@ -1,6 +1,7 @@
 import { Batch } from '../models/batch.js'
 import {
   CaptureOutcome,
+  Jabs,
   ConsentOutcome,
   PatientOutcome,
   PatientSession,
@@ -98,6 +99,10 @@ export const sessionController = {
           PatientOutcome.NoOutcomeYet
         ]
         break
+      case 'jabs':
+        tab = tab || Jabs.All
+        tabs = [Jabs.All, Jabs.Some, Jabs.None]
+        break
     }
 
     response.locals.activity = activity
@@ -139,7 +144,7 @@ export const sessionController = {
 
     response.locals.couldNotVaccinate = patientSessions
       .filter(({ consent }) => consent !== ConsentOutcome.NoResponse)
-      .filter(({ outcome }) => outcome === PatientOutcome.CouldNotVaccinate)
+      .filter(({ jabs }) => jabs !== Jabs.All)
 
     response.locals.noResponse = patientSessions.filter(
       ({ consent }) => consent === ConsentOutcome.NoResponse
