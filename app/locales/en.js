@@ -1092,12 +1092,13 @@ export const en = {
         'Consent request sent to {{parent.formatted.fullNameAndRelationship}}'
     },
     preScreen: {
-      label: 'Pre-screening questions',
+      label: 'Pre-screening questions for {{vaccine.brand}}',
       questions: {
-        label: 'Have you asked {{patient.firstName}} if:'
+        label: 'Has {{patient.firstName}} confirmed that:'
       },
       ready: {
-        label: 'Is {{patient.firstName}} ready to vaccinate in this session?',
+        label:
+          'Is {{patient.firstName}} ready to be vaccinated with {{vaccine.brand}}?',
         yes: 'Yes',
         no: 'No'
       },
