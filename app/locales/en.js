@@ -1,6 +1,7 @@
 import {
   CaptureOutcome,
   ConsentOutcome,
+  Jabs,
   RegistrationOutcome,
   PatientOutcome,
   ScreenOutcome,
@@ -838,6 +839,36 @@ export const en = {
       hint: 'Use this password to unlock offline vaccination spreadsheets. Don’t share it with anyone outside your team.'
     }
   },
+  jabs: {
+    label: 'Session outcome',
+    [Jabs.None]: {
+      colour: 'grey',
+      label: 'Not vaccinated yet',
+      count: {
+        one: '%s child not vaccinated yet',
+        other:
+          '[0] No children not vaccinated yet|%s children not vaccinated yet yet'
+      }
+    },
+    [Jabs.Some]: {
+      colour: 'aqua-green',
+      label: 'Partly vaccinated',
+      title: 'Partly vaccinated',
+      count: {
+        one: '%s child part vaccinated',
+        other: '[0] No children partly vaccinated|%s children partly vaccinated'
+      }
+    },
+    [Jabs.All]: {
+      colour: 'green',
+      label: 'Fully vaccinated',
+      title: 'Fully vaccinated',
+      count: {
+        one: '%s child vaccinated',
+        other: '[0] No children fully vaccinated|%s children fully vaccinated'
+      }
+    }
+  },
   outcome: {
     label: 'Outcome',
     [PatientOutcome.NoOutcomeYet]: {
@@ -1461,6 +1492,9 @@ export const en = {
         title: 'Record session outcomes'
       },
       outcome: {
+        title: 'Review session outcomes'
+      },
+      jabs: {
         title: 'Review session outcomes'
       }
     },

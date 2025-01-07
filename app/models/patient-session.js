@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import {
   getCaptureOutcome,
+  getJabs,
   getPatientOutcome,
   getProgrammeOutcome
 } from '../utils/capture.js'
@@ -86,6 +87,16 @@ export const PatientOutcome = {
   Vaccinated: 'Vaccinated',
   CouldNotVaccinate: 'Could not vaccinate'
 }
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const Jabs = Object.freeze({
+  None: 'No outcome yet',
+  Some: 'Vaccinations in progress',
+  All: 'All vaccinations given'
+})
 
 /**
  * @class Patient Session
@@ -282,6 +293,15 @@ export class PatientSession {
    */
   get capture() {
     return getCaptureOutcome(this)
+  }
+
+  /**
+   * Get jabs (completed vaccinations against those needed)
+   *
+   * @returns {PatientOutcome} - Jabs
+   */
+  get jabs() {
+    return getJabs(this)
   }
 
   /**
