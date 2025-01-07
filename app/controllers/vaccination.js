@@ -64,7 +64,8 @@ export const vaccinationController = {
     const { programme } = response.locals
 
     const { patient, session } = PatientSession.read(patientSession_uuid, data)
-    const { injectionSite, ready } = data.patientSession.preScreen
+    const { injectionSite, ready } =
+      data.patientSession.preScreen[programme.pid]
 
     // Check for default batch
     const defaultBatchId = session.defaultBatch_ids?.[programme.vaccine.gtin]

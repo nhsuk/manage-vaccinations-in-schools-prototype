@@ -1,3 +1,4 @@
+import { Gender } from '../models/child.js'
 import { Gillick } from '../models/gillick.js'
 import {
   CaptureOutcome,
@@ -18,6 +19,7 @@ import {
   VaccinationOutcome,
   VaccinationSite
 } from '../models/vaccination.js'
+import { PreScreenQuestion } from '../models/vaccine.js'
 import { today } from '../utils/date.js'
 
 export const patientSessionController = {
@@ -73,6 +75,18 @@ export const patientSessionController = {
         text: VaccinationSite[key],
         value
       }))
+
+    response.locals.preScreenItems =
+      patientSession.session.preScreenQuestionKeys
+        .filter((value) =>
+          patientSession.patient.gender === Gender.Male
+            ? value !== 'isPregnant'
+            : value
+        )
+        .map((key) => ({
+          text: PreScreenQuestion[key],
+          value: key
+        }))
 
     response.locals.patientSession = patientSession
     response.locals.patient = patientSession.patient
@@ -179,13 +193,16 @@ export const patientSessionController = {
   preScreen(request, response) {
     const { preScreen } = request.body.patientSession
     const { data } = request.session
-    const { back, patientSession, programme } = response.locals
+    const { back, patientSession } = response.locals
 
     // Pre-screen interview
     patientSession.preScreen({
-      note: preScreen.note,
+      note: preScreen[preScreen.programme_pid].note,
       ...(data.token && { createdBy_uid: data.token?.uid })
     })
+
+    // Get programme
+    const programme = Programme.read(preScreen.programme_pid, data)
 
     response.redirect(
       `${programme.uri}/vaccinations/new?patientSession_uuid=${patientSession.uuid}&referrer=${back}`
