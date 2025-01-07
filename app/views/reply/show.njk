@@ -34,7 +34,12 @@
         rows: summaryRows(reply, {
           createdAt: {},
           method: {},
-          programme: {},
+          programme: {
+            value: tag({
+              classes: "nhsuk-tag--white",
+              text: reply.programme.name
+            })
+          },
           decision: {},
           refusalReason: {},
           refusalReasonDetails: {},
