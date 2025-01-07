@@ -2,7 +2,6 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
 import exampleUsers from './datasets/users.js'
-import { Gender } from './models/child.js'
 import {
   ConsentOutcome,
   PatientOutcome,
@@ -230,23 +229,6 @@ export default () => {
   globals.percentage = function (total, number) {
     const percentage = (total / number) * 100
     return Math.round(percentage)
-  }
-
-  /**
-   * Show relevant pre-screening questions based on gender of the patient
-   *
-   * @param {import('./models/session.js').Session} session - Programme
-   * @param {import('./models/patient.js').Patient} patient - Patient
-   * @returns {Array<string>|undefined} Pre-screening question keys
-   */
-  globals.preScreenQuestionKeys = function (session, patient) {
-    if (!session) {
-      return
-    }
-
-    return session.preScreenQuestionKeys.filter((value) =>
-      patient.gender === Gender.Male ? value !== 'isPregnant' : value
-    )
   }
 
   /**

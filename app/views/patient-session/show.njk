@@ -347,31 +347,31 @@
       }
     }) | formCard if options.showTriage }}
 
-    {% set preScreenDescriptionHtml %}
-      {% for key in preScreenQuestionKeys(session, patient) %}
-        {{ radios({
-          classes: "nhsuk-radios--inline",
-          fieldset: {
-            legend: { text: PreScreenQuestion[key] }
-          },
-          items: booleanItems,
-          decorate: ["patientSession", "preScreen", key]
-        }) }}
-      {% endfor %}
+    {% macro preScreenDescriptionHtml(programme) %}
+      {{ checkboxes({
+        fieldset: {
+          legend: {
+            text: __("patientSession.preScreen.questions.label", { patient: patient })
+          }
+        },
+        items: preScreenItems,
+        decorate: "patientSession.preScreen.questions"
+      }) }}
 
       {{ textarea({
         label: { text: __("patientSession.preScreen.note.label") + " (Optional)" },
-        rows: 3,
-        decorate: "patientSession.preScreen.note"
+        rows: 2,
+        decorate: "patientSession.preScreen." + programme.pid + ".note"
       }) }}
-
-      <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
 
       {{ radios({
         fieldset: {
           legend: {
             classes: "nhsuk-fieldset__legend--m",
-            text: __("patientSession.preScreen.ready.label", { patient: patient })
+            text: __("patientSession.preScreen.ready.label", {
+              patient: patient,
+              vaccine: programme.vaccine
+            })
           }
         },
         items: [
@@ -384,7 +384,7 @@
                   legend: { text: __("patientSession.preScreen.injectionSite.label") }
                 },
                 items: injectionSiteItems,
-                decorate: "patientSession.preScreen.injectionSite"
+                decorate: "patientSession.preScreen." + programme.pid + ".injectionSite"
               })
             }
           },
@@ -393,21 +393,55 @@
             value: false
           }
         ],
-        decorate: "patientSession.preScreen.ready"
+        decorate: "patientSession.preScreen." + programme.pid + ".ready"
       }) }}
 
       {{ button({
-        text: __("patientSession.preScreen.confirm")
+        classes: "nhsuk-u-margin-0",
+        text: __("patientSession.preScreen.confirm"),
+        value: programme.pid,
+        decorate: "patientSession.preScreen.programme_pid"
       }) }}
-    {% endset %}
+    {% endmacro %}
 
-    {{ card({
-      heading: __("patientSession.preScreen.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: preScreenDescriptionHtml,
-      attributes: {
-        action: patientSession.uri + "/new/pre-screen"
-      }
-    }) | formCard if options.showPreScreen }}
+    {% if session.programmes.length > 1 %}
+      {% set programmeItems = [] %}
+      {% for programme in session.programmes %}
+        {% set programmeHtml %}
+          <form classes="nhsuk-u-margin-0" action="{{ patientSession.uri }}/new/pre-screen" method="post">
+            <h2 class="nhsuk-heading-m">
+              {{ __("patientSession.preScreen.label", {
+                vaccine: programme.vaccine
+              }) }}
+            </h2>
+            {{ preScreenDescriptionHtml(programme) }}
+          </form>
+        {% endset %}
+
+        {% set programmeItems = programmeItems | push({
+          label: programme.name,
+          id: programme.pid,
+          panel: {
+            html: programmeHtml
+          }
+        }) %}
+      {% endfor %}
+
+      {{ tabs({
+        items: programmeItems
+      }) if options.showPreScreen }}
+    {% else %}
+      {% set programme = session.programmes[0] %}
+      {{ card({
+        heading: __("patientSession.preScreen.label", {
+          vaccine: programme.vaccine
+        }),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: preScreenDescriptionHtml(programme),
+        attributes: {
+          action: patientSession.uri + "/new/pre-screen"
+        }
+      }) | formCard if options.showPreScreen }}
+    {% endif %}
   </div>
 {% endblock %}
