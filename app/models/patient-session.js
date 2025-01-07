@@ -1,6 +1,10 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { getCaptureOutcome, getPatientOutcome } from '../utils/capture.js'
+import {
+  getCaptureOutcome,
+  getPatientOutcome,
+  getProgrammeOutcome
+} from '../utils/capture.js'
 import { getDateValueDifference, today } from '../utils/date.js'
 import {
   getConsentOutcome,
@@ -205,12 +209,34 @@ export class PatientSession {
   }
 
   /**
+   * Get vaccinations for patient session that have been administered
+   *
+   * @returns {Array<import('./vaccination.js').Vaccination>|undefined} - Vaccinations
+   */
+  get administeredVaccinations() {
+    return this.vaccinations.filter((vaccination) => vaccination.given)
+  }
+
+  /**
    * Get consent outcome
    *
    * @returns {ConsentOutcome} - Consent outcome
    */
   get consent() {
     return getConsentOutcome(this)
+  }
+
+  /**
+   * Get consent outcome, per programme
+   *
+   * @returns {object} - Consent outcomes
+   */
+  get consentOutcomes() {
+    const programmeOutcomes = {}
+    for (const { pid } of this.session.programmes) {
+      programmeOutcomes[pid] = getConsentOutcome(this, pid)
+    }
+    return programmeOutcomes
   }
 
   /**
@@ -265,6 +291,19 @@ export class PatientSession {
    */
   get outcome() {
     return getPatientOutcome(this)
+  }
+
+  /**
+   * Get overall patient outcome, per programme
+   *
+   * @returns {object} - Patient outcomes
+   */
+  get programmeOutcomes() {
+    const programmeOutcomes = {}
+    for (const { pid } of this.session.programmes) {
+      programmeOutcomes[pid] = getProgrammeOutcome(this, pid)
+    }
+    return programmeOutcomes
   }
 
   /**

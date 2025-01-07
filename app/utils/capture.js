@@ -40,6 +40,43 @@ export const getPatientOutcome = (patientSession) => {
 }
 
 /**
+ * Get patient outcome for a programme
+ *
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {string} pid - Programme PID
+ * @returns {PatientOutcome} Patient outcome
+ */
+export const getProgrammeOutcome = (patientSession, pid) => {
+  const programmeVaccinations = patientSession.vaccinations.filter(
+    ({ programme_pid }) => programme_pid === pid
+  )
+
+  if (programmeVaccinations.length === 1) {
+    if (programmeVaccinations[0].given === true) {
+      return PatientOutcome.Vaccinated
+    }
+  }
+
+  // Consent outcome
+  if (
+    patientSession.consent === ConsentOutcome.Refused ||
+    patientSession.consent === ConsentOutcome.Inconsistent
+  ) {
+    return PatientOutcome.CouldNotVaccinate
+  }
+
+  // Screen outcome
+  if (
+    patientSession.screen === ScreenOutcome.DelayVaccination ||
+    patientSession.screen === ScreenOutcome.DoNotVaccinate
+  ) {
+    return PatientOutcome.CouldNotVaccinate
+  }
+
+  return PatientOutcome.NoOutcomeYet
+}
+
+/**
  * Get capture outcome (what capture activity needs to be performed)
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session

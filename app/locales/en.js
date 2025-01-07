@@ -1135,6 +1135,9 @@ export const en = {
         [RegistrationOutcome.Absent]:
           '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is absent from today’s session.'
       }
+    },
+    vaccination: {
+      label: '{{programme.name}} vaccination'
     }
   },
   programme: {

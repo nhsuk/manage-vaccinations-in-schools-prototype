@@ -1,7 +1,6 @@
 import { Gender } from '../models/child.js'
 import { Gillick } from '../models/gillick.js'
 import {
-  CaptureOutcome,
   ConsentOutcome,
   PatientOutcome,
   PatientSession,
@@ -56,11 +55,16 @@ export const patientSessionController = {
       editRegistration:
         patientSession.consent === ConsentOutcome.Given &&
         patientSession.triage !== TriageOutcome.Needed &&
-        patientSession.outcome !== PatientOutcome.Vaccinated,
-      showPreScreen:
-        patientSession.capture === CaptureOutcome.Vaccinate &&
-        patientSession.outcome !== PatientOutcome.Vaccinated &&
-        patientSession.outcome !== PatientOutcome.CouldNotVaccinate
+        patientSession.outcome !== PatientOutcome.Vaccinated
+    }
+
+    response.locals.options.showPreScreen = {}
+
+    for (const { pid } of patientSession.session.programmes) {
+      response.locals.options.showPreScreen[pid] =
+        patientSession.programmeOutcomes[pid] !== PatientOutcome.Vaccinated &&
+        patientSession.programmeOutcomes[pid] !==
+          PatientOutcome.CouldNotVaccinate
     }
 
     response.locals.injectionSiteItems = Object.entries(VaccinationSite)
@@ -193,7 +197,7 @@ export const patientSessionController = {
   preScreen(request, response) {
     const { preScreen } = request.body.patientSession
     const { data } = request.session
-    const { back, patientSession } = response.locals
+    const { patientSession } = response.locals
 
     // Pre-screen interview
     patientSession.preScreen({
@@ -205,7 +209,7 @@ export const patientSessionController = {
     const programme = Programme.read(preScreen.programme_pid, data)
 
     response.redirect(
-      `${programme.uri}/vaccinations/new?patientSession_uuid=${patientSession.uuid}&referrer=${back}`
+      `${programme.uri}/vaccinations/new?patientSession_uuid=${patientSession.uuid}&referrer=${patientSession.uri}`
     )
   },
 
