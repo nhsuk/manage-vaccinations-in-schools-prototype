@@ -5,7 +5,7 @@ import { patientSessionController } from '../controllers/patient-session.js'
 const router = express.Router({ strict: true, mergeParams: true })
 
 router.all('/:nhsn*', patientSessionController.read)
-router.get(['/:nhsn', '/:nhsn/?:view'], patientSessionController.show)
+router.get(['/:nhsn', '/:nhsn/?:view(events)'], patientSessionController.show)
 
 router.all('/:nhsn/?:form(new|edit)/:view', patientSessionController.readForm)
 router.get('/:nhsn/?:form(new|edit)/:view', patientSessionController.showForm)
