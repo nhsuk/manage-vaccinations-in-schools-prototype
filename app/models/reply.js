@@ -234,6 +234,9 @@ export class Reply {
         minute: '2-digit',
         hour12: true
       }),
+      createdAt_date: formatDate(this.createdAt, {
+        dateStyle: 'long'
+      }),
       createdBy: this.createdBy?.fullName || '',
       decision: decision(),
       programme: this.programme.name,

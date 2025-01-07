@@ -211,10 +211,18 @@
             {
               classes: "app-table__cell-status--" + consentModifier,
               header: __("consent.createdAt.label"),
-              html: consent.formatted.createdAt or "Not provided",
+              html: consent.formatted.createdAt_date or "Not provided",
               attributes: {
                 "data-sort": consent.createdAt
               }
+            },
+            {
+              classes: "app-table__cell-status--" + consentModifier,
+              header: __("consent.programme.label"),
+              html: tag({
+                classes: "nhsuk-tag--white",
+                text: consent.programme.name
+              })
             },
             {
               classes: "app-table__cell-status--" + consentModifier,
@@ -232,6 +240,7 @@
           head: [
             { text: __("parent.fullName.label") },
             { text: __("consent.createdAt.label") },
+            { text: __("consent.programme.label") },
             { text: __("consent.decision.label") }
           ],
           rows: consentRows
@@ -266,7 +275,7 @@
     {% endset %}
 
     {{ card({
-      heading: __("consent.label"),
+      heading: __("patientSession.consent.label"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: consentDescriptionHtml
     }) }}

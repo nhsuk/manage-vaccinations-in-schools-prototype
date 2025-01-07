@@ -523,6 +523,9 @@ export const en = {
         hint: 'This means you have legal rights and duties relating to the child'
       }
     },
+    programme: {
+      label: 'Programme'
+    },
     decision: {
       summary: 'Consent for the {{session.vaccination}}',
       title: 'Do you agree to them having the {{session.vaccination}}?',
@@ -1023,6 +1026,9 @@ export const en = {
     },
     events: {
       title: 'Programme activity log'
+    },
+    consent: {
+      label: 'Consent responses'
     },
     gillick: {
       label: 'Gillick assessment',
