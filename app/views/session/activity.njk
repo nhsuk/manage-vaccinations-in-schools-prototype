@@ -2,9 +2,9 @@
 
 {% set showLastReminderDate = tab == ConsentOutcome.NoResponse %}
 {% set showRefusalReasons = tab == ConsentOutcome.Refused or tab == ConsentOutcome.Inconsistent %}
-{% set showCouldNotVaccinateReason = tab == PatientOutcome.CouldNotVaccinate %}
+{% set showCouldNotVaccinateReason = tab == Jabs.None %}
 {% set showRegistration = tab == CaptureOutcome.Register %}
-{% set showStatus = activity == "capture" or tab == PatientOutcome.NoOutcomeYet %}
+{% set showStatus = activity == "capture" or tab == Jabs.None %}
 {% set showYearGroup = true %}
 {% set title = __("session.activity." + activity + ".title") %}
 

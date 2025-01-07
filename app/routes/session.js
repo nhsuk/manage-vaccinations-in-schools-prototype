@@ -15,7 +15,7 @@ router.get(
   sessionController.show
 )
 router.get(
-  '/:id/:activity(consent|triage|capture|outcome)',
+  '/:id/:activity(consent|triage|capture|outcome|jabs)',
   sessionController.activity
 )
 

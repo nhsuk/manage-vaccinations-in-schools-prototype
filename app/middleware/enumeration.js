@@ -14,6 +14,7 @@ import {
 import {
   CaptureOutcome,
   ConsentOutcome,
+  Jabs,
   PatientOutcome,
   RegistrationOutcome,
   ScreenOutcome,
@@ -50,6 +51,7 @@ export const enumeration = (request, response, next) => {
   response.locals.Gender = Gender
   response.locals.GillickCompetent = GillickCompetent
   response.locals.HealthQuestion = HealthQuestion
+  response.locals.Jabs = Jabs
   response.locals.MoveSource = MoveSource
   response.locals.NoticeType = NoticeType
   response.locals.ParentalRelationship = ParentalRelationship

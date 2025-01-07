@@ -90,19 +90,19 @@
           session.status == SessionStatus.Closed
         %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
-            {% set outcomeCardDescriptionHtml %}
+            {% set jabsCardDescriptionHtml %}
               <p>
-                {{ __n("outcome." + PatientOutcome.Vaccinated + ".count", patientSessions | where("outcome", PatientOutcome.Vaccinated) | length) }}<br>
-                {{ __n("outcome." + PatientOutcome.CouldNotVaccinate + ".count", patientSessions | where("outcome", PatientOutcome.CouldNotVaccinate) | length) }}<br>
-                {{ __n("outcome." + PatientOutcome.NoOutcomeYet + ".count", patientSessions | where("outcome", PatientOutcome.NoOutcomeYet) | length) }}
+                {{ __n("jabs." + Jabs.None + ".count", patientSessions | where("jabs", Jabs.None) | length) }}<br>
+                {{ __n("jabs." + Jabs.Some + ".count", patientSessions | where("jabs", Jabs.Some) | length) }}<br>
+                {{ __n("jabs." + Jabs.All + ".count", patientSessions | where("jabs", Jabs.All) | length) }}
               </p>
             {% endset %}
             {{ card({
               clickable: true,
-              heading: __("session.activity.outcome.title"),
+              heading: __("session.activity.jabs.title"),
               headingClasses: "nhsuk-heading-m",
-              href: session.uri + "/outcome",
-              descriptionHtml: outcomeCardDescriptionHtml
+              href: session.uri + "/jabs",
+              descriptionHtml: jabsCardDescriptionHtml
             }) }}
           </li>
         {% endif %}

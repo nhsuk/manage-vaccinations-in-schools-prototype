@@ -2,6 +2,7 @@ import { Gender } from '../models/child.js'
 import { Gillick } from '../models/gillick.js'
 import {
   ConsentOutcome,
+  Jabs,
   PatientOutcome,
   PatientSession,
   ScreenOutcome,
@@ -35,7 +36,7 @@ export const patientSessionController = {
     response.locals.options = {
       editGillick:
         patientSession.consent !== ConsentOutcome.Given &&
-        patientSession.outcome !== PatientOutcome.Vaccinated,
+        patientSession.outcome !== Jabs.All,
       showGillick:
         !patientSession.session.programme_pids?.includes(fluPid) &&
         patientSession.session.isActive &&
@@ -44,18 +45,18 @@ export const patientSessionController = {
       getReply: Object.values(patientSession.replies).length === 0,
       editReplies:
         patientSession.consent !== ConsentOutcome.Given &&
-        patientSession.outcome !== PatientOutcome.Vaccinated,
+        patientSession.outcome !== Jabs.All,
       editTriage:
         patientSession.triage === TriageOutcome.Completed &&
-        patientSession.outcome !== PatientOutcome.Vaccinated,
+        patientSession.outcome !== Jabs.All,
       showTriage:
         patientSession.consentHealthAnswers &&
         patientSession.triage === TriageOutcome.Needed &&
-        patientSession.outcome === PatientOutcome.NoOutcomeYet,
+        patientSession.outcome === Jabs.None,
       editRegistration:
         patientSession.consent === ConsentOutcome.Given &&
         patientSession.triage !== TriageOutcome.Needed &&
-        patientSession.outcome !== PatientOutcome.Vaccinated
+        patientSession.outcome !== Jabs.All
     }
 
     response.locals.options.showPreScreen = {}
