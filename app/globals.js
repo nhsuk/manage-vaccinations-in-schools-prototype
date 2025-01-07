@@ -192,6 +192,12 @@ export default () => {
       colour = __(`outcome.${outcome}.colour`)
       title = __(`outcome.${outcome}.title`)
 
+      const administeredVaccinations =
+        patientSession.administeredVaccinations.map(
+          (vaccination) => vaccination.vaccine.brandWithType
+        )
+      description = `Vaccinated with ${prototypeFilters.formatList(administeredVaccinations)}`
+
       // If could not vaccinate, provide a description for why
       if (outcome === PatientOutcome.CouldNotVaccinate) {
         if (

@@ -42,33 +42,6 @@
     {% set statusDescriptionHtml %}
       {{ patientStatus(patientSession).description | nhsukMarkdown }}
 
-      {% for vaccination in patientSession.vaccinations %}
-        {{ summaryList({
-          rows: summaryRows(vaccination, {
-            vaccine_gtin: {},
-            outcome: {},
-            method: {},
-            site: {},
-            dose: {},
-            sequence: {},
-            batch_id: {},
-            createdAt: {},
-            createdBy: {},
-            updatedAt: {},
-            location: {},
-            protocol: {},
-            note: {}
-          })
-        }) }}
-        <p class="nhsuk-body">
-          {{ button({
-            classes: "app-button--secondary nhsuk-u-margin-0",
-            text: __("vaccination.edit.title"),
-            href: vaccination.uri + "/edit?referrer=" + patientSession.uri
-          }) }}
-        </p>
-      {% endfor %}
-
       {% if options.editTriage %}
         <p class="nhsuk-body">
           {{ button({
@@ -404,32 +377,70 @@
       }) }}
     {% endmacro %}
 
+    {% macro vaccinationRecordHtml(programme) %}
+      {% for vaccination in patientSession.vaccinations | where("programme_pid", programme.pid) %}
+        {{ summaryList({
+          rows: summaryRows(vaccination, {
+            vaccine_gtin: {},
+            outcome: {},
+            method: {},
+            site: {},
+            dose: {},
+            sequence: {},
+            batch_id: {},
+            createdAt: {},
+            createdBy: {},
+            updatedAt: {},
+            location: {},
+            protocol: {},
+            note: {}
+          })
+        }) }}
+        <p class="nhsuk-body">
+          {{ button({
+            classes: "app-button--secondary nhsuk-u-margin-0",
+            text: __("vaccination.edit.title"),
+            href: vaccination.uri + "/edit?referrer=" + patientSession.uri
+          }) }}
+        </p>
+      {% endfor %}
+    {% endmacro %}
+
     {% if session.programmes.length > 1 %}
-      {% set programmeItems = [] %}
+      {% set vaccinationTabItems = [] %}
       {% for programme in session.programmes %}
-        {% set programmeHtml %}
-          <form classes="nhsuk-u-margin-0" action="{{ patientSession.uri }}/new/pre-screen" method="post">
+        {% set vaccinationTabHtml %}
+          {% if options.showPreScreen[programme.pid] %}
+            <form classes="nhsuk-u-margin-0" action="{{ patientSession.uri }}/new/pre-screen" method="post">
+              <h2 class="nhsuk-heading-m">
+                {{ __("patientSession.preScreen.label", {
+                  vaccine: programme.vaccine
+                }) }}
+              </h2>
+              {{ preScreenDescriptionHtml(programme) }}
+            </form>
+          {% else %}
             <h2 class="nhsuk-heading-m">
-              {{ __("patientSession.preScreen.label", {
-                vaccine: programme.vaccine
-              }) }}
+              {{ __("patientSession.vaccination.label", {
+                programme: programme
+              }) | safe }}
             </h2>
-            {{ preScreenDescriptionHtml(programme) }}
-          </form>
+            {{ vaccinationRecordHtml(programme) }}
+          {% endif %}
         {% endset %}
 
-        {% set programmeItems = programmeItems | push({
+        {% set vaccinationTabItems = vaccinationTabItems | push({
           label: programme.name,
           id: programme.pid,
           panel: {
-            html: programmeHtml
+            html: vaccinationTabHtml
           }
         }) %}
       {% endfor %}
 
       {{ tabs({
-        items: programmeItems
-      }) if options.showPreScreen }}
+        items: vaccinationTabItems
+      }) }}
     {% else %}
       {% set programme = session.programmes[0] %}
       {{ card({
@@ -441,7 +452,13 @@
         attributes: {
           action: patientSession.uri + "/new/pre-screen"
         }
-      }) | formCard if options.showPreScreen }}
+      }) | formCard if options.showPreScreen[programme.pid] else card({
+        heading: __("patientSession.vaccination.label", {
+          programme: programme
+        }),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: vaccinationRecordHtml(programme)
+      }) }}
     {% endif %}
   </div>
 {% endblock %}

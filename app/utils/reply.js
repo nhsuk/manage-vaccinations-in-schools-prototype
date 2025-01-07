@@ -109,9 +109,10 @@ export const getConfirmedConsentOutcome = (reply) => {
  * Get consent outcome
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {string} [pid] - Programme PID
  * @returns {ConsentOutcome} Consent outcome
  */
-export const getConsentOutcome = (patientSession) => {
+export const getConsentOutcome = (patientSession, pid) => {
   const parentalRelationships = Object.values(ParentalRelationship)
 
   // Get valid replies
@@ -119,6 +120,11 @@ export const getConsentOutcome = (patientSession) => {
   let replies = Object.values(patientSession.replies).filter(
     (reply) => !reply.invalid
   )
+
+  // Filter by programme, if programme PID provided
+  if (pid) {
+    replies = replies.filter(({ programme_pid }) => programme_pid === pid)
+  }
 
   if (replies.length === 1) {
     // Check if request was delivered
