@@ -406,7 +406,7 @@
       {% endfor %}
     {% endmacro %}
 
-    {% if session.programmes.length > 1 %}
+    {% if options.showVaccinate and session.programmes.length > 1 %}
       {% set vaccinationTabItems = [] %}
       {% for programme in session.programmes %}
         {% set vaccinationTabHtml %}
@@ -441,7 +441,7 @@
       {{ tabs({
         items: vaccinationTabItems
       }) }}
-    {% else %}
+    {% elif options.showVaccinate %}
       {% set programme = session.programmes[0] %}
       {{ card({
         heading: __("patientSession.preScreen.label", {

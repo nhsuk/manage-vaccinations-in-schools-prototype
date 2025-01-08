@@ -1,6 +1,7 @@
 import { Gender } from '../models/child.js'
 import { Gillick } from '../models/gillick.js'
 import {
+  CaptureOutcome,
   ConsentOutcome,
   Jabs,
   PatientOutcome,
@@ -56,7 +57,8 @@ export const patientSessionController = {
       editRegistration:
         patientSession.consent === ConsentOutcome.Given &&
         patientSession.triage !== TriageOutcome.Needed &&
-        patientSession.outcome !== Jabs.All
+        patientSession.outcome !== Jabs.All,
+      showVaccinate: patientSession.capture !== CaptureOutcome.Register
     }
 
     response.locals.options.showPreScreen = {}
