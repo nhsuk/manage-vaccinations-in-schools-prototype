@@ -60,12 +60,24 @@ export const patientSessionController = {
     }
 
     response.locals.options.showPreScreen = {}
+    response.locals.preScreenItems = {}
 
-    for (const { pid } of patientSession.session.programmes) {
+    for (const { pid, vaccine } of patientSession.session.programmes) {
       response.locals.options.showPreScreen[pid] =
         patientSession.programmeOutcomes[pid] !== PatientOutcome.Vaccinated &&
         patientSession.programmeOutcomes[pid] !==
           PatientOutcome.CouldNotVaccinate
+
+      response.locals.preScreenItems[pid] = vaccine.preScreenQuestionKeys
+        .filter((value) =>
+          patientSession.patient.gender === Gender.Male
+            ? value !== 'isPregnant'
+            : value
+        )
+        .map((key) => ({
+          text: PreScreenQuestion[key],
+          value: key
+        }))
     }
 
     response.locals.injectionSiteItems = Object.entries(VaccinationSite)
@@ -80,18 +92,6 @@ export const patientSessionController = {
         text: VaccinationSite[key],
         value
       }))
-
-    response.locals.preScreenItems =
-      patientSession.session.preScreenQuestionKeys
-        .filter((value) =>
-          patientSession.patient.gender === Gender.Male
-            ? value !== 'isPregnant'
-            : value
-        )
-        .map((key) => ({
-          text: PreScreenQuestion[key],
-          value: key
-        }))
 
     response.locals.patientSession = patientSession
     response.locals.patient = patientSession.patient
