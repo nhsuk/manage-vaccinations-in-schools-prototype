@@ -317,11 +317,11 @@ export const en = {
     },
     [ConsentOutcome.Given]: {
       colour: 'aqua-green',
-      description: '{{patient.fullName}} is ready for the nurse.',
+      description: '{{patient.fullName}} is ready for the vaccinator.',
       icon: 'tick',
       label: 'Consent given',
       status: 'Consent given',
-      title: 'Ready for nurse',
+      title: 'Ready for vaccinator',
       count: {
         one: '%s child with consent given',
         other:
@@ -1110,7 +1110,7 @@ export const en = {
         [CaptureOutcome.NeedsTriage]:
           '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. A nurse needs to triage their record.',
         [CaptureOutcome.Vaccinate]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. They are ready for the nurse.',
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. They are ready for the vaccinator.',
         [CaptureOutcome.Register]:
           '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is absent from today’s session.',
         [RegistrationOutcome.Absent]:
@@ -1424,7 +1424,7 @@ export const en = {
       description:
         '{{user.fullName}} decided that {{patient.fullName}} is safe to vaccinate.',
       status: 'Safe to vaccinate',
-      title: 'Ready for nurse'
+      title: 'Ready for vaccinator'
     }
   },
   session: {
@@ -1576,7 +1576,7 @@ export const en = {
         'If the internet connection at the vaccination session is unreliable, you can record offline using a spreadsheet.\n\nYou need to download the blank spreadsheet ahead of the session while you still have internet access.\n\nTo upload a completed spreadsheet, go to the ‘Vaccinations’ area. You also need an internet connection to upload the spreadsheet.',
       confirm: 'Download spreadsheet',
       vaccinator: {
-        label: 'Administering nurse',
+        label: 'Vaccinator',
         firstName: 'First name',
         lastName: 'Last name'
       }
@@ -1984,8 +1984,8 @@ export const en = {
       hint: 'For example, 13 15'
     },
     createdBy: {
-      label: 'Nurse',
-      title: 'Which nurse gave the vaccination?'
+      label: 'Vaccinator',
+      title: 'Who was the vaccinator?'
     },
     updatedAt: {
       label: 'Record updated'
