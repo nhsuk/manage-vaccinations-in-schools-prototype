@@ -78,6 +78,7 @@ export function getConsentHealthAnswers(patientSession) {
       } else if (hasSameAnswers) {
         answers[key].All = value
       } else {
+        // TODO: Fix multiple consent responses for different programmes but from same parent getting merged.
         answers[key][relationship] = value
       }
     }
@@ -113,8 +114,9 @@ export const getConfirmedConsentOutcome = (reply) => {
 export const getConsentOutcome = (patientSession) => {
   const parentalRelationships = Object.values(ParentalRelationship)
 
-  // Get valid consent responses
-  const replies = Object.values(patientSession.replies).filter(
+  // Get valid replies
+  // Include undelivered replies so can return ConsentOutcome.NoRequest
+  let replies = Object.values(patientSession.replies).filter(
     (reply) => !reply.invalid
   )
 
@@ -127,14 +129,15 @@ export const getConsentOutcome = (patientSession) => {
     // Reply decision value matches consent outcome key
     return getConfirmedConsentOutcome(replies[0])
   } else if (replies.length > 1) {
-    const decisions = _.uniqBy(replies, 'decision')
-    const delivered = _.uniqBy(replies, 'delivered')
+    // Exclude undelivered replies so can return ConsentOutcome.NoRequest
+    replies = replies.filter((reply) => reply.delivered)
 
-    // Check if any requests were delivered
-    if (delivered.length === 0) {
+    // If no replies, no requests were delivered
+    if (replies.length === 0) {
       return ConsentOutcome.NoRequest
     }
 
+    const decisions = _.uniqBy(replies, 'decision')
     if (decisions.length > 1) {
       // If one of the replies is not from parent (so from child), use that
       const childReply = replies.find(

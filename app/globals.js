@@ -145,17 +145,17 @@ export default () => {
     // Get logged in user, else use placeholder
     const user = new User(data.token ? data.token : exampleUsers[0])
 
-    // Get replies
-    const replies = Object.values(patientSession.replies)
+    // Get valid consent responses
+    const replies = Object.values(patientSession.responses)
       .map((reply) => new Reply(reply))
       .filter((reply) => !reply.invalid)
 
     let colour
-    let description = false
-    const relationships = []
+    let description
     let title
 
     // Build list of reply relationships
+    const relationships = []
     for (const reply of replies) {
       relationships.push(reply.relationship || 'Parent or guardian')
     }
