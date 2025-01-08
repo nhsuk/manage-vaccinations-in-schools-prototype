@@ -7,6 +7,7 @@ import {
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient-session.js'
+import { Programme } from '../models/programme.js'
 
 /**
  * Get jabs (completed vaccinations against those needed)
@@ -15,17 +16,24 @@ import {
  * @returns {Jabs} Jabs
  */
 export const getJabs = (patientSession) => {
-  if (patientSession.administeredVaccinations.length === 0) {
-    return Jabs.None
-  } else if (
-    // TODO: Compare against eligible vaccinations, based on consent responses
-    patientSession.administeredVaccinations.length <
+  if (
+    patientSession.administeredVaccinations.length ===
     patientSession.session.programmes.length
   ) {
-    return Jabs.Some
+    // All vaccinations administered by the programme have been given
+    // TODO: Compare against eligible vaccinations, based on consent responses?
+    return Jabs.All
+  } else if (patientSession.administeredVaccinations.length === 1) {
+    // One of the vaccinations administered by the programme has been given
+    const vaccination = patientSession.administeredVaccinations[0]
+    const programme = Programme.read(
+      vaccination.programme_pid,
+      patientSession.context
+    )
+    return Jabs[programme.type]
   }
 
-  return Jabs.All
+  return Jabs.None
 }
 
 /**

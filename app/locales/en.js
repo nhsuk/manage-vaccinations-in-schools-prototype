@@ -846,29 +846,69 @@ export const en = {
     label: 'Session outcome',
     [Jabs.None]: {
       colour: 'grey',
-      label: 'Not vaccinated yet',
+      label: 'None given',
+      title: 'No vaccines given',
       count: {
-        one: '%s child not vaccinated yet',
+        one: '%s child not vaccinated',
+        other: '[0] No children not vaccinated|%s children not vaccinated'
+      }
+    },
+    [Jabs.Flu]: {
+      colour: 'aqua-green',
+      label: 'Flu given',
+      title: 'Flu vaccine given',
+      count: {
+        one: '%s child given flu vaccine',
+        other: '[0] No children given flu vaccine|%s children given flu vaccine'
+      }
+    },
+    [Jabs.HPV]: {
+      colour: 'aqua-green',
+      label: 'HPV given',
+      title: 'HPV vaccine given',
+      count: {
+        one: '%s child given HPV vaccine',
+        other: '[0] No children given HPV vaccine|%s children given HPV vaccine'
+      }
+    },
+    [Jabs.MenACWY]: {
+      colour: 'aqua-green',
+      label: 'MenACWY given',
+      title: 'MenACWY vaccine given',
+      count: {
+        one: '%s child given MenACWY vaccine',
         other:
-          '[0] No children not vaccinated yet|%s children not vaccinated yet yet'
+          '[0] No children given MenACWY vaccine|%s children given MenACWY vaccine'
+      }
+    },
+    [Jabs.TdIPV]: {
+      colour: 'aqua-green',
+      label: 'Td/IPV given',
+      title: 'Td/IPV vaccine given',
+      count: {
+        one: '%s child given Td/IPV vaccine',
+        other:
+          '[0] No children given Td/IPV vaccine|%s children given Td/IPV vaccine'
       }
     },
     [Jabs.Some]: {
       colour: 'aqua-green',
-      label: 'Partly vaccinated',
-      title: 'Partly vaccinated',
+      label: 'Some given',
+      title: 'Given some vaccines',
       count: {
         one: '%s child part vaccinated',
-        other: '[0] No children partly vaccinated|%s children partly vaccinated'
+        other:
+          '[0] No children given some vaccines|%s children given some vaccines'
       }
     },
     [Jabs.All]: {
       colour: 'green',
-      label: 'Fully vaccinated',
-      title: 'Fully vaccinated',
+      label: 'All given',
+      title: 'All vaccines given',
       count: {
-        one: '%s child vaccinated',
-        other: '[0] No children fully vaccinated|%s children fully vaccinated'
+        one: '%s child given all vaccines',
+        other:
+          '[0] No children given all vaccines|%s children given all vaccines'
       }
     }
   },

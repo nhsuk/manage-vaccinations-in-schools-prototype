@@ -92,11 +92,15 @@ export const PatientOutcome = {
  * @readonly
  * @enum {string}
  */
-export const Jabs = Object.freeze({
-  None: 'No outcome yet',
-  Some: 'Vaccinations in progress',
-  All: 'All vaccinations given'
-})
+export const Jabs = {
+  None: 'No vaccines given',
+  Flu: 'Flu vaccine given',
+  HPV: 'HPV vaccine given',
+  TdIPV: 'TdIPV vaccine given',
+  MenACWY: 'MenACWY vaccine given',
+  Some: 'Some vaccines given',
+  All: 'All vaccines given'
+}
 
 /**
  * @class Patient Session

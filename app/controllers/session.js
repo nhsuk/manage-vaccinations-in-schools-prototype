@@ -60,7 +60,13 @@ export const sessionController = {
   activity(request, response) {
     const { activity } = request.params
     let { tab } = request.query
-    const { __, patientSessions } = response.locals
+    const { __, patientSessions, session } = response.locals
+
+    const jabTabs = [Jabs.All]
+    for (const programme of session.programmes) {
+      jabTabs.push(Jabs[programme.type])
+    }
+    jabTabs.push(Jabs.None)
 
     let tabs = []
     switch (activity) {
@@ -102,7 +108,7 @@ export const sessionController = {
         break
       case 'jabs':
         tab = tab || Jabs.All
-        tabs = [Jabs.All, Jabs.Some, Jabs.None]
+        tabs = jabTabs
         break
     }
 
