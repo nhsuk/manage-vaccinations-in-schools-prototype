@@ -82,7 +82,9 @@
             {% set jabsCardDescriptionHtml %}
               <p>
                 {{ __n("jabs." + Jabs.None + ".count", patientSessions | where("jabs", Jabs.None) | length) }}<br>
-                {{ __n("jabs." + Jabs.Some + ".count", patientSessions | where("jabs", Jabs.Some) | length) }}<br>
+                {% for programme in session.programmes %}
+                  {{ __n("jabs." + Jabs[programme.type] + ".count", patientSessions | where("jabs", Jabs[programme.type]) | length) }}<br>
+                {% endfor %}
                 {{ __n("jabs." + Jabs.All + ".count", patientSessions | where("jabs", Jabs.All) | length) }}
               </p>
             {% endset %}
