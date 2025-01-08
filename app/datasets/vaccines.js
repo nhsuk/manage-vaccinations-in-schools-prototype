@@ -90,13 +90,7 @@ export default {
       'Immunosuppressant',
       'Support'
     ],
-    preScreenQuestionKeys: [
-      'isHappy',
-      'isVaccinated',
-      'isWell',
-      'isAllergic',
-      'isMedicated'
-    ]
+    preScreenQuestionKeys: ['isHappy', 'isWell', 'isAllergic', 'isMedicated']
   },
   // Menveo, Nimenrix and MenQuadfi
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1076053/Meningococcal-greenbook-chapter-22_17May2022.pdf
