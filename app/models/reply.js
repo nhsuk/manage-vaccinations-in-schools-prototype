@@ -127,6 +127,11 @@ export class Reply {
    * @returns {boolean} - Response was delivered
    */
   get delivered() {
+    // Only invites to give consent online can have delivery failures
+    if (this.method !== ReplyMethod.Website) {
+      return true
+    }
+
     const hasEmailGotEmail =
       this.parent?.email && this.parent?.emailStatus === EmailStatus.Delivered
     const wantsSmsGotSms =
