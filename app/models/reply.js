@@ -130,7 +130,8 @@ export class Reply {
     const hasEmailGotEmail =
       this.parent?.email && this.parent?.emailStatus === EmailStatus.Delivered
     const wantsSmsGotSms =
-      this.parent.sms === true && this.parent?.smsStatus === SmsStatus.Delivered
+      this.parent?.sms === true &&
+      this.parent?.smsStatus === SmsStatus.Delivered
 
     return hasEmailGotEmail || wantsSmsGotSms
   }
