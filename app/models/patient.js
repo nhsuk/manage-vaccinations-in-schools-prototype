@@ -69,7 +69,7 @@ export class Patient extends Record {
 
     // Add any new parents found in consent replies
     Object.values(this.replies).forEach(({ parent }) => {
-      if (!parents.has(parent.uuid)) {
+      if (parent && !parents.has(parent.uuid)) {
         parents.set(parent.uuid, new Parent(parent))
       }
     })
