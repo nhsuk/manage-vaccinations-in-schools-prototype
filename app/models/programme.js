@@ -38,6 +38,7 @@ export const programmeTypes = {
   [ProgrammeType.Flu]: {
     pid: 'flu',
     name: 'Flu',
+    active: false,
     information: {
       title: 'Flu',
       description: `The vaccine protects against flu, which can cause serious health problems.`,
@@ -53,6 +54,7 @@ export const programmeTypes = {
   [ProgrammeType.HPV]: {
     pid: 'hpv',
     name: 'HPV',
+    active: true,
     information: {
       title: 'Human papillomavirus (HPV)',
       description: `The HPV vaccine helps protect boys and girls against cancers caused by HPV, including:\n- cervical cancer\n- some mouth and throat (head and neck) cancers\n- some cancers of the anal and genital areas`,
@@ -68,6 +70,7 @@ export const programmeTypes = {
   [ProgrammeType.TdIPV]: {
     pid: 'td-ipv',
     name: 'Td/IPV',
+    active: true,
     information: {
       title: 'Td/IPV (3-in-1 teenage booster)',
       description:
@@ -83,6 +86,7 @@ export const programmeTypes = {
   [ProgrammeType.MenACWY]: {
     pid: 'menacwy',
     name: 'MenACWY',
+    active: true,
     information: {
       title: 'MenACWY',
       description:
@@ -103,6 +107,7 @@ export const programmeTypes = {
  * @param {object} [context] - Context
  * @property {object} [context] - Context
  * @property {string} name - Name
+ * @property {boolean} active - Active programme
  * @property {boolean} seasonal - Seasonal programme
  * @property {ProgrammeStatus} status - Status
  * @property {SchoolTerm} term - School term administered in
@@ -120,6 +125,7 @@ export class Programme {
     this.name = options?.type && programmeTypes[options.type]?.name
     this.information =
       options?.type && programmeTypes[options.type]?.information
+    this.active = options?.type && programmeTypes[options.type]?.active
     this.seasonal = options?.type && programmeTypes[options.type]?.seasonal
     this.term = options?.type && programmeTypes[options.type]?.term
     this.type = options?.type
