@@ -5,10 +5,10 @@ import { stringToBoolean } from '../utils/string.js'
  * @readonly
  * @enum {string}
  */
-export const GillickCompetent = Object.freeze({
+export const GillickCompetent = {
   True: 'Child assessed as Gillick competent',
   False: 'Child assessed as not Gillick competent'
-})
+}
 
 /**
  * @class Gillick assessment

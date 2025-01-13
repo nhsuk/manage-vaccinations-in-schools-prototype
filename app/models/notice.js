@@ -8,12 +8,12 @@ import { Patient } from './patient.js'
  * @readonly
  * @enum {string}
  */
-export const NoticeType = Object.freeze({
+export const NoticeType = {
   Deceased: 'Deceased',
   Hidden: 'Hidden',
   Invalid: 'Invalid',
   Sensitive: 'Sensitive'
-})
+}
 
 /**
  * @class Notice

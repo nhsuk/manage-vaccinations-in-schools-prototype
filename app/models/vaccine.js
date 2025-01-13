@@ -13,7 +13,7 @@ import { Batch } from './batch.js'
  * @readonly
  * @enum {string}
  */
-export const HealthQuestion = Object.freeze({
+export const HealthQuestion = {
   Aspirin: 'Does the child take regular aspirin?',
   Allergy: 'Does the child have any severe allergies?',
   Asthma: 'Has the child been diagnosed with asthma?',
@@ -36,13 +36,13 @@ export const HealthQuestion = Object.freeze({
   RecentFluVaccination:
     'Has the child had a flu vaccination in the last 5 months?',
   Support: 'Does the child need extra support during vaccination sessions?'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const PreScreenQuestion = Object.freeze({
+export const PreScreenQuestion = {
   isAllergic:
     'Has the child confirmed they have no allergies which would prevent vaccination?',
   isPregnant: 'Has the child confirmed they’re not pregnant?',
@@ -53,16 +53,16 @@ export const PreScreenQuestion = Object.freeze({
   isWell: 'Is the child is feeling well?',
   isHappy:
     'Does the child know what the vaccination is for, and are they happy to have it?'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const VaccineMethod = Object.freeze({
+export const VaccineMethod = {
   Nasal: 'Nasal spray',
   Injection: 'Injection'
-})
+}
 
 /**
  * @class Vaccine

@@ -20,37 +20,37 @@ import { User } from './user.js'
  * @readonly
  * @enum {string}
  */
-export const ReplyDecision = Object.freeze({
+export const ReplyDecision = {
   Given: 'Consent given',
   Refused: 'Consent refused',
   OnlyMenACWY: 'Consent given for MenACWY only',
   Only3in1: 'Consent given for 3-in-1 only',
   NoResponse: 'No response'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const ReplyMethod = Object.freeze({
+export const ReplyMethod = {
   Website: 'Online',
   Phone: 'By phone',
   Paper: 'Paper form',
   InPerson: 'In person'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const ReplyRefusal = Object.freeze({
+export const ReplyRefusal = {
   Gelatine: 'Vaccine contains gelatine',
   AlreadyGiven: 'Vaccine already received',
   GettingElsewhere: 'Vaccine will be given elsewhere',
   Medical: 'Medical reasons',
   Personal: 'Personal choice',
   Other: 'Other'
-})
+}
 
 /**
  * @class Reply

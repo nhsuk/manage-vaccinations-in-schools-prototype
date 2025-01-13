@@ -33,32 +33,32 @@ import { Vaccine } from './vaccine.js'
  * @readonly
  * @enum {string}
  */
-export const ConsentWindow = Object.freeze({
+export const ConsentWindow = {
   Opening: 'Opening',
   Open: 'Open',
   Closed: 'Closed',
   None: 'Session not scheduled'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const SessionStatus = Object.freeze({
+export const SessionStatus = {
   Unplanned: 'No sessions scheduled',
   Planned: 'Sessions scheduled',
   Completed: 'All sessions completed',
   Closed: 'Closed'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const SessionType = Object.freeze({
+export const SessionType = {
   School: 'School session',
   Clinic: 'Community clinic'
-})
+}
 
 /**
  * @class Session

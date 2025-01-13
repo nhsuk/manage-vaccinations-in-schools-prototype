@@ -27,7 +27,7 @@ import { Vaccine, VaccineMethod } from './vaccine.js'
  * @readonly
  * @enum {string}
  */
-export const VaccinationOutcome = Object.freeze({
+export const VaccinationOutcome = {
   Vaccinated: 'Vaccinated',
   PartVaccinated: 'Partially vaccinated',
   AlreadyVaccinated: 'Already had the vaccine',
@@ -38,33 +38,33 @@ export const VaccinationOutcome = Object.freeze({
   Unwell: 'Unwell',
   NoConsent: 'Unable to contact parent',
   LateConsent: 'Consent received too late'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const VaccinationMethod = Object.freeze({
+export const VaccinationMethod = {
   Nasal: 'Nasal spray',
   Intramuscular: 'Intramuscular (IM) injection',
   Subcutaneous: 'Subcutaneous injection'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const VaccinationSequence = Object.freeze({
+export const VaccinationSequence = {
   P1: 'First',
   P2: 'Second',
   P3: 'Third'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const VaccinationSite = Object.freeze({
+export const VaccinationSite = {
   Nose: 'Nose',
   ArmLeftUpper: 'Left arm (upper position)',
   ArmLeftLower: 'Left arm (lower position)',
@@ -73,15 +73,15 @@ export const VaccinationSite = Object.freeze({
   ThighLeft: 'Left thigh',
   ThighRight: 'Right thigh',
   Other: 'Other'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const VaccinationProtocol = Object.freeze({
+export const VaccinationProtocol = {
   PGD: 'Patient Group Directions'
-})
+}
 
 /**
  * @class Vaccination

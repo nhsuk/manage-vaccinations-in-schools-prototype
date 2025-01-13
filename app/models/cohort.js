@@ -8,9 +8,9 @@ import { Programme, ProgrammeType } from './programme.js'
  * @readonly
  * @enum {string}
  */
-export const AcademicYear = Object.freeze({
+export const AcademicYear = {
   Y2024: '2024/25'
-})
+}
 
 /**
  * @class Cohort

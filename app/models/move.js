@@ -8,12 +8,12 @@ import { formatDate, today } from '../utils/date.js'
  * @readonly
  * @enum {string}
  */
-export const MoveSource = Object.freeze({
+export const MoveSource = {
   Cohort: 'Cohort record',
   Consent: 'Consent response',
   School: 'Class list',
   External: 'Another SAIS team'
-})
+}
 
 /**
  * @class Move

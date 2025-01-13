@@ -9,20 +9,20 @@ import { Record } from './record.js'
  * @readonly
  * @enum {string}
  */
-export const SchoolPhase = Object.freeze({
+export const SchoolPhase = {
   Primary: 'Primary',
   Secondary: 'Secondary'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const SchoolTerm = Object.freeze({
+export const SchoolTerm = {
   Autumn: 'Autumn',
   Spring: 'Spring',
   Summer: 'Summer'
-})
+}
 
 export const schoolTerms = {
   [SchoolTerm.Autumn]: { from: '2024-09-03', to: '2024-12-13' },

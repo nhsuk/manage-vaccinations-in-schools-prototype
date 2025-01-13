@@ -14,12 +14,12 @@ import { Address } from './address.js'
  * @readonly
  * @enum {string}
  */
-export const Gender = Object.freeze({
+export const Gender = {
   Female: 'Female',
   Male: 'Male',
   NotKnown: 'Not known',
   NotSpecified: 'Not specified'
-})
+}
 
 /**
  * @class Child

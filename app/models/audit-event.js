@@ -9,7 +9,7 @@ import { User } from './user.js'
  * @readonly
  * @enum {string}
  */
-export const EventType = Object.freeze({
+export const EventType = {
   Select: 'Select',
   Invite: 'Invite',
   Remind: 'Remind',
@@ -18,7 +18,7 @@ export const EventType = Object.freeze({
   Capture: 'Capture',
   Record: 'Record',
   Notice: 'Notice'
-})
+}
 
 /**
  * @class Audit event

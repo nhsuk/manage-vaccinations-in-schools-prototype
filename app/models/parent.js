@@ -6,46 +6,46 @@ import { formatOther, formatParent, stringToBoolean } from '../utils/string.js'
  * @readonly
  * @enum {string}
  */
-export const ContactPreference = Object.freeze({
+export const ContactPreference = {
   None: 'No preference',
   Text: 'Text message',
   Call: 'Voice call',
   Other: 'Other'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const ParentalRelationship = Object.freeze({
+export const ParentalRelationship = {
   Mum: 'Mum',
   Dad: 'Dad',
   Guardian: 'Guardian',
   Other: 'Other',
   Unknown: 'Unknown'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const EmailStatus = Object.freeze({
+export const EmailStatus = {
   Delivered: 'Delivered',
   Permanent: 'Email address does not exist',
   Temporary: 'Inbox not accepting messages right now',
   Technical: 'Technical failure'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const SmsStatus = Object.freeze({
+export const SmsStatus = {
   Delivered: 'Delivered',
   Permanent: 'Not delivered',
   Temporary: 'Phone not accepting messages right now',
   Technical: 'Technical failure'
-})
+}
 
 /**
  * @class Parent

@@ -11,21 +11,21 @@ import { Vaccination } from './vaccination.js'
  * @readonly
  * @enum {string}
  */
-export const UploadType = Object.freeze({
+export const UploadType = {
   Cohort: 'Child records',
   School: 'Class list records',
   Report: 'Vaccination records'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const UploadStatus = Object.freeze({
+export const UploadStatus = {
   Processing: 'Processing',
   Complete: 'Completed',
   Invalid: 'Invalid'
-})
+}
 
 /**
  * @class Upload

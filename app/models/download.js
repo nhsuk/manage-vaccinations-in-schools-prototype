@@ -17,11 +17,11 @@ import { Vaccination } from './vaccination.js'
  * @readonly
  * @enum {string}
  */
-export const DownloadFormat = Object.freeze({
+export const DownloadFormat = {
   CSV: 'CSV',
   CarePlus: 'XLSX for CarePlus (System C)',
   SystmOne: 'XLSX for SystmOne (TPP)'
-})
+}
 
 /**
  * @class Vaccination report download

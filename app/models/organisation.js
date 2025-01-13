@@ -7,10 +7,10 @@ import { School } from './school.js'
  * @readonly
  * @enum {number}
  */
-export const OrganisationDefaults = Object.freeze({
+export const OrganisationDefaults = {
   SessionOpenWeeks: 3,
   SessionReminderWeeks: 1
-})
+}
 
 /**
  * @class Organisation

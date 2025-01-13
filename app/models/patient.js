@@ -18,10 +18,10 @@ import { Vaccination } from './vaccination.js'
  * @readonly
  * @enum {string}
  */
-export const PatientMovement = Object.freeze({
+export const PatientMovement = {
   In: 'Moved in',
   Out: 'Moved out'
-})
+}
 
 /**
  * @class Patient in-session record

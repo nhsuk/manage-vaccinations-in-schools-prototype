@@ -19,69 +19,69 @@ import { Session } from './session.js'
  * @readonly
  * @enum {string}
  */
-export const ConsentOutcome = Object.freeze({
+export const ConsentOutcome = {
   NoRequest: 'Request failed',
   NoResponse: 'No response',
   Inconsistent: 'Conflicting consent',
   Given: 'Consent given',
   Refused: 'Consent refused',
   FinalRefusal: 'Refusal confirmed'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const RegistrationOutcome = Object.freeze({
+export const RegistrationOutcome = {
   Pending: 'Not registered yet',
   Present: 'Attending today’s session',
   Absent: 'Absent from today’s session',
   Complete: 'Completed today’s session'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const TriageOutcome = Object.freeze({
+export const TriageOutcome = {
   Needed: 'Triage needed',
   Completed: 'Triage completed',
   NotNeeded: 'No triage needed'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const ScreenOutcome = Object.freeze({
+export const ScreenOutcome = {
   NeedsTriage: 'Needs triage',
   DelayVaccination: 'Delay vaccination',
   DoNotVaccinate: 'Do not vaccinate',
   Vaccinate: 'Safe to vaccinate'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const CaptureOutcome = Object.freeze({
+export const CaptureOutcome = {
   Register: 'Register attendance',
   GetConsent: 'Get consent',
   CheckRefusal: 'Check refusal',
   NeedsTriage: 'Triage',
   DoNotVaccinate: 'Do not vaccinate',
   Vaccinate: 'Vaccinate'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const PatientOutcome = Object.freeze({
+export const PatientOutcome = {
   NoOutcomeYet: 'No outcome yet',
   Vaccinated: 'Vaccinated',
   CouldNotVaccinate: 'Could not vaccinate'
-})
+}
 
 /**
  * @class Patient Session

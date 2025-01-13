@@ -6,11 +6,11 @@ import { formatLink, formatMonospace } from '../utils/string.js'
  * @readonly
  * @enum {string}
  */
-export const UserRole = Object.freeze({
+export const UserRole = {
   ClinicalAdmin: 'Nurse',
   DataAdmin: 'Data administrator',
   DataConsumer: 'Data consumer'
-})
+}
 
 /**
  * @class User

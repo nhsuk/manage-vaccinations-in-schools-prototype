@@ -17,22 +17,22 @@ import { Vaccine } from './vaccine.js'
  * @readonly
  * @enum {string}
  */
-export const ProgrammeStatus = Object.freeze({
+export const ProgrammeStatus = {
   Planned: 'Planned',
   Current: 'Current',
   Completed: 'Completed'
-})
+}
 
 /**
  * @readonly
  * @enum {string}
  */
-export const ProgrammeType = Object.freeze({
+export const ProgrammeType = {
   Flu: 'Flu',
   HPV: 'HPV',
   TdIPV: 'TdIPV',
   MenACWY: 'MenACWY'
-})
+}
 
 export const programmeTypes = {
   [ProgrammeType.Flu]: {
