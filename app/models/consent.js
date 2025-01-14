@@ -1,3 +1,5 @@
+import { formatLinkWithSecondaryText } from '../utils/string.js'
+
 import { Reply } from './reply.js'
 
 /**
@@ -5,6 +7,21 @@ import { Reply } from './reply.js'
  * @augments Reply
  */
 export class Consent extends Reply {
+  /**
+   * Get formatted links
+   *
+   * @returns {object} - Formatted links
+   */
+  get link() {
+    return {
+      summary: formatLinkWithSecondaryText(
+        this.uri,
+        this.parent.formatted.fullNameAndRelationship,
+        `for ${this.child.fullName}`
+      )
+    }
+  }
+
   /**
    * Get namespace
    *

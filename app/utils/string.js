@@ -185,7 +185,7 @@ export function formatNhsNumber(string) {
 export function formatParent(parent, includeTelephone = true) {
   if (!parent) return
 
-  let string = parent.fullName || 'Parent or guardian (name unknown)'
+  let string = parent.fullName || 'Parent or guardian'
 
   // Add relationship, if provided
   if (parent.fullName !== undefined && parent.relationship) {

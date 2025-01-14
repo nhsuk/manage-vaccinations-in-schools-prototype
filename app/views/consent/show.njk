@@ -1,0 +1,87 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("consent.show.title", consent.parent.formatted.fullName) %}
+
+{% block content %}
+  <div class="nhsuk-u-width-three-quarters">
+    {{ super() }}
+
+    {{ heading({
+      title: title
+    }) }}
+
+    {{ actionList({
+      items: [{
+        text: __("consent.match.label"),
+        href: "/consents/" + consent.uuid + "/match"
+      }, {
+        text: __("consent.invalidate.label"),
+        href: "/consents/" + consent.uuid + "/invalidate"
+      }, {
+        text: __("consent.add.label"),
+        href: "/consents/" + consent.uuid + "/add"
+      }]
+    }) }}
+
+    {{ card({
+      heading: __("consent.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(consent, {
+          createdAt: {},
+          method: {},
+          programme: {
+            value: tag({
+              classes: "nhsuk-tag--white",
+              text: consent.programme.name
+            })
+          },
+          decision: {},
+          refusalReason: {},
+          refusalReasonDetails: {}
+        })
+      })
+    }) }}
+
+    {{ card({
+      heading: __("parent.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(consent.parent, {
+          fullName: {},
+          relationship: {},
+          hasParentalResponsibility: {},
+          email: {},
+          tel: {},
+          contactPreference: {},
+          sms: {}
+        })
+      })
+    }) if consent.parent }}
+
+    {{ card({
+      heading: __("child.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(consent.child, {
+          fullName: {},
+          preferredFirstName: {},
+          preferredLastName: {},
+          dob: {},
+          address: {},
+          gpSurgery: {},
+          school: {}
+        })
+      })
+    }) if consent.child }}
+
+    {{ card({
+      heading: __("consent.healthAnswers.label"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        classes: "app-summary-list--full-width",
+        rows: healthAnswerRows(consent.healthAnswers)
+      })
+    }) if consent.healthAnswers }}
+  </div>
+{% endblock %}
