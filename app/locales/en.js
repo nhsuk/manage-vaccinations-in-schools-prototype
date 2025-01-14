@@ -382,6 +382,14 @@ export const en = {
       success:
         '[{{patient.fullName}}]({{patient.uri}})’s record created from a consent response from {{consent.parent.fullName}}'
     },
+    invalidate: {
+      label: 'Mark as invalid',
+      caption: 'Consent response from {{consent.fullName}}',
+      title: 'Mark response as invalid',
+      description: 'This operation cannot be undone.',
+      confirm: 'Mark response as invalid',
+      success: 'Consent response from {{consent.fullName}} marked as invalid'
+    },
     start: {
       title: {
         single: 'Give or refuse consent for a %s',
@@ -581,6 +589,9 @@ export const en = {
         RecentFluVaccination: false,
         Support: 'For example, they’re autistic, or extremely anxious'
       }
+    },
+    note: {
+      label: 'Notes'
     },
     confirmation: {
       title: {

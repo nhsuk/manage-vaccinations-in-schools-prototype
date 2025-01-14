@@ -45,6 +45,10 @@ export const consentController = {
     const { uuid } = request.params
     const view = request.params.view || 'show'
 
+    if (view === 'invalidate') {
+      response.locals.back = `/consents`
+    }
+
     if (view === 'link') {
       response.locals.back = `/consents/${uuid}/match`
     }
@@ -133,6 +137,21 @@ export const consentController = {
     consent.linkToPatient(patient, data)
 
     request.flash('success', __(`consent.add.success`, { consent, patient }))
+
+    response.redirect('/consents')
+  },
+
+  invalidate(request, response) {
+    const { note } = request.body.consent
+    const { data } = request.session
+    const { __, consent } = response.locals
+
+    consent.update({ invalid: true, note }, data)
+
+    // Clean up session data
+    delete data.consent
+
+    request.flash('success', __(`consent.invalidate.success`, { consent }))
 
     response.redirect('/consents')
   }
