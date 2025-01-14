@@ -11,6 +11,7 @@ router.all('/:uuid*', consentController.read)
 router.get('/:uuid/match', consentController.match)
 router.get('/:uuid/:view', consentController.show)
 
+router.post('/:uuid/invalidate', consentController.invalidate)
 router.post('/:uuid/link', consentController.link)
 router.post('/:uuid/add', consentController.add)
 
