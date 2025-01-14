@@ -21,6 +21,7 @@ export const consentController = {
     const { data } = request.session
 
     let consents = Consent.readAll(data)
+    consents = consents.filter((consent) => !consent.invalid)
 
     // Sort
     consents = _.sortBy(consents, 'createdAt')
@@ -309,5 +310,36 @@ export const consentController = {
     request.flash('success', __(`consent.add.success`, { consent, patient }))
 
     response.redirect('/consents')
+  },
+
+  readInvalidate(request, response, next) {
+    const { uuid } = request.params
+    const { data } = request.session
+
+    const consent = Consent.read(uuid, data)
+    response.locals.consent = consent
+
+    response.locals.back = `/consents/`
+
+    next()
+  },
+
+  showInvalidate(request, response) {
+    response.render('consent/invalidate')
+  },
+
+  updateInvalidate(request, response) {
+    const { note } = request.body.consent
+    const { data } = request.session
+    const { __, back, consent } = response.locals
+
+    consent.update({ invalid: true, note }, data)
+
+    // Clean up session data
+    delete data.consent
+
+    request.flash('success', __(`consent.invalidate.success`, { consent }))
+
+    response.redirect(back)
   }
 }

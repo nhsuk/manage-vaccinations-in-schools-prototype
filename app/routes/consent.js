@@ -17,6 +17,10 @@ router.all('/:uuid/add', consentController.readAdd)
 router.get('/:uuid/add', consentController.showAdd)
 router.post('/:uuid/add', consentController.updateAdd)
 
+router.all('/:uuid/invalidate', consentController.readInvalidate)
+router.get('/:uuid/invalidate', consentController.showInvalidate)
+router.post('/:uuid/invalidate', consentController.updateInvalidate)
+
 router.get('/:id/new', consentController.new)
 
 router.all(['/:id', '/:id*'], consentController.read)
