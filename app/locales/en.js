@@ -275,7 +275,6 @@ export const en = {
       one: '%s unmatched consent response',
       other: '[0] No unmatched consent responses|%s unmatched consent responses'
     },
-    summary: 'Details of child given in consent response',
     [ConsentOutcome.NoResponse]: {
       colour: 'grey',
       description: 'No-one responded to our requests for consent.',
@@ -360,6 +359,9 @@ export const en = {
       description:
         'Review incoming consent responses that can’t be automatically matched'
     },
+    show: {
+      title: 'Consent response from %s'
+    },
     match: {
       label: 'Match with record',
       title: 'Search for a child record to match with {{child.fullName}}',
@@ -385,7 +387,8 @@ export const en = {
       label: 'Mark as invalid',
       caption: 'Consent response from {{consent.fullName}}',
       title: 'Mark response as invalid',
-      description: 'This operation cannot be undone.',
+      description:
+        'The unmatched response will be hidden. This operation cannot be undone.',
       confirm: 'Mark response as invalid',
       success: 'Consent response from {{consent.fullName}} marked as invalid'
     },
@@ -591,6 +594,9 @@ export const en = {
     },
     note: {
       label: 'Notes'
+    },
+    summary: {
+      label: 'Response'
     },
     confirmation: {
       title: {

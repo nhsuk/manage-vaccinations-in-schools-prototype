@@ -1,5 +1,6 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 import _ from 'lodash'
+import { validate as isValidUUID } from 'uuid'
 
 import { generateChild } from '../generators/child.js'
 import { generateParent } from '../generators/parent.js'
@@ -21,7 +22,6 @@ export const consentController = {
     const { data } = request.session
 
     let consents = Consent.readAll(data)
-    consents = consents.filter((consent) => !consent.invalid)
 
     // Sort
     consents = _.sortBy(consents, 'createdAt')
@@ -94,8 +94,20 @@ export const consentController = {
   show(request, response) {
     const { session } = request.app.locals
     const { view } = request.params
+    const { data } = request.session
 
-    // Service homepage should show closed message if deadline has passed
+    // Show unmatched consent
+    if (isValidUUID(view)) {
+      return response.render('consent/show', {
+        back: '/consents',
+        consent: Consent.read(view, data),
+        public: false,
+        transactionalService: false
+      })
+    }
+
+    // Show service homepage
+    // Should show closed message if deadline has passed
     if (!view) {
       return response.render(
         session.consentWindow === ConsentWindow.Closed
