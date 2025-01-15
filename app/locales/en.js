@@ -384,13 +384,13 @@ export const en = {
         '[{{patient.fullName}}]({{patient.uri}})’s record created from a consent response from {{consent.parent.fullName}}'
     },
     invalidate: {
-      label: 'Mark as invalid',
+      label: 'Archive',
       caption: 'Consent response from {{consent.fullName}}',
-      title: 'Mark response as invalid',
+      title: 'Archive response',
       description:
         'The unmatched response will be hidden. This operation cannot be undone.',
-      confirm: 'Mark response as invalid',
-      success: 'Consent response from {{consent.fullName}} marked as invalid'
+      confirm: 'Archive response',
+      success: 'Consent response from {{consent.fullName}} archived'
     },
     start: {
       title: {
