@@ -73,9 +73,9 @@ export const consentController = {
     response.redirect(`${consent.uri}/new/child`)
   },
 
-  match(request, response) {
+  readMatches(request, response, next) {
     const { uuid } = request.params
-    let { page, limit } = request.query
+    let { page, limit, q } = request.query
     const { data } = request.session
 
     let patients = Patient.readAll(data)
@@ -85,14 +85,40 @@ export const consentController = {
 
     // Paginate
     page = parseInt(page) || 1
-    limit = parseInt(limit) || 200
+    limit = parseInt(limit) || 50
+
+    // Query
+    if (q) {
+      patients = patients.filter((patient) =>
+        patient.tokenized.includes(String(q).toLowerCase())
+      )
+    }
+
+    // Clean up session data
+    delete data.q
 
     response.locals.consent = Consent.read(uuid, data)
     response.locals.patients = patients
     response.locals.results = getResults(patients, page, limit)
     response.locals.pages = getPagination(patients, page, limit)
 
-    response.render('consent/match')
+    next()
+  },
+
+  updateMatches(request, response) {
+    const { q } = request.body
+    const { consent } = response.locals
+
+    // Update query
+    const params = {}
+    if (q) {
+      params.q = String(q)
+    }
+
+    // @ts-ignore
+    const queryString = new URLSearchParams(params).toString()
+
+    response.redirect(`${consent.uri}/match?${queryString}`)
   },
 
   link(request, response) {
