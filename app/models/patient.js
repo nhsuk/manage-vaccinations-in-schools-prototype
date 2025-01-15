@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import _ from 'lodash'
 
 import { getDateValueDifference, removeDays, today } from '../utils/date.js'
+import { tokenize } from '../utils/object.js'
 import { getPreferredNames } from '../utils/reply.js'
 import { formatLink, formatParent } from '../utils/string.js'
 
@@ -219,6 +220,27 @@ export class Patient extends Record {
             ${this.formatted.yearGroup}
           </span>`
     }
+  }
+
+  /**
+   * Get tokenised values (to use in search queries)
+   *
+   * @returns {string} - Tokens
+   */
+  get tokenized() {
+    const parentTokens = []
+    for (const parent of this.parents) {
+      parentTokens.push(tokenize(parent, ['fullName', 'tel', 'email']))
+    }
+
+    const childTokens = tokenize(this, [
+      'nhsn',
+      'fullName',
+      'postalCode',
+      'school.name'
+    ])
+
+    return [childTokens, parentTokens].join(' ')
   }
 
   /**

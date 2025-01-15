@@ -259,6 +259,9 @@ export const en = {
     address: {
       label: 'Home address'
     },
+    postalCode: {
+      label: 'Postcode'
+    },
     school: {
       label: 'School'
     },
@@ -356,7 +359,7 @@ export const en = {
       }
     },
     list: {
-      label: 'Responses',
+      label: 'Unmatched responses',
       title: 'Unmatched consent responses',
       description:
         'Review incoming consent responses that can’t be automatically matched'
@@ -365,7 +368,7 @@ export const en = {
       title: 'Consent response from %s'
     },
     match: {
-      label: 'Match with record',
+      label: 'Match',
       title: 'Search for a child record to match with {{child.fullName}}',
       caption: 'Consent response from {{parent.formatted.fullName}}'
     },
@@ -378,7 +381,7 @@ export const en = {
         'Consent response from {{consent.parent.fullName}} linked to [{{patient.fullName}}]({{patient.uri}})’s record'
     },
     add: {
-      label: 'Create record',
+      label: 'Create new record',
       title: 'Create a new child record from this consent response?',
       caption: 'Consent response from {{parent.fullName}}',
       confirm: 'Create a new record from response',
@@ -934,11 +937,14 @@ export const en = {
       other: '%s children'
     },
     filter: {
-      label: 'Filter children',
+      label: 'Find children',
       options: 'Options',
+      q: 'Search',
       name: 'Name',
+      dob: 'Child’s date of birth',
       hasMissingNhsNumber: 'Missing NHS number',
-      confirm: 'Update children',
+      advanced: 'Advanced filters',
+      confirm: 'Update list',
       clear: 'Clear filters'
     },
     nhsn: {
