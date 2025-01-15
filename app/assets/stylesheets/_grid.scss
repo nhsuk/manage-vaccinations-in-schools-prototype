@@ -1,0 +1,6 @@
+.app-grid-column--sticky {
+  @include mq($from: desktop) {
+    position: sticky;
+    top: 0;
+  }
+}

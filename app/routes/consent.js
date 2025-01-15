@@ -7,7 +7,9 @@ const router = express.Router({ strict: true })
 router.all('/*', consentController.readAll)
 router.get('/', consentController.showAll)
 
+router.all('/:uuid/match', consentController.readMatch)
 router.get('/:uuid/match', consentController.showMatch)
+router.post('/:uuid/match', consentController.updateMatch)
 
 router.all('/:uuid/link', consentController.readLink)
 router.get('/:uuid/link', consentController.showLink)

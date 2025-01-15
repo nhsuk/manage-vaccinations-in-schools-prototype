@@ -98,6 +98,14 @@ export default (env) => {
     return a
   }
 
+  filters.highlightQuery = (string, query) => {
+    if (!string || !query) return string
+
+    const regex = new RegExp(`(${query})`, 'gi')
+
+    return string.replace(regex, (match, p1) => formatHighlight(p1))
+  }
+
   /**
    * Format markdown
    *

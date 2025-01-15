@@ -55,6 +55,20 @@ export class Consent extends Reply {
   }
 
   /**
+   * Read
+   *
+   * @param {string} uuid - Reply UUID
+   * @param {object} context - Context
+   * @returns {Reply|undefined} Reply
+   * @static
+   */
+  static read(uuid, context) {
+    if (context?.replies) {
+      return new Consent(context.replies[uuid], context)
+    }
+  }
+
+  /**
    * Link consent with patient record
    *
    * @param {import('./patient.js').Patient} patient - Patient
