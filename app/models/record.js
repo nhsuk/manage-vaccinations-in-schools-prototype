@@ -85,6 +85,18 @@ export class Record extends Child {
   }
 
   /**
+   * Get parent names
+   *
+   * @returns {string} - Parent names
+   */
+  get parentNames() {
+    return (
+      this.parents &&
+      this.parents.map((parent) => formatParent(parent, false)).join('\n')
+    )
+  }
+
+  /**
    * Get vaccinations
    *
    * @returns {Array<Vaccination>} - Vaccinations
@@ -126,7 +138,8 @@ export class Record extends Child {
         schools[this.pendingChanges.school_urn].name,
       parent1: this.parent1 && formatParent(this.parent1),
       parent2: this.parent2 && formatParent(this.parent2),
-      parents: formatList(formattedParents)
+      parents: formatList(formattedParents),
+      parentNames: this.parentNames.replace('\n', '<br>')
     }
   }
 
