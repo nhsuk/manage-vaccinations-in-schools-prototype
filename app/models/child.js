@@ -178,6 +178,17 @@ export class Child {
   }
 
   /**
+   * Get school name
+   *
+   * @returns {string|undefined} - School name
+   */
+  get schoolName() {
+    if (this.school) {
+      return this.school.name
+    }
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values
