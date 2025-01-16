@@ -1,3 +1,5 @@
+import { formatLinkWithSecondaryText } from '../utils/string.js'
+
 import { Reply } from './reply.js'
 
 /**
@@ -5,6 +7,21 @@ import { Reply } from './reply.js'
  * @augments Reply
  */
 export class Consent extends Reply {
+  /**
+   * Get formatted links
+   *
+   * @returns {object} - Formatted links
+   */
+  get link() {
+    return {
+      summary: formatLinkWithSecondaryText(
+        this.uri,
+        this.parent.formatted.fullNameAndRelationship,
+        `for ${this.child.fullName}`
+      )
+    }
+  }
+
   /**
    * Get namespace
    *
@@ -21,6 +38,34 @@ export class Consent extends Reply {
    */
   get uri() {
     return `/consents/${this.session_id}/${this.uuid}`
+  }
+
+  /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Reply>|undefined} Replies
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.replies)
+      .map((reply) => new Consent(reply, context))
+      .filter((consent) => !consent.invalid)
+      .filter((consent) => !consent.patient_uuid)
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} uuid - Reply UUID
+   * @param {object} context - Context
+   * @returns {Reply|undefined} Reply
+   * @static
+   */
+  static read(uuid, context) {
+    if (context?.replies) {
+      return new Consent(context.replies[uuid], context)
+    }
   }
 
   /**

@@ -1,5 +1,6 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 import _ from 'lodash'
+import { validate as isValidUUID } from 'uuid'
 
 import { generateChild } from '../generators/child.js'
 import { generateParent } from '../generators/parent.js'
@@ -93,8 +94,20 @@ export const consentController = {
   show(request, response) {
     const { session } = request.app.locals
     const { view } = request.params
+    const { data } = request.session
 
-    // Service homepage should show closed message if deadline has passed
+    // Show unmatched consent
+    if (isValidUUID(view)) {
+      return response.render('consent/show', {
+        back: '/consents',
+        consent: Consent.read(view, data),
+        public: false,
+        transactionalService: false
+      })
+    }
+
+    // Show service homepage
+    // Should show closed message if deadline has passed
     if (!view) {
       return response.render(
         session.consentWindow === ConsentWindow.Closed
@@ -221,9 +234,9 @@ export const consentController = {
     response.redirect(paths.next)
   },
 
-  showMatch(request, response) {
+  readMatch(request, response, next) {
     const { uuid } = request.params
-    let { page, limit } = request.query
+    let { page, limit, q } = request.query
     const { data } = request.session
 
     let patients = Patient.readAll(data)
@@ -233,14 +246,44 @@ export const consentController = {
 
     // Paginate
     page = parseInt(page) || 1
-    limit = parseInt(limit) || 200
+    limit = parseInt(limit) || 50
+
+    // Query
+    if (q) {
+      patients = patients.filter((patient) =>
+        patient.tokenized.includes(String(q).toLowerCase())
+      )
+    }
+
+    // Clean up session data
+    delete data.q
 
     response.locals.consent = Consent.read(uuid, data)
     response.locals.patients = patients
     response.locals.results = getResults(patients, page, limit)
     response.locals.pages = getPagination(patients, page, limit)
 
+    next()
+  },
+
+  showMatch(request, response) {
     response.render('consent/match')
+  },
+
+  updateMatch(request, response) {
+    const { q } = request.body
+    const { uuid } = request.params
+
+    // Update query
+    const params = {}
+    if (q) {
+      params.q = String(q)
+    }
+
+    // @ts-ignore
+    const queryString = new URLSearchParams(params).toString()
+
+    response.redirect(`/consents/${uuid}/match?${queryString}`)
   },
 
   readLink(request, response, next) {
@@ -309,5 +352,36 @@ export const consentController = {
     request.flash('success', __(`consent.add.success`, { consent, patient }))
 
     response.redirect('/consents')
+  },
+
+  readInvalidate(request, response, next) {
+    const { uuid } = request.params
+    const { data } = request.session
+
+    const consent = Consent.read(uuid, data)
+    response.locals.consent = consent
+
+    response.locals.back = `/consents/`
+
+    next()
+  },
+
+  showInvalidate(request, response) {
+    response.render('consent/invalidate')
+  },
+
+  updateInvalidate(request, response) {
+    const { note } = request.body.consent
+    const { data } = request.session
+    const { __, back, consent } = response.locals
+
+    consent.update({ invalid: true, note }, data)
+
+    // Clean up session data
+    delete data.consent
+
+    request.flash('success', __(`consent.invalidate.success`, { consent }))
+
+    response.redirect(back)
   }
 }

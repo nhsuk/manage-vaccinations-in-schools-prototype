@@ -14,16 +14,12 @@
   {% for consent in results.page %}
     {% set consentRows = consentRows | push([
       {
+        header: __("consent.summary.label"),
+        html: consent.link.summary
+      },
+      {
         header: __("consent.createdAt.label"),
-        text: consent.formatted.createdAt
-      },
-      {
-        header: __("consent.child.label"),
-        text: consent.child.fullName
-      },
-      {
-        header: __("consent.parent.label"),
-        text: consent.parent.formatted.fullName
+        text: consent.formatted.createdAt_date
       },
       {
         header: __("actions.label"),
@@ -32,8 +28,8 @@
             text: __("consent.match.label"),
             href: "/consents/" + consent.uuid + "/match"
           }, {
-            text: __("consent.add.label"),
-            href: "/consents/" + consent.uuid + "/add"
+            text: __("consent.invalidate.label"),
+            href: "/consents/" + consent.uuid + "/invalidate"
           }]
         })
       }
@@ -49,13 +45,10 @@
       responsive: true,
       head: [
         {
+          text: __("consent.summary.label") or "Not provided"
+        },
+        {
           text: __("consent.createdAt.label") or "Not provided"
-        },
-        {
-          text: __("consent.child.label") or "Not provided"
-        },
-        {
-          text: __("consent.parent.label") or "Not provided"
         },
         {
           text: __("actions.label")

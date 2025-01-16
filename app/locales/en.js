@@ -259,6 +259,9 @@ export const en = {
     address: {
       label: 'Home address'
     },
+    postalCode: {
+      label: 'Postcode'
+    },
     school: {
       label: 'School'
     },
@@ -275,7 +278,6 @@ export const en = {
       one: '%s unmatched consent response',
       other: '[0] No unmatched consent responses|%s unmatched consent responses'
     },
-    summary: 'Details of child given in consent response',
     [ConsentOutcome.NoResponse]: {
       colour: 'grey',
       description: 'No-one responded to our requests for consent.',
@@ -355,13 +357,16 @@ export const en = {
       }
     },
     list: {
-      label: 'Responses',
+      label: 'Unmatched responses',
       title: 'Unmatched consent responses',
       description:
         'Review incoming consent responses that can’t be automatically matched'
     },
+    show: {
+      title: 'Consent response from %s'
+    },
     match: {
-      label: 'Match with record',
+      label: 'Match',
       title: 'Search for a child record to match with {{child.fullName}}',
       caption: 'Consent response from {{parent.formatted.fullName}}'
     },
@@ -374,12 +379,21 @@ export const en = {
         'Consent response from {{consent.parent.fullName}} linked to [{{patient.fullName}}]({{patient.uri}})’s record'
     },
     add: {
-      label: 'Create record',
+      label: 'Create new record',
       title: 'Create a new child record from this consent response?',
       caption: 'Consent response from {{parent.fullName}}',
       confirm: 'Create a new record from response',
       success:
         '[{{patient.fullName}}]({{patient.uri}})’s record created from a consent response from {{consent.parent.fullName}}'
+    },
+    invalidate: {
+      label: 'Archive',
+      caption: 'Consent response from {{consent.fullName}}',
+      title: 'Archive response',
+      description:
+        'The unmatched response will be hidden. This operation cannot be undone.',
+      confirm: 'Archive response',
+      success: 'Consent response from {{consent.fullName}} archived'
     },
     start: {
       title: {
@@ -580,6 +594,12 @@ export const en = {
         RecentFluVaccination: false,
         Support: 'For example, they’re autistic, or extremely anxious'
       }
+    },
+    note: {
+      label: 'Notes'
+    },
+    summary: {
+      label: 'Response'
     },
     confirmation: {
       title: {
@@ -915,11 +935,13 @@ export const en = {
       other: '%s children'
     },
     filter: {
-      label: 'Filter children',
+      label: 'Search',
       options: 'Options',
+      q: 'Search records',
       name: 'Name',
       hasMissingNhsNumber: 'Missing NHS number',
-      confirm: 'Update children',
+      advanced: 'Advanced filters',
+      confirm: 'Update search results',
       clear: 'Clear filters'
     },
     nhsn: {

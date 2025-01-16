@@ -1,0 +1,22 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonClasses = "nhsuk-button--warning" %}
+{% set confirmButtonText = __("consent.invalidate.confirm") %}
+{% set title = __("consent.invalidate.title") %}
+
+{% block form %}
+  {{ heading({
+    caption: __("consent.invalidate.caption", { consent: consent }),
+    title: title
+  }) }}
+
+  {{ __("consent.invalidate.description") | nhsukMarkdown }}
+
+  {{ textarea({
+    label: {
+      classes: "nhsuk-label--m nhsuk-u-margin-bottom-2",
+      text: __("consent.note.label")
+    },
+    decorate: "consent.note"
+  }) }}
+{% endblock %}

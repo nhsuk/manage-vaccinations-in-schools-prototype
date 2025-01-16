@@ -7,7 +7,9 @@ const router = express.Router({ strict: true })
 router.all('/*', consentController.readAll)
 router.get('/', consentController.showAll)
 
+router.all('/:uuid/match', consentController.readMatch)
 router.get('/:uuid/match', consentController.showMatch)
+router.post('/:uuid/match', consentController.updateMatch)
 
 router.all('/:uuid/link', consentController.readLink)
 router.get('/:uuid/link', consentController.showLink)
@@ -16,6 +18,10 @@ router.post('/:uuid/link', consentController.updateLink)
 router.all('/:uuid/add', consentController.readAdd)
 router.get('/:uuid/add', consentController.showAdd)
 router.post('/:uuid/add', consentController.updateAdd)
+
+router.all('/:uuid/invalidate', consentController.readInvalidate)
+router.get('/:uuid/invalidate', consentController.showInvalidate)
+router.post('/:uuid/invalidate', consentController.updateInvalidate)
 
 router.get('/:id/new', consentController.new)
 
