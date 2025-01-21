@@ -191,6 +191,12 @@
     }) if options.showGillick }}
 
     {% set consentDescriptionHtml %}
+      {{ status({
+        colour: "blue",
+        icon: "warning",
+        text: __("session.consents.warning")
+      }) if patientSession.session.consents.length != 0 }}
+
       {% if patientSession.responses.length %}
         {{ status({
           text: __("consent." + patientSession.consent + ".status"),

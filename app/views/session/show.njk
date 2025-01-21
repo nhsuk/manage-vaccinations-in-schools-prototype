@@ -42,6 +42,17 @@
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-two-thirds">
       <ul class="nhsuk-grid-row nhsuk-card-group">
+        {% if unmatchedResponses.length %}
+          <li class="nhsuk-grid-column-full nhsuk-card-group__item">
+            {{ card({
+              clickable: true,
+              heading: "Match consent responses",
+              headingClasses: "nhsuk-heading-m",
+              href: session.uri + "/consents",
+              description: __n("consent.count", unmatchedResponses.length)
+            }) }}
+          </li>
+        {% endif %}
         {% if session.status == SessionStatus.Unplanned %}
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {{ card({
