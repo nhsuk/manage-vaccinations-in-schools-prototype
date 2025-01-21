@@ -3,18 +3,6 @@
 {% set dateOfBirth = true %}
 {% set title = __("consent.match.title", { child: consent.child }) %}
 
-{% block beforeContent %}
-  {{ breadcrumb({
-    items: [{
-      text: __("home.show.title"),
-      href: "/"
-    }, {
-      text: __("consent.list.title"),
-      href: "/consents"
-    }]
-  }) }}
-{% endblock %}
-
 {% block content %}
   {{ super() }}
 
@@ -65,10 +53,10 @@
           })
         }) }}
 
-        {{ link(consent.uri, "View full consent response") | nhsukMarkdown }}
+        {{ link(consentPath, "View full consent response") | nhsukMarkdown }}
 
         {{ button({
-          href: "/consents/" + consent.uuid + "/add",
+          href: consentPath + "/add",
           classes: "app-button--secondary",
           text: __("consent.add.label")
         }) }}
@@ -105,7 +93,7 @@
             heading: patient.fullName,
             headingClasses: "nhsuk-heading-s",
             clickable: true,
-            href: "/consents/" + consent.uuid + "/link?nhsn=" + patient.nhsn,
+            href: consentPath + "/link?nhsn=" + patient.nhsn,
             descriptionHtml: summaryList({
               rows: summaryRows(patient, {
                 dob: {},

@@ -3,10 +3,12 @@ import _ from 'lodash'
 import { Consent } from '../models/consent.js'
 import { PatientSession } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
+import { Session } from '../models/session.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const consentController = {
   readAll(request, response, next) {
+    const { id } = request.params
     let { page, limit } = request.query
     const { data } = request.session
 
@@ -19,9 +21,17 @@ export const consentController = {
     page = parseInt(page) || 1
     limit = parseInt(limit) || 100
 
+    // Session consents
+    if (id) {
+      const session = Session.read(id, data)
+      consents = session.consents
+      response.locals.session = session
+    }
+
     response.locals.consents = consents
     response.locals.results = getResults(consents, page, limit)
     response.locals.pages = getPagination(consents, page, limit)
+    response.locals.rootPath = id ? `/sessions/${id}/consents` : '/consents'
 
     next()
   },
@@ -31,27 +41,25 @@ export const consentController = {
   },
 
   read(request, response, next) {
-    const { uuid } = request.params
+    const { id, uuid } = request.params
     const { nhsn } = request.query
-    const { data } = request.session
+    const { data, referrer } = request.session
 
-    response.locals.consent = Consent.read(uuid, data)
+    const back = id ? `/sessions/${id}/consents` : ''
+    const consent = Consent.read(uuid, data)
+
+    response.locals.back = referrer || back
+    response.locals.consent = consent
     response.locals.patient = Patient.read(nhsn, data)
+    response.locals.consentPath = id
+      ? `/sessions/${id}${consent.uri}`
+      : consent.uri
 
     next()
   },
 
   show(request, response) {
-    const { uuid } = request.params
     const view = request.params.view || 'show'
-
-    if (view === 'invalidate') {
-      response.locals.back = `/consents`
-    }
-
-    if (view === 'link') {
-      response.locals.back = `/consents/${uuid}/match`
-    }
 
     response.render(`consent/${view}`)
   },
@@ -123,19 +131,19 @@ export const consentController = {
 
   link(request, response) {
     const { data } = request.session
-    const { __, consent, patient } = response.locals
+    const { __, consent, patient, rootPath } = response.locals
 
     // Link consent with patient record
     consent.linkToPatient(patient, data)
 
     request.flash('success', __(`consent.link.success`, { consent, patient }))
 
-    response.redirect('/consents')
+    response.redirect(rootPath)
   },
 
   add(request, response) {
     const { data } = request.session
-    const { __, consent } = response.locals
+    const { __, consent, rootPath } = response.locals
 
     // Create and add patient
     const patient = new Patient(consent.child)
@@ -164,13 +172,13 @@ export const consentController = {
 
     request.flash('success', __(`consent.add.success`, { consent, patient }))
 
-    response.redirect('/consents')
+    response.redirect(rootPath)
   },
 
   invalidate(request, response) {
     const { note } = request.body.consent
     const { data } = request.session
-    const { __, consent } = response.locals
+    const { __, consent, rootPath } = response.locals
 
     consent.update({ invalid: true, note }, data)
 
@@ -179,6 +187,6 @@ export const consentController = {
 
     request.flash('success', __(`consent.invalidate.success`, { consent }))
 
-    response.redirect('/consents')
+    response.redirect(rootPath)
   }
 }

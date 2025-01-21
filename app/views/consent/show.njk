@@ -1,6 +1,7 @@
 {% extends "_layouts/default.njk" %}
 
 {% set title = __("consent.show.title", consent.parent.formatted.fullName) %}
+{% set paths = { back: rootPath } %}
 
 {% block content %}
   <div class="nhsuk-u-width-three-quarters">
@@ -13,13 +14,13 @@
     {{ actionList({
       items: [{
         text: __("consent.match.label"),
-        href: "/consents/" + consent.uuid + "/match"
+        href: consentPath + "/match?referrer=" + consentPath
       }, {
         text: __("consent.add.label"),
-        href: "/consents/" + consent.uuid + "/add"
+        href: consentPath + "/add?referrer=" + consentPath
       }, {
         text: __("consent.invalidate.label"),
-        href: "/consents/" + consent.uuid + "/invalidate"
+        href: consentPath + "/invalidate?referrer=" + consentPath
       }]
     }) }}
 

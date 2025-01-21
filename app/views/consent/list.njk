@@ -2,11 +2,26 @@
 
 {% set title = __("consent.list.title") %}
 
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("session.list.title"),
+      href: "/sessions"
+    }, {
+      text: session.location.name,
+      href: "/sessions/" + session.id
+    }]
+  }) if session }}
+{% endblock %}
+
 {% block content %}
   {{ super() }}
 
   {{ heading({
-    size: "xl",
+    size: "l" if session else "xl",
     title: title
   }) }}
 
@@ -15,7 +30,7 @@
     {% set consentRows = consentRows | push([
       {
         header: __("consent.summary.label"),
-        html: consent.link.summary
+        html: consent.link.summary | replace("/consents", rootPath)
       },
       {
         header: __("consent.createdAt.label"),
@@ -26,10 +41,10 @@
         html: actionList({
           items: [{
             text: __("consent.match.label"),
-            href: "/consents/" + consent.uuid + "/match"
+            href: rootPath + "/" + consent.uuid + "/match?referrer=" + rootPath
           }, {
             text: __("consent.invalidate.label"),
-            href: "/consents/" + consent.uuid + "/invalidate"
+            href: rootPath + "/" + consent.uuid + "/invalidate?referrer=" + rootPath
           }]
         })
       }

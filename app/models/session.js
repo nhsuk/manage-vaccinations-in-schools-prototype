@@ -23,6 +23,7 @@ import {
 
 import { Batch } from './batch.js'
 import { Clinic } from './clinic.js'
+import { Consent } from './consent.js'
 import { OrganisationDefaults } from './organisation.js'
 import { PatientSession } from './patient-session.js'
 import { Programme } from './programme.js'
@@ -206,6 +207,17 @@ export class Session {
     if (this.lastDate) {
       return removeDays(this.lastDate, 1)
     }
+  }
+
+  /**
+   * Get consents (unmatched consent responses)
+   *
+   * @returns {Array<import('./consent.js').Consent>} - Consent
+   */
+  get consents() {
+    return Consent.readAll(this.context).filter(
+      ({ session_id }) => session_id === this.id
+    )
   }
 
   /**
