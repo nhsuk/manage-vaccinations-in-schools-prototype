@@ -1,4 +1,5 @@
 import { Batch } from '../models/batch.js'
+import { Consent } from '../models/consent.js'
 import {
   CaptureOutcome,
   ConsentOutcome,
@@ -134,6 +135,10 @@ export const sessionController = {
         (batch) => batch.vaccine.gtin === gtin
       )
     }
+
+    response.locals.unmatchedResponses = Consent.readAll(data).filter(
+      (consent) => consent.session_id === id
+    )
 
     response.locals.patientSessions = patientSessions
 

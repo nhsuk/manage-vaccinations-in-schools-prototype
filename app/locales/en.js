@@ -1141,6 +1141,9 @@ export const en = {
         [RegistrationOutcome.Absent]:
           '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is absent from today’s session.'
       }
+    },
+    vaccinate: {
+      label: 'Vaccinate'
     }
   },
   programme: {
@@ -1522,6 +1525,9 @@ export const en = {
             '[0] No locations with closed sessions|%s locations with closed sessions'
         }
       }
+    },
+    consents: {
+      warning: 'You need to review unmatched consent responses for this session'
     },
     schedule: {
       title: 'Schedule sessions',
