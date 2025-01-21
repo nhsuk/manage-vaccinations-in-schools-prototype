@@ -2,7 +2,7 @@ import express from 'express'
 
 import { consentController } from '../controllers/consent.js'
 
-const router = express.Router({ strict: true })
+const router = express.Router({ strict: true, mergeParams: true })
 
 router.all('/*', consentController.readAll)
 router.get('/', consentController.showAll)
