@@ -1,8 +1,8 @@
 import _ from 'lodash'
 
 import { Consent } from '../models/consent.js'
+import { PatientSession } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
-import { Session } from '../models/session.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const consentController = {
@@ -107,17 +107,27 @@ export const consentController = {
     const { data } = request.session
     const { __, consent } = response.locals
 
-    // Create patient
+    // Create and add patient
     const patient = new Patient(consent.child)
+    patient.create(patient, data)
 
     // TODO: Select for cohort
     // Get programmes from session
     // Get cohorts for programmes
     // Find cohort that matches child’s year group
 
+    // Create and add patient session
+    const patientSession = new PatientSession(
+      {
+        patient_uuid: patient.uuid,
+        session_id: consent.session_id
+      },
+      data
+    )
+    patientSession.create(patientSession, data)
+
     // Invite to session
-    const session = new Session(data.sessions[consent.session_id], data)
-    patient.inviteToSession(session)
+    patient.inviteToSession(patientSession)
 
     // Link consent with patient record
     consent.linkToPatient(patient, data)
