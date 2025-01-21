@@ -275,7 +275,8 @@ export const en = {
       one: '%s unmatched consent response',
       other: '[0] No unmatched consent responses|%s unmatched consent responses'
     },
-    summary: 'Details of child given in consent response',
+    results:
+      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> responses',
     [ConsentOutcome.NoResponse]: {
       colour: 'grey',
       description: 'No-one responded to our requests for consent.',
