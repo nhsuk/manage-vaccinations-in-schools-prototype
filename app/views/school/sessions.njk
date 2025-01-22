@@ -1,0 +1,125 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = school.name + " – " + __("school.sessions.title") %}
+{% set view = "sessions" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("school.list.title"),
+      href: "/schools"
+    }],
+    text: school.name,
+    href: school.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: school.name
+  }) }}
+
+  {% include "school/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("school.sessions.title") }}
+  </h2>
+
+  {% macro count(number, percentage) %}
+    <div>
+      <span class="nhsuk-u-font-size-36 nhsuk-u-font-weight-bold">{{ number or "0" }}</span>
+    {% if percentage %}
+      <br><span class="nhsuk-u-secondary-text-color">{{ percentage }}%</span>
+    {% endif %}
+    </div>
+  {% endmacro %}
+
+  {% set sessionRows = [] %}
+  {% for session in school.sessions | sort(false, false, "date") %}
+    {% set noResponse = session.patients | where("consent", ConsentOutcome.NoResponse) | length %}
+    {% set percentageNoResponse = percentage(noResponse, session.patients.length) %}
+    {% set triageNeeded = session.patients | where("triage", TriageOutcome.Needed) | length %}
+    {% set vaccinated = session.patients | where("outcome", PatientOutcome.Vaccinated) | length %}
+    {% set percentageVaccinated = percentage(vaccinated, session.patients.length) %}
+    {% set sessionRows = sessionRows | push([
+      {
+        header: __("session.details.label"),
+        html: session.details
+      },
+      {
+        header: __("session.patients.label"),
+        text: count(session.patients.length),
+        attributes: {
+          "data-sort": session.patients.length
+        }
+      },
+      {
+        header: __("consent." + ConsentOutcome.NoResponse + ".label"),
+        text: count(noResponse, percentageNoResponse),
+        attributes: {
+          "data-sort": noResponse
+        }
+      },
+      {
+        header: __("triage." + + TriageOutcome.Needed + ".label"),
+        text: count(triageNeeded),
+        attributes: {
+          "data-sort": triageNeeded
+        }
+      },
+      {
+        header: __("outcome." + PatientOutcome.Vaccinated + ".label"),
+        text: count(vaccinated, percentageVaccinated),
+        attributes: {
+          "data-sort": vaccinated
+        }
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    id: "sessions",
+    sort: "date",
+    panel: true,
+    heading: __n("session.count", school.sessions.length),
+    responsive: true,
+    head: [
+      {
+        text: __("session.details.label"),
+        attributes: {
+          "no-sort": "no-sort"
+        }
+      },
+      {
+        text: __("session.patients.label"),
+        attributes: {
+          "style": "width: 15%"
+        }
+      },
+      {
+        text: __("consent." + ConsentOutcome.NoResponse + ".label"),
+        attributes: {
+          "style": "width: 15%"
+        }
+      },
+      {
+        text: __("triage." + TriageOutcome.Needed + ".label"),
+        attributes: {
+          "style": "width: 15"
+        }
+      },
+      {
+        text: __("outcome." + PatientOutcome.Vaccinated + ".label"),
+        attributes: {
+          "style": "width: 15%"
+        }
+      }
+    ],
+    rows: sessionRows
+  }) }}
+{% endblock %}

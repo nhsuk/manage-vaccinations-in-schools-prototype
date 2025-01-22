@@ -1372,6 +1372,9 @@ export const en = {
     patientSessions: {
       label: 'Children'
     },
+    sessions: {
+      label: 'Sessions'
+    },
     name: {
       label: 'Name'
     },

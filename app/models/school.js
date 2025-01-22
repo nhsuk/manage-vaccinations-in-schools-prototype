@@ -6,6 +6,7 @@ import { formatLink, formatMonospace } from '../utils/string.js'
 import { Address } from './address.js'
 import { PatientSession } from './patient-session.js'
 import { Record } from './record.js'
+import { Session } from './session.js'
 
 /**
  * @readonly
@@ -102,6 +103,17 @@ export class School {
     }
 
     return []
+  }
+
+  /**
+   * Get sessions
+   *
+   * @returns {Array<Session>} - Sessions
+   */
+  get sessions() {
+    return Session.readAll(this.context)
+      .filter(({ school_urn }) => school_urn === this.urn)
+      .filter(({ patients }) => patients.length > 0)
   }
 
   /**
