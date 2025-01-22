@@ -35,6 +35,7 @@ export const schoolController = {
     limit = parseInt(limit) || 100
 
     // Sort
+    const consents = _.sortBy(school.consents, 'createdAt')
     const patientSessions = _.sortBy(school.patientSessions, 'lastName')
 
     // Filter
@@ -44,8 +45,13 @@ export const schoolController = {
     }))
 
     // Paginate
-    response.locals.results = getResults(patientSessions, page, limit)
-    response.locals.pages = getPagination(patientSessions, page, limit)
+    if (view === 'consents') {
+      response.locals.results = getResults(consents, page, limit)
+      response.locals.pages = getPagination(consents, page, limit)
+    } else if (view === 'patients') {
+      response.locals.results = getResults(patientSessions, page, limit)
+      response.locals.pages = getPagination(patientSessions, page, limit)
+    }
 
     response.render(`school/${view}`)
   }

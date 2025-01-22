@@ -4,6 +4,7 @@ import { range } from '../utils/number.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Address } from './address.js'
+import { Consent } from './consent.js'
 import { PatientSession } from './patient-session.js'
 import { Record } from './record.js'
 import { Session } from './session.js'
@@ -64,6 +65,17 @@ export class School {
       name: this.name,
       ...this.address
     }
+  }
+
+  /**
+   * Get consents (unmatched consent responses)
+   *
+   * @returns {Array<import('./consent.js').Consent>} - Consent
+   */
+  get consents() {
+    return Consent.readAll(this.context).filter(
+      ({ child }) => child.school_urn === this.urn
+    )
   }
 
   /**

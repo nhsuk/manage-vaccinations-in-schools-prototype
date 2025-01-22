@@ -45,6 +45,17 @@
         description: school.sessions.length or "0"
       }) }}
     </div>
+
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data app-card--reversed",
+        clickable: true,
+        heading: __("school.consents.label"),
+        headingClasses: "nhsuk-heading-xs",
+        href: school.uri + "/consents",
+        description: school.consents.length or "0"
+      }) }}
+    </div>
   </div>
 
   {{ card({

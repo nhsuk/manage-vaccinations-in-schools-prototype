@@ -1375,6 +1375,9 @@ export const en = {
     sessions: {
       label: 'Sessions'
     },
+    consents: {
+      label: 'Unmatched responses'
+    },
     uploads: {
       new: {
         label: 'Import class list records'

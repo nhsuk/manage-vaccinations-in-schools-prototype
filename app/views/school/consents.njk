@@ -1,0 +1,83 @@
+{% from "school/_navigation.njk" import schoolNavigation with context %}
+
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("consent.list.title") %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("school.list.title"),
+      href: "/schools"
+    }],
+    text: school.name,
+    href: school.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ schoolNavigation({
+    school: school,
+    view: "consents"
+  }) }}
+
+  {% set consentRows = [] %}
+  {% for consent in results.page %}
+    {% set consentRows = consentRows | push([
+      {
+        header: __("consent.summary.label"),
+        html: consent.link.summary | replace("/consents", rootPath)
+      },
+      {
+        header: __("consent.createdAt.label"),
+        text: consent.formatted.createdAt_date
+      },
+      {
+        header: __("consent.decision.label"),
+        text: consent.decision
+      },
+      {
+        header: __("actions.label"),
+        html: actionList({
+          items: [{
+            text: __("consent.match.label"),
+            href: rootPath + "/" + consent.uuid + "/match?referrer=" + rootPath
+          }, {
+            text: __("consent.invalidate.label"),
+            href: rootPath + "/" + consent.uuid + "/invalidate?referrer=" + rootPath
+          }]
+        })
+      }
+    ]) %}
+  {% endfor %}
+
+  {% if school.consents.length %}
+    {{ actionTable({
+      id: "consents",
+      sort: "createdAt",
+      heading: __n("consent.count", school.consents.length),
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("consent.summary.label") },
+        { text: __("consent.createdAt.label") },
+        { text: __("consent.decision.label") },
+        { text: __("actions.label") }
+      ],
+      rows: consentRows
+    }) }}
+
+    {{ govukPagination(pages) }}
+
+    {{ __("consent.results", { results: results }) | nhsukMarkdown }}
+  {% else %}
+    <p class="nhsuk-caption-m">
+      {{ __n("consent.count", school.consents.length) }}
+    </p>
+  {% endif %}
+{% endblock %}
