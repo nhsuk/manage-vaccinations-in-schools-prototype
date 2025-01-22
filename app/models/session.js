@@ -214,9 +214,7 @@ export class Session {
    * @returns {object|undefined} - Consent window
    */
   get consentUrl() {
-    if (this.firstDate && this.consentWindow !== ConsentWindow.Closed) {
-      return `/consents/${this.id}`
-    }
+    return `/give-or-refuse-consent/${this.id}`
   }
 
   /**

@@ -113,15 +113,15 @@ export const navigation = (request, response, next) => {
         ? [
             [
               {
-                URL: `/consents/${fluSession.id}`,
+                URL: `${fluSession.consentUrl}/start`,
                 label: 'Flu consent'
               },
               {
-                URL: `/consents/${fluSession.id}/emails`,
+                URL: `${fluSession.consentUrl}/emails`,
                 label: 'Flu consent emails'
               },
               {
-                URL: `/consents/${fluSession.id}/texts`,
+                URL: `${fluSession.consentUrl}/texts`,
                 label: 'Flu consent texts'
               }
             ]
@@ -131,15 +131,15 @@ export const navigation = (request, response, next) => {
         ? [
             [
               {
-                URL: `/consents/${hpvSession.id}`,
+                URL: `${hpvSession.consentUrl}/start`,
                 label: 'HPV consent'
               },
               {
-                URL: `/consents/${hpvSession.id}/emails`,
+                URL: `${hpvSession.consentUrl}/emails`,
                 label: 'HPV consent emails'
               },
               {
-                URL: `/consents/${hpvSession.id}/texts`,
+                URL: `${hpvSession.consentUrl}/texts`,
                 label: 'HPV consent texts'
               }
             ]
@@ -149,15 +149,15 @@ export const navigation = (request, response, next) => {
         ? [
             [
               {
-                URL: `/consents/${tioSession.id}`,
+                URL: `${tioSession.consentUrl}/start`,
                 label: '‘Doubles’ consent'
               },
               {
-                URL: `/consents/${tioSession.id}/emails`,
+                URL: `${tioSession.consentUrl}/emails`,
                 label: '‘Doubles’ consent emails'
               },
               {
-                URL: `/consents/${tioSession.id}/texts`,
+                URL: `${tioSession.consentUrl}/texts`,
                 label: '‘Doubles’ consent texts'
               }
             ]
