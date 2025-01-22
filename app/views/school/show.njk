@@ -1,6 +1,7 @@
 {% extends "_layouts/default.njk" %}
 
 {% set title = school.name %}
+{% set view = "show" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -17,6 +18,25 @@
   {{ heading({
     title: title
   }) }}
+
+  {% include "school/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("programme.show.title") }}
+  </h2>
+
+  <div class="nhsuk-grid-row nhsuk-card-group">
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data app-card--reversed",
+        clickable: true,
+        heading: __("school.patientSessions.label"),
+        headingClasses: "nhsuk-heading-xs",
+        href: school.uri + "/patients",
+        description: school.patientSessions.length or "0"
+      }) }}
+    </div>
+  </div>
 
   {{ card({
     heading: __("school.show.summary"),

@@ -1366,7 +1366,11 @@ export const en = {
       title: 'Schools'
     },
     show: {
+      label: 'Overview',
       summary: 'School details'
+    },
+    patientSessions: {
+      label: 'Children'
     },
     name: {
       label: 'Name'

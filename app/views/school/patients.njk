@@ -1,0 +1,148 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = school.name + " – " + __("school.patientSessions.title") %}
+{% set view = "patients" %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("school.list.title"),
+      href: "/schools"
+    }],
+    text: school.name,
+    href: school.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ heading({
+    title: school.name
+  }) }}
+
+  {% include "school/_secondary-navigation.njk" %}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("school.patientSessions.title") }}
+  </h2>
+
+  {% set filterCardHtml %}
+    {{ input({
+      label: { text: __("patient.filter.q") },
+      decorate: "q"
+    }) }}
+
+    {{ details({
+      text: __("patient.filter.advanced"),
+      HTML: dateInput({
+        fieldset: {
+          legend: { text: __("patient.filter.dob") }
+        },
+        decorate: "dob"
+      }) + checkboxes({
+        name: "yearGroup",
+        fieldset: {
+          legend: { text: "Year group" }
+        },
+        items: yearGroupItems
+      }) + checkboxes({
+        name: "status",
+        fieldset: {
+          legend: { text: "Status" }
+        },
+        items: [
+          { value: "Ready for vaccinator", text: "Ready for vaccinator" },
+          { value: "Do not vaccinate", text: "Do not vaccinate" },
+          { value: "Request failed", text: "Request failed" },
+          { value: "No response", text: "No response" },
+          { value: "Conflicting consent", text: "Conflicting consent" },
+          { value: "Needs triage", text: "Needs triage" }
+        ]
+      })
+    }) }}
+
+    <div class="app-button-group">
+      {{ button({
+        text: __("patient.filter.confirm")
+      }) }}
+
+      {{ button({
+        classes: "app-button--secondary",
+        text: __("patient.filter.clear"),
+        href: "/schools/" + school.urn + "/patients"
+      }) if data.q }}
+    </div>
+  {% endset %}
+
+  {{ card({
+    classes: "app-card--muted app-card--grey",
+    feature: true,
+    heading: __("patient.filter.label") ,
+    headingClasses: "nhsuk-heading-s",
+    descriptionHtml: filterCardHtml,
+    attributes: {
+      method: "post",
+      role: "search"
+    }
+  }) | formCard }}
+
+  {% if school.patientSessions.length %}
+    {% set resultRows = [] %}
+    {% for patientSession in results.page %}
+      {% set resultRows = resultRows | push([
+        {
+          header: __("patient.fullName.label"),
+          html: patientSession.link.fullName
+        },
+        {
+          header: __("patient.dob.label"),
+          html: patientSession.patient.formatted.dob or "Not provided"
+        },
+        {
+          header: __("patient.yearGroup.label"),
+          html: patientSession.patient.formatted.yearGroupWithRegistration,
+          attributes: {
+            "data-filter": patientSession.patient.yearGroup,
+            "data-sort": patientSession.patient.yearGroup
+          }
+        },
+        {
+          header: __("session.status.label"),
+          text: patientStatus(patientSession).title
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "school-patients",
+      sort: "name",
+      heading: __n("patient.count", school.patientSessions.length),
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("patient.fullName.label") },
+        { text: __("patient.dob.label") },
+        {
+          text: __("patient.yearGroup.label"),
+          attributes: {
+            "data-col": "yearGroup"
+          }
+        },
+        { text: __("session.status.label") }
+      ],
+      rows: resultRows
+    }) }}
+
+    {{ govukPagination(pages) }}
+
+    {{ __("patient.results", { results: results }) | nhsukMarkdown }}
+  {% else %}
+    <div class="app-patients">
+      <p class="app-patients__no-results nhsuk-caption-m">{{ __n("patient.count", school.patientSessions.length) }}</p>
+    </div>
+  {% endif %}
+{% endblock %}

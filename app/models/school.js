@@ -1,8 +1,10 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import { range } from '../utils/number.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Address } from './address.js'
+import { PatientSession } from './patient-session.js'
 import { Record } from './record.js'
 
 /**
@@ -64,6 +66,17 @@ export class School {
   }
 
   /**
+   * Get patient sessions
+   *
+   * @returns {Array<PatientSession>} - Patient sessions
+   */
+  get patientSessions() {
+    return PatientSession.readAll(this.context).filter(
+      ({ session }) => session.school_urn === this.urn
+    )
+  }
+
+  /**
    * Get school pupils
    *
    * @returns {Array<Record>} - Records
@@ -79,7 +92,7 @@ export class School {
   }
 
   /**
-   * Get school pupils
+   * Get school pupils by year group
    *
    * @returns {object} - Records by year group
    */
@@ -89,6 +102,19 @@ export class School {
     }
 
     return []
+  }
+
+  /**
+   * Get school year groups
+   *
+   * @returns {Array} - Records by year group
+   */
+  get yearGroups() {
+    if (this.phase === SchoolPhase.Primary) {
+      return [...range(0, 6)]
+    }
+
+    return [...range(7, 11)]
   }
 
   /**
