@@ -18,7 +18,7 @@ Your local health team are coming to {{ session.location.name }} on {{ session.s
 
 If you want your child to get {% if session.programmes.length == 1 %}this vaccine{% else %}these vaccines{% endif %} at school, you need to give consent by {{ session.formatted.firstDate }}.
 
-[Give or refuse consent for the {{ session.vaccination }}](/consents/{{ session.id }})
+[Give or refuse consent for the {{ session.vaccination }}]({{ session.consentUrl }})
 
 Responding will take less than 5 minutes. If you do not give consent, it’s still important for you to let us know.
 

@@ -20,7 +20,16 @@ export class Consent extends Reply {
    * @returns {string} - URI
    */
   get uri() {
-    return `/consents/${this.session_id}/${this.uuid}`
+    return `/consents/${this.uuid}`
+  }
+
+  /**
+   * Get parent form URI
+   *
+   * @returns {string} - Parent form URI
+   */
+  get parentUri() {
+    return `${this.session.consentUrl}/${this.uuid}`
   }
 
   /**

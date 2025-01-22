@@ -17,6 +17,7 @@ import { homeRoutes } from './routes/home.js'
 import { moveRoutes } from './routes/move.js'
 import { noticeRoutes } from './routes/notice.js'
 import { organisationRoutes } from './routes/organisation.js'
+import { parentRoutes } from './routes/parent.js'
 import { patientSessionRoutes } from './routes/patient-session.js'
 import { patientRoutes } from './routes/patient.js'
 import { programmeRoutes } from './routes/programme.js'
@@ -40,6 +41,7 @@ router.use('/home', homeRoutes)
 router.use('/account', accountRoutes)
 router.use('/cohorts', cohortRoutes)
 router.use('/consents', consentRoutes)
+router.use('/give-or-refuse-consent', parentRoutes)
 router.use('/moves', moveRoutes)
 router.use('/notices', noticeRoutes)
 router.use('/organisations', organisationRoutes)
