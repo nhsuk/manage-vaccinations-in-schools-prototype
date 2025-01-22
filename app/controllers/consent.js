@@ -30,6 +30,28 @@ export const consentController = {
     response.render('consent/list')
   },
 
+  read(request, response, next) {
+    const { uuid } = request.params
+    const { nhsn } = request.query
+    const { data } = request.session
+
+    response.locals.consent = Consent.read(uuid, data)
+    response.locals.patient = Patient.read(nhsn, data)
+
+    next()
+  },
+
+  show(request, response) {
+    const { uuid } = request.params
+    const view = request.params.view || 'show'
+
+    if (view === 'link') {
+      response.locals.back = `/consents/${uuid}/match`
+    }
+
+    response.render(`consent/${view}`)
+  },
+
   edit(request, response) {
     response.render('consent/edit')
   },
@@ -47,7 +69,7 @@ export const consentController = {
     response.redirect(`${consent.uri}/new/child`)
   },
 
-  showMatch(request, response) {
+  match(request, response) {
     const { uuid } = request.params
     let { page, limit } = request.query
     const { data } = request.session
@@ -69,26 +91,7 @@ export const consentController = {
     response.render('consent/match')
   },
 
-  readLink(request, response, next) {
-    const { uuid } = request.params
-    const { nhsn } = request.query
-    const { data } = request.session
-
-    const consent = Consent.read(uuid, data)
-    response.locals.consent = consent
-
-    response.locals.patient = Patient.read(nhsn, data)
-
-    response.locals.back = `/consents/${uuid}/match`
-
-    next()
-  },
-
-  showLink(request, response) {
-    response.render('consent/link')
-  },
-
-  updateLink(request, response) {
+  link(request, response) {
     const { data } = request.session
     const { __, consent, patient } = response.locals
 
@@ -100,20 +103,7 @@ export const consentController = {
     response.redirect('/consents')
   },
 
-  readAdd(request, response, next) {
-    const { uuid } = request.params
-    const { data } = request.session
-
-    response.locals.consent = Consent.read(uuid, data)
-
-    next()
-  },
-
-  showAdd(request, response) {
-    response.render('consent/add')
-  },
-
-  updateAdd(request, response) {
+  add(request, response) {
     const { data } = request.session
     const { __, consent } = response.locals
 

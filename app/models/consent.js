@@ -33,6 +33,34 @@ export class Consent extends Reply {
   }
 
   /**
+   * Read all
+   *
+   * @param {object} context - Context
+   * @returns {Array<Consent>|undefined} Consents
+   * @static
+   */
+  static readAll(context) {
+    return Object.values(context.replies)
+      .map((reply) => new Consent(reply, context))
+      .filter((consent) => !consent.invalid)
+      .filter((consent) => !consent.patient_uuid)
+  }
+
+  /**
+   * Read
+   *
+   * @param {string} uuid - Reply UUID
+   * @param {object} context - Context
+   * @returns {Consent|undefined} Consent
+   * @static
+   */
+  static read(uuid, context) {
+    if (context?.replies) {
+      return new Consent(context.replies[uuid], context)
+    }
+  }
+
+  /**
    * Link consent with patient record
    *
    * @param {import('./patient.js').Patient} patient - Patient
