@@ -37,6 +37,10 @@
         text: consent.formatted.createdAt_date
       },
       {
+        header: __("consent.decision.label"),
+        text: consent.decision
+      },
+      {
         header: __("actions.label"),
         html: actionList({
           items: [{
@@ -59,15 +63,10 @@
       panel: true,
       responsive: true,
       head: [
-        {
-          text: __("consent.summary.label") or "Not provided"
-        },
-        {
-          text: __("consent.createdAt.label") or "Not provided"
-        },
-        {
-          text: __("actions.label")
-        }
+        { text: __("consent.summary.label") },
+        { text: __("consent.createdAt.label") },
+        { text: __("consent.decision.label") },
+        { text: __("actions.label") }
       ],
       rows: consentRows
     }) }}
