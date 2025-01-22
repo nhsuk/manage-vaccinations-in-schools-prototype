@@ -18,7 +18,7 @@
 
   {{ heading({
     title: title,
-    summary: ("URN: " + session.formatted.school_urn) | safe if session.type == SessionType.School
+    summary: ("URN: " + session.school.formatted.urn) | safe if session.type == SessionType.School
   }) }}
 
   {{ actionList({

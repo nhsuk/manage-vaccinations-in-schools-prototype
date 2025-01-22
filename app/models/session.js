@@ -17,7 +17,6 @@ import {
   formatLink,
   formatLinkWithSecondaryText,
   formatList,
-  formatMonospace,
   lowerCaseFirst
 } from '../utils/string.js'
 
@@ -575,7 +574,6 @@ export class Session {
           }
         ),
       consentWindow,
-      school_urn: formatMonospace(this.school_urn),
       location: Object.values(this.location)
         .filter((string) => string)
         .join(', ')
