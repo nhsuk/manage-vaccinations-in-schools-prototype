@@ -1,10 +1,10 @@
-{%- from "../_macros/parent-email.njk" import parentEmail -%}
-{%- from "../_macros/parent-sms.njk" import parentSms -%}
+{% from "../_macros/parent-email.njk" import parentEmail %}
+{% from "../_macros/parent-sms.njk" import parentSms %}
+{% from "patient-session/_navigation.njk" import patientSessionNavigation with context %}
 
 {% extends "_layouts/default.njk" %}
 
 {% set title = patient.initials + " – " + session.location.name %}
-{% set view = "show" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -28,16 +28,10 @@
   <div class="nhsuk-u-width-three-quarters">
     {{ super() }}
 
-    {{ heading({
-      caption: session.location.name,
-      title: patient.fullName
+    {{ patientSessionNavigation({
+      patientSession: patientSession,
+      view: "show"
     }) }}
-
-    {% include "patient-session/_secondary-navigation.njk" %}
-
-    <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-      {{ __("patient.show.title") }}
-    </h2>
 
     {% set statusDescriptionHtml %}
       {{ patientStatus(patientSession).description | nhsukMarkdown }}

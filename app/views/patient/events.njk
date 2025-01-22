@@ -1,7 +1,8 @@
+{% from "patient/_navigation.njk" import patientNavigation with context %}
+
 {% extends "_layouts/default.njk" %}
 
 {% set title = patient.fullName + " – " + __("patient.events.title") %}
-{% set view = "events" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -19,16 +20,10 @@
   <div class="nhsuk-u-width-three-quarters">
     {{ super() }}
 
-    {{ heading({
-      caption: session.location.name if inSession,
-      title: patient.fullName
+    {{ patientNavigation({
+      patient: patient,
+      view: "events"
     }) }}
-
-    {% include "patient/_secondary-navigation.njk" %}
-
-    <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-      {{ __("patient.events.title") }}
-    </h2>
 
     {% for group, auditEvents in patient.auditEventLog %}
       <h3 class="nhsuk-heading-xs nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal">{{ group }}</h3>

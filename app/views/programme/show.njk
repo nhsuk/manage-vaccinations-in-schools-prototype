@@ -1,9 +1,10 @@
+{% from "programme/_navigation.njk" import programmeNavigation with context %}
+
 {% extends "_layouts/default.njk" %}
 
 {% set isDataConsumer = data.token.role == UserRole.DataConsumer %}
 {% set paths = { back: "/home" } if isDataConsumer %}
 {% set title = programme.name + " – " + __("programme.show.title") %}
-{% set view = "show" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -19,33 +20,17 @@
 {% block content %}
   {{ super() }}
 
-  {{ heading({
-    title: programme.name
+  {{ programmeNavigation({
+    isDataConsumer: isDataConsumer,
+    programme: programme,
+    view: "show"
   }) }}
 
-  {% if isDataConsumer %}
-    {{ button({
-      classes: "app-button--secondary",
-      text: __("download.new.label"),
-      href: programme.uri + "/download/new"
-    }) }}
-  {% else %}
-    {% include "programme/_secondary-navigation.njk" %}
-
-    <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-      {{ __("programme.show.title") }}
-    </h2>
-
-    {{ button({
-      classes: "app-button--secondary",
-      text: __("download.new.label"),
-      href: programme.uri + "/download/new"
-    }) if programme.vaccinations.length }}
-  {% endif %}
-
-  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("programme.show.title") }}
-  </h2>
+  {{ button({
+    classes: "app-button--secondary",
+    text: __("download.new.label"),
+    href: programme.uri + "/download/new"
+  }) if programme.vaccinations.length }}
 
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">

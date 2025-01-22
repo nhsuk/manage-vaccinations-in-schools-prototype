@@ -1,0 +1,24 @@
+{% from "x-govuk/components/secondary-navigation/macro.njk" import xGovukSecondaryNavigation %}
+{% from "_macros/heading.njk" import heading %}
+
+{% macro patientNavigation(params) %}
+  {{ heading({
+      title: params.patient.fullName
+    }) }}
+
+  {{ xGovukSecondaryNavigation({
+    items: [{
+      text: __("patient.show.title"),
+      href: params.patient.uri,
+      current: params.view == "show"
+    }, {
+      text: __("patient.events.title"),
+      href: params.patient.uri + "/events",
+      current: params.view == "events"
+    }]
+  }) }}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("patient." + params.view + ".title") }}
+  </h2>
+{% endmacro %}

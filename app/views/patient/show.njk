@@ -1,7 +1,8 @@
+{% from "patient/_navigation.njk" import patientNavigation with context %}
+
 {% extends "_layouts/default.njk" %}
 
 {% set title = patient.initials %}
-{% set view = "show" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -19,15 +20,10 @@
   <div class="nhsuk-u-width-three-quarters">
     {{ super() }}
 
-    {{ heading({
-      title: patient.fullName
+    {{ patientNavigation({
+      patient: patient,
+      view: "show"
     }) }}
-
-    {% include "patient/_secondary-navigation.njk" %}
-
-    <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-      {{ __("patient.show.title") }}
-    </h2>
 
     {% set recordDescriptionHtml %}
       {{ status({

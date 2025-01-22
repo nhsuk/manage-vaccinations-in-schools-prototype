@@ -1,0 +1,48 @@
+{% from "components/button/macro.njk" import button %}
+{% from "x-govuk/components/secondary-navigation/macro.njk" import xGovukSecondaryNavigation %}
+{% from "_macros/count.njk" import count %}
+{% from "_macros/heading.njk" import heading %}
+
+{% macro programmeNavigation(params) %}
+  {{ heading({
+    title: params.programme.name
+  }) }}
+
+  {% if not params.isDataConsumer %}
+    {{ xGovukSecondaryNavigation({
+      items: [{
+        text: __("programme.show.label"),
+        href: params.programme.uri,
+        current: params.view == "show"
+      }, {
+        text: __("programme.cohorts.label"),
+        href: params.programme.uri + "/cohorts",
+        current: params.view == "cohorts"
+      }, {
+        text: __("programme.sessions.label"),
+        href: params.programme.uri + "/sessions",
+        current: params.view == "sessions"
+      }, {
+        text: __("programme.patientSessions.label"),
+        href: params.programme.uri + "/patients",
+        current: params.view == "patients"
+      }, {
+        text: __("programme.vaccinations.label"),
+        href: params.programme.uri + "/vaccinations",
+        current: params.view == "vaccinations"
+      }, {
+        text: __("programme.uploads.label"),
+        href: params.programme.uri + "/uploads",
+        current: params.view == "uploads"
+      }, {
+        text: (__("programme.reviews.label") + " " + count(params.programme.reviews.length)) | safe,
+        href: params.programme.uri + "/reviews",
+        current: params.view == "reviews"
+      } if params.programme.reviews.length]
+    }) }}
+
+    <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+      {{ __("programme." + params.view + ".title") }}
+    </h2>
+  {% endif %}
+{% endmacro %}

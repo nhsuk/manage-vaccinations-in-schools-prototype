@@ -1,0 +1,35 @@
+{% from "x-govuk/components/secondary-navigation/macro.njk" import xGovukSecondaryNavigation %}
+{% from "_macros/action-list.njk" import actionList %}
+{% from "_macros/heading.njk" import heading %}
+
+{% macro patientSessionNavigation(params) %}
+  {{ heading({
+    caption: params.patientSession.session.location.name,
+    title: params.patientSession.patient.fullName
+  }) }}
+
+  {{ actionList({
+    items: [{
+      tag: statusTag(params.patientSession.registrationStatus)
+    }, {
+      text: __("patientSession.registration.title"),
+      href: params.patientSession.uri + "/edit/registration"
+    } if params.patientSession.registration != RegistrationOutcome.Complete]
+  }) if params.patientSession.session.isActive }}
+
+  {{ xGovukSecondaryNavigation({
+    items: [{
+      text: __("patientSession.show.title"),
+      href: params.patientSession.uri,
+      current: params.view == "show"
+    }, {
+      text: __("patientSession.events.title"),
+      href: params.patientSession.uri + "/events",
+      current: params.view == "events"
+    }]
+  }) }}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("patientSession." + params.view + ".title") }}
+  </h2>
+{% endmacro %}

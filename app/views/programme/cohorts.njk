@@ -1,7 +1,8 @@
+{% from "programme/_navigation.njk" import programmeNavigation with context %}
+
 {% extends "_layouts/default.njk" %}
 
 {% set title = programme.name + " – " + __("programme.cohorts.title") %}
-{% set view = "cohorts" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -20,15 +21,10 @@
 {% block content %}
   {{ super() }}
 
-  {{ heading({
-    title: programme.name
+  {{ programmeNavigation({
+    programme: programme,
+    view: "cohorts"
   }) }}
-
-  {% include "programme/_secondary-navigation.njk" %}
-
-  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("programme.cohorts.title") }}
-  </h2>
 
   {{ button({
     classes: "app-button--secondary",
