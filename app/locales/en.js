@@ -1375,6 +1375,11 @@ export const en = {
     sessions: {
       label: 'Sessions'
     },
+    uploads: {
+      new: {
+        label: 'Import class list records'
+      }
+    },
     name: {
       label: 'Name'
     },

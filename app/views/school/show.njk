@@ -1,7 +1,8 @@
+{% from "school/_navigation.njk" import schoolNavigation with context %}
+
 {% extends "_layouts/default.njk" %}
 
 {% set title = school.name %}
-{% set view = "show" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -15,15 +16,12 @@
 {% endblock %}
 
 {% block content %}
-  {{ heading({
-    title: title
+  {{ super() }}
+
+  {{ schoolNavigation({
+    school: school,
+    view: "show"
   }) }}
-
-  {% include "school/_secondary-navigation.njk" %}
-
-  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("programme.show.title") }}
-  </h2>
 
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">

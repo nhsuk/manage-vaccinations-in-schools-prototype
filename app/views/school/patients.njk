@@ -1,7 +1,8 @@
+{% from "school/_navigation.njk" import schoolNavigation with context %}
+
 {% extends "_layouts/default.njk" %}
 
 {% set title = school.name + " – " + __("school.patientSessions.title") %}
-{% set view = "patients" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -20,15 +21,10 @@
 {% block content %}
   {{ super() }}
 
-  {{ heading({
-    title: school.name
+  {{ schoolNavigation({
+    school: school,
+    view: "patientSessions"
   }) }}
-
-  {% include "school/_secondary-navigation.njk" %}
-
-  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("school.patientSessions.title") }}
-  </h2>
 
   {% set filterCardHtml %}
     {{ input({

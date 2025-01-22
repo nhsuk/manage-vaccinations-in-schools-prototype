@@ -1,0 +1,38 @@
+{% from "x-govuk/components/secondary-navigation/macro.njk" import xGovukSecondaryNavigation %}
+{% from "_macros/action-list.njk" import actionList %}
+{% from "_macros/heading.njk" import heading %}
+
+{%- macro schoolNavigation(params) -%}
+  {{ heading({
+    title: params.school.name,
+    summary: ("URN: " + params.school.formatted.urn) | safe
+  }) }}
+
+  {# TODO: Reconsider where imports sit within overall IA #}
+  {{ actionList({
+    items: [{
+      text: __("school.uploads.new.label"),
+      href: "#"
+    }]
+  }) }}
+
+  {{ xGovukSecondaryNavigation({
+    items: [{
+      text: __("school.show.label"),
+      href: params.school.uri,
+      current: params.view == "show"
+    }, {
+      text: __("school.patientSessions.label"),
+      href: params.school.uri + "/patients",
+      current: params.view == "patientSessions"
+    }, {
+      text: __("school.sessions.label"),
+      href: params.school.uri + "/sessions",
+      current: params.view == "sessions"
+    }]
+  }) }}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("school." + params.view + ".title") }}
+  </h2>
+{% endmacro %}
