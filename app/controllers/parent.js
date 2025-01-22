@@ -107,12 +107,11 @@ export const parentController = {
             [`/${id}/${uuid}/${form}/school`]: {}
           }
         : {}),
-      [`/${id}/${uuid}/${form}/parent`]: {},
-      ...(consent?.parent?.tel !== ''
-        ? {
-            [`/${id}/${uuid}/${form}/contact-preference`]: {}
-          }
-        : {}),
+      [`/${id}/${uuid}/${form}/parent`]: {
+        [`/${id}/${uuid}/${form}/contact-preference`]: () => {
+          return request.session.data.consent?.parent?.tel
+        }
+      },
       [`/${id}/${uuid}/${form}/decision`]: {
         [`${id}/${uuid}/${form}/refusal-reason`]: {
           data: 'consent.decision',
