@@ -90,7 +90,7 @@ export class Reply {
     this.decision = options?.decision
     this.confirmed = stringToBoolean(options?.confirmed)
     this.given =
-      this.decision !== ReplyDecision.Refused ||
+      this.decision !== ReplyDecision.Refused &&
       this.decision !== ReplyDecision.NoResponse
     this.invalid =
       this?.decision === ReplyDecision.NoResponse
