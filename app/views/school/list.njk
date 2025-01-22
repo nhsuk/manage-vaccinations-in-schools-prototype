@@ -1,4 +1,4 @@
-{% extends "_layouts/unbranded.njk" %}
+{% extends "_layouts/default.njk" %}
 
 {% set title = __("school.list.title") %}
 
@@ -6,7 +6,6 @@
   {{ super() }}
 
   {{ heading({
-    caption: __("school.list.caption"),
     size: "xl",
     title: title
   }) }}
@@ -37,7 +36,8 @@
       classes: "nhsuk-u-margin-bottom-6",
       id: "schools",
       sort: "name",
-      caption: __n("school." + phase | lower + ".count", schools.length),
+      heading: __n("school." + phase | lower + ".count", schools.length),
+      panel: true,
       responsive: true,
       head: [
         {

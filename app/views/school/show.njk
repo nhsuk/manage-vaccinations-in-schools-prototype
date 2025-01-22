@@ -1,9 +1,17 @@
-{% extends "_layouts/unbranded.njk" %}
-
-{% from "_macros/count.njk" import count %}
+{% extends "_layouts/default.njk" %}
 
 {% set title = school.name %}
-{% set paths = { back: "/schools" } %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }],
+    text: __("school.list.title"),
+    href: "/schools"
+  }) }}
+{% endblock %}
 
 {% block content %}
   {{ heading({
