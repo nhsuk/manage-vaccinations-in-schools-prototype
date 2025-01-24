@@ -2,6 +2,28 @@
   background-color: color.mix($color_nhsuk-white, $color_nhsuk-warm-yellow, 80%);
   border-bottom: 3px solid $color_nhsuk-warm-yellow;
 
+  a & {
+    color: $nhsuk-link-color;
+  }
+
+  a:visited & {
+    color: $nhsuk-link-visited-color;
+  }
+
+  a:hover & {
+    color: $nhsuk-link-hover-color;
+  }
+
+  a:active & {
+    color: $nhsuk-link-active-color;
+  }
+
+  a:focus & {
+    border-color: transparent;
+    background-color: transparent;
+    color: $nhsuk-focus-text-color;
+  }
+
   // Ensure highlight is announced by screen readers
   // @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/mark#accessibility
   &::before,
