@@ -339,7 +339,7 @@ export class Session {
       }
     }
 
-    return [...healthQuestionKeys]
+    return [...healthQuestionKeys].sort()
   }
 
   /**
