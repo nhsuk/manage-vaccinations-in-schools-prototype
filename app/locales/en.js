@@ -1766,7 +1766,7 @@ export const en = {
       other: '[0] No imports|%s imports'
     },
     list: {
-      label: 'Import',
+      label: 'Import records',
       title: 'Import records',
       description:
         'Import child, cohort and vaccination records and see important notices'
@@ -1929,7 +1929,7 @@ export const en = {
   move: {
     list: {
       label: 'School moves',
-      title: 'School moves',
+      title: 'Review school moves',
       description: 'Review children who have moved schools'
     },
     show: {

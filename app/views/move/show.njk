@@ -3,18 +3,7 @@
 {% set gridColumns = "full" %}
 {% set title = __("move.show.title") %}
 {% set confirmButtonText = __("move.show.confirm") %}
-
-{% block beforeContent %}
-  {{ breadcrumb({
-    items: [{
-      text: __("home.show.title"),
-      href: "/"
-    }, {
-      text: __("move.list.title"),
-      href: "/moves"
-    }]
-  }) }}
-{% endblock %}
+{% set paths = { back: "/moves" } %}
 
 {% block form %}
   {{ super() }}

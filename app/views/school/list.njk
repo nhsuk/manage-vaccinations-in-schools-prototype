@@ -10,6 +10,17 @@
     title: title
   }) }}
 
+  <div class="app-button-group">
+    {{ button({
+      classes: "app-button--secondary",
+      href: "/moves",
+      text: __("move.list.title")
+    }) }}
+    <p class="nhsuk-hint nhsuk-u-margin-0">
+      {{ __n("move.count", moves.length) }}
+    </p>
+  </div>
+
   {% set searchCardHtml %}
     {{ input({
       label: { text: __("search.label") },

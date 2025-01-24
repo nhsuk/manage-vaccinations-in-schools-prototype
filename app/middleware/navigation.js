@@ -65,7 +65,7 @@ export const navigation = (request, response, next) => {
           {
             url: '/schools',
             label: __('school.list.label'),
-            current: current === 'schools'
+            current: ['schools', 'moves'].includes(current)
           },
           {
             url: '/patients',
@@ -78,13 +78,6 @@ export const navigation = (request, response, next) => {
             classes: 'app-header__navigation-item--with-count',
             count: response.locals.consents.length,
             current: current === 'consents'
-          },
-          {
-            url: '/moves',
-            label: __('move.list.label'),
-            classes: 'app-header__navigation-item--with-count',
-            count: response.locals.moves.length,
-            current: current === 'moves'
           },
           {
             url: '/vaccines',
