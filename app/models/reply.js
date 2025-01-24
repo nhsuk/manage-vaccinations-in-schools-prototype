@@ -24,7 +24,7 @@ export const ReplyDecision = {
   Given: 'Consent given',
   Refused: 'Consent refused',
   OnlyMenACWY: 'Consent given for MenACWY only',
-  Only3in1: 'Consent given for 3-in-1 only',
+  OnlyTdIPV: 'Consent given for Td/IPV only',
   NoResponse: 'No response'
 }
 
@@ -97,15 +97,31 @@ export class Reply {
         ? false // Don’t show non response as invalid
         : stringToBoolean(options?.invalid) || false
     this.method = options?.method
-    this.healthAnswers = options?.healthAnswers
-    this.refusalReason = options?.refusalReason
-    this.refusalReasonOther = options?.refusalReasonOther
-    this.refusalReasonDetails = options?.refusalReasonDetails
     this.selfConsent = options?.selfConsent
     this.note = options?.note || ''
     this.patient_uuid = options?.patient_uuid
     this.programme_pid = options?.programme_pid
     this.session_id = options?.session_id
+
+    if (this.given) {
+      this.healthAnswers = options?.healthAnswers
+    }
+
+    if (!this.given) {
+      this.refusalReason = options?.refusalReason || ''
+
+      if (this.refusalReason === ReplyRefusal.Other) {
+        this.refusalReasonOther = options?.refusalReasonOther
+      }
+
+      if (
+        ![ReplyRefusal.Personal, ReplyRefusal.Other].includes(
+          this.refusalReason
+        )
+      ) {
+        this.refusalReasonDetails = options?.refusalReasonDetails || ''
+      }
+    }
   }
 
   /**
@@ -245,7 +261,7 @@ export class Reply {
       }),
       createdBy: this.createdBy?.fullName || '',
       decision: decision(),
-      programme: this.programme.name,
+      programme: this.programme?.name,
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
       refusalReasonDetails: formatMarkdown(this.refusalReasonDetails),
       note: formatMarkdown(this.note)

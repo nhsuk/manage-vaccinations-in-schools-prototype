@@ -184,8 +184,25 @@ export const parentController = {
   },
 
   updateForm(request, response) {
+    const { decisions } = request.body
     const { data } = request.session
     const { paths, consent } = response.locals
+
+    if (decisions) {
+      switch (true) {
+        case ['menacwy', 'td-ipv'].every((value) => decisions.includes(value)):
+          request.body.consent.decision = ReplyDecision.Given
+          break
+        case decisions.includes('menacwy'):
+          request.body.consent.decision = ReplyDecision.OnlyMenACWY
+          break
+        case decisions.includes('td-ipv'):
+          request.body.consent.decision = ReplyDecision.OnlyTdIPV
+          break
+        default:
+          request.body.consent.decision = ReplyDecision.Refused
+      }
+    }
 
     consent.update(request.body.consent, data.wizard)
 

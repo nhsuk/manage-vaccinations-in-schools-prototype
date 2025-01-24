@@ -3,6 +3,7 @@
 {% set confirmButtonText = __("consent.new.check-answers.confirm") %}
 {% set title = __("consent.new.check-answers.title") %}
 {% set refusalReasonHasDetails = consent.refusalReason != RefusalReason.PersonalChoice or consent.refusalReason != RefusalReason.Other %}
+{% set editPath = session.consentUrl + "/" + consent.uuid + "/edit/" %}
 
 {% block form %}
   {{ heading({
@@ -10,18 +11,18 @@
   }) }}
 
   {{ card({
-    heading: __("consent.decision.summary", { session: session }),
+    heading: __("consent.decision.summary", { session: session }) | safe,
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(consent, {
         decision: {
-          href: consent.uri + "/edit/decision"
+          href: editPath + "decision"
         },
         refusalReason: {
-          href: consent.uri + "/edit/refusal-reason"
+          href: editPath + "refusal-reason"
         },
         refusalReasonDetails: {
-          href: consent.uri + "/edit/refusal-reason-details"
+          href: editPath + "refusal-reason-details"
         }
       })
     })
@@ -33,24 +34,24 @@
     descriptionHtml: summaryList({
       rows: summaryRows(consent.child, {
         fullName: {
-          href: consent.uri + "/edit/child"
+          href: editPath + "child"
         },
         preferredName: {
-          href: consent.uri + "/edit/child"
+          href: editPath + "child"
         },
         dob: {
-          href: consent.uri + "/edit/dob"
+          href: editPath + "dob"
         },
         address: {
-          href: consent.uri + "/edit/address"
+          href: editPath + "address"
         } if consent.given,
         gpSurgery: {
           changeLabel: "GP surgery",
-          href: consent.uri + "/edit/gp-registered"
+          href: editPath + "gp-registered"
         } if consent.given,
         school: {
           value: consent.child.formatted.school or session.location.name,
-          href: consent.uri + "/edit/school"
+          href: editPath + "school"
         } if session.type === SessionType.School
       })
     })
@@ -62,25 +63,25 @@
     descriptionHtml: summaryList({
       rows: summaryRows(consent.parent, {
         fullName: {
-          href: consent.uri + "/edit/parent"
+          href: editPath + "parent"
         },
         relationship: {
-          href: consent.uri + "/edit/parent"
+          href: editPath + "parent"
         },
         hasParentalResponsibility: {
-          href: consent.uri + "/edit/parent"
+          href: editPath + "parent"
         },
         email: {
-          href: consent.uri + "/edit/parent"
+          href: editPath + "parent"
         },
         tel: {
-          href: consent.uri + "/edit/parent"
+          href: editPath + "parent"
         },
         sms: {
-          href: consent.uri + "/edit/parent"
+          href: editPath + "parent"
         },
         contactPreference: {
-          href: consent.uri + "/edit/contact-preference"
+          href: editPath + "contact-preference"
         }
       })
     })
@@ -93,8 +94,8 @@
       classes: "app-summary-list--full-width",
       rows: healthAnswerRows(
         consent.healthAnswers,
-        consent.uri + "/edit/health-question-{{key}}"
+        editPath + "health-question-{{key}}"
       )
     })
-  }) if consent.decision == ReplyDecision.Given }}
+  }) if consent.given }}
 {% endblock %}
