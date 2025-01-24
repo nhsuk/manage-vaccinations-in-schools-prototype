@@ -10,8 +10,7 @@ import {
 
 import { Address } from './address.js'
 import { Consent } from './consent.js'
-import { PatientSession } from './patient-session.js'
-import { Record } from './record.js'
+import { Patient } from './patient.js'
 import { Session } from './session.js'
 
 /**
@@ -84,42 +83,14 @@ export class School {
   }
 
   /**
-   * Get patient sessions
+   * Get patients
    *
-   * @returns {Array<PatientSession>} - Patient sessions
+   * @returns {Array<Patient>} - Patient sessions
    */
-  get patientSessions() {
-    return PatientSession.readAll(this.context).filter(
-      ({ session }) => session.school_urn === this.urn
+  get patients() {
+    return Patient.readAll(this.context).filter(
+      ({ school_urn }) => school_urn === this.urn
     )
-  }
-
-  /**
-   * Get school pupils
-   *
-   * @returns {Array<Record>} - Records
-   */
-  get records() {
-    if (this.context?.records && this.urn) {
-      return Object.values(this.context?.records)
-        .filter((record) => record.school_urn === this.urn)
-        .map((record) => new Record(record))
-    }
-
-    return []
-  }
-
-  /**
-   * Get school pupils by year group
-   *
-   * @returns {object} - Records by year group
-   */
-  get recordsByYearGroup() {
-    if (this.context?.records && this.records) {
-      return Object.groupBy(this.records, ({ yearGroup }) => yearGroup)
-    }
-
-    return []
   }
 
   /**

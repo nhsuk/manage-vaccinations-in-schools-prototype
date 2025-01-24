@@ -23,41 +23,6 @@
     view: "show"
   }) }}
 
-  <div class="nhsuk-grid-row nhsuk-card-group">
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        classes: "app-card--data app-card--reversed",
-        clickable: true,
-        heading: __("school.patientSessions.label"),
-        headingClasses: "nhsuk-heading-xs",
-        href: school.uri + "/patients",
-        description: school.patientSessions.length or "0"
-      }) }}
-    </div>
-
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        classes: "app-card--data app-card--reversed",
-        clickable: true,
-        heading: __("school.sessions.label"),
-        headingClasses: "nhsuk-heading-xs",
-        href: school.uri + "/sessions",
-        description: school.sessions.length or "0"
-      }) }}
-    </div>
-
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        classes: "app-card--data app-card--reversed",
-        clickable: true,
-        heading: __("school.consents.label"),
-        headingClasses: "nhsuk-heading-xs",
-        href: school.uri + "/consents",
-        description: school.consents.length or "0"
-      }) }}
-    </div>
-  </div>
-
   {{ card({
     heading: __("school.show.summary"),
     headingClasses: "nhsuk-heading-m",
@@ -70,48 +35,4 @@
       })
     })
   }) }}
-
-  {% for yearGroup, records in school.recordsByYearGroup %}
-    {% set recordRows = [] %}
-    {% for record in records | sort(false, false, "createdAt") %}
-      {% set recordRows = recordRows | push([
-        {
-          header: __("record.fullName.label"),
-          text: record.fullName,
-          attributes: {
-            "data-col": "name"
-          }
-        },
-        {
-          header: __("record.dob.label"),
-          text: record.formatted.dob
-        },
-        {
-          header: __("record.postalCode.label"),
-          text: record.postalCode
-        }
-      ]) %}
-    {% endfor %}
-
-    {{ details({
-      classes: "nhsuk-expander",
-      text: yearGroup | yearGroup + " (" + __n("school.records.count", records.length) + ")",
-      HTML: actionTable({
-        tableClasses: "nhsuk-u-margin-0",
-        id: "records",
-        sort: "name",
-        head: [
-          {
-            text: __("record.fullName.label"),
-            attributes: {
-              style: "width: 50%"
-            }
-          },
-          { text: __("record.dob.label") },
-          { text: __("record.postalCode.label") }
-        ],
-        rows: recordRows
-      })
-    }) }}
-  {% endfor %}
 {% endblock %}

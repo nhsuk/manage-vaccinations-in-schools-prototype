@@ -1366,7 +1366,7 @@ export const en = {
       other: '[0] No schools|%s schools'
     },
     search: {
-      label: 'Find school'
+      label: 'Find a school'
     },
     list: {
       label: 'Schools',
@@ -1376,11 +1376,14 @@ export const en = {
       label: 'Overview',
       summary: 'School details'
     },
-    patientSessions: {
+    patients: {
       label: 'Children'
     },
     sessions: {
-      label: 'Sessions'
+      label: 'Sessions',
+      new: {
+        label: 'Add a session'
+      }
     },
     consents: {
       label: 'Unmatched responses'

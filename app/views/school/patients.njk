@@ -23,10 +23,10 @@
 
   {{ schoolNavigation({
     school: school,
-    view: "patientSessions"
+    view: "patients"
   }) }}
 
-  {% set filterCardHtml %}
+  {% set searchCardHtml %}
     {{ input({
       label: { text: __("search.label") },
       decorate: "q"
@@ -66,31 +66,31 @@
     feature: true,
     heading: __("patient.search.label") ,
     headingClasses: "nhsuk-heading-s",
-    descriptionHtml: filterCardHtml,
+    descriptionHtml: searchCardHtml,
     attributes: {
       method: "post",
       role: "search"
     }
   }) | formCard }}
 
-  {% if school.patientSessions.length %}
+  {% if school.patients.length %}
     {% set resultRows = [] %}
-    {% for patientSession in results.page %}
+    {% for patient in results.page %}
       {% set resultRows = resultRows | push([
         {
           header: __("patient.fullName.label"),
-          html: patientSession.link.fullName
+          html: patient.link.fullName
         },
         {
           header: __("patient.dob.label"),
-          html: patientSession.patient.formatted.dob or "Not provided"
+          html: patient.formatted.dob or "Not provided"
         },
         {
           header: __("patient.yearGroup.label"),
-          html: patientSession.patient.formatted.yearGroupWithRegistration,
+          html: patient.formatted.yearGroupWithRegistration,
           attributes: {
-            "data-filter": patientSession.patient.yearGroup,
-            "data-sort": patientSession.patient.yearGroup
+            "data-filter": patient.yearGroup,
+            "data-sort": patient.yearGroup
           }
         }
       ]) %}
@@ -99,7 +99,7 @@
     {{ actionTable({
       id: "school-patients",
       sort: "name",
-      heading: __n("patient.count", school.patientSessions.length),
+      heading: __n("patient.count", school.patients.length),
       panel: true,
       responsive: true,
       head: [
@@ -114,8 +114,8 @@
 
     {{ __("patient.results", { results: results }) | nhsukMarkdown }}
   {% else %}
-    <div class="app-patients">
-      <p class="app-patients__no-results nhsuk-caption-m">{{ __n("patient.count", school.patientSessions.length) }}</p>
-    </div>
+    <p class="nhsuk-caption-m">
+      {{ __n("patient.count", school.patients.length) }}
+    </p>
   {% endif %}
 {% endblock %}

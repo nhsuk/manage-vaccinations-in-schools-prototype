@@ -42,7 +42,7 @@ export const schoolController = {
 
     // Sort
     const consents = _.sortBy(school.consents, 'createdAt')
-    const patientSessions = _.sortBy(school.patientSessions, 'lastName')
+    const patients = _.sortBy(school.patients, 'lastName')
 
     // Filter
     response.locals.yearGroupItems = school.yearGroups.map((yearGroup) => ({
@@ -55,8 +55,8 @@ export const schoolController = {
       response.locals.results = getResults(consents, page, limit)
       response.locals.pages = getPagination(consents, page, limit)
     } else if (view === 'patients') {
-      response.locals.results = getResults(patientSessions, page, limit)
-      response.locals.pages = getPagination(patientSessions, page, limit)
+      response.locals.results = getResults(patients, page, limit)
+      response.locals.pages = getPagination(patients, page, limit)
     }
 
     response.render(`school/${view}`)
