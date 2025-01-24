@@ -279,7 +279,7 @@ export const en = {
       other: '[0] No unmatched consent responses|%s unmatched consent responses'
     },
     results:
-      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> responses',
+      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> responses',
     [ConsentOutcome.NoResponse]: {
       colour: 'grey',
       description: 'No-one responded to our requests for consent.',
@@ -936,21 +936,16 @@ export const en = {
       label: 'Notice'
     },
     results:
-      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> children',
+      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> children',
     count: {
       one: '%s child',
-      other: '%s children'
+      other: '[0] No children|%s children'
     },
-    filter: {
+    search: {
       label: 'Find children',
-      options: 'Options',
-      q: 'Search',
-      name: 'Name',
       dob: 'Child’s date of birth',
       hasMissingNhsNumber: 'Missing NHS number',
-      advanced: 'Advanced filters',
-      confirm: 'Update list',
-      clear: 'Clear filters'
+      empty: 'No children matching search criteria found'
     },
     nhsn: {
       label: 'NHS number',
@@ -1226,7 +1221,7 @@ export const en = {
       summary: 'Details'
     },
     results:
-      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> records',
+      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> records',
     count: {
       one: '%s record',
       other: '%s records'
@@ -1456,6 +1451,13 @@ export const en = {
       status: 'Safe to vaccinate',
       title: 'Ready for vaccinator'
     }
+  },
+  search: {
+    label: 'Search',
+    options: 'Options',
+    advanced: 'Advanced filters',
+    confirm: 'Update list',
+    clear: 'Clear filters'
   },
   session: {
     label: 'Sessions',
@@ -1927,7 +1929,7 @@ export const en = {
       other: '[0] No school moves|%s school moves'
     },
     results:
-      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count }}</b> school moves',
+      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> school moves',
     createdAt: {
       label: 'Updated'
     },

@@ -75,10 +75,6 @@
 
     {{ __("consent.results", { results: results }) | nhsukMarkdown }}
   {% else %}
-    <div class="app-patients">
-      <p class="app-patients__no-results nhsuk-caption-m">
-        {{ __n("consent.count", consents.length) }}
-      </p>
-    </div>
+    {{ __n("consent.count", results.length) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

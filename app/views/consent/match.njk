@@ -11,17 +11,17 @@
     title: title
   }) }}
 
-  {% set filterCardHtml %}
+  {% set searchCardHtml %}
     {{ input({
-      label: { text: __("patient.filter.q") },
+      label: { text: __("search.label") },
       decorate: "q"
     }) }}
 
     {{ details({
-      text: __("patient.filter.advanced"),
+      text: __("search.advanced"),
       HTML: dateInput({
         fieldset: {
-          legend: { text: __("patient.filter.dob") }
+          legend: { text: __("patient.search.dob") }
         },
         decorate: "dob"
       })
@@ -29,12 +29,12 @@
 
     <div class="app-button-group">
       {{ button({
-        text: __("patient.filter.confirm")
+        text: __("search.confirm")
       }) }}
 
       {{ button({
         classes: "app-button--secondary",
-        text: __("patient.filter.clear"),
+        text: __("search.clear"),
         href: "/consents/" + consent.uuid + "/match"
       }) if data.q }}
     </div>
@@ -73,24 +73,23 @@
       {{ card({
         classes: "app-card--muted app-card--grey",
         feature: true,
-        heading: __("patient.filter.label") ,
+        heading: __("patient.search.label") ,
         headingClasses: "nhsuk-heading-s",
-        descriptionHtml: filterCardHtml,
+        descriptionHtml: searchCardHtml,
         attributes: {
           method: "post",
           role: "search"
         }
       }) | formCard }}
 
+      <h2 class="nhsuk-heading-m nhsuk-u-margin-bottom-2">Search results</h2>
       {% if patients.length %}
-        <h2 class="nhsuk-heading-m nhsuk-u-margin-bottom-2">Search results</h2>
-
         {{ __("patient.results", { results: results }) | nhsukMarkdown }}
 
         {% for patient in results.page %}
           {{ card({
             classes: "nhsuk-u-margin-bottom-3",
-            heading: patient.fullName,
+            heading: patient.fullName | highlightQuery(data.q),
             headingClasses: "nhsuk-heading-s",
             clickable: true,
             href: consentPath + "/link?nhsn=" + patient.nhsn,
@@ -113,9 +112,7 @@
 
         {{ govukPagination(pages) }}
       {% else %}
-        <p class="nhsuk-caption-m">
-          {{ __n("patient.count", patients.length) }}
-        </p>
+        {{ __("patient.search.empty") | nhsukMarkdown }}
       {% endif %}
     </div>
   </div>

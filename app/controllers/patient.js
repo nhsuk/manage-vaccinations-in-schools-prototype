@@ -27,14 +27,12 @@ export const patientController = {
 
     // Query
     if (q) {
-      patients = patients.filter((patient) => {
-        const fullName = String(patient.fullName).toLowerCase()
-        const query = q.toLowerCase()
-
-        return fullName.includes(query)
-      })
+      patients = patients.filter((patient) =>
+        patient.tokenized.includes(String(q).toLowerCase())
+      )
     }
 
+    // Clean up session data
     delete data.hasMissingNhsNumber
     delete data.q
 

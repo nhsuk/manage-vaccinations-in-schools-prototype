@@ -10,64 +10,70 @@
     title: title
   }) }}
 
-  {% set detailsHtml %}
-    <form role="search" method="post">
-      {{ input({
-        label: { text: __("patient.filter.name") },
-        decorate: "q"
-      }) }}
+  {% set searchCardHtml %}
+    {{ input({
+      label: { text: __("search.label") },
+      decorate: "q"
+    }) }}
 
-      {{ checkboxes({
+    {{ details({
+      text: __("search.advanced"),
+      HTML: checkboxes({
         fieldset: {
           legend: {
             classes: "nhsuk-u-visually-hidden",
-            text: __("patient.filter.options")
+            text: __("search.options")
           }
         },
         items: [
           {
             value: "true",
-            text: __("patient.filter.hasMissingNhsNumber")
+            text: __("patient.search.hasMissingNhsNumber")
           }
         ],
         decorate: "hasMissingNhsNumber"
+      })
+    }) }}
+
+    <div class="app-button-group">
+      {{ button({
+        text: __("search.confirm")
       }) }}
 
-      <div class="app-button-group nhsuk-u-margin-bottom-0">
-        {{ button({
-          text: __("patient.filter.confirm")
-        }) }}
-
-        {{ button({
-          classes: "nhsuk-button--secondary",
-          text: __("patient.filter.clear"),
-          href: "/patients"
-        }) if data.q or data.hasMissingNhsNumber }}
-      </div>
-    </form>
+      {{ button({
+        classes: "app-button--secondary",
+        text: __("search.clear"),
+        href: "/patients"
+      }) if data.q or data.hasMissingNhsNumber }}
+    </div>
   {% endset %}
 
-  {{ details({
-    classes: "nhsuk-expander",
-    text: __("patient.filter.label"),
-    HTML: detailsHtml,
-    open: true if data.q or data.hasMissingNhsNumber
-  }) }}
+  {{ card({
+    classes: "app-card--muted app-card--grey",
+    feature: true,
+    heading: __("patient.search.label") ,
+    headingClasses: "nhsuk-heading-s",
+    descriptionHtml: searchCardHtml,
+    attributes: {
+      method: "post",
+      role: "search"
+    }
+  }) | formCard }}
 
   {% set patientRows = [] %}
   {% for patient in results.page %}
     {% set patientRows = patientRows | push([
       {
         header: __("patient.fullName.label"),
-        html: patient.link.fullName
+        html: patient.link.fullName | highlightQuery(data.q)
       },
       {
         header: __("patient.postalCode.label"),
-        html: patient.postalCode or "Not provided"
+        html: patient.postalCode | highlightQuery(data.q) or "Not provided"
       },
       {
         header: __("patient.school.label"),
-        html: patient.formatted.school or "Not provided"
+        html: patient.formatted.school | highlightQuery(data.q) or "Not provided"
       },
       {
         header: __("patient.dob.label"),
@@ -101,8 +107,11 @@
 
     {{ __("patient.results", { results: results }) | nhsukMarkdown }}
   {% else %}
-    <div class="app-patients">
-      <p class="app-patients__no-results nhsuk-caption-m">{{ __n("patient.count", patients.length) }}</p>
-    </div>
+    {{ card({
+      heading: __n("patient.count", patients.length),
+      headingClasses: "nhsuk-heading-s",
+      feature: true,
+      description: __("patient.search.empty")
+    }) }}
   {% endif %}
 {% endblock %}
