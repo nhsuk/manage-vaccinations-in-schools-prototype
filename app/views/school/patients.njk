@@ -28,47 +28,34 @@
 
   {% set filterCardHtml %}
     {{ input({
-      label: { text: __("patient.filter.q") },
+      label: { text: __("search.label") },
       decorate: "q"
     }) }}
 
     {{ details({
-      text: __("patient.filter.advanced"),
+      text: __("search.advanced"),
       HTML: dateInput({
         fieldset: {
-          legend: { text: __("patient.filter.dob") }
+          legend: { text: __("patient.dob.label") }
         },
         decorate: "dob"
       }) + checkboxes({
         name: "yearGroup",
         fieldset: {
-          legend: { text: "Year group" }
+          legend: { text: __("patient.yearGroup.label") }
         },
         items: yearGroupItems
-      }) + checkboxes({
-        name: "status",
-        fieldset: {
-          legend: { text: "Status" }
-        },
-        items: [
-          { value: "Ready for vaccinator", text: "Ready for vaccinator" },
-          { value: "Do not vaccinate", text: "Do not vaccinate" },
-          { value: "Request failed", text: "Request failed" },
-          { value: "No response", text: "No response" },
-          { value: "Conflicting consent", text: "Conflicting consent" },
-          { value: "Needs triage", text: "Needs triage" }
-        ]
       })
     }) }}
 
     <div class="app-button-group">
       {{ button({
-        text: __("patient.filter.confirm")
+        text: __("search.confirm")
       }) }}
 
       {{ button({
         classes: "app-button--secondary",
-        text: __("patient.filter.clear"),
+        text: __("search.clear"),
         href: "/schools/" + school.urn + "/patients"
       }) if data.q }}
     </div>
@@ -77,7 +64,7 @@
   {{ card({
     classes: "app-card--muted app-card--grey",
     feature: true,
-    heading: __("patient.filter.label") ,
+    heading: __("patient.search.label") ,
     headingClasses: "nhsuk-heading-s",
     descriptionHtml: filterCardHtml,
     attributes: {
@@ -105,10 +92,6 @@
             "data-filter": patientSession.patient.yearGroup,
             "data-sort": patientSession.patient.yearGroup
           }
-        },
-        {
-          header: __("session.status.label"),
-          text: patientStatus(patientSession).title
         }
       ]) %}
     {% endfor %}
@@ -122,13 +105,7 @@
       head: [
         { text: __("patient.fullName.label") },
         { text: __("patient.dob.label") },
-        {
-          text: __("patient.yearGroup.label"),
-          attributes: {
-            "data-col": "yearGroup"
-          }
-        },
-        { text: __("session.status.label") }
+        { text: __("patient.yearGroup.label") }
       ],
       rows: resultRows
     }) }}

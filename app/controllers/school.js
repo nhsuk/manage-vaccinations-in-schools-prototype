@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { School } from '../models/school.js'
+import { School, SchoolPhase } from '../models/school.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
@@ -9,6 +9,12 @@ export const schoolController = {
     const { data } = request.session
 
     response.locals.schools = School.readAll(data)
+
+    // Filter
+    response.locals.phaseItems = Object.values(SchoolPhase).map((phase) => ({
+      text: phase,
+      value: phase
+    }))
 
     next()
   },

@@ -1,7 +1,12 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import { formatDate } from '../utils/date.js'
 import { range } from '../utils/number.js'
-import { formatLink, formatMonospace } from '../utils/string.js'
+import {
+  formatLink,
+  formatLinkWithSecondaryText,
+  formatMonospace
+} from '../utils/string.js'
 
 import { Address } from './address.js'
 import { Consent } from './consent.js'
@@ -128,6 +133,10 @@ export class School {
       .filter(({ patients }) => patients.length > 0)
   }
 
+  get nextSessionDate() {
+    return this.sessions[0]?.nextDate ? this.sessions[0].nextDate : false
+  }
+
   /**
    * Get school year groups
    *
@@ -157,6 +166,9 @@ export class School {
             this.address.formatted.singleline
           }</span></span>`
         : this.name,
+      nextSessionDate:
+        this.nextSessionDate &&
+        formatDate(this.nextSessionDate, { dateStyle: 'full' }),
       urn: formatMonospace(this.urn)
     }
   }
@@ -168,7 +180,12 @@ export class School {
    */
   get link() {
     return {
-      name: formatLink(this.uri, this.name)
+      name: formatLink(this.uri, this.name),
+      nameAndUrn: formatLinkWithSecondaryText(
+        this.uri,
+        this.name,
+        formatMonospace(this.urn)
+      )
     }
   }
 

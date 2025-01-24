@@ -1361,6 +1361,13 @@ export const en = {
     }
   },
   school: {
+    count: {
+      one: '%s school',
+      other: '[0] No schools|%s schools'
+    },
+    search: {
+      label: 'Find school'
+    },
     list: {
       label: 'Schools',
       title: 'Schools'
@@ -1395,9 +1402,8 @@ export const en = {
     address: {
       label: 'Address'
     },
-    count: {
-      one: '%s school',
-      other: '[0] No schools|%s schools'
+    nextSessionDate: {
+      label: 'Next session'
     },
     primary: {
       count: {

@@ -10,46 +10,93 @@
     title: title
   }) }}
 
-  {% for phase, schools in schools | selectattr("phase") | groupby("phase") %}
-    {% set schoolRows = [] %}
-    {% for school in schools | sort(false, false, "name") %}
-      {% set schoolRows = schoolRows | push([
-        {
-          header: __("school.name.label"),
-          html: school.link.name or "Not provided",
-          attributes: {
-            "data-sort": school.name
-          }
-        },
-        {
-          header: __("school.urn.label"),
-          html: school.formatted.urn or "Not provided"
-        },
-        {
-          header: __("school.address.label"),
-          html: school.address.formatted.singleline or "Not provided"
-        }
-      ]) %}
-    {% endfor %}
-
-    {{ actionTable({
-      classes: "nhsuk-u-margin-bottom-6",
-      id: "schools",
-      sort: "name",
-      heading: __n("school." + phase | lower + ".count", schools.length),
-      panel: true,
-      responsive: true,
-      head: [
-        {
-          text: __("school.name.label"),
-          attributes: {
-            style: "width: 40%"
-          }
-        },
-        { text: __("school.urn.label") },
-        { text: __("school.address.label") }
-      ],
-      rows: schoolRows
+  {% set searchCardHtml %}
+    {{ input({
+      label: { text: __("search.label") },
+      decorate: "q"
     }) }}
+
+    {{ details({
+      text: __("search.advanced"),
+      HTML: checkboxes({
+        fieldset: {
+          legend: { text: __("school.phase.label") }
+        },
+        items: phaseItems
+      })
+    }) }}
+
+    <div class="app-button-group">
+      {{ button({
+        text: __("search.confirm")
+      }) }}
+
+      {{ button({
+        classes: "app-button--secondary",
+        text: __("search.clear"),
+        href: "/schools/"
+      }) if data.q }}
+    </div>
+  {% endset %}
+
+  {{ card({
+    classes: "app-card--muted app-card--grey",
+    feature: true,
+    heading: __("school.search.label") ,
+    headingClasses: "nhsuk-heading-s",
+    descriptionHtml: searchCardHtml,
+    attributes: {
+      method: "post",
+      role: "search"
+    }
+  }) | formCard }}
+
+  {% set schoolRows = [] %}
+  {% for school in schools | sort(false, false, "name") %}
+    {% set schoolRows = schoolRows | push([
+      {
+        header: __("school.name.label"),
+        html: school.link.nameAndUrn or "Not provided",
+        attributes: {
+          "data-sort": school.name
+        }
+      },
+      {
+        header: __("school.phase.label"),
+        html: school.phase or "Not provided"
+      },
+      {
+        header: __("school.records.label"),
+        html: school.records.length or "None"
+      },
+      {
+        header: __("school.nextSessionDate.label"),
+        text: school.formatted.nextSessionDate or "No sessions scheduled",
+        attributes: {
+          "data-sort": school.nextSessionDate
+        }
+      }
+    ]) %}
   {% endfor %}
+
+  {{ actionTable({
+    classes: "nhsuk-u-margin-bottom-6",
+    id: "schools",
+    sort: "name",
+    heading: __n("school.count", schools.length),
+    panel: true,
+    responsive: true,
+    head: [
+      {
+        text: __("school.name.label"),
+        attributes: {
+          style: "width: 40%"
+        }
+      },
+      { text: __("school.phase.label") },
+      { text: __("school.records.label") },
+      { text: __("school.nextSessionDate.label") }
+    ],
+    rows: schoolRows
+  }) }}
 {% endblock %}
