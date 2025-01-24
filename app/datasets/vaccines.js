@@ -85,9 +85,9 @@ export default {
     method: 'Injection',
     dose: 0.5,
     healthQuestionKeys: [
-      'Allergy',
-      'MedicalConditions',
-      'Immunosuppressant',
+      'Bleeding',
+      'RecentTdIpvVaccination',
+      'PreviousReaction',
       'Support'
     ],
     preScreenQuestionKeys: [
@@ -108,9 +108,9 @@ export default {
     method: 'Injection',
     dose: 0.5,
     healthQuestionKeys: [
-      'Allergy',
-      'MedicalConditions',
-      'Immunosuppressant',
+      'Bleeding',
+      'RecentMenAcwyVaccination',
+      'PreviousReaction',
       'Support'
     ],
     preScreenQuestionKeys: [

@@ -586,6 +586,7 @@ export const en = {
         Asthma: false,
         AsthmaSteroids: 'Include the steroid name, dose and length of course',
         AsthmaAdmitted: false,
+        Bleeding: false,
         EggAllergy: false,
         ImmuneSystem: false,
         Immunosuppressant: false,
@@ -594,6 +595,10 @@ export const en = {
         MedicalConditions: false,
         MedicationAllergies: false,
         RecentFluVaccination: false,
+        RecentMenAcwyVaccination:
+          'This vaccine is usually only given once and most children will not have had it previously.',
+        RecentTdIpvVaccination:
+          'For example, after an injury. Most children will not have had this vaccination since their 4-in-1 pre-school booster.',
         Support: 'For example, they’re autistic, or extremely anxious'
       }
     },

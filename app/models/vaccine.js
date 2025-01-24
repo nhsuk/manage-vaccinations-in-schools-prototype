@@ -21,6 +21,8 @@ export const HealthQuestion = {
     'Has the child been admitted to intensive care for their asthma?',
   AsthmaSteroids:
     'Has the child taken any oral steroids for their asthma in the last 2 weeks?',
+  Bleeding:
+    'Does the child have a bleeding disorder or another medical condition they receive treatment for?',
   EggAllergy:
     'Has the child ever been admitted to intensive care due an allergic reaction to egg?',
   Immunosuppressant: 'Does the child take any immunosuppressant medication?',
@@ -35,6 +37,10 @@ export const HealthQuestion = {
     'Has the child ever had a severe reaction to any medicines, including vaccines?',
   RecentFluVaccination:
     'Has the child had a flu vaccination in the last 5 months?',
+  RecentMenAcwyVaccination:
+    'Has the child had a MenACWY vaccination in the last 3 years?',
+  RecentTdIpvVaccination:
+    'Has the child had a tetanus, diphtheria and polio vaccination in the last 5 years?',
   Support: 'Does the child need extra support during vaccination sessions?'
 }
 

@@ -70,6 +70,8 @@ export default {
       'Spoke with parent, confirmed bad reaction from previous vaccine. Vaccine was a COVID-19 vaccination and the reaction was swelling at the site of vaccination. Safe to vaccinate with caution. Monitor for adverse reactions post-vaccination.'
   },
   bleedingDisorder: {
+    Bleeding:
+      'My child has frequent nose bleeds, but our doctor says its nothing to be worried about.',
     MedicalConditions:
       'My child has a bleeding disorder and can easily bruise or bleed.',
     MedicationAllergies:
@@ -125,6 +127,10 @@ export default {
     MedicationAllergies:
       'My child takes insulin injections multiple times a day to manage their diabetes.',
     triageNote: 'Spoke with parent, it is safe to vaccinate'
+  },
+  dogBite: {
+    RecentTdIpvVaccination:
+      'My child was bitten by a dog last summer and got a Tetanus jab when we visited A&E.'
   },
   dyslexia: {
     MedicalConditions:
