@@ -3,6 +3,7 @@
 {% macro actionTable(params) -%}
 <action-table sort="{{ params.sort }}" store="{{ params.id }}"
   {%- if params.classes %} class="{{ params.classes }}"{% endif %}>
+{% if caller %}{{ caller() }}{%- endif %}
 {%  if params.panel %}
   <div class="nhsuk-table__panel-with-heading-tab
   {%- if params.panelClasses %} {{ params.panelClasses }}{% endif %}">
@@ -84,6 +85,5 @@
 {%- if params.panel %}
   </div>
 {%- endif %}
-{% if caller %}{{ caller() }}{%- endif %}
 </action-table>
 {%- endmacro %}

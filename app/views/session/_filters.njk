@@ -1,9 +1,4 @@
-{% call fieldset({
-  legend: {
-    classes: "nhsuk-fieldset__legend--s",
-    text: "Filter results"
-  }
-}) %}
+{% set searchCardHtml %}
   {{ input({
     id: "name",
     name: "name",
@@ -67,8 +62,16 @@
   }) if showStatus }}
 
   {{ button({
-    classes: "nhsuk-button--secondary app-button--small nhsuk-u-margin-0",
+    classes: "app-button--small nhsuk-button--secondary",
     type: "reset",
     text: "Reset filters"
   }) }}
-{% endcall %}
+{% endset %}
+
+{{ card({
+  classes: "app-filters",
+  feature: true,
+  heading: __("patient.search.label") ,
+  headingClasses: "nhsuk-heading-s",
+  descriptionHtml: searchCardHtml
+}) }}

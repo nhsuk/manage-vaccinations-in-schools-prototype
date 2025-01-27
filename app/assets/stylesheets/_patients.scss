@@ -1,45 +1,39 @@
 .app-patients {
-  @include top-and-bottom;
-
   align-items: start;
-  background-color: $color_nhsuk-white;
   display: flex;
+  gap: nhsuk-spacing(4);
   flex-wrap: wrap;
 
   & .app-patients__filters {
-    @include nhsuk-responsive-padding(4);
-
     align-self: stretch;
-    background-color: $color_nhsuk-grey-4;
-    flex-basis: 15rem;
+    flex-basis: 16rem;
     flex-grow: 1;
   }
 
-  & .app-patients__no-results {
-    @include nhsuk-responsive-margin(5);
-  }
-
   & .app-patients__table {
-    @include nhsuk-responsive-margin(5);
-
     flex-basis: 0;
     flex-grow: 999;
     min-width: 70%;
   }
 
-  & .nhsuk-checkboxes__label {
-    padding-left: 0;
+  & .nhsuk-card--feature,
+  & .nhsuk-table__panel-with-heading-tab {
+    margin-bottom: nhsuk-spacing(2);
+    margin-top: nhsuk-spacing(2);
+  }
 
-    &::before {
-      border-width: 3px;
-      padding: 0;
-      transform: scale(0.6667);
-      transform-origin: center left;
-    }
+  & .nhsuk-card__content,
+  & .nhsuk-table__panel-with-heading-tab {
+    padding: nhsuk-spacing(4);
+  }
 
-    &::after {
-      left: 3px;
-      transform: rotate(-45deg) scale(0.6667);
-    }
+  & .nhsuk-card__heading--feature {
+    left: #{nhsuk-spacing(4) * -1 - 1px};
+    padding-left: nhsuk-spacing(4);
+  }
+
+  & .nhsuk-table__heading-tab {
+    margin-left: #{nhsuk-spacing(4) * -1 - 1px};
+    padding-left: nhsuk-spacing(4);
   }
 }

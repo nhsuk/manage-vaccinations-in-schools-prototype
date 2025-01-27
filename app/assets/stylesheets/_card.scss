@@ -49,14 +49,6 @@
     }
   }
 
-  &--muted {
-    background-color: color.scale($color_nhsuk-grey-4, $alpha: -50%);
-
-    .nhsuk-details__text {
-      border-color: $color_nhsuk-grey-3;
-    }
-  }
-
   &--data {
     display: flex;
 
