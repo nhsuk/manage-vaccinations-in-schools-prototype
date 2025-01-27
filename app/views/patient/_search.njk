@@ -1,10 +1,26 @@
 {%- from "x-nhsuk/decorated/button/macro.njk" import button with context %}
 {%- from "x-nhsuk/decorated/checkboxes/macro.njk" import checkboxes with context %}
 {%- from "x-nhsuk/decorated/date-input/macro.njk" import dateInput with context %}
+{%- from "x-nhsuk/decorated/radios/macro.njk" import radios with context %}
 {%- from "components/button/macro.njk" import button with context -%}
 {%- from "components/card/macro.njk" import card with context -%}
 {%- from "components/details/macro.njk" import details with context -%}
 {%- from "_macros/search-input.njk" import searchInput with context -%}
+
+{% set filterButtonGroup %}
+<div class="app-button-group">
+  {{ button({
+    classes: "app-button--small nhsuk-button--secondary",
+    text: __("search.confirm")
+  }) }}
+
+  {{ button({
+    classes: "app-button--small app-button--secondary",
+    text: __("search.clear"),
+    href: params.clear or "/patients"
+  }) if data.q or data.programme or data.yearGroup or data.dob or data.status or data.hasMissingNhsNumber }}
+</div>
+{% endset %}
 
 {% macro patientSearch(params) %}
   {% set searchCardHtml %}
@@ -12,6 +28,21 @@
       label: { text: __("search.label") },
       decorate: "q"
     }) }}
+
+    {{ radios({
+      classes: "nhsuk-radios--inline",
+      formGroup: {
+        classes: "app-form-group--inline"
+      },
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("programme.label")
+        }
+      },
+      items: programmeItems,
+      decorate: "programme"
+    }) if programmeItems }}
 
     {% set searchDetailsHtml %}
       {{ dateInput({
@@ -25,22 +56,25 @@
       }) }}
 
       {{ checkboxes({
-        name: "yearGroup",
         fieldset: {
           legend: {
             classes: "nhsuk-fieldset__legend--s",
             text: __("patient.yearGroup.label")
           }
         },
-        items: yearGroupItems
+        items: yearGroupItems,
+        decorate: "yearGroup"
       }) if yearGroupItems }}
 
       {{ checkboxes({
-        name: "status",
         fieldset: {
-          legend: { text: "Status" }
+          legend: {
+            classes: "nhsuk-fieldset__legend--s",
+            text: __("patient.status.label")
+          }
         },
-        items: statusItems
+        items: statusItems,
+        decorate: "status"
       }) if statusItems }}
 
       {{ checkboxes({
@@ -59,18 +93,7 @@
         decorate: "hasMissingNhsNumber"
       }) }}
 
-      <div class="app-button-group">
-        {{ button({
-          classes: "app-button--small nhsuk-button--secondary",
-          text: __("search.confirm")
-        }) }}
-
-        {{ button({
-          classes: "app-button--small app-button--secondary",
-          text: __("search.clear"),
-          href: params.clear or "/patients"
-        }) }}
-      </div>
+      {{ filterButtonGroup | safe if not programmeItems }}
     {% endset %}
 
     {{ details({
@@ -78,6 +101,8 @@
       open: true if data.hasMissingNhsNumber,
       HTML: searchDetailsHtml
     }) }}
+
+    {{ filterButtonGroup | safe if programmeItems }}
   {% endset %}
 
   {{ card({

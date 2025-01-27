@@ -11,6 +11,7 @@ import { Patient } from '../models/patient.js'
 import { programmeTypes } from '../models/programme.js'
 import { Session, SessionStatus, SessionType } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
+import { formatYearGroup } from '../utils/string.js'
 
 const getPatientsForKey = (patients, activity, tab) => {
   return patients.filter((patient) => {
@@ -59,7 +60,7 @@ export const sessionController = {
   activity(request, response) {
     const { activity } = request.params
     let { tab } = request.query
-    const { __, patientSessions } = response.locals
+    const { __, patientSessions, session } = response.locals
 
     let tabs = []
     switch (activity) {
@@ -115,6 +116,37 @@ export const sessionController = {
       href: `?tab=${key}`,
       current: key === tab
     }))
+
+    response.locals.activityItems = tabs.map((key) => ({
+      text: __(`${activity}.${key}.label`),
+      value: key,
+      checked: key === tab
+    }))
+
+    if (session.programmes.length > 1) {
+      response.locals.programmeItems = session.programmes.map((programme) => ({
+        text: programme.name,
+        value: programme.pid
+      }))
+    }
+
+    response.locals.yearGroupItems = session.school.yearGroups.map(
+      (yearGroup) => ({
+        text: formatYearGroup(yearGroup),
+        value: yearGroup
+      })
+    )
+
+    if (activity === 'capture' && tab === CaptureOutcome.Register) {
+      response.locals.statusItems = [
+        { value: 'Ready for vaccinator', text: 'Ready for vaccinator' },
+        { value: 'Do not vaccinate', text: 'Do not vaccinate' },
+        { value: 'Request failed', text: 'Request failed' },
+        { value: 'No response', text: 'No response' },
+        { value: 'Conflicting consent', text: 'Conflicting consent' },
+        { value: 'Needs triage', text: 'Needs triage' }
+      ]
+    }
 
     response.render('session/activity', { tab })
   },
