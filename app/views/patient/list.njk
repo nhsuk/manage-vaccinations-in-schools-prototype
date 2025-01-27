@@ -1,3 +1,5 @@
+{% from "patient/_search.njk" import patientSearch with context %}
+
 {% extends "_layouts/default.njk" %}
 
 {% set title = __("patient.list.title") %}
@@ -10,55 +12,7 @@
     title: title
   }) }}
 
-  {% set searchCardHtml %}
-    {{ input({
-      label: { text: __("search.label") },
-      decorate: "q"
-    }) }}
-
-    {{ details({
-      text: __("search.advanced"),
-      HTML: checkboxes({
-        fieldset: {
-          legend: {
-            classes: "nhsuk-u-visually-hidden",
-            text: __("search.options")
-          }
-        },
-        items: [
-          {
-            value: "true",
-            text: __("patient.search.hasMissingNhsNumber")
-          }
-        ],
-        decorate: "hasMissingNhsNumber"
-      })
-    }) }}
-
-    <div class="app-button-group">
-      {{ button({
-        text: __("search.confirm")
-      }) }}
-
-      {{ button({
-        classes: "app-button--secondary",
-        text: __("search.clear"),
-        href: "/patients"
-      }) if data.q or data.hasMissingNhsNumber }}
-    </div>
-  {% endset %}
-
-  {{ card({
-    classes: "app-card--muted app-card--grey",
-    feature: true,
-    heading: __("patient.search.label") ,
-    headingClasses: "nhsuk-heading-s",
-    descriptionHtml: searchCardHtml,
-    attributes: {
-      method: "post",
-      role: "search"
-    }
-  }) | formCard }}
+  {{ patientSearch() }}
 
   {% set patientRows = [] %}
   {% for patient in results.page %}
