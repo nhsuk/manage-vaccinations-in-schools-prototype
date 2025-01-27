@@ -1,0 +1,26 @@
+{%- from "x-nhsuk/decorated/button/macro.njk" import button with context %}
+{%- from "x-nhsuk/decorated/input/macro.njk" import input with context %}
+{%- from "_macros/icon.njk" import icon -%}
+
+{% macro searchInput(params) %}
+<div class="app-search-input{%- if params.classes %} {{ params.classes }}{% endif %}" role="search">
+  {{ input({
+    classes: "app-search-input__input",
+    label: {
+      classes: "nhsuk-u-visually-hidden",
+      text: params.label.text
+    },
+    type: "search",
+    autocomplete: "off",
+    decorate: params.decorate or "q"
+  }) }}
+
+  {{ button({
+    classes: "nhsuk-button--secondary app-search-input__submit",
+    html: icon({
+      icon: "search",
+      title: "Search"
+    })
+  }) }}
+</div>
+{% endmacro %}
