@@ -52,7 +52,7 @@ export const patientController = {
       params.q = String(q)
     }
 
-    if (hasMissingNhsNumber && hasMissingNhsNumber[0] === 'true') {
+    if (hasMissingNhsNumber.includes('true')) {
       params.hasMissingNhsNumber = true
     }
 
