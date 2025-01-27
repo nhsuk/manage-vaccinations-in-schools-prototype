@@ -1,34 +1,19 @@
-{% from "programme/_navigation.njk" import programmeNavigation with context %}
+{% from "upload/_navigation.njk" import uploadNavigation with context %}
 
 {% extends "_layouts/default.njk" %}
 
-{% set title = programme.name + " – " + __("programme.reviews.title") %}
-
-{% block beforeContent %}
-  {{ breadcrumb({
-    items: [{
-      text: __("home.show.title"),
-      href: "/"
-    }, {
-      text: __("programme.list.title"),
-      href: "/programmes"
-    }],
-    text: programme.name,
-    href: programme.uri
-  }) }}
-{% endblock %}
+{% set title = __("upload.reviews.title") + " – " + __("upload.list.title") %}
 
 {% block content %}
   {{ super() }}
 
-  {{ programmeNavigation({
-    programme: programme,
+  {{ uploadNavigation({
     view: "reviews"
   }) }}
 
-  {% if programme.reviews.length %}
+  {% if reviews.length %}
     {% set reviewRows = [] %}
-    {% for record in programme.reviews %}
+    {% for record in reviews %}
       {% set reviewRows = reviewRows | push([
         {
           header: __("record.fullName.label"),
@@ -53,7 +38,7 @@
     {{ actionTable({
       id: "reviews",
       sort: "name",
-      heading: __n("programme.reviews.count", programme.reviews.length),
+      heading: __n("upload.reviews.count", reviews.length),
       panel: true,
       responsive: true,
       head: [
@@ -73,6 +58,6 @@
       rows: reviewRows
     }) }}
   {% else %}
-    {{ __n("programme.reviews.count", 0) | nhsukMarkdown }}
+    {{ __n("upload.reviews.count", 0) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

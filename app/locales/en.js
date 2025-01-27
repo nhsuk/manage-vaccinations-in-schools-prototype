@@ -754,8 +754,7 @@ export const en = {
     label: 'Notice',
     list: {
       label: 'Notices',
-      title: 'Important notices',
-      description: 'View notices about important updates to patient records'
+      title: 'Important notices'
     },
     delete: {
       success: 'Notice archived'
@@ -1148,7 +1147,7 @@ export const en = {
       label: 'Programmes',
       title: 'Programmes',
       description:
-        'Use this area to:\n- import child records\n- organise vaccination sessions\n- report vaccinations',
+        'Use this area to:\n- organise vaccination sessions\n- report vaccinations',
       adolescent: 'Adolescent',
       seasonal: 'Seasonal'
     },
@@ -1174,23 +1173,6 @@ export const en = {
       count: {
         one: '%s session organised',
         other: '[0] No sessions organised|%s sessions organised'
-      }
-    },
-    reviews: {
-      label: 'Import issues',
-      title: 'Import issues',
-      count: {
-        one: '%s imported record needs review',
-        other:
-          '[0] No imported records need review|%s imported records need review'
-      }
-    },
-    uploads: {
-      label: 'Imports',
-      title: 'Imports',
-      count: {
-        one: '%s import',
-        other: '[0] No imports|%s imports'
       }
     },
     vaccinations: {
@@ -1758,6 +1740,32 @@ export const en = {
   },
   upload: {
     label: 'Record import',
+    count: {
+      one: '%s import',
+      other: '[0] No imports|%s imports'
+    },
+    list: {
+      label: 'Import',
+      title: 'Import records',
+      description:
+        'Import child, cohort and vaccination records and see important notices'
+    },
+    recent: {
+      label: 'Recent imports',
+      title: 'Recent imports'
+    },
+    reviews: {
+      label: 'Import issues',
+      title: 'Import issues',
+      count: {
+        one: '%s imported record needs review',
+        other:
+          '[0] No imported records need review|%s imported records need review'
+      }
+    },
+    notices: {
+      label: 'Important notices'
+    },
     show: {
       title: 'Import ({{upload.formatted.createdAt}})',
       summary: 'Details'

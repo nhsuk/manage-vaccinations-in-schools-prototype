@@ -82,16 +82,16 @@ export const navigation = (request, response, next) => {
             current: current === 'moves'
           },
           {
-            url: '/notices',
-            label: __('notice.list.label'),
-            classes: 'app-header__navigation-item--with-count',
-            count: response.locals.notices.length,
-            current: current === 'notices'
-          },
-          {
             url: '/vaccines',
             label: __('vaccine.list.label'),
             current: current === 'vaccines'
+          },
+          {
+            url: '/uploads',
+            label: __('upload.list.label'),
+            classes: 'app-header__navigation-item--with-count',
+            count: response.locals.notices.length + data.uploadReviewCount,
+            current: current === 'uploads'
           },
           {
             url: organisation.uri,

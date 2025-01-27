@@ -1,14 +1,35 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
+import { Notice } from '../models/notice.js'
 import { Record } from '../models/record.js'
 import { Upload, UploadType } from '../models/upload.js'
+import { getDateValueDifference } from '../utils/date.js'
 import { formatList } from '../utils/string.js'
 
 export const uploadController = {
-  redirect(request, response) {
-    const { pid } = request.params
+  readAll(request, response, next) {
+    const { data } = request.session
 
-    response.redirect(`/programmes/${pid}/uploads`)
+    let uploads = Upload.readAll(data)
+
+    // Sort
+    uploads = uploads.sort((a, b) =>
+      getDateValueDifference(b.createdAt, a.createdAt)
+    )
+
+    response.locals.notices = Notice.readAll(data)
+    response.locals.uploads = uploads
+    response.locals.reviews = uploads[0].record_nhsns
+      .slice(0, data.uploadReviewCount)
+      .map((nhsn) => Record.read(nhsn, data))
+
+    next()
+  },
+
+  showAll(request, response) {
+    const view = request.params.view || 'list'
+
+    response.render(`upload/${view}`)
   },
 
   read(request, response, next) {

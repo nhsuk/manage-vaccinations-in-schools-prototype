@@ -44,6 +44,7 @@ export default {
   schools,
   sessions,
   uploads,
+  uploadReviewCount: 3,
   users,
   vaccinations,
   vaccines,

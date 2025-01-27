@@ -22,15 +22,9 @@
     items: [{
       text: __("home.show.title"),
       href: "/"
-    }, {
-      text: __("programme.list.title"),
-      href: "/programmes"
-    }, {
-      text: programme.type,
-      href: "/programmes/" + upload.programme_pid
     }],
-    text: __("programme.uploads.title"),
-    href: "/programmes/" + upload.programme_pid + "/uploads"
+    text: __("upload.list.title"),
+    href: "/uploads"
   }) }}
 {% endblock %}
 
@@ -57,7 +51,9 @@
         createdAt: {},
         createdBy: {},
         programme: {},
-        type: {},
+        type: {
+          value: upload.summary.type
+        },
         invalid: {
           value: __n("upload.invalid.count", upload.invalid)
         } if upload.status == UploadStatus.Complete and upload.type == UploadType.Report,

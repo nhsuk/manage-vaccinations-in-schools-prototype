@@ -4,7 +4,8 @@ import { uploadController } from '../controllers/upload.js'
 
 const router = express.Router({ strict: true, mergeParams: true })
 
-router.get('/', uploadController.redirect)
+router.all('/*', uploadController.readAll)
+router.get(['/', '/?:view(notices|reviews)'], uploadController.showAll)
 
 router.get('/new', uploadController.new)
 

@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { Upload, UploadStatus } from '../models/upload.js'
+import { today } from '../utils/date.js'
 
 /**
  * Generate fake upload
@@ -12,7 +13,7 @@ import { Upload, UploadStatus } from '../models/upload.js'
  * @returns {Upload} - Upload
  */
 export function generateUpload(programme, record_nhsns, user, type) {
-  const createdAt = faker.date.recent({ days: 14, refDate: programme.start })
+  const createdAt = faker.date.recent({ days: 14, refDate: today() })
 
   let validations
   let status = UploadStatus.Complete
