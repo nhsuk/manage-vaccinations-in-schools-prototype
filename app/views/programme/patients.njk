@@ -1,3 +1,4 @@
+{% from "patient/_search.njk" import patientSearch with context %}
 {% from "programme/_navigation.njk" import programmeNavigation with context %}
 
 {% extends "_layouts/default.njk" %}
@@ -27,18 +28,25 @@
   }) }}
 
   {{ button({
-    classes: "app-button--secondary",
+    classes: "app-button--secondary nhsuk-u-margin-0",
     text: __("cohort.upload.label"),
     href: programme.uri + "/uploads/new?type=" + UploadType.Cohort
   }) }}
 
-  {% if programme.patientSessions.length %}
+  {{ patientSearch({
+    clear: programme.uri + "/patients"
+  }) }}
+
+  {% if results.page.length %}
     {% set resultRows = [] %}
     {% for patientSession in results.page %}
       {% set resultRows = resultRows | push([
         {
           header: __("patient.fullName.label"),
-          html: patientSession.link.fullName
+          html: patientSession.link.fullName | highlightQuery(data.q),
+          attributes: {
+            "data-sort": patientSession.patient.fullName
+          }
         },
         {
           header: __("patient.dob.label"),
@@ -48,7 +56,6 @@
           header: __("patient.yearGroup.label"),
           html: patientSession.patient.formatted.yearGroupWithRegistration,
           attributes: {
-            "data-filter": patientSession.patient.yearGroup,
             "data-sort": patientSession.patient.yearGroup
           }
         },
@@ -59,16 +66,18 @@
       ]) %}
     {% endfor %}
 
-    {% call actionTable({
+    {{ actionTable({
       id: "programme-patients",
-      classes: "app-patients nhsuk-u-margin-bottom-6",
-      tableClasses: "app-patients__table",
       sort: "name",
-      caption: __n("patient.count", programme.patientSessions.length),
-      captionClasses: "nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal nhsuk-u-font-size-19",
+      heading: __n("patient.count", programme.patientSessions.length),
       responsive: true,
+      panel: true,
       head: [
-        { text: __("patient.fullName.label") },
+        { text: __("patient.fullName.label"),
+          attributes: {
+            "data-col": "name"
+          }
+        },
         { text: __("patient.dob.label") },
         {
           text: __("patient.yearGroup.label"),
@@ -79,18 +88,17 @@
         { text: __("session.status.label") }
       ],
       rows: resultRows
-    }) %}
-      <action-table-filters class="app-patients__filters">
-        {% include "programme/_filters.njk" %}
-      </action-table-filters>
-    {% endcall %}
+    }) }}
 
     {{ govukPagination(pages) }}
 
     {{ __("patient.results", { results: results }) | nhsukMarkdown }}
   {% else %}
-    <div class="app-patients">
-      <p class="app-patients__no-results nhsuk-caption-m">{{ __n("patient.count", programme.patientSessions.length) }}</p>
-    </div>
+    {{ card({
+      heading: __n("patient.count", results.count),
+      headingClasses: "nhsuk-heading-s",
+      feature: true,
+      description: __("patient.search.empty")
+    }) }}
   {% endif %}
 {% endblock %}
