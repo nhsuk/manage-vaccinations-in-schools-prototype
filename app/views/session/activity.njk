@@ -83,14 +83,18 @@
     {% set patientRows = patientRows | push([
       {
         header: __("patient.fullName.label"),
-        html: patientSession.link.fullName
+        html: patientSession.link.fullName,
+        attributes: {
+          "data-filter": patientSession.patient.fullName,
+          "data-sort": patientSession.patient.fullName
+        }
       },
       {
         header: __("patient.yearGroup.label"),
         html: patientSession.patient.formatted.yearGroupWithRegistration or "Not provided",
         attributes: {
-          "data-filter": patient.yearGroup,
-          "data-sort": patient.yearGroup
+          "data-filter": patientSession.patient.yearGroup,
+          "data-sort": patientSession.patient.yearGroup
         }
       },
       {
@@ -120,11 +124,11 @@
     {% call actionTable({
       id: "patient-sessions",
       classes: "app-patients",
-      tableClasses: "app-patients__table",
+      panelClasses: "app-patients__table",
       sort: "name",
-      caption: __n(activity + "." + tab + ".count", patientSessions.length),
-      captionClasses: "nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal nhsuk-u-font-size-19",
+      heading: __n(activity + "." + tab + ".count", patientSessions.length),
       responsive: true,
+      panel: true,
       head: [
         {
           text: __("patient.fullName.label"),
@@ -170,8 +174,11 @@
       </action-table-filters>
     {% endcall %}
   {% else %}
-    <div class="app-patients">
-      <p class="app-patients__no-results nhsuk-caption-m">{{ __n(activity + "." + tab + ".count", patientSessions.length) }}</p>
-    </div>
+    {{ card({
+      heading: __n("patient.count", patientSessions.length),
+      headingClasses: "nhsuk-heading-s",
+      feature: true,
+      description: __("patient.search.empty")
+    }) }}
   {% endif %}
 {% endblock %}
