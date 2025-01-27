@@ -1,13 +1,26 @@
-{% extends "_layouts/unbranded.njk" %}
+{% from "school/_navigation.njk" import schoolNavigation with context %}
 
-{% from "_macros/count.njk" import count %}
+{% extends "_layouts/default.njk" %}
 
 {% set title = school.name %}
-{% set paths = { back: "/schools" } %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }],
+    text: __("school.list.title"),
+    href: "/schools"
+  }) }}
+{% endblock %}
 
 {% block content %}
-  {{ heading({
-    title: title
+  {{ super() }}
+
+  {{ schoolNavigation({
+    school: school,
+    view: "show"
   }) }}
 
   {{ card({
@@ -22,48 +35,4 @@
       })
     })
   }) }}
-
-  {% for yearGroup, records in school.recordsByYearGroup %}
-    {% set recordRows = [] %}
-    {% for record in records | sort(false, false, "createdAt") %}
-      {% set recordRows = recordRows | push([
-        {
-          header: __("record.fullName.label"),
-          text: record.fullName,
-          attributes: {
-            "data-col": "name"
-          }
-        },
-        {
-          header: __("record.dob.label"),
-          text: record.formatted.dob
-        },
-        {
-          header: __("record.postalCode.label"),
-          text: record.postalCode
-        }
-      ]) %}
-    {% endfor %}
-
-    {{ details({
-      classes: "nhsuk-expander",
-      text: yearGroup | yearGroup + " (" + __n("school.records.count", records.length) + ")",
-      HTML: actionTable({
-        tableClasses: "nhsuk-u-margin-0",
-        id: "records",
-        sort: "name",
-        head: [
-          {
-            text: __("record.fullName.label"),
-            attributes: {
-              style: "width: 50%"
-            }
-          },
-          { text: __("record.dob.label") },
-          { text: __("record.postalCode.label") }
-        ],
-        rows: recordRows
-      })
-    }) }}
-  {% endfor %}
 {% endblock %}

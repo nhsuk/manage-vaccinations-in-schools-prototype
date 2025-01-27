@@ -1,9 +1,17 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { formatLink, formatMonospace } from '../utils/string.js'
+import { formatDate } from '../utils/date.js'
+import { range } from '../utils/number.js'
+import {
+  formatLink,
+  formatLinkWithSecondaryText,
+  formatMonospace
+} from '../utils/string.js'
 
 import { Address } from './address.js'
-import { Record } from './record.js'
+import { Consent } from './consent.js'
+import { Patient } from './patient.js'
+import { Session } from './session.js'
 
 /**
  * @readonly
@@ -64,31 +72,53 @@ export class School {
   }
 
   /**
-   * Get school pupils
+   * Get consents (unmatched consent responses)
    *
-   * @returns {Array<Record>} - Records
+   * @returns {Array<import('./consent.js').Consent>} - Consent
    */
-  get records() {
-    if (this.context?.records && this.urn) {
-      return Object.values(this.context?.records)
-        .filter((record) => record.school_urn === this.urn)
-        .map((record) => new Record(record))
-    }
-
-    return []
+  get consents() {
+    return Consent.readAll(this.context).filter(
+      ({ child }) => child.school_urn === this.urn
+    )
   }
 
   /**
-   * Get school pupils
+   * Get patients
    *
-   * @returns {object} - Records by year group
+   * @returns {Array<Patient>} - Patient sessions
    */
-  get recordsByYearGroup() {
-    if (this.context?.records && this.records) {
-      return Object.groupBy(this.records, ({ yearGroup }) => yearGroup)
+  get patients() {
+    return Patient.readAll(this.context).filter(
+      ({ school_urn }) => school_urn === this.urn
+    )
+  }
+
+  /**
+   * Get sessions
+   *
+   * @returns {Array<Session>} - Sessions
+   */
+  get sessions() {
+    return Session.readAll(this.context)
+      .filter(({ school_urn }) => school_urn === this.urn)
+      .filter(({ patients }) => patients.length > 0)
+  }
+
+  get nextSessionDate() {
+    return this.sessions[0]?.nextDate ? this.sessions[0].nextDate : false
+  }
+
+  /**
+   * Get school year groups
+   *
+   * @returns {Array} - Records by year group
+   */
+  get yearGroups() {
+    if (this.phase === SchoolPhase.Primary) {
+      return [...range(0, 6)]
     }
 
-    return []
+    return [...range(7, 11)]
   }
 
   /**
@@ -107,6 +137,9 @@ export class School {
             this.address.formatted.singleline
           }</span></span>`
         : this.name,
+      nextSessionDate:
+        this.nextSessionDate &&
+        formatDate(this.nextSessionDate, { dateStyle: 'full' }),
       urn: formatMonospace(this.urn)
     }
   }
@@ -118,7 +151,12 @@ export class School {
    */
   get link() {
     return {
-      name: formatLink(this.uri, this.name)
+      name: formatLink(this.uri, this.name),
+      nameAndUrn: formatLinkWithSecondaryText(
+        this.uri,
+        this.name,
+        formatMonospace(this.urn)
+      )
     }
   }
 

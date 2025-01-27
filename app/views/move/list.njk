@@ -2,11 +2,24 @@
 
 {% set title = __("move.list.title") %}
 
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("school.list.title"),
+      href: "/schools"
+    }],
+    text: title,
+    href: "/moves"
+  }) }}
+{% endblock %}
+
 {% block content %}
   {{ super() }}
 
   {{ heading({
-    size: "xl",
     title: title
   }) }}
 

@@ -1,0 +1,121 @@
+{% from "school/_navigation.njk" import schoolNavigation with context %}
+
+{% extends "_layouts/default.njk" %}
+
+{% set title = school.name + " – " + __("school.patientSessions.title") %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("school.list.title"),
+      href: "/schools"
+    }],
+    text: school.name,
+    href: school.uri
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ schoolNavigation({
+    school: school,
+    view: "patients"
+  }) }}
+
+  {% set searchCardHtml %}
+    {{ input({
+      label: { text: __("search.label") },
+      decorate: "q"
+    }) }}
+
+    {{ details({
+      text: __("search.advanced"),
+      HTML: dateInput({
+        fieldset: {
+          legend: { text: __("patient.dob.label") }
+        },
+        decorate: "dob"
+      }) + checkboxes({
+        name: "yearGroup",
+        fieldset: {
+          legend: { text: __("patient.yearGroup.label") }
+        },
+        items: yearGroupItems
+      })
+    }) }}
+
+    <div class="app-button-group">
+      {{ button({
+        text: __("search.confirm")
+      }) }}
+
+      {{ button({
+        classes: "app-button--secondary",
+        text: __("search.clear"),
+        href: "/schools/" + school.urn + "/patients"
+      }) if data.q }}
+    </div>
+  {% endset %}
+
+  {{ card({
+    classes: "app-card--muted app-card--grey",
+    feature: true,
+    heading: __("patient.search.label") ,
+    headingClasses: "nhsuk-heading-s",
+    descriptionHtml: searchCardHtml,
+    attributes: {
+      method: "post",
+      role: "search"
+    }
+  }) | formCard }}
+
+  {% if school.patients.length %}
+    {% set resultRows = [] %}
+    {% for patient in results.page %}
+      {% set resultRows = resultRows | push([
+        {
+          header: __("patient.fullName.label"),
+          html: patient.link.fullName
+        },
+        {
+          header: __("patient.dob.label"),
+          html: patient.formatted.dob or "Not provided"
+        },
+        {
+          header: __("patient.yearGroup.label"),
+          html: patient.formatted.yearGroupWithRegistration,
+          attributes: {
+            "data-filter": patient.yearGroup,
+            "data-sort": patient.yearGroup
+          }
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "school-patients",
+      sort: "name",
+      heading: __n("patient.count", school.patients.length),
+      panel: true,
+      responsive: true,
+      head: [
+        { text: __("patient.fullName.label") },
+        { text: __("patient.dob.label") },
+        { text: __("patient.yearGroup.label") }
+      ],
+      rows: resultRows
+    }) }}
+
+    {{ govukPagination(pages) }}
+
+    {{ __("patient.results", { results: results }) | nhsukMarkdown }}
+  {% else %}
+    <p class="nhsuk-caption-m">
+      {{ __n("patient.count", school.patients.length) }}
+    </p>
+  {% endif %}
+{% endblock %}
