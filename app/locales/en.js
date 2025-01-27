@@ -1044,6 +1044,9 @@ export const en = {
     parent2: {
       label: 'Second parent or guardian',
       title: 'Details for second parent or guardian'
+    },
+    status: {
+      label: 'Status'
     }
   },
   patientSession: {
@@ -1145,6 +1148,7 @@ export const en = {
     }
   },
   programme: {
+    label: 'Programme',
     list: {
       label: 'Programmes',
       title: 'Programmes',
