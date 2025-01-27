@@ -1,6 +1,14 @@
-{% macro icon(type) -%}
-<svg class="nhsuk-icon nhsuk-icon__{{ type }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-{% if type == "tick" -%}
+{% macro icon(params) -%}
+<svg class="nhsuk-icon nhsuk-icon__{{ params.icon }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" focusable="false"{% if not params.title %} aria-hidden="true"{% endif %} role="{{ "img" if params.title else "presentation" }}">
+{% if params.title -%}
+  <title>{{ params.title }}</title>
+{% endif %}
+{% if params.icon == "search" -%}
+  <path
+    d="M19.71 18.29l-4.11-4.1a7 7 0 1 0-1.41 1.41l4.1 4.11a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42zM5 10a5 5 0 1 1 5 5 5 5 0 0 1-5-5z"
+    fill="currentColor">
+  </path>
+{% elif params.icon == "tick" -%}
   <path
     d="M18.4 7.8l-8.5 8.4L5.6 12"
     fill="none"
@@ -8,9 +16,9 @@
     stroke-width="4"
     stroke-linecap="round">
   </path>
-{%- elif type == "cross" -%}
+{%- elif params.icon == "cross" -%}
   <path d="M18.6 6.5c.5.5.5 1.5 0 2l-4 4 4 4c.5.6.5 1.4 0 2-.4.4-.7.4-1 .4-.5 0-.9 0-1.2-.3l-3.9-4-4 4c-.3.3-.5.3-1 .3a1.5 1.5 0 0 1-1-2.4l3.9-4-4-4c-.5-.5-.5-1.4 0-2 .6-.7 1.5-.7 2.2 0l3.9 3.9 4-4c.6-.6 1.4-.6 2 0Z" fill="currentColor"/>
-{%- elif type == "warning" -%}
+{%- elif params.icon == "warning" -%}
   <path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 14a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm-1.5-9.5V13a1.5 1.5 0 0 0 3 0V6.5a1.5 1.5 0 0 0-3 0Z" fill="currentColor"/>
 {%- endif %}
 </svg>
