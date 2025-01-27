@@ -1445,7 +1445,7 @@ export const en = {
     label: 'Search',
     options: 'Options',
     advanced: 'Advanced filters',
-    confirm: 'Update list',
+    confirm: 'Update results',
     clear: 'Clear filters'
   },
   session: {

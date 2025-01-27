@@ -1,3 +1,5 @@
+{% from "patient/_search.njk" import patientSearch with context %}
+
 {% extends "_layouts/default.njk" %}
 
 {% set dateOfBirth = true %}
@@ -10,35 +12,6 @@
     caption: __("consent.match.caption", { parent: consent.parent } ),
     title: title
   }) }}
-
-  {% set searchCardHtml %}
-    {{ input({
-      label: { text: __("search.label") },
-      decorate: "q"
-    }) }}
-
-    {{ details({
-      text: __("search.advanced"),
-      HTML: dateInput({
-        fieldset: {
-          legend: { text: __("patient.search.dob") }
-        },
-        decorate: "dob"
-      })
-    }) }}
-
-    <div class="app-button-group">
-      {{ button({
-        text: __("search.confirm")
-      }) }}
-
-      {{ button({
-        classes: "app-button--secondary",
-        text: __("search.clear"),
-        href: "/consents/" + consent.uuid + "/match"
-      }) if data.q }}
-    </div>
-  {% endset %}
 
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-one-third app-grid-column--sticky">
@@ -70,17 +43,9 @@
       }) }}
     </div>
     <div class="nhsuk-grid-column-two-thirds">
-      {{ card({
-        classes: "app-card--muted app-card--grey",
-        feature: true,
-        heading: __("patient.search.label") ,
-        headingClasses: "nhsuk-heading-s",
-        descriptionHtml: searchCardHtml,
-        attributes: {
-          method: "post",
-          role: "search"
-        }
-      }) | formCard }}
+      {{ patientSearch({
+        clear: "/consents/" + consent.uuid + "/match"
+      }) }}
 
       <h2 class="nhsuk-heading-m nhsuk-u-margin-bottom-2">Search results</h2>
       {% if patients.length %}
