@@ -1,18 +1,6 @@
 import { Notice } from '../models/notice.js'
 
 export const noticeController = {
-  readAll(request, response, next) {
-    const { data } = request.session
-
-    response.locals.notices = Notice.readAll(data)
-
-    next()
-  },
-
-  showAll(request, response) {
-    response.render('notice/list')
-  },
-
   read(request, response, next) {
     const { uuid } = request.params
     const { data } = request.session

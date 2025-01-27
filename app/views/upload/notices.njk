@@ -1,13 +1,14 @@
+{% from "upload/_navigation.njk" import uploadNavigation with context %}
+
 {% extends "_layouts/default.njk" %}
 
-{% set title = __("notice.list.title") %}
+{% set title = __("notice.list.title") + " – " + __("upload.list.title") %}
 
 {% block content %}
   {{ super() }}
 
-  {{ heading({
-    size: "xl",
-    title: title
+  {{ uploadNavigation({
+    view: "notices"
   }) }}
 
   {% if notices.length %}

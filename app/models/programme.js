@@ -6,10 +6,8 @@ import { formatLink } from '../utils/string.js'
 
 import { Cohort } from './cohort.js'
 import { PatientSession } from './patient-session.js'
-import { Record } from './record.js'
 import { SchoolTerm } from './school.js'
 import { Session } from './session.js'
-import { Upload } from './upload.js'
 import { Vaccination } from './vaccination.js'
 import { Vaccine } from './vaccine.js'
 
@@ -192,17 +190,6 @@ export class Programme {
   }
 
   /**
-   * Get uploads
-   *
-   * @returns {Array<Upload>} - Uploads
-   */
-  get uploads() {
-    return Upload.readAll(this.context).filter(
-      ({ programme_pid }) => programme_pid === this.pid
-    )
-  }
-
-  /**
    * Get patient sessions
    *
    * @returns {Array<PatientSession>} - Patient sessions
@@ -222,22 +209,6 @@ export class Programme {
     return Session.readAll(this.context)
       .filter(({ programme_pids }) => programme_pids.includes(this.pid))
       .filter(({ patients }) => patients.length > 0)
-  }
-
-  /**
-   * Get upload reviews
-   *
-   * @returns {Array<Session>} - Sessions
-   */
-  get reviews() {
-    // Only mock issues with uploaded records if there are uploads
-    if (this.context?.sessions && this.uploads.length) {
-      return this.uploads[0].record_nhsns
-        .slice(0, 3)
-        .map((record) => new Record(record))
-    }
-
-    return []
   }
 
   /**

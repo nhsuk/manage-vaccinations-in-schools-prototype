@@ -30,15 +30,7 @@
         text: __("programme.vaccinations.label"),
         href: params.programme.uri + "/vaccinations",
         current: params.view == "vaccinations"
-      }, {
-        text: __("programme.uploads.label"),
-        href: params.programme.uri + "/uploads",
-        current: params.view == "uploads"
-      }, {
-        text: (__("programme.reviews.label") + " " + count(params.programme.reviews.length)) | safe,
-        href: params.programme.uri + "/reviews",
-        current: params.view == "reviews"
-      } if params.programme.reviews.length]
+      }]
     }) }}
 
     <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">

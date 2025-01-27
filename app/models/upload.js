@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { formatDate, today } from '../utils/date.js'
+import { formatWithSecondaryText } from '../utils/string.js'
 
 import { Programme } from './programme.js'
 import { Record } from './record.js'
@@ -115,6 +116,26 @@ export class Upload {
   }
 
   /**
+   * Get school class list is for
+   *
+   * @returns {string} - School Name
+   */
+  get schoolName() {
+    if (this.records.length) {
+      return this.records[0].schoolName
+    }
+  }
+
+  get summary() {
+    return {
+      type:
+        this.type === UploadType.School
+          ? formatWithSecondaryText(this.type, this.schoolName)
+          : this.type
+    }
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values
@@ -130,7 +151,7 @@ export class Upload {
         hour12: true
       }),
       createdBy: this.createdBy?.fullName || '',
-      programme: this.programme.type
+      programme: this.type === UploadType.Report && this.programme.type
     }
   }
 
@@ -173,7 +194,7 @@ export class Upload {
    * @returns {string} - URI
    */
   get uri() {
-    return `/programmes/${this.programme_pid}/uploads/${this.id}`
+    return `/uploads/${this.id}`
   }
 
   /**

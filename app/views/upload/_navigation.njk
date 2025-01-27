@@ -1,0 +1,37 @@
+{% from "components/button/macro.njk" import button %}
+{% from "x-govuk/components/secondary-navigation/macro.njk" import xGovukSecondaryNavigation %}
+{% from "_macros/count.njk" import count %}
+{% from "_macros/heading.njk" import heading %}
+
+{% macro uploadNavigation(params) %}
+  {{ heading({
+    size: "xl",
+    title: __("upload.list.title")
+  }) }}
+
+  {{ button({
+    classes: "app-button--secondary",
+    text: __("upload.new.label"),
+    href: "/uploads/new"
+  }) }}
+
+  {{ xGovukSecondaryNavigation({
+    items: [{
+      text: __("upload.recent.label"),
+      href: "/uploads",
+      current: params.view == "list"
+    }, {
+      text: (__("upload.reviews.label") + " " + count(reviews.length)) | safe,
+      href: "/uploads/reviews",
+      current: params.view == "reviews"
+    }, {
+      text: (__("upload.notices.label") + " " + count(notices.length)) | safe,
+      href: "/uploads/notices",
+      current: params.view == "notices"
+    }]
+  }) }}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("upload." + params.view + ".title") }}
+  </h2>
+{% endmacro %}
