@@ -1,0 +1,94 @@
+{%- from "x-nhsuk/decorated/button/macro.njk" import button with context %}
+{%- from "x-nhsuk/decorated/checkboxes/macro.njk" import checkboxes with context %}
+{%- from "x-nhsuk/decorated/date-input/macro.njk" import dateInput with context %}
+{%- from "components/button/macro.njk" import button with context -%}
+{%- from "components/card/macro.njk" import card with context -%}
+{%- from "components/details/macro.njk" import details with context -%}
+{%- from "_macros/search-input.njk" import searchInput with context -%}
+
+{% macro patientSearch(params) %}
+  {% set searchCardHtml %}
+    {{ searchInput({
+      label: { text: __("search.label") },
+      decorate: "q"
+    }) }}
+
+    {% set searchDetailsHtml %}
+      {{ dateInput({
+        fieldset: {
+          legend: {
+            classes: "nhsuk-label--s",
+            text: __("patient.dob.label")
+          }
+        },
+        decorate: "dob"
+      }) }}
+
+      {{ checkboxes({
+        name: "yearGroup",
+        fieldset: {
+          legend: {
+            classes: "nhsuk-fieldset__legend--s",
+            text: __("patient.yearGroup.label")
+          }
+        },
+        items: yearGroupItems
+      }) if yearGroupItems }}
+
+      {{ checkboxes({
+        name: "status",
+        fieldset: {
+          legend: { text: "Status" }
+        },
+        items: statusItems
+      }) if statusItems }}
+
+      {{ checkboxes({
+        fieldset: {
+          legend: {
+            classes: "nhsuk-fieldset__legend--s",
+            text: __("search.options")
+          }
+        },
+        items: [
+          {
+            value: "true",
+            text: __("patient.search.hasMissingNhsNumber")
+          }
+        ],
+        decorate: "hasMissingNhsNumber"
+      }) }}
+
+      <div class="app-button-group">
+        {{ button({
+          classes: "app-button--small nhsuk-button--secondary",
+          text: __("search.confirm")
+        }) }}
+
+        {{ button({
+          classes: "app-button--small app-button--secondary",
+          text: __("search.clear"),
+          href: params.clear or "/patients"
+        }) }}
+      </div>
+    {% endset %}
+
+    {{ details({
+      text: __("search.advanced"),
+      open: true if data.hasMissingNhsNumber,
+      HTML: searchDetailsHtml
+    }) }}
+  {% endset %}
+
+  {{ card({
+    classes: "app-filters",
+    feature: true,
+    heading: __("patient.search.label") ,
+    headingClasses: "nhsuk-heading-s",
+    descriptionHtml: searchCardHtml,
+    attributes: {
+      method: "post",
+      role: "search"
+    }
+  }) | formCard }}
+{% endmacro %}
