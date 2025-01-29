@@ -14,9 +14,16 @@ import { generateParent } from './parent.js'
  * @param {import('../models/session.js').Session} session - Session
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @param {number} index - Reply
+ * @param {Date} lastConsentCreatedAt - Date previous consent response created
  * @returns {Consent|undefined} - Consent
  */
-export function generateConsent(programme, session, patientSession, index) {
+export function generateConsent(
+  programme,
+  session,
+  patientSession,
+  index,
+  lastConsentCreatedAt
+) {
   // Child
   const child = patientSession.patient
 
@@ -54,10 +61,12 @@ export function generateConsent(programme, session, patientSession, index) {
   }
 
   return new Consent({
-    createdAt: faker.date.between({
-      from: session.openAt,
-      to: sessionClosedBeforeToday ? session.closeAt : nowAt
-    }),
+    createdAt:
+      lastConsentCreatedAt ||
+      faker.date.between({
+        from: session.openAt,
+        to: sessionClosedBeforeToday ? session.closeAt : nowAt
+      }),
     child,
     parent,
     decision,
