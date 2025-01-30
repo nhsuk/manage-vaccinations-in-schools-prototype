@@ -7,7 +7,7 @@ import {
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient-session.js'
-import { Programme } from '../models/programme.js'
+import { kebabToPascalCase } from '../utils/string.js'
 
 /**
  * Get jabs (completed vaccinations against those needed)
@@ -26,11 +26,8 @@ export const getJabs = (patientSession) => {
   } else if (patientSession.administeredVaccinations.length === 1) {
     // One of the vaccinations administered by the programme has been given
     const vaccination = patientSession.administeredVaccinations[0]
-    const programme = Programme.read(
-      vaccination.programme_pid,
-      patientSession.context
-    )
-    return Jabs[programme.type]
+    const type = kebabToPascalCase(vaccination.programme_pid)
+    return Jabs[type]
   }
 
   return Jabs.None
