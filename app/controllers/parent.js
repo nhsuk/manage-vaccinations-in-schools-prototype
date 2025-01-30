@@ -200,7 +200,6 @@ export const parentController = {
           request.body.consent.decision = ReplyDecision.OnlyTdIPV
           break
         default:
-          request.body.consent.decision = ReplyDecision.Refused
       }
     }
 
