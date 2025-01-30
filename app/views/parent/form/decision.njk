@@ -2,9 +2,9 @@
 
 {% set title = __("consent.decision.title", { session: session }) %}
 
-{% if programmeItems.length == 1 %}
+{% if programmeItems | length == 1 %}
   {% set yesLabelText = __("consent.decision.yes.single") %}
-{% elif programmeItems.length == 2 %}
+{% elif programmeItems | length == 2 %}
   {% set yesLabelText = __("consent.decision.yes.double") %}
   {% set someLabelText = __("consent.decision.some.double") %}
 {% else %}
@@ -41,7 +41,7 @@
             decorate: "decisions"
           })
         }
-      } if programmeItems.length > 1,
+      } if programmeItems | length > 1,
       {
         text: __("consent.decision.no"),
         value: ReplyDecision.Refused
