@@ -443,7 +443,7 @@ export const en = {
       label: 'Child',
       summary: 'About your child',
       description:
-        'Give the official name that’s on their passport or birth certificate. If their name has changed, tell us their current name.',
+        'Give the name held on your child’s official school records. If their name has changed, tell us their current name.',
       firstName: {
         label: 'First name'
       },
@@ -470,7 +470,7 @@ export const en = {
       dob: {
         title: 'What is your child’s date of birth?',
         label: 'Child’s date of birth',
-        hint: 'For example, 27 3 2017'
+        hint: 'For example, 27 3 2012'
       },
       'confirm-school': {
         title: 'Confirm your child’s school',
@@ -510,11 +510,11 @@ export const en = {
       },
       email: {
         label: 'Email address',
-        hint: 'We use this to send you confirmation messages'
+        hint: 'We will use this to send you confirmation messages'
       },
       tel: {
         label: 'Phone number',
-        hint: 'A nurse might call you about your child’s vaccination'
+        hint: 'Someone from the vaccinations team might call you if they have questions'
       },
       sms: {
         label: "Tick this box if you'd like to get updates by text message"
@@ -544,7 +544,7 @@ export const en = {
     },
     decision: {
       summary: 'Consent for the {{session.vaccination}}',
-      title: 'Do you agree to them having the {{session.vaccination}}?',
+      title: 'Do you agree to your child having the {{session.vaccination}}?',
       label: 'Decision',
       hint: {
         Flu: 'The nasal flu spray contains gelatine which comes from pigs.'
@@ -596,9 +596,9 @@ export const en = {
         MedicationAllergies: false,
         RecentFluVaccination: false,
         RecentMenAcwyVaccination:
-          'This vaccine is usually only given once and most children will not have had it previously.',
+          'This vaccine is usually given once, and most children will not have had it previously',
         RecentTdIpvVaccination:
-          'For example, after an injury. Most children will not have had this vaccination since their 4-in-1 pre-school booster.',
+          'Most children will not have had this vaccination since their 4-in-1 pre-school booster',
         Support: 'For example, they’re autistic, or extremely anxious'
       }
     },
@@ -611,12 +611,20 @@ export const en = {
     confirmation: {
       title: {
         [ReplyDecision.Given]:
-          '{{consent.child.fullName}} is due to get the {{programme.vaccine.name}} vaccination at school on {{session.summary.dates}}',
+          '{{consent.child.fullName}} is due to get the {{session.vaccination}} at school on {{session.summary.datesDisjunction}}',
+        [ReplyDecision.OnlyMenACWY]:
+          '{{consent.child.fullName}} is due to get the MenACWY vaccination at school on {{session.summary.datesDisjunction}}',
+        [ReplyDecision.OnlyTdIPV]:
+          '{{consent.child.fullName}} is due to get the Td/IPV vaccination at school on {{session.summary.datesDisjunction}}',
         [ReplyDecision.Refused]:
-          'You’ve told us that you do not want your child to get the {{programme.vaccine.name}} vaccine at school'
+          'You’ve told us that you do not want {{consent.child.fullName}} to get the {{session.vaccination}} at school'
       },
       description: {
         [ReplyDecision.Given]:
+          'We’ll send a confirmation once the vaccination has been given.\n\nIf the vaccination does not take place due to illness or absence, we’ll contact you about a catch-up session.',
+        [ReplyDecision.OnlyTdIPV]:
+          'We’ll send a confirmation once the vaccination has been given.\n\nIf the vaccination does not take place due to illness or absence, we’ll contact you about a catch-up session.',
+        [ReplyDecision.OnlyTdIPV]:
           'We’ll send a confirmation once the vaccination has been given.\n\nIf the vaccination does not take place due to illness or absence, we’ll contact you about a catch-up session.',
         [ReplyDecision.Refused]:
           'We’ve sent a confirmation to {{consent.parent.email}}.'
