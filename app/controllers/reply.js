@@ -1,6 +1,7 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { GillickCompetent } from '../models/gillick.js'
+import { Parent } from '../models/parent.js'
 import { Programme } from '../models/programme.js'
 import {
   Reply,
@@ -34,17 +35,13 @@ export const replyController = {
 
   new(request, response) {
     const { data } = request.session
-    const { patient, patientSession, session } = response.locals
-
-    const selfConsent =
-      patientSession.gillick?.competent === GillickCompetent.True
+    const { patient, session } = response.locals
 
     const reply = new Reply(
       {
         child: patient,
         patient_uuid: patient.uuid,
         session_id: session.id,
-        selfConsent,
         ...(data.token && { createdBy_uid: data.token?.uid })
       },
       data
@@ -113,6 +110,10 @@ export const replyController = {
 
     response.locals.reply = reply
 
+    // Child can self consent if assessed as Gillick competent
+    const canSelfConsent =
+      patientSession.gillick?.competent === GillickCompetent.True
+
     // Only ask for programme if more than 1 administered in a session
     const isMultiProgrammeSession = patientSession.session.programmes.length > 1
     response.locals.isMultiProgrammeSession = isMultiProgrammeSession
@@ -135,9 +136,10 @@ export const replyController = {
     const journey = {
       [`/`]: {},
       [`/${uuid}/${form}/respondent`]: {},
-      ...(!reply?.selfConsent && {
-        [`/${uuid}/${form}/parent`]: {}
-      }),
+      ...(data.respondent !== 'self' &&
+        !reply.selfConsent && {
+          [`/${uuid}/${form}/parent`]: {}
+        }),
       ...(isMultiProgrammeSession && {
         [`/${uuid}/${form}/programme`]: {}
       }),
@@ -214,9 +216,9 @@ export const replyController = {
       )
     }
 
-    if (reply?.selfConsent) {
+    if (canSelfConsent) {
       response.locals.respondentItems.unshift({
-        text: reply.relationship,
+        text: 'Child (Gillick competent)',
         value: 'self'
       })
     }
@@ -253,27 +255,32 @@ export const replyController = {
       switch (respondent) {
         case 'new': // Consent response is from a new contact
           newReply.method = ReplyMethod.Phone
-          newReply.parent = {}
+          newReply.parent = new Parent({})
+          newReply.selfConsent = false
           break
         case 'self':
           newReply.method = ReplyMethod.InPerson
           newReply.parent = false
+          newReply.selfConsent = true
           break
         case 'parent-1': // Consent response is from CHIS record
           newReply.method = ReplyMethod.Phone
           newReply.parent = patient.parents[0]
+          newReply.selfConsent = false
           break
         case 'parent-2': // Consent response is from CHIS record
           newReply.method = ReplyMethod.Phone
           newReply.parent = patient.parents[1]
+          newReply.selfConsent = false
           break
         default: // Consent response is an existing respondent
+          newReply.method = ReplyMethod.Phone
+          newReply.parent = Reply.read(respondent, data).parent
+          newReply.selfConsent = false
+
           // Store reply that needs marked as invalid
           // We only want to do this when submitting replacement reply
           response.locals.invalidUuid = request.body.uuid
-
-          newReply.method = ReplyMethod.Phone
-          newReply.parent = Reply.read(respondent, data).parent
       }
     }
 
