@@ -24,6 +24,15 @@ export const SchoolTerm = {
   Summer: 'Summer'
 }
 
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const SchoolYear = {
+  Y2024: '2024/25',
+  Y2023: '2023/24'
+}
+
 export const schoolTerms = {
   [SchoolTerm.Autumn]: { from: '2024-09-03', to: '2024-12-13' },
   [SchoolTerm.Spring]: { from: '2025-01-06', to: '2025-04-11' },

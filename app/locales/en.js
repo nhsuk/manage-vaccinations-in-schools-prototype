@@ -1144,9 +1144,7 @@ export const en = {
       label: 'Programmes',
       title: 'Programmes',
       description:
-        'Use this area to:\n- organise vaccination sessions\n- report vaccinations',
-      adolescent: 'Adolescent',
-      seasonal: 'Seasonal'
+        'Use this area to:\n- organise vaccination sessions\n- report vaccinations'
     },
     show: {
       label: 'Overview',
