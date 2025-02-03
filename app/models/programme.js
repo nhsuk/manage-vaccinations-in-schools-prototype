@@ -6,7 +6,7 @@ import { formatLink } from '../utils/string.js'
 
 import { Cohort } from './cohort.js'
 import { PatientSession } from './patient-session.js'
-import { SchoolTerm } from './school.js'
+import { SchoolTerm, SchoolYear } from './school.js'
 import { Session } from './session.js'
 import { Vaccination } from './vaccination.js'
 import { Vaccine } from './vaccine.js'
@@ -133,6 +133,7 @@ export class Programme {
       options?.type && programmeTypes[options.type]?.information
     this.active = options?.type && programmeTypes[options.type]?.active
     this.seasonal = options?.type && programmeTypes[options.type]?.seasonal
+    this.year = options?.year || SchoolYear.Y2024
     this.term = options?.type && programmeTypes[options.type]?.term
     this.type = options?.type
     this.cohort_uids = options?.cohort_uids || []

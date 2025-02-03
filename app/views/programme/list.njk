@@ -10,7 +10,7 @@
     title: title
   }) }}
 
-  {% for seasonal, programmes in programmes | groupby("seasonal") %}
+  {% for year, programmes in programmes | groupby("year") %}
     {% set programmeRows = [] %}
     {% for programme in programmes | sort(false, false, "name") %}
       {% set programmeRows = programmeRows | push([
@@ -36,7 +36,7 @@
     {{ actionTable({
       id: "programmes",
       sort: "name",
-      heading: __("programme.list.seasonal") if seasonal == "true" else __("programme.list.adolescent"),
+      heading: year,
       panel: true,
       responsive: true,
       head: [
