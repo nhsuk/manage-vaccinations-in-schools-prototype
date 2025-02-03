@@ -15,7 +15,7 @@
   {{ input({
     label: { text: __("parent.fullName.label") },
     decorate: "reply.parent.fullName"
-  }) if not reply.parent.fullName }}
+  }) }}
 
   {# `pop` removes `Other` and `Unknown` from ParentalRelationship array #}
   {{ radios({
@@ -44,7 +44,7 @@
       }
     }),
     decorate: "reply.parent.relationship"
-  }) if not reply.parent.relationship }}
+  }) }}
 
   {{ input({
     label: { text: __("parent.email.label") },
