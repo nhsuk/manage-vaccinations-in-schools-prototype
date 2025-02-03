@@ -1304,7 +1304,11 @@ export const en = {
       label: 'Parent'
     },
     programme: {
-      label: 'Programme'
+      label: 'Programme',
+      title: {
+        Child: 'Which vaccination is the child giving consent for?',
+        Parent: 'Which vaccination are they giving consent for?'
+      }
     },
     method: {
       title: 'How was the response given?',

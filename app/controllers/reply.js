@@ -1,6 +1,7 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { GillickCompetent } from '../models/gillick.js'
+import { Programme } from '../models/programme.js'
 import {
   Reply,
   ReplyDecision,
@@ -42,9 +43,6 @@ export const replyController = {
       {
         child: patient,
         patient_uuid: patient.uuid,
-        // TODO: Ask what programme consent response is for when a session
-        // is for multiple programmes
-        programme_pid: patientSession.session.programme_pids[0],
         session_id: session.id,
         selfConsent,
         ...(!selfConsent && { method: ReplyMethod.Phone }),
@@ -116,6 +114,14 @@ export const replyController = {
 
     response.locals.reply = reply
 
+    // Only ask for programme if more than 1 administered in a session
+    const isMultiProgrammeSession = patientSession.session.programmes.length > 1
+    response.locals.isMultiProgrammeSession = isMultiProgrammeSession
+
+    response.locals.programme = isMultiProgrammeSession
+      ? reply.programme_pid && Programme.read(reply.programme_pid, data)
+      : patientSession.session.programmes[0]
+
     response.locals.triage = {
       ...(form === 'edit' && triage), // Previous values
       ...data?.wizard?.triage // Wizard values
@@ -132,6 +138,9 @@ export const replyController = {
       [`/${uuid}/${form}/respondent`]: {},
       ...(!reply?.selfConsent && {
         [`/${uuid}/${form}/parent`]: {}
+      }),
+      ...(isMultiProgrammeSession && {
+        [`/${uuid}/${form}/programme`]: {}
       }),
       [`/${uuid}/${form}/decision`]: {
         [`/${uuid}/${form}/${reply?.selfConsent ? 'notify-parent' : 'health-answers'}`]:
@@ -211,6 +220,15 @@ export const replyController = {
         text: reply.relationship,
         value: 'self'
       })
+    }
+
+    if (isMultiProgrammeSession) {
+      response.locals.programmeItems = patientSession.session.programmes.map(
+        (programme) => ({
+          text: programme.name,
+          value: programme.pid
+        })
+      )
     }
 
     next()

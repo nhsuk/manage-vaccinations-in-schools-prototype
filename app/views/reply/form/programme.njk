@@ -1,0 +1,23 @@
+{% extends "_layouts/form.njk" %}
+
+{% if reply.selfConsent %}
+  {% set title = __("reply.programme.title.Child") %}
+{% else %}
+  {% set title = __("reply.programme.title.Parent") %}
+{% endif %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: patient.fullName,
+          title: title
+        })
+      }
+    },
+    items: programmeItems,
+    decorate: "reply.programme_pid"
+  }) }}
+{% endblock %}

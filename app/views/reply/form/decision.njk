@@ -31,4 +31,10 @@
     }],
     decorate: "reply.decision"
   }) }}
+
+  {{ input({
+    type: "hidden",
+    value: programme.pid,
+    decorate: "reply.programme_pid"
+  }) if not isMultiProgrammeSession }}
 {% endblock %}

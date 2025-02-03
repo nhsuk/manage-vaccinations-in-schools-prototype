@@ -18,7 +18,9 @@
         method: {
           href: reply.uri + "/new/method"
         },
-        programme: {},
+        programme: {
+          href: reply.uri + "/new/programme" if isMultiProgrammeSession
+        },
         decision: {
           href: reply.uri + "/new/decision"
         },
