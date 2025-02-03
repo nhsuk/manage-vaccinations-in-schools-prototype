@@ -45,7 +45,6 @@ export const replyController = {
         patient_uuid: patient.uuid,
         session_id: session.id,
         selfConsent,
-        ...(!selfConsent && { method: ReplyMethod.Phone }),
         ...(data.token && { createdBy_uid: data.token?.uid })
       },
       data
@@ -253,15 +252,19 @@ export const replyController = {
     if (respondent) {
       switch (respondent) {
         case 'new': // Consent response is from a new contact
+          newReply.method = ReplyMethod.Phone
           newReply.parent = {}
           break
         case 'self':
+          newReply.method = ReplyMethod.InPerson
           newReply.parent = false
           break
         case 'parent-1': // Consent response is from CHIS record
+          newReply.method = ReplyMethod.Phone
           newReply.parent = patient.parents[0]
           break
         case 'parent-2': // Consent response is from CHIS record
+          newReply.method = ReplyMethod.Phone
           newReply.parent = patient.parents[1]
           break
         default: // Consent response is an existing respondent
@@ -269,6 +272,7 @@ export const replyController = {
           // We only want to do this when submitting replacement reply
           response.locals.invalidUuid = request.body.uuid
 
+          newReply.method = ReplyMethod.Phone
           newReply.parent = Reply.read(respondent, data).parent
       }
     }
