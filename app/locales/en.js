@@ -1360,12 +1360,37 @@ export const en = {
     }
   },
   school: {
+    count: {
+      one: '%s school',
+      other: '[0] No schools|%s schools'
+    },
+    search: {
+      label: 'Find a school'
+    },
     list: {
-      title: 'Schools',
-      caption: 'Local authority'
+      label: 'Schools',
+      title: 'Schools'
     },
     show: {
+      label: 'Overview',
       summary: 'School details'
+    },
+    patients: {
+      label: 'Children'
+    },
+    sessions: {
+      label: 'Sessions',
+      new: {
+        label: 'Add a session'
+      }
+    },
+    consents: {
+      label: 'Unmatched responses'
+    },
+    uploads: {
+      new: {
+        label: 'Import class list records'
+      }
     },
     name: {
       label: 'Name'
@@ -1379,9 +1404,8 @@ export const en = {
     address: {
       label: 'Address'
     },
-    count: {
-      one: '%s school',
-      other: '[0] No schools|%s schools'
+    nextSessionDate: {
+      label: 'Next session'
     },
     primary: {
       count: {
@@ -1744,7 +1768,7 @@ export const en = {
       other: '[0] No imports|%s imports'
     },
     list: {
-      label: 'Import',
+      label: 'Import records',
       title: 'Import records',
       description:
         'Import child, cohort and vaccination records and see important notices'
@@ -1907,7 +1931,7 @@ export const en = {
   move: {
     list: {
       label: 'School moves',
-      title: 'School moves',
+      title: 'Review school moves',
       description: 'Review children who have moved schools'
     },
     show: {

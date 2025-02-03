@@ -1,0 +1,51 @@
+{% from "components/button/macro.njk" import button %}
+{% from "x-govuk/components/secondary-navigation/macro.njk" import xGovukSecondaryNavigation %}
+{% from "_macros/count.njk" import count %}
+{% from "_macros/action-list.njk" import actionList %}
+{% from "_macros/heading.njk" import heading %}
+
+{%- macro schoolNavigation(params) -%}
+  {{ heading({
+    title: params.school.name,
+    summary: ("URN: " + params.school.formatted.urn) | safe
+  }) }}
+
+  {# TODO: Reconsider where imports sit within overall IA #}
+  <div class="app-button-group">
+    {{ button({
+      classes: "app-button--secondary",
+      text: __("school.sessions.new.label"),
+      href: "#"
+    }) }}
+
+    {{ button({
+      classes: "app-button--secondary",
+      text: __("school.uploads.new.label"),
+      href: "#"
+    }) }}
+  </div>
+
+  {{ xGovukSecondaryNavigation({
+    items: [{
+      text: __("school.show.label"),
+      href: params.school.uri,
+      current: params.view == "show"
+    }, {
+      text: (__("school.patients.label") + " " + count(params.school.patients.length)) | safe,
+      href: params.school.uri + "/patients",
+      current: params.view == "patients"
+    }, {
+      text: (__("school.sessions.label") + " " + count(params.school.sessions.length)) | safe,
+      href: params.school.uri + "/sessions",
+      current: params.view == "sessions"
+    }, {
+      text: (__("school.consents.label") + " " + count(params.school.consents.length)) | safe,
+      href: params.school.uri + "/consents",
+      current: params.view == "consents"
+    }]
+  }) }}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("school." + params.view + ".title") }}
+  </h2>
+{% endmacro %}
