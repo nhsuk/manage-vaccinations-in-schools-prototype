@@ -1,5 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import { range } from '../utils/number.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Address } from './address.js'
@@ -98,6 +99,18 @@ export class School {
     }
 
     return []
+  }
+
+  /** Get year groups
+   *
+   * @returns {Array} - Year groups
+   */
+  get yearGroups() {
+    if (this.phase === SchoolPhase.Primary) {
+      return [...range(0, 6)]
+    }
+
+    return [...range(7, 11)]
   }
 
   /**
