@@ -45,7 +45,7 @@
 {% block pageTitle %}
   {{- "Error: " if errors -}}
   {{- (title + " – " if title) | safe -}}
-  {{- serviceName + " – NHS.UK" -}}
+  {{- (transactionalService.name or serviceName) + " – NHS.UK" -}}
 {% endblock %}
 
 {% set bodyAttributes = {"data-module": "edge"} %}

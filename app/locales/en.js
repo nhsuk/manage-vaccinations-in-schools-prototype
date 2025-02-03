@@ -402,26 +402,15 @@ export const en = {
         single: 'Give or refuse consent for a %s',
         multiple: 'Give or refuse consent for the %s'
       },
-      Flu: {
-        description:
-          'The vaccination helps to protect children against flu. It also protects others who are vulnerable to flu, such as babies and older people.'
+      more: `Find out more about the {{programme.name}} vaccine`,
+      confirm: {
+        title: 'Give or refuse consent',
+        buttonText: 'Start now'
       },
-      HPV: {
+      otherMethods: {
+        title: 'Other ways to give consent',
         description:
-          'The HPV vaccine helps to prevent HPV related cancers from developing in boys and girls.\n\nThe number of doses you need depends on your age and how well your immune system works. Young people usually only need 1 dose.'
-      },
-      TdIPV: {
-        description:
-          'The 3-in-1 teenage booster, also known as the Td/IPV vaccine, boosts protection against 3 diseases: tetanus, diphtheria and polio.\n\nIt is offered to all young people aged 13 to 15 (in school Years 9 and 10) and given as an injection into the upper arm.'
-      },
-      MenACWY: {
-        description:
-          'The MenACWY vaccine helps to prevent meningitis and septicaemia.\n\nIt is offered to all young people aged 13 to 15 (in school Years 9 and 10) and given as an injection into the upper arm.'
-      },
-      confirm: 'Start now',
-      language: {
-        title: 'Use this service in another language',
-        en: 'Change language (English)'
+          'The quickest way to give or refuse consent is online, using this service. This will take less than 5 minutes.\n\nIf you cannot use the service, you can respond over the phone using the number given in the consent request you got by email.'
       }
     },
     closed: {
