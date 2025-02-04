@@ -659,11 +659,11 @@ export const en = {
     consent: {
       invite: {
         label: 'Invitation',
-        name: '{{session.vaccinationTitle}} on {{session.summary.dates}}'
+        name: 'Vaccinations on {{session.summary.dates}}'
       },
       'invite-catch-up': {
         label: 'Invitation (catch-up)',
-        name: '{{session.vaccinationTitle}} on {{session.summary.dates}}'
+        name: 'Vaccinations on {{session.summary.dates}}'
       },
       'invite-reminder': {
         label: 'Reminder',
@@ -1689,7 +1689,7 @@ export const en = {
       'capture-could-not-vaccinate': {
         label: 'Could not vaccinate',
         name: 'Child did not get their vaccination despite having consent',
-        text: '{{consent.child.firstName}} did not have their {{session.vaccination}} at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact the local health team by calling [{{organisation.tel}}](#), or email [{{organisation.email}}](#).'
+        text: '{{consent.child.firstName}} did not have their {{session.vaccination}} at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact our team by calling [{{organisation.tel}}](#), or email [{{organisation.email}}](#).'
       }
     }
   },

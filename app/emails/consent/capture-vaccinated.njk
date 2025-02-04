@@ -5,12 +5,10 @@ Dear {{ consent.parent.fullName }},
 We suggest you record the following details {% if data.schools[session.school_urn].phase == "Primary" %}in their red book (also known as their personal child health record){% else %}somewhere{% endif %}:
 
 {% for programme in session.programmes %}
-## {{ programme.name }}
-
-- Vaccination: {{ programme.name }}
-- Vaccine: {{ programme.vaccine.brand }}
-- Date of vaccination: {{ session.formatted.firstDate }}
-- Batch number: AB1234
+Vaccination: {{ programme.name }}<br>
+Vaccine: {{ programme.vaccine.brand }}<br>
+Date of vaccination: {{ session.formatted.firstDate }}<br>
+Batch number: AB1234
 {% endfor %}
 
 ## Your child might have some side effects
@@ -24,10 +22,16 @@ Your child might have some of the following side effects:
 - loss of appetite
 
 {% else %}
-- bruising or itching at the site of the injection
-- a high temperature, or feeling hot and shivery
-- feeling sick (nausea)
-- pain in the arms, hands, fingers
+- pain, swelling or itchiness at the injection site
+- a headache
+- dizziness
+- feeling or being sick
+- a rash
+- feeling irritable
+- feeling drowsy
+- loss of appetite
+- a high temperature
+- generally feeling unwell
 
 {% endif %}
 
