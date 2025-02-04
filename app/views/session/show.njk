@@ -35,7 +35,7 @@
       href: session.uri + "/offline"
     } if session.status == SessionStatus.Planned, {
       text: __("session.upload-class-list.title"),
-      href: session.programmes[0].uri + "/uploads/new?type=" + UploadType.School
+      href: session.programmes[0].uri + "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn
     } if session.type == SessionType.School]
   }) }}
 

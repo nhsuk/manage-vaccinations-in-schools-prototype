@@ -9,11 +9,7 @@
   {% elif upload.type == UploadType.School %}
     {% include "upload/_template-format-school.njk" %}
   {% elif upload.type == UploadType.Report %}
-    {% if programme.type == ProgrammeType.HPV %}
-      {% include "upload/_template-format-report-hpv.njk" %}
-    {% elif programme.type == ProgrammeType.Flu %}
-      {% include "upload/_template-format-report-flu.njk" %}
-    {% endif %}
+    {% include "upload/_template-format-report.njk" %}
   {% endif %}
 {% endset %}
 
@@ -50,25 +46,18 @@
       rows: summaryRows(upload, {
         createdAt: {},
         createdBy: {},
-        programme: {},
-        type: {
-          value: upload.summary.type
-        },
-        invalid: {
-          value: __n("upload.invalid.count", upload.invalid)
-        } if upload.status == UploadStatus.Complete and upload.type == UploadType.Report,
-        devoid: {
-          value: __n("upload.devoid.count", upload.devoid)
-        } if upload.status == UploadStatus.Complete,
-        duplicate: {
-          value: __n("upload.duplicate.count", upload.duplicate)
-        } if upload.status == UploadStatus.Complete
+        type: {},
+        school: {},
+        yearGroups: {},
+        invalid: {},
+        devoid: {},
+        duplicate: {}
       })
     })
   }) }}
 
   {% set duplicateRecordRows = [] %}
-  {% for record in duplicates %}
+  {% for record in upload.duplicate %}
     {% set duplicateRecordRows = duplicateRecordRows | push([
       {
         header: __("record.fullName.label"),
@@ -94,7 +83,7 @@
     id: "duplicate-records",
     sort: "name",
     panel: true,
-    heading: __n("upload.duplicate.count", upload.duplicate),
+    heading: upload.formatted.duplicate,
     responsive: true,
     head: [
       {
@@ -111,7 +100,7 @@
       }
     ],
     rows: duplicateRecordRows
-  }) if duplicates.length }}
+  }) if upload.duplicate.length }}
 
   {% set recordRows = [] %}
   {% for record in upload.records %}
@@ -132,8 +121,8 @@
         header: __("record.postalCode.label"),
         text: record.postalCode
       }, {
-        header: __("record.school.label"),
-        text: record.formatted.school
+        header: __("record.yearGroup.label"),
+        text: record.formatted.yearGroup
       } if upload.type == UploadType.School, {
         header: __("vaccination.createdAt.label"),
         text: record.vaccination.formatted.createdAt_date
@@ -153,7 +142,7 @@
       { text: __("record.nhsn.label") },
       { text: __("record.dob.label") },
       { text: __("record.postalCode.label") },
-      { text: __("record.school.label") } if upload.type == UploadType.School,
+      { text: __("record.yearGroup.label") } if upload.type == UploadType.School,
       { text: __("vaccination.createdAt.label") } if upload.type == UploadType.Report
     ],
     rows: recordRows

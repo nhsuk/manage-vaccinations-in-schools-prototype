@@ -11,11 +11,7 @@
   {% elif upload.type == UploadType.School %}
     {% include "upload/_template-format-school.njk" %}
   {% elif upload.type == UploadType.Report %}
-    {% if programme.type == ProgrammeType.HPV %}
-      {% include "upload/_template-format-report-hpv.njk" %}
-    {% elif programme.type == ProgrammeType.Flu %}
-      {% include "upload/_template-format-report-flu.njk" %}
-    {% endif %}
+    {% include "upload/_template-format-report.njk" %}
   {% endif %}
 {% endset %}
 
@@ -53,7 +49,6 @@
     label: {
       classes: "nhsuk-label--m",
       html: heading({
-        caption: programme.name,
         title: title
       })
     },

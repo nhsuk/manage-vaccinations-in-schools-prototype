@@ -20,8 +20,6 @@
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
       {% set descriptionHtml %}
-        <h3 class="nhsuk-heading-s">{{ __("upload.review.duplicate.record") }}</h3>
-
         {{ summaryList({
           rows: summaryRows(duplicateRecord, {
             nhsn: {},
@@ -67,8 +65,6 @@
     </div>
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
       {% set descriptionHtml %}
-        <h3 class="nhsuk-heading-s">{{ __("upload.review.original.record") }}</h3>
-
         {{ summaryList({
           rows: summaryRows(record, {
             nhsn: {},

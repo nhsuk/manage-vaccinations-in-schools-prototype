@@ -1,18 +1,17 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("upload.type.title") %}
+{% set title = __("upload.yearGroups.title") %}
 
 {% block form %}
-  {{ radios({
+  {{ checkboxes({
     fieldset: {
       legend: {
-        classes: "nhsuk-fieldset__legend--l",
         html: heading({
           title: title
         })
       }
     },
-    items: typeItems,
-    decorate: "upload.type"
-  }) }}
+    items: yearGroupItems,
+    decorate: "upload.yearGroups"
+  }) | replace("govuk-", "nhsuk-") }}
 {% endblock %}

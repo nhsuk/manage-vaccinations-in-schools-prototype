@@ -2,9 +2,10 @@ import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { Notice } from '../models/notice.js'
 import { Record } from '../models/record.js'
+import { School } from '../models/school.js'
 import { Upload, UploadType } from '../models/upload.js'
 import { getDateValueDifference } from '../utils/date.js'
-import { formatList } from '../utils/string.js'
+import { formatYearGroup } from '../utils/string.js'
 
 export const uploadController = {
   readAll(request, response, next) {
@@ -19,9 +20,7 @@ export const uploadController = {
 
     response.locals.notices = Notice.readAll(data)
     response.locals.uploads = uploads
-    response.locals.reviews = uploads[0].record_nhsns
-      .slice(0, data.uploadReviewCount)
-      .map((nhsn) => Record.read(nhsn, data))
+    response.locals.reviews = uploads.flatMap((upload) => upload.duplicate)
 
     next()
   },
@@ -35,32 +34,8 @@ export const uploadController = {
   read(request, response, next) {
     const { id } = request.params
     const { data } = request.session
-    const { __n } = response.locals
 
-    const upload = Upload.read(id, data)
-
-    // Count and show duplicate records
-    const duplicates = upload.records.filter(
-      (record) => record.hasPendingChanges
-    )
-    upload.duplicate = duplicates.length
-
-    // Count incomplete records (those missing an NHS number)
-    upload.incomplete = upload.records.filter(
-      (record) => record.hasMissingNhsNumber
-    ).length
-
-    // Issues to show in warning callout
-    const issues = []
-    for (const type of ['devoid', 'invalid', 'incomplete']) {
-      if (upload[type]) {
-        issues.push(__n(`upload.${type}.count`, upload[type]))
-      }
-    }
-
-    response.locals.upload = upload
-    response.locals.duplicates = duplicates
-    response.locals.issues = formatList(issues)
+    response.locals.upload = Upload.read(id, data)
 
     next()
   },
@@ -71,19 +46,27 @@ export const uploadController = {
 
   new(request, response) {
     const { pid } = request.params
-    const { type } = request.query
+    const { type, urn } = request.query
     const { data } = request.session
 
     const upload = new Upload({
       programme_pid: pid,
       type,
+      ...(type === UploadType.School &&
+        urn && {
+          school_urn: urn
+        }),
       ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
     upload.create(upload, data.wizard)
 
     // If type provided in query string, start journey at upload question
-    data.startPath = type ? 'file' : 'type'
+    data.startPath = type
+      ? type === UploadType.School
+        ? 'year-groups'
+        : 'file'
+      : 'type'
 
     response.redirect(`${upload.uri}/new/${data.startPath}`)
   },
@@ -124,11 +107,20 @@ export const uploadController = {
       [`/`]: {},
       ...(data.startPath === 'type'
         ? {
-            [`/${id}/${form}/type`]: {},
+            [`/${id}/${form}/type`]: {
+              [`/${id}/${form}/file`]: {
+                data: 'upload.type',
+                excludedValue: UploadType.School
+              }
+            },
+            [`/${id}/${form}/school`]: {},
+            [`/${id}/${form}/year-groups`]: {},
             [`/${id}/${form}/file`]: {},
             [`/${id}/${form}/summary`]: {}
           }
         : {
+            [`/${id}/${form}/school`]: {},
+            [`/${id}/${form}/year-groups`]: {},
             [`/${id}/${form}/file`]: {},
             [`/${id}/${form}/summary`]: {}
           }),
@@ -150,6 +142,27 @@ export const uploadController = {
         value
       })
     )
+
+    response.locals.urnItems = Object.values(data.schools)
+      .map((school) => new School(school))
+      .map((school) => ({
+        text: school.name,
+        value: school.urn,
+        ...(school.address && {
+          attributes: {
+            'data-hint': school.address.formatted.singleline
+          }
+        })
+      }))
+
+    if (upload.school) {
+      response.locals.yearGroupItems = upload.school.yearGroups.map(
+        (yearGroup) => ({
+          text: formatYearGroup(yearGroup),
+          value: yearGroup
+        })
+      )
+    }
 
     next()
   },

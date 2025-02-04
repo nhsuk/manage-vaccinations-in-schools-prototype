@@ -3,6 +3,7 @@ import { Move } from '../models/move.js'
 import { Notice } from '../models/notice.js'
 import { Organisation } from '../models/organisation.js'
 import { ProgrammeType } from '../models/programme.js'
+import { Upload } from '../models/upload.js'
 import { User, UserRole } from '../models/user.js'
 import { formatDate, today } from '../utils/date.js'
 import { getProgrammeSession } from '../utils/session.js'
@@ -16,9 +17,10 @@ export const navigation = (request, response, next) => {
   const user = new User(data.token)
   const root = request.path.split('/')[1]
 
-  response.locals.consents = Consent.readAll(data)
-  response.locals.moves = Move.readAll(data)
-  response.locals.notices = Notice.readAll(data)
+  const consents = Consent.readAll(data)
+  const moves = Move.readAll(data)
+  const notices = Notice.readAll(data)
+  const reviews = Upload.readAll(data).flatMap((upload) => upload.duplicate)
 
   // Get account navigation
   const account = data.token
@@ -71,14 +73,14 @@ export const navigation = (request, response, next) => {
             url: '/consents',
             label: __('consent.list.label'),
             classes: 'app-header__navigation-item--with-count',
-            count: response.locals.consents.length,
+            count: consents.length,
             current: current === 'consents'
           },
           {
             url: '/moves',
             label: __('move.list.label'),
             classes: 'app-header__navigation-item--with-count',
-            count: response.locals.moves.length,
+            count: moves.length,
             current: current === 'moves'
           },
           {
@@ -90,7 +92,7 @@ export const navigation = (request, response, next) => {
             url: '/uploads',
             label: __('upload.list.label'),
             classes: 'app-header__navigation-item--with-count',
-            count: response.locals.notices.length + data.uploadReviewCount,
+            count: notices.length + reviews.length,
             current: current === 'uploads'
           },
           {

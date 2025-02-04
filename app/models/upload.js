@@ -1,12 +1,12 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { formatDate, today } from '../utils/date.js'
-import { formatWithSecondaryText } from '../utils/string.js'
+import { formatWithSecondaryText, formatYearGroup } from '../utils/string.js'
 
-import { Programme } from './programme.js'
 import { Record } from './record.js'
+import { School } from './school.js'
 import { User } from './user.js'
-import { Vaccination } from './vaccination.js'
 
 /**
  * @readonly
@@ -39,12 +39,8 @@ export const UploadStatus = {
  * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created upload
  * @property {Date} [updatedAt] - Updated date
- * @property {string} [programme_pid] - Programme ID
  * @property {Array<string>} [record_nhsns] - Record NHS numbers
  * @property {number} [devoid] - Exact duplicate records found
- * @property {number} [duplicate] - Inexact duplicate records found
- * @property {number} [incomplete] - Incomplete records (no NHS number)
- * @property {number|undefined} [invalid] - Invalid records (no vaccination)
  */
 export class Upload {
   constructor(options, context) {
@@ -55,14 +51,17 @@ export class Upload {
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
-    this.programme_pid = options?.programme_pid
     this.validations = options?.validations || []
     this.record_nhsns = options?.record_nhsns || []
-    this.devoid = options?.devoid || 0
-    this.duplicate = options?.duplicate || 0
-    this.incomplete = options?.incomplete || 0
-    this.invalid =
-      this.type === UploadType.Report ? options?.invalid || 0 : undefined
+
+    if (this.type === UploadType.School) {
+      this.yearGroups = options?.yearGroups
+      this.school_urn = options?.school_urn
+    }
+
+    if (this.status === UploadStatus.Complete) {
+      this.devoid = options?.devoid || faker.number.int({ min: 1, max: 99 })
+    }
   }
 
   /**
@@ -81,51 +80,111 @@ export class Upload {
   }
 
   /**
-   * Get programme
-   *
-   * @returns {Programme} - User
-   */
-  get programme() {
-    try {
-      if (this.programme_pid) {
-        return Programme.read(this.programme_pid, this.context)
-      }
-    } catch (error) {
-      console.error('Upload.programme', error.message)
-    }
-  }
-
-  /**
    * Get uploaded records
    *
    * @returns {Array<Record>} - Records
    */
   get records() {
     if (this.context?.records && this.record_nhsns) {
-      return this.record_nhsns
-        .map((nhsn) => Record.read(nhsn, this.context))
-        .map((record) => {
-          record.vaccination = record.vaccination_uuids.map((uuid) =>
-            Vaccination.read(uuid, this.context)
-          )[0]
-          return record
-        })
+      let records = this.record_nhsns.map((nhsn) =>
+        Record.read(nhsn, this.context)
+      )
+
+      if (this.type === UploadType.Report) {
+        records = records
+          .filter((record) => record.vaccinations.length > 0)
+          .map((record) => {
+            record.vaccination = record.vaccinations[0]
+            return record
+          })
+      }
+
+      return records
     }
 
     return []
   }
 
   /**
-   * Get school class list is for
+   * Get number of invalid records (no vaccination recorded)
    *
-   * @returns {string} - School Name
+   * @returns {Array<Record>} - Invalid records
    */
-  get schoolName() {
-    if (this.records.length) {
-      return this.records[0].schoolName
+  get invalid() {
+    if (
+      this.status === UploadStatus.Complete &&
+      this.type === UploadType.Report
+    ) {
+      if (this.context?.records && this.record_nhsns) {
+        return this.record_nhsns
+          .map((nhsn) => Record.read(nhsn, this.context))
+          .filter((record) => record.vaccinations.length === 0)
+      }
+
+      return []
     }
   }
 
+  /**
+   * Get number of duplicate records
+   *
+   * @returns {Array<Record>|undefined} - Records with pending changes
+   */
+  get duplicate() {
+    if (this.status === UploadStatus.Complete) {
+      if (this.records) {
+        return this.records.filter((record) => record.hasPendingChanges)
+      }
+
+      return []
+    }
+  }
+
+  /**
+   * Get number of incomplete records
+   *
+   * @returns {Array<Record>|undefined} - Records missing an NHS number
+   */
+  get incomplete() {
+    if (
+      this.status === UploadStatus.Complete &&
+      this.type === UploadType.Report
+    ) {
+      if (this.records) {
+        return this.records.filter((record) => record.hasMissingNhsNumber)
+      }
+
+      return []
+    }
+  }
+
+  /**
+   * Get school
+   *
+   * @returns {object|undefined} - School
+   */
+  get school() {
+    if (this.type === UploadType.School && this.school_urn) {
+      return School.read(this.school_urn, this.context)
+    }
+  }
+
+  /**
+   * Get school name
+   *
+   * @returns {string|undefined} - School name
+   */
+  get schoolName() {
+    if (this.school) {
+      return this.school.name
+    }
+  }
+
+  /**
+   * Get formatted summary
+   *
+   * @returns {object} - Formatted summaries
+   */
   get summary() {
     return {
       type:
@@ -141,6 +200,12 @@ export class Upload {
    * @returns {object} - Formatted values
    */
   get formatted() {
+    const yearGroups =
+      this.yearGroups &&
+      this.yearGroups
+        .filter((yearGroup) => yearGroup !== '_unchecked')
+        .map((yearGroup) => formatYearGroup(yearGroup))
+
     return {
       createdAt: formatDate(this.createdAt, {
         day: 'numeric',
@@ -151,7 +216,18 @@ export class Upload {
         hour12: true
       }),
       createdBy: this.createdBy?.fullName || '',
-      programme: this.type === UploadType.Report && this.programme.type
+      ...(this.type === UploadType.School && {
+        school: this.schoolName,
+        yearGroups: prototypeFilters.formatList(yearGroups)
+      }),
+      ...(this.status === UploadStatus.Complete && {
+        devoid: `${prototypeFilters.plural(this.devoid, 'previously imported record')} omitted`,
+        duplicate: `${prototypeFilters.plural(this.duplicate.length, 'duplicate record')} need review`
+      }),
+      ...(this.status === UploadStatus.Complete &&
+        this.type === UploadType.Report && {
+          invalid: `${prototypeFilters.plural(this.invalid.length, 'record')} for a child who was not vaccinated omitted`
+        })
     }
   }
 

@@ -30,7 +30,7 @@ export function generateRecord() {
 
   // Pending changes
   const pendingChanges = {}
-  const hasPendingChanges = faker.datatype.boolean(0.1)
+  const hasPendingChanges = faker.datatype.boolean(0.025)
   if (hasPendingChanges) {
     // Adjust date of birth
     const newDob = new Date(child.dob)

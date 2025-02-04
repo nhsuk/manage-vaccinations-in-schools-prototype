@@ -928,9 +928,6 @@ export const en = {
       label: 'Last reminder sent',
       title: 'Last reminder sent %s'
     },
-    notice: {
-      label: 'Notice'
-    },
     results:
       'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> children',
     count: {
@@ -1229,6 +1226,9 @@ export const en = {
     },
     school: {
       label: 'School'
+    },
+    yearGroup: {
+      label: 'Year group'
     },
     parents: {
       label: 'Parents or guardians'
@@ -1812,6 +1812,14 @@ export const en = {
         invalid: 'The selected file must be a CSV'
       }
     },
+    school: {
+      label: 'School',
+      title: 'Which school is this class list for?'
+    },
+    yearGroups: {
+      label: 'Year groups',
+      title: 'Which year groups do you want to import class list records for?'
+    },
     summary: {
       title: 'Are you sure you want to import these {{type}}?',
       description: 'The uploaded file contains {{size}} records.',
@@ -1825,28 +1833,13 @@ export const en = {
     },
     devoid: {
       label: 'Omitted records',
-      description: 'All records in this CSV file had already been imported.',
-      count: {
-        one: '%s previously imported record was omitted',
-        other:
-          '[0] No previously imported records were omitted|%s previously imported records were omitted'
-      }
+      description: 'All records in this CSV file had already been imported.'
     },
     duplicate: {
-      label: 'Duplicate records',
-      count: {
-        one: '%s duplicate record needs review',
-        other:
-          '[0] No duplicate records need review|%s duplicate records need review'
-      }
+      label: 'Duplicate records'
     },
     invalid: {
-      label: 'Missing vaccination',
-      count: {
-        one: '%s record for a child who was not vaccinated were omitted',
-        other:
-          '[0] No records for children who were not vaccinated were omitted|%s records for children who were not vaccinated were omitted'
-      }
+      label: 'Missing vaccination'
     },
     incomplete: {
       label: 'Incomplete',

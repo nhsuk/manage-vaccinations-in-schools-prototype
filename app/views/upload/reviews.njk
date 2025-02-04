@@ -17,7 +17,7 @@
       {% set reviewRows = reviewRows | push([
         {
           header: __("record.fullName.label"),
-          html: record.fullName
+          html: record.fullName or "Not provided"
         },
         {
           header: __("upload.issue.label"),

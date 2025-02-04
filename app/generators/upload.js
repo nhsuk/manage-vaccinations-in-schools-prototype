@@ -6,13 +6,13 @@ import { today } from '../utils/date.js'
 /**
  * Generate fake upload
  *
- * @param {import('../models/programme.js').Programme} programme - Programme
  * @param {Array<string>|boolean|undefined} record_nhsns - Records
  * @param {import('../models/user.js').User} user - User
  * @param {import('../models/upload.js').UploadType} [type] - Upload type
+ * @param {import('../models/school.js').School} [school] - School
  * @returns {Upload} - Upload
  */
-export function generateUpload(programme, record_nhsns, user, type) {
+export function generateUpload(record_nhsns, user, type, school) {
   const createdAt = faker.date.recent({ days: 14, refDate: today() })
 
   let validations
@@ -37,12 +37,13 @@ export function generateUpload(programme, record_nhsns, user, type) {
   return new Upload({
     createdAt,
     createdBy_uid: user.uid,
-    programme_pid: programme.pid,
     status,
     type,
     validations,
     record_nhsns,
-    devoid: 99,
-    invalid: 99
+    ...(school && {
+      yearGroups: school.yearGroups,
+      school_urn: school.urn
+    })
   })
 }
