@@ -76,7 +76,7 @@ export class Notice {
    * @returns {string} - URI
    */
   get uri() {
-    return `/notices/${this.uuid}`
+    return `/uploads/notices/${this.uuid}`
   }
 
   /**

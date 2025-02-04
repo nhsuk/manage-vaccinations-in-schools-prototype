@@ -1,0 +1,18 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("upload.school.title") %}
+
+{% block form %}
+  {{ xGovukAutocomplete({
+    id: "school-urn",
+    name: "[upload][school_urn]",
+    value: upload.school_urn,
+    allowEmpty: false,
+    label: {
+      html: heading({
+        title: title
+      })
+    },
+    items: urnItems
+  }) | replace("govuk-", "nhsuk-") }}
+{% endblock %}

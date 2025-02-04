@@ -174,4 +174,15 @@ export class Record extends Child {
       return new Record(context.records[nhsn], context)
     }
   }
+
+  /**
+   * Report vaccination
+   *
+   * @param {import('./vaccination.js').Vaccination} vaccination - Vaccination
+   */
+  reportVaccination(vaccination) {
+    if (vaccination.given) {
+      this.vaccination_uuids.push(vaccination.uuid)
+    }
+  }
 }

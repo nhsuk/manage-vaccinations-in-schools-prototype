@@ -6,7 +6,6 @@
 
 {% block form %}
   {{ heading({
-    caption: programme.name,
     title: title
   }) }}
 
@@ -18,8 +17,8 @@
   {% filter nhsukMarkdown %}
   Importing these class lists will:
 
-  - Move 28 children out of {{ programme.sessions[0].location.name }}
-  - Move 17 children in to {{ programme.sessions[0].location.name }}
+  - Move 28 children out of {{ upload.schoolName }}
+  - Move 17 children in to {{ upload.schoolName }}
   {% endfilter %}
   {% endif %}
 {% endblock %}
