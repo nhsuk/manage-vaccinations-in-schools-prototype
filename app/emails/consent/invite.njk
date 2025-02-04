@@ -1,43 +1,52 @@
 {% if session.programmes.length == 1 %}
-Your local health team are coming to {{ session.location.name }} on {{ session.summary.dates }} to give the {{ session.programmes[0].information.title }} vaccine.
+We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to offer the {{ session.programmes[0].information.title }} vaccine to your child.
 {% else %}
-Your local health team are coming to {{ session.location.name }} on {{ session.summary.dates }} to give the following vaccines:
+We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to offer the following vaccines to your child:
 
 {% for programme in session.programmes %}
 - {{ programme.information.title }}
 {%- endfor %}
 {% endif %}
 
-## What the {{vaccine__n}} {{is__n}} for
-
-{% for programme in session.programmes %}
-{{ programme.information.description }}
-{% endfor %}
-
-## Please give or refuse consent
-
-If you want your child to get {% if session.programmes.length == 1 %}this vaccine{% else %}these vaccines{% endif %} at school, you need to give consent by {{ session.formatted.firstDate }}.
-
-[Give or refuse consent for the {{ session.vaccination }}]({{ session.consentUrl }})
-
-Responding will take less than 5 minutes. If you do not give consent, it’s still important for you to let us know.
-
-## Your data
-
-By responding, you’re agreeing to your data being processed as set out in our [privacy notice]({{ data.organisation.privacyPolicyUrl }}).
+We would like your consent to vaccinate {{ consent.child.fullName }}. You can give this by filling in our online form (the link is below).
 
 {% for programme in session.programmes %}
 ## About the {{ programme.name | replace("Flu", "flu") }} vaccine
 
-{{ programme.information.audience }}
+{{ programme.information.description }}
 
 [Find out more about the {{ programme.name | replace("Flu", "flu") }} vaccine on NHS.UK]({{ programme.information.url }})
 
 {% if programme.information.leaflet %}
 [Read the patient information leaflet]({{ programme.information.leaflet }})
 {% endif %}
+{% endfor %}
+
+## How to respond
+
+> It’s important to let us know whether you do or do not want your child to have {% if session.programmes.length == 1 %}this vaccination{% else %}these vaccinations{% endif %}. It will take less than 5 minutes to respond using the link below.
+
+[Respond to the consent request]({{ session.consentUrl }})
+
+You need to respond by {{ session.formatted.firstDate }}.
+
+{% if programme.type != ProgrammeType.Flu %}
+## Talk to your child about what they want
+
+We suggest you talk to your child about the {{ vaccine__n }} before you respond to us.
+{% endif %}
+
+## If you cannot use the online form
+
+If you cannot use the online form, you can respond over the phone using the contact details below.
+
+## Your data
+
+By responding, you’re agreeing to your data being processed as set out in our [privacy notice]({{ data.organisation.privacyPolicyUrl }}).
 
 {% if programme.type == ProgrammeType.Flu %}
+## About the nasal spray
+
 The nasal spray contains gelatine. If your child does not use gelatine products, or the nasal spray is not suitable for medical reasons, they could have an injection instead.
 
 The nasal spray gives children the best protection against flu. However, the injected vaccine is a good alternative if the nasal spray vaccine cannot be used.
@@ -46,18 +55,7 @@ The nasal spray gives children the best protection against flu. However, the inj
 
 [Find out more about the use of gelatine in the flu vaccine (including the views of faith communities)](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1107767/UKHSA-12462-vaccines-porcine-gelatine-English.pdf)
 {% endif %}
-{% endfor %}
 
-{% if programme.type != ProgrammeType.Flu %}
-## Talk to your child about what they want
+## Get in touch with us
 
-We suggest you talk to your child about the {{ vaccine__n }} before you respond to us.
-{% endif %}
-
-## If you have trouble using the online form
-
-If you have any trouble using the online form, you can respond over the phone using the contact details below.
-
-## Contact the local health team
-
-Speak to a member of the local health team by calling {{ data.organisation.tel }}, or email {{ data.organisation.email }}.
+Speak to a member of our team by calling {{ data.organisation.tel }}, or email {{ data.organisation.email }}.

@@ -41,9 +41,8 @@ export const programmeTypes = {
       title: 'Flu',
       startPage:
         'The vaccination helps to protect children against flu. It also protects others who are vulnerable to flu, such as babies and older people.',
-      description: `The vaccine protects against flu, which can cause serious health problems.`,
-      audience:
-        'By preventing the spread of flu, the vaccine also protects others who are vulnerable, such as babies and older people. The vaccination is a quick and painless spray up the nose. Even if your child had the vaccine last year, the type of flu can vary each winter, so it is recommended to have it again this year.',
+      description:
+        'The vaccine protects against flu, which can cause serious health problems.\n\nBy preventing the spread of flu, the vaccine also protects others who are vulnerable, such as babies and older people. The vaccination is a quick and painless spray up the nose. Even if your child had the vaccine last year, the type of flu can vary each winter, so it is recommended to have it again this year.',
       url: 'https://www.nhs.uk/vaccinations/child-flu-vaccine/'
     },
     term: SchoolTerm.Autumn,
@@ -59,9 +58,8 @@ export const programmeTypes = {
       title: 'Human papillomavirus (HPV)',
       startPage:
         'The HPV vaccine helps to prevent HPV related cancers from developing in boys and girls.\n\nThe number of doses you need depends on your age and how well your immune system works. Young people usually only need 1 dose.',
-      description: `The HPV vaccine helps protect boys and girls against cancers caused by HPV, including:\n- cervical cancer\n- some mouth and throat (head and neck) cancers\n- some cancers of the anal and genital areas`,
-      audience:
-        'The HPV vaccine has been given to girls since 2008. Following its success at helping prevent cervical cancers, it was introduced to boys in 2019 to help prevent HPV-related cancers that affect them.\n\nYoung people usually only need 1 dose.',
+      description:
+        'The HPV vaccine helps protect boys and girls against cancers caused by HPV, including:\n- cervical cancer\n- some mouth and throat (head and neck) cancers\n- some cancers of the anal and genital areas\n\nThe HPV vaccine has been given to girls since 2008. Following its success at helping prevent cervical cancers, it was introduced to boys in 2019 to help prevent HPV-related cancers that affect them.\n\nYoung people usually only need 1 dose.',
       url: 'https://www.nhs.uk/conditions/vaccinations/hpv-human-papillomavirus-vaccine/',
       leaflet: 'https://www.medicines.org.uk/emc/files/pil.7330.pdf'
     },
@@ -78,9 +76,7 @@ export const programmeTypes = {
       startPage:
         'The Td/IPV vaccine (3-in-1 teenage booster) protects against tetanus, diphtheria and polio.\n\nIt boosts the protection provided by the [6-in-1 vaccine](https://www.nhs.uk/vaccinations/6-in-1-vaccine/) and [4-in-1 pre-school booster vaccine](https://www.nhs.uk/vaccinations/4-in-1-preschool-booster-vaccine/).',
       description:
-        'The Td/IPV vaccine helps protect against:\n- tetanus\n - diptheria\n- polio',
-      audience:
-        'The Td/IPV vaccine (3-in-1 teenage booster) is offered at around 13 or 14 years old (school year 9 or 10). It boosts the protection provided by the [6-in-1 vaccine](https://www.nhs.uk/vaccinations/6-in-1-vaccine/) and [4-in-1 pre-school booster vaccine](https://www.nhs.uk/vaccinations/4-in-1-preschool-booster-vaccine/).',
+        'The Td/IPV vaccine (3-in-1 teenage booster) helps protect against tetanus, diphtheria and polio.\n\nIt’s offered at around 13 or 14 years old (school year 9 or 10). It boosts the protection provided by the [6-in-1 vaccine](https://www.nhs.uk/vaccinations/6-in-1-vaccine/) and [4-in-1 pre-school booster vaccine](https://www.nhs.uk/vaccinations/4-in-1-preschool-booster-vaccine/).',
       url: 'https://www.nhs.uk/vaccinations/td-ipv-vaccine-3-in-1-teenage-booster/'
     },
     term: SchoolTerm.Summer,
@@ -96,9 +92,7 @@ export const programmeTypes = {
       startPage:
         'The MenACWY vaccine is recommended for all teenagers. Most people only need one dose of the vaccine.',
       description:
-        'The MenACWY vaccine helps protect against life-threatening illnesses including:\n - meningitis\n- sepsis\n- septicaemia (blood poisoning)',
-      audience:
-        'The MenACWY vaccine is recommended for all teenagers. Most people only need 1 dose of the vaccine.',
+        'The MenACWY vaccine helps protect against life-threatening illnesses including meningitis, sepsis and septicaemia (blood poisoning).\n\nIt is recommended for all teenagers. Most people only need 1 dose of the vaccine.',
       url: 'https://www.nhs.uk/vaccinations/menacwy-vaccine/'
     },
     term: SchoolTerm.Summer,
