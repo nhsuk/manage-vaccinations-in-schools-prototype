@@ -1,6 +1,12 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("consent.refusalReason.title") %}
+{% if consent.decision == ReplyDecision.OnlyMenACWY %}
+  {% set title = __("consent.refusalReason.title", "Td/IPV") %}
+{% elif consent.decision == ReplyDecision.OnlyTdIPV %}
+  {% set title = __("consent.refusalReason.title", "MenACWY") %}
+{% else %}
+  {% set title = __("consent.refusalReason.title", programme.name) %}
+{% endif %}
 
 {% block form %}
   {{ radios({
