@@ -1,7 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import {
-  ContactPreference,
   EmailStatus,
   Parent,
   ParentalRelationship,
@@ -68,9 +67,7 @@ export function generateParent(childLastName, isMum) {
     { value: EmailStatus.Technical, weight: 1 }
   ])
 
-  const contactPreference = faker.helpers.arrayElement(
-    Object.values(ContactPreference)
-  )
+  const contactPreference = faker.datatype.boolean(0.2)
 
   return new Parent({
     ...(hasName && { fullName: `${firstName} ${lastName}` }),
@@ -85,9 +82,9 @@ export function generateParent(childLastName, isMum) {
       sms,
       ...(sms && { smsStatus }),
       contactPreference,
-      ...(contactPreference === ContactPreference.Other && {
-        contactPreferenceOther:
-          'Please call 01234 567890 ext 8910 between 9am and 5pm.'
+      ...(contactPreference && {
+        contactPreferenceDetails:
+          'I sometimes have difficulty hearing phone calls, so it’s best to send me a text message.'
       })
     })
   })

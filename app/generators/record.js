@@ -26,7 +26,7 @@ export function generateRecord() {
   // CHIS records provide only a subset of parent data
   delete parent1.sms
   delete parent1.contactPreference
-  delete parent1.contactPreferenceOther
+  delete parent1.contactPreferenceDetails
 
   // Pending changes
   const pendingChanges = {}

@@ -6,7 +6,6 @@ import { GillickCompetent } from '../models/gillick.js'
 import { MoveSource } from '../models/move.js'
 import { NoticeType } from '../models/notice.js'
 import {
-  ContactPreference,
   EmailStatus,
   ParentalRelationship,
   SmsStatus
@@ -43,7 +42,6 @@ export const enumeration = (request, response, next) => {
   response.locals.CaptureOutcome = CaptureOutcome
   response.locals.ConsentOutcome = ConsentOutcome
   response.locals.ConsentWindow = ConsentWindow
-  response.locals.ContactPreference = ContactPreference
   response.locals.DownloadFormat = DownloadFormat
   response.locals.EmailStatus = EmailStatus
   response.locals.EventType = EventType

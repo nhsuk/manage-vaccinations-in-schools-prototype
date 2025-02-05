@@ -6,17 +6,6 @@ import { formatOther, formatParent, stringToBoolean } from '../utils/string.js'
  * @readonly
  * @enum {string}
  */
-export const ContactPreference = {
-  None: 'No preference',
-  Text: 'Text message',
-  Call: 'Voice call',
-  Other: 'Other'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
 export const ParentalRelationship = {
   Mum: 'Mum',
   Dad: 'Dad',
@@ -60,8 +49,8 @@ export const SmsStatus = {
  * @property {EmailStatus} emailStatus - Email status
  * @property {boolean} sms - Update via SMS
  * @property {SmsStatus} smsStatus - SMS status
- * @property {ContactPreference} [contactPreference] - Preferred contact method
- * @property {string} [contactPreferenceOther] - Other contact method
+ * @property {boolean} [contactPreference] - Preferred contact method
+ * @property {string} [contactPreferenceDetails] - Contact method details
  */
 export class Parent {
   constructor(options) {
@@ -82,11 +71,12 @@ export class Parent {
     this.emailStatus = this?.email && options?.emailStatus
     this.sms = stringToBoolean(options.sms) || false
     this.smsStatus = this?.sms && options?.smsStatus
-    this.contactPreference = options?.contactPreference
-    this.contactPreferenceOther =
-      this.contactPreference === ContactPreference.Other
-        ? options?.contactPreferenceOther
-        : undefined
+    this.contactPreference =
+      stringToBoolean(options?.contactPreference) || false
+
+    if (this.contactPreference) {
+      this.contactPreferenceDetails = options?.contactPreferenceDetails
+    }
   }
 
   /**
@@ -96,10 +86,8 @@ export class Parent {
    */
   get formatted() {
     return {
-      contactPreference: formatOther(
-        this.contactPreferenceOther,
-        this.contactPreference
-      ),
+      contactPreference:
+        this.contactPreferenceDetails || this.contactPreference,
       fullName: this.fullName || 'Name unknown',
       fullNameAndRelationship: formatParent(this, false),
       relationship: formatOther(this.relationshipOther, this.relationship)
