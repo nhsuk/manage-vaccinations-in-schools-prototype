@@ -10,23 +10,89 @@
     title: title
   }) }}
 
-  {{ card({
-    heading: __("consent.decision.summary", { session: session }) | safe,
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(consent, {
-        decision: {
-          href: editPath + "decision"
-        },
-        refusalReason: {
-          href: editPath + "refusal-reason"
-        },
-        refusalReasonDetails: {
-          href: editPath + "refusal-reason-details"
-        }
+  {% if consent.decision == ReplyDecision.OnlyMenACWY %}
+    {{ card({
+      heading: "Consent for the MenACWY vaccination",
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(consent, {
+          decision: {
+            value: ReplyDecision.Given,
+            href: editPath + "decision"
+          }
+        })
       })
-    })
-  }) }}
+    }) }}
+
+    {{ card({
+      heading: "Consent for the Td/IPV vaccination",
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(consent, {
+          decision: {
+            value: ReplyDecision.Refused,
+            href: editPath + "decision"
+          },
+          refusalReason: {
+            href: editPath + "refusal-reason"
+          },
+          refusalReasonDetails: {
+            href: editPath + "refusal-reason-details"
+          }
+        })
+      })
+    }) }}
+  {% elif consent.decision == ReplyDecision.OnlyTdIPV %}
+    {{ card({
+      heading: "Consent for the MenACWY vaccination",
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(consent, {
+          decision: {
+            value: ReplyDecision.Refused,
+            href: editPath + "decision"
+          },
+          refusalReason: {
+            href: editPath + "refusal-reason"
+          },
+          refusalReasonDetails: {
+            href: editPath + "refusal-reason-details"
+          }
+        })
+      })
+    }) }}
+
+    {{ card({
+      heading: "Consent for the Td/IPV vaccination",
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(consent, {
+          decision: {
+            value: ReplyDecision.Given,
+            href: editPath + "decision"
+          }
+        })
+      })
+    }) }}
+  {% else %}
+    {{ card({
+      heading: __("consent.decision.summary", { session: session }) | safe,
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: summaryList({
+        rows: summaryRows(consent, {
+          decision: {
+            href: editPath + "decision"
+          },
+          refusalReason: {
+            href: editPath + "refusal-reason"
+          },
+          refusalReasonDetails: {
+            href: editPath + "refusal-reason-details"
+          }
+        })
+      })
+    }) }}
+  {% endif %}
 
   {{ card({
     heading: __("consent.child.summary"),
@@ -93,7 +159,7 @@
     descriptionHtml: summaryList({
       classes: "app-summary-list--full-width",
       rows: healthAnswerRows(
-        consent.healthAnswers,
+        consent.healthAnswersForDecision,
         editPath + "health-question-{{key}}"
       )
     })

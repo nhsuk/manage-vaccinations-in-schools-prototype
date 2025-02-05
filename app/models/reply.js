@@ -89,9 +89,12 @@ export class Reply {
     this.parent = options?.parent && new Parent(options.parent)
     this.decision = options?.decision
     this.confirmed = stringToBoolean(options?.confirmed)
-    this.given =
-      this.decision !== ReplyDecision.Refused &&
-      this.decision !== ReplyDecision.NoResponse
+    this.given = [
+      ReplyDecision.Given,
+      ReplyDecision.OnlyMenACWY,
+      ReplyDecision.OnlyTdIPV
+    ].includes(this.decision)
+    this.healthAnswers = this.given && options?.healthAnswers
     this.invalid =
       this?.decision === ReplyDecision.NoResponse
         ? false // Don’t show non response as invalid
@@ -103,11 +106,13 @@ export class Reply {
     this.programme_pid = options?.programme_pid
     this.session_id = options?.session_id
 
-    if (this.given) {
-      this.healthAnswers = options?.healthAnswers
-    }
-
-    if (!this.given) {
+    if (
+      [
+        ReplyDecision.Refused,
+        ReplyDecision.OnlyMenACWY,
+        ReplyDecision.OnlyTdIPV
+      ].includes(this.decision)
+    ) {
       this.refusalReason = options?.refusalReason || ''
 
       if (this.refusalReason === ReplyRefusal.Other) {
@@ -168,6 +173,37 @@ export class Reply {
     } else if (this.child) {
       return 'Child (Gillick competent)'
     }
+  }
+
+  /**
+   * Get health answers for consented vaccinations
+   *
+   * @todo Shows correct health answers on parental consent journey.
+   * This shouldn’t really exist; if a parent were to change their decision,
+   * they should be asked any outstanding questions. The current flow doesn’t
+   * support complex branching when questions are edited.
+   * @returns {object|undefined} - Health answers for consented vaccinations
+   */
+  get healthAnswersForDecision() {
+    let healthAnswers = this.healthAnswers
+
+    if (this.decision === ReplyDecision.OnlyMenACWY) {
+      healthAnswers = Object.fromEntries(
+        Object.entries(this.healthAnswers).map(([key, value]) => [
+          key === 'RecentTdIpvVaccination' ? 'RecentMenAcwyVaccination' : key,
+          value
+        ])
+      )
+    } else if (this.decision === ReplyDecision.OnlyTdIPV) {
+      healthAnswers = Object.fromEntries(
+        Object.entries(this.healthAnswers).map(([key, value]) => [
+          key === 'RecentMenAcwyVaccination' ? 'RecentTdIpvVaccination' : key,
+          value
+        ])
+      )
+    }
+
+    return healthAnswers
   }
 
   /**

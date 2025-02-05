@@ -550,7 +550,8 @@ export const en = {
       no: 'No'
     },
     refusalReason: {
-      title: 'Please tell us why you do not agree',
+      title:
+        'Please tell us why you do not agree to your child having the %s vaccination',
       label: 'Refusal reason'
     },
     refusalReasonDetails: {
@@ -611,7 +612,7 @@ export const en = {
       description: {
         [ReplyDecision.Given]:
           'We’ll send a confirmation once the vaccination has been given.\n\nIf the vaccination does not take place due to illness or absence, we’ll contact you about a catch-up session.',
-        [ReplyDecision.OnlyTdIPV]:
+        [ReplyDecision.OnlyMenACWY]:
           'We’ll send a confirmation once the vaccination has been given.\n\nIf the vaccination does not take place due to illness or absence, we’ll contact you about a catch-up session.',
         [ReplyDecision.OnlyTdIPV]:
           'We’ll send a confirmation once the vaccination has been given.\n\nIf the vaccination does not take place due to illness or absence, we’ll contact you about a catch-up session.',

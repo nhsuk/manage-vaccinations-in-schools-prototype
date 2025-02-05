@@ -3,6 +3,7 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import { isAfter } from 'date-fns'
 import _ from 'lodash'
 
+import { getHealthQuestionKeys } from '../utils/consent.js'
 import {
   removeDays,
   convertIsoDateToObject,
@@ -336,14 +337,7 @@ export class Session {
    * @returns {Array} - Programmes
    */
   get healthQuestionKeys() {
-    const healthQuestionKeys = new Set()
-    for (const vaccine of this.vaccines) {
-      for (const key of vaccine.healthQuestionKeys) {
-        healthQuestionKeys.add(key)
-      }
-    }
-
-    return [...healthQuestionKeys].sort()
+    return getHealthQuestionKeys(this.vaccines)
   }
 
   /**

@@ -84,6 +84,9 @@ export const parentController = {
 
     consent.update(request.body.consent, data)
 
+    // Clean up session data
+    delete data.consent
+
     response.redirect(paths.next)
   },
 
@@ -119,7 +122,11 @@ export const parentController = {
         }
       },
       [`/${id}/${uuid}/${form}/address`]: {},
-      ...getHealthQuestionPaths(`/${id}/${uuid}/${form}/`, consent.session),
+      ...getHealthQuestionPaths(
+        `/${id}/${uuid}/${form}/`,
+        consent.session,
+        consent.decision
+      ),
       [`/${id}/${uuid}/${form}/check-answers`]: {},
       [`/${id}/${uuid}/new/confirmation`]: {},
       [`/${id}/${uuid}/${form}/refusal-reason`]: {
@@ -156,7 +163,10 @@ export const parentController = {
     response.locals.programmeItems = consent.session.programmes.map(
       (programme) => ({
         text: programme.name,
-        value: programme.pid
+        value:
+          programme.pid === 'td-ipv'
+            ? ReplyDecision.OnlyTdIPV
+            : ReplyDecision.OnlyMenACWY
       })
     )
 
@@ -184,23 +194,17 @@ export const parentController = {
   },
 
   updateForm(request, response) {
-    const { decisions } = request.body
+    const { decision } = request.body
     const { data } = request.session
     const { paths, consent } = response.locals
 
-    if (decisions) {
-      switch (true) {
-        case ['menacwy', 'td-ipv'].every((value) => decisions.includes(value)):
-          request.body.consent.decision = ReplyDecision.Given
-          break
-        case decisions.includes('menacwy'):
-          request.body.consent.decision = ReplyDecision.OnlyMenACWY
-          break
-        case decisions.includes('td-ipv'):
-          request.body.consent.decision = ReplyDecision.OnlyTdIPV
-          break
-        default:
-      }
+    const combinedDecisionGiven = [
+      ReplyDecision.Given,
+      ReplyDecision.Refused
+    ].includes(request.body.consent?.decision)
+
+    if (!combinedDecisionGiven && decision) {
+      request.body.consent.decision = decision
     }
 
     consent.update(request.body.consent, data.wizard)
