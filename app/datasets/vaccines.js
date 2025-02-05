@@ -6,6 +6,7 @@ export default {
     type: 'Flu',
     brand: 'Fluenz Tetra',
     manufacturer: 'AstraZeneca UK Ltd',
+    leaflet: 'https://www.medicines.org.uk/emc/files/pil.15790.pdf',
     method: 'Nasal spray',
     dose: 0.2,
     healthQuestionKeys: [
@@ -57,6 +58,7 @@ export default {
     type: 'HPV',
     brand: 'Gardasil 9',
     manufacturer: 'Merck Sharp & Dohme (UK) Ltd',
+    leaflet: 'https://www.medicines.org.uk/emc/files/pil.7330.pdf',
     method: 'Injection',
     dose: 0.5,
     sequenceLimit: 3,
@@ -82,6 +84,7 @@ export default {
     type: 'TdIPV',
     brand: 'Revaxis',
     manufacturer: 'Sanofi',
+    leaflet: 'https://www.medicines.org.uk/emc/files/pil.5581.pdf',
     method: 'Injection',
     dose: 0.5,
     healthQuestionKeys: [
@@ -105,6 +108,7 @@ export default {
     type: 'MenACWY',
     brand: 'Nimenrix',
     manufacturer: 'Pfizer Ltd',
+    leaflet: 'https://www.medicines.org.uk/emc/files/pil.4118.pdf',
     method: 'Injection',
     dose: 0.5,
     healthQuestionKeys: [

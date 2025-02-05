@@ -60,8 +60,7 @@ export const programmeTypes = {
         'The HPV vaccine helps to prevent HPV related cancers from developing in boys and girls.\n\nThe number of doses you need depends on your age and how well your immune system works. Young people usually only need 1 dose.',
       description:
         'The HPV vaccine helps protect boys and girls against cancers caused by HPV, including:\n- cervical cancer\n- some mouth and throat (head and neck) cancers\n- some cancers of the anal and genital areas\n\nThe HPV vaccine has been given to girls since 2008. Following its success at helping prevent cervical cancers, it was introduced to boys in 2019 to help prevent HPV-related cancers that affect them.\n\nYoung people usually only need 1 dose.',
-      url: 'https://www.nhs.uk/conditions/vaccinations/hpv-human-papillomavirus-vaccine/',
-      leaflet: 'https://www.medicines.org.uk/emc/files/pil.7330.pdf'
+      url: 'https://www.nhs.uk/conditions/vaccinations/hpv-human-papillomavirus-vaccine/'
     },
     term: SchoolTerm.Spring,
     yearGroups: [8, 9, 10, 11],
