@@ -489,7 +489,7 @@ export const en = {
       title: 'About you',
       label: 'Parent',
       fullName: {
-        label: 'Name'
+        label: 'Full name'
       },
       relationship: {
         label: 'Relationship to child'
