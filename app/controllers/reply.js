@@ -316,7 +316,6 @@ export const replyController = {
     const { patient, reply, session } = response.locals
 
     if (decision === 'true') {
-      response.locals.paths = { back: `${reply.uri}/follow-up` }
       response.redirect(`${reply.uri}/edit/outcome`)
     } else {
       // Store reply that needs marked as invalid
