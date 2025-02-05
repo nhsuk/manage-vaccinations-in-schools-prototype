@@ -320,9 +320,11 @@ export class Session {
    */
   get programmes() {
     if (this.context?.programmes && this.programme_pids) {
-      return this.programme_pids.map(
-        (pid) => new Programme(this.context?.programmes[pid], this.context)
-      )
+      return this.programme_pids
+        .sort()
+        .map(
+          (pid) => new Programme(this.context?.programmes[pid], this.context)
+        )
     }
 
     return []
