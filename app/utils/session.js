@@ -1,7 +1,12 @@
 import { isAfter, isBefore } from 'date-fns'
 
 import { ProgrammeType, programmeTypes } from '../models/programme.js'
-import { ConsentWindow, Session, SessionType } from '../models/session.js'
+import {
+  ConsentWindow,
+  Session,
+  SessionStatus,
+  SessionType
+} from '../models/session.js'
 import { today } from '../utils/date.js'
 
 /**
@@ -37,5 +42,6 @@ export const getProgrammeSession = (sessions, type, isSchool = true) => {
     .map((session) => new Session(session))
     .filter((session) => session.programme_pids.includes(pid))
     .filter((session) => session.type === sessionType)
+    .filter((session) => session.status !== SessionStatus.Unplanned)
     .at(-1)
 }
