@@ -509,14 +509,14 @@ export const en = {
         label: "Tick this box if you'd like to get updates by text message"
       },
       contactPreference: {
-        title: 'Phone contact method',
-        hint: 'Tell us if you have specific needs',
-        sms: 'I can only receive text messages',
-        voice: 'I can only receive voice calls',
-        other: 'Other',
-        none: 'I do not have specific needs'
+        title: 'If we need to contact you',
+        label: 'Do you have any communication needs?',
+        yes: 'Yes',
+        no: 'No',
+        description:
+          'Let us know if you have any communication needs you’d like us to be aware of – for example, a hearing or visual impairment.'
       },
-      contactPreferenceOther: {
+      contactPreferenceDetails: {
         label: 'Give details'
       },
       relationshipOther: {
@@ -893,7 +893,7 @@ export const en = {
       label: 'Phone number'
     },
     contactPreference: {
-      label: 'Contact preference'
+      label: 'Communication needs'
     },
     relationshipOther: {
       label: 'Give details',

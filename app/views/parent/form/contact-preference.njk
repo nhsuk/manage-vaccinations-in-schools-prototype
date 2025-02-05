@@ -3,32 +3,28 @@
 {% set title = __("consent.parent.contactPreference.title") %}
 
 {% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ __("consent.parent.contactPreference.description") | nhsukMarkdown }}
+
   {{ radios({
     fieldset: {
       legend: {
-        html: heading({
-          classes: "nhsuk-fieldset__legend--l",
-          title: title
-        })
+        text: __("consent.parent.contactPreference.label")
       }
     },
-    hint: { text: __("consent.parent.contactPreference.hint") },
     items: [{
-      text: __("consent.parent.contactPreference.sms")
-    }, {
-      text: __("consent.parent.contactPreference.voice")
-    }, {
-      text: __("consent.parent.contactPreference.other"),
+      text: __("consent.parent.contactPreference.yes"),
       conditional: {
         html: textarea({
-          label: { text: __("consent.parent.contactPreferenceOther.label") },
-          decorate: "consent.parent.contactPreferenceOther"
+          label: { text: __("consent.parent.contactPreferenceDetails.label") },
+          decorate: "consent.parent.contactPreferenceDetails"
         })
       }
     }, {
-      divider: "or"
-    }, {
-      text: __("consent.parent.contactPreference.none")
+      text: __("consent.parent.contactPreference.no")
     }],
     decorate: "consent.parent.contactPreference"
   }) }}
