@@ -550,9 +550,16 @@ export const en = {
       no: 'No'
     },
     refusalReason: {
-      title:
-        'Please tell us why you do not agree to your child having the %s vaccination',
-      label: 'Refusal reason'
+      title: 'Please tell us why you do not agree to your child having the %s',
+      label: 'Refusal reason',
+      alreadyGiven: {
+        one: ReplyRefusal.AlreadyGiven,
+        other: ReplyRefusal.AlreadyGiven.replace('Vaccine', 'Vaccines')
+      },
+      gettingElsewhere: {
+        one: ReplyRefusal.GettingElsewhere,
+        other: ReplyRefusal.GettingElsewhere.replace('Vaccine', 'Vaccines')
+      }
     },
     refusalReasonDetails: {
       label: 'Refusal details',
