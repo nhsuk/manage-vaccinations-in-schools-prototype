@@ -30,8 +30,8 @@ export const SchoolTerm = {
  * @enum {string}
  */
 export const SchoolYear = {
-  Y2024: '2024/25',
-  Y2023: '2023/24'
+  Y2024: '2024 to 2025',
+  Y2023: '2023 to 2024'
 }
 
 export const schoolTerms = {
