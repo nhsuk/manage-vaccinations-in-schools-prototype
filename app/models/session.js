@@ -101,7 +101,9 @@ export class Session {
     this.reminderWeeks =
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
     this.defaultBatch_ids = options?.defaultBatch_ids || {}
-    this.programme_pids = options?.programme_pids || []
+    this.programme_pids = options?.programme_pids
+      ? options.programme_pids.filter((pid) => pid !== '_unchecked')
+      : []
   }
 
   /**
