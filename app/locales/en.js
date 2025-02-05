@@ -1081,24 +1081,6 @@ export const en = {
       success:
         'Consent request sent to {{parent.formatted.fullNameAndRelationship}}'
     },
-    preScreen: {
-      label: 'Pre-screening questions',
-      questions: {
-        label: 'Have you asked {{patient.firstName}} if:'
-      },
-      ready: {
-        label: 'Is {{patient.firstName}} ready to vaccinate in this session?',
-        yes: 'Yes',
-        no: 'No'
-      },
-      injectionSite: {
-        label: 'Where will the injection be given?'
-      },
-      confirm: 'Continue',
-      note: {
-        label: 'Pre-screening notes'
-      }
-    },
     registration: {
       label: 'Is {{patient.fullName}} attending today’s session?',
       title: 'Update attendance',
@@ -1130,6 +1112,31 @@ export const en = {
         [RegistrationOutcome.Absent]:
           '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is absent from today’s session.'
       }
+    },
+    preScreen: {
+      label: 'Pre-screening questions',
+      questions: {
+        label: 'Have you asked {{patient.firstName}} if:'
+      },
+      note: {
+        label: 'Pre-screening notes'
+      },
+      ready: {
+        label:
+          'Is {{patient.firstName}} ready to vaccinated with {{programme.vaccine.brand}}?',
+        yes: 'Yes',
+        no: 'No'
+      },
+      injectionSite: {
+        label: 'Where will the injection be given?'
+      }
+    },
+    capture: {
+      label: {
+        one: 'Record vaccination',
+        other: 'Record vaccinations'
+      },
+      confirm: 'Continue'
     }
   },
   programme: {

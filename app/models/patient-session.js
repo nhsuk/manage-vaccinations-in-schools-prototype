@@ -4,6 +4,7 @@ import {
   getCaptureOutcome,
   getConsentStatus,
   getPatientOutcome,
+  getProgrammeOutcome,
   getRegistrationStatus
 } from '../utils/capture.js'
 import { getDateValueDifference, today } from '../utils/date.js'
@@ -334,6 +335,19 @@ export class PatientSession {
    */
   get outcome() {
     return getPatientOutcome(this)
+  }
+
+  /**
+   * Get overall patient outcome, per programme
+   *
+   * @returns {object} - Patient outcomes
+   */
+  get programmeOutcomes() {
+    const programmeOutcomes = {}
+    for (const { pid } of this.session.programmes) {
+      programmeOutcomes[pid] = getProgrammeOutcome(this, pid)
+    }
+    return programmeOutcomes
   }
 
   /**

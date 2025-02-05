@@ -52,18 +52,21 @@ export const patientSessionController = {
         patientSession.consent === ConsentOutcome.Given &&
         patientSession.triage !== TriageOutcome.Needed &&
         patientSession.outcome !== PatientOutcome.Vaccinated,
-      showPreScreen:
-        patientSession.capture === CaptureOutcome.Vaccinate &&
-        patientSession.outcome !== PatientOutcome.Vaccinated &&
-        patientSession.outcome !== PatientOutcome.CouldNotVaccinate
+      showPreScreen: patientSession.capture === CaptureOutcome.Vaccinate
     }
 
     response.locals.options.editReplies = {}
+    response.locals.options.editCapture = {}
 
     for (const { pid } of patientSession.session.programmes) {
       response.locals.options.editReplies[pid] =
         patientSession.consentOutcomes[pid] !== ConsentOutcome.Given &&
         patientSession.outcome !== PatientOutcome.Vaccinated
+
+      response.locals.options.editCapture[pid] =
+        patientSession.programmeOutcomes[pid] !== PatientOutcome.Vaccinated &&
+        patientSession.programmeOutcomes[pid] !==
+          PatientOutcome.CouldNotVaccinate
     }
 
     response.locals.injectionSiteItems = Object.entries(VaccinationSite)
@@ -182,15 +185,18 @@ export const patientSessionController = {
   },
 
   preScreen(request, response) {
-    const { preScreen } = request.body.patientSession
+    const { preScreen, capture } = request.body.patientSession
     const { data } = request.session
-    const { back, patientSession, programme } = response.locals
+    const { back, patientSession } = response.locals
 
     // Pre-screen interview
     patientSession.preScreen({
       note: preScreen.note,
       ...(data.token && { createdBy_uid: data.token?.uid })
     })
+
+    // Get programme
+    const programme = Programme.read(capture.programme_pid, data)
 
     response.redirect(
       `${programme.uri}/vaccinations/new?patientSession_uuid=${patientSession.uuid}&referrer=${back}`
