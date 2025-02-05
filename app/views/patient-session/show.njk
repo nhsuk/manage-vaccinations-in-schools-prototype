@@ -184,101 +184,93 @@
       descriptionHtml: gillickDescriptionHtml
     }) if options.showGillick }}
 
-    {% set consentDescriptionHtml %}
-      {{ status({
-        colour: "blue",
-        icon: "warning",
-        text: __("session.consents.warning")
-      }) if patientSession.session.consents.length != 0 }}
+    <h2 class="nhsuk-heading-m">
+      {{ __("patientSession.consent.label") }}
+    </h2>
 
-      {% if patientSession.responses.length %}
-        {{ status({
-          text: __("consent." + patientSession.consent + ".status"),
-          icon: __("consent." + patientSession.consent + ".icon"),
-          colour: __("consent." + patientSession.consent + ".colour")
-        }) }}
+    {{ status(patientSession.unmatchedConsentStatus) }}
 
-        {% set consentRows = [] %}
-        {% for consent in patientSession.responses %}
-          {% set consentColour = __("consent." + consent.decision + ".colour") %}
-          {% set consentModifier = "grey" if consent.invalid else consentColour %}
-          {% set consentRows = consentRows | push([
-            {
-              classes: "app-table__cell-status--" + consentModifier,
-              header: __("parent.fullName.label"),
-              html: consent.link.fullNameAndRelationship
-            },
-            {
-              classes: "app-table__cell-status--" + consentModifier,
-              header: __("consent.createdAt.label"),
-              html: consent.formatted.createdAt_date or "Not provided",
-              attributes: {
-                "data-sort": consent.createdAt
+    {% for programme in patientSession.session.programmes %}
+      {% set consentDescriptionHtml %}
+        {% set consentResponses = patientSession.consentResponses(programme.pid) %}
+        {% set consentStatus = patientSession.consentStatus(programme) %}
+        {% if consentResponses.length %}
+          {% set consentRows = [] %}
+          {% for consent in consentResponses %}
+            {% set consentRows = consentRows | push([
+              {
+                header: __("parent.fullName.label"),
+                html: consent.link.fullNameAndRelationship
+              },
+              {
+                header: __("consent.createdAt.label"),
+                html: consent.formatted.createdAt_date or "Not provided",
+                attributes: {
+                  "data-sort": consent.createdAt
+                }
+              },
+              {
+                header: __("consent.decision.label"),
+                html: tag(statusTag(consent.status))
               }
-            },
-            {
-              classes: "app-table__cell-status--" + consentModifier,
-              header: __("consent.programme.label"),
-              html: tag({
-                classes: "nhsuk-tag--white",
-                text: consent.programme.name
-              })
-            },
-            {
-              classes: "app-table__cell-status--" + consentModifier,
-              header: __("consent.decision.label"),
-              html: consent.formatted.decision
-            }
-          ]) %}
-        {% endfor %}
+            ]) %}
+          {% endfor %}
 
-        {{ actionTable({
-          id: "consents",
-          classes: "nhsuk-u-margin-bottom-4",
-          sort: "createdAt",
-          responsive: true,
-          head: [
-            { text: __("parent.fullName.label") },
-            { text: __("consent.createdAt.label") },
-            { text: __("consent.programme.label") },
-            { text: __("consent.decision.label") }
-          ],
-          rows: consentRows
-        }) }}
-      {% elif session.consentWindow == ConsentWindow.Opening %}
-        {{ __("session.consentWindow." + session.consentWindow + ".text", {
-          openAt: session.openAt | date({
-            day: "numeric",
-            month: "long"
-          })
-        }) | nhsukMarkdown }}
-      {% else %}
-        {{ __("consent."+ ReplyDecision.NoResponse + ".description") | nhsukMarkdown }}
-      {% endif %}
-      {% if options.getReply %}
-        <form action="{{ patientSession.uri }}/new/invite" method="post">
-          {{ button({
-            classes: "app-button--secondary nhsuk-u-margin-bottom-4",
-            text: __("patientSession.invite.label")
+          {{ table({
+            id: "consents-" + programme.pid,
+            tableClasses: "nhsuk-u-margin-bottom-4" if options.getReply or options.editReplies[programme.pid],
+            sort: "createdAt",
+            responsive: true,
+            head: [
+              { text: __("parent.fullName.label") },
+              { text: __("consent.createdAt.label") },
+              { text: __("consent.decision.label") }
+            ],
+            rows: consentRows
           }) }}
-        </form>
-      {% endif %}
-      {% if options.editReplies %}
-        <p class="nhsuk-body">
-          {{ button({
-            classes: "app-button--secondary nhsuk-u-margin-0",
-            text: __("reply.new.title"),
-            href: patientSession.uri + "/replies/new"
-          }) }}
-        </p>
-      {% endif %}
-    {% endset %}
+        {% elif session.consentWindow == ConsentWindow.Opening %}
+          {{ __("session.consentWindow." + session.consentWindow + ".text", {
+            openAt: session.openAt | date({
+              day: "numeric",
+              month: "long"
+            })
+          }) | nhsukMarkdown }}
+        {% else %}
+          {{ consentStatus.description | nhsukMarkdown }}
+        {% endif %}
+        {% if options.getReply %}
+          <form action="{{ patientSession.uri }}/new/invite" method="post">
+            {{ button({
+              classes: "app-button--secondary nhsuk-u-margin-bottom-4",
+              text: __("patientSession.invite.label")
+            }) }}
+          </form>
+        {% endif %}
+        {% if options.editReplies[programme.pid] %}
+          <p class="nhsuk-body">
+            {{ button({
+              classes: "app-button--secondary nhsuk-u-margin-0",
+              text: __("reply.new.title"),
+              href: patientSession.uri + "/replies/new"
+            }) }}
+          </p>
+        {% endif %}
+      {% endset %}
 
-    {{ card({
-      heading: __("patientSession.consent.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: consentDescriptionHtml
-    }) }}
+      {{ card({
+        classes: "app-card--" + consentStatus.colour,
+        feature: true,
+        heading: consentStatus.text,
+        headingClasses: "nhsuk-heading-s nhsuk-u-margin-0",
+        descriptionHtml: consentDescriptionHtml
+      }) }}
+    {% endfor %}
+
+    {% if patientSession.consentHealthAnswers %}
+      <h2 class="nhsuk-heading-m">
+        {{ __("screen.label") }}
+      </h2>
+    {% endif %}
 
     {{ card({
       heading: __("healthAnswers.label"),

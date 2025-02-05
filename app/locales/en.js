@@ -281,9 +281,7 @@ export const en = {
     results:
       'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> responses',
     [ConsentOutcome.NoResponse]: {
-      colour: 'grey',
       description: 'No-one responded to our requests for consent.',
-      icon: false,
       label: 'No response',
       status: 'No response',
       title: 'No response',
@@ -294,9 +292,7 @@ export const en = {
       }
     },
     [ConsentOutcome.NoRequest]: {
-      colour: 'dark-orange',
       description: 'Consent response could not be delivered.',
-      icon: false,
       label: 'Request failed',
       status: 'Request failed',
       title: 'Request failed',
@@ -307,9 +303,7 @@ export const en = {
       }
     },
     [ConsentOutcome.Inconsistent]: {
-      colour: 'dark-orange',
       description: 'You can only vaccinate if all respondents give consent.',
-      icon: 'cross',
       label: 'Conflicts',
       status: 'Conflicting consent',
       title: 'Conflicting consent',
@@ -320,9 +314,7 @@ export const en = {
       }
     },
     [ConsentOutcome.Given]: {
-      colour: 'aqua-green',
       description: '{{patient.fullName}} is ready for the vaccinator.',
-      icon: 'tick',
       label: 'Consent given',
       status: 'Consent given',
       title: 'Ready for vaccinator',
@@ -333,9 +325,7 @@ export const en = {
       }
     },
     [ConsentOutcome.Refused]: {
-      colour: 'red',
       description: '{{relationships}} refused to give consent.',
-      icon: 'cross',
       label: 'Refused',
       status: 'Consent refused',
       title: 'Consent refused',
@@ -346,9 +336,7 @@ export const en = {
       }
     },
     [ConsentOutcome.FinalRefusal]: {
-      colour: 'red',
       description: 'Refusal to give consent confirmed by {{relationships}}.',
-      icon: 'cross',
       label: 'Refusal confirmed',
       status: 'Refusal confirmed',
       title: 'Refusal confirmed',

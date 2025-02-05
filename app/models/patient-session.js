@@ -1,6 +1,11 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { getCaptureOutcome, getPatientOutcome } from '../utils/capture.js'
+import {
+  getCaptureOutcome,
+  getConsentStatus,
+  getPatientOutcome,
+  getRegistrationStatus
+} from '../utils/capture.js'
 import { getDateValueDifference, today } from '../utils/date.js'
 import {
   getConsentOutcome,
@@ -165,6 +170,16 @@ export class PatientSession {
       .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
   }
 
+  /** Get parental relationships from valid replies
+   *
+   * @returns {Array<string>} - Parental relationships
+   */
+  get parentalRelationships() {
+    return this.replies
+      .filter((reply) => !reply.invalid)
+      .flatMap((reply) => reply.relationship || 'Parent or guardian')
+  }
+
   /**
    * Get responses (consent requests that were delivered)
    *
@@ -214,6 +229,51 @@ export class PatientSession {
   }
 
   /**
+   * Get consent outcome, per programme
+   *
+   * @returns {object} - Consent outcomes
+   */
+  get consentOutcomes() {
+    const consentOutcomes = {}
+    for (const { pid } of this.session.programmes) {
+      consentOutcomes[pid] = getConsentOutcome(this, pid)
+    }
+    return consentOutcomes
+  }
+
+  /**
+   * Get responses (consent requests that were delivered)
+   *
+   * @param {string} pid - Programme PID
+   * @returns {Array<import('./reply.js').Reply>} - Responses
+   */
+  consentResponses(pid) {
+    return this.replies
+      .filter(({ programme_pid }) => programme_pid === pid)
+      .filter((reply) => reply.delivered)
+  }
+
+  /**
+   * Get consent status properties
+   *
+   * @param {import('./programme.js').Programme} programme - Programme
+   * @returns {object} - Consent status properties
+   */
+  consentStatus(programme) {
+    return getConsentStatus(this, programme)
+  }
+
+  get unmatchedConsentStatus() {
+    if (this.session.consents.length !== 0) {
+      return {
+        colour: 'blue',
+        icon: 'warning',
+        text: 'You need to review unmatched consent responses for this session'
+      }
+    }
+  }
+
+  /**
    * Get consent health answers
    *
    * @returns {object|boolean} - Consent health answers
@@ -259,6 +319,15 @@ export class PatientSession {
   }
 
   /**
+   * Get registration status properties
+   *
+   * @returns {object} - Registration status properties
+   */
+  get registrationStatus() {
+    return getRegistrationStatus(this)
+  }
+
+  /**
    * Get overall patient outcome
    *
    * @returns {PatientOutcome} - Overall patient outcome
@@ -275,37 +344,6 @@ export class PatientSession {
   get link() {
     return {
       fullName: formatLink(this.uri, this.patient.fullName)
-    }
-  }
-
-  /**
-   * Get registration status properties
-   *
-   * @returns {object} - Status properties
-   */
-  get registrationStatus() {
-    let colour
-    let description
-    switch (this.registration) {
-      case RegistrationOutcome.Present:
-        colour = 'green'
-        description = `Registered as attending today’s session at ${this.session.location.name}`
-        break
-      case RegistrationOutcome.Absent:
-        colour = 'red'
-        description = `Registered as absent from today’s session at ${this.session.location.name}`
-        break
-      case RegistrationOutcome.Complete:
-        colour = 'white'
-        break
-      default:
-        colour = 'blue'
-    }
-
-    return {
-      colour,
-      description,
-      text: this.registration
     }
   }
 

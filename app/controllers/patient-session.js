@@ -41,9 +41,6 @@ export const patientSessionController = {
         patientSession.consent !== ConsentOutcome.Given,
       showReminder: patientSession.consent === ConsentOutcome.NoResponse,
       getReply: Object.values(patientSession.replies).length === 0,
-      editReplies:
-        patientSession.consent !== ConsentOutcome.Given &&
-        patientSession.outcome !== PatientOutcome.Vaccinated,
       editTriage:
         patientSession.triage === TriageOutcome.Completed &&
         patientSession.outcome !== PatientOutcome.Vaccinated,
@@ -59,6 +56,14 @@ export const patientSessionController = {
         patientSession.capture === CaptureOutcome.Vaccinate &&
         patientSession.outcome !== PatientOutcome.Vaccinated &&
         patientSession.outcome !== PatientOutcome.CouldNotVaccinate
+    }
+
+    response.locals.options.editReplies = {}
+
+    for (const { pid } of patientSession.session.programmes) {
+      response.locals.options.editReplies[pid] =
+        patientSession.consentOutcomes[pid] !== ConsentOutcome.Given &&
+        patientSession.outcome !== PatientOutcome.Vaccinated
     }
 
     response.locals.injectionSiteItems = Object.entries(VaccinationSite)

@@ -8,7 +8,6 @@ import {
   PatientOutcome,
   ScreenOutcome
 } from './models/patient-session.js'
-import { Reply } from './models/reply.js'
 import { User } from './models/user.js'
 import { HealthQuestion } from './models/vaccine.js'
 import { formatLink, formatParent, pascalToKebabCase } from './utils/string.js'
@@ -140,25 +139,15 @@ export default () => {
    */
   globals.patientStatus = function (patientSession) {
     const { __, data } = this.ctx
-    const { consent, screen, outcome, patient } = patientSession
+    const { consent, screen, outcome, parentalRelationships, patient } =
+      patientSession
 
     // Get logged in user, else use placeholder
     const user = new User(data.token ? data.token : exampleUsers[0])
 
-    // Get valid consent responses
-    const replies = Object.values(patientSession.responses)
-      .map((reply) => new Reply(reply))
-      .filter((reply) => !reply.invalid)
-
     let colour
     let description
     let title
-
-    // Build list of reply relationships
-    const relationships = []
-    for (const reply of replies) {
-      relationships.push(reply.relationship || 'Parent or guardian')
-    }
 
     if (outcome === PatientOutcome.NoOutcomeYet) {
       // If no outcome, use status colour and title for consent/triage outcome
@@ -184,7 +173,7 @@ export default () => {
         colour = __(`consent.${consent}.colour`)
         description = __(`consent.${consent}.description`, {
           patient,
-          relationships: prototypeFilters.formatList(relationships)
+          relationships: prototypeFilters.formatList(parentalRelationships)
         })
         title = __(`consent.${consent}.title`)
       }
@@ -211,7 +200,7 @@ export default () => {
         ) {
           description = __(`consent.${consent}.description`, {
             patient,
-            relationships: prototypeFilters.formatList(relationships)
+            relationships: prototypeFilters.formatList(parentalRelationships)
           })
         }
       }
@@ -279,13 +268,15 @@ export default () => {
    * Get tag parameters
    *
    * @param {object} status - Status
-   * @param {string} status.text - Status text
+   * @param {string} [status.text] - Status text
+   * @param {string} [status.html] - Status HTML
    * @param {string} [status.colour] - Status colour
    * @returns {object} Parameters
    */
-  globals.statusTag = function ({ text, colour }) {
+  globals.statusTag = function ({ text, html, colour }) {
     return {
       text,
+      html,
       ...(colour && { classes: `nhsuk-tag--${colour}` })
     }
   }
