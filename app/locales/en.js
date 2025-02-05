@@ -432,7 +432,7 @@ export const en = {
       label: 'Child',
       summary: 'About your child',
       description:
-        'Give the name held on your child’s official school records. If their name has changed, tell us their current name.',
+        'Give the name on your child’s birth certificate. If it’s changed, give the name held by your child’s GP.',
       firstName: {
         label: 'First name'
       },
