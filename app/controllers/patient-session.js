@@ -22,11 +22,11 @@ import { today } from '../utils/date.js'
 
 export const patientSessionController = {
   read(request, response, next) {
-    const { id, nhsn } = request.params
+    const { pid, nhsn } = request.params
     const { data } = request.session
 
     const patientSession = PatientSession.readAll(data)
-      .filter(({ session_id }) => session_id === id)
+      .filter(({ programme_pid }) => programme_pid === pid)
       .find(({ patient }) => patient.nhsn === nhsn)
 
     const fluPid = programmeTypes[ProgrammeType.Flu].pid
