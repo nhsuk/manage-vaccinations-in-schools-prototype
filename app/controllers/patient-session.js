@@ -74,6 +74,13 @@ export const patientSessionController = {
         value
       }))
 
+    response.locals.siblingPatientSessionItems =
+      patientSession.siblingPatientSessions.map((patientSession) => ({
+        text: patientSession.name,
+        href: patientSession.uri,
+        current: patientSession.programme_pid === pid
+      }))
+
     response.locals.patientSession = patientSession
     response.locals.patient = patientSession.patient
     response.locals.session = patientSession.session

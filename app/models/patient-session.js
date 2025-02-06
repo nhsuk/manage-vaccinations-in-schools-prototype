@@ -13,6 +13,7 @@ import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 import { EventType } from './audit-event.js'
 import { Gillick } from './gillick.js'
 import { Patient } from './patient.js'
+import { Programme } from './programme.js'
 import { Session } from './session.js'
 
 /**
@@ -113,6 +114,15 @@ export class PatientSession {
   }
 
   /**
+   * Get name of patient session
+   *
+   * @returns {string} - Patient
+   */
+  get name() {
+    return `${this.programme.name} session at ${this.session.location.name}`
+  }
+
+  /**
    * Get patient
    *
    * @returns {Patient|undefined} - Patient
@@ -125,6 +135,19 @@ export class PatientSession {
       }
     } catch (error) {
       console.error('PatientSession.patient', error.message)
+    }
+  }
+
+  /**
+   * Get programme
+   *
+   * @returns {Programme|undefined} - Programme
+   */
+  get programme() {
+    try {
+      return Programme.read(this.programme_pid, this.context)
+    } catch (error) {
+      console.error('PatientSession.programme', error.message)
     }
   }
 

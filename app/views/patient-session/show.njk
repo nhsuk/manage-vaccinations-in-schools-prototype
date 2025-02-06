@@ -33,6 +33,12 @@
       view: "show"
     }) }}
 
+    <h2 class="nhsuk-heading-s nhsuk-u-margin-bottom-2">Related sessions</h2>
+
+    {{ contentsList({
+      items: siblingPatientSessionItems
+    }) }}
+
     {% set statusDescriptionHtml %}
       {{ patientStatus(patientSession).description | nhsukMarkdown }}
 
