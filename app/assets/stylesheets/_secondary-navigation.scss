@@ -46,6 +46,17 @@
   font-weight: inherit;
 }
 
+.app-secondary-navigation__link,
+.app-secondary-navigation__current {
+  align-items: baseline;
+  display: flex;
+  column-gap: nhsuk-spacing(2);
+
+  @include mq($from: tablet) {
+    flex-direction: column;
+  }
+}
+
 .app-secondary-navigation__list {
   // The list uses box-shadow rather than a border to set a 1px grey line at the
   // bottom, so that the current item appears on top of the grey line.

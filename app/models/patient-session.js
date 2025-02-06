@@ -216,6 +216,21 @@ export class PatientSession {
   }
 
   /**
+   * Get related patient sessions
+   *
+   * @returns {Array<PatientSession>} - Patient sessions
+   */
+  get siblingPatientSessions() {
+    try {
+      return PatientSession.readAll(this.context)
+        .filter(({ patient_uuid }) => patient_uuid === this.patient_uuid)
+        .filter(({ session_id }) => session_id === this.session_id)
+    } catch (error) {
+      console.error('PatientSession.siblingPatientSessions', error.message)
+    }
+  }
+
+  /**
    * Get vaccinations for patient session
    *
    * @returns {Array<import('./vaccination.js').Vaccination>|undefined} - Vaccinations
@@ -583,10 +598,9 @@ export class PatientSession {
       programme_pids: this.session.programme_pids
     })
 
-    // Update context, so that session activity reflects updated value
-    // TODO: Why is this needed?
-    const patientSession = PatientSession.read(this.uuid, this.context)
-    patientSession.update({ registration }, this.context)
+    for (const patientSession of this.siblingPatientSessions) {
+      patientSession.update({ registration }, this.context)
+    }
   }
 
   /**
