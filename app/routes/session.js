@@ -18,6 +18,10 @@ router.get(
   '/:id/:activity(consent|triage|capture|outcome)',
   sessionController.activity
 )
+router.post(
+  '/:id/:activity(consent|triage|capture|outcome)',
+  sessionController.updateActivity
+)
 
 router.post('/:id/offline', sessionController.downloadFile)
 

@@ -1052,7 +1052,7 @@ export const en = {
       }
     },
     consent: {
-      label: 'Consent responses'
+      label: 'Consent for %s'
     },
     record: {
       label: 'Vaccination status'

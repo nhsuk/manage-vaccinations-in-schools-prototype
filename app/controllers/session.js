@@ -59,7 +59,7 @@ export const sessionController = {
 
   activity(request, response) {
     const { activity } = request.params
-    let { tab } = request.query
+    let { pid, tab } = request.query
     const { __, patientSessions, session } = response.locals
 
     let tabs = []
@@ -125,7 +125,8 @@ export const sessionController = {
     if (session.programmes.length > 1) {
       response.locals.programmeItems = session.programmes.map((programme) => ({
         text: programme.name,
-        value: programme.pid
+        value: programme.pid,
+        checked: programme.pid === pid
       }))
     }
 
@@ -150,15 +151,43 @@ export const sessionController = {
     response.render('session/activity', { tab })
   },
 
+  updateActivity(request, response, next) {
+    const { pid } = request.body
+    const { id, activity } = request.params
+    const { tab } = request.query
+    const { session } = response.locals
+
+    const params = {}
+
+    if (tab) {
+      params.tab = String(tab)
+    }
+
+    params.pid = pid || session.programmes[0]
+
+    // @ts-ignore
+    const queryString = new URLSearchParams(params).toString()
+
+    response.redirect(`/sessions/${id}/${activity}?${queryString}`)
+  },
+
   read(request, response, next) {
     const { id } = request.params
-    const { gtin } = request.query
+    let { gtin, pid } = request.query
     const { data } = request.session
 
     const session = Session.read(id, data)
-    const patientSessions = PatientSession.readAll(data).filter(
-      ({ session_id }) => session_id === id
-    )
+    pid = pid || session.programmes[0].pid
+    const patientSessions = PatientSession.readAll(data)
+      .filter(({ programme_pid }) => programme_pid === pid)
+      .filter(({ session_id }) => session_id === id)
+
+    const programmePatientSessions = {}
+    for (const { pid } of session.programmes) {
+      programmePatientSessions[pid] = PatientSession.readAll(data)
+        .filter(({ programme_pid }) => programme_pid === pid)
+        .filter(({ session_id }) => session_id === id)
+    }
 
     // Used when updating the default batch
     if (gtin) {
@@ -172,6 +201,8 @@ export const sessionController = {
     )
 
     response.locals.patientSessions = patientSessions
+
+    response.locals.programmePatientSessions = programmePatientSessions
 
     response.locals.session = session
 
