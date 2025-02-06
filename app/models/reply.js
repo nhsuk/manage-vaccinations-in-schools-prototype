@@ -364,7 +364,7 @@ export class Reply {
    * @returns {string} - URI
    */
   get uri() {
-    return `/sessions/${this.session_id}/patients/${this.patient.nhsn}/replies/${this.uuid}`
+    return `/programmes/${this.programme_pid}/patients/${this.patient.nhsn}/replies/${this.uuid}`
   }
 
   /**

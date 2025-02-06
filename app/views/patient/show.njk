@@ -123,12 +123,12 @@
             html: link(patientSession.uri, patientSession.session.location.name)
           },
           {
-            header: __("session.programmes.label"),
-            html: patientSession.session.formatted.programmes
-          },
-          {
             header: __("session.dates.label"),
             html: patientSession.session.formatted.dates if patientSession.session.dates.length else patientSession.session.status
+          },
+          {
+            header: __("programme.label"),
+            html: patientSession.formatted.programme
           }
         ]) %}
       {% endfor %}
@@ -139,8 +139,8 @@
         responsive: true,
         head: [
           { text: __("session.location.label") },
-          { text: __("session.programmes.label") },
-          { text: __("session.dates.label") }
+          { text: __("session.dates.label") },
+          { text: __("programme.label") }
         ],
         rows: patientSessionRows
       }) }}
