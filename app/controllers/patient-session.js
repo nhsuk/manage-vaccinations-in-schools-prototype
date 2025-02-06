@@ -22,11 +22,11 @@ import { today } from '../utils/date.js'
 
 export const patientSessionController = {
   read(request, response, next) {
-    const { id, nhsn } = request.params
+    const { pid, nhsn } = request.params
     const { data } = request.session
 
     const patientSession = PatientSession.readAll(data)
-      .filter(({ session_id }) => session_id === id)
+      .filter(({ programme_pid }) => programme_pid === pid)
       .find(({ patient }) => patient.nhsn === nhsn)
 
     const fluPid = programmeTypes[ProgrammeType.Flu].pid
@@ -72,6 +72,13 @@ export const patientSessionController = {
       .map(([key, value]) => ({
         text: VaccinationSite[key],
         value
+      }))
+
+    response.locals.siblingPatientSessionItems =
+      patientSession.siblingPatientSessions.map((patientSession) => ({
+        text: patientSession.name,
+        href: patientSession.uri,
+        current: patientSession.programme_pid === pid
       }))
 
     response.locals.patientSession = patientSession

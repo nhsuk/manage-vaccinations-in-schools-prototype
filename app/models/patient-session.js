@@ -13,6 +13,7 @@ import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 import { EventType } from './audit-event.js'
 import { Gillick } from './gillick.js'
 import { Patient } from './patient.js'
+import { Programme } from './programme.js'
 import { Session } from './session.js'
 
 /**
@@ -95,6 +96,7 @@ export const PatientOutcome = {
  * @property {RegistrationOutcome} [registration] - Registration outcome
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {string} patient_uuid - Patient UUID
+ * @property {string} programme_pid - Programme PID
  * @property {string} session_id - Session ID
  */
 export class PatientSession {
@@ -107,7 +109,17 @@ export class PatientSession {
     this.registration = options?.registration || RegistrationOutcome.Pending
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.patient_uuid = options?.patient_uuid
+    this.programme_pid = options?.programme_pid
     this.session_id = options?.session_id
+  }
+
+  /**
+   * Get name of patient session
+   *
+   * @returns {string} - Patient
+   */
+  get name() {
+    return `${this.programme.name} session at ${this.session.location.name}`
   }
 
   /**
@@ -123,6 +135,19 @@ export class PatientSession {
       }
     } catch (error) {
       console.error('PatientSession.patient', error.message)
+    }
+  }
+
+  /**
+   * Get programme
+   *
+   * @returns {Programme|undefined} - Programme
+   */
+  get programme() {
+    try {
+      return Programme.read(this.programme_pid, this.context)
+    } catch (error) {
+      console.error('PatientSession.programme', error.message)
     }
   }
 
@@ -159,9 +184,7 @@ export class PatientSession {
    */
   get replies() {
     return this.patient.replies
-      .filter(({ programme_pid }) =>
-        this.session.programme_pids.includes(programme_pid)
-      )
+      .filter(({ programme_pid }) => programme_pid === this.programme_pid)
       .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
   }
 
@@ -188,6 +211,21 @@ export class PatientSession {
   }
 
   /**
+   * Get related patient sessions
+   *
+   * @returns {Array<PatientSession>} - Patient sessions
+   */
+  get siblingPatientSessions() {
+    try {
+      return PatientSession.readAll(this.context)
+        .filter(({ patient_uuid }) => patient_uuid === this.patient_uuid)
+        .filter(({ session_id }) => session_id === this.session_id)
+    } catch (error) {
+      console.error('PatientSession.siblingPatientSessions', error.message)
+    }
+  }
+
+  /**
    * Get vaccinations for patient session
    *
    * @returns {Array<import('./vaccination.js').Vaccination>|undefined} - Vaccinations
@@ -196,7 +234,7 @@ export class PatientSession {
     try {
       if (this.patient.vaccinations) {
         return this.patient.vaccinations.filter(
-          (vaccination) => vaccination.session_id === this.session_id
+          ({ programme_pid }) => programme_pid === this.programme_pid
         )
       }
     } catch (error) {
@@ -324,7 +362,7 @@ export class PatientSession {
    * @returns {string} - URI
    */
   get uri() {
-    return `/sessions/${this.session_id}/patients/${this.patient.nhsn}`
+    return `/programmes/${this.programme_pid}/patients/${this.patient.nhsn}`
   }
 
   /**
@@ -465,10 +503,9 @@ export class PatientSession {
       programme_pids: this.session.programme_pids
     })
 
-    // Update context, so that session activity reflects updated value
-    // TODO: Why is this needed?
-    const patientSession = PatientSession.read(this.uuid, this.context)
-    patientSession.update({ registration }, this.context)
+    for (const patientSession of this.siblingPatientSessions) {
+      patientSession.update({ registration }, this.context)
+    }
   }
 
   /**
