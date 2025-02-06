@@ -78,3 +78,122 @@ export const getCaptureOutcome = (patientSession) => {
 
   return CaptureOutcome.Register
 }
+
+/**
+ * Get patient outcome for a programme
+ *
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {string} pid - Programme PID
+ * @returns {PatientOutcome} Patient outcome
+ */
+export const getProgrammeOutcome = (patientSession, pid) => {
+  const programmeVaccinations = patientSession.vaccinations.filter(
+    ({ programme_pid }) => programme_pid === pid
+  )
+  if (programmeVaccinations.length === 1) {
+    if (programmeVaccinations[0].given === true) {
+      return PatientOutcome.Vaccinated
+    }
+  }
+  // Consent outcome
+  if (
+    patientSession.consent === ConsentOutcome.Refused ||
+    patientSession.consent === ConsentOutcome.Inconsistent
+  ) {
+    return PatientOutcome.CouldNotVaccinate
+  }
+  // Screen outcome
+  if (
+    patientSession.screen === ScreenOutcome.DelayVaccination ||
+    patientSession.screen === ScreenOutcome.DoNotVaccinate
+  ) {
+    return PatientOutcome.CouldNotVaccinate
+  }
+  return PatientOutcome.NoOutcomeYet
+}
+
+/**
+ * Get consent status properties
+ *
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {import('../models/programme.js').Programme} programme - Programme
+ * @returns {object} - Consent status properties
+ */
+export const getConsentStatus = (patientSession, programme) => {
+  const { consentOutcomes, patient, parentalRelationships } = patientSession
+  const consentOutcome = consentOutcomes[programme.pid]
+
+  let colour
+  let description
+  let icon
+  switch (consentOutcome) {
+    case ConsentOutcome.NoResponse:
+      colour = 'grey'
+      description = 'No-one responded to our requests for consent.'
+      break
+    case ConsentOutcome.NoRequest:
+      colour = 'dark-orange'
+      description = 'Consent response could not be delivered.'
+      break
+    case ConsentOutcome.Inconsistent:
+      colour = 'dark-orange'
+      description = 'You can only vaccinate if all respondents give consent.'
+      icon = 'cross'
+      break
+    case ConsentOutcome.Given:
+      colour = 'aqua-green'
+      description = `${patient.fullName} is ready for the vaccinator.`
+      icon = 'tick'
+      break
+    case ConsentOutcome.Refused:
+      colour = 'red'
+      description = `${parentalRelationships} refused to give consent.`
+      icon = 'cross'
+      break
+    case ConsentOutcome.FinalRefusal:
+      colour = 'red'
+      description = `Refusal to give consent confirmed by ${parentalRelationships}.`
+      icon = 'cross'
+      break
+    default:
+  }
+
+  return {
+    colour,
+    description,
+    icon,
+    text: `${consentOutcome} for ${programme.name}`
+  }
+}
+
+/**
+ * Get registration status properties
+ *
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @returns {object} - Registration status properties
+ */
+export const getRegistrationStatus = (patientSession) => {
+  let colour
+  let description
+  switch (patientSession.registration) {
+    case RegistrationOutcome.Present:
+      colour = 'green'
+      description = `Registered as attending today’s session at ${patientSession.session.location.name}`
+      break
+    case RegistrationOutcome.Absent:
+      colour = 'red'
+      description = `Registered as absent from today’s session at ${patientSession.session.location.name}`
+      break
+    case RegistrationOutcome.Complete:
+      colour = 'white'
+      break
+    default:
+      colour = 'blue'
+  }
+
+  return {
+    colour,
+    description,
+    text: patientSession.registration
+  }
+}

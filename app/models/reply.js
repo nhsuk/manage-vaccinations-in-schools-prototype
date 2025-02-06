@@ -3,9 +3,10 @@ import _ from 'lodash'
 
 import { formatDate, today } from '../utils/date.js'
 import {
-  formatLinkWithSecondaryText,
+  formatLink,
   formatMarkdown,
   formatOther,
+  formatParent,
   stringToBoolean
 } from '../utils/string.js'
 
@@ -268,6 +269,33 @@ export class Reply {
   }
 
   /**
+   * Get status properties
+   *
+   * @returns {object} - Status properties
+   */
+  get status() {
+    let colour
+    switch (this.decision) {
+      case ReplyDecision.Given:
+        colour = 'aqua-green'
+        break
+      case ReplyDecision.Refused:
+        colour = 'red'
+        break
+      case ReplyDecision.NoResponse:
+        colour = 'grey'
+        break
+      default:
+        colour = 'blue'
+    }
+
+    return {
+      colour: this.invalid ? 'grey' : colour,
+      html: this.formatted.decision
+    }
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values
@@ -275,9 +303,9 @@ export class Reply {
   get formatted() {
     const decision = () => {
       if (this.invalid) {
-        return `<s>${this.decision}</s><br>Invalid`
+        return `<s>${this.decision}</s> Invalid`
       } else if (this.confirmed) {
-        return `${this.decision}<br><b>Confirmed</b>`
+        return `${this.decision} (Confirmed)`
       }
 
       return this.decision
@@ -310,13 +338,10 @@ export class Reply {
    * @returns {object} - Formatted links
    */
   get link() {
-    const fullName = this.fullName || 'Name unknown'
-
     return {
-      fullNameAndRelationship: formatLinkWithSecondaryText(
+      fullNameAndRelationship: formatLink(
         this.uri,
-        fullName,
-        this.relationship
+        formatParent(this.parent, false)
       )
     }
   }

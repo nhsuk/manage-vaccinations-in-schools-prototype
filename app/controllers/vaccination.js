@@ -61,10 +61,14 @@ export const vaccinationController = {
   new(request, response) {
     const { patientSession_uuid } = request.query
     const { data } = request.session
-    const { programme } = response.locals
 
     const { patient, session } = PatientSession.read(patientSession_uuid, data)
-    const { injectionSite, ready } = data.patientSession.preScreen
+    const { programme_pid } = data.patientSession.capture
+    const { injectionSite, ready } =
+      data.patientSession.preScreen[programme_pid]
+
+    // Get programme
+    const programme = Programme.read(programme_pid, data)
 
     // Check for default batch
     const defaultBatchId = session.defaultBatch_ids?.[programme.vaccine.gtin]
@@ -96,7 +100,7 @@ export const vaccinationController = {
     const vaccination = new Vaccination({
       location: session.formatted.location,
       patient_uuid: patient.uuid,
-      programme_pid: programme.pid,
+      programme_pid,
       school_urn: session.school_urn,
       session_id: session.id,
       vaccine_gtin: programme.vaccine.gtin,
