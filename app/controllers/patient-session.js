@@ -19,11 +19,13 @@ import {
   VaccinationSite
 } from '../models/vaccination.js'
 import { today } from '../utils/date.js'
+import { formatNavigationItemWithSecondaryText } from '../utils/string.js'
 
 export const patientSessionController = {
   read(request, response, next) {
     const { pid, nhsn } = request.params
     const { data } = request.session
+    const { __, __n } = response.locals
 
     const patientSession = PatientSession.readAll(data)
       .filter(({ programme_pid }) => programme_pid === pid)
@@ -70,6 +72,33 @@ export const patientSessionController = {
         text: VaccinationSite[key],
         value
       }))
+
+    const view = request.path.split('/').at(-1)
+    response.locals.navigationItems = [
+      ...patientSession.siblingPatientSessions.map((patientSession) => ({
+        text: formatNavigationItemWithSecondaryText(
+          patientSession.programme.name,
+          patientSession.nextActivity
+        ),
+        href: patientSession.uri,
+        current: view !== 'events' && patientSession.programme_pid === pid
+      })),
+      ...[
+        {
+          text: formatNavigationItemWithSecondaryText(
+            __('patientSession.events.title'),
+            String(
+              __n(
+                'patientSession.events.count',
+                patientSession.auditEvents.length
+              )
+            )
+          ),
+          href: `${patientSession.uri}/events`,
+          current: view === 'events'
+        }
+      ]
+    ]
 
     response.locals.patientSession = patientSession
     response.locals.patient = patientSession.patient

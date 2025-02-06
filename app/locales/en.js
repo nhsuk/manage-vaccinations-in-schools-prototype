@@ -1045,7 +1045,11 @@ export const en = {
       title: 'Child record'
     },
     events: {
-      title: 'Programme activity log'
+      title: 'Activity log',
+      count: {
+        one: '%s event',
+        other: '[0] No events|%s events'
+      }
     },
     consent: {
       label: 'Consent responses'

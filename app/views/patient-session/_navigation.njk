@@ -18,15 +18,7 @@
   }) if params.patientSession.session.isActive }}
 
   {{ secondaryNavigation({
-    items: [{
-      text: __("patientSession.show.title"),
-      href: params.patientSession.uri,
-      current: params.view == "show"
-    }, {
-      text: __("patientSession.events.title"),
-      href: params.patientSession.uri + "/events",
-      current: params.view == "events"
-    }]
+    items: navigationItems
   }) }}
 
   <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
