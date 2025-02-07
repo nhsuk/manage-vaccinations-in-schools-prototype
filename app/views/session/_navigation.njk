@@ -1,0 +1,63 @@
+{% from "_macros/action-list.njk" import actionList %}
+{% from "_macros/heading.njk" import heading %}
+{% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
+
+{% macro sessionNavigation(params) %}
+  {{ heading({
+    title: params.session.location.name
+  }) }}
+
+  {{ actionList({
+    items: [{
+      tag: statusTag(params.session.sessionStatus)
+    }, {
+      text: __("session.upload-class-list.title"),
+      href: "/uploads/new?type=" + UploadType.School + "&urn=" + params.session.school.urn
+    } if params.session.type == SessionType.School, {
+      text: "Match consent responses",
+      href: params.session.uri + "/consents"
+    } if unmatchedResponses.length, {
+      text: __("session.offline.title"),
+      href: params.session.uri + "/offline"
+    } if params.session.status == SessionStatus.Planned]
+  }) }}
+
+  {{ secondaryNavigation({
+    items: [
+      {
+        text: __("session.show.label"),
+        href: params.session.uri,
+        current: params.view == "show"
+      },
+      {
+        text: __("session.consent.label"),
+        href: params.session.uri + "/consent",
+        current: params.view == "consent"
+      },
+      {
+        text: __("session.screen.label"),
+        href: params.session.uri + "/screen",
+        current: params.view == "screen"
+      },
+      {
+        text: __("session.register.label"),
+        href: params.session.uri + "/register",
+        current: params.view == "register"
+      },
+      {
+        text: __("session.record.label"),
+        href: params.session.uri + "/record",
+        current: params.view == "record"
+      },
+      {
+        text: __("session.outcome.label"),
+        href: params.session.uri + "/outcome",
+        current: params.view == "outcome"
+      }
+    ]
+  }) if not params.session.isUnplanned }}
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("session." + params.view + ".title") }}
+  </h2>
+{% endmacro %}

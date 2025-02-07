@@ -1,17 +1,11 @@
 {% from "_macros/patient-search.njk" import patientSearch with context %}
+{% from "session/_navigation.njk" import sessionNavigation with context %}
 
 {% extends "_layouts/form.njk" %}
 
-{% set showLastReminderDate = tab == ConsentOutcome.NoResponse %}
-{% set showRefusalReasons = tab == ConsentOutcome.Refused or tab == ConsentOutcome.Inconsistent %}
-{% set showCouldNotVaccinateReason = tab == PatientOutcome.CouldNotVaccinate %}
-{% set showRegistration = tab == Activity.Register %}
-{% set showStatus = activity == "capture" or tab == PatientOutcome.NoOutcomeYet %}
-{% set showYearGroup = true %}
-
 {% set gridColumns = "full" %}
 {% set hideConfirmButton = true %}
-{% set title = __("session.activity." + activity + ".title") %}
+{% set title = session.location.name + " – " + __("session." + view + ".title") %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -31,14 +25,10 @@
 {% block form %}
   {{ super() }}
 
-  {{ heading({
-    title: title
+  {{ sessionNavigation({
+    session: session,
+    view: view
   }) }}
-
-  {{ insetText({
-    classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4",
-    html: session.formatted.consentWindow | nhsukMarkdown
-  }) if activity == "consent" }}
 
   {% set defaultBatchHtml %}
     {% include "session/_default-batch.njk" %}
@@ -47,12 +37,10 @@
   {{ insetText({
     classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4",
     html: defaultBatchHtml
-  }) if activity == "capture" and session.defaultBatch.length }}
-
-  {% include "session/_activity-navigation.njk" %}
+  }) if view == "record" and session.defaultBatch.length }}
 
   {% set patientRows = [] %}
-  {% for patientSession in patientSessions | sort(false, false, "firstName") %}
+  {% for patientSession in results.page %}
     {% set registrationButtonHtml %}
       <div>
         {{ button({
@@ -62,10 +50,10 @@
           value: RegistrationOutcome.Present,
           attributes: {
             "aria-label": __("patientSession.registration.actions.present.visuallyHiddenLabel", { patient: patientSession.patient }),
-            formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/capture",
+            formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
             formmethod: "post"
           }
-        }) }}
+        }) if patientSession.registration != RegistrationOutcome.Present }}
         {{ button({
           classes: "app-button--secondary-warning app-button--small",
           text: __("patientSession.registration.actions.absent.label"),
@@ -73,16 +61,16 @@
           value: RegistrationOutcome.Absent,
           attributes: {
             "aria-label": __("patientSession.registration.actions.absent.visuallyHiddenLabel", { patient: patientSession.patient }),
-            formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/capture",
+            formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
             formmethod: "post"
           }
-        }) }}
+        }) if patientSession.registration != RegistrationOutcome.Absent }}
       </div>
     {% endset %}
     {% set patientRows = patientRows | push([
       {
         header: __("patient.fullName.label"),
-        html: patientSession.link.fullName,
+        html: patientSession.link.fullName | highlightQuery(data.q),
         attributes: {
           "data-filter": patientSession.patient.fullName,
           "data-sort": patientSession.patient.fullName
@@ -90,90 +78,72 @@
       },
       {
         header: __("patient.yearGroup.label"),
-        html: patientSession.patient.formatted.yearGroupWithRegistration or "Not provided",
+        html: patientSession.patient.formatted.yearGroupWithRegistration,
         attributes: {
           "data-filter": patientSession.patient.yearGroup,
           "data-sort": patientSession.patient.yearGroup
         }
       },
       {
-        header: __("patient.lastReminderDate.label"),
-        html: patientSession.patient.lastReminderDate or "No reminders sent"
-      } if showLastReminderDate,
-      {
-        header: __("reply.refusalReason.label"),
-        html: patientSession.consentRefusalReasons | join("<br>")
-      } if showRefusalReasons,
-      {
-        header: "Reason",
-        html: couldNotVaccinateReason(patientSession)
-      } if showCouldNotVaccinateReason,
-      {
-        header: __("capture.label"),
-        html: patientStatus(patientSession).title
-      } if showStatus,
+        header: __("patientSession." + view + ".label"),
+        html: patientSession.formatted.status[view]
+      },
       {
         header: __("patientSession.registration.actions.label"),
         html: registrationButtonHtml
-      } if showRegistration
+      } if view == "register"
     ]) %}
   {% endfor %}
 
-  {{ patientSearch() }}
+  <div class="app-grid-row">
+    <div class="app-grid-column-filters">
+      {{ patientSearch({
+        clear: session.uri + "/" + view,
+        status: view
+      }) }}
+    </div>
 
-  {% if patientSessions.length %}
-    {{ actionTable({
-      id: "patient-sessions",
-      sort: "name",
-      heading: __n(activity + "." + tab + ".count", patientSessions.length),
-      responsive: true,
-      panel: true,
-      head: [
-        {
-          text: __("patient.fullName.label"),
-          attributes: {
-            "data-col": "name"
-          }
-        },
-        {
-          text: __("patient.yearGroup.label"),
-          attributes: {
-            "data-col": "yearGroup"
-          }
-        },
-        {
-          text: __("patient.lastReminderDate.label")
-        } if showLastReminderDate,
-        {
-          text: __("reply.refusalReason.label"),
-          attributes: {
-            "no-sort": "no-sort"
-          }
-        } if showRefusalReasons,
-        {
-          text: "Reason"
-        } if showCouldNotVaccinateReason,
-        {
-          text: __("capture.label"),
-          attributes: {
-            "no-sort": "no-sort"
-          }
-        } if showStatus,
-        {
-          text: __("patientSession.registration.actions.label"),
-          attributes: {
-            "no-sort": "no-sort"
-          }
-        } if showRegistration
-      ],
-      rows: patientRows
-    }) }}
-  {% else %}
-    {{ card({
-      heading: __n("patient.count", patientSessions.length),
-      headingClasses: "nhsuk-heading-s",
-      feature: true,
-      description: __("patient.search.empty")
-    }) }}
-  {% endif %}
+    <div class="app-grid-column-results">
+    {% if patientSessions.length %}
+      {{ actionTable({
+        id: "patient-sessions",
+        sort: "name",
+        heading: __n("patient.count", results.count),
+        responsive: true,
+        panel: true,
+        head: [
+          {
+            text: __("patient.fullName.label"),
+            attributes: {
+              "data-col": "name"
+            }
+          },
+          {
+            text: __("patient.yearGroup.label"),
+            attributes: {
+              "data-col": "yearGroup"
+            }
+          },
+          {
+            text: __("patientSession." + view + ".label")
+          },
+          {
+            text: __("patientSession.registration.actions.label"),
+            attributes: {
+              "no-sort": "no-sort"
+            }
+          } if view == "register"
+        ],
+        rows: patientRows
+      }) }}
+    {% else %}
+      {{ card({
+        heading: __n("patient.count", patientSessions.length),
+        headingClasses: "nhsuk-heading-s",
+        feature: true,
+        description: __("patient.search.empty")
+      }) }}
+    {% endif %}
+    </div>
+  </div>
 {% endblock %}

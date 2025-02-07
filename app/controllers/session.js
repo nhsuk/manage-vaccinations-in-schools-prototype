@@ -1,30 +1,21 @@
+import _ from 'lodash'
+
 import { Batch } from '../models/batch.js'
 import { Consent } from '../models/consent.js'
 import {
   ConsentOutcome,
-  Activity,
   PatientOutcome,
-  PatientSession,
+  RegistrationOutcome,
+  ScreenOutcome,
   TriageOutcome
 } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
 import { programmeTypes } from '../models/programme.js'
 import { Session, SessionStatus, SessionType } from '../models/session.js'
+import { VaccinationOutcome } from '../models/vaccination.js'
 import { getDateValueDifference } from '../utils/date.js'
+import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
-
-const getPatientsForKey = (patients, activity, tab) => {
-  return patients.filter((patient) => {
-    // Show FinalRefusal outcome in Refusal tab
-    if (tab === ConsentOutcome.Refused) {
-      return [ConsentOutcome.Refused, ConsentOutcome.FinalRefusal].includes(
-        patient[activity]
-      )
-    }
-
-    return patient[activity] === tab
-  })
-}
 
 export const sessionController = {
   list(request, response) {
@@ -51,143 +42,63 @@ export const sessionController = {
     response.render('session/list', { sessions, view })
   },
 
-  show(request, response) {
-    const view = request.params.view || 'show'
-
-    response.render(`session/${view}`)
-  },
-
-  activity(request, response) {
-    const { activity } = request.params
-    let { pid, tab } = request.query
-    const { __, patientSessions, session } = response.locals
-
-    let tabs = []
-    switch (activity) {
-      case 'consent':
-        tab = tab || ConsentOutcome.NoResponse
-        tabs = [
-          ConsentOutcome.NoRequest,
-          ConsentOutcome.NoResponse,
-          ConsentOutcome.Given,
-          ConsentOutcome.Refused,
-          ConsentOutcome.Inconsistent
-        ]
-        break
-      case 'triage':
-        tab = tab || TriageOutcome.Needed
-        tabs = [
-          TriageOutcome.Needed,
-          TriageOutcome.Completed,
-          TriageOutcome.NotNeeded
-        ]
-        break
-      case 'capture':
-        tab = tab || Activity.Register
-        tabs = [
-          Activity.Register,
-          Activity.Consent,
-          Activity.Triage,
-          Activity.Record
-        ]
-        break
-      case 'outcome':
-        tab = tab || PatientOutcome.Vaccinated
-        tabs = [
-          PatientOutcome.Vaccinated,
-          PatientOutcome.CouldNotVaccinate,
-          PatientOutcome.NoOutcomeYet
-        ]
-        break
-    }
-
-    response.locals.activity = activity
-
-    response.locals.patientSessions = getPatientsForKey(
-      patientSessions,
-      activity,
-      tab
-    )
-
-    response.locals.navigationItems = tabs.map((key) => ({
-      text: __(`${activity}.${key}.label`),
-      count: getPatientsForKey(patientSessions, activity, key).length,
-      href: `?tab=${key}`,
-      current: key === tab
-    }))
-
-    response.locals.activityItems = tabs.map((key) => ({
-      text: __(`${activity}.${key}.label`),
-      value: key,
-      checked: key === tab
-    }))
-
-    if (session.programmes.length > 1) {
-      response.locals.programmeItems = session.programmes.map((programme) => ({
-        text: programme.name,
-        value: programme.pid,
-        checked: programme.pid === pid
-      }))
-    }
-
-    response.locals.yearGroupItems = session.school.yearGroups.map(
-      (yearGroup) => ({
-        text: formatYearGroup(yearGroup),
-        value: yearGroup
-      })
-    )
-
-    if (activity === 'capture' && tab === Activity.Register) {
-      response.locals.statusItems = [
-        { value: 'Ready for vaccinator', text: 'Ready for vaccinator' },
-        { value: 'Do not vaccinate', text: 'Do not vaccinate' },
-        { value: 'Request failed', text: 'Request failed' },
-        { value: 'No response', text: 'No response' },
-        { value: 'Conflicting consent', text: 'Conflicting consent' },
-        { value: 'Needs triage', text: 'Needs triage' }
-      ]
-    }
-
-    response.render('session/activity', { tab })
-  },
-
-  updateActivity(request, response, next) {
-    const { pid } = request.body
-    const { id, activity } = request.params
-    const { tab } = request.query
-    const { session } = response.locals
-
-    const params = {}
-
-    if (tab) {
-      params.tab = String(tab)
-    }
-
-    params.pid = pid || session.programmes[0]
-
-    // @ts-ignore
-    const queryString = new URLSearchParams(params).toString()
-
-    response.redirect(`/sessions/${id}/${activity}?${queryString}`)
-  },
-
   read(request, response, next) {
-    const { id } = request.params
-    let { gtin, pid } = request.query
+    const { id, view } = request.params
+    let { page, limit, gtin, q } = request.query
     const { data } = request.session
 
-    const session = Session.read(id, data)
-    pid = pid || session.programmes[0].pid
-    const patientSessions = PatientSession.readAll(data)
-      .filter(({ programme_pid }) => programme_pid === pid)
-      .filter(({ session_id }) => session_id === id)
+    response.locals.view = view
 
-    const programmePatientSessions = {}
-    for (const { pid } of session.programmes) {
-      programmePatientSessions[pid] = PatientSession.readAll(data)
-        .filter(({ programme_pid }) => programme_pid === pid)
-        .filter(({ session_id }) => session_id === id)
+    const session = Session.read(id, data)
+    response.locals.session = session
+
+    let patientSessions = session.patientSessions
+
+    // Paginate
+    page = parseInt(page) || 1
+    limit = parseInt(limit) || 200
+
+    // Query
+    if (q) {
+      patientSessions = session.patientSessions.filter(({ patient }) =>
+        patient.tokenized.includes(String(q).toLowerCase())
+      )
     }
+
+    // Filter
+    const filters = {
+      pid: request.query.pid || session.programmes[0].pid,
+      consent: request.query.consent || 'none',
+      screen: request.query.screen || 'none',
+      register: request.query.register || 'none',
+      record: request.query.record || 'none',
+      outcome: request.query.outcome || 'none'
+    }
+
+    // Filter by programme
+    patientSessions = patientSessions.filter(
+      ({ programme_pid }) => programme_pid === filters.pid
+    )
+
+    // Filter by status
+    if (filters[view] !== 'none') {
+      patientSessions = patientSessions.filter(
+        (patientSession) => patientSession[view] === filters[view]
+      )
+    }
+
+    // Remove patient sessions where outcome returns false
+    patientSessions = patientSessions.filter(
+      (patientSession) => patientSession[view] !== false
+    )
+
+    // Sort
+    patientSessions = _.sortBy(patientSessions, 'patient.firstName')
+
+    // Results
+    response.locals.patientSessions = patientSessions
+    response.locals.results = getResults(patientSessions, page, limit)
+    response.locals.pages = getPagination(patientSessions, page, limit)
 
     // Used when updating the default batch
     if (gtin) {
@@ -196,17 +107,113 @@ export const sessionController = {
       )
     }
 
+    // Filters
+    if (session.programmes.length > 1) {
+      response.locals.programmeItems = session.programmes.map((programme) => ({
+        text: programme.name,
+        value: programme.pid,
+        checked: programme.pid === filters.pid
+      }))
+    }
+
+    const statusItems = {
+      consent: ConsentOutcome,
+      triage: TriageOutcome,
+      register: RegistrationOutcome,
+      record: VaccinationOutcome
+    }
+
+    if (statusItems[view]) {
+      response.locals.statusItems = [
+        {
+          text: 'All',
+          value: 'none',
+          checked: filters[view] === 'none'
+        },
+        ...Object.values(statusItems[view]).map((value) => ({
+          text: value,
+          value,
+          checked: value === filters[view]
+        }))
+      ]
+    }
+
+    const outcomeItems = {
+      screen: ScreenOutcome,
+      outcome: PatientOutcome
+    }
+
+    if (outcomeItems[view]) {
+      response.locals.statusItems = [
+        {
+          text: 'All',
+          value: 'none',
+          checked: filters[view] === 'none'
+        },
+        ...Object.values(outcomeItems[view]).map((value) => ({
+          text: value,
+          value,
+          checked: value === filters[view]
+        }))
+      ]
+    }
+
+    if (session.school) {
+      response.locals.yearGroupItems = session.school.yearGroups.map(
+        (yearGroup) => ({
+          text: formatYearGroup(yearGroup),
+          value: yearGroup
+        })
+      )
+    }
+
     response.locals.unmatchedResponses = Consent.readAll(data).filter(
       (consent) => consent.session_id === id
     )
 
-    response.locals.patientSessions = patientSessions
-
-    response.locals.programmePatientSessions = programmePatientSessions
-
-    response.locals.session = session
+    // Clean up session data
+    delete data.hasMissingNhsNumber
+    delete data.q
 
     next()
+  },
+
+  show(request, response) {
+    let { view } = request.params
+
+    if (['consent', 'screen', 'register', 'record', 'outcome'].includes(view)) {
+      view = 'activity'
+    } else if (!view) {
+      view = 'show'
+    }
+
+    response.render(`session/${view}`)
+  },
+
+  search(request, response) {
+    const { id, view } = request.params
+
+    const params = {}
+    for (const key of [
+      'q',
+      'pid',
+      'consent',
+      'triage',
+      'screen',
+      'register',
+      'record',
+      'outcome'
+    ]) {
+      const param = request.body[key]
+      if (param) {
+        params[key] = String(param)
+      }
+    }
+
+    // @ts-ignore
+    const queryString = new URLSearchParams(params).toString()
+
+    response.redirect(`/sessions/${id}/${view}?${queryString}`)
   },
 
   edit(request, response) {
@@ -342,6 +349,6 @@ export const sessionController = {
 
     request.flash('success', __('session.defaultBatch.success'))
 
-    response.redirect(`${session.uri}/capture`)
+    response.redirect(`${session.uri}/record`)
   }
 }

@@ -258,12 +258,39 @@ export class Session {
   }
 
   /**
+   * Is unplanned session
+   *
+   * @returns {boolean} - Is unplanned session
+   */
+  get isUnplanned() {
+    return this.status === SessionStatus.Unplanned
+  }
+
+  /**
    * Is active session
    *
    * @returns {boolean} - Is active session
    */
   get isActive() {
     return includesDate(this.dates, setMidday(today()))
+  }
+
+  /**
+   * Is completed session
+   *
+   * @returns {boolean} - Is completed session
+   */
+  get isCompleted() {
+    return this.status === SessionStatus.Completed
+  }
+
+  /**
+   * Is closed session
+   *
+   * @returns {boolean} - Is closed session
+   */
+  get isClosed() {
+    return this.status === SessionStatus.Closed
   }
 
   /**
@@ -332,11 +359,11 @@ export class Session {
   }
 
   /**
-   * Get patients
+   * Get patient sessions
    *
-   * @returns {Array<PatientSession>} - Patients
+   * @returns {Array<PatientSession>} - Patient sessions
    */
-  get patients() {
+  get patientSessions() {
     if (this.context?.patients && this.id) {
       return PatientSession.readAll(this.context)
         .filter(({ session }) => session.id === this.id)
@@ -344,6 +371,15 @@ export class Session {
     }
 
     return []
+  }
+
+  /**
+   * Get patients
+   *
+   * @returns {Array<PatientSession>} - Patients
+   */
+  get patients() {
+    return _.uniqBy(this.patientSessions, 'patient.nhsn')
   }
 
   /**
@@ -661,7 +697,8 @@ export class Session {
       consentWindow,
       location: Object.values(this.location)
         .filter((string) => string)
-        .join(', ')
+        .join(', '),
+      school_urn: this.school && this.school.formatted.urn
     }
   }
 

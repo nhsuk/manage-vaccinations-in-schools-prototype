@@ -243,15 +243,6 @@ export class Patient extends Record {
     return [childTokens, parentTokens].join(' ')
   }
 
-  get formatted() {
-    return {
-      ...super.formatted,
-      lastReminderDate: this.lastReminderDate
-        ? `Reminder sent on ${this.lastReminderDate}`
-        : 'No reminders sent'
-    }
-  }
-
   /**
    * Get formatted values
    *

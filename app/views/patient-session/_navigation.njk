@@ -10,7 +10,7 @@
 
   {{ actionList({
     items: [{
-      tag: statusTag(params.patientSession.registrationStatus)
+      tag: statusTag(params.patientSession.status.register)
     }, {
       text: __("patientSession.registration.title"),
       href: params.patientSession.uri + "/edit/registration"

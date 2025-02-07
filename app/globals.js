@@ -1,14 +1,12 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
-import exampleUsers from './datasets/users.js'
 import { Gender } from './models/child.js'
 import {
   ConsentOutcome,
   PatientOutcome,
   ScreenOutcome
 } from './models/patient-session.js'
-import { User } from './models/user.js'
 import { HealthQuestion } from './models/vaccine.js'
 import { formatLink, formatParent, pascalToKebabCase } from './utils/string.js'
 
@@ -151,49 +149,35 @@ export default () => {
    * @returns {object} Patient status
    */
   globals.patientStatus = function (patientSession) {
-    const { __, data } = this.ctx
-    const { consent, screen, outcome, parentalRelationships, patient } =
-      patientSession
-
-    // Get logged in user, else use placeholder
-    const user = new User(data.token ? data.token : exampleUsers[0])
+    const { consent, screen, outcome } = patientSession
 
     let colour
     let description
     let title
 
-    if (outcome === PatientOutcome.NoOutcomeYet) {
+    if (!outcome) {
       // If no outcome, use status colour and title for consent/triage outcome
 
       if (screen === ScreenOutcome.NeedsTriage) {
         // Patient needs triage
-        colour = __(`screen.${screen}.colour`)
-        description = __(`screen.${screen}.description`, {
-          patient,
-          user
-        })
-        title = __(`screen.${screen}.title`)
+        colour = patientSession.status.screen.colour
+        description = patientSession.status.screen.description
+        title = patientSession.status.screen.text
       } else if (screen === ScreenOutcome.Vaccinate) {
         // Patient needs triage
-        colour = __(`screen.${screen}.colour`)
-        description = __(`screen.${screen}.description`, {
-          patient,
-          user
-        })
-        title = __(`screen.${screen}.title`)
+        colour = patientSession.status.screen.colour
+        description = patientSession.status.screen.description
+        title = patientSession.status.screen.text
       } else {
         // Patient requires consent
-        colour = __(`consent.${consent}.colour`)
-        description = __(`consent.${consent}.description`, {
-          patient,
-          relationships: prototypeFilters.formatList(parentalRelationships)
-        })
-        title = __(`consent.${consent}.title`)
+        colour = patientSession.status.consent.colour
+        description = patientSession.status.consent.description
+        title = patientSession.status.consent.text
       }
     } else {
       // If outcome, use status colour and title for that outcome
-      colour = __(`outcome.${outcome}.colour`)
-      title = __(`outcome.${outcome}.title`)
+      colour = patientSession.status.report.colour
+      title = patientSession.status.report.text
 
       // If could not vaccinate, provide a description for why
       if (outcome === PatientOutcome.CouldNotVaccinate) {
@@ -202,19 +186,13 @@ export default () => {
           screen === ScreenOutcome.DoNotVaccinate
         ) {
           // Patient had a triage outcome that prevented vaccination
-          description = __(`screen.${screen}.description`, {
-            patient,
-            user
-          })
+          description = patientSession.status.screen.description
         } else if (
           // Patient wasn’t able to get consent for vaccination
           consent === ConsentOutcome.Inconsistent ||
           consent === ConsentOutcome.Refused
         ) {
-          description = __(`consent.${consent}.description`, {
-            patient,
-            relationships: prototypeFilters.formatList(parentalRelationships)
-          })
+          description = patientSession.status.consent.description
         }
       }
     }
@@ -249,32 +227,6 @@ export default () => {
     return session.preScreenQuestionKeys.filter((value) =>
       patient.gender === Gender.Male ? value !== 'isPregnant' : value
     )
-  }
-
-  /**
-   * Show reason could not vaccinate
-   *
-   * @param {import('./models/patient-session.js').PatientSession} patientSession - Patient session
-   * @returns {string|undefined} Reason could not vaccinate
-   */
-  globals.couldNotVaccinateReason = function (patientSession) {
-    const { __ } = this.ctx
-
-    if (!patientSession.screen) {
-      return __(`consent.${patientSession.consent}.status`)
-    } else if (
-      patientSession.screen &&
-      patientSession.screen !== ScreenOutcome.Vaccinate
-    ) {
-      return __(`screen.${patientSession.screen}.status`)
-    } else if (
-      patientSession.screen &&
-      patientSession.consent !== ConsentOutcome.Given
-    ) {
-      return __(`consent.${patientSession.consent}.status`)
-    } else if (patientSession.vaccinations.length) {
-      return patientSession.vaccinations[0].outcome
-    }
   }
 
   /**
