@@ -1614,19 +1614,28 @@ export const en = {
       description:
         'All sessions for this school have been completed.\n\nWhen you close this session, the following children will be invited to community clinics:',
       confirm: 'Close session',
-      success: '{{session.name}} has been closed',
+      success: '{{session.name}} has been closed'
+    },
+    closingSummary: {
+      noConsentRequest: {
+        count: {
+          one: '%s child whose parents did not receive a consent request',
+          other:
+            '[0] No children whose parents did not receive a consent request|%s children whose parents did not receive a consent request'
+        }
+      },
+      noConsentResponse: {
+        count: {
+          one: '%s child whose parents did not give a consent response',
+          other:
+            '[0] No children whose parents did not give a consent response|%s children whose parents did not give a consent response'
+        }
+      },
       couldNotVaccinate: {
         count: {
           one: '%s child who could not be vaccinated',
           other:
             '[0] No children who could not be vaccinated|%s children who could not be vaccinated'
-        }
-      },
-      noResponse: {
-        count: {
-          one: '%s child whose parents did not give a consent response',
-          other:
-            '[0] No children whose parents did not give a consent response|%s children whose parents did not give a consent response'
         }
       }
     },

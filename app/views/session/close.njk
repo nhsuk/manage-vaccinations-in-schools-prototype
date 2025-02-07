@@ -12,15 +12,12 @@
   {{ __("session.close.description") | nhsukMarkdown }}
 
   <ul class="nhsuk-list nhsuk-list--bullet">
-{% if couldNotVaccinate.length %}
+{% for outcome, patients in session.closingSummary %}
+  {% if patients.length > 0 %}
     <li>
-      {{ __n("session.close.couldNotVaccinate.count", couldNotVaccinate.length) }}
+      {{ __n("session.closingSummary." + outcome + ".count", patients.length) }}
     </li>
-{% endif %}
-{% if noReponse.length %}
-    <li>
-      {{ __n("session.close.noResponse.count", noReponse.length) }}
-    </li>
-{% endif %}
+  {% endif %}
+{% endfor %}
   </ul>
 {% endblock %}

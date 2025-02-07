@@ -174,14 +174,6 @@ export const sessionController = {
 
     response.locals.patientSessions = patientSessions
 
-    response.locals.couldNotVaccinate = patientSessions
-      .filter(({ consent }) => consent !== ConsentOutcome.NoResponse)
-      .filter(({ outcome }) => outcome === PatientOutcome.CouldNotVaccinate)
-
-    response.locals.noResponse = patientSessions.filter(
-      ({ consent }) => consent === ConsentOutcome.NoResponse
-    )
-
     response.locals.session = session
 
     next()
@@ -276,8 +268,7 @@ export const sessionController = {
 
   close(request, response) {
     const { data } = request.session
-    const { __, couldNotVaccinate, noResponse, patientSession, session } =
-      response.locals
+    const { __, session } = response.locals
 
     request.flash('success', __(`session.close.success`, { session }))
 
@@ -293,11 +284,11 @@ export const sessionController = {
 
     // Move patients to clinic
     if (clinic) {
-      const patientsToMove = couldNotVaccinate
-        .concat(noResponse)
-        .map((patient) => patient.nhsn)
-      for (const nhsn of patientsToMove) {
-        const patient = Patient.read(nhsn, data)
+      const patientSessionsForClinic = session.patientSessionsForClinic.map(
+        (patient) => patient.nhsn
+      )
+      for (const patientSession of patientSessionsForClinic) {
+        const patient = Patient.read(patientSession.patient.nhsn, data)
         patientSession.removeFromSession({
           ...(data.token && { createdBy_uid: data.token?.uid })
         })

@@ -25,7 +25,11 @@ import { Batch } from './batch.js'
 import { Clinic } from './clinic.js'
 import { Consent } from './consent.js'
 import { OrganisationDefaults } from './organisation.js'
-import { PatientSession } from './patient-session.js'
+import {
+  ConsentOutcome,
+  PatientOutcome,
+  PatientSession
+} from './patient-session.js'
 import { Programme } from './programme.js'
 import { School } from './school.js'
 import { Vaccine } from './vaccine.js'
@@ -504,6 +508,49 @@ export class Session {
       return `Last session completed ${lastDate}`
     }
     return 'No sessions scheduled'
+  }
+
+  /**
+   * Get closing summary
+   *
+   * @returns {object} - Closing summary
+   */
+  get closingSummary() {
+    return {
+      noConsentRequest: this.patients.filter(
+        ({ consent }) => consent === ConsentOutcome.NoRequest
+      ),
+      noConsentResponse: this.patients.filter(
+        ({ consent }) => consent === ConsentOutcome.NoResponse
+      ),
+      couldNotVaccinate: this.patients.filter(
+        ({ consent, outcome }) =>
+          consent === ConsentOutcome.Given &&
+          outcome !== PatientOutcome.Vaccinated
+      )
+    }
+  }
+
+  /**
+   * Get patient sessions that can be moved to a clinic session
+   *
+   * @returns {Array<PatientSession>} - Patient sessions
+   */
+  get patientSessionsForClinic() {
+    return this.patients
+      .filter(({ consent }) =>
+        [
+          ConsentOutcome.NoResponse,
+          ConsentOutcome.NoRequest,
+          ConsentOutcome.Given
+        ].includes(consent)
+      )
+      .filter(({ outcome }) =>
+        [
+          PatientOutcome.CouldNotVaccinate,
+          PatientOutcome.NoOutcomeYet
+        ].includes(outcome)
+      )
   }
 
   get details() {
