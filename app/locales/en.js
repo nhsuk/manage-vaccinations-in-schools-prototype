@@ -1472,9 +1472,6 @@ export const en = {
         title: 'Review session outcomes'
       }
     },
-    'download-consent-form': {
-      title: 'Download consent form (PDF)'
-    },
     'upload-class-list': {
       title: 'Import class list records'
     },
@@ -1571,7 +1568,10 @@ export const en = {
       label: 'Type'
     },
     consentUrl: {
-      label: 'Consent form'
+      label: 'Online consent form'
+    },
+    consentPdf: {
+      label: 'Paper consent form'
     },
     consentWindow: {
       label: 'Consent period',

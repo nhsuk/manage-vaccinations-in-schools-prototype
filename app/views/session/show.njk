@@ -25,12 +25,6 @@
     items: [{
       tag: statusTag(session.sessionStatus)
     }, {
-      text: __("session.download-consent-form.title"),
-      href: "/public/downloads/hpv-consent-form.pdf",
-      attributes: {
-        download: true
-      }
-    } if programme.type == ProgrammeType.HPV and session.status != SessionStatus.Completed, {
       text: __("session.offline.title"),
       href: session.uri + "/offline"
     } if session.status == SessionStatus.Planned, {
@@ -147,6 +141,7 @@
           dates: {},
           consentWindow: {},
           consentUrl: {},
+          consentPdf: {},
           patients: {
             value: __n("session.patients.count", patientSessions.length)
           }
