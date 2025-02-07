@@ -619,6 +619,7 @@ export class Session {
       reminderWeeks: `Send ${reminderWeeks} before each session</br>
       <span class="nhsuk-u-secondary-text-color">First: ${formattedNextReminderDate}</span>`,
       closeAt: formatDate(this.closeAt, { dateStyle: 'full' }),
+      patients: `${prototypeFilters.plural(this.patients.length, 'child')} in this session`,
       programmes: this.programmes.map(({ name }) => name).join('<br>'),
       consentUrl:
         this.consentUrl &&
