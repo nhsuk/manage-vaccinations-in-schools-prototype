@@ -1,6 +1,6 @@
 import {
-  ConsentOutcome,
   Activity,
+  ConsentOutcome,
   RegistrationOutcome,
   PatientOutcome,
   ScreenOutcome,
@@ -123,8 +123,6 @@ export const en = {
     }
   },
   capture: {
-    label: 'Status',
-    title: 'Record vaccinations',
     [Activity.Register]: {
       label: 'Register',
       count: {
@@ -271,11 +269,7 @@ export const en = {
     results:
       'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> responses',
     [ConsentOutcome.NoResponse]: {
-      colour: 'grey',
-      description: 'No-one responded to our requests for consent.',
-      icon: false,
       label: 'No response',
-      status: 'No response',
       title: 'No response',
       count: {
         one: '%s child without a response',
@@ -284,11 +278,7 @@ export const en = {
       }
     },
     [ConsentOutcome.NoRequest]: {
-      colour: 'dark-orange',
-      description: 'Consent response could not be delivered.',
-      icon: false,
       label: 'Request failed',
-      status: 'Request failed',
       title: 'Request failed',
       count: {
         one: '%s child whose request failed',
@@ -297,11 +287,7 @@ export const en = {
       }
     },
     [ConsentOutcome.Inconsistent]: {
-      colour: 'dark-orange',
-      description: 'You can only vaccinate if all respondents give consent.',
-      icon: 'cross',
       label: 'Conflicts',
-      status: 'Conflicting consent',
       title: 'Conflicting consent',
       count: {
         one: '%s child with conflicting consent',
@@ -310,11 +296,7 @@ export const en = {
       }
     },
     [ConsentOutcome.Given]: {
-      colour: 'aqua-green',
-      description: '{{patient.fullName}} is ready for the vaccinator.',
-      icon: 'tick',
       label: 'Consent given',
-      status: 'Consent given',
       title: 'Ready for vaccinator',
       count: {
         one: '%s child with consent given',
@@ -323,11 +305,7 @@ export const en = {
       }
     },
     [ConsentOutcome.Refused]: {
-      colour: 'red',
-      description: '{{relationships}} refused to give consent.',
-      icon: 'cross',
       label: 'Refused',
-      status: 'Consent refused',
       title: 'Consent refused',
       count: {
         one: '%s child with consent refused',
@@ -336,11 +314,7 @@ export const en = {
       }
     },
     [ConsentOutcome.FinalRefusal]: {
-      colour: 'red',
-      description: 'Refusal to give consent confirmed by {{relationships}}.',
-      icon: 'cross',
       label: 'Refusal confirmed',
-      status: 'Refusal confirmed',
       title: 'Refusal confirmed',
       count: {
         one: '%s child with no consent response',
@@ -841,7 +815,7 @@ export const en = {
   outcome: {
     label: 'Outcome',
     [PatientOutcome.NoOutcomeYet]: {
-      colour: 'grey',
+      title: 'No outcome yet',
       label: 'No outcome yet',
       count: {
         one: '%s child without an outcome yet',
@@ -850,7 +824,6 @@ export const en = {
       }
     },
     [PatientOutcome.Vaccinated]: {
-      colour: 'green',
       label: 'Vaccinated',
       title: 'Vaccinated',
       count: {
@@ -859,7 +832,6 @@ export const en = {
       }
     },
     [PatientOutcome.CouldNotVaccinate]: {
-      colour: 'red',
       label: 'Not vaccinated',
       title: 'Do not vaccinate',
       count: {
@@ -1052,13 +1024,26 @@ export const en = {
       }
     },
     consent: {
-      label: 'Consent for %s'
+      title: 'Consent for %s',
+      label: 'Consent status'
+    },
+    triage: {
+      label: 'Triage status'
+    },
+    screen: {
+      label: 'Triage outcome'
+    },
+    register: {
+      label: 'Registration status'
     },
     record: {
       label: 'Vaccination status'
     },
     outcome: {
       label: 'Programme outcome'
+    },
+    information: {
+      label: 'Notes'
     },
     gillick: {
       label: 'Gillick assessment',
@@ -1122,7 +1107,7 @@ export const en = {
       absent: 'No, they are absent from today’s session',
       pending: 'They have not been registered yet',
       actions: {
-        label: 'Today’s attendance',
+        label: 'Update attendance',
         present: {
           label: 'Attending',
           visuallyHiddenLabel: 'Register {{patient.fullName}} as attending'
@@ -1415,32 +1400,17 @@ export const en = {
     }
   },
   screen: {
-    label: 'Triage',
+    label: 'Triage outcome',
     [ScreenOutcome.NeedsTriage]: {
-      colour: 'blue',
-      description: 'You need to decide if it’s safe to vaccinate.',
-      status: 'Needs triage',
       title: 'Needs triage'
     },
     [ScreenOutcome.DelayVaccination]: {
-      colour: 'red',
-      description:
-        '{{user.fullName}} decided that {{patient.fullName}}’s vaccination should be delayed.',
-      status: 'Vaccination delayed',
       title: 'Delay vaccination to a later date'
     },
     [ScreenOutcome.DoNotVaccinate]: {
-      colour: 'red',
-      description:
-        '{{user.fullName}} decided that {{patient.fullName}} should not be vaccinated.',
-      status: 'Do not vaccinate in this year’s programme',
       title: 'Do not vaccinate in year’s programme'
     },
     [ScreenOutcome.Vaccinate]: {
-      colour: 'aqua-green',
-      description:
-        '{{user.fullName}} decided that {{patient.fullName}} is safe to vaccinate.',
-      status: 'Safe to vaccinate',
       title: 'Ready for vaccinator'
     }
   },
@@ -1457,19 +1427,38 @@ export const en = {
       one: '%s session',
       other: '[0] No sessions|%s sessions'
     },
-    activity: {
-      consent: {
-        title: 'Check consent responses'
+    show: {
+      label: 'Overview',
+      summary: 'Session details'
+    },
+    edit: {
+      title: 'Edit session',
+      summary: 'Session details',
+      programme: {
+        title: 'Which programmes is this session part of?'
       },
-      triage: {
-        title: 'Triage health questions'
+      dates: {
+        title: 'When will sessions be held?'
       },
-      capture: {
-        title: 'Record session outcomes'
-      },
-      outcome: {
-        title: 'Review session outcomes'
-      }
+      success: '{{session.name}} updated'
+    },
+    consent: {
+      label: 'Consent'
+    },
+    triage: {
+      label: 'Triage'
+    },
+    screen: {
+      label: 'Screen'
+    },
+    register: {
+      label: 'Register'
+    },
+    record: {
+      label: 'Record'
+    },
+    outcome: {
+      label: 'Outcome'
     },
     'upload-class-list': {
       title: 'Import class list records'
@@ -1522,20 +1511,12 @@ export const en = {
     consents: {
       warning: 'You need to review unmatched consent responses for this session'
     },
+    consentWindow: {
+      label: 'Consent period'
+    },
     schedule: {
       title: 'Schedule sessions',
       description: 'Add dates for this school.'
-    },
-    edit: {
-      title: 'Edit session',
-      summary: 'Session details',
-      programme: {
-        title: 'Which programmes is this session part of?'
-      },
-      dates: {
-        title: 'When will sessions be held?'
-      },
-      success: '{{session.name}} updated'
     },
     patients: {
       label: 'Cohort',
@@ -1553,6 +1534,9 @@ export const en = {
     },
     school: {
       label: 'School'
+    },
+    school_urn: {
+      label: 'School URN'
     },
     location: {
       label: 'Location'

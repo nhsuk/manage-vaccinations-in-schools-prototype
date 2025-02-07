@@ -9,19 +9,8 @@ router.get(
   sessionController.list
 )
 
-router.all('/:id*', sessionController.read)
-router.get(
-  ['/:id', '/:id/?:view(offline|close|default-batch)'],
-  sessionController.show
-)
-router.get(
-  '/:id/:activity(consent|triage|capture|outcome)',
-  sessionController.activity
-)
-router.post(
-  '/:id/:activity(consent|triage|capture|outcome)',
-  sessionController.updateActivity
-)
+router.all(['/:id', '/:id/:view'], sessionController.read)
+router.get(['/:id', '/:id/:view'], sessionController.show)
 
 router.post('/:id/offline', sessionController.downloadFile)
 
@@ -34,5 +23,6 @@ router.post('/:id/?:form(new|edit)/:view', sessionController.updateForm)
 
 router.post('/:id/close', sessionController.close)
 router.post('/:id/default-batch', sessionController.updateDefaultBatch)
+router.post('/:id/:view', sessionController.search)
 
 export const sessionRoutes = router

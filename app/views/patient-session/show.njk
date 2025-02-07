@@ -75,17 +75,21 @@
     {% endif %}
 
     {% if options.showReminder %}
-      <form class="app-button-group" action="{{ patientSession.uri }}/new/remind" method="post">
+      <div class="app-button-group">
         {{ button({
           classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("remind.new.title")
+          text: __("remind.new.title"),
+          attributes: {
+            formaction: patientSession.uri + "/new/remind",
+            formmethod: "post"
+          }
         }) }}
         {% if patientSession.patient.lastReminderDate %}
           <p class="nhsuk-u-secondary-text-color nhsuk-u-margin-0">
             {{ patientSession.patient.formatted.lastReminderDate }}
           </p>
         {% endif %}
-      </form>
+      </div>
     {% endif %}
   {% endset %}
 
@@ -189,15 +193,11 @@
     {{ status(patientSession.session.unmatchedConsentStatus) }}
 
     {% if patientSession.responses.length %}
-      {{ status({
-        text: __("consent." + patientSession.consent + ".status"),
-        icon: __("consent." + patientSession.consent + ".icon"),
-        colour: __("consent." + patientSession.consent + ".colour")
-      }) }}
+      {{ status(patientSession.status.consent) }}
 
       {% set consentRows = [] %}
       {% for consent in patientSession.responses %}
-        {% set consentColour = __("consent." + consent.decision + ".colour") %}
+        {% set consentColour = consent.status.colour %}
         {% set consentModifier = "grey" if consent.invalid else consentColour %}
         {% set consentRows = consentRows | push([
           {
@@ -236,7 +236,7 @@
     {% elif session.consentWindow == ConsentWindow.Opening %}
       {{ session.formatted.consentWindow | nhsukMarkdown }}
     {% else %}
-      {{ __("consent."+ ReplyDecision.NoResponse + ".description") | nhsukMarkdown }}
+      {{ patientSession.status.consent.text | nhsukMarkdown }}
     {% endif %}
     {% if options.getReply %}
       <form action="{{ patientSession.uri }}/new/invite" method="post">
@@ -258,7 +258,7 @@
   {% endset %}
 
   {{ card({
-    heading: __("patientSession.consent.label", programme.name),
+    heading: __("patientSession.consent.title", programme.name),
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: consentDescriptionHtml
   }) }}

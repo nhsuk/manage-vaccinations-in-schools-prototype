@@ -1,7 +1,16 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { getDateValueDifference, today } from '../utils/date.js'
-import { getNextActivity, getPatientOutcome } from '../utils/patient-session.js'
+import {
+  getNextActivity,
+  getConsentStatus,
+  getOutcomeStatus,
+  getPatientOutcome,
+  getRecordStatus,
+  getRegistrationStatus,
+  getScreenStatus,
+  getTriageStatus
+} from '../utils/patient-session.js'
 import {
   getConsentOutcome,
   getConsentHealthAnswers,
@@ -83,9 +92,9 @@ export const RegistrationOutcome = {
  * @enum {string}
  */
 export const PatientOutcome = {
-  NoOutcomeYet: 'No outcome yet',
   Vaccinated: 'Vaccinated',
-  CouldNotVaccinate: 'Could not vaccinate'
+  CouldNotVaccinate: 'Could not vaccinate',
+  NoOutcomeYet: 'No outcome yet'
 }
 
 /**
@@ -257,10 +266,20 @@ export class PatientSession {
   }
 
   /**
-   * @todo Remove once session pages no longer rely on capture method
+   * Get reason could not vaccinate
+   *
+   * @returns {string|undefined} Reason could not vaccinate
    */
-  get capture() {
-    return getNextActivity(this)
+  get couldNotVaccinateReason() {
+    if (!this.screen) {
+      return this.status.consent.reason
+    } else if (this.screen && this.screen !== ScreenOutcome.Vaccinate) {
+      return this.status.screen.reason
+    } else if (this.screen && this.consent !== ConsentOutcome.Given) {
+      return this.status.consent.reason
+    } else if (this.vaccinations.length) {
+      return this.vaccinations[0].outcome
+    }
   }
 
   /**
@@ -428,6 +447,45 @@ export class PatientSession {
   }
 
   /**
+   * Get status properties per activity
+   *
+   * @returns {object} - Status properties
+   */
+  get status() {
+    return {
+      consent: getConsentStatus(this),
+      triage: getTriageStatus(this),
+      screen: getScreenStatus(this),
+      register: getRegistrationStatus(this),
+      record: getRecordStatus(this),
+      outcome: getOutcomeStatus(this)
+    }
+  }
+
+  get reason() {
+    let consent
+    if (this.consent === ConsentOutcome.NoResponse) {
+      consent = this.patient.formatted.lastReminderDate
+    } else if (
+      [ConsentOutcome.Refused, ConsentOutcome.FinalRefusal].includes(
+        this.consent
+      )
+    ) {
+      consent = this.consentRefusalReasons
+    }
+
+    return {
+      consent,
+      triage:
+        this.triage === TriageOutcome.Completed && this.status.screen.reason,
+      record: this.couldNotVaccinateReason,
+      outcome:
+        this.outcome === PatientOutcome.CouldNotVaccinate &&
+        this.couldNotVaccinateReason
+    }
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values
@@ -435,6 +493,32 @@ export class PatientSession {
   get formatted() {
     return {
       programme: formatTag({ text: this.programme.name, colour: 'white' }),
+      status: {
+        consent: this.reason.consent
+          ? formatTagWithSecondaryText(this.status.consent, this.reason.consent)
+          : formatTag(this.status.consent),
+        triage: this.reason.triage
+          ? formatTagWithSecondaryText(this.status.triage, this.reason.triage)
+          : formatTag(this.status.triage),
+        screen: this.reason.screen
+          ? formatTagWithSecondaryText(this.status.screen, this.reason.screen)
+          : formatTag(this.status.screen),
+        register: this.reason.register
+          ? formatTagWithSecondaryText(
+              this.status.register,
+              this.reason.register
+            )
+          : formatTag(this.status.register),
+        record: this.reason.record
+          ? formatTagWithSecondaryText(this.status.outcome, this.reason.record)
+          : formatTag(this.status.record),
+        outcome: this.reason.outcome
+          ? formatTagWithSecondaryText(
+              this.status.outcome,
+              this.status.record.text
+            )
+          : formatTag(this.status.outcome)
+      },
       outcome:
         !this.record || this.record === VaccinationOutcome.Vaccinated
           ? formatTag(this.outcomeStatus)
@@ -592,7 +676,7 @@ export class PatientSession {
     this.registration = registration
     this.patient.addEvent({
       type: EventType.Register,
-      name: this.registrationStatus.description,
+      name: this.status.register.description,
       createdAt: event.createdAt,
       createdBy_uid: event.createdBy_uid,
       programme_pids: this.session.programme_pids
