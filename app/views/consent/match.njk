@@ -1,11 +1,13 @@
 {% from "_macros/patient-search.njk" import patientSearch with context %}
 
-{% extends "_layouts/default.njk" %}
+{% extends "_layouts/form.njk" %}
 
 {% set dateOfBirth = true %}
+{% set gridColumns = "full" %}
+{% set hideConfirmButton = true %}
 {% set title = __("consent.match.title", { child: consent.child }) %}
 
-{% block content %}
+{% block form %}
   {{ super() }}
 
   {{ heading({

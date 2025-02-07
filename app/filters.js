@@ -29,24 +29,6 @@ export default (env) => {
   }
 
   /**
-   * Convert div.nhsuk-card to form.nhsuk-card
-   *
-   * @param {string} string - HTML
-   * @returns {string} Formatted HTML
-   */
-  filters.formCard = function (string) {
-    const { filters } = this.ctx.settings.nunjucksEnv
-    const html = string
-      .replace(
-        /^\n\n\n\n<div class="nhsuk-card/,
-        '<form method="post" class="nhsuk-card'
-      )
-      .replace(/<\/div>\n$/, '</form>')
-
-    return filters.safe(html)
-  }
-
-  /**
    * Convert div.nhsuk-card to button.nhsuk-card
    *
    * @param {string} string - HTML

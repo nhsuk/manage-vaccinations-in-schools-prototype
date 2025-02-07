@@ -1,8 +1,10 @@
 {% from "_macros/patient-search.njk" import patientSearch with context %}
 {% from "programme/_navigation.njk" import programmeNavigation with context %}
 
-{% extends "_layouts/default.njk" %}
+{% extends "_layouts/form.njk" %}
 
+{% set gridColumns = "full" %}
+{% set hideConfirmButton = true %}
 {% set title = programme.name + " – " + __("programme.patientSessions.title") %}
 
 {% block beforeContent %}
@@ -19,7 +21,7 @@
   }) }}
 {% endblock %}
 
-{% block content %}
+{% block form %}
   {{ super() }}
 
   {{ programmeNavigation({

@@ -7,25 +7,34 @@
 {%- from "components/details/macro.njk" import details with context -%}
 {%- from "_macros/search-input.njk" import searchInput with context -%}
 
-{% set filterButtonGroup %}
-<div class="app-button-group">
-  {{ button({
-    classes: "app-button--small nhsuk-button--secondary",
-    text: __("search.confirm")
-  }) }}
-
-  {{ button({
-    classes: "app-button--small app-button--secondary",
-    text: __("search.clear"),
-    href: params.clear or "/patients"
-  }) if data.q or data.programme or data.yearGroup or data.dob or data.status or data.hasMissingNhsNumber }}
-</div>
-{% endset %}
-
 {% macro patientSearch(params) %}
+  {% set filterButtonGroup %}
+    <div class="app-button-group">
+      {{ button({
+        classes: "app-button--small nhsuk-button--secondary",
+        text: __("search.confirm"),
+        attributes: {
+          formaction: params.formaction,
+          formmethod: "post",
+          role: "search"
+        }
+      }) }}
+
+      {{ button({
+        classes: "app-button--small app-button--secondary",
+        text: __("search.clear"),
+        href: params.clear or "/patients"
+      }) if data.q or data.programme or data.yearGroup or data.dob or data.status or data.hasMissingNhsNumber }}
+    </div>
+  {% endset %}
+
   {% set searchCardHtml %}
     {{ searchInput({
       label: { text: __("search.label") },
+      attributes: {
+        formaction: params.formaction,
+        formmethod: "post"
+      },
       decorate: "q"
     }) }}
 
@@ -110,10 +119,6 @@
     feature: true,
     heading: __("patient.search.label") ,
     headingClasses: "nhsuk-heading-s",
-    descriptionHtml: searchCardHtml,
-    attributes: {
-      method: "post",
-      role: "search"
-    }
-  }) | formCard }}
+    descriptionHtml: searchCardHtml
+  }) }}
 {% endmacro %}

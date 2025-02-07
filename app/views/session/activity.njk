@@ -1,6 +1,6 @@
 {% from "_macros/patient-search.njk" import patientSearch with context %}
 
-{% extends "_layouts/default.njk" %}
+{% extends "_layouts/form.njk" %}
 
 {% set showLastReminderDate = tab == ConsentOutcome.NoResponse %}
 {% set showRefusalReasons = tab == ConsentOutcome.Refused or tab == ConsentOutcome.Inconsistent %}
@@ -8,6 +8,9 @@
 {% set showRegistration = tab == CaptureOutcome.Register %}
 {% set showStatus = activity == "capture" or tab == PatientOutcome.NoOutcomeYet %}
 {% set showYearGroup = true %}
+
+{% set gridColumns = "full" %}
+{% set hideConfirmButton = true %}
 {% set title = __("session.activity." + activity + ".title") %}
 
 {% block beforeContent %}
@@ -25,7 +28,7 @@
   }) }}
 {% endblock %}
 
-{% block content %}
+{% block form %}
   {{ super() }}
 
   {{ heading({
