@@ -165,6 +165,16 @@ export class PatientSession {
       .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
   }
 
+  /** Get parental relationships from valid replies
+   *
+   * @returns {Array<string>} - Parental relationships
+   */
+  get parentalRelationships() {
+    return this.replies
+      .filter((reply) => !reply.invalid)
+      .flatMap((reply) => reply.relationship || 'Parent or guardian')
+  }
+
   /**
    * Get responses (consent requests that were delivered)
    *
