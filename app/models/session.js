@@ -683,7 +683,8 @@ export class Session {
       location: Object.values(this.location)
         .filter((string) => string)
         .join(', '),
-      school_urn: this.school && this.school.formatted.urn
+      school_urn: this.school && this.school.formatted.urn,
+      status: formatTag(this.sessionStatus)
     }
   }
 

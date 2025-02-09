@@ -4,8 +4,8 @@
 
 {% macro patientSessionNavigation(params) %}
   {{ heading({
-    caption: params.patientSession.session.location.name,
-    title: params.patientSession.patient.fullName
+    title: params.patientSession.patient.fullName,
+    summary: params.patientSession.patient.formatted.yearGroup
   }) }}
 
   {{ actionList({

@@ -4,19 +4,8 @@
 
 {% macro sessionNavigation(params) %}
   {{ heading({
-    title: params.session.location.name
-  }) }}
-
-  {{ actionList({
-    items: [{
-      tag: statusTag(params.session.sessionStatus)
-    }, {
-      text: __("session.upload-class-list.title"),
-      href: "/uploads/new?type=" + UploadType.School + "&urn=" + params.session.school.urn
-    } if params.session.type == SessionType.School, {
-      text: __("session.offline.title"),
-      href: params.session.uri + "/offline"
-    } if params.session.status == SessionStatus.Planned]
+    title: params.session.location.name,
+    summary: params.session.immunisation
   }) }}
 
   {{ secondaryNavigation({

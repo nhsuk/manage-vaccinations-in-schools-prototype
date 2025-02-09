@@ -27,6 +27,7 @@
     {{ summaryList({
       rows: summaryRows(session, {
         type: {},
+        status: {},
         location: {},
         school_urn: {},
         programmes: {},
@@ -38,24 +39,33 @@
       })
     }) }}
 
-    <div class="app-button-group">
-      {{ button({
-        text: __("session.schedule.title"),
-        href: session.uri + "/edit"
-      }) if session.status.isUnplanned }}
+    {% if not session.isClosed %}
+      <div class="app-button-group">
+        {{ button({
+          classes: "app-button--secondary",
+          text: __("session.schedule.title") if session.isUnplanned else __("session.edit.title"),
+          href: session.uri + "/edit"
+        }) }}
 
-      {{ button({
-        classes: "app-button--secondary",
-        text: __("session.edit.title"),
-        href: session.uri + "/edit"
-      }) if not session.isUnplanned and not session.isClosed }}
+        {{ button({
+          classes: "app-button--secondary",
+          text: __("session.upload-class-list.title"),
+          href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn
+        }) if session.status == SessionStatus.Planned and session.type == SessionType.School }}
 
-      {{ button({
-        classes: "app-button--secondary",
-        text: __("session.close.title"),
-        href: session.uri + "/close"
-      }) if session.isCompleted }}
-    </div>
+        {{ button({
+          classes: "app-button--secondary",
+          text: __("session.offline.title"),
+          href: session.uri + "/offline"
+        }) if session.status == SessionStatus.Planned }}
+
+        {{ button({
+          classes: "app-button--secondary",
+          text: __("session.close.title"),
+          href: session.uri + "/close"
+        }) if session.isCompleted }}
+      </div>
+    {% endif %}
   {% endset %}
 
   {{ card({

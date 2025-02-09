@@ -24,6 +24,7 @@ import { formatNavigationItemWithSecondaryText } from '../utils/string.js'
 export const patientSessionController = {
   read(request, response, next) {
     const { pid, nhsn } = request.params
+    const { activity } = request.query
     const { data } = request.session
     const { __, __n } = response.locals
 
@@ -80,7 +81,7 @@ export const patientSessionController = {
           patientSession.programme.name,
           patientSession.nextActivity
         ),
-        href: patientSession.uri,
+        href: `${patientSession.uri}?activity=${activity}`,
         current: view !== 'events' && patientSession.programme_pid === pid
       })),
       ...[
@@ -94,12 +95,13 @@ export const patientSessionController = {
               )
             )
           ),
-          href: `${patientSession.uri}/events`,
+          href: `${patientSession.uri}/events?activity=${activity}`,
           current: view === 'events'
         }
       ]
     ]
 
+    response.locals.activity = activity || false
     response.locals.patientSession = patientSession
     response.locals.patient = patientSession.patient
     response.locals.session = patientSession.session
