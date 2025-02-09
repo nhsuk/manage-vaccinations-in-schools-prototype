@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { formatDate, today } from '../utils/date.js'
+import { formatTag } from '../utils/string.js'
 
 import { Programme } from './programme.js'
 import { User } from './user.js'
@@ -94,7 +95,10 @@ export class AuditEvent {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true
-      })
+      }),
+      programmes: this.programmes
+        .flatMap(({ name }) => formatTag({ colour: 'white', text: name }))
+        .join(' ')
     }
   }
 

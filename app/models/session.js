@@ -18,6 +18,7 @@ import {
   formatLink,
   formatLinkWithSecondaryText,
   formatList,
+  formatTag,
   lowerCaseFirst
 } from '../utils/string.js'
 
@@ -635,7 +636,9 @@ export class Session {
       <span class="nhsuk-u-secondary-text-color">First: ${formattedNextReminderDate}</span>`,
       closeAt: formatDate(this.closeAt, { dateStyle: 'full' }),
       patients: `${prototypeFilters.plural(this.patients.length, 'child')} in this session`,
-      programmes: this.programmes.map(({ name }) => name).join('<br>'),
+      programmes: this.programmes
+        .flatMap(({ name }) => formatTag({ colour: 'white', text: name }))
+        .join(' '),
       consentUrl:
         this.consentUrl &&
         formatLink(

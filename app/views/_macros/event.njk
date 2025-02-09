@@ -6,12 +6,9 @@
   </blockquote>
   {%- endif %}
   <p class="nhsuk-body-s nhsuk-u-margin-0 nhsuk-u-secondary-text-color">
-    {%- for programme in auditEvent.programmes -%}
-      {{- tag({
-        classes: "nhsuk-tag--white",
-        text: programme.name
-      }) -}}
-    {%- endfor -%}&nbsp;
+    {% if auditEvent.formatted.programmes %}
+      {{ auditEvent.formatted.programmes | safe }}&nbsp;
+    {% endif %}
     {{ auditEvent.formatted.datetime }}
     {% if auditEvent.createdBy_uid %}&middot;
       {{ auditEvent.createdBy.link.fullName | safe -}}
