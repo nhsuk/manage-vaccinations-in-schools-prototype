@@ -1,7 +1,6 @@
 import _ from 'lodash'
 
 import { Batch } from '../models/batch.js'
-import { Consent } from '../models/consent.js'
 import {
   ConsentOutcome,
   PatientOutcome,
@@ -224,7 +223,6 @@ export const sessionController = {
 
     // Show back link to session page
     response.locals.back = session.uri
-    response.locals.session = new Session(Session.read(id, data.wizard), data)
 
     response.render('session/edit')
   },
@@ -232,9 +230,7 @@ export const sessionController = {
   update(request, response) {
     const { id } = request.params
     const { data } = request.session
-    const { __ } = response.locals
-
-    const session = new Session(Session.read(id, data.wizard), data)
+    const { __, session } = response.locals
 
     request.flash('success', __(`session.edit.success`, { session }))
 
@@ -252,7 +248,13 @@ export const sessionController = {
     const { form, id } = request.params
     const { data } = request.session
 
-    const session = Session.read(id, data.wizard)
+    let session
+    if (form === 'edit') {
+      session = Session.read(id, data)
+    } else {
+      session = new Session(Session.read(id, data.wizard), data)
+    }
+
     response.locals.session = session
 
     response.locals.paths = {
@@ -282,7 +284,7 @@ export const sessionController = {
     const { data } = request.session
     const { paths, session } = response.locals
 
-    session.update(request.body.session, data.wizard)
+    session.update(request.body.session, data)
 
     response.redirect(paths.next)
   },
