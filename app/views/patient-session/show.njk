@@ -133,28 +133,10 @@
         address: {},
         school: {},
         yearGroupWithRegistration: {},
-        gpSurgery: {}
+        gpSurgery: {},
+        parents: {}
       })
     }) }}
-
-    {% for parent in patient.parents %}
-      <h3 class="nhsuk-heading-s nhsuk-u-margin-bottom-2">
-        {{ parent.formatted.fullNameAndRelationship }}
-      </h3>
-
-      {% set showDeliveryStatus = patientSession.consent != ConsentOutcome.NoResponse %}
-
-      {{ summaryList({
-        rows: summaryRows(parent, {
-          tel: {
-            value: parentSms(parent, showDeliveryStatus)
-          } if parent.tel,
-          email: {
-            value: parentEmail(parent, showDeliveryStatus)
-          } if parent.email
-        })
-      }) }}
-    {% endfor %}
 
     <p class="nhsuk-body">
       {{ button({
