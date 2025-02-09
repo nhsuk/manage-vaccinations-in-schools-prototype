@@ -443,7 +443,7 @@ export class Patient extends Record {
     }
 
     this.addEvent({
-      type: EventType.Capture,
+      type: EventType.Record,
       name,
       note: vaccination.note,
       createdAt: vaccination.updatedAt || vaccination.createdAt,

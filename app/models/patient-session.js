@@ -468,7 +468,7 @@ export class PatientSession {
   registerAttendance(event, registration) {
     this.registration = registration
     this.patient.addEvent({
-      type: EventType.Capture,
+      type: EventType.Register,
       name: this.registrationStatus.description,
       createdAt: event.createdAt,
       createdBy_uid: event.createdBy_uid,
