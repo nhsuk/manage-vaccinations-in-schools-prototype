@@ -106,6 +106,42 @@ export function formatWithSecondaryText(text, secondary) {
 }
 
 /**
+ * Format tag
+ *
+ * @param {object} options - Tag options
+ * @param {string} [options.text] - Text
+ * @param {string} [options.html] - Text
+ * @param {string} [options.colour] - Colour
+ * @returns {string} Formatted HTML
+ */
+export function formatTag({ text, html, colour }) {
+  text = html || text
+
+  if (colour) {
+    return `<strong class="nhsuk-tag nhsuk-tag--${colour}">${text}</strong>`
+  }
+
+  return `<strong class="nhsuk-tag">${text}</strong>`
+}
+
+/**
+ * Format tag with optional secondary text
+ *
+ * @param {object} tag - Tag
+ * @param {string} [secondary] - Secondary text
+ * @returns {string} Formatted HTML
+ */
+export function formatTagWithSecondaryText(tag, secondary) {
+  let html = formatTag(tag)
+
+  if (secondary) {
+    html += `<span class="nhsuk-u-secondary-text-color">${secondary}</span>`
+  }
+
+  return `<span>${html}</span>`
+}
+
+/**
  * Format array as HTML list
  *
  * @param {Array} array - Array

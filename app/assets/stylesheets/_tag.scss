@@ -5,3 +5,10 @@
     color: shade($color_app-dark-orange, 50%);
   }
 }
+
+.nhsuk-tag + .nhsuk-u-secondary-text-color {
+  @include nhsuk-font(16, $line-height: 1);
+
+  display: block;
+  margin-top: 12px;
+}

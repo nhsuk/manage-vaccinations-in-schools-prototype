@@ -6,6 +6,8 @@ import {
   formatLinkWithSecondaryText,
   formatMarkdown,
   formatOther,
+  formatTag,
+  formatTagWithSecondaryText,
   stringToBoolean
 } from '../utils/string.js'
 
@@ -268,19 +270,43 @@ export class Reply {
   }
 
   /**
+   * Get status properties
+   *
+   * @returns {object} - Status properties
+   */
+  get status() {
+    let colour
+    switch (this.decision) {
+      case ReplyDecision.Given:
+        colour = 'aqua-green'
+        break
+      case ReplyDecision.Refused:
+        colour = 'red'
+        break
+      case ReplyDecision.NoResponse:
+        colour = 'grey'
+        break
+      default:
+        colour = 'blue'
+    }
+
+    return {
+      colour: this.invalid ? 'grey' : colour,
+      html: this.invalid ? `<s>${this.decision}</s>` : this.decision
+    }
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values
    */
   get formatted() {
-    const decision = () => {
-      if (this.invalid) {
-        return `<s>${this.decision}</s><br>Invalid`
-      } else if (this.confirmed) {
-        return `${this.decision}<br><b>Confirmed</b>`
-      }
-
-      return this.decision
+    let formattedDecision = formatTag(this.status)
+    if (this.invalid) {
+      formattedDecision = formatTagWithSecondaryText(this.status, 'Invalid')
+    } else if (this.confirmed) {
+      formattedDecision = formatTagWithSecondaryText(this.status, 'Confirmed')
     }
 
     return {
@@ -296,7 +322,7 @@ export class Reply {
         dateStyle: 'long'
       }),
       createdBy: this.createdBy?.fullName || '',
-      decision: decision(),
+      decision: formattedDecision,
       programme: this.programme?.name,
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
       refusalReasonDetails: formatMarkdown(this.refusalReasonDetails),

@@ -268,13 +268,15 @@ export default () => {
    * Get tag parameters
    *
    * @param {object} status - Status
-   * @param {string} status.text - Status text
+   * @param {string} [status.text] - Status text
+   * @param {string} [status.html] - Status HTML
    * @param {string} [status.colour] - Status colour
    * @returns {object} Parameters
    */
-  globals.statusTag = function ({ text, colour }) {
+  globals.statusTag = function ({ text, html, colour }) {
     return {
       text,
+      html,
       ...(colour && { classes: `nhsuk-tag--${colour}` })
     }
   }
