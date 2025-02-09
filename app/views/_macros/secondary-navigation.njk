@@ -1,0 +1,19 @@
+{% macro secondaryNavigation(params) %}
+<nav class="app-secondary-navigation {%- if params.classes %} {{ params.classes }}{% endif -%}" {% if params.labelledBy %}aria-labelledby="{{ params.labelledBy }}"{% else %}aria-label="{{ params.visuallyHiddenTitle or "Secondary menu" }}"{% endif %} {%- for attribute, value in params.attributes %} {{ attribute }}="{{ value }}"{% endfor %}>
+  <ul class="app-secondary-navigation__list">
+  {% for item in params.items %}
+    {% if item %}
+    <li class="app-secondary-navigation__list-item{% if item.classes %} {{ item.classes }}{% endif -%}">
+      <a class="app-secondary-navigation__link" href="{{ item.href }}" {{ "aria-current=page" if item.current }}>
+      {%- if item.active or item.current -%}
+        <strong class="app-secondary-navigation__current">{{ item.text | safe }}</strong>
+      {%- else -%}
+        {{- item.text | safe -}}
+      {%- endif -%}
+      </a>
+    </li>
+    {% endif %}
+  {% endfor %}
+  </ul>
+</nav>
+{% endmacro %}

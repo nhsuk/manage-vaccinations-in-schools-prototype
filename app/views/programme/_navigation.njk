@@ -1,7 +1,7 @@
 {% from "components/button/macro.njk" import button %}
-{% from "x-govuk/components/secondary-navigation/macro.njk" import xGovukSecondaryNavigation %}
 {% from "_macros/count.njk" import count %}
 {% from "_macros/heading.njk" import heading %}
+{% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
 
 {% macro programmeNavigation(params) %}
   {{ heading({
@@ -10,7 +10,7 @@
   }) }}
 
   {% if not params.isDataConsumer %}
-    {{ xGovukSecondaryNavigation({
+    {{ secondaryNavigation({
       items: [{
         text: __("programme.show.label"),
         href: params.programme.uri,

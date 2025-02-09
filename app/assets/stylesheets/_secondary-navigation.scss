@@ -1,16 +1,44 @@
-.x-govuk-secondary-navigation {
-  @include nhsuk-responsive-margin(4, "bottom");
+.app-secondary-navigation {
+  @include nhsuk-font(19);
+  @include nhsuk-responsive-margin(5, "bottom");
 }
 
-.x-govuk-secondary-navigation__list-item {
+.app-secondary-navigation__link {
+  @include nhsuk-link-style-default;
+  @include nhsuk-link-style-no-visited-state;
+
+  display: block;
+  padding: nhsuk-spacing(3) 2px;
+  text-decoration: none;
+
+  &[aria-current] {
+    box-shadow: inset 0 ($nhsuk-border-width * -1) $color_nhsuk-blue;
+    color: $nhsuk-text-color;
+    text-decoration: none;
+  }
+
+  &:focus {
+    box-shadow: inset 0 ($nhsuk-focus-width * -1) $nhsuk-focus-text-color;
+  }
+}
+
+.app-secondary-navigation__current {
+  font-weight: inherit;
+}
+
+.app-secondary-navigation__list {
+  // The list uses box-shadow rather than a border to set a 1px grey line at the
+  // bottom, so that the current item appears on top of the grey line.
+  box-shadow: inset 0 -1px 0 $nhsuk-border-color;
+  display: flex;
+  flex-wrap: wrap;
+  gap: nhsuk-spacing(2) nhsuk-spacing(4);
+  list-style: none;
   margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
-.x-govuk-secondary-navigation__list-item--current {
-  border-bottom-width: nhsuk-spacing(1);
-}
-
-.x-govuk-secondary-navigation__link {
-  padding-left: nhsuk-spacing(3);
-  padding-right: nhsuk-spacing(3);
+.app-secondary-navigation__list-item {
+  margin-bottom: 0;
 }

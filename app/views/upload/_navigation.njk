@@ -1,7 +1,7 @@
 {% from "components/button/macro.njk" import button %}
-{% from "x-govuk/components/secondary-navigation/macro.njk" import xGovukSecondaryNavigation %}
 {% from "_macros/count.njk" import count %}
 {% from "_macros/heading.njk" import heading %}
+{% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
 
 {% macro uploadNavigation(params) %}
   {{ heading({
@@ -15,7 +15,7 @@
     href: "/uploads/new"
   }) }}
 
-  {{ xGovukSecondaryNavigation({
+  {{ secondaryNavigation({
     items: [{
       text: __("upload.recent.label"),
       href: "/uploads",
