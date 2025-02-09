@@ -729,15 +729,15 @@ export const en = {
         label: 'Do not vaccinate',
         name: 'Your child will not have the {{session.vaccination}} in school'
       },
-      'capture-reminder': {
+      'record-reminder': {
         label: 'Reminder',
         name: '{{consent.child.fullName}} will get their {{session.vaccination}} on {{session.summary.dates}}'
       },
-      'capture-vaccinated': {
+      'record-vaccinated': {
         label: 'Vaccinated',
         name: 'Your child had their {{session.vaccination}} today'
       },
-      'capture-could-not-vaccinate': {
+      'record-could-not-vaccinate': {
         label: 'Could not vaccinate',
         name: 'Your child did not have their {{session.vaccination}} today'
       },
@@ -1692,22 +1692,22 @@ export const en = {
         name: 'Confirmation that consent has been refused',
         text: 'You’ve refused to give consent for {{consent.child.fullName}} to have their {{session.vaccination}}.'
       },
-      'capture-reminder': {
+      'record-reminder': {
         label: 'Reminder',
         name: 'Reminder (to go out the day before the vaccination)',
         text: '{{consent.child.firstName}} will get their {{session.vaccination}} at school tomorrow ({{session.formatted.nextDate}}). Please make sure they have breakfast and encourage them to wear a short-sleeved shirt.'
       },
-      'capture-reminder-child': {
+      'record-reminder-child': {
         label: 'Reminder (child)',
         name: 'Reminder (to go out the day before the vaccination)',
         text: 'You’re due to get your {{session.vaccination}} at school tomorrow ({{session.formatted.nextDate}}). Please wear a short-sleeved shirt and make sure you eat something before the session.'
       },
-      'capture-vaccinated': {
+      'record-vaccinated': {
         label: 'Vaccinated',
         name: 'Child has been vaccinated',
         text: '{{consent.child.firstName}} had their {{session.vaccination}} at school today. They might have some side effects, including bruising or itching at the injection site, a high temperature, nausea, or pain in the arms, hands, or fingers.\n\nIf you’re concerned, contact your GP in the usual way.'
       },
-      'capture-could-not-vaccinate': {
+      'record-could-not-vaccinate': {
         label: 'Could not vaccinate',
         name: 'Child did not get their vaccination despite having consent',
         text: '{{consent.child.firstName}} did not have their {{session.vaccination}} at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact our team by calling [{{organisation.tel}}](#), or email [{{organisation.email}}](#).'
