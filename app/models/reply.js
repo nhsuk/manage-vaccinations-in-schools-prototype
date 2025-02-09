@@ -6,6 +6,7 @@ import {
   formatLinkWithSecondaryText,
   formatMarkdown,
   formatOther,
+  formatParent,
   formatTag,
   formatTagWithSecondaryText,
   stringToBoolean
@@ -338,13 +339,11 @@ export class Reply {
    * @returns {object} - Formatted links
    */
   get link() {
-    const fullName = this.fullName || 'Name unknown'
-
     return {
       fullNameAndRelationship: formatLinkWithSecondaryText(
         this.uri,
-        fullName,
-        this.relationship
+        formatParent(this.parent, false),
+        this.parent.tel
       )
     }
   }
