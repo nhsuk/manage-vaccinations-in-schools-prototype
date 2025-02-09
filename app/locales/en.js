@@ -1113,14 +1113,14 @@ export const en = {
       absent: 'No, they are absent from today’s session',
       pending: 'They have not been registered yet',
       actions: {
-        label: 'Update attendance',
+        label: 'Attending?',
         present: {
           label: 'Attending',
-          visuallyHiddenLabel: 'Register {{patient.fullName}} as attending'
+          title: 'Register {{patient.fullName}} as attending'
         },
         absent: {
           label: 'Absent',
-          visuallyHiddenLabel: 'Register {{patient.fullName}} as absent'
+          title: 'Register {{patient.fullName}} as absent'
         }
       },
       success: {

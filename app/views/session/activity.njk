@@ -44,23 +44,27 @@
     {% set registrationButtonHtml %}
       <div>
         {{ button({
-          classes: "app-button--secondary app-button--small",
-          text: __("patientSession.registration.actions.present.label"),
+          classes: "app-button--secondary app-button--icon app-button--small",
+          html: icon({
+            icon: "tick",
+            title: __("patientSession.registration.actions.present.title", { patient: patientSession.patient })
+          }),
           decorate: "patientSession.registration",
           value: RegistrationOutcome.Present,
           attributes: {
-            "aria-label": __("patientSession.registration.actions.present.visuallyHiddenLabel", { patient: patientSession.patient }),
             formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
             formmethod: "post"
           }
         }) if patientSession.registration != RegistrationOutcome.Present }}
         {{ button({
-          classes: "app-button--secondary-warning app-button--small",
-          text: __("patientSession.registration.actions.absent.label"),
+          classes: "app-button--secondary-warning app-button--icon app-button--small",
+          html: icon({
+            icon: "cross",
+            title: __("patientSession.registration.actions.absent.title", { patient: patientSession.patient })
+          }),
           decorate: "patientSession.registration",
           value: RegistrationOutcome.Absent,
           attributes: {
-            "aria-label": __("patientSession.registration.actions.absent.visuallyHiddenLabel", { patient: patientSession.patient }),
             formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
             formmethod: "post"
           }
