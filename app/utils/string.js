@@ -55,6 +55,13 @@ export function formatHighlight(string) {
 export function formatLink(href, text, attributes = {}) {
   const attrs = []
 
+  const classes = [
+    'nhsuk-link',
+    ...(attributes.classes ? [attributes.classes] : [])
+  ].join(' ')
+
+  delete attributes.classes
+
   for (const [key, value] of Object.entries(attributes)) {
     if (value === true || value === 'true') {
       attrs.push(key)
@@ -63,7 +70,7 @@ export function formatLink(href, text, attributes = {}) {
     }
   }
 
-  return `<a class="nhsuk-link" href="${href}"${attrs.join(' ')}>${text}</a>`
+  return `<a class="${classes}" href="${href}"${attrs.join(' ')}>${text}</a>`
 }
 
 /**
