@@ -283,6 +283,21 @@ export class Session {
   }
 
   /**
+   * Get unmatched consents status
+   *
+   * @returns {object|undefined} - Status
+   */
+  get unmatchedConsentStatus() {
+    if (this.consents.length !== 0) {
+      return {
+        colour: 'blue',
+        icon: 'warning',
+        text: 'You need to review unmatched consent responses for this session'
+      }
+    }
+  }
+
+  /**
    * Get clinic
    *
    * @returns {Clinic} - Clinic
