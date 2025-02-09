@@ -190,7 +190,12 @@
   }) if options.showGillick }}
 
   {% set consentDescriptionHtml %}
-    {{ status(patientSession.session.unmatchedConsentStatus) }}
+    {{ status({
+      classes: "nhsuk-u-margin-bottom-3",
+      colour: "blue",
+      text: link(patientSession.session.uri + "/consents", __n("consent.warning.text", patientSession.session.consents.length), { classes: "nhsuk-link--no-visited-state" }) | safe,
+      icon: "warning"
+    }) if patientSession.session.consents.length }}
 
     {% if patientSession.responses.length %}
       {{ status(patientSession.status.consent) }}
