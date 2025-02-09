@@ -1,7 +1,9 @@
 {% from "patient/_navigation.njk" import patientNavigation with context %}
 
-{% extends "_layouts/default.njk" %}
+{% extends "_layouts/form.njk" %}
 
+{% set hideConfirmButton = true %}
+{% set gridColumns = "three-quarters" %}
 {% set title = patient.initials %}
 
 {% block beforeContent %}
@@ -16,191 +18,187 @@
   }) }}
 {% endblock %}
 
-{% block content %}
-  <div class="nhsuk-u-width-three-quarters">
-    {{ super() }}
+{% block form %}
+  {{ super() }}
 
-    {{ patientNavigation({
-      patient: patient,
-      view: "show"
+  {{ patientNavigation({
+    patient: patient,
+    view: "show"
+  }) }}
+
+  {% set recordDescriptionHtml %}
+    {{ status({
+      text: patient.notice.name,
+      icon: "warning",
+      colour: "blue"
+    }) if patient.notice }}
+
+    {{ summaryList({
+      rows: summaryRows(patient, {
+        nhsn: {
+          changeLabel: "the child’s NHS number",
+          href: patient.uri + "/edit/nhsn" if patient.hasMissingNhsNumber
+        },
+        fullName: {},
+        preferredNames: { value: patient.preferredNames },
+        dob: { value: patient.dobWithAge },
+        dod: {},
+        gender: {},
+        address: {},
+        school: {},
+        yearGroupWithRegistration: {},
+        gpSurgery: {},
+        parents: {}
+      })
     }) }}
 
-    {% set recordDescriptionHtml %}
-      {{ status({
-        text: patient.notice.name,
-        icon: "warning",
-        colour: "blue"
-      }) if patient.notice }}
-
-      {{ summaryList({
-        rows: summaryRows(patient, {
-          nhsn: {
-            changeLabel: "the child’s NHS number",
-            href: patient.uri + "/edit/nhsn" if patient.hasMissingNhsNumber
-          },
-          fullName: {},
-          preferredNames: { value: patient.preferredNames },
-          dob: { value: patient.dobWithAge },
-          dod: {},
-          gender: {},
-          address: {},
-          school: {},
-          yearGroupWithRegistration: {},
-          gpSurgery: {},
-          parents: {}
-        })
+    <p class="nhsuk-body">
+      {{ button({
+        classes: "app-button--secondary nhsuk-u-margin-0",
+        text: __("patient.edit.title"),
+        href: patient.uri + "/edit"
       }) }}
+    </p>
+  {% endset %}
 
-      <p class="nhsuk-body">
-        {{ button({
-          classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("patient.edit.title"),
-          href: patient.uri + "/edit"
-        }) }}
-      </p>
-    {% endset %}
+  {{ card({
+    heading: __("patient.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: recordDescriptionHtml
+  }) }}
 
-    {{ card({
-      heading: __("patient.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: recordDescriptionHtml
-    }) }}
-
-    {% set cohortsDescriptionHtml %}
-      {% macro unselectButtonHtml(uid) %}
-        <form class="app-button-group app-button-group--table" action="{{ patient.uri }}/reject" method="post">
-          {{ button({
-            classes: "app-button--secondary-warning app-button--small",
-            text: __("cohort.unselect.confirm"),
-            decorate: "uid",
-            value: uid
-          }) }}
-        </form>
-      {% endmacro %}
-
-      {% if patient.cohorts.length %}
-        {% set cohortRows = [] %}
-        {% for cohort in patient.cohorts | sort(false, false, "createdAt") %}
-          {% set cohortRows = cohortRows | push([
-            {
-              header: __("cohort.name.label"),
-              html: cohort.link.name
-            },
-            {
-              header: __("actions.label"),
-              html: unselectButtonHtml(cohort.uid)
-            }
-          ]) %}
-        {% endfor %}
-
-        {{ actionTable({
-          id: "cohorts",
-          sort: "name",
-          responsive: true,
-          head: [
-            { text: __("cohort.name.label") },
-            { text: __("actions.label") }
-          ],
-          rows: cohortRows
-        }) }}
-      {% else %}
-        {{ __n("cohort.count", 0) | nhsukMarkdown }}
-      {% endif %}
-    {% endset %}
-
-    {{ card({
-      heading: __("cohort.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: cohortsDescriptionHtml
-    }) }}
-
-    {% set sessionsDescriptionHtml %}
-      {% if patient.patientSessions.length %}
-        {% set patientSessionRows = [] %}
-        {% for patientSession in patient.patientSessions %}
-          {% set patientSessionRows = patientSessionRows | push([
-            {
-              header: __("session.location.label"),
-              html: link(patientSession.uri, patientSession.session.location.name)
-            },
-            {
-              header: __("session.programmes.label"),
-              html: patientSession.session.formatted.programmes
-            },
-            {
-              header: __("session.dates.label"),
-              html: patientSession.session.formatted.dates if patientSession.session.dates.length else patientSession.session.status
-            }
-          ]) %}
-        {% endfor %}
-
-        {{ actionTable({
-          id: "patient-sessions",
-          sort: "name",
-          responsive: true,
-          head: [
-            { text: __("session.location.label") },
-            { text: __("session.programmes.label") },
-            { text: __("session.dates.label") }
-          ],
-          rows: patientSessionRows
-        }) }}
-      {% else %}
-        {{ __n("session.count", 0) | nhsukMarkdown }}
-      {% endif %}
-    {% endset %}
-
-    {{ card({
-      heading: __("session.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: sessionsDescriptionHtml
-    }) }}
-
-    {% set vaccinationsDescriptionHtml %}
-      {% if patient.vaccinations.length %}
-        {% set vaccinationRows = [] %}
-        {% for vaccination in patient.vaccinations | sort(false, false, "createdAt") %}
-          {% set vaccinationRows = vaccinationRows | push([
-            {
-              header: __("vaccination.vaccine_gtin.label"),
-              html: vaccination.link.vaccine_gtin
-            },
-            {
-              header: __("vaccination.createdAt.label"),
-              text: vaccination.formatted.createdAt_date,
+  {% set cohortsDescriptionHtml %}
+    {% if patient.cohorts.length %}
+      {% set cohortRows = [] %}
+      {% for cohort in patient.cohorts | sort(false, false, "createdAt") %}
+        {% set cohortRows = cohortRows | push([
+          {
+            header: __("cohort.name.label"),
+            html: cohort.link.name
+          },
+          {
+            header: __("actions.label"),
+            html: button({
+              classes: "app-button--secondary-warning app-button--small",
+              text: __("cohort.unselect.confirm"),
+              decorate: "uid",
+              value: cohort.uid,
               attributes: {
-                "data-col": "createdAt",
-                "data-sort": vaccination.createdAt
+                formaction: patient.uri + "/reject",
+                formmethod: "post"
               }
-            },
-            {
-              header: __("vaccination.location.label"),
-              text: vaccination.location
+            })
+          }
+        ]) %}
+      {% endfor %}
+
+      {{ actionTable({
+        id: "cohorts",
+        sort: "name",
+        responsive: true,
+        head: [
+          { text: __("cohort.name.label") },
+          { text: __("actions.label") }
+        ],
+        rows: cohortRows
+      }) }}
+    {% else %}
+      {{ __n("cohort.count", 0) | nhsukMarkdown }}
+    {% endif %}
+  {% endset %}
+
+  {{ card({
+    heading: __("cohort.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: cohortsDescriptionHtml
+  }) }}
+
+  {% set sessionsDescriptionHtml %}
+    {% if patient.patientSessions.length %}
+      {% set patientSessionRows = [] %}
+      {% for patientSession in patient.patientSessions %}
+        {% set patientSessionRows = patientSessionRows | push([
+          {
+            header: __("session.location.label"),
+            html: link(patientSession.uri, patientSession.session.location.name)
+          },
+          {
+            header: __("session.programmes.label"),
+            html: patientSession.session.formatted.programmes
+          },
+          {
+            header: __("session.dates.label"),
+            html: patientSession.session.formatted.dates if patientSession.session.dates.length else patientSession.session.status
+          }
+        ]) %}
+      {% endfor %}
+
+      {{ actionTable({
+        id: "patient-sessions",
+        sort: "name",
+        responsive: true,
+        head: [
+          { text: __("session.location.label") },
+          { text: __("session.programmes.label") },
+          { text: __("session.dates.label") }
+        ],
+        rows: patientSessionRows
+      }) }}
+    {% else %}
+      {{ __n("session.count", 0) | nhsukMarkdown }}
+    {% endif %}
+  {% endset %}
+
+  {{ card({
+    heading: __("session.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: sessionsDescriptionHtml
+  }) }}
+
+  {% set vaccinationsDescriptionHtml %}
+    {% if patient.vaccinations.length %}
+      {% set vaccinationRows = [] %}
+      {% for vaccination in patient.vaccinations | sort(false, false, "createdAt") %}
+        {% set vaccinationRows = vaccinationRows | push([
+          {
+            header: __("vaccination.vaccine_gtin.label"),
+            html: vaccination.link.vaccine_gtin
+          },
+          {
+            header: __("vaccination.createdAt.label"),
+            text: vaccination.formatted.createdAt_date,
+            attributes: {
+              "data-col": "createdAt",
+              "data-sort": vaccination.createdAt
             }
-          ]) %}
-        {% endfor %}
+          },
+          {
+            header: __("vaccination.location.label"),
+            text: vaccination.location
+          }
+        ]) %}
+      {% endfor %}
 
-        {{ actionTable({
-          id: "vaccinations",
-          classes: "nhsuk-u-margin-bottom-4",
-          sort: "createdAt",
-          responsive: true,
-          head: [
-            { text: __("vaccination.vaccine_gtin.label") },
-            { text: __("vaccination.createdAt.label") },
-            { text: __("vaccination.location.label") }
-          ],
-          rows: vaccinationRows
-        }) }}
-      {% else %}
-        {{ __n("vaccination.count", 0) | nhsukMarkdown }}
-      {% endif %}
-    {% endset %}
+      {{ actionTable({
+        id: "vaccinations",
+        classes: "nhsuk-u-margin-bottom-4",
+        sort: "createdAt",
+        responsive: true,
+        head: [
+          { text: __("vaccination.vaccine_gtin.label") },
+          { text: __("vaccination.createdAt.label") },
+          { text: __("vaccination.location.label") }
+        ],
+        rows: vaccinationRows
+      }) }}
+    {% else %}
+      {{ __n("vaccination.count", 0) | nhsukMarkdown }}
+    {% endif %}
+  {% endset %}
 
-    {{ card({
-      heading: __("patient.vaccinations.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: vaccinationsDescriptionHtml
-    }) }}
-  </div>
+  {{ card({
+    heading: __("patient.vaccinations.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: vaccinationsDescriptionHtml
+  }) }}
 {% endblock %}
