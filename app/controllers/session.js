@@ -167,10 +167,6 @@ export const sessionController = {
       )
     }
 
-    response.locals.unmatchedResponses = Consent.readAll(data).filter(
-      (consent) => consent.session_id === id
-    )
-
     // Clean up session data
     delete data.hasMissingNhsNumber
     delete data.q

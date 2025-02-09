@@ -266,6 +266,12 @@ export const en = {
       one: '%s unmatched consent response',
       other: '[0] No unmatched consent responses|%s unmatched consent responses'
     },
+    warning: {
+      text: {
+        one: '%s unmatched consent response for this session needs review',
+        other: '%s unmatched consent responses for this session need review'
+      }
+    },
     results:
       'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> responses',
     [ConsentOutcome.NoResponse]: {
