@@ -14,15 +14,18 @@ import {
  * @returns {PatientOutcome} Patient outcome
  */
 export const getPatientOutcome = (patientSession) => {
-  if (patientSession.vaccinations.length === 1) {
-    if (patientSession.vaccinations[0].given === true) {
+  if (patientSession.vaccinations.length > 0) {
+    if (patientSession.vaccinations.at(-1).given) {
       return PatientOutcome.Vaccinated
     }
+
+    return PatientOutcome.CouldNotVaccinate
   }
 
   // Consent outcome
   if (
     patientSession.consent === ConsentOutcome.Refused ||
+    patientSession.consent === ConsentOutcome.FinalRefusal ||
     patientSession.consent === ConsentOutcome.Inconsistent
   ) {
     return PatientOutcome.CouldNotVaccinate
