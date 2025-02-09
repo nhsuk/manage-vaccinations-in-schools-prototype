@@ -390,7 +390,7 @@ export const replyController = {
         ...(data.reply?.note && { note }),
         ...(data.token && { createdBy_uid: data.token?.uid })
       })
-      patientSession.patient.captureVaccination(vaccination)
+      patientSession.patient.recordVaccination(vaccination)
       vaccination.update(vaccination, data)
     }
 

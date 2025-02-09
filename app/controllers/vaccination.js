@@ -113,7 +113,7 @@ export const vaccinationController = {
     })
 
     vaccination.create(vaccination, data.wizard)
-    patient.captureVaccination(vaccination)
+    patient.recordVaccination(vaccination)
 
     response.redirect(`${vaccination.uri}/new/${data.startPath}`)
   },

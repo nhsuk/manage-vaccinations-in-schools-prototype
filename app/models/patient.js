@@ -425,11 +425,11 @@ export class Patient extends Record {
   }
 
   /**
-   * Capture vaccination
+   * Record vaccination
    *
    * @param {import('./vaccination.js').Vaccination} vaccination - Vaccination
    */
-  captureVaccination(vaccination) {
+  recordVaccination(vaccination) {
     this.vaccination_uuids.push(vaccination.uuid)
 
     let name
