@@ -17,9 +17,21 @@
       text: session.location.name,
       href: "/sessions/" + session.id
     }, {
-      text: __("session.activity." + activity + ".title"),
+      text: __("session." + activity + ".label"),
       href: "/sessions/" + session.id + "/" + activity
-    } if activity]
+    }] if activity else [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("programme.list.title"),
+      href: "/programmes"
+    }, {
+      text: patientSession.programme.name,
+      href: "/programmes/" + patientSession.programme_pid
+    }, {
+      text: __("programme.patientSessions.title"),
+      href: "/programmes/" + patientSession.programme_pid + "/patients"
+    }]
   }) }}
 {% endblock %}
 

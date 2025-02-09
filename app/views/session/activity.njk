@@ -70,7 +70,7 @@
     {% set patientRows = patientRows | push([
       {
         header: __("patient.fullName.label"),
-        html: patientSession.link.fullName | highlightQuery(data.q),
+        html: patientSession.link.fullName | replace(patientSession.uri, patientSession.uri + "?activity=" + view) | highlightQuery(data.q),
         attributes: {
           "data-filter": patientSession.patient.fullName,
           "data-sort": patientSession.patient.fullName
