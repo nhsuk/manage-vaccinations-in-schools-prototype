@@ -26,6 +26,15 @@
   background: none;
 }
 
+.nhsuk-table__cell .nhsuk-button {
+  margin-bottom: 0;
+  margin-top: -4px;
+
+  &:active {
+    margin-top: -3px;
+  }
+}
+
 .app-table__cell-status {
   &--aqua-green:first-of-type {
     border-left: $nhsuk-border-width solid $color_nhsuk-aqua-green;
