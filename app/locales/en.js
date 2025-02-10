@@ -1458,7 +1458,8 @@ export const en = {
       label: 'Screen'
     },
     register: {
-      label: 'Register'
+      label: 'Register',
+      information: 'You can register attendance when a session is in progress.'
     },
     record: {
       label: 'Record'
