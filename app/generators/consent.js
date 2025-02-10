@@ -1,9 +1,14 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import healthConditions from '../datasets/health-conditions.js'
 import { Consent } from '../models/consent.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { today } from '../utils/date.js'
-import { getHealthAnswers, getRefusalReason } from '../utils/reply.js'
+import {
+  getHealthAnswers,
+  getRefusalReason,
+  getTriageNote
+} from '../utils/reply.js'
 
 import { generateParent } from './parent.js'
 
@@ -39,7 +44,7 @@ export function generateConsent(
 
   // Decision
   const decision = faker.helpers.weightedArrayElement([
-    { value: ReplyDecision.Given, weight: 5 },
+    { value: ReplyDecision.Given, weight: 6 },
     { value: ReplyDecision.Refused, weight: 1 }
   ])
   const method = faker.helpers.weightedArrayElement([
@@ -48,7 +53,9 @@ export function generateConsent(
     { value: ReplyMethod.Paper, weight: 1 }
   ])
 
-  const healthAnswers = getHealthAnswers(programme.vaccine)
+  const healthCondition = faker.helpers.objectKey(healthConditions)
+  const healthAnswers = getHealthAnswers(programme.vaccine, healthCondition)
+  const triageNote = getTriageNote(healthAnswers, healthCondition)
   const refusalReason = getRefusalReason(programme.type)
 
   const nowAt = today()
@@ -71,7 +78,7 @@ export function generateConsent(
     parent,
     decision,
     method,
-    ...(decision === ReplyDecision.Given && { healthAnswers }),
+    ...(decision === ReplyDecision.Given && { healthAnswers, triageNote }),
     ...(decision === ReplyDecision.Refused && {
       refusalReason,
       ...(refusalReason === ReplyRefusal.AlreadyGiven && {

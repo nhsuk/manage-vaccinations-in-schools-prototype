@@ -71,6 +71,7 @@ export const ReplyRefusal = {
  * @property {boolean} invalid - Reply is invalid
  * @property {ReplyMethod} [method] - Reply method
  * @property {object} [healthAnswers] - Answers to health questions
+ * @property {Array} [triageNote] - Triage note for answered health questions
  * @property {ReplyRefusal} [refusalReason] - Refusal reason
  * @property {string} [refusalReasonOther] - Other refusal reason
  * @property {string} [refusalReasonDetails] - Refusal reason details
@@ -97,6 +98,7 @@ export class Reply {
       ReplyDecision.OnlyTdIPV
     ].includes(this.decision)
     this.healthAnswers = this.given && options?.healthAnswers
+    this.triageNote = this.given && options?.triageNote
     this.invalid =
       this?.decision === ReplyDecision.NoResponse
         ? false // Don’t show non response as invalid

@@ -233,6 +233,15 @@ export class PatientSession {
   }
 
   /**
+   * Get triage notes for consent health answers
+   *
+   * @returns {Array} - Triage notes
+   */
+  get consentTriageNotes() {
+    return this.responses.flatMap((response) => response.triageNote)
+  }
+
+  /**
    * Get consent refusal reasons (from replies)
    *
    * @returns {object|boolean} - Consent refusal reasons

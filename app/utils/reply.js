@@ -14,14 +14,14 @@ import { formatParentalRelationship } from './string.js'
  * Add example answers to health questions
  *
  * @param {string} key - Health question key
+ * @param {string} healthCondition - Health condition
  * @returns {string|boolean} Health answer, or `false`
  */
-const enrichWithRealisticAnswer = (key) => {
-  const condition = faker.helpers.objectKey(healthConditions)
+const enrichWithRealisticAnswer = (key, healthCondition) => {
   const useAnswer = faker.helpers.maybe(() => true, { probability: 0.2 })
 
-  if (healthConditions[condition][key] && useAnswer) {
-    return healthConditions[condition][key]
+  if (healthConditions[healthCondition][key] && useAnswer) {
+    return healthConditions[healthCondition][key]
   }
 
   return false
@@ -187,16 +187,34 @@ export const getConsentRefusalReasons = (patientSession) => {
  * Get faked answers for health questions needed for a vaccine
  *
  * @param {import('../models/vaccine.js').Vaccine} vaccine - Vaccine
+ * @param {string} healthCondition - Health condition
  * @returns {object} Health answers
  */
-export const getHealthAnswers = (vaccine) => {
+export const getHealthAnswers = (vaccine, healthCondition) => {
   const answers = {}
 
   for (const key of vaccine.healthQuestionKeys) {
-    answers[key] = enrichWithRealisticAnswer(key)
+    answers[key] = enrichWithRealisticAnswer(key, healthCondition)
   }
 
   return answers
+}
+
+/**
+ * Get faked triage note for health answer given for a child’s health condition
+ *
+ * @param {object} healthAnswers - Health answers
+ * @param {string} healthCondition - Health condition
+ * @returns {string} Triage note
+ */
+export const getTriageNote = (healthAnswers, healthCondition) => {
+  const healthAnswersNeedsTriage = Object.values(healthAnswers)
+    .flatMap((answer) => answer !== false)
+    .includes(true)
+
+  if (healthAnswersNeedsTriage) {
+    return healthConditions[healthCondition].triageNote
+  }
 }
 
 /**
