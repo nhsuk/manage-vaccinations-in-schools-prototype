@@ -76,7 +76,7 @@ export default {
       'isPregnant'
     ]
   },
-  // 3-in-1 and MenACWY vaccines
+  // 3-in-1 vaccines
   // Possible others: Pediacel, Repevax, Infanrix IPV
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/147952/Green-Book-Chapter-15.pdf
   3664798042948: {
@@ -101,14 +101,15 @@ export default {
       'isMedicated'
     ]
   },
-  // Menveo, Nimenrix and MenQuadfi
+  // MenACWY vaccines
+  // Possible others: Menveo, Nimenrix
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1076053/Meningococcal-greenbook-chapter-22_17May2022.pdf
-  5415062370568: {
-    gtin: '5415062370568',
+  5000283662365: {
+    gtin: '5000283662365',
     type: 'MenACWY',
-    brand: 'Nimenrix',
-    manufacturer: 'Pfizer Ltd',
-    leaflet: 'https://www.medicines.org.uk/emc/files/pil.4118.pdf',
+    brand: 'MenQuadfi',
+    manufacturer: 'Sanofi',
+    leaflet: 'https://www.medicines.org.uk/emc/files/pil.12818.pdf',
     method: 'Injection',
     dose: 0.5,
     healthQuestionKeys: [

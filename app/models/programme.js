@@ -96,7 +96,7 @@ export const programmeTypes = {
     },
     term: SchoolTerm.Summer,
     yearGroups: [9, 10, 11],
-    vaccines: ['5415062370568']
+    vaccines: ['5000283662365']
   }
 }
 
