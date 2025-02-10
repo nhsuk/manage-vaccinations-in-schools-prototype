@@ -79,7 +79,7 @@ export function formatLink(href, text, attributes = {}) {
  * @param {string} href - Hyperlink reference
  * @param {string} text - Hyperlink text
  * @param {string} [secondary] - Secondary text
- * @returns {string} HTML anchor decorated with nhsuk-link class
+ * @returns {string} Formatted HTML
  */
 export function formatLinkWithSecondaryText(href, text, secondary) {
   let html = text
@@ -98,9 +98,9 @@ export function formatLinkWithSecondaryText(href, text, secondary) {
 /**
  * Format text with optional secondary text
  *
- * @param {string} text - Hyperlink text
+ * @param {string} text - Primary text
  * @param {string} [secondary] - Secondary text
- * @returns {string} HTML anchor decorated with nhsuk-link class
+ * @returns {string} Formatted HTML
  */
 export function formatWithSecondaryText(text, secondary) {
   let html = text
