@@ -471,7 +471,7 @@ export class PatientSession {
         this.consent
       )
     ) {
-      consent = this.consentRefusalReasons
+      consent = this.consentRefusalReasons.join('<br>')
     }
 
     return {
