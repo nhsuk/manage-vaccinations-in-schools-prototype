@@ -434,10 +434,12 @@ export const en = {
       description:
         'Give the name on your child’s birth certificate. If it’s changed, give the name held by your child’s GP.',
       firstName: {
-        label: 'First name'
+        label: 'First name',
+        hint: 'Or given name'
       },
       lastName: {
-        label: 'Last name'
+        label: 'Last name',
+        hint: 'Or family name'
       },
       hasPreferredName: {
         label: 'Do they use a different name in school?',
