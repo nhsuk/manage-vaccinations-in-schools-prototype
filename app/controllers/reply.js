@@ -35,12 +35,13 @@ export const replyController = {
 
   new(request, response) {
     const { data } = request.session
-    const { patient, session } = response.locals
+    const { patient, programme, session } = response.locals
 
     const reply = new Reply(
       {
         child: patient,
         patient_uuid: patient.uuid,
+        programme_pid: programme.pid,
         session_id: session.id,
         ...(data.token && { createdBy_uid: data.token?.uid })
       },
