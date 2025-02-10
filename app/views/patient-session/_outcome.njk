@@ -1,0 +1,51 @@
+{{ heading({
+  level: 2,
+  size: "m",
+  title: __("session.outcome.label")
+}) }}
+
+{% set cardDescriptionHtml %}
+  {# Decision table #}
+  {% set vaccinationRows = [] %}
+  {% for vaccination in patientSession.vaccinations | reverse %}
+    {% set vaccinationRows = vaccinationRows | push([
+      {
+        header: __("vaccination.vaccine_gtin.label"),
+        html: vaccination.link.createdAt_date,
+        attributes: {
+          "data-col": "createdAt",
+          "data-sort": vaccination.createdAt
+        }
+      },
+      {
+        header: __("vaccination.note.label"),
+        text: vaccination.note or "Not provided"
+      },
+      {
+        header: __("vaccination.location.label"),
+        text: vaccination.formatted.outcome | safe
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    id: "vaccinations",
+    caption: __("patient.vaccinations.label"),
+    sort: "createdAt",
+    responsive: true,
+    head: [
+      { text: __("vaccination.createdAt.label") },
+      { text: __("vaccination.note.label") },
+      { text: __("vaccination.outcome.label") }
+    ],
+    rows: vaccinationRows
+  }) if patientSession.vaccinations | length }}
+{% endset %}
+
+{{ card({
+  classes: "app-card--" + patientSession.status.outcome.colour,
+  feature: true,
+  heading: programme.name + ": " + patientSession.status.outcome.text,
+  headingClasses: "nhsuk-u-font-size-24",
+  descriptionHtml: cardDescriptionHtml
+}) }}

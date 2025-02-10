@@ -1,0 +1,133 @@
+{{ heading({
+  level: 2,
+  size: "m",
+  title: __("session.consent.label")
+}) }}
+
+{{ warningCallout({
+  heading: __("consent.list.title"),
+  HTML: link(patientSession.session.uri + "/consents", __n("consent.warning.text", patientSession.session.consents.length), {
+    classes: "nhsuk-link--no-visited-state"
+  }) | nhsukMarkdown
+}) if patientSession.session.consents | length }}
+
+{% set cardDescriptionHtml %}
+  {# Description #}
+  {% if session.consentWindow == ConsentWindow.Opening %}
+    {{ session.formatted.consentWindow | nhsukMarkdown }}
+  {% elif session.consentWindow == ConsentWindow.Open %}
+    {{ patientSession.status.consent.description | nhsukMarkdown }}
+  {% endif %}
+
+  {% if patientSession.patient.lastReminderDate %}
+    {{ patientSession.patient.formatted.lastReminderDate | nhsukMarkdown }}
+  {% endif %}
+
+  {# Actions #}
+  <div class="app-button-group">
+    {{ button({
+      classes: "app-button--secondary",
+      text: __("remind.new.title"),
+      attributes: {
+        formaction: patientSession.uri + "/new/remind",
+        formmethod: "post"
+      }
+    }) if options.canRemind }}
+
+    {{ button({
+      classes: "app-button--secondary",
+      text: __("patientSession.invite.label"),
+      attributes: {
+        formmethod: patientSession.uri + "/new/invite",
+        formaction: "post"
+      }
+    }) if options.canInvite }}
+
+    {{ button({
+      classes: "app-button--secondary",
+      text: __("reply.new.title"),
+      href: patientSession.uri + "/replies/new"
+    }) if options.canRespond }}
+  </div>
+
+  {# Gillick #}
+  {% if options.canGillick %}
+    {{ heading({
+      classes: "nhsuk-u-margin-bottom-3",
+      level: 4,
+      size: "s",
+      title: __("patientSession.gillick.label")
+    }) }}
+
+    {{ status(patientSession.gillick.status) }}
+
+    <div class="app-button-group">
+      {% set form = "edit" if patientSession.gillick.competent else "new" %}
+      {{ button({
+        classes: "app-button--secondary",
+        text: __("patientSession.gillick." + form + ".title"),
+        href: patientSession.uri + "/" + form + "/gillick?referrer=" + referrer
+      }) }}
+    </div>
+  {% endif %}
+
+  {# Decision table #}
+  {% if patientSession.responses | length %}
+    {% set consentRows = [] %}
+    {% for consent in patientSession.responses %}
+      {% set consentColour = consent.status.colour %}
+      {% set consentModifier = "grey" if consent.invalid else consentColour %}
+      {% set consentRows = consentRows | push([
+        {
+          classes: "app-table__cell-status--" + consentModifier,
+          header: __("parent.fullName.label"),
+          html: consent.link.fullNameAndRelationship
+        },
+        {
+          classes: "app-table__cell-status--" + consentModifier,
+          header: __("consent.createdAt.label"),
+          html: consent.formatted.createdAt_date or "Not provided",
+          attributes: {
+            "data-sort": consent.createdAt
+          }
+        },
+        {
+          classes: "app-table__cell-status--" + consentModifier,
+          header: __("consent.decision.label"),
+          html: consent.formatted.decision
+        }
+      ]) %}
+    {% endfor %}
+
+    {{ actionTable({
+      id: "consents",
+      caption: __("patientSession.responses.label"),
+      sort: "createdAt",
+      responsive: true,
+      head: [
+        { text: __("parent.fullName.label") },
+        { text: __("consent.createdAt.label") },
+        { text: __("consent.decision.label") }
+      ],
+      rows: consentRows
+    }) }}
+  {% endif %}
+{% endset %}
+
+{{ card({
+  classes: "app-card--" + patientSession.status.consent.colour,
+  feature: true,
+  heading: programme.name + ": " + patientSession.status.consent.text,
+  headingClasses: "nhsuk-u-font-size-24",
+  headingLevel: 3,
+  descriptionHtml: cardDescriptionHtml
+}) }}
+
+{{ card({
+  heading: __("healthAnswers.label"),
+  headingClasses: "nhsuk-u-font-size-24",
+  descriptionHtml: summaryList({
+    classes: "app-summary-list--full-width",
+    rows: healthAnswerRows(patientSession.consentHealthAnswers)
+  })
+}) if patientSession.consentHealthAnswers }}

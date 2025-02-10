@@ -16,22 +16,8 @@ import { VaccinationOutcome } from '../models/vaccination.js'
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @returns {Activity} Activity
  */
-export const getNextActivity = ({
-  consent,
-  triage,
-  screen,
-  registration,
-  outcome,
-  session
-}) => {
-  if (session.isActive && registration === RegistrationOutcome.Pending) {
-    return Activity.Register
-  }
-
-  if (
-    consent === ConsentOutcome.NoResponse ||
-    consent === ConsentOutcome.NoRequest
-  ) {
+export const getNextActivity = ({ consent, triage, screen, outcome }) => {
+  if (![ConsentOutcome.Given, ConsentOutcome.FinalRefusal].includes(consent)) {
     return Activity.Consent
   }
 
@@ -40,7 +26,6 @@ export const getNextActivity = ({
   }
 
   if (
-    session.isActive &&
     screen !== ScreenOutcome.NeedsTriage &&
     outcome === PatientOutcome.NoOutcomeYet
   ) {
@@ -156,7 +141,7 @@ export const getScreenStatus = (patientSession) => {
       description = 'You need to decide if it’s safe to vaccinate.'
       break
     case ScreenOutcome.DelayVaccination:
-      colour = 'red'
+      colour = 'dark-orange'
       description = `${user.fullName} decided that ${patient.fullName}’s vaccination should be delayed.`
       reason = 'Vaccination delayed'
       break

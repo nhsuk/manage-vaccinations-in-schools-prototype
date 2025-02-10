@@ -719,6 +719,17 @@ export const en = {
       }
     }
   },
+  event: {
+    createdAt: {
+      label: 'Date'
+    },
+    note: {
+      label: 'Note'
+    },
+    outcome: {
+      label: 'Outcome'
+    }
+  },
   healthAnswers: {
     label: 'All answers to health questions'
   },
@@ -884,7 +895,7 @@ export const en = {
     }
   },
   patient: {
-    label: 'Child',
+    label: 'Child record',
     list: {
       label: 'Children',
       title: 'Children',
@@ -904,6 +915,9 @@ export const en = {
     },
     lastReminderDate: {
       label: 'Last reminder sent'
+    },
+    triageNotes: {
+      label: 'Triage notes'
     },
     results:
       'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> children',
@@ -1088,6 +1102,9 @@ export const en = {
       success:
         'Consent request sent to {{parent.formatted.fullNameAndRelationship}}'
     },
+    responses: {
+      label: 'Consent responses'
+    },
     preScreen: {
       label: 'Pre-screening questions',
       questions: {
@@ -1250,7 +1267,7 @@ export const en = {
       title: 'Consent response from %s'
     },
     new: {
-      title: 'Get consent response',
+      title: 'Get verbal consent',
       'check-answers': {
         title: 'Check and confirm'
       },
@@ -1455,7 +1472,7 @@ export const en = {
       label: 'Triage'
     },
     screen: {
-      label: 'Screen'
+      label: 'Triage'
     },
     register: {
       label: 'Register',
