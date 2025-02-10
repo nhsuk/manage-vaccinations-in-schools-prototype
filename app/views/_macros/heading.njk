@@ -1,11 +1,12 @@
 {% macro heading(params) -%}
+{%- set level = params.level or 1 -%}
 {%- set size = params.size or "l" -%}
-<h1 class="nhsuk-heading-{{ size }}{%- if params.classes %} {{ params.classes }}{% endif %}{%- if params.summary %} nhsuk-u-margin-bottom-2{% endif %}">
+<h{{level}} class="nhsuk-heading-{{ size }}{%- if params.classes %} {{ params.classes }}{% endif %}{%- if params.summary %} nhsuk-u-margin-bottom-2{% endif %}">
   {%- if params.caption -%}
   <span class="nhsuk-caption-{{ size }}">{{ params.caption }}</span>
   {%- endif -%}
   {{ params.title | safe }}
-</h1>
+</h{{level}}>
 {%- if params.summary -%}
 <p class="nhsuk-caption-{{ size }} nhsuk-u-margin-bottom-4">
   {{ params.summary }}
