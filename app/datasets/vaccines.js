@@ -107,7 +107,8 @@ export default {
       'isVaccinated',
       'isWell',
       'isAllergic',
-      'isMedicated'
+      'isMedicated',
+      'isPregnant'
     ]
   },
   // MenACWY vaccines
