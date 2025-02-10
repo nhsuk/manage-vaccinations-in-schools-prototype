@@ -107,3 +107,12 @@ $color_app-dark-orange: color.scale(color.mix($color_nhsuk-red, $color_nhsuk-war
 .nhsuk-fieldset__legend--s {
   margin-bottom: nhsuk-spacing(2);
 }
+
+// Ensure expander shares same padding with cards
+.nhsuk-expander {
+  .nhsuk-details__summary,
+  .nhsuk-details__text {
+    @include nhsuk-responsive-padding(5, "left");
+    @include nhsuk-responsive-padding(5, "right");
+  }
+}
