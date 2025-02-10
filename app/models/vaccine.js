@@ -79,7 +79,7 @@ export const VaccineMethod = {
  * @property {string} type - Type
  * @property {string} brand - Brand
  * @property {string} manufacturer - Manufacturer
- * @property {string} [leaflet] - Leaflet
+ * @property {object} [leaflet] - Leaflet
  * @property {number} dose - Dosage
  * @property {number} sequenceLimit - Maximum doses in sequence
  * @property {VaccineMethod} method - Method
