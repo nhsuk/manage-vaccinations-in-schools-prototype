@@ -115,6 +115,19 @@ export default () => {
     return rows
   }
 
+  globals.inspect = function (data, includeContext = false) {
+    const { filters } = this.ctx.settings.nunjucksEnv
+
+    if (!includeContext) {
+      const contextlessData = structuredClone(data)
+      delete contextlessData.context
+      data = contextlessData
+    }
+
+    const json = JSON.stringify(data, null, 2)
+    return filters.safe(`<pre>${json}</pre>`)
+  }
+
   /**
    * Format link
    *
