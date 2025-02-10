@@ -46,74 +46,7 @@
     view: "show"
   }) }}
 
-  {% set statusDescriptionHtml %}
-    {{ patientStatus(patientSession).description | nhsukMarkdown }}
-
-    {% for vaccination in patientSession.vaccinations %}
-      {{ summaryList({
-        rows: summaryRows(vaccination, {
-          vaccine_gtin: {},
-          outcome: {},
-          method: {},
-          site: {},
-          dose: {},
-          sequence: {},
-          batch_id: {},
-          createdAt: {},
-          createdBy: {},
-          updatedAt: {},
-          location: {},
-          protocol: {},
-          note: {}
-        })
-      }) }}
-      <p class="nhsuk-body">
-        {{ button({
-          classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("vaccination.edit.title"),
-          href: vaccination.uri + "/edit?referrer=" + patientSession.uri
-        }) }}
-      </p>
-    {% endfor %}
-
-    {% if options.editTriage %}
-      <p class="nhsuk-body">
-        {{ button({
-          classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("triage.edit.title"),
-          href: patientSession.uri + "/edit/triage"
-        }) }}
-      </p>
-    {% endif %}
-
-    {% if options.showReminder %}
-      <div class="app-button-group">
-        {{ button({
-          classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("remind.new.title"),
-          attributes: {
-            formaction: patientSession.uri + "/new/remind",
-            formmethod: "post"
-          }
-        }) }}
-        {% if patientSession.patient.lastReminderDate %}
-          <p class="nhsuk-u-secondary-text-color nhsuk-u-margin-0">
-            {{ patientSession.patient.formatted.lastReminderDate }}
-          </p>
-        {% endif %}
-      </div>
-    {% endif %}
-  {% endset %}
-
-  {{ card({
-    classes: "app-card--" + patientStatus(patientSession).colour,
-    heading: patientStatus(patientSession).title,
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: statusDescriptionHtml,
-    feature: true
-  }) if session.consentWindow != ConsentWindow.Opening }}
-
-  {% set recordDescriptionHtml %}
+  {% set patientDescriptionHtml %}
     {{ status({
       text: patient.notice.name,
       icon: "warning",
@@ -138,257 +71,32 @@
       })
     }) }}
 
-    <p class="nhsuk-body">
+    <div class="app-button-group">
       {{ button({
         classes: "app-button--secondary nhsuk-u-margin-0",
         text: __("patient.edit.title"),
         href: patient.uri + "/edit?referrer=" + patientSession.uri
       }) }}
-    </p>
+    </div>
   {% endset %}
 
   {{ card({
     heading: __("patient.label"),
     headingClasses: "nhsuk-heading-m",
-    descriptionHtml: recordDescriptionHtml
+    descriptionHtml: patientDescriptionHtml
   }) }}
 
-  {% set gillickDescriptionHtml %}
-    {% if patientSession.gillick.competent %}
-      {{ status(patientSession.gillick.status) }}
+  {% include "patient-session/_consent.njk" %}
 
-      {% if options.editGillick %}
-        <p class="nhsuk-body">
-          {{ button({
-            classes: "app-button--secondary nhsuk-u-margin-0",
-            text: __("patientSession.gillick.edit.title"),
-            href: patientSession.uri + "/edit/gillick"
-          }) }}
-        </p>
-      {% endif %}
-    {% elif options.editGillick %}
-      <p class="nhsuk-body">
-        {{ button({
-          classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("patientSession.gillick.new.title"),
-          href: patientSession.uri + "/new/gillick"
-        }) }}
-      </p>
-    {% endif %}
-  {% endset %}
+  {% if options.canTriage %}
+    {% include "patient-session/_triage.njk" %}
+  {% endif %}
 
-  {{ card({
-    heading: __("patientSession.gillick.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: gillickDescriptionHtml
-  }) if options.showGillick }}
+  {% if options.canRecord %}
+    {% include "patient-session/_record.njk" %}
+  {% endif %}
 
-  {% set consentDescriptionHtml %}
-    {{ status({
-      classes: "nhsuk-u-margin-bottom-3",
-      colour: "blue",
-      text: link(patientSession.session.uri + "/consents", __n("consent.warning.text", patientSession.session.consents.length), { classes: "nhsuk-link--no-visited-state" }) | safe,
-      icon: "warning"
-    }) if patientSession.session.consents.length }}
-
-    {% if patientSession.responses.length %}
-      {{ status(patientSession.status.consent) }}
-
-      {% set consentRows = [] %}
-      {% for consent in patientSession.responses %}
-        {% set consentColour = consent.status.colour %}
-        {% set consentModifier = "grey" if consent.invalid else consentColour %}
-        {% set consentRows = consentRows | push([
-          {
-            classes: "app-table__cell-status--" + consentModifier,
-            header: __("parent.fullName.label"),
-            html: consent.link.fullNameAndRelationship
-          },
-          {
-            classes: "app-table__cell-status--" + consentModifier,
-            header: __("consent.createdAt.label"),
-            html: consent.formatted.createdAt_date or "Not provided",
-            attributes: {
-              "data-sort": consent.createdAt
-            }
-          },
-          {
-            classes: "app-table__cell-status--" + consentModifier,
-            header: __("consent.decision.label"),
-            html: consent.formatted.decision
-          }
-        ]) %}
-      {% endfor %}
-
-      {{ actionTable({
-        id: "consents",
-        classes: "nhsuk-u-margin-bottom-4",
-        sort: "createdAt",
-        responsive: true,
-        head: [
-          { text: __("parent.fullName.label") },
-          { text: __("consent.createdAt.label") },
-          { text: __("consent.decision.label") }
-        ],
-        rows: consentRows
-      }) }}
-    {% elif session.consentWindow == ConsentWindow.Opening %}
-      {{ session.formatted.consentWindow | nhsukMarkdown }}
-    {% else %}
-      {{ patientSession.status.consent.text | nhsukMarkdown }}
-    {% endif %}
-    {% if options.getReply %}
-      <form action="{{ patientSession.uri }}/new/invite" method="post">
-        {{ button({
-          classes: "app-button--secondary nhsuk-u-margin-bottom-4",
-          text: __("patientSession.invite.label")
-        }) }}
-      </form>
-    {% endif %}
-    {% if options.editReplies %}
-      <p class="nhsuk-body">
-        {{ button({
-          classes: "app-button--secondary nhsuk-u-margin-0",
-          text: __("reply.new.title"),
-          href: patientSession.uri + "/replies/new"
-        }) }}
-      </p>
-    {% endif %}
-  {% endset %}
-
-  {{ card({
-    heading: __("patientSession.consent.title", programme.name),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: consentDescriptionHtml
-  }) }}
-
-  {{ card({
-    heading: __("healthAnswers.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      classes: "app-summary-list--full-width",
-      rows: healthAnswerRows(patientSession.consentHealthAnswers)
-    })
-  }) if patientSession.consentHealthAnswers }}
-
-  {% set triageNotesDescriptionHtml %}
-    {% for note in patientSession.patient.triageNotes | reverse %}
-      <h3 class="nhsuk-heading-s nhsuk-u-margin-bottom-2">{{ note.name }}</h3>
-      {{ event(note, users) }}
-      {% if not loop.last -%}
-        <hr class="nhsuk-section-break nhsuk-section-break--visible  nhsuk-section-break--m">
-      {%- endif %}
-    {% endfor %}
-  {% endset %}
-
-  {{ card({
-    heading: __("triage.note.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: triageNotesDescriptionHtml
-  }) if patientSession.patient.triageNotes.length }}
-
-  {% set triageDescriptionHtml %}
-    {{ radios({
-      items: [{
-        text: __("triage.outcome." + ScreenOutcome.Vaccinate),
-        value: ScreenOutcome.Vaccinate
-      }, {
-        divider: "or"
-      }, {
-        text: __("triage.outcome." + ScreenOutcome.DoNotVaccinate),
-        value: ScreenOutcome.DoNotVaccinate
-      }, {
-        text: __("triage.outcome." + ScreenOutcome.DelayVaccination),
-        value: ScreenOutcome.DelayVaccination
-      }, {
-        text: __("triage.outcome." + ScreenOutcome.NeedsTriage),
-        value: ScreenOutcome.NeedsTriage
-      }],
-      decorate: "triage.outcome"
-    }) }}
-
-    {{ textarea({
-      label: {
-        text: __("triage.note.label") + " (optional)"
-      },
-      rows: 5,
-      decorate: "triage.note"
-    }) }}
-
-    {{ button({
-      text: __("triage.confirm"),
-      attributes: {
-        formaction: patientSession.uri + "/new/triage"
-      }
-    }) }}
-  {% endset %}
-
-  {{ card({
-    heading: __("triage.label", { patient: patient }),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: triageDescriptionHtml
-  }) if options.showTriage }}
-
-  {% set preScreenDescriptionHtml %}
-    {% for key in preScreenQuestionKeys(session, patient) %}
-      {{ radios({
-        classes: "nhsuk-radios--inline",
-        fieldset: {
-          legend: { text: PreScreenQuestion[key] }
-        },
-        items: booleanItems,
-        decorate: ["patientSession", "preScreen", key]
-      }) }}
-    {% endfor %}
-
-    {{ textarea({
-      label: { text: __("patientSession.preScreen.note.label") + " (Optional)" },
-      rows: 3,
-      decorate: "patientSession.preScreen.note"
-    }) }}
-
-    <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
-
-    {{ radios({
-      fieldset: {
-        legend: {
-          classes: "nhsuk-fieldset__legend--m",
-          text: __("patientSession.preScreen.ready.label", { patient: patient })
-        }
-      },
-      items: [
-        {
-          text: __("patientSession.preScreen.ready.yes"),
-          value: true,
-          conditional: {
-            html: radios({
-              fieldset: {
-                legend: { text: __("patientSession.preScreen.injectionSite.label") }
-              },
-              items: injectionSiteItems,
-              decorate: "patientSession.preScreen.injectionSite"
-            })
-          }
-        },
-        {
-          text: __("patientSession.preScreen.ready.no"),
-          value: false
-        }
-      ],
-      decorate: "patientSession.preScreen.ready"
-    }) }}
-
-    {{ button({
-      text: __("patientSession.preScreen.confirm"),
-      attributes: {
-        formaction: patientSession.uri + "/new/pre-screen"
-      }
-    }) }}
-  {% endset %}
-
-  {{ card({
-    heading: __("patientSession.preScreen.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: preScreenDescriptionHtml
-  }) if options.showPreScreen }}
+  {% if options.canOutcome %}
+    {% include "patient-session/_outcome.njk" %}
+  {% endif %}
 {% endblock %}

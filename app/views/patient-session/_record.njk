@@ -1,0 +1,68 @@
+{{ heading({
+  level: 2,
+  size: "m",
+  title: __("session.record.label")
+}) }}
+
+{% set preScreenDescriptionHtml %}
+  {% for key in preScreenQuestionKeys(session, patient) %}
+    {{ radios({
+      classes: "nhsuk-radios--inline",
+      fieldset: {
+        legend: { text: PreScreenQuestion[key] }
+      },
+      items: booleanItems,
+      decorate: ["patientSession", "preScreen", key]
+    }) }}
+  {% endfor %}
+
+  {{ textarea({
+    label: { text: __("patientSession.preScreen.note.label") + " (Optional)" },
+    rows: 3,
+    decorate: "patientSession.preScreen.note"
+  }) }}
+
+  <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("patientSession.preScreen.ready.label", { patient: patient })
+      }
+    },
+    items: [
+      {
+        text: __("patientSession.preScreen.ready.yes"),
+        value: true,
+        conditional: {
+          html: radios({
+            fieldset: {
+              legend: { text: __("patientSession.preScreen.injectionSite.label") }
+            },
+            items: injectionSiteItems,
+            decorate: "patientSession.preScreen.injectionSite"
+          })
+        }
+      },
+      {
+        text: __("patientSession.preScreen.ready.no"),
+        value: false
+      }
+    ],
+    decorate: "patientSession.preScreen.ready"
+  }) }}
+
+  {{ button({
+    text: __("patientSession.preScreen.confirm"),
+    attributes: {
+      formaction: patientSession.uri + "/new/pre-screen"
+    }
+  }) }}
+{% endset %}
+
+{{ card({
+  heading: __("patientSession.preScreen.label"),
+  headingClasses: "nhsuk-heading-m",
+  descriptionHtml: preScreenDescriptionHtml
+}) }}

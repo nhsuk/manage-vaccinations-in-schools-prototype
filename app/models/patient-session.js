@@ -82,9 +82,9 @@ export const ScreenOutcome = {
  */
 export const RegistrationOutcome = {
   Pending: 'Not registered yet',
-  Present: 'Attending today’s session',
-  Absent: 'Absent from today’s session',
-  Complete: 'Completed today’s session'
+  Present: 'Attending session',
+  Absent: 'Absent from session',
+  Complete: 'Completed session'
 }
 
 /**
@@ -478,6 +478,8 @@ export class PatientSession {
       consent,
       triage:
         this.triage === TriageOutcome.Completed && this.status.screen.reason,
+      register:
+        this.registration === RegistrationOutcome.Present && this.nextActivity,
       record: this.couldNotVaccinateReason,
       outcome:
         this.outcome === PatientOutcome.CouldNotVaccinate &&
@@ -660,8 +662,8 @@ export class PatientSession {
       type: EventType.Screen,
       name: event.name,
       note: event.note,
-      createdBy_uid: event.createdBy_uid,
       outcome: event.outcome,
+      createdBy_uid: event.createdBy_uid,
       programme_pids: this.session.programme_pids
     })
   }

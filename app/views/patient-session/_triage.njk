@@ -1,0 +1,114 @@
+{{ heading({
+  level: 2,
+  size: "m",
+  title: __("session.triage.label")
+}) }}
+
+{% set cardDescriptionHtml %}
+  {# Description #}
+  {{ patientSession.status.screen.description | nhsukMarkdown }}
+
+  {# Actions #}
+  {% if options.hasTriage %}
+    <div class="app-button-group">
+      {{ button({
+        classes: "app-button--secondary",
+        text: __("triage.edit.title"),
+        href: patientSession.uri + "/edit/triage"
+      }) }}
+    </div>
+  {% endif %}
+
+  {# Decision table #}
+  {% set triageNoteRows = [] %}
+  {% for triageNote in patientSession.patient.triageNotes | reverse %}
+    {% set triageNoteRows = triageNoteRows | push([
+      {
+        header: __("event.createdAt.label"),
+        html: triageNote.link.createdAtAndBy
+      },
+      {
+        header: __("event.note.label"),
+        html: triageNote.note or "—" | nhsukMarkdown
+      },
+      {
+        header: __("event.outcome.label"),
+        html: triageNote.formatted.outcome
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ actionTable({
+    id: "triage-notes",
+    caption: __("patient.triageNotes.label"),
+    sort: "createdAt",
+    responsive: true,
+    head: [
+      {
+        text: __("event.createdAt.label"),
+        attributes: {
+          width: "25%"
+        }
+      },
+      { text: __("event.note.label") },
+      {
+        text: __("event.outcome.label"),
+        attributes: {
+          width: "25%"
+        }
+      }
+    ],
+    rows: triageNoteRows
+  }) if patientSession.patient.triageNotes | length }}
+{% endset %}
+
+{{ card({
+  classes: "app-card--" + patientSession.status.screen.colour,
+  feature: true,
+  heading: programme.name + ": " + patientSession.status.screen.text,
+  headingClasses: "nhsuk-u-font-size-24",
+  headingLevel: 3,
+  descriptionHtml: cardDescriptionHtml
+}) }}
+
+{% set triageDescriptionHtml %}
+  {{ radios({
+    items: [{
+      text: __("triage.outcome." + ScreenOutcome.Vaccinate),
+      value: ScreenOutcome.Vaccinate
+    }, {
+      divider: "or"
+    }, {
+      text: __("triage.outcome." + ScreenOutcome.DoNotVaccinate),
+      value: ScreenOutcome.DoNotVaccinate
+    }, {
+      text: __("triage.outcome." + ScreenOutcome.DelayVaccination),
+      value: ScreenOutcome.DelayVaccination
+    }, {
+      text: __("triage.outcome." + ScreenOutcome.NeedsTriage),
+      value: ScreenOutcome.NeedsTriage
+    }],
+    decorate: "triage.outcome"
+  }) }}
+
+  {{ textarea({
+    label: {
+      text: __("triage.note.label") + " (optional)"
+    },
+    rows: 5,
+    decorate: "triage.note"
+  }) }}
+
+  {{ button({
+    text: __("triage.confirm"),
+    attributes: {
+      formaction: patientSession.uri + "/new/triage"
+    }
+  }) }}
+{% endset %}
+
+{{ card({
+  heading: __("triage.label", { patient: patient }),
+  headingClasses: "nhsuk-u-font-size-24",
+  descriptionHtml: triageDescriptionHtml
+}) if not options.hasTriage }}
