@@ -99,62 +99,66 @@
     ]) %}
   {% endfor %}
 
-  <div class="app-grid-row">
-    <div class="app-grid-column-filters">
-      {{ patientSearch({
-        clear: session.uri + "/" + view,
-        status: view
-      }) }}
-    </div>
-
-    <div class="app-grid-column-results">
-      {{ warningCallout({
-        heading: __("consent.list.title"),
-        HTML: link(session.uri + "/consents", __n("consent.warning.text", session.consents.length), {
-          classes: "nhsuk-link--no-visited-state"
-        }) | nhsukMarkdown
-      }) if session.consents.length and view == "consent" }}
-
-      {% if patientSessions.length %}
-        {{ actionTable({
-          id: "patient-sessions",
-          sort: "name",
-          heading: __n("patient.count", results.count),
-          responsive: true,
-          panel: true,
-          head: [
-            {
-              text: __("patient.fullName.label"),
-              attributes: {
-                "data-col": "name"
-              }
-            },
-            {
-              text: __("patient.yearGroup.label"),
-              attributes: {
-                "data-col": "yearGroup"
-              }
-            },
-            {
-              text: __("patientSession." + view + ".label")
-            },
-            {
-              text: __("patientSession.registration.actions.label"),
-              attributes: {
-                "no-sort": "no-sort"
-              }
-            } if view == "register"
-          ],
-          rows: patientRows
+  {% if view == "register" and not session.isActive %}
+    {{ __("session.register.information") | nhsukMarkdown }}
+  {% else %}
+    <div class="app-grid-row">
+      <div class="app-grid-column-filters">
+        {{ patientSearch({
+          clear: session.uri + "/" + view,
+          status: view
         }) }}
-      {% else %}
-        {{ card({
-          heading: __n("patient.count", patientSessions.length),
-          headingClasses: "nhsuk-heading-s",
-          feature: true,
-          description: __("patient.search.empty")
-        }) }}
-      {% endif %}
+      </div>
+
+      <div class="app-grid-column-results">
+        {{ warningCallout({
+          heading: __("consent.list.title"),
+          HTML: link(session.uri + "/consents", __n("consent.warning.text", session.consents.length), {
+            classes: "nhsuk-link--no-visited-state"
+          }) | nhsukMarkdown
+        }) if session.consents.length and view == "consent" }}
+
+        {% if patientSessions.length %}
+          {{ actionTable({
+            id: "patient-sessions",
+            sort: "name",
+            heading: __n("patient.count", results.count),
+            responsive: true,
+            panel: true,
+            head: [
+              {
+                text: __("patient.fullName.label"),
+                attributes: {
+                  "data-col": "name"
+                }
+              },
+              {
+                text: __("patient.yearGroup.label"),
+                attributes: {
+                  "data-col": "yearGroup"
+                }
+              },
+              {
+                text: __("patientSession." + view + ".label")
+              },
+              {
+                text: __("patientSession.registration.actions.label"),
+                attributes: {
+                  "no-sort": "no-sort"
+                }
+              } if view == "register"
+            ],
+            rows: patientRows
+          }) }}
+        {% else %}
+          {{ card({
+            heading: __n("patient.count", patientSessions.length),
+            headingClasses: "nhsuk-heading-s",
+            feature: true,
+            description: __("patient.search.empty")
+          }) }}
+        {% endif %}
+      </div>
     </div>
-  </div>
+  {% endif %}
 {% endblock %}
