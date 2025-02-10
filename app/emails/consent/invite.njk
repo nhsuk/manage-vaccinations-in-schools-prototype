@@ -18,7 +18,7 @@ We would like your consent to vaccinate {{ consent.child.fullName }}. You can gi
 [Find out more about the {{ programme.name | replace("Flu", "flu") }} vaccine on NHS.UK]({{ programme.information.url }})
 
 {% if programme.vaccine.leaflet %}
-[Read the patient information leaflet]({{ programme.vaccine.leaflet }})
+[Read the patient information leaflet for the {{ programme.name }} vaccine (PDF, {{ programme.vaccine.leaflet.size }})]({{ programme.vaccine.leaflet.url }})
 {% endif %}
 {% endfor %}
 
