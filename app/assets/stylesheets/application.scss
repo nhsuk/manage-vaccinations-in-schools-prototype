@@ -27,8 +27,6 @@ $govuk-colours: (
   "turquoise": #00a499
 );
 
-@import "node_modules/nhsuk-frontend/packages/nhsuk";
-
 // Import GOV.UK Frontend
 @import "govuk-frontend/dist/govuk/base";
 @import "govuk-frontend/dist/govuk/core";
@@ -36,6 +34,20 @@ $govuk-colours: (
 @import "govuk-frontend/dist/govuk/components/notification-banner";
 @import "govuk-frontend/dist/govuk/components/pagination";
 @import "govuk-frontend/dist/govuk/components/panel";
+
+// Import NHS.UK Frontend
+$_nhsuk-grid-widths: (
+  one-quarter: 25%,
+  one-third: 33.3333%,
+  one-half: 50%,
+  two-thirds: 66.6666%,
+  three-quarters: 75%,
+  full: 100%,
+  filters: 30%,
+  results: 70%
+) !default;
+
+@import "node_modules/nhsuk-frontend/packages/nhsuk";
 
 // Import GOV.UK Prototype Components
 @import "@x-govuk/govuk-prototype-components/x-govuk/components/autocomplete/autocomplete";
