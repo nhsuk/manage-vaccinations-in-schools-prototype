@@ -84,18 +84,22 @@ export class AuditEvent {
    * @returns {object} - Formatted values
    */
   get formatted() {
+    const datetime = formatDate(this.createdAt, {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    })
+
     return {
-      createdAt: formatDate(this.createdAt, {
-        dateStyle: 'long'
-      }),
-      datetime: formatDate(this.createdAt, {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      }),
+      createdAt: formatDate(this.createdAt, { dateStyle: 'long' }),
+      createdAtAndBy: this.createdBy
+        ? [datetime, this.createdBy.link.fullName].join(` · `)
+        : datetime,
+      datetime,
+      note: this.note && `<blockquote>${this.note}</blockquote>`,
       programmes: this.programmes
         .flatMap(({ name }) => formatTag({ colour: 'white', text: name }))
         .join(' ')

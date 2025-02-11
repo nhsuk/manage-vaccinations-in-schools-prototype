@@ -1,17 +1,9 @@
-{%- from "components/tag/macro.njk" import tag -%}
-{% macro event(auditEvent) -%}
-  {% if auditEvent.note -%}
-  <blockquote>
-    {{ auditEvent.note | nhsukMarkdown }}
-  </blockquote>
-  {%- endif %}
+{% macro event(auditEvent, showProgrammes = true) -%}
+  {{ auditEvent.formatted.note | nhsukMarkdown }}
   <p class="nhsuk-body-s nhsuk-u-margin-0 nhsuk-u-secondary-text-color">
-    {% if auditEvent.formatted.programmes %}
+    {% if auditEvent.formatted.programmes and showProgrammes %}
       {{ auditEvent.formatted.programmes | safe }}&nbsp;
     {% endif %}
-    {{ auditEvent.formatted.datetime }}
-    {% if auditEvent.createdBy_uid %}&middot;
-      {{ auditEvent.createdBy.link.fullName | safe -}}
-    {% endif -%}
+    {{ auditEvent.formatted.createdAtAndBy | safe }}
   </p>
 {%- endmacro %}
