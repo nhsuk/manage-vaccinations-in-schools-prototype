@@ -1663,7 +1663,7 @@ export const en = {
       invite: {
         label: 'Invitation',
         name: 'Inviting parent to give or refuse consent',
-        text: 'Give or refuse consent for your child’s {{session.vaccination}} by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}]({{session.consentUrl}}). You need to do this by {{session.formatted.openAt}}.\n\nResponding will take less than 5 minutes.'
+        text: 'Give or refuse consent for your child’s {{session.vaccination}} by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}]({{session.consentUrl}}/start). You need to do this by {{session.formatted.openAt}}.\n\nResponding will take less than 5 minutes.'
       },
       'invite-clinic': {
         label: 'Clinic booking',
@@ -1683,7 +1683,7 @@ export const en = {
       'invite-reminder': {
         label: 'Reminder',
         name: 'Reminding parent to give or refuse consent',
-        text: 'We recently asked for your consent to vaccinate your child against {{session.immunisation}}.\n\nGo to [https://give-or-refuse-consent.nhs.uk/{{session.id}}]({{session.consentUrl}}) to submit a response. This will take less than 5 minutes.'
+        text: 'We recently asked for your consent to vaccinate your child against {{session.immunisation}}.\n\nGo to [https://give-or-refuse-consent.nhs.uk/{{session.id}}]({{session.consentUrl}}/start) to submit a response. This will take less than 5 minutes.'
       },
       'consent-given': {
         label: 'Consent given',
