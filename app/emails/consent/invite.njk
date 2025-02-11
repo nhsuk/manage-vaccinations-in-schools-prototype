@@ -34,6 +34,11 @@ You need to respond by {{ session.formatted.firstDate }}.
 ## Talk to your child about what they want
 
 We suggest you talk to your child about the {{ vaccine__n }} before you respond to us.
+
+{% if programme.type != ProgrammeType.Flu %}
+Young people who show ‘[Gillick competence](https://www.nhs.uk/conditions/consent-to-treatment/children)’ have a legal right to consent to vaccinations themselves. They also have the right to refuse vaccinations which their parents want them to have. Our team may assess Gillick competence during vaccination sessions.
+{% endif %}
+
 {% endif %}
 
 ## If you cannot use the online form
