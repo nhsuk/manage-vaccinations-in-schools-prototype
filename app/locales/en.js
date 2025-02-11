@@ -1061,6 +1061,12 @@ export const en = {
     consent: {
       label: 'Consent responses'
     },
+    record: {
+      label: 'Vaccination status'
+    },
+    outcome: {
+      label: 'Programme outcome'
+    },
     gillick: {
       label: 'Gillick assessment',
       text: 'Before you make your assessment, you should give {{patient.firstName}} a chance to ask questions.',

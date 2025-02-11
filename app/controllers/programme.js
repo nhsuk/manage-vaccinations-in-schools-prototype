@@ -1,6 +1,8 @@
 import _ from 'lodash'
 
+import { PatientOutcome } from '../models/patient-session.js'
 import { Programme } from '../models/programme.js'
+import { VaccinationOutcome } from '../models/vaccination.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
@@ -19,7 +21,7 @@ export const programmeController = {
 
   read(request, response, next) {
     const { pid } = request.params
-    let { page, limit, hasMissingNhsNumber, q } = request.query
+    let { page, limit, hasMissingNhsNumber, q, outcome, record } = request.query
     const { data } = request.session
 
     const programme = Programme.read(pid, data)
@@ -28,6 +30,11 @@ export const programmeController = {
 
     let results = []
 
+    const filters = {
+      outcome: outcome || 'none',
+      record: record || 'none'
+    }
+
     // Paginate
     page = parseInt(page) || 1
     limit = parseInt(limit) || 200
@@ -35,10 +42,23 @@ export const programmeController = {
     // Search
     const view = request.path.split('/').at(-1)
     if (view === 'patients') {
-      // Sort
-      results = _.sortBy(programme.patientSessions, 'lastName')
+      results = programme.patientSessions
 
-      // Filter
+      // Filter by programme outcome
+      if (filters.outcome !== 'none') {
+        results = results.filter(
+          (patientSession) => patientSession.outcome === filters.outcome
+        )
+      }
+
+      // Filter by vaccination record status
+      if (filters.record !== 'none') {
+        results = results.filter(
+          (patientSession) => patientSession.record === filters.record
+        )
+      }
+
+      // Filter by missing NHS number
       if (hasMissingNhsNumber) {
         results = results.filter(({ patient }) => patient.hasMissingNhsNumber)
       }
@@ -49,31 +69,52 @@ export const programmeController = {
           patient.tokenized.includes(String(q).toLowerCase())
         )
       }
+
+      // Sort
+      results = _.sortBy(results, 'lastName')
     } else if (view === 'vaccinations') {
       results = _.sortBy(programme.vaccinations, 'createdAt').reverse()
     }
-
-    // Clean up session data
-    delete data.hasMissingNhsNumber
-    delete data.q
 
     // Results
     response.locals.results = getResults(results, page, limit)
     response.locals.pages = getPagination(results, page, limit)
 
-    // Filters
-    response.locals.statusItems = [
-      { value: 'Ready for vaccinator', text: 'Ready for vaccinator' },
-      { value: 'Do not vaccinate', text: 'Do not vaccinate' },
-      { value: 'Request failed', text: 'Request failed' },
-      { value: 'No response', text: 'No response' },
-      { value: 'Conflicting consent', text: 'Conflicting consent' },
-      { value: 'Needs triage', text: 'Needs triage' }
+    // Filter option items
+    response.locals.outcomeItems = [
+      {
+        text: 'All',
+        value: 'none',
+        checked: filters.outcome === 'none'
+      },
+      ...Object.values(PatientOutcome).map((value) => ({
+        text: value,
+        value,
+        checked: value === filters.outcome
+      }))
     ]
+
+    response.locals.statusItems = [
+      {
+        text: 'All',
+        value: 'none',
+        checked: filters.record === 'none'
+      },
+      ...Object.values(VaccinationOutcome).map((value) => ({
+        text: value,
+        value,
+        checked: value === filters.record
+      }))
+    ]
+
     response.locals.yearGroupItems = programme.cohorts.map((cohort) => ({
       text: formatYearGroup(cohort.yearGroup),
       value: cohort.yearGroup
     }))
+
+    // Clean up session data
+    delete data.hasMissingNhsNumber
+    delete data.q
 
     next()
   },
@@ -86,12 +127,15 @@ export const programmeController = {
 
   updatePatients(request, response) {
     const { pid } = request.params
-    const { hasMissingNhsNumber, q } = request.body
+    const { hasMissingNhsNumber } = request.body
 
     const params = {}
 
-    if (q) {
-      params.q = String(q)
+    for (const key of ['q', 'outcome', 'record']) {
+      const param = request.body[key]
+      if (param) {
+        params[key] = String(param)
+      }
     }
 
     if (hasMissingNhsNumber.includes('true')) {

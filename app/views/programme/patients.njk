@@ -38,7 +38,9 @@
   <div class="app-grid-row">
     <div class="app-grid-column-filters">
       {{ patientSearch({
-        clear: programme.uri + "/patients"
+        clear: programme.uri + "/patients",
+        outcome: "outcome",
+        status: "record"
       }) }}
     </div>
 
@@ -59,15 +61,8 @@
               html: patientSession.patient.formatted.dob or "Not provided"
             },
             {
-              header: __("patient.yearGroup.label"),
-              html: patientSession.patient.formatted.yearGroupWithRegistration,
-              attributes: {
-                "data-sort": patientSession.patient.yearGroup
-              }
-            },
-            {
-              header: __("session.status.label"),
-              text: patientStatus(patientSession).title
+              header: __("patientSession.outcome.label"),
+              html: patientSession.formatted.outcome
             }
           ]) %}
         {% endfor %}
@@ -86,13 +81,7 @@
               }
             },
             { text: __("patient.dob.label") },
-            {
-              text: __("patient.yearGroup.label"),
-              attributes: {
-                "data-col": "yearGroup"
-              }
-            },
-            { text: __("session.status.label") }
+            { text: __("patientSession.outcome.label") }
           ],
           rows: resultRows
         }) }}
