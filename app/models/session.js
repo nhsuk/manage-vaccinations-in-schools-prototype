@@ -597,13 +597,13 @@ export class Session {
     const consentDateStyle = { day: 'numeric', month: 'long' }
     switch (this.consentWindow) {
       case ConsentWindow.Opening:
-        consentWindow = `Opens ${formatDate(this.openAt, consentDateStyle)}`
+        consentWindow = `Consent period opens ${formatDate(this.openAt, consentDateStyle)}`
         break
       case ConsentWindow.Closed:
-        consentWindow = `Closed ${formatDate(this.closeAt, consentDateStyle)}`
+        consentWindow = `Consent period closed ${formatDate(this.closeAt, consentDateStyle)}`
         break
       case ConsentWindow.Open:
-        consentWindow = `Open until ${formatDate(this.closeAt, consentDateStyle)}`
+        consentWindow = `Consent period open from ${formatDate(this.openAt, consentDateStyle)} until ${formatDate(this.closeAt, consentDateStyle)}`
         break
       default:
         consentWindow = ''

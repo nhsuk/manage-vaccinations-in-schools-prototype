@@ -243,12 +243,7 @@
         rows: consentRows
       }) }}
     {% elif session.consentWindow == ConsentWindow.Opening %}
-      {{ __("session.consentWindow." + session.consentWindow + ".text", {
-        openAt: session.openAt | date({
-          day: "numeric",
-          month: "long"
-        })
-      }) | nhsukMarkdown }}
+      {{ session.formatted.consentWindow | nhsukMarkdown }}
     {% else %}
       {{ __("consent."+ ReplyDecision.NoResponse + ".description") | nhsukMarkdown }}
     {% endif %}

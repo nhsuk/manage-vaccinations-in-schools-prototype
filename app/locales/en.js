@@ -7,7 +7,6 @@ import {
   TriageOutcome
 } from '../models/patient-session.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
-import { ConsentWindow } from '../models/session.js'
 
 /**
  * @returns {import("i18n").LocaleCatalog}
@@ -1568,18 +1567,6 @@ export const en = {
     },
     consentPdf: {
       label: 'Paper consent form'
-    },
-    consentWindow: {
-      label: 'Consent period',
-      [ConsentWindow.Opening]: {
-        text: 'Consent period opens on {{openAt}}'
-      },
-      [ConsentWindow.Open]: {
-        text: 'Consent period is open from {{openAt}} until {{closeAt}}'
-      },
-      [ConsentWindow.Closed]: {
-        text: 'Consent period closed on {{closeAt}}'
-      }
     },
     details: {
       label: 'Details'
