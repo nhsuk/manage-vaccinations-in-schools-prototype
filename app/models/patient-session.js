@@ -7,13 +7,18 @@ import {
   getConsentHealthAnswers,
   getConsentRefusalReasons
 } from '../utils/reply.js'
-import { formatLink } from '../utils/string.js'
+import {
+  formatLink,
+  formatTag,
+  formatTagWithSecondaryText
+} from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 
 import { EventType } from './audit-event.js'
 import { Gillick } from './gillick.js'
 import { Patient } from './patient.js'
 import { Session } from './session.js'
+import { VaccinationOutcome } from './vaccination.js'
 
 /**
  * @readonly
@@ -278,12 +283,66 @@ export class PatientSession {
   }
 
   /**
+   * Get last recorded vaccination
+   *
+   * @returns {import('./vaccination.js').Vaccination} - Vaccination
+   */
+  get lastRecordedVaccination() {
+    if (this.vaccinations.length > 0) {
+      return this.vaccinations.at(-1)
+    }
+  }
+
+  /**
+   * Get most recent vaccination outcome
+   *
+   * @returns {import('./vaccination.js').VaccinationOutcome|PatientOutcome} - Vaccination outcome
+   */
+  get record() {
+    if (this.lastRecordedVaccination) {
+      return this.lastRecordedVaccination.outcome
+    }
+  }
+
+  get recordStatus() {
+    if (this.lastRecordedVaccination) {
+      return this.lastRecordedVaccination.outcomeStatus
+    }
+  }
+
+  /**
    * Get overall patient outcome
    *
    * @returns {PatientOutcome} - Overall patient outcome
    */
   get outcome() {
     return getPatientOutcome(this)
+  }
+
+  /**
+   * Get report status properties
+   *
+   * @returns {object} - Report status properties
+   */
+  get outcomeStatus() {
+    let colour
+    switch (this.outcome) {
+      case PatientOutcome.Vaccinated:
+        colour = 'green'
+        break
+      case PatientOutcome.CouldNotVaccinate:
+        colour = 'red'
+        break
+      case PatientOutcome.NoOutcomeYet:
+        colour = 'grey'
+        break
+      default:
+    }
+
+    return {
+      colour,
+      text: this.outcome
+    }
   }
 
   /**
@@ -294,6 +353,20 @@ export class PatientSession {
   get link() {
     return {
       fullName: formatLink(this.uri, this.patient.fullName)
+    }
+  }
+
+  /**
+   * Get formatted values
+   *
+   * @returns {object} - Formatted values
+   */
+  get formatted() {
+    return {
+      outcome:
+        !this.record || this.record === VaccinationOutcome.Vaccinated
+          ? formatTag(this.outcomeStatus)
+          : formatTagWithSecondaryText(this.outcomeStatus, this.record)
     }
   }
 
