@@ -35,7 +35,7 @@
   {% set hasMissingNhsNumber = programme.vaccinations | where("patient.hasMissingNhsNumber", true) %}
 
   {{ insetText({
-    classes: "nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-4",
+    classes: "nhsuk-u-margin-top-6",
     html: __n("patient.hasMissingNhsNumber.count", hasMissingNhsNumber | length) | nhsukMarkdown
   }) if hasMissingNhsNumber.length }}
 
