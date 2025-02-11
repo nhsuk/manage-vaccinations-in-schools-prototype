@@ -35,72 +35,79 @@
     href: programme.uri + "/uploads/new?type=" + UploadType.Cohort
   }) }}
 
-  {{ patientSearch({
-    clear: programme.uri + "/patients"
-  }) }}
+  <div class="app-grid-row">
+    <div class="app-grid-column-filters">
+      {{ patientSearch({
+        clear: programme.uri + "/patients"
+      }) }}
+    </div>
 
-  {% if results.page.length %}
-    {% set resultRows = [] %}
-    {% for patientSession in results.page %}
-      {% set resultRows = resultRows | push([
-        {
-          header: __("patient.fullName.label"),
-          html: patientSession.link.fullName | highlightQuery(data.q),
-          attributes: {
-            "data-sort": patientSession.patient.fullName
-          }
-        },
-        {
-          header: __("patient.dob.label"),
-          html: patientSession.patient.formatted.dob or "Not provided"
-        },
-        {
-          header: __("patient.yearGroup.label"),
-          html: patientSession.patient.formatted.yearGroupWithRegistration,
-          attributes: {
-            "data-sort": patientSession.patient.yearGroup
-          }
-        },
-        {
-          header: __("session.status.label"),
-          text: patientStatus(patientSession).title
-        }
-      ]) %}
-    {% endfor %}
+    <div class="app-grid-column-results">
+      {% if results.page.length %}
+        {% set resultRows = [] %}
+        {% for patientSession in results.page %}
+          {% set resultRows = resultRows | push([
+            {
+              header: __("patient.fullName.label"),
+              html: patientSession.link.fullName | highlightQuery(data.q),
+              attributes: {
+                "data-sort": patientSession.patient.fullName
+              }
+            },
+            {
+              header: __("patient.dob.label"),
+              html: patientSession.patient.formatted.dob or "Not provided"
+            },
+            {
+              header: __("patient.yearGroup.label"),
+              html: patientSession.patient.formatted.yearGroupWithRegistration,
+              attributes: {
+                "data-sort": patientSession.patient.yearGroup
+              }
+            },
+            {
+              header: __("session.status.label"),
+              text: patientStatus(patientSession).title
+            }
+          ]) %}
+        {% endfor %}
 
-    {{ actionTable({
-      id: "programme-patients",
-      sort: "name",
-      heading: __n("patient.count", programme.patientSessions.length),
-      responsive: true,
-      panel: true,
-      head: [
-        { text: __("patient.fullName.label"),
-          attributes: {
-            "data-col": "name"
-          }
-        },
-        { text: __("patient.dob.label") },
-        {
-          text: __("patient.yearGroup.label"),
-          attributes: {
-            "data-col": "yearGroup"
-          }
-        },
-        { text: __("session.status.label") }
-      ],
-      rows: resultRows
-    }) }}
+        {{ actionTable({
+          id: "programme-patients",
+          sort: "name",
+          heading: __n("patient.count", results.count),
+          headingClasses: "nhsuk-u-font-size-22",
+          responsive: true,
+          panel: true,
+          head: [
+            { text: __("patient.fullName.label"),
+              attributes: {
+                "data-col": "name"
+              }
+            },
+            { text: __("patient.dob.label") },
+            {
+              text: __("patient.yearGroup.label"),
+              attributes: {
+                "data-col": "yearGroup"
+              }
+            },
+            { text: __("session.status.label") }
+          ],
+          rows: resultRows
+        }) }}
 
-    {{ govukPagination(pages) }}
+        {{ govukPagination(pages) }}
 
-    {{ __("patient.results", { results: results }) | nhsukMarkdown }}
-  {% else %}
-    {{ card({
-      heading: __n("patient.count", results.count),
-      headingClasses: "nhsuk-heading-s",
-      feature: true,
-      description: __("patient.search.empty")
-    }) }}
-  {% endif %}
+        {{ __("patient.results", { results: results }) | nhsukMarkdown }}
+      {% else %}
+        {{ card({
+          heading: __n("patient.count", results.count),
+          headingClasses: "nhsuk-heading-s",
+          feature: true,
+          description: __("patient.search.empty")
+        }) }}
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}
