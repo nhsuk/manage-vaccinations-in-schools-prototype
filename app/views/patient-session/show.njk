@@ -82,7 +82,7 @@
         }) }}
         {% if patientSession.patient.lastReminderDate %}
           <p class="nhsuk-u-secondary-text-color nhsuk-u-margin-0">
-            {{ __("patient.lastReminderDate.title", patientSession.patient.lastReminderDate) }}
+            {{ patientSession.patient.formatted.lastReminderDate }}
           </p>
         {% endif %}
       </form>

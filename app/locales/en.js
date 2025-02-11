@@ -935,8 +935,7 @@ export const en = {
       title: 'Activity log'
     },
     lastReminderDate: {
-      label: 'Last reminder sent',
-      title: 'Last reminder sent %s'
+      label: 'Last reminder sent'
     },
     results:
       'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> children',

@@ -127,6 +127,18 @@ export class Patient extends Record {
   }
 
   /**
+   * Get date last reminders sent
+   *
+   * @returns {string|undefined} - Date last reminders sent
+   */
+  get lastReminderDate() {
+    const lastReminder = this.reminders.at(-1)
+    if (lastReminder) {
+      return lastReminder.formatted.createdAt
+    }
+  }
+
+  /**
    * Get all notices
    *
    * @returns {Array<AuditEvent>} - Notice events
@@ -144,18 +156,6 @@ export class Patient extends Record {
    */
   get notice() {
     return this.notices && this.notices[0]
-  }
-
-  /**
-   * Get date last reminders sent
-   *
-   * @returns {string|undefined} - Date last reminders sent
-   */
-  get lastReminderDate() {
-    const lastReminder = this.reminders.at(-1)
-    if (lastReminder) {
-      return lastReminder.formatted.createdAt
-    }
   }
 
   /**
@@ -241,6 +241,20 @@ export class Patient extends Record {
     ])
 
     return [childTokens, parentTokens].join(' ')
+  }
+
+  /**
+   * Get formatted values
+   *
+   * @returns {object} - Formatted values
+   */
+  get formatted() {
+    return {
+      ...super.formatted,
+      lastReminderDate: this.lastReminderDate
+        ? `Reminder sent on ${this.lastReminderDate}`
+        : 'No reminders sent'
+    }
   }
 
   /**
