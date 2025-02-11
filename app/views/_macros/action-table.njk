@@ -8,7 +8,7 @@
   {%- if params.panelClasses %} {{ params.panelClasses }}{% endif %}">
   {%- if params.heading %}
     {%- set headingLevel = params.headingLevel if params.headingLevel else 3 -%}
-    <h{{ headingLevel }} class="nhsuk-table__heading-tab">{{ params.heading | safe }}</h{{ headingLevel }}>
+    <h{{ headingLevel }} class="nhsuk-table__heading-tab {%- if params.headingClasses %} {{ params.headingClasses }}{% endif %}">{{ params.heading | safe }}</h{{ headingLevel }}>
   {%- endif %}
 {%- endif %}
   <table class="nhsuk-table{%- if params.responsive %}-responsive{% endif %}
