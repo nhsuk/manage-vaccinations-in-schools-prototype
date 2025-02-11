@@ -32,7 +32,7 @@ export const EventType = {
  * @property {EventType} type - Activity type
  * @property {string} name - Name
  * @property {string} [note] - Note
- * @property {object} [info_] - Temporary information storage object
+ * @property {string} [outcome] - Outcome for activity type
  * @property {Array<string>} [programme_pids] - Programme PIDs
  */
 export class AuditEvent {
@@ -44,7 +44,7 @@ export class AuditEvent {
     this.type = options.type
     this.name = options.name
     this.note = options.note
-    this.info_ = options?.info_
+    this.outcome = options?.outcome
     this.programme_pids = options?.programme_pids
   }
 

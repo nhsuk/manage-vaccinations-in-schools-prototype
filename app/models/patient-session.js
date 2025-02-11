@@ -463,7 +463,7 @@ export class PatientSession {
       name: event.name,
       note: event.note,
       createdBy_uid: event.createdBy_uid,
-      info_: event.info_, // Store outcome, used to calculate screen outcome
+      outcome: event.outcome,
       programme_pids: this.session.programme_pids
     })
   }

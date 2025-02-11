@@ -162,7 +162,6 @@ export const patientSessionController = {
 
     patientSession.assessGillick(
       {
-        info_: gillick,
         ...(data.token && { createdBy_uid: data.token?.uid })
       },
       new Gillick(gillick)
@@ -229,7 +228,7 @@ export const patientSessionController = {
     const { __, back, patientSession } = response.locals
 
     patientSession.recordTriage({
-      info_: triage.outcome,
+      outcome: triage.outcome,
       name:
         triage.outcome === ScreenOutcome.NeedsTriage
           ? 'Triaged decision: Keep in triage'
