@@ -34,23 +34,3 @@
     }
   }
 }
-
-.app-button-group--table {
-  @include nhsuk-responsive-margin(1, "bottom");
-  gap: nhsuk-spacing(2);
-  justify-content: end;
-  width: 100%;
-
-  @include mq($from: mobile) {
-    flex-direction: row;
-
-    .nhsuk-button {
-      width: auto;
-    }
-  }
-
-  @include mq($from: desktop) {
-    flex-wrap: nowrap;
-    justify-content: start;
-  }
-}
