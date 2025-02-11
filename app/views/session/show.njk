@@ -62,11 +62,10 @@
           <li class="nhsuk-grid-column-full nhsuk-card-group__item">
             {% set captureCardDescriptionHtml %}
               <p>
-                {{ __n("capture." + CaptureOutcome.Register + ".count", patientSessions | where("capture", CaptureOutcome.Register) | length) }}<br>
-                {{ __n("capture." + CaptureOutcome.GetConsent + ".count", patientSessions | where("capture", CaptureOutcome.Given) | length) }}<br>
-                {{ __n("capture." + CaptureOutcome.CheckRefusal + ".count", patientSessions | where("capture", CaptureOutcome.CheckRefusal) | length) }}<br>
-                {{ __n("capture." + CaptureOutcome.NeedsTriage + ".count", patientSessions | where("capture", CaptureOutcome.NeedsTriage) | length) }}<br>
-                {{ __n("capture." + CaptureOutcome.Vaccinate + ".count", patientSessions | where("capture", CaptureOutcome.Vaccinate) | length) }}
+                {{ __n("capture." + Activity.Register + ".count", patientSessions | where("capture", Activity.Register) | length) }}<br>
+                {{ __n("capture." + Activity.Consent + ".count", patientSessions | where("capture", Activity.Consent) | length) }}<br>
+                {{ __n("capture." + Activity.Triage + ".count", patientSessions | where("capture", Activity.Triage) | length) }}<br>
+                {{ __n("capture." + Activity.Record + ".count", patientSessions | where("capture", Activity.Record) | length) }}
               </p>
             {% endset %}
             {{ card({

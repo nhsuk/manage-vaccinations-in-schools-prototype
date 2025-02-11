@@ -1,7 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { getCaptureOutcome, getPatientOutcome } from '../utils/capture.js'
 import { getDateValueDifference, today } from '../utils/date.js'
+import { getNextActivity, getPatientOutcome } from '../utils/patient-session.js'
 import {
   getConsentOutcome,
   getConsentHealthAnswers,
@@ -24,6 +24,18 @@ import { VaccinationOutcome } from './vaccination.js'
  * @readonly
  * @enum {string}
  */
+export const Activity = {
+  Consent: 'Get consent',
+  Triage: 'Triage',
+  Register: 'Register attendance',
+  Record: 'Vaccinate',
+  Report: 'Report'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const ConsentOutcome = {
   NoRequest: 'Request failed',
   NoResponse: 'No response',
@@ -31,17 +43,6 @@ export const ConsentOutcome = {
   Given: 'Consent given',
   Refused: 'Consent refused',
   FinalRefusal: 'Refusal confirmed'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const RegistrationOutcome = {
-  Pending: 'Not registered yet',
-  Present: 'Attending today’s session',
-  Absent: 'Absent from today’s session',
-  Complete: 'Completed today’s session'
 }
 
 /**
@@ -69,13 +70,11 @@ export const ScreenOutcome = {
  * @readonly
  * @enum {string}
  */
-export const CaptureOutcome = {
-  Register: 'Register attendance',
-  GetConsent: 'Get consent',
-  CheckRefusal: 'Check refusal',
-  NeedsTriage: 'Triage',
-  DoNotVaccinate: 'Do not vaccinate',
-  Vaccinate: 'Vaccinate'
+export const RegistrationOutcome = {
+  Pending: 'Not registered yet',
+  Present: 'Attending today’s session',
+  Absent: 'Absent from today’s session',
+  Complete: 'Completed today’s session'
 }
 
 /**
@@ -220,6 +219,22 @@ export class PatientSession {
   }
 
   /**
+   * Get next activity
+   *
+   * @returns {Activity} Activity
+   */
+  get nextActivity() {
+    return getNextActivity(this)
+  }
+
+  /**
+   * @todo Remove once session pages no longer rely on capture method
+   */
+  get capture() {
+    return getNextActivity(this)
+  }
+
+  /**
    * Get consent outcome
    *
    * @returns {ConsentOutcome} - Consent outcome
@@ -271,15 +286,6 @@ export class PatientSession {
    */
   get triage() {
     return getTriageOutcome(this)
-  }
-
-  /**
-   * Get capture outcome
-   *
-   * @returns {CaptureOutcome|RegistrationOutcome} - Capture outcome
-   */
-  get capture() {
-    return getCaptureOutcome(this)
   }
 
   /**

@@ -1,7 +1,7 @@
 import { Gillick } from '../models/gillick.js'
 import {
-  CaptureOutcome,
   ConsentOutcome,
+  Activity,
   PatientOutcome,
   PatientSession,
   ScreenOutcome,
@@ -55,10 +55,7 @@ export const patientSessionController = {
         patientSession.consent === ConsentOutcome.Given &&
         patientSession.triage !== TriageOutcome.Needed &&
         patientSession.outcome !== PatientOutcome.Vaccinated,
-      showPreScreen:
-        patientSession.capture === CaptureOutcome.Vaccinate &&
-        patientSession.outcome !== PatientOutcome.Vaccinated &&
-        patientSession.outcome !== PatientOutcome.CouldNotVaccinate
+      showPreScreen: patientSession.nextActivity === Activity.Record
     }
 
     response.locals.injectionSiteItems = Object.entries(VaccinationSite)
@@ -121,7 +118,7 @@ export const patientSessionController = {
       registration === RegistrationOutcome.Absent &&
       patientSession.outcome !== PatientOutcome.CouldNotVaccinate
     ) {
-      // Capture vaccination outcome as absent from session if safe to vaccinate
+      // Record vaccination outcome as absent from session if safe to vaccinate
       const programme = Programme.read(session.programme_pids[0], data)
       const absentVaccination = new Vaccination({
         location: session.location.name,
@@ -143,7 +140,7 @@ export const patientSessionController = {
 
     request.flash(
       'message',
-      __(`patientSession.registration.success.${patientSession.capture}`, {
+      __(`patientSession.registration.success.${patientSession.nextActivity}`, {
         patientSession
       })
     )

@@ -11,8 +11,8 @@ import {
   SmsStatus
 } from '../models/parent.js'
 import {
-  CaptureOutcome,
   ConsentOutcome,
+  Activity,
   PatientOutcome,
   RegistrationOutcome,
   ScreenOutcome,
@@ -39,7 +39,6 @@ import {
 
 export const enumeration = (request, response, next) => {
   response.locals.AcademicYear = AcademicYear
-  response.locals.CaptureOutcome = CaptureOutcome
   response.locals.ConsentOutcome = ConsentOutcome
   response.locals.ConsentWindow = ConsentWindow
   response.locals.DownloadFormat = DownloadFormat
@@ -49,6 +48,7 @@ export const enumeration = (request, response, next) => {
   response.locals.GillickCompetent = GillickCompetent
   response.locals.HealthQuestion = HealthQuestion
   response.locals.MoveSource = MoveSource
+  response.locals.Activity = Activity
   response.locals.NoticeType = NoticeType
   response.locals.ParentalRelationship = ParentalRelationship
   response.locals.PatientOutcome = PatientOutcome

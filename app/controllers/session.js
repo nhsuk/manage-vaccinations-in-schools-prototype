@@ -1,8 +1,8 @@
 import { Batch } from '../models/batch.js'
 import { Consent } from '../models/consent.js'
 import {
-  CaptureOutcome,
   ConsentOutcome,
+  Activity,
   PatientOutcome,
   PatientSession,
   TriageOutcome
@@ -83,13 +83,12 @@ export const sessionController = {
         ]
         break
       case 'capture':
-        tab = tab || CaptureOutcome.Register
+        tab = tab || Activity.Register
         tabs = [
-          CaptureOutcome.Register,
-          CaptureOutcome.GetConsent,
-          CaptureOutcome.CheckRefusal,
-          CaptureOutcome.NeedsTriage,
-          CaptureOutcome.Vaccinate
+          Activity.Register,
+          Activity.Consent,
+          Activity.Triage,
+          Activity.Record
         ]
         break
       case 'outcome':
@@ -137,7 +136,7 @@ export const sessionController = {
       })
     )
 
-    if (activity === 'capture' && tab === CaptureOutcome.Register) {
+    if (activity === 'capture' && tab === Activity.Register) {
       response.locals.statusItems = [
         { value: 'Ready for vaccinator', text: 'Ready for vaccinator' },
         { value: 'Do not vaccinate', text: 'Do not vaccinate' },

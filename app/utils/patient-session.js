@@ -1,5 +1,5 @@
 import {
-  CaptureOutcome,
+  Activity,
   ConsentOutcome,
   PatientOutcome,
   RegistrationOutcome,
@@ -43,41 +43,43 @@ export const getPatientOutcome = (patientSession) => {
 }
 
 /**
- * Get capture outcome (what capture activity needs to be performed)
+ * Get next activity
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {CaptureOutcome|RegistrationOutcome} Capture outcome
+ * @returns {Activity} Activity
  */
-export const getCaptureOutcome = (patientSession) => {
-  if (patientSession.registration === RegistrationOutcome.Present) {
-    if (patientSession.consent === ConsentOutcome.NoResponse) {
-      return CaptureOutcome.GetConsent
-    } else if (
-      patientSession.consent === ConsentOutcome.Refused ||
-      patientSession.consent === ConsentOutcome.Inconsistent
-    ) {
-      return CaptureOutcome.CheckRefusal
-    }
-
-    if (patientSession.triage === TriageOutcome.Needed) {
-      return CaptureOutcome.NeedsTriage
-    }
-
-    if (
-      patientSession.triage !== TriageOutcome.Needed &&
-      patientSession.outcome !== PatientOutcome.Vaccinated
-    ) {
-      return CaptureOutcome.Vaccinate
-    }
-
-    if (patientSession.outcome === PatientOutcome.Vaccinated) {
-      return
-    }
+export const getNextActivity = ({
+  consent,
+  triage,
+  screen,
+  registration,
+  outcome,
+  session
+}) => {
+  if (session.isActive && registration === RegistrationOutcome.Pending) {
+    return Activity.Register
   }
 
-  if (patientSession.registration === RegistrationOutcome.Absent) {
-    return RegistrationOutcome.Absent
+  if (
+    consent === ConsentOutcome.NoResponse ||
+    consent === ConsentOutcome.NoRequest
+  ) {
+    return Activity.Consent
   }
 
-  return CaptureOutcome.Register
+  if (triage === TriageOutcome.Needed) {
+    return Activity.Triage
+  }
+
+  if (
+    session.isActive &&
+    screen !== ScreenOutcome.NeedsTriage &&
+    outcome === PatientOutcome.NoOutcomeYet
+  ) {
+    return Activity.Record
+  }
+
+  if (outcome !== PatientOutcome.NoOutcomeYet) {
+    return Activity.Report
+  }
 }

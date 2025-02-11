@@ -1,6 +1,6 @@
 import {
-  CaptureOutcome,
   ConsentOutcome,
+  Activity,
   RegistrationOutcome,
   PatientOutcome,
   ScreenOutcome,
@@ -126,37 +126,28 @@ export const en = {
   capture: {
     label: 'Status',
     title: 'Record vaccinations',
-    [CaptureOutcome.Register]: {
+    [Activity.Register]: {
       label: 'Register',
       count: {
         one: '%s child still to register',
         other: '[0] No children still to register|%s children still to register'
       }
     },
-    [CaptureOutcome.GetConsent]: {
+    [Activity.Consent]: {
       label: 'Get consent',
       count: {
-        one: '%s child without a consent response',
-        other:
-          '[0] No children without a response|%s children without a response'
+        one: '%s child need consent',
+        other: '[0] No children need consent|%s children need consent'
       }
     },
-    [CaptureOutcome.CheckRefusal]: {
-      label: 'Check refusal',
-      count: {
-        one: '%s child with refused consent',
-        other:
-          '[0] No children with refused consent|%s children with refused consent'
-      }
-    },
-    [CaptureOutcome.NeedsTriage]: {
+    [Activity.Triage]: {
       label: 'Triage',
       count: {
         one: '%s child needing triage',
         other: '[0] No children needing triage|%s children needing triage'
       }
     },
-    [CaptureOutcome.Vaccinate]: {
+    [Activity.Record]: {
       label: 'Vaccinate',
       count: {
         one: '%s child ready to vaccinate',
@@ -1139,16 +1130,14 @@ export const en = {
         }
       },
       success: {
-        [CaptureOutcome.GetConsent]:
+        [Activity.Consent]:
           '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. They still need consent to vaccinate.',
-        [CaptureOutcome.CheckRefusal]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) needs to leave the session because their parent or guardian refused to give consent.',
-        [CaptureOutcome.NeedsTriage]:
+        [Activity.Triage]:
           '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. A nurse needs to triage their record.',
-        [CaptureOutcome.Vaccinate]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. They are ready for the vaccinator.',
-        [CaptureOutcome.Register]:
+        [Activity.Register]:
           '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is absent from today’s session.',
+        [Activity.Record]:
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. They are ready for the vaccinator.',
         [RegistrationOutcome.Absent]:
           '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is absent from today’s session.'
       }
