@@ -39,10 +39,6 @@
     }) }}
 
     {{ radios({
-      classes: "nhsuk-radios--inline",
-      formGroup: {
-        classes: "app-form-group--inline"
-      },
       fieldset: {
         legend: {
           classes: "nhsuk-fieldset__legend--s",
@@ -52,6 +48,28 @@
       items: programmeItems,
       decorate: "programme"
     }) if programmeItems }}
+
+    {{ radios({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("patientSession." + params.outcome + ".label")
+        }
+      },
+      items: outcomeItems,
+      decorate: params.outcome
+    }) if params.outcome }}
+
+    {{ radios({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("patientSession." + params.status + ".label")
+        }
+      },
+      items: statusItems,
+      decorate: params.status
+    }) if params.status }}
 
     {% set searchDetailsHtml %}
       {{ dateInput({
@@ -79,17 +97,6 @@
         fieldset: {
           legend: {
             classes: "nhsuk-fieldset__legend--s",
-            text: __("patient.status.label")
-          }
-        },
-        items: statusItems,
-        decorate: "status"
-      }) if statusItems }}
-
-      {{ checkboxes({
-        fieldset: {
-          legend: {
-            classes: "nhsuk-fieldset__legend--s",
             text: __("search.options")
           }
         },
@@ -102,7 +109,7 @@
         decorate: "hasMissingNhsNumber"
       }) }}
 
-      {{ filterButtonGroup | safe if not programmeItems }}
+      {{ filterButtonGroup | safe if not (programmeItems or statusItems) }}
     {% endset %}
 
     {{ details({
@@ -111,7 +118,7 @@
       HTML: searchDetailsHtml
     }) }}
 
-    {{ filterButtonGroup | safe if programmeItems }}
+    {{ filterButtonGroup | safe if programmeItems or statusItems }}
   {% endset %}
 
   {{ card({

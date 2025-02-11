@@ -12,7 +12,8 @@ import {
   formatLink,
   formatMillilitres,
   formatMarkdown,
-  formatMonospace
+  formatMonospace,
+  formatTag
 } from '../utils/string.js'
 
 import { Batch } from './batch.js'
@@ -308,6 +309,29 @@ export class Vaccination {
   }
 
   /**
+   * Get status properties for outcome
+   *
+   * @returns {object} - Status properties for outcome
+   */
+  get outcomeStatus() {
+    let colour
+    switch (this.outcome) {
+      case VaccinationOutcome.Vaccinated:
+      case VaccinationOutcome.PartVaccinated:
+      case VaccinationOutcome.AlreadyVaccinated:
+        colour = 'green'
+        break
+      default:
+        colour = 'red'
+    }
+
+    return {
+      colour,
+      text: this.outcome
+    }
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values
@@ -339,6 +363,7 @@ export class Vaccination {
       dose: formatMillilitres(this.dose),
       vaccine_gtin: this.vaccine?.brandWithType,
       note: formatMarkdown(this.note),
+      outcome: formatTag(this.outcomeStatus),
       school: this?.school && this.school.name
     }
   }
