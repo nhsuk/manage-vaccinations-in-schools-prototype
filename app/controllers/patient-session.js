@@ -50,8 +50,8 @@ export const patientSessionController = {
         consent !== ConsentOutcome.Given,
       // Patient requires triage
       canTriage: triage !== TriageOutcome.NotNeeded,
-      // Patient has a triage outcome
-      hasTriage: screen !== ScreenOutcome.NeedsTriage,
+      // Patient already triaged
+      hasTriage: patient.triageNotes.length > 0,
       editRegistration:
         consent === ConsentOutcome.Given &&
         triage !== TriageOutcome.Needed &&
