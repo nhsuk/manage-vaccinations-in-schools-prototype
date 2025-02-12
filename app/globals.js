@@ -286,6 +286,7 @@ export default () => {
         }
 
         const label = rows[key].label || __(`${data.ns}.${key}.label`)
+        const changeText = rows[key].changeText || __(`actions.change`)
         const changeLabel = rows[key].changeLabel || _.lowerFirst(label)
         const href = rows[key].href
         const fallbackValue = href
@@ -305,7 +306,7 @@ export default () => {
               items: [
                 {
                   href,
-                  text: 'Change',
+                  text: changeText,
                   visuallyHiddenText: changeLabel
                 }
               ]

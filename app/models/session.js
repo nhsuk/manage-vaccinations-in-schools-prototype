@@ -28,9 +28,12 @@ import { Clinic } from './clinic.js'
 import { Consent } from './consent.js'
 import { OrganisationDefaults } from './organisation.js'
 import {
+  Activity,
   ConsentOutcome,
   PatientOutcome,
-  PatientSession
+  PatientSession,
+  RegistrationOutcome,
+  TriageOutcome
 } from './patient-session.js'
 import { Programme } from './programme.js'
 import { School } from './school.js'
@@ -368,6 +371,69 @@ export class Session {
   }
 
   /**
+   * Get vaccinated patients
+   *
+   * @returns {Array<PatientSession>} - Patients
+   */
+  get patientsVaccinated() {
+    if (!this.isUnplanned) {
+      return this.patients.filter(
+        ({ outcome }) => outcome === PatientOutcome.Vaccinated
+      )
+    }
+  }
+
+  /**
+   * Get patients with no consent response
+   *
+   * @returns {Array<PatientSession>} - Patients
+   */
+  get patientsToConsent() {
+    return this.patientSessions.filter(
+      ({ consent }) => consent === ConsentOutcome.NoResponse
+    )
+  }
+
+  /**
+   * Get patients needing triage
+   *
+   * @returns {Array<PatientSession>} - Patients
+   */
+  get patientsToTriage() {
+    return this.patientSessions.filter(
+      ({ triage }) => triage === TriageOutcome.Needed
+    )
+  }
+
+  /**
+   * Get patients awaiting registration
+   *
+   * @returns {Array<PatientSession>} - Patients
+   */
+  get patientsToRegister() {
+    if (this.isActive) {
+      return this.patients.filter(
+        ({ registration }) => registration === RegistrationOutcome.Pending
+      )
+    }
+  }
+
+  /**
+   * Get patients awaiting vaccination
+   *
+   * @returns {Array<PatientSession>} - Patients
+   */
+  get patientsToRecord() {
+    if (this.isActive) {
+      return this.patients.filter(
+        ({ nextActivity }) => nextActivity === Activity.Record
+      )
+    }
+
+    return []
+  }
+
+  /**
    * Get session programmes
    *
    * @returns {Array<Programme>} - Programmes
@@ -661,7 +727,32 @@ export class Session {
           )
         : `Send ${reminderWeeks} before each session`,
       closeAt: formatDate(this.closeAt, { dateStyle: 'full' }),
-      patients: `${prototypeFilters.plural(this.patients.length, 'child')} in this session`,
+      patients: prototypeFilters.plural(this.patients.length, 'child'),
+      consents: prototypeFilters.plural(
+        this.consents.length,
+        'unmatched response'
+      ),
+      patientsVaccinated:
+        this.patientsVaccinated &&
+        `${prototypeFilters.plural(
+          this.patientsVaccinated.length,
+          'vaccination'
+        )} administered`,
+      patientsToConsent: prototypeFilters.plural(
+        this.patientsToConsent.length,
+        'child'
+      ),
+      patientsToTriage: prototypeFilters.plural(
+        this.patientsToTriage.length,
+        'child'
+      ),
+      patientsToRegister:
+        this.patientsToRegister &&
+        prototypeFilters.plural(this.patientsToRegister.length, 'child'),
+      patientsToRecord: prototypeFilters.plural(
+        this.patientsToRecord?.length,
+        'child'
+      ),
       programmes: this.programmes
         .flatMap(({ name }) => formatTag({ colour: 'white', text: name }))
         .join(' '),
@@ -669,7 +760,7 @@ export class Session {
         this.consentUrl &&
         formatLink(
           this.consentUrl,
-          'View parental consent form (opens in a new tab)',
+          'Parental consent form (opens in a new tab)',
           {
             target: '_blank'
           }

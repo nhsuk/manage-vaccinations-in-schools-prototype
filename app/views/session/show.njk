@@ -24,53 +24,131 @@
   }) }}
 
   {% set cardDescriptionHtml %}
+    {{ session.formatted.status | nhsukMarkdown }}
+
+    {% if not session.isUnplanned %}
+      {{ heading({
+        classes: "nhsuk-u-margin-bottom-2",
+        level: 3,
+        size: "s",
+        title: __("session.dates.label")
+      }) }}
+
+      {{ session.formatted.dates | safe }}
+
+      {{ session.formatted.consentWindow | nhsukMarkdown }}
+    {% endif %}
+
+    {{ heading({
+      classes: "nhsuk-u-margin-bottom-2",
+      level: 3,
+      size: "s",
+      title: __("session.show.summary")
+    }) }}
+
     {{ summaryList({
       rows: summaryRows(session, {
-        type: {},
-        status: {},
-        location: {},
-        school_urn: {},
         programmes: {},
-        dates: {},
-        consentWindow: {},
-        consentUrl: {},
-        consentPdf: {},
-        patients: {}
+        patients: {
+          changeText: __("session.upload-class-list.title"),
+          href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn if session.type == SessionType.School
+        },
+        patientsVaccinated: {
+          changeText: __("actions.review"),
+          href: session.uri + "/outcome"
+        }
       })
     }) }}
 
-    {% if not session.isClosed %}
-      <div class="app-button-group">
-        {{ button({
-          classes: "app-button--secondary",
-          text: __("session.schedule.title") if session.isUnplanned else __("session.edit.title"),
-          href: session.uri + "/edit"
-        }) }}
+    {% if not session.isUnplanned %}
+      {{ heading({
+        classes: "nhsuk-u-margin-bottom-2",
+        level: 3,
+        size: "s",
+        title: __("session.activities.label")
+      }) }}
 
-        {{ button({
-          classes: "app-button--secondary",
-          text: __("session.upload-class-list.title"),
-          href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn
-        }) if session.status == SessionStatus.Planned and session.type == SessionType.School }}
-
-        {{ button({
-          classes: "app-button--secondary",
-          text: __("session.offline.title"),
-          href: session.uri + "/offline"
-        }) if session.status == SessionStatus.Planned }}
-
-        {{ button({
-          classes: "app-button--secondary",
-          text: __("session.close.title"),
-          href: session.uri + "/close"
-        }) if session.isCompleted }}
-      </div>
+      {{ summaryList({
+        rows: summaryRows(session, {
+          consents: {
+            changeText: __("actions.review"),
+            href: session.uri + "/consents" if session.consents != 0
+          },
+          patientsToConsent: {
+            changeText: __("actions.review"),
+            href: session.uri + "/consent?consent=" + ConsentOutcome.NoResponse if session.patientsToConsent != 0
+          },
+          patientsToTriage: {
+            changeText: __("actions.review"),
+            href: session.uri + "/screen?screen=" + ScreenOutcome.NeedsTriage if session.patientsToTriage != 0
+          },
+          patientsToRegister: {
+            changeText: __("actions.review"),
+            href: session.uri + "/register" if session.patientsToRegister
+          },
+          patientsToRecord: {
+            changeText: __("actions.review"),
+            href: session.uri + "/record" if session.patientsToRecord != 0
+          }
+        })
+      }) }}
     {% endif %}
+
+    <div class="app-button-group">
+      {{ button({
+        classes: "app-button--secondary",
+        text: __("session.schedule.title") if session.isUnplanned else __("session.edit.title"),
+        href: session.uri + "/edit"
+      }) }}
+
+      {{ button({
+        classes: "app-button--secondary",
+        text: __("session.close.title"),
+        href: session.uri + "/close"
+      }) if session.isCompleted }}
+
+      {{ link(
+        session.uri + "/offline",
+        __("session.offline.title")
+      ) | safe if not session.isUnplanned }}
+    </div>
   {% endset %}
 
-  {{ card({
-    heading: __("session.show.summary"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: cardDescriptionHtml
-  }) }}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-three-quarters">
+      {{ card({
+        heading: session.type,
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: cardDescriptionHtml
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-one-quarter">
+      {{ card({
+        heading: session.location.name,
+        headingClasses: "nhsuk-heading-s",
+        secondary: true,
+        descriptionHtml: summaryList({
+          classes: "app-summary-list--full-width",
+          rows: summaryRows(session, {
+            school_urn: {},
+            location: {}
+          })
+        })
+      }) }}
+
+      {% if not session.isUnplanned %}
+        {{ heading({
+          classes: "nhsuk-u-margin-bottom-2",
+          level: 3,
+          size: "s",
+          title: "Consent forms"
+        }) }}
+
+        {{ session.formatted.consentUrl | nhsukMarkdown }}
+
+        {{ session.formatted.consentPdf | nhsukMarkdown }}
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}
