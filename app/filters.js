@@ -83,9 +83,21 @@ export default (env) => {
   filters.highlightQuery = (string, query) => {
     if (!string || !query) return string
 
-    const regex = new RegExp(`(${query})`, 'gi')
+    // Escape special regex characters in the query
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-    return string.replace(regex, (match, p1) => formatHighlight(p1))
+    // Match text between tags or at the start/end of the string
+    // Uses positive lookahead/lookbehind to ensure we’re not inside a tag
+    const regex = /(?<=>|^)([^<]*)(?=<|$)|(?<=>)([^<]*)(?=<)/g
+
+    // Replace only text content inside tags
+    return string.replace(regex, (textContent) => {
+      if (!textContent) return textContent
+      return textContent.replace(
+        new RegExp(`(${escapedQuery})`, 'gi'),
+        (match) => formatHighlight(match)
+      )
+    })
   }
 
   /**
