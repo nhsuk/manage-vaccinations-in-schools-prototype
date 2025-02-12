@@ -52,10 +52,6 @@ export const patientSessionController = {
       canTriage: triage !== TriageOutcome.NotNeeded,
       // Patient already triaged
       hasTriage: patient.triageNotes.length > 0,
-      editRegistration:
-        consent === ConsentOutcome.Given &&
-        triage !== TriageOutcome.Needed &&
-        outcome !== PatientOutcome.Vaccinated,
       canRecord:
         session.isActive &&
         registration === RegistrationOutcome.Present &&
