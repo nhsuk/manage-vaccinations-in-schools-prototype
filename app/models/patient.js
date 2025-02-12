@@ -484,8 +484,8 @@ export class Patient extends Record {
         name = `Request for vaccination not to be shared with GP`
         break
       case NoticeType.Invalid:
-        // Update patient record with temporary NHS number
-        this.nhsn = faker.string.alpha(10)
+        // Flag record as invalid
+        this.invalid = true
         name = `Record flagged as invalid`
         break
       case NoticeType.Sensitive:

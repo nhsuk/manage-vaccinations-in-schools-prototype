@@ -23,12 +23,14 @@ import { Vaccination } from './vaccination.js'
  * @property {Parent} [parent2] - Parent 2
  * @property {Array<string>} [vaccination_uuids] - Vaccination UUIDs
  * @property {Record} [pendingChanges] - Pending changes to record values
+ * @property {boolean} invalid - Flagged as invalid
  * @property {boolean} sensitive - Flagged as sensitive
  */
 export class Record extends Child {
   constructor(options, context) {
     super(options)
 
+    const invalid = stringToBoolean(options?.invalid)
     const sensitive = stringToBoolean(options?.sensitive)
 
     this.context = context
@@ -40,6 +42,7 @@ export class Record extends Child {
       !sensitive && options?.parent2 ? new Parent(options.parent2) : undefined
     this.vaccination_uuids = options?.vaccination_uuids || []
     this.pendingChanges = options?.pendingChanges || {}
+    this.invalid = invalid
     this.sensitive = sensitive
   }
 
@@ -120,7 +123,7 @@ export class Record extends Child {
 
     return {
       ...super.formatted,
-      nhsn: formatNhsNumber(this.nhsn),
+      nhsn: formatNhsNumber(this.nhsn, this.invalid),
       newUrn:
         this.pendingChanges?.school_urn &&
         schools[this.pendingChanges.school_urn].name,

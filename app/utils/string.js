@@ -233,9 +233,10 @@ export function formatMonospace(string) {
  * joiner to prevent telephone format detection
  *
  * @param {string} string - String
+ * @param {boolean} invalid - Invalid record
  * @returns {string|undefined} Formatted HTML
  */
-export function formatNhsNumber(string) {
+export function formatNhsNumber(string, invalid) {
   if (!string) return
 
   // Patients without an NHS number have a 10 character alphanumeric UID
@@ -245,6 +246,10 @@ export function formatNhsNumber(string) {
     string = string
       .toString()
       .replaceAll(/(\d{3})(\d{3})(\d{4})/g, '$1&nbsp;&zwj;$2&nbsp;&zwj;$3')
+
+    if (invalid) {
+      string = `<s>${string}</s>`
+    }
 
     return formatMonospace(string)
   }
