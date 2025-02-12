@@ -1483,7 +1483,7 @@ export const en = {
       label: 'Outcome'
     },
     'upload-class-list': {
-      title: 'Import class list records'
+      title: 'Import class lists'
     },
     list: {
       label: 'Sessions',
@@ -1531,6 +1531,7 @@ export const en = {
       }
     },
     consents: {
+      label: 'Match responses',
       warning: 'You need to review unmatched consent responses for this session'
     },
     consentWindow: {
@@ -1546,6 +1547,24 @@ export const en = {
         one: '%s child in session cohort',
         other: '[0] No children in session cohort|%s children in session cohort'
       }
+    },
+    patientsVaccinated: {
+      label: 'Vaccinations'
+    },
+    patientsToConsent: {
+      label: 'Get consent'
+    },
+    patientsToTriage: {
+      label: 'Triage'
+    },
+    patientsToRegister: {
+      label: 'Register'
+    },
+    patientsToRecord: {
+      label: 'Record vaccination'
+    },
+    activities: {
+      label: 'Action required'
     },
     date: {
       label: 'Session date',

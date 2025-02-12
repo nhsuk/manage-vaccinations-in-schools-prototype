@@ -38,7 +38,7 @@ export const Activity = {
   Consent: 'Get consent',
   Triage: 'Triage',
   Register: 'Register attendance',
-  Record: 'Ready for vaccinator',
+  Record: 'Record vaccination',
   Report: 'Report'
 }
 
