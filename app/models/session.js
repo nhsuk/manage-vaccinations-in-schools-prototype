@@ -19,6 +19,7 @@ import {
   formatLinkWithSecondaryText,
   formatList,
   formatTag,
+  formatWithSecondaryText,
   lowerCaseFirst
 } from '../utils/string.js'
 
@@ -632,8 +633,12 @@ export class Session {
         day: 'numeric'
       }),
       openAt: formatDate(this.openAt, { dateStyle: 'full' }),
-      reminderWeeks: `Send ${reminderWeeks} before each session</br>
-      <span class="nhsuk-u-secondary-text-color">First: ${formattedNextReminderDate}</span>`,
+      reminderWeeks: formattedNextReminderDate
+        ? formatWithSecondaryText(
+            `Send ${reminderWeeks} before each session`,
+            `First: ${formattedNextReminderDate}`
+          )
+        : `Send ${reminderWeeks} before each session`,
       closeAt: formatDate(this.closeAt, { dateStyle: 'full' }),
       patients: `${prototypeFilters.plural(this.patients.length, 'child')} in this session`,
       programmes: this.programmes
