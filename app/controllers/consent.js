@@ -9,17 +9,12 @@ import { getResults, getPagination } from '../utils/pagination.js'
 export const consentController = {
   readAll(request, response, next) {
     const { id } = request.params
-    let { page, limit } = request.query
     const { data } = request.session
 
     let consents = Consent.readAll(data)
 
     // Sort
     consents = _.sortBy(consents, 'createdAt')
-
-    // Paginate
-    page = parseInt(page) || 1
-    limit = parseInt(limit) || 50
 
     // Session consents
     if (id) {
@@ -29,8 +24,8 @@ export const consentController = {
     }
 
     response.locals.consents = consents
-    response.locals.results = getResults(consents, page, limit)
-    response.locals.pages = getPagination(consents, page, limit)
+    response.locals.results = getResults(consents, request.query)
+    response.locals.pages = getPagination(consents, request.query)
     response.locals.rootPath = id ? `/sessions/${id}/consents` : '/consents'
 
     next()
@@ -108,7 +103,7 @@ export const consentController = {
     response.locals.consent = Consent.read(uuid, data)
     response.locals.patients = patients
     response.locals.results = getResults(patients, page, limit)
-    response.locals.pages = getPagination(patients, page, limit)
+    response.locals.pages = getPagination(patients, request.query)
 
     next()
   },

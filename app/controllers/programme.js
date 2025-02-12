@@ -21,7 +21,7 @@ export const programmeController = {
 
   read(request, response, next) {
     const { pid } = request.params
-    let { page, limit, hasMissingNhsNumber, q, outcome, record } = request.query
+    const { hasMissingNhsNumber, q, outcome, record } = request.query
     const { data } = request.session
 
     const programme = Programme.read(pid, data)
@@ -34,10 +34,6 @@ export const programmeController = {
       outcome: outcome || 'none',
       record: record || 'none'
     }
-
-    // Paginate
-    page = parseInt(page) || 1
-    limit = parseInt(limit) || 50
 
     // Search
     const view = request.path.split('/').at(-1)
@@ -77,8 +73,8 @@ export const programmeController = {
     }
 
     // Results
-    response.locals.results = getResults(results, page, limit)
-    response.locals.pages = getPagination(results, page, limit)
+    response.locals.results = getResults(results, request.query)
+    response.locals.pages = getPagination(results, request.query)
 
     // Filter option items
     response.locals.outcomeItems = [

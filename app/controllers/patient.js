@@ -8,17 +8,13 @@ import { getResults, getPagination } from '../utils/pagination.js'
 
 export const patientController = {
   readAll(request, response, next) {
-    let { page, limit, q, hasMissingNhsNumber } = request.query
+    const { q, hasMissingNhsNumber } = request.query
     const { data } = request.session
 
     let patients = Patient.readAll(data)
 
     // Sort
     patients = _.sortBy(patients, 'lastName')
-
-    // Paginate
-    page = parseInt(page) || 1
-    limit = parseInt(limit) || 50
 
     // Filter
     if (hasMissingNhsNumber) {
@@ -37,8 +33,8 @@ export const patientController = {
     delete data.q
 
     response.locals.patients = patients
-    response.locals.results = getResults(patients, page, limit)
-    response.locals.pages = getPagination(patients, page, limit)
+    response.locals.results = getResults(patients, request.query)
+    response.locals.pages = getPagination(patients, request.query)
 
     next()
   },

@@ -5,7 +5,6 @@ import { getResults, getPagination } from '../utils/pagination.js'
 
 export const recordController = {
   readAll(request, response, next) {
-    let { page, limit } = request.query
     const { data } = request.session
 
     let records = Record.readAll(data)
@@ -13,13 +12,9 @@ export const recordController = {
     // Sort
     records = _.sortBy(records, 'lastName')
 
-    // Paginate
-    page = parseInt(page) || 1
-    limit = parseInt(limit) || 50
-
     response.locals.records = records
-    response.locals.results = getResults(records, page, limit)
-    response.locals.pages = getPagination(records, page, limit)
+    response.locals.results = getResults(records, request.query)
+    response.locals.pages = getPagination(records, request.query)
 
     next()
   },

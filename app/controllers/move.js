@@ -5,7 +5,6 @@ import { getResults, getPagination } from '../utils/pagination.js'
 
 export const moveController = {
   readAll(request, response, next) {
-    let { page, limit } = request.query
     const { data } = request.session
 
     let moves = Move.readAll(data)
@@ -13,13 +12,9 @@ export const moveController = {
     // Sort
     moves = _.sortBy(moves, 'createdAt')
 
-    // Paginate
-    page = parseInt(page) || 1
-    limit = parseInt(limit) || 50
-
     response.locals.moves = moves
-    response.locals.results = getResults(moves, page, limit)
-    response.locals.pages = getPagination(moves, page, limit)
+    response.locals.results = getResults(moves, request.query)
+    response.locals.pages = getPagination(moves, request.query)
 
     next()
   },

@@ -2,14 +2,17 @@
  * Generate results page
  *
  * @param {Array} items - Items to paginate
- * @param {number} currentPage - Current page
- * @param {number} limit - Limit of items per page
+ * @param {object} query - Query parameters
+ * @param {number} [limit] - Limit
  * @returns {object} Results
  */
-export function getResults(items, currentPage, limit) {
+export function getResults(items, query, limit = 50) {
+  const page = parseInt(query.page) || 1
+  limit = parseInt(query.limit) || limit
+
   const count = items.length
-  const skip = (currentPage - 1) * limit
-  const resultsFrom = (currentPage - 1) * limit + 1
+  const skip = (page - 1) * limit
+  const resultsFrom = (page - 1) * limit + 1
   let resultsTo = resultsFrom - 1 + limit
   resultsTo = resultsTo > count ? count : resultsTo
 
@@ -25,33 +28,33 @@ export function getResults(items, currentPage, limit) {
  * Generate pagination items
  *
  * @param {Array} items - Items to paginate
- * @param {number} currentPage - Current page
- * @param {number} limit - Limit of items per page
+ * @param {object} query - Query parameters
+ * @param {number} [limit] - Limit
  * @returns {object} Pagination
  */
-export function getPagination(items, currentPage, limit) {
+export function getPagination(items, query, limit = 50) {
+  const page = parseInt(query.page) || 1
+  limit = parseInt(query.limit) || limit
+
   const count = items.length
   const totalPages = Math.ceil(count / limit)
-  const nextPage = currentPage < totalPages ? currentPage + 1 : false
-  const previousPage = currentPage > 0 ? currentPage - 1 : false
+  const nextPage = page < totalPages ? page + 1 : false
+  const prevPage = page > 0 ? page - 1 : false
+
   const pageItems = [...Array(totalPages).keys()].map((item) => ({
-    current: item + 1 === currentPage,
-    href: `?${new URLSearchParams({ page: item + 1, limit })}`,
+    current: item + 1 === page,
+    href: `?${new URLSearchParams({ ...query, page: item + 1, limit })}`,
     number: item + 1
   }))
 
   return {
     items: pageItems.length > 1 ? pageItems : false,
-    current: currentPage,
-    next: nextPage
-      ? {
-          href: `?${new URLSearchParams({ page: nextPage, limit })}`
-        }
-      : false,
-    previous: previousPage
-      ? {
-          href: `?${new URLSearchParams({ page: previousPage, limit })}`
-        }
-      : false
+    current: page,
+    next: nextPage && {
+      href: `?${new URLSearchParams({ ...query, page: nextPage, limit })}`
+    },
+    previous: prevPage && {
+      href: `?${new URLSearchParams({ ...query, page: prevPage, limit })}`
+    }
   }
 }

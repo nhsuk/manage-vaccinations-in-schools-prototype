@@ -44,7 +44,7 @@ export const sessionController = {
 
   read(request, response, next) {
     const { id, view } = request.params
-    let { page, limit, gtin, q } = request.query
+    const { gtin, q } = request.query
     const { data } = request.session
 
     response.locals.view = view
@@ -53,10 +53,6 @@ export const sessionController = {
     response.locals.session = session
 
     let patientSessions = session.patientSessions
-
-    // Paginate
-    page = parseInt(page) || 1
-    limit = parseInt(limit) || 50
 
     // Query
     if (q) {
@@ -104,8 +100,8 @@ export const sessionController = {
 
     // Results
     response.locals.patientSessions = patientSessions
-    response.locals.results = getResults(patientSessions, page, limit)
-    response.locals.pages = getPagination(patientSessions, page, limit)
+    response.locals.results = getResults(patientSessions, request.query)
+    response.locals.pages = getPagination(patientSessions, request.query)
 
     // Used when updating the default batch
     if (gtin) {
