@@ -152,15 +152,15 @@ export const navigation = (request, response, next) => {
             [
               {
                 URL: `${tioSession.consentUrl}/start`,
-                label: '‘Doubles’ consent'
+                label: 'MenACWY & Td/IPV consent'
               },
               {
                 URL: `${tioSession.consentUrl}/emails`,
-                label: '‘Doubles’ consent emails'
+                label: 'MenACWY & Td/IPV consent emails'
               },
               {
                 URL: `${tioSession.consentUrl}/texts`,
-                label: '‘Doubles’ consent texts'
+                label: 'MenACWY & Td/IPV consent texts'
               }
             ]
           ]
