@@ -340,11 +340,13 @@ export class Reply {
    */
   get link() {
     return {
-      fullNameAndRelationship: formatLinkWithSecondaryText(
-        this.uri,
-        formatParent(this.parent, false),
-        this.parent.tel
-      )
+      fullNameAndRelationship: this.selfConsent
+        ? formatLinkWithSecondaryText(this.uri, this.relationship)
+        : formatLinkWithSecondaryText(
+            this.uri,
+            formatParent(this.parent, false),
+            this.parent?.tel
+          )
     }
   }
 

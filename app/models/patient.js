@@ -252,7 +252,7 @@ export class Patient extends Record {
     return {
       ...super.formatted,
       lastReminderDate: this.lastReminderDate
-        ? `Reminder sent on ${this.lastReminderDate}`
+        ? `Last reminder sent on ${this.lastReminderDate}`
         : 'No reminders sent'
     }
   }

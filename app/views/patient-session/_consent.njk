@@ -46,7 +46,7 @@
     {{ button({
       classes: "app-button--secondary",
       text: __("reply.new.title"),
-      href: patientSession.uri + "/replies/new"
+      href: patientSession.uri + "/replies/new?referrer=" + referrer
     }) if options.canRespond }}
   </div>
 

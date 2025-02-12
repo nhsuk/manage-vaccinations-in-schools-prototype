@@ -1,7 +1,6 @@
 import { Gillick } from '../models/gillick.js'
 import {
   ConsentOutcome,
-  Activity,
   PatientOutcome,
   PatientSession,
   ScreenOutcome,
@@ -48,8 +47,7 @@ export const patientSessionController = {
       canGillick:
         programme.type !== ProgrammeType.Flu &&
         session.isActive &&
-        consent !== ConsentOutcome.Given &&
-        !patientSession.gillick?.competent,
+        consent !== ConsentOutcome.Given,
       // Patient requires triage
       canTriage: triage !== TriageOutcome.NotNeeded,
       // Patient has a triage outcome
