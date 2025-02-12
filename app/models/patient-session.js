@@ -480,7 +480,7 @@ export class PatientSession {
       consent,
       triage:
         this.triage === TriageOutcome.Completed && this.status.screen.reason,
-      record: this.screen || this.consent,
+      record: this.screen ? String(this.screen) : this.consent,
       outcome:
         this.outcome === PatientOutcome.CouldNotVaccinate &&
         this.couldNotVaccinateReason
