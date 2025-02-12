@@ -150,6 +150,10 @@
             ],
             rows: patientRows
           }) }}
+
+          {{ govukPagination(pages) }}
+
+          {{ __("patient.results", { results: results }) | nhsukMarkdown }}
         {% else %}
           {{ card({
             heading: __n("patient.count", patientSessions.length),
