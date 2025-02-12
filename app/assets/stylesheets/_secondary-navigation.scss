@@ -55,12 +55,14 @@
 
 .app-secondary-navigation__link,
 .app-secondary-navigation__current {
-  align-items: baseline;
-  column-gap: nhsuk-spacing(2);
-  display: flex;
+  &:has(.nhsuk-u-secondary-text-color) {
+    align-items: baseline;
+    column-gap: nhsuk-spacing(2);
+    display: flex;
 
-  @include mq($from: tablet) {
-    flex-direction: column;
+    @include mq($from: tablet) {
+      flex-direction: column;
+    }
   }
 }
 
