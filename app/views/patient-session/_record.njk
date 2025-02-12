@@ -56,7 +56,7 @@
   {{ button({
     text: __("patientSession.preScreen.confirm"),
     attributes: {
-      formaction: patientSession.uri + "/new/pre-screen"
+      formaction: patientSession.uri + "/new/pre-screen?referrer=" + referrer
     }
   }) }}
 {% endset %}
