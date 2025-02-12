@@ -24,9 +24,9 @@ export const replyController = {
   },
 
   redirect(request, response) {
-    const { id, nhsn } = request.params
+    const { pid, nhsn } = request.params
 
-    response.redirect(`/sessions/${id}/patients/${nhsn}`)
+    response.redirect(`/programmes/${pid}/patients/${nhsn}`)
   },
 
   show(request, response) {
@@ -67,7 +67,7 @@ export const replyController = {
       reply.update(request.body.reply, data)
     } else {
       reply = new Reply(Reply.read(uuid, data.wizard), data)
-      next = `${patientSession.session.uri}/${activity || 'consent'}`
+      next = `${patientSession.uri}?activity=${activity || 'consent'}`
 
       // Remove any parent details in reply if self consent
       if (reply.selfConsent) {
@@ -348,7 +348,7 @@ export const replyController = {
   invalidate(request, response) {
     const { note } = request.body.reply
     const { data } = request.session
-    const { __, patientSession, reply } = response.locals
+    const { __, activity, patientSession, reply } = response.locals
 
     reply.update({ invalid: true, note }, data)
 
@@ -357,13 +357,13 @@ export const replyController = {
 
     request.flash('success', __(`reply.invalidate.success`, { reply }))
 
-    response.redirect(patientSession.uri)
+    response.redirect(`${patientSession.uri}?activity=${activity || 'consent'}`)
   },
 
   withdraw(request, response) {
     const { refusalReason, refusalReasonOther, note } = request.body.reply
     const { data } = request.session
-    const { __, programme, patient, patientSession, reply, session } =
+    const { __, activity, programme, patient, patientSession, reply, session } =
       response.locals
 
     // Create a new reply
@@ -403,6 +403,6 @@ export const replyController = {
 
     request.flash('success', __(`reply.withdraw.success`, { reply }))
 
-    response.redirect(patientSession.uri)
+    response.redirect(`${patientSession.uri}?activity=${activity || 'consent'}`)
   }
 }

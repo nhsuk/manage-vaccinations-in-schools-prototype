@@ -1142,15 +1142,15 @@ export const en = {
       },
       success: {
         [Activity.Consent]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. They still need consent to vaccinate.',
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is attending today’s session. They still need consent to vaccinate.',
         [Activity.Triage]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. A nurse needs to triage their record.',
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is attending today’s session. A nurse needs to triage their record.',
         [Activity.Register]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is absent from today’s session.',
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is absent from today’s session.',
         [Activity.Record]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is attending today’s session. They are ready for the vaccinator.',
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is attending today’s session. They are ready for the vaccinator.',
         [RegistrationOutcome.Absent]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}) is absent from today’s session.'
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is absent from today’s session.'
       }
     }
   },
@@ -1271,12 +1271,10 @@ export const en = {
       'check-answers': {
         title: 'Check and confirm'
       },
-      success:
-        'Consent response from {{reply.fullName}} added to [{{patientSession.patient.fullName}}]({{patientSession.uri}})’s record'
+      success: 'Consent response from {{reply.fullName}} added'
     },
     edit: {
-      success:
-        'Consent response from {{reply.fullName}} updated on [{{patientSession.patient.fullName}}]({{patientSession.uri}})’s record'
+      success: 'Consent response from {{reply.fullName}} updated'
     },
     'follow-up': {
       label: 'Follow up',
@@ -1715,8 +1713,7 @@ export const en = {
     confirm: 'Save triage',
     edit: {
       title: 'Update triage outcome',
-      success:
-        'Triage outcome updated for [{{patientSession.patient.fullName}}]({{patientSession.uri}})'
+      success: 'Triage outcome updated'
     },
     note: {
       label: 'Triage notes'

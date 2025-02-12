@@ -14,7 +14,7 @@
       {{ button({
         classes: "app-button--secondary",
         text: __("triage.edit.title"),
-        href: patientSession.uri + "/edit/triage"
+        href: patientSession.uri + "/edit/triage?referrer=" + referrer
       }) }}
     </div>
   {% endif %}
