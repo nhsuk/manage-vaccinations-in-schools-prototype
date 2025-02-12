@@ -18,7 +18,7 @@ export const patientController = {
 
     // Paginate
     page = parseInt(page) || 1
-    limit = parseInt(limit) || 200
+    limit = parseInt(limit) || 50
 
     // Filter
     if (hasMissingNhsNumber) {

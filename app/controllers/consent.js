@@ -19,7 +19,7 @@ export const consentController = {
 
     // Paginate
     page = parseInt(page) || 1
-    limit = parseInt(limit) || 100
+    limit = parseInt(limit) || 50
 
     // Session consents
     if (id) {

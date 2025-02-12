@@ -56,7 +56,7 @@ export const sessionController = {
 
     // Paginate
     page = parseInt(page) || 1
-    limit = parseInt(limit) || 200
+    limit = parseInt(limit) || 50
 
     // Query
     if (q) {

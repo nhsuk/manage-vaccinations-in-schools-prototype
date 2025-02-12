@@ -15,7 +15,7 @@ export const moveController = {
 
     // Paginate
     page = parseInt(page) || 1
-    limit = parseInt(limit) || 100
+    limit = parseInt(limit) || 50
 
     response.locals.moves = moves
     response.locals.results = getResults(moves, page, limit)

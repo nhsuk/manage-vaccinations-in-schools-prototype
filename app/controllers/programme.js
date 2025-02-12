@@ -37,7 +37,7 @@ export const programmeController = {
 
     // Paginate
     page = parseInt(page) || 1
-    limit = parseInt(limit) || 200
+    limit = parseInt(limit) || 50
 
     // Search
     const view = request.path.split('/').at(-1)

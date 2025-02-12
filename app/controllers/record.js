@@ -15,7 +15,7 @@ export const recordController = {
 
     // Paginate
     page = parseInt(page) || 1
-    limit = parseInt(limit) || 200
+    limit = parseInt(limit) || 50
 
     response.locals.records = records
     response.locals.results = getResults(records, page, limit)
