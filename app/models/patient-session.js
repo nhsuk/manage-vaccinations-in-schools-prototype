@@ -38,7 +38,7 @@ export const Activity = {
   Consent: 'Get consent',
   Triage: 'Triage',
   Register: 'Register attendance',
-  Record: 'Vaccinate',
+  Record: 'Ready for vaccinator',
   Report: 'Report'
 }
 
@@ -478,8 +478,6 @@ export class PatientSession {
       consent,
       triage:
         this.triage === TriageOutcome.Completed && this.status.screen.reason,
-      register:
-        this.registration === RegistrationOutcome.Present && this.nextActivity,
       record: this.couldNotVaccinateReason,
       outcome:
         this.outcome === PatientOutcome.CouldNotVaccinate &&
@@ -505,12 +503,10 @@ export class PatientSession {
         screen: this.reason.screen
           ? formatTagWithSecondaryText(this.status.screen, this.reason.screen)
           : formatTag(this.status.screen),
-        register: this.reason.register
-          ? formatTagWithSecondaryText(
-              this.status.register,
-              this.reason.register
-            )
-          : formatTag(this.status.register),
+        register: formatTagWithSecondaryText(
+          this.status.register,
+          this.nextActivity
+        ),
         record: this.reason.record
           ? formatTagWithSecondaryText(this.status.outcome, this.reason.record)
           : formatTag(this.status.record),
