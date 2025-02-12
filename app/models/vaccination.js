@@ -375,8 +375,7 @@ export class Vaccination {
    */
   get link() {
     return {
-      createdAt_date: formatLink(this.uri, this.formatted.createdAt_date),
-      vaccine_gtin: formatLink(this.uri, this.formatted.vaccine_gtin)
+      createdAt_date: formatLink(this.uri, this.formatted.createdAt_date)
     }
   }
 
