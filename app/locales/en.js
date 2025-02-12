@@ -1152,6 +1152,8 @@ export const en = {
           '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is absent from today’s session.',
         [Activity.Record]:
           '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is attending today’s session. They are ready for the vaccinator.',
+        [Activity.Report]:
+          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is attending today’s session, but they have already been vaccinated.',
         [RegistrationOutcome.Absent]:
           '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is absent from today’s session.'
       }
