@@ -17,7 +17,7 @@
       {% set noticeRows = noticeRows | push([
         {
           header: __("patient.label"),
-          html: notice.patient.link.fullName
+          html: notice.patient.link.fullNameAndNhsn
         },
         {
           header: __("notice.createdAt.label"),

@@ -20,8 +20,8 @@
   {% for patient in results.page %}
     {% set patientRows = patientRows | push([
       {
-        header: __("patient.fullName.label"),
-        html: patient.link.fullName | highlightQuery(data.q)
+        header: __("patient.fullNameAndNhsn.label"),
+        html: patient.link.fullNameAndNhsn | highlightQuery(data.q)
       },
       {
         header: __("patient.postalCode.label"),
@@ -51,7 +51,7 @@
       panel: true,
       responsive: true,
       head: [
-        { text: __("patient.fullName.label") },
+        { text: __("patient.fullNameAndNhsn.label") },
         { text: __("patient.postalCode.label") },
         { text: __("patient.school.label") },
         { text: __("patient.dob.label") }

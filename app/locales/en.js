@@ -943,6 +943,9 @@ export const en = {
           '[0] No records without an NHS number|%s records without an NHS number'
       }
     },
+    fullNameAndNhsn: {
+      label: 'Name and NHS number'
+    },
     fullName: {
       label: 'Full name',
       title: 'What is the child’s name?'

@@ -4,7 +4,11 @@ import _ from 'lodash'
 import { getDateValueDifference, removeDays, today } from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
 import { getPreferredNames } from '../utils/reply.js'
-import { formatLink, formatParent } from '../utils/string.js'
+import {
+  formatLink,
+  formatLinkWithSecondaryText,
+  formatParent
+} from '../utils/string.js'
 
 import { AuditEvent, EventType } from './audit-event.js'
 import { Cohort } from './cohort.js'
@@ -204,7 +208,12 @@ export class Patient extends Record {
    */
   get link() {
     return {
-      fullName: formatLink(this.uri, this.fullName)
+      fullName: formatLink(this.uri, this.fullName),
+      fullNameAndNhsn: formatLinkWithSecondaryText(
+        this.uri,
+        this.fullName,
+        this.formatted.nhsn || 'Missing NHS number'
+      )
     }
   }
 
