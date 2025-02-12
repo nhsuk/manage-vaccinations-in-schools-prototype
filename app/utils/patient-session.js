@@ -241,9 +241,9 @@ export const getOutcomeStatus = (patientSession) => {
       colour = 'red'
       break
     case PatientOutcome.NoOutcomeYet:
+    default:
       colour = 'white'
       break
-    default:
   }
 
   return {

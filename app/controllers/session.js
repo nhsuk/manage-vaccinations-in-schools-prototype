@@ -2,6 +2,7 @@ import _ from 'lodash'
 
 import { Batch } from '../models/batch.js'
 import {
+  Activity,
   ConsentOutcome,
   PatientOutcome,
   RegistrationOutcome,
@@ -91,6 +92,13 @@ export const sessionController = {
       (patientSession) => patientSession[view] !== false
     )
 
+    // Only show patients ready to vaccinate
+    if (view === 'record') {
+      patientSessions = patientSessions.filter(
+        (patientSession) => patientSession.nextActivity === Activity.Record
+      )
+    }
+
     // Sort
     patientSessions = _.sortBy(patientSessions, 'patient.firstName')
 
@@ -119,7 +127,8 @@ export const sessionController = {
       consent: ConsentOutcome,
       triage: TriageOutcome,
       register: RegistrationOutcome,
-      record: VaccinationOutcome
+      record: PatientOutcome,
+      outcome: PatientOutcome
     }
 
     if (statusItems[view]) {
@@ -139,7 +148,7 @@ export const sessionController = {
 
     const outcomeItems = {
       screen: ScreenOutcome,
-      outcome: PatientOutcome
+      outcome: VaccinationOutcome
     }
 
     if (outcomeItems[view]) {

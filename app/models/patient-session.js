@@ -387,6 +387,8 @@ export class PatientSession {
     if (this.lastRecordedVaccination) {
       return this.lastRecordedVaccination.outcome
     }
+
+    return PatientOutcome.NoOutcomeYet
   }
 
   /**
@@ -478,7 +480,7 @@ export class PatientSession {
       consent,
       triage:
         this.triage === TriageOutcome.Completed && this.status.screen.reason,
-      record: this.couldNotVaccinateReason,
+      record: this.screen || this.consent,
       outcome:
         this.outcome === PatientOutcome.CouldNotVaccinate &&
         this.couldNotVaccinateReason
