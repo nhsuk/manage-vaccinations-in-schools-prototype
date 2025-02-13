@@ -10,6 +10,13 @@
     title: title
   }) }}
 
+  {{ warningCallout({
+    heading: __("notice.list.title"),
+    HTML: link("/uploads/notices", __n("notice.warning", notices.length), {
+      classes: "nhsuk-link--no-visited-state"
+    }) | nhsukMarkdown
+  }) if notices.length }}
+
   <ul class="nhsuk-grid-row nhsuk-card-group">
     <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
