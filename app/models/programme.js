@@ -192,6 +192,15 @@ export class Programme {
   }
 
   /**
+   * Get consent form PDF
+   *
+   * @returns {string} - Consent form PDF
+   */
+  get consentPdf() {
+    return `/public/downloads/${this.pid}-consent-form.pdf`
+  }
+
+  /**
    * Get patient sessions
    *
    * @returns {Array<PatientSession>} - Patient sessions
@@ -235,6 +244,15 @@ export class Programme {
       : []
 
     return {
+      consentPdf:
+        this.consentPdf &&
+        formatLink(
+          this.consentPdf,
+          `Download ${this.name} consent form (PDF)`,
+          {
+            download: 'true'
+          }
+        ),
       vaccines: vaccineList.join('<br>')
     }
   }

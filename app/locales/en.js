@@ -1188,6 +1188,9 @@ export const en = {
       label: 'Cohorts',
       title: 'Cohorts'
     },
+    consentPdf: {
+      label: 'Paper consent form'
+    },
     patientSessions: {
       label: 'Children',
       title: 'Children',
@@ -1611,9 +1614,6 @@ export const en = {
     },
     consentUrl: {
       label: 'Online consent form'
-    },
-    consentPdf: {
-      label: 'Paper consent form'
     },
     details: {
       label: 'Details'
