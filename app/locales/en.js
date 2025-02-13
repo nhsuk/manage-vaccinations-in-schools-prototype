@@ -751,6 +751,10 @@ export const en = {
       one: '%s notice',
       other: '[0] No notices|%s notices'
     },
+    warning: {
+      one: '%s important notice needs attention',
+      other: '%s important notices need attention'
+    },
     createdAt: {
       label: 'Date'
     },

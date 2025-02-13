@@ -37,7 +37,7 @@ router.use(internationalisation)
 router.use(flash(), navigation, notification, users)
 router.use(referrer)
 
-router.use('/home', homeRoutes)
+router.use('/', homeRoutes)
 router.use('/account', accountRoutes)
 router.use('/cohorts', cohortRoutes)
 router.use('/consents', consentRoutes)
