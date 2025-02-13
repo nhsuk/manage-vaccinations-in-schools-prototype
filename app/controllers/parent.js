@@ -116,7 +116,7 @@ export const parentController = {
       },
       [`/${id}/${uuid}/${form}/contact-preference`]: {},
       [`/${id}/${uuid}/${form}/decision`]: {
-        [`${id}/${uuid}/${form}/refusal-reason`]: {
+        [`${id}/${uuid}/${form}/consultation`]: {
           data: 'consent.decision',
           value: ReplyDecision.Refused
         }
@@ -129,6 +129,12 @@ export const parentController = {
       ),
       [`/${id}/${uuid}/${form}/check-answers`]: {},
       [`/${id}/${uuid}/new/confirmation`]: {},
+      [`/${id}/${uuid}/${form}/consultation`]: {
+        [`${id}/${uuid}/${form}/refusal-reason`]: {
+          data: 'consent.decision',
+          value: ReplyDecision.Refused
+        }
+      },
       [`/${id}/${uuid}/${form}/refusal-reason`]: {
         [`/${id}/${uuid}/${form}/refusal-reason-details`]: {
           data: 'consent.refusalReason',

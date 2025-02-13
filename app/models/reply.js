@@ -67,6 +67,7 @@ export const ReplyRefusal = {
  * @property {import('./child.js').Child} [child] - Child
  * @property {import('./parent.js').Parent} [parent] - Parent or guardian
  * @property {ReplyDecision} [decision] - Consent decision
+ * @property {ReplyDecision} [consultation] - Parent wants consultation
  * @property {boolean} [confirmed] - Decision confirmed
  * @property {boolean} given - Reply gives consent
  * @property {boolean} invalid - Reply is invalid
@@ -98,6 +99,9 @@ export class Reply {
       ReplyDecision.OnlyMenACWY,
       ReplyDecision.OnlyTdIPV
     ].includes(this.decision)
+    this.consultation =
+      this?.decision === ReplyDecision.Refused &&
+      stringToBoolean(options?.consultation)
     this.healthAnswers = this.given && options?.healthAnswers
     this.triageNote = this.given && options?.triageNote
     this.invalid =

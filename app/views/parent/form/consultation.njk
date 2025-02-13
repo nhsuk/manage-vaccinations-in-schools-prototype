@@ -1,0 +1,31 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __n("consent.consultation.title", programmeItems.length) %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ __n("consent.consultation.description", programmeItems.length) | nhsukMarkdown }}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--s",
+          title: __("consent.consultation.legend")
+        })
+      }
+    },
+    items: [{
+      text: __("consent.consultation.yes"),
+      value: true
+    },
+    {
+      text: __("consent.consultation.no"),
+      value: false
+    }],
+    decorate: "consent.consultation"
+  }) }}
+{% endblock %}

@@ -522,6 +522,23 @@ export const en = {
       },
       no: 'No'
     },
+    consultation: {
+      title: {
+        one: 'Your child may be able to have the vaccination outside of school',
+        other:
+          'Your child may be able to have the vaccinations outside of school'
+      },
+      description: {
+        one: 'For example, they may be able to have the vaccination in a clinic.',
+        other:
+          'For example, they may be able to have the vaccinations in a clinic.'
+      },
+      label: 'Discuss options',
+      legend:
+        'Would you like a member of the team to contact you to discuss your options?',
+      yes: 'Yes, I’m happy for someone to contact me',
+      no: 'No'
+    },
     refusalReason: {
       title: 'Please tell us why you do not agree to your child having the %s',
       label: 'Refusal reason',
