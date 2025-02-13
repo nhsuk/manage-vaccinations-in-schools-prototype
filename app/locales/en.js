@@ -580,6 +580,14 @@ export const en = {
     },
     confirmation: {
       title: {
+        [ReplyDecision.Given]: 'Consent confirmed',
+        [ReplyDecision.OnlyMenACWY]:
+          'Consent for the MenACWY vaccination confirmed',
+        [ReplyDecision.OnlyTdIPV]:
+          'Consent for the Td/IPV vaccination confirmed',
+        [ReplyDecision.Refused]: 'Refusal confirmed'
+      },
+      text: {
         [ReplyDecision.Given]:
           '{{consent.child.fullName}} is due to get the {{session.vaccination}} at school on {{session.summary.datesDisjunction}}',
         [ReplyDecision.OnlyMenACWY]:
