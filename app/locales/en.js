@@ -505,7 +505,8 @@ export const en = {
     },
     decision: {
       summary: 'Consent for the {{session.vaccination}}',
-      title: 'Do you agree to your child having the {{session.vaccination}}?',
+      title:
+        'Do you agree to your child having the {{session.vaccinationTitle}}?',
       label: 'Decision',
       hint: {
         Flu: 'The nasal flu spray contains gelatine which comes from pigs.'
