@@ -532,7 +532,7 @@ export class Session {
     const pluralisation =
       this.programmes.length === 1 ? 'vaccination' : 'vaccinations'
 
-    return `${this.immunisation.replace('flu', 'Flu')} ${pluralisation}`
+    return `${this.programmeTitle.replace('flu', 'Flu')} ${pluralisation}`
   }
 
   /**
