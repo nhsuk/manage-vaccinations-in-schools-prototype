@@ -241,17 +241,6 @@ export class Session {
   }
 
   /**
-   * Get consent form PDF
-   *
-   * @returns {string} - Consent form PDF
-   */
-  get consentPdf() {
-    const pids = this.programme_pids.join('-')
-
-    return `/public/downloads/${pids}-consent-form.pdf`
-  }
-
-  /**
    * Get consent window
    *
    * @returns {object} - Consent window
@@ -765,11 +754,6 @@ export class Session {
             target: '_blank'
           }
         ),
-      consentPdf:
-        this.consentPdf &&
-        formatLink(this.consentPdf, 'Download parental consent form (PDF)', {
-          download: 'true'
-        }),
       consentWindow,
       location: Object.values(this.location)
         .filter((string) => string)

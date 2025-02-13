@@ -147,7 +147,9 @@
 
         {{ session.formatted.consentUrl | nhsukMarkdown }}
 
-        {{ session.formatted.consentPdf | nhsukMarkdown }}
+        {% for programme in session.programmes %}
+          {{ programme.formatted.consentPdf | nhsukMarkdown }}
+        {% endfor %}
       {% endif %}
     </div>
   </div>
