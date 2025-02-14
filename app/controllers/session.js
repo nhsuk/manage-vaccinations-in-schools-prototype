@@ -44,7 +44,7 @@ export const sessionController = {
 
   read(request, response, next) {
     const { id, view } = request.params
-    const { gtin, q } = request.query
+    const { snomed, q } = request.query
     const { data } = request.session
 
     response.locals.view = view
@@ -104,9 +104,9 @@ export const sessionController = {
     response.locals.pages = getPagination(patientSessions, request.query)
 
     // Used when updating the default batch
-    if (gtin) {
+    if (snomed) {
       response.locals.batchItems = Batch.readAll(data).filter(
-        (batch) => batch.vaccine.gtin === gtin
+        (batch) => batch.vaccine.snomed === snomed
       )
     }
 

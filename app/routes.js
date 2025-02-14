@@ -64,6 +64,6 @@ router.use('/uploads/:id/vaccinations', vaccinationRoutes)
 router.use('/uploads/:id/patients', patientRoutes)
 router.use('/users', userRoutes)
 router.use('/vaccines', vaccineRoutes)
-router.use('/vaccines/:gtin/batches', batchRoutes)
+router.use('/vaccines/:snomed/batches', batchRoutes)
 
 export default router

@@ -9,13 +9,13 @@ export const batchController = {
   },
 
   create(request, response) {
-    const { gtin } = request.params
+    const { snomed } = request.params
     const { data } = request.session
     const { __ } = response.locals
 
     const batch = new Batch({
       ...request.body.batch,
-      vaccine_gtin: gtin
+      vaccine_snomed: snomed
     })
 
     request.flash('success', __(`batch.new.success`, { batch }))
@@ -76,7 +76,7 @@ export const batchController = {
 
     // Remove batch from session defaults
     for (const session of sessionsWithDefaultBatch) {
-      delete session.defaultBatch_ids[batch.vaccine_gtin]
+      delete session.defaultBatch_ids[batch.vaccine_snomed]
     }
 
     response.redirect('/vaccines')

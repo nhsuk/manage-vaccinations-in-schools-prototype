@@ -22,7 +22,7 @@ import { Vaccine } from './vaccine.js'
  * @property {Date} [archivedAt] - Archived date
  * @property {Date} [expiry] - Expiry date
  * @property {object} [expiry_] - Expiry date (from `dateInput`)
- * @property {string} [vaccine_gtin] - Vaccine GTIN
+ * @property {string} [vaccine_snomed] - Vaccine SNOMED code
  */
 export class Batch {
   constructor(options, context) {
@@ -33,7 +33,7 @@ export class Batch {
     this.archivedAt = options?.archivedAt && new Date(options.archivedAt)
     this.expiry = options?.expiry ? new Date(options.expiry) : undefined
     this.expiry_ = options?.expiry_
-    this.vaccine_gtin = options?.vaccine_gtin
+    this.vaccine_snomed = options?.vaccine_snomed
   }
 
   /**
@@ -83,7 +83,7 @@ export class Batch {
    */
   get vaccine() {
     try {
-      const vaccine = this.context?.vaccines[this.vaccine_gtin]
+      const vaccine = this.context?.vaccines[this.vaccine_snomed]
       if (vaccine) {
         return new Vaccine(vaccine)
       }
@@ -121,7 +121,7 @@ export class Batch {
    * @returns {string} - URI
    */
   get uri() {
-    return `/vaccines/${this.vaccine_gtin}/batches/${this.id}`
+    return `/vaccines/${this.vaccine_snomed}/batches/${this.id}`
   }
 
   /**

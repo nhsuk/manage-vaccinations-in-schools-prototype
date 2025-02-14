@@ -1,10 +1,10 @@
 export default {
   // Flu vaccines
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1107978/Influenza-green-book-chapter19-16September22.pdf
-  '05000456078276': {
-    gtin: '05000456078276',
+  '43208811000001106': {
+    snomed: '43208811000001106',
     type: 'Flu',
-    brand: 'Fluenz Tetra',
+    brand: 'Fluenz Trivalent',
     manufacturer: 'AstraZeneca UK Ltd',
     leaflet: {
       url: 'https://www.medicines.org.uk/emc/files/pil.15790.pdf',
@@ -32,11 +32,15 @@ export default {
       'isMedicated'
     ]
   },
-  5000123114115: {
-    gtin: '5000123114115',
+  '40085011000001101': {
+    snomed: '40085011000001101',
     type: 'Flu',
-    brand: 'Fluarix Tetra',
-    manufacturer: 'GlaxoSmithKline UK Ltd',
+    brand: 'Cell-based Quadrivalent',
+    manufacturer: 'Seqirus UK Limited',
+    leaflet: {
+      url: 'https://www.medicines.org.uk/emc/files/pil.12882.pdf',
+      size: '174KB'
+    },
     method: 'Injection',
     dose: 0.5,
     healthQuestionKeys: [
@@ -56,8 +60,8 @@ export default {
   // HPV vaccines
   // Possible others: Gardasil, Cervarix
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1065283/HPV-greenbook-chapter-18a.pdf
-  '00191778001693': {
-    gtin: '00191778001693',
+  '33493111000001108': {
+    snomed: '33493111000001108',
     type: 'HPV',
     brand: 'Gardasil 9',
     manufacturer: 'Merck Sharp & Dohme (UK) Ltd',
@@ -85,8 +89,8 @@ export default {
   // 3-in-1 vaccines
   // Possible others: Pediacel, Repevax, Infanrix IPV
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/147952/Green-Book-Chapter-15.pdf
-  3664798042948: {
-    gtin: '3664798042948',
+  '7374311000001101': {
+    snomed: '7374311000001101',
     type: 'TdIPV',
     brand: 'Revaxis',
     manufacturer: 'Sanofi',
@@ -114,8 +118,8 @@ export default {
   // MenACWY vaccines
   // Possible others: Menveo, Nimenrix
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1076053/Meningococcal-greenbook-chapter-22_17May2022.pdf
-  5000283662365: {
-    gtin: '5000283662365',
+  '39779611000001104': {
+    snomed: '39779611000001104',
     type: 'MenACWY',
     brand: 'MenQuadfi',
     manufacturer: 'Sanofi',

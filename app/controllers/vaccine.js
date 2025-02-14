@@ -14,10 +14,10 @@ export const vaccineController = {
   },
 
   read(request, response, next) {
-    const { gtin } = request.params
+    const { snomed } = request.params
     const { data } = request.session
 
-    response.locals.vaccine = Vaccine.read(gtin, data)
+    response.locals.vaccine = Vaccine.read(snomed, data)
 
     next()
   },

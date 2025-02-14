@@ -64,10 +64,10 @@ export function generateVaccination(
     programme_pid: programme.pid,
     session_id: session.id,
     patient_uuid: patientSession.patient.uuid,
-    vaccine_gtin: batch.vaccine_gtin,
+    vaccine_snomed: batch.vaccine_snomed,
     ...(vaccinated && {
       batch_id: batch.id,
-      dose: vaccines[batch.vaccine_gtin].dose,
+      dose: vaccines[batch.vaccine_snomed].dose,
       sequence,
       injectionMethod,
       injectionSite

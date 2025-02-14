@@ -48,7 +48,7 @@ export const programmeTypes = {
     term: SchoolTerm.Autumn,
     seasonal: true,
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    vaccines: ['05000456078276', '5000123114115']
+    vaccine_smomeds: ['43208811000001106', '40085011000001101']
   },
   [ProgrammeType.HPV]: {
     pid: 'hpv',
@@ -64,7 +64,7 @@ export const programmeTypes = {
     },
     term: SchoolTerm.Spring,
     yearGroups: [8, 9, 10, 11],
-    vaccines: ['00191778001693']
+    vaccine_smomeds: ['33493111000001108']
   },
   [ProgrammeType.TdIPV]: {
     pid: 'td-ipv',
@@ -80,7 +80,7 @@ export const programmeTypes = {
     },
     term: SchoolTerm.Summer,
     yearGroups: [9, 10, 11],
-    vaccines: ['3664798042948']
+    vaccine_smomeds: ['7374311000001101']
   },
   [ProgrammeType.MenACWY]: {
     pid: 'menacwy',
@@ -96,7 +96,7 @@ export const programmeTypes = {
     },
     term: SchoolTerm.Summer,
     yearGroups: [9, 10, 11],
-    vaccines: ['5000283662365']
+    vaccine_smomeds: ['39779611000001104']
   }
 }
 
@@ -111,9 +111,9 @@ export const programmeTypes = {
  * @property {ProgrammeStatus} status - Status
  * @property {SchoolTerm} term - School term administered in
  * @property {ProgrammeType} type - Programme type
- * @property {Array[string]} cohort_uids - Cohort UIDs
  * @property {Array[number]} yearGroups - Year groups available to
- * @property {Array[string]} vaccines - Vaccines administered
+ * @property {Array[string]} cohort_uids - Cohort UIDs
+ * @property {Array[string]} vaccine_smomeds - Vaccines administered
  * @property {string} pid - Programme ID
  * @property {string} ns - Namespace
  * @property {string} uri - URL
@@ -129,9 +129,10 @@ export class Programme {
     this.year = options?.year || SchoolYear.Y2024
     this.term = options?.type && programmeTypes[options.type]?.term
     this.type = options?.type
-    this.cohort_uids = options?.cohort_uids || []
     this.yearGroups = options?.type && programmeTypes[options.type]?.yearGroups
-    this.vaccines = options?.type && programmeTypes[options.type]?.vaccines
+    this.cohort_uids = options?.cohort_uids || []
+    this.vaccine_smomeds =
+      options?.type && programmeTypes[options.type]?.vaccine_smomeds
   }
 
   /**
@@ -179,7 +180,7 @@ export class Programme {
    * @returns {import('./vaccine.js').Vaccine} Vaccine
    */
   get vaccine() {
-    return new Vaccine(vaccines[this.vaccines[0]])
+    return new Vaccine(vaccines[this.vaccine_smomeds[0]])
   }
 
   /**
@@ -239,8 +240,10 @@ export class Programme {
    * @returns {object} - Formatted values
    */
   get formatted() {
-    const vaccineList = Array.isArray(this.vaccines)
-      ? this.vaccines.map((gtin) => new Vaccine(vaccines[gtin]).brand)
+    const vaccineList = Array.isArray(this.vaccine_smomeds)
+      ? this.vaccine_smomeds.map(
+          (snomed) => new Vaccine(vaccines[snomed]).brand
+        )
       : []
 
     return {

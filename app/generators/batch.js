@@ -7,15 +7,15 @@ import { addDays } from '../utils/date.js'
 /**
  * Generate fake batch
  *
- * @param {string} [vaccine_gtin] - Vaccine GTIN
+ * @param {string} [vaccine_snomed] - Vaccine SNOMED code
  * @param {string} [id] - Batch ID
  * @returns {Batch} - Batch
  */
-export function generateBatch(vaccine_gtin, id) {
+export function generateBatch(vaccine_snomed, id) {
   const createdAt = faker.date.recent({ days: 30 })
   const expiry = addDays(createdAt, 120)
-  vaccine_gtin =
-    vaccine_gtin || faker.helpers.arrayElement(Object.keys(vaccines))
+  vaccine_snomed =
+    vaccine_snomed || faker.helpers.arrayElement(Object.keys(vaccines))
 
   let archivedAt
   const isArchived = faker.datatype.boolean(0.5)
@@ -28,6 +28,6 @@ export function generateBatch(vaccine_gtin, id) {
     createdAt,
     ...(isArchived && { archivedAt }),
     expiry,
-    vaccine_gtin
+    vaccine_snomed
   })
 }

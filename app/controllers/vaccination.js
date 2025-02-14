@@ -67,7 +67,7 @@ export const vaccinationController = {
     const { injectionSite, ready } = data.patientSession.preScreen
 
     // Check for default batch
-    const defaultBatchId = session.defaultBatch_ids?.[programme.vaccine.gtin]
+    const defaultBatchId = session.defaultBatch_ids?.[programme.vaccine.snomed]
 
     const readyToVaccine = ready === 'true'
     const injectionSiteGiven = [
@@ -99,7 +99,7 @@ export const vaccinationController = {
       programme_pid: programme.pid,
       school_urn: session.school_urn,
       session_id: session.id,
-      vaccine_gtin: programme.vaccine.gtin,
+      vaccine_snomed: programme.vaccine.snomed,
       ...(data.token && { createdBy_uid: data.token?.uid }),
       ...(injectionSite && {
         dose: programme.vaccine.dose,
@@ -236,7 +236,7 @@ export const vaccinationController = {
       .filter((vaccine) => programme.type.includes(vaccine.type))
       .map((vaccine) => ({
         text: vaccine.brandWithType,
-        value: vaccine.gtin
+        value: vaccine.snomed
       }))
 
     response.locals.declineItems = Object.entries(VaccinationOutcome)
@@ -286,10 +286,10 @@ export const vaccinationController = {
     if (batch_id) {
       // Checkbox submits ['_unchecked', BATCH_ID]
       batch_id = Array.isArray(batch_id) ? batch_id.at(-1) : batch_id
-      const { gtin } = programme.vaccine
+      const { snomed } = programme.vaccine
 
       patientSession.session.update(
-        { defaultBatch_ids: { [gtin]: batch_id } },
+        { defaultBatch_ids: { [snomed]: batch_id } },
         data
       )
     }

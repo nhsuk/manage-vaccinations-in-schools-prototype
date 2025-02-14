@@ -459,8 +459,8 @@ export class Patient extends Record {
     vaccination = new Vaccination(vaccination)
     if (vaccination.given) {
       name = vaccination.updatedAt
-        ? `Vaccination record for ${vaccination.formatted.vaccine_gtin} updated`
-        : `Vaccinated with ${vaccination.formatted.vaccine_gtin}`
+        ? `Vaccination record for ${vaccination.formatted.vaccine_snomed} updated`
+        : `Vaccinated with ${vaccination.formatted.vaccine_snomed}`
     } else {
       name = `Unable to vaccinate: ${vaccination.outcome}`
     }

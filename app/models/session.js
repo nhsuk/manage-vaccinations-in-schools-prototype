@@ -86,7 +86,7 @@ export const SessionType = {
  * @property {object} [openAt_] - Date consent window opens (from `dateInput`)
  * @property {boolean} [closed] - Session closed
  * @property {number} [reminderWeeks] - Weeks before session to send reminders
- * @property {object} [defaultBatch_ids] - Vaccine GTIN: Default batch ID
+ * @property {object} [defaultBatch_ids] - Vaccine SNOMED code: Default batch ID
  * @property {Array<string>} [programme_pids] - Programme PIDs
  */
 export class Session {
@@ -471,15 +471,17 @@ export class Session {
    */
   get vaccines() {
     if (this.context?.vaccines && this.programmes) {
-      const gtins = new Set()
+      const snomedCodes = new Set()
 
       for (const programme of this.programmes) {
-        for (const vaccine_gtin of programme.vaccines) {
-          gtins.add(vaccine_gtin)
+        for (const vaccine_snomed of programme.vaccine_smomeds) {
+          snomedCodes.add(vaccine_snomed)
         }
       }
 
-      return [...gtins].map((gtin) => new Vaccine(this.context?.vaccines[gtin]))
+      return [...snomedCodes].map(
+        (snomed) => new Vaccine(this.context?.vaccines[snomed])
+      )
     }
 
     return []

@@ -163,7 +163,7 @@ export const patientSessionController = {
         patient_uuid: patient.uuid,
         programme_pid: programme.pid,
         session_id: session.id,
-        vaccine_gtin: programme.vaccine.gtin,
+        vaccine_snomed: programme.vaccine.snomed,
         ...(data.token && { createdBy_uid: data.token?.uid })
       })
       vaccination.update(vaccination, data)

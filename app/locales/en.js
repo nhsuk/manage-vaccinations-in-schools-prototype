@@ -2148,7 +2148,7 @@ export const en = {
       label: 'Dose number',
       title: 'Which dose was this?'
     },
-    vaccine_gtin: {
+    vaccine_snomed: {
       title: 'Vaccine',
       label: 'Vaccine'
     },
@@ -2206,8 +2206,8 @@ export const en = {
     createdAt: {
       label: 'Entered date'
     },
-    gtin: {
-      label: 'GTIN'
+    snomed: {
+      label: 'SNOMED code'
     },
     brand: {
       label: 'Brand'

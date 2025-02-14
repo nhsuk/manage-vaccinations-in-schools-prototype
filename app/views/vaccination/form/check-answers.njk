@@ -14,7 +14,7 @@
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(vaccination, {
-        vaccine_gtin: {},
+        vaccine_snomed: {},
         method: {
           href: vaccination.uri + "/new/administer" if vaccination.vaccine.method == VaccineMethod.Injection
         },
@@ -46,7 +46,7 @@
     heading: __("vaccination.new.check-answers.callout"),
     HTML: summaryList({
       rows: summaryRows(vaccination, {
-        vaccine_gtin: {},
+        vaccine_snomed: {},
         outcome: {
           href: vaccination.uri + "/new/decline"
         },

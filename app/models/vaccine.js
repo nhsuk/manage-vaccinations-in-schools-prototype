@@ -75,7 +75,7 @@ export const VaccineMethod = {
  * @param {object} options - Options
  * @param {object} [context] - Context
  * @property {object} [context] - Context
- * @property {string} gtin - GTIN
+ * @property {string} snomed - SNOMED code
  * @property {string} type - Type
  * @property {string} brand - Brand
  * @property {string} manufacturer - Manufacturer
@@ -89,8 +89,8 @@ export const VaccineMethod = {
 export class Vaccine {
   constructor(options, context) {
     this.context = context
-    this.gtin = options?.gtin || faker.string.numeric(14)
-    this.type = options.type
+    this.snomed = options?.snomed || faker.string.numeric(14)
+    this.type = options?.type
     this.brand = options.brand
     this.manufacturer = options.manufacturer
     this.leaflet = options.leaflet
@@ -116,7 +116,7 @@ export class Vaccine {
    * @returns {Array} - Health questions
    */
   get healthQuestions() {
-    return vaccines[this.gtin].healthQuestionKeys.map(
+    return vaccines[this.snomed].healthQuestionKeys.map(
       (key) => HealthQuestion[key]
     )
   }
@@ -127,7 +127,7 @@ export class Vaccine {
    * @returns {Array} - Pre-screening questions
    */
   get preScreenQuestions() {
-    return vaccines[this.gtin].preScreenQuestionKeys.map(
+    return vaccines[this.snomed].preScreenQuestionKeys.map(
       (key) => PreScreenQuestion[key]
     )
   }
@@ -140,7 +140,7 @@ export class Vaccine {
   get batches() {
     try {
       return Object.values(this.context.batches)
-        .filter((batch) => batch.vaccine_gtin === this.gtin)
+        .filter((batch) => batch.vaccine_snomed === this.snomed)
         .map((batch) => new Batch(batch))
     } catch (error) {
       console.error('Vaccine.batches', error.message)
@@ -154,7 +154,7 @@ export class Vaccine {
    */
   get formatted() {
     return {
-      gtin: formatMonospace(this.gtin),
+      snomed: formatMonospace(this.snomed),
       healthQuestions: formatList(this.healthQuestions),
       preScreenQuestions: formatList(this.preScreenQuestions),
       dose: formatMillilitres(this.dose)
@@ -176,7 +176,7 @@ export class Vaccine {
    * @returns {string} - URI
    */
   get uri() {
-    return `/vaccines/${this.gtin}`
+    return `/vaccines/${this.snomed}`
   }
 
   /**
@@ -195,14 +195,14 @@ export class Vaccine {
   /**
    * Read
    *
-   * @param {string} gtin - GTIN
+   * @param {string} snomed - SNOMED code
    * @param {object} context - Context
    * @returns {Vaccine|undefined} Vaccine
    * @static
    */
-  static read(gtin, context) {
+  static read(snomed, context) {
     if (context?.vaccines) {
-      return new Vaccine(context.vaccines[gtin], context)
+      return new Vaccine(context.vaccines[snomed], context)
     }
   }
 
@@ -212,6 +212,6 @@ export class Vaccine {
    * @param {object} context - Context
    */
   delete(context) {
-    delete context.vaccines[this.gtin]
+    delete context.vaccines[this.snomed]
   }
 }

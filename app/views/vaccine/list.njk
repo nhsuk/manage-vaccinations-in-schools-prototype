@@ -13,7 +13,7 @@
   {% for vaccine in vaccines %}
     {% set descriptionHtml %}
       <p class="nhsuk-body">
-        {{ vaccine.manufacturer }}, GTIN: <span class="app-u-monospace">{{ vaccine.gtin }}</span>
+        {{ vaccine.manufacturer }}, SNOMED code: <span class="app-u-monospace">{{ vaccine.snomed }}</span>
       </p>
 
       {{ button({

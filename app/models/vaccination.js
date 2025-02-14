@@ -107,7 +107,7 @@ export const VaccinationProtocol = {
  * @property {string} [patient_uuid] - Patient UUID
  * @property {string} [programme_pid] - Programme ID
  * @property {string} [batch_id] - Batch ID
- * @property {string} [vaccine_gtin] - Vaccine GTIN
+ * @property {string} [vaccine_snomed] - Vaccine SNOMED code
  */
 export class Vaccination {
   constructor(options, context) {
@@ -134,7 +134,7 @@ export class Vaccination {
     this.patient_uuid = options?.patient_uuid
     this.programme_pid = options?.programme_pid
     this.batch_id = this.given ? options?.batch_id || '' : undefined
-    this.vaccine_gtin = options?.vaccine_gtin
+    this.vaccine_snomed = options?.vaccine_snomed
   }
 
   /**
@@ -199,9 +199,9 @@ export class Vaccination {
    * @returns {object|undefined} - Vaccine
    */
   get vaccine() {
-    if (!this.vaccine_gtin) return
+    if (!this.vaccine_snomed) return
 
-    return new Vaccine(vaccines[this.vaccine_gtin])
+    return new Vaccine(vaccines[this.vaccine_snomed])
   }
 
   /**
@@ -361,7 +361,7 @@ export class Vaccination {
       batch: this.batch?.summary,
       batch_id: formatMonospace(this.batch_id),
       dose: formatMillilitres(this.dose),
-      vaccine_gtin: this.vaccine?.brandWithType,
+      vaccine_snomed: this.vaccine?.brandWithType,
       note: formatMarkdown(this.note),
       outcome: formatTag(this.outcomeStatus),
       school: this?.school && this.school.name
