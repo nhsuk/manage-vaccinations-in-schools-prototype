@@ -1,6 +1,7 @@
 {
   "semi": false,
   "singleQuote": true,
+  "quoteProps": "preserve",
   "tabWidth": 2,
   "trailingComma": "none",
   "overrides": [
