@@ -1,6 +1,5 @@
 {%- macro defaultBatch(batch, session) %}
-{{ batch.vaccine.brandWithType }}:
-<span class="app-u-monospace">{{ batch.id }}</span>
+{{ batch.vaccine.brandWithType }}: {{ batch.formatted.id | safe }}
 <a class="nhsuk-link nhsuk-u-margin-left-2" href="{{ session.uri }}/default-batch?snomed={{ batch.vaccine_snomed }}">
   {{- __("session.defaultBatch.label", {
     vaccine: batch.vaccine
