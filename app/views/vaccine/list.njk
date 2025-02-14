@@ -12,9 +12,12 @@
 
   {% for vaccine in vaccines %}
     {% set descriptionHtml %}
-      <p class="nhsuk-body">
-        {{ vaccine.manufacturer }}, SNOMED code: <span class="app-u-monospace">{{ vaccine.snomed }}</span>
-      </p>
+      {{ summaryList({
+        rows: summaryRows(vaccine, {
+          manufacturer: {},
+          snomed: {}
+        })
+      }) }}
 
       {{ button({
         classes: "app-button--secondary",

@@ -12,14 +12,13 @@
     }) }}
 
     {{ card({
-      heading: __("vaccine.show.summary"),
+      heading: vaccine.brand,
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         rows: summaryRows(vaccine, {
+          manufacturer: {},
           snomed: {},
           type: {},
-          brand: {},
-          manufacturer: {},
           method: {},
           dose: {},
           healthQuestions: {},
