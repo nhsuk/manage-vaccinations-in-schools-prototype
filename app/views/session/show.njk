@@ -72,23 +72,23 @@
         rows: summaryRows(session, {
           consents: {
             changeText: __("actions.review"),
-            href: session.uri + "/consents" if session.consents != 0
+            href: session.uri + "/consents"
           },
           patientsToConsent: {
             changeText: __("actions.review"),
-            href: session.uri + "/consent?consent=" + ConsentOutcome.NoResponse if session.patientsToConsent != 0
+            href: session.uri + "/consent?consent=" + ConsentOutcome.NoResponse
           },
           patientsToTriage: {
             changeText: __("actions.review"),
-            href: session.uri + "/screen?screen=" + ScreenOutcome.NeedsTriage if session.patientsToTriage != 0
+            href: session.uri + "/screen?screen=" + ScreenOutcome.NeedsTriage
           },
           patientsToRegister: {
             changeText: __("actions.review"),
-            href: session.uri + "/register" if session.patientsToRegister
+            href: session.uri + "/register"
           },
           patientsToRecord: {
             changeText: __("actions.review"),
-            href: session.uri + "/record" if session.patientsToRecord != 0
+            href: session.uri + "/record"
           }
         })
       }) }}
