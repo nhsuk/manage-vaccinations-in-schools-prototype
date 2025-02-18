@@ -57,7 +57,7 @@ export const ConsentWindow = {
 export const SessionStatus = {
   Unplanned: 'No sessions scheduled',
   Planned: 'Sessions scheduled',
-  Completed: 'All sessions completed',
+  Completed: 'All session dates completed',
   Closed: 'Closed'
 }
 
@@ -700,6 +700,7 @@ export class Session {
     const reminderWeeks = prototypeFilters.plural(this.reminderWeeks, 'week')
 
     return {
+      address: this.address?.formatted.multiline,
       dates: formatList(formattedDates).replace(
         'nhsuk-list--bullet',
         'app-list--sessions'
@@ -728,11 +729,11 @@ export class Session {
         `${prototypeFilters.plural(
           this.patientsVaccinated.length,
           'vaccination'
-        )} administered`,
-      patientsToConsent: prototypeFilters.plural(
+        )} given`,
+      patientsToConsent: `${prototypeFilters.plural(
         this.patientsToConsent.length,
         'child'
-      ),
+      )} without a response`,
       patientsToTriage: prototypeFilters.plural(
         this.patientsToTriage.length,
         'child'
@@ -751,7 +752,7 @@ export class Session {
         this.consentUrl &&
         formatLink(
           this.consentUrl,
-          'Parental consent form (opens in a new tab)',
+          'View the online consent form (opens in new tab)',
           {
             target: '_blank'
           }

@@ -132,7 +132,7 @@
           classes: "app-summary-list--full-width",
           rows: summaryRows(session, {
             school_urn: {},
-            location: {}
+            address: {}
           })
         })
       }) }}
@@ -142,7 +142,7 @@
           classes: "nhsuk-u-margin-bottom-2",
           level: 3,
           size: "s",
-          title: "Consent forms"
+          title: __("session.consentForms.label")
         }) }}
 
         {{ session.formatted.consentUrl | nhsukMarkdown }}
