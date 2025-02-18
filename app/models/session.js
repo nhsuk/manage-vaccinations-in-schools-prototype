@@ -259,6 +259,15 @@ export class Session {
   }
 
   /**
+   * Is planned session
+   *
+   * @returns {boolean} - Is planned session
+   */
+  get isPlanned() {
+    return this.status === SessionStatus.Planned
+  }
+
+  /**
    * Is active session
    *
    * @returns {boolean} - Is active session
@@ -599,7 +608,7 @@ export class Session {
   }
 
   get dateSummary() {
-    if (this.status === SessionStatus.Planned) {
+    if (this.isPlanned) {
       const firstDate = formatDate(this.firstDate, {
         day: 'numeric',
         month: 'long'
