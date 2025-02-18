@@ -1,5 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import prototypeFilters from '@x-govuk/govuk-prototype-filters'
+import { default as filters } from '@x-govuk/govuk-prototype-filters'
 import { isAfter } from 'date-fns'
 import _ from 'lodash'
 
@@ -543,7 +543,7 @@ export class Session {
    * @example flu and HPV
    */
   get immunisation() {
-    return prototypeFilters.formatList(
+    return filters.formatList(
       this.programmes.map(({ name }) => name.replace('Flu', 'flu'))
     )
   }
@@ -554,7 +554,7 @@ export class Session {
    * @returns {string} - Programme title
    */
   get programmeTitle() {
-    return prototypeFilters.formatList(
+    return filters.formatList(
       this.programmes.map(({ information }) => information.title)
     )
   }
@@ -706,7 +706,7 @@ export class Session {
       dateStyle: 'full'
     })
 
-    const reminderWeeks = prototypeFilters.plural(this.reminderWeeks, 'week')
+    const reminderWeeks = filters.plural(this.reminderWeeks, 'week')
 
     return {
       address: this.address?.formatted.multiline,
@@ -728,32 +728,36 @@ export class Session {
           )
         : `Send ${reminderWeeks} before each session`,
       closeAt: formatDate(this.closeAt, { dateStyle: 'full' }),
-      patients: prototypeFilters.plural(this.patients.length, 'child'),
-      consents: prototypeFilters.plural(
-        this.consents.length,
-        'unmatched response'
-      ),
-      patientsVaccinated:
-        this.patientsVaccinated &&
-        `${prototypeFilters.plural(
-          this.patientsVaccinated.length,
-          'vaccination'
-        )} given`,
-      patientsToConsent: `${prototypeFilters.plural(
-        this.patientsToConsent.length,
-        'child'
-      )} without a response`,
-      patientsToTriage: prototypeFilters.plural(
-        this.patientsToTriage.length,
-        'child'
-      ),
+      patients: filters.plural(this.patients.length, 'child'),
+      consents:
+        this.consents.length > 0
+          ? filters.plural(this.consents.length, 'unmatched response')
+          : undefined,
+      patientsVaccinated: this.patientsVaccinated?.length
+        ? `${filters.plural(
+            this.patientsVaccinated.length,
+            'vaccination'
+          )} given`
+        : undefined,
+      patientsToConsent:
+        this.patientsToConsent?.length > 0
+          ? `${filters.plural(
+              this.patientsToConsent.length,
+              'child'
+            )} without a response`
+          : undefined,
+      patientsToTriage:
+        this.patientsToTriage?.length > 0
+          ? filters.plural(this.patientsToTriage.length, 'child')
+          : undefined,
       patientsToRegister:
-        this.patientsToRegister &&
-        prototypeFilters.plural(this.patientsToRegister.length, 'child'),
-      patientsToRecord: prototypeFilters.plural(
-        this.patientsToRecord?.length,
-        'child'
-      ),
+        this.patientsToRegister?.length > 0
+          ? filters.plural(this.patientsToRegister.length, 'child')
+          : undefined,
+      patientsToRecord:
+        this.patientsToRegister?.length > 0
+          ? filters.plural(this.patientsToRecord.length, 'child')
+          : undefined,
       programmes: this.programmes
         .flatMap(({ name }) => formatTag({ colour: 'white', text: name }))
         .join(' '),
@@ -820,10 +824,10 @@ export class Session {
         : []
 
     return {
-      dates: prototypeFilters.formatList(dates),
-      datesDisjunction: prototypeFilters.formatList(dates, 'disjunction'),
+      dates: filters.formatList(dates),
+      datesDisjunction: filters.formatList(dates, 'disjunction'),
       firstDate,
-      remainingDates: prototypeFilters.formatList(remainingDates),
+      remainingDates: filters.formatList(remainingDates),
       location: `${this.location.name}</br>
       <span class="nhsuk-u-secondary-text-color">
         ${this.location.addressLine1},
