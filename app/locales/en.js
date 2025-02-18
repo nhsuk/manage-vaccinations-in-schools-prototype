@@ -1239,7 +1239,7 @@ export const en = {
       label: 'Programme type'
     },
     vaccines: {
-      label: 'Vaccines administered'
+      label: 'Vaccines given'
     }
   },
   record: {
@@ -1538,9 +1538,9 @@ export const en = {
       completed: {
         label: 'Completed',
         count: {
-          one: '%s location with all sessions completed',
+          one: '%s location with all session dates completed',
           other:
-            '[0] No locations with all sessions completed|%s locations with all sessions completed'
+            '[0] No locations with all session dates completed|%s locations with all session dates completed'
         }
       },
       planned: {
@@ -1569,8 +1569,14 @@ export const en = {
       }
     },
     consents: {
-      label: 'Match responses',
+      label: 'Match consent responses',
       warning: 'You need to review unmatched consent responses for this session'
+    },
+    address: {
+      label: 'Address'
+    },
+    consentForms: {
+      label: 'Consent forms'
     },
     consentWindow: {
       label: 'Consent period'
@@ -1593,13 +1599,13 @@ export const en = {
       label: 'Get consent'
     },
     patientsToTriage: {
-      label: 'Triage'
+      label: 'Triage health questions'
     },
     patientsToRegister: {
-      label: 'Register'
+      label: 'Register attendance'
     },
     patientsToRecord: {
-      label: 'Record vaccination'
+      label: 'Record vaccinations'
     },
     activities: {
       label: 'Action required'
