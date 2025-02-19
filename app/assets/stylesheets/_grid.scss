@@ -1,6 +1,8 @@
 // Search filters and results
-.app-grid-row {
-  margin-top: #{nhsuk-spacing(5) * -1};
+.app-grid-column-filters > .nhsuk-card--feature,
+.app-grid-column-results > .nhsuk-card--feature,
+.app-grid-column-results > .nhsuk-warning-callout {
+  margin-top: nhsuk-spacing(3);
 }
 
 @include govuk-grid-row($class: "app-grid-row");

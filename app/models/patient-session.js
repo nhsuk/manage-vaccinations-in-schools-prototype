@@ -18,9 +18,8 @@ import {
 } from '../utils/reply.js'
 import {
   formatLink,
-  formatLinkWithSecondaryText,
-  formatTag,
-  formatTagWithSecondaryText
+  formatProgrammeStatus,
+  formatTag
 } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 
@@ -29,7 +28,6 @@ import { Gillick } from './gillick.js'
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
 import { Session } from './session.js'
-import { VaccinationOutcome } from './vaccination.js'
 
 /**
  * @readonly
@@ -445,14 +443,7 @@ export class PatientSession {
    */
   get link() {
     return {
-      fullName: formatLink(this.uri, this.patient.fullName),
-      fullAndPreferredName: this.patient.preferredName
-        ? formatLinkWithSecondaryText(
-            this.uri,
-            this.patient.fullName,
-            this.patient.preferredName
-          )
-        : formatLink(this.uri, this.patient.fullName)
+      fullName: formatLink(this.uri, this.patient.fullName)
     }
   }
 
@@ -502,35 +493,44 @@ export class PatientSession {
    */
   get formatted() {
     return {
-      programme: formatTag({ text: this.programme.name, colour: 'white' }),
+      programme: formatTag({
+        text: this.programme.name,
+        colour: 'white'
+      }),
       status: {
-        consent: this.reason.consent
-          ? formatTagWithSecondaryText(this.status.consent, this.reason.consent)
-          : formatTag(this.status.consent),
-        triage: this.reason.triage
-          ? formatTagWithSecondaryText(this.status.triage, this.reason.triage)
-          : formatTag(this.status.triage),
-        screen: this.reason.screen
-          ? formatTagWithSecondaryText(this.status.screen, this.reason.screen)
-          : formatTag(this.status.screen),
-        register: formatTagWithSecondaryText(
+        consent: formatProgrammeStatus(
+          this.programme,
+          this.status.consent,
+          this.reason.consent
+        ),
+        screen:
+          this.screen &&
+          formatProgrammeStatus(
+            this.programme,
+            this.status.screen,
+            this.reason.screen
+          ),
+        register: formatProgrammeStatus(
+          this.programme,
           this.status.register,
           this.nextActivity
         ),
-        record: this.reason.record
-          ? formatTagWithSecondaryText(this.status.outcome, this.reason.record)
-          : formatTag(this.status.record),
-        outcome: this.reason.outcome
-          ? formatTagWithSecondaryText(
-              this.status.outcome,
-              this.status.record.text
-            )
-          : formatTag(this.status.outcome)
+        record: formatProgrammeStatus(
+          this.programme,
+          this.status.outcome,
+          this.reason.record
+        ),
+        outcome: formatProgrammeStatus(
+          this.programme,
+          this.status.outcome,
+          this.status.record.text
+        )
       },
-      outcome:
-        !this.record || this.record === VaccinationOutcome.Vaccinated
-          ? formatTag(this.outcomeStatus)
-          : formatTagWithSecondaryText(this.outcomeStatus, this.record)
+      outcome: formatProgrammeStatus(
+        this.programme,
+        this.outcomeStatus,
+        this.record
+      )
     }
   }
 
