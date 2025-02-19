@@ -240,6 +240,20 @@ export class Session {
     return `/give-or-refuse-consent/${this.id}`
   }
 
+  get consentForms() {
+    if (!this.isUnplanned) {
+      let forms = [this.formatted.consentUrl]
+
+      for (const programme of this.programmes) {
+        forms = [...forms, programme.formatted.consentPdf]
+      }
+
+      return formatList(forms).replace('nhsuk-list--bullet', 'app-list--spaced')
+    }
+
+    return []
+  }
+
   /**
    * Get consent window
    *
@@ -712,7 +726,7 @@ export class Session {
       address: this.address?.formatted.multiline,
       dates: formatList(formattedDates).replace(
         'nhsuk-list--bullet',
-        'app-list--sessions'
+        'app-list--spaced'
       ),
       firstDate: formatDate(this.firstDate, { dateStyle: 'full' }),
       nextDate: formatDate(this.nextDate, {

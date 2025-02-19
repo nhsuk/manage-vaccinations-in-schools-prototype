@@ -124,33 +124,20 @@
     </div>
 
     <div class="nhsuk-grid-column-one-quarter">
-      {{ card({
-        heading: session.location.name,
-        headingClasses: "nhsuk-heading-s",
-        secondary: true,
-        descriptionHtml: summaryList({
-          classes: "app-summary-list--full-width",
-          rows: summaryRows(session, {
-            school_urn: {},
-            address: {}
-          })
+      {{ heading({
+        classes: "nhsuk-u-margin-top-5",
+        level: 3,
+        size: "s",
+        title: session.location.name
+      }) }}
+      {{ summaryList({
+        classes: "nhsuk-summary-list--no-border app-summary-list--full-width",
+        rows: summaryRows(session, {
+          school_urn: {},
+          address: {},
+          consentForms: {}
         })
       }) }}
-
-      {% if not session.isUnplanned %}
-        {{ heading({
-          classes: "nhsuk-u-margin-bottom-2",
-          level: 3,
-          size: "s",
-          title: __("session.consentForms.label")
-        }) }}
-
-        {{ session.formatted.consentUrl | nhsukMarkdown }}
-
-        {% for programme in session.programmes %}
-          {{ programme.formatted.consentPdf | nhsukMarkdown }}
-        {% endfor %}
-      {% endif %}
     </div>
   </div>
 {% endblock %}
