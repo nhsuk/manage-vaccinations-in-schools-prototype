@@ -35,6 +35,7 @@ import {
   RegistrationOutcome,
   TriageOutcome
 } from './patient-session.js'
+import { Patient } from './patient.js'
 import { Programme } from './programme.js'
 import { School } from './school.js'
 import { Vaccine } from './vaccine.js'
@@ -221,6 +222,31 @@ export class Session {
   }
 
   /**
+   * Get patients eligible for this session
+   *
+   * @returns {Array<Patient>} - Patients
+   */
+  get cohort() {
+    const programmeCohortUids = this.programmes.flatMap(
+      ({ cohort_uids }) => cohort_uids
+    )
+
+    // Select patients in all programme cohorts supported by this session
+    let patients = Patient.readAll(this.context).filter(({ cohort_uids }) =>
+      programmeCohortUids.some((uid) => cohort_uids.includes(uid))
+    )
+
+    if (this.type === SessionType.School) {
+      // Select patients that attend this school
+      patients = patients.filter(
+        ({ school_urn }) => school_urn === this.school_urn
+      )
+    }
+
+    return patients
+  }
+
+  /**
    * Get consents (unmatched consent responses)
    *
    * @returns {Array<import('./consent.js').Consent>} - Consent
@@ -368,22 +394,13 @@ export class Session {
   }
 
   /**
-   * Get patients
-   *
-   * @returns {Array<PatientSession>} - Patients
-   */
-  get patients() {
-    return _.uniqBy(this.patientSessions, 'patient.nhsn')
-  }
-
-  /**
    * Get vaccinated patients
    *
    * @returns {Array<PatientSession>} - Patients
    */
   get patientsVaccinated() {
     if (!this.isUnplanned) {
-      return this.patients.filter(
+      return this.patientSessions.filter(
         ({ outcome }) => outcome === PatientOutcome.Vaccinated
       )
     }
@@ -418,7 +435,7 @@ export class Session {
    */
   get patientsToRegister() {
     if (this.isActive) {
-      return this.patients.filter(
+      return this.patientSessions.filter(
         ({ registration }) => registration === RegistrationOutcome.Pending
       )
     }
@@ -431,7 +448,7 @@ export class Session {
    */
   get patientsToRecord() {
     if (this.isActive) {
-      return this.patients.filter(
+      return this.patientSessions.filter(
         ({ nextActivity }) => nextActivity === Activity.Record
       )
     }
@@ -636,13 +653,13 @@ export class Session {
    */
   get closingSummary() {
     return {
-      noConsentRequest: this.patients.filter(
+      noConsentRequest: this.patientSessions.filter(
         ({ consent }) => consent === ConsentOutcome.NoRequest
       ),
-      noConsentResponse: this.patients.filter(
+      noConsentResponse: this.patientSessions.filter(
         ({ consent }) => consent === ConsentOutcome.NoResponse
       ),
-      couldNotVaccinate: this.patients.filter(
+      couldNotVaccinate: this.patientSessions.filter(
         ({ consent, outcome }) =>
           consent === ConsentOutcome.Given &&
           outcome !== PatientOutcome.Vaccinated
@@ -656,7 +673,7 @@ export class Session {
    * @returns {Array<PatientSession>} - Patient sessions
    */
   get patientSessionsForClinic() {
-    return this.patients
+    return this.patientSessions
       .filter(({ consent }) =>
         [
           ConsentOutcome.NoResponse,
@@ -732,7 +749,7 @@ export class Session {
           )
         : `Send ${reminderWeeks} before each session`,
       closeAt: formatDate(this.closeAt, { dateStyle: 'full' }),
-      patients: filters.plural(this.patients.length, 'child'),
+      cohort: filters.plural(this.cohort.length, 'child'),
       consents:
         this.consents.length > 0
           ? filters.plural(this.consents.length, 'unmatched response')

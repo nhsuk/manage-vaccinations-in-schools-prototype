@@ -49,7 +49,7 @@
     {{ summaryList({
       rows: summaryRows(session, {
         programmes: {},
-        patients: {
+        cohort: {
           changeText: __("session.upload-class-list.title"),
           href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn if session.type == SessionType.School
         },

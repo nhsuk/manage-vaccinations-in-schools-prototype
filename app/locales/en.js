@@ -1593,7 +1593,7 @@ export const en = {
       title: 'Schedule sessions',
       description: 'Add dates for this school.'
     },
-    patients: {
+    cohort: {
       label: 'Cohort',
       count: {
         one: '%s child in session cohort',

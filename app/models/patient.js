@@ -414,7 +414,7 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Invite,
       name: `Invited to the ${patientSession.session.name}`,
-      createdAt: patientSession.createdAt,
+      createdAt: patientSession.session.openAt,
       createdBy_uid: patientSession.createdBy_uid,
       programme_pids: patientSession.session.programme_pids
     })
