@@ -40,8 +40,6 @@ export function generateVaccination(
       { value: VaccinationOutcome.Vaccinated, weight: 7 },
       { value: VaccinationOutcome.PartVaccinated, weight: 1 },
       { value: VaccinationOutcome.Refused, weight: 1 },
-      { value: VaccinationOutcome.AbsentSchool, weight: 1 },
-      { value: VaccinationOutcome.AbsentSession, weight: 1 },
       { value: VaccinationOutcome.Unwell, weight: 1 }
     ])
   } else {
@@ -56,8 +54,11 @@ export function generateVaccination(
     outcome === VaccinationOutcome.Vaccinated ||
     outcome === VaccinationOutcome.PartVaccinated
 
+  // Vaccinate 15 minutes after registration
+  const createdAt = new Date(session.firstDate.getTime() + 15 * 60000)
+
   return new Vaccination({
-    createdAt: session.firstDate,
+    createdAt,
     createdBy_uid: user.uid,
     outcome,
     location: session.location.name,

@@ -220,7 +220,7 @@ export class Programme {
   get sessions() {
     return Session.readAll(this.context)
       .filter(({ programme_pids }) => programme_pids.includes(this.pid))
-      .filter(({ patients }) => patients.length > 0)
+      .filter(({ cohort }) => cohort.length > 0)
   }
 
   /**

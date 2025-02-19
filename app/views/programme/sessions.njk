@@ -37,21 +37,21 @@
 
   {% set sessionRows = [] %}
   {% for session in programme.sessions | sort(false, false, "date") %}
-    {% set noResponse = session.patients | where("consent", ConsentOutcome.NoResponse) | length %}
-    {% set percentageNoResponse = percentage(noResponse, session.patients.length) %}
-    {% set triageNeeded = session.patients | where("triage", TriageOutcome.Needed) | length %}
-    {% set vaccinated = session.patients | where("outcome", PatientOutcome.Vaccinated) | length %}
-    {% set percentageVaccinated = percentage(vaccinated, session.patients.length) %}
+    {% set noResponse = session.patientSessions | where("consent", ConsentOutcome.NoResponse) | length %}
+    {% set percentageNoResponse = percentage(noResponse, session.patientSessions.length) %}
+    {% set triageNeeded = session.patientSessions | where("triage", TriageOutcome.Needed) | length %}
+    {% set vaccinated = session.patientSessions | where("outcome", PatientOutcome.Vaccinated) | length %}
+    {% set percentageVaccinated = percentage(vaccinated, session.patientSessions.length) %}
     {% set sessionRows = sessionRows | push([
       {
         header: __("session.details.label"),
         html: session.details
       },
       {
-        header: __("session.patients.label"),
-        text: count(session.patients.length),
+        header: __("session.cohort.label"),
+        text: count(session.cohort.length),
         attributes: {
-          "data-sort": session.patients.length
+          "data-sort": session.cohort.length
         }
       },
       {
@@ -92,7 +92,7 @@
         }
       },
       {
-        text: __("session.patients.label"),
+        text: __("session.cohort.label"),
         attributes: {
           "style": "width: 15%"
         }
