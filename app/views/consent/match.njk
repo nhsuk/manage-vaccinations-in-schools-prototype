@@ -55,7 +55,7 @@
 
         {% for patient in results.page %}
           {{ card({
-            classes: "nhsuk-u-margin-bottom-3",
+            classes: "app-card--patient",
             heading: patient.fullName | highlightQuery(data.q),
             headingClasses: "nhsuk-heading-s",
             clickable: true,
