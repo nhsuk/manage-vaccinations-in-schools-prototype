@@ -39,66 +39,6 @@
     html: defaultBatchHtml
   }) if view == "record" and session.defaultBatch.length }}
 
-  {% set patientRows = [] %}
-  {% for patientSession in results.page %}
-    {% set registrationButtonHtml %}
-      <div>
-        {{ button({
-          classes: "app-button--secondary app-button--icon app-button--small",
-          html: icon({
-            icon: "tick",
-            title: __("patientSession.registration.actions.present.title", { patient: patientSession.patient })
-          }),
-          decorate: "patientSession.registration",
-          value: RegistrationOutcome.Present,
-          attributes: {
-            formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
-            formmethod: "post"
-          }
-        }) if patientSession.registration != RegistrationOutcome.Present }}
-        {{ button({
-          classes: "app-button--secondary-warning app-button--icon app-button--small",
-          html: icon({
-            icon: "cross",
-            title: __("patientSession.registration.actions.absent.title", { patient: patientSession.patient })
-          }),
-          decorate: "patientSession.registration",
-          value: RegistrationOutcome.Absent,
-          attributes: {
-            formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
-            formmethod: "post"
-          }
-        }) if patientSession.registration != RegistrationOutcome.Absent }}
-      </div>
-    {% endset %}
-    {% set patientRows = patientRows | push([
-      {
-        header: __("patient.fullName.label"),
-        html: patientSession.link.fullAndPreferredName | replace(patientSession.uri, patientSession.uri + "?activity=" + view) | highlightQuery(data.q),
-        attributes: {
-          "data-filter": patientSession.patient.fullName,
-          "data-sort": patientSession.patient.fullName
-        }
-      },
-      {
-        header: __("patient.yearGroup.label"),
-        html: patientSession.patient.formatted.yearGroupWithRegistration,
-        attributes: {
-          "data-filter": patientSession.patient.yearGroup,
-          "data-sort": patientSession.patient.yearGroup
-        }
-      },
-      {
-        header: __("patientSession." + view + ".label"),
-        html: patientSession.formatted.status[view]
-      },
-      {
-        header: __("patientSession.registration.actions.label"),
-        html: registrationButtonHtml
-      } if view == "register"
-    ]) %}
-  {% endfor %}
-
   {% if view == "register" and not session.isActive %}
     {{ __("session.register.information") | nhsukMarkdown }}
   {% else %}
@@ -118,49 +58,75 @@
           }) | nhsukMarkdown
         }) if session.consents.length }}
 
+        <h2 class="nhsuk-heading-m nhsuk-u-margin-bottom-2">Search results</h2>
         {% if patientSessions.length %}
-          {{ actionTable({
-            id: "patient-sessions",
-            sort: "name",
-            heading: __n("patient.count", results.count),
-            responsive: true,
-            panel: true,
-            head: [
-              {
-                text: __("patient.fullName.label"),
-                attributes: {
-                  "data-col": "name"
-                }
-              },
-              {
-                text: __("patient.yearGroup.label"),
-                attributes: {
-                  "data-col": "yearGroup"
-                }
-              },
-              {
-                text: __("patientSession." + view + ".label")
-              },
-              {
-                text: __("patientSession.registration.actions.label"),
-                attributes: {
-                  "no-sort": "no-sort"
-                }
-              } if view == "register"
-            ],
-            rows: patientRows
-          }) }}
+          {{ __("patient.results", { results: results }) | nhsukMarkdown }}
+
+          {% for patientSession in results.page %}
+            {% set statusHtml %}
+            {% if view == "register" %}
+              {{ patientSession.formatted.status.register | safe }}
+            {% else %}
+              {% for patientSession in patientSession.siblingPatientSessions %}
+                {% if patientSession.formatted.status[view] %}
+                  <p>{{ patientSession.formatted.status[view] | safe }}</p>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+            {% endset %}
+
+            {% set cardDescriptionHtml %}
+              {{ summaryList({
+                rows: summaryRows(patientSession.patient, {
+                  dob: {},
+                  yearGroupWithRegistration: {},
+                  status: {
+                    value: statusHtml,
+                    href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.registration != RegistrationOutcome.Pending
+                  },
+                  registration: {
+                    label: __("patientSession.registration.actions.label"),
+                    value: registrationButtonHtml
+                  } if view == "register" and patientSession.registration == RegistrationOutcome.Pending
+                })
+              }) }}
+
+              {{ buttonGroup({
+                buttons: [{
+                  classes: "app-button--secondary app-button--small",
+                  text: __("patientSession.registration.actions.present.label"),
+                  decorate: "patientSession.registration",
+                  value: RegistrationOutcome.Present,
+                  attributes: {
+                    "aria-label": __("patientSession.registration.actions.present.title", { patient: patientSession.patient }),
+                    formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
+                    formmethod: "post"
+                  }
+                }, {
+                  classes: "app-button--secondary-warning app-button--small",
+                  text: __("patientSession.registration.actions.absent.label"),
+                  decorate: "patientSession.registration",
+                  value: RegistrationOutcome.Absent,
+                  attributes: {
+                    "aria-label": __("patientSession.registration.actions.absent.title", { patient: patientSession.patient }),
+                    formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
+                    formmethod: "post"
+                  }
+                }]
+              }) if view == "register" and patientSession.registration == RegistrationOutcome.Pending }}
+            {% endset %}
+            {{ card({
+              classes: "app-card--patient",
+              heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
+              headingClasses: "nhsuk-heading-s",
+              href: patientSession.uri + "?activity=" + view,
+              descriptionHtml: cardDescriptionHtml
+            }) }}
+          {% endfor %}
 
           {{ govukPagination(pages) }}
-
-          {{ __("patient.results", { results: results }) | nhsukMarkdown }}
         {% else %}
-          {{ card({
-            heading: __n("patient.count", patientSessions.length),
-            headingClasses: "nhsuk-heading-s",
-            feature: true,
-            description: __("patient.search.empty")
-          }) }}
+          {{ __("patient.search.empty") | nhsukMarkdown }}
         {% endif %}
       </div>
     </div>

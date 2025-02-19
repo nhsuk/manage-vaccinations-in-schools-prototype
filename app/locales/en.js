@@ -16,6 +16,7 @@ export const en = {
     label: 'Actions',
     change: 'Change',
     review: 'Review',
+    update: 'Update',
     archive: 'Archive'
   },
   address: {

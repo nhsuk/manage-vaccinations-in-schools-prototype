@@ -41,17 +41,6 @@
       fieldset: {
         legend: {
           classes: "nhsuk-fieldset__legend--s",
-          text: __("programme.label")
-        }
-      },
-      items: programmeItems,
-      decorate: "pid"
-    }) if programmeItems }}
-
-    {{ radios({
-      fieldset: {
-        legend: {
-          classes: "nhsuk-fieldset__legend--s",
           text: __("patientSession." + params.outcome + ".label")
         }
       },
@@ -70,6 +59,17 @@
       decorate: params.status
     }) if params.status }}
 
+    {{ checkboxes({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("patient.yearGroup.label")
+        }
+      },
+      items: yearGroupItems,
+      decorate: "yearGroup"
+    }) if yearGroupItems }}
+
     {% set searchDetailsHtml %}
       {{ dateInput({
         fieldset: {
@@ -80,17 +80,6 @@
         },
         decorate: "dob"
       }) }}
-
-      {{ checkboxes({
-        fieldset: {
-          legend: {
-            classes: "nhsuk-fieldset__legend--s",
-            text: __("patient.yearGroup.label")
-          }
-        },
-        items: yearGroupItems,
-        decorate: "yearGroup"
-      }) if yearGroupItems }}
 
       {{ checkboxes({
         fieldset: {

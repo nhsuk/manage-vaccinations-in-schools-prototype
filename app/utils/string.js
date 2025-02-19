@@ -136,16 +136,18 @@ export function formatNavigationItemWithSecondaryText(text, secondary) {
  * @param {string} [options.text] - Text
  * @param {string} [options.html] - Text
  * @param {string} [options.colour] - Colour
+ * @param {string} [options.classes] - Classes
  * @returns {string} Formatted HTML
  */
-export function formatTag({ text, html, colour }) {
+export function formatTag({ text, html, colour, classes }) {
   text = html || text
+  classes = ['nhsuk-tag', classes].join(' ')
 
   if (colour) {
-    return `<strong class="nhsuk-tag nhsuk-tag--${colour}">${text}</strong>`
+    return `<strong class="${classes} nhsuk-tag--${colour}">${text}</strong>`
   }
 
-  return `<strong class="nhsuk-tag">${text}</strong>`
+  return `<strong class="${classes}">${text}</strong>`
 }
 
 /**
@@ -163,6 +165,24 @@ export function formatTagWithSecondaryText(tag, secondary) {
   }
 
   return `<span>${html}</span>`
+}
+
+export function formatProgrammeStatus(programme, status, note) {
+  let html = formatTag({
+    classes: 'app-tag--attached',
+    text: programme.name,
+    colour: 'white'
+  })
+
+  if (status) {
+    html += formatTag(status)
+  }
+
+  if (note) {
+    html += `<span class="nhsuk-u-secondary-text-color">${note}</span>`
+  }
+
+  return html
 }
 
 /**

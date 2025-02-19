@@ -111,14 +111,6 @@ export const sessionController = {
     }
 
     // Filters
-    if (session.programmes.length > 1) {
-      response.locals.programmeItems = session.programmes.map((programme) => ({
-        text: programme.name,
-        value: programme.pid,
-        checked: programme.pid === filters.pid
-      }))
-    }
-
     const statusItems = {
       consent: ConsentOutcome,
       triage: TriageOutcome,
