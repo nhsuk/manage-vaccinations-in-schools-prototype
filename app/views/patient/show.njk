@@ -156,54 +156,48 @@
   }) }}
 
   {% set vaccinationsDescriptionHtml %}
-    {% if patient.patientSessions.length %}
-      {% set patientSessionRows = [] %}
-      {% for patientSession in patient.patientSessions %}
-        {{ heading({
-          classes: "nhsuk-u-margin-bottom-2",
-          level: 3,
-          size: "xs",
-          title: patientSession.programme.name
-        }) }}
-        {% if patientSession.vaccinations.length %}
-          {% set vaccinationRows = [] %}
-          {% for vaccination in patientSession.vaccinations | sort(false, false, "createdAt") %}
-            {% set vaccinationRows = vaccinationRows | push([
-              {
-                header: __("vaccination.createdAt.label"),
-                html: vaccination.link.createdAt_date,
-                attributes: {
-                  "data-col": "createdAt",
-                  "data-sort": vaccination.link.createdAt_date
-                }
-              },
-              {
-                header: __("vaccination.location.label"),
-                text: vaccination.location
-              },
-              {
-                header: __("vaccination.outcome.label"),
-                html: vaccination.formatted.outcome
-              }
-            ]) %}
-          {% endfor %}
-
-          {{ actionTable({
-            id: "vaccinations",
-            classes: "nhsuk-u-margin-bottom-4",
-            sort: "createdAt",
-            responsive: true,
-            head: [
-              { text: __("vaccination.createdAt.label") },
-              { text: __("vaccination.location.label") },
-              { text: __("vaccination.outcome.label") }
-            ],
-            rows: vaccinationRows
-          }) }}
-        {% else %}
-          {{ __n("vaccination.count", 0) | nhsukMarkdown }}
-        {% endif %}
+    {% if patient.vaccinations.length %}
+      {% set vaccinationRows = [] %}
+      {% for vaccination in patient.vaccinations | sort(false, false, "createdAt") %}
+        {% set vaccinationRows = vaccinationRows | push([
+          {
+            header: __("vaccination.createdAt.label"),
+            html: vaccination.link.createdAt_date,
+            attributes: {
+              "data-col": "createdAt",
+              "data-sort": vaccination.link.createdAt_date
+            }
+          },
+          {
+            header: __("vaccination.location.label"),
+            text: vaccination.location
+          },
+          {
+            header: __("vaccination.programme.label"),
+            html: vaccination.formatted.programme
+          },
+          {
+            header: __("vaccination.outcome.label"),
+            html: vaccination.formatted.outcome
+          }
+        ]) %}
       {% endfor %}
+
+      {{ actionTable({
+        id: "vaccinations",
+        classes: "nhsuk-u-margin-bottom-4",
+        sort: "createdAt",
+        responsive: true,
+        head: [
+          { text: __("vaccination.createdAt.label") },
+          { text: __("vaccination.location.label") },
+          { text: __("vaccination.programme.label") },
+          { text: __("vaccination.outcome.label") }
+        ],
+        rows: vaccinationRows
+      }) }}
+    {% else %}
+      {{ __n("vaccination.count", 0) | nhsukMarkdown }}
     {% endif %}
   {% endset %}
 

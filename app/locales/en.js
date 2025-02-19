@@ -2132,6 +2132,9 @@ export const en = {
     site: {
       label: 'Site'
     },
+    programme: {
+      label: 'Programme'
+    },
     protocol: {
       label: 'Protocol'
     },
