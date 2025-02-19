@@ -70,11 +70,19 @@ export const en = {
         smartcard: 'Smartcard',
         hello: 'Windows Hello',
         key: 'Security key',
-        ipad: 'iPad app'
+        ipad: 'iPad app',
+        authenticator: 'Authenticator app',
+        nhsMail: 'NHSmail',
+        passkey: 'Passkey (private beta)'
+      },
+      terms: {
+        heading: 'Agree to our terms of use',
+        description:
+          'By continuing, you agree to our [terms and conditions](https://digital.nhs.uk/services/care-identity-service/registration-authority-users/registration-authority-help/privacy-notice#terms-and-conditions)'
       },
       remember: {
         label: 'Remember my selection',
-        hint: 'Do not check this box if you are using a shared machine'
+        hint: 'Do not check this box if you are on a shared computer'
       }
     },
     permissions: {

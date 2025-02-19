@@ -1,5 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
+{% set hideConfirmButton = true %}
 {% set public = true %}
 {% set transactionalService = {
   name: "CIS2 Authentication"
@@ -20,8 +21,23 @@
       { text: __("account.cis2.method.smartcard") },
       { text: __("account.cis2.method.hello") },
       { text: __("account.cis2.method.key") },
-      { text: __("account.cis2.method.ipad") }
+      { text: __("account.cis2.method.ipad") },
+      { text: __("account.cis2.method.authenticator") },
+      { text: __("account.cis2.method.nhsMail") },
+      { text: __("account.cis2.method.passkey") }
     ]
+  }) }}
+
+  {{ heading({
+    classes: "nhsuk-heading-xs nhsuk-u-margin-bottom-2 nhsuk-u-margin-top-5",
+    level: 2,
+    title: __("account.cis2.terms.heading")
+  }) }}
+
+  {{ __("account.cis2.terms.description") | nhsukMarkdown }}
+
+  {{ button({
+    text: __("form.continue")
   }) }}
 
   {{ checkboxes({
