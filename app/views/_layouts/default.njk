@@ -52,11 +52,7 @@
 {% set bodyClasses = "app-signed-in" if not public %}
 
 {% block header %}
-  {{ env({
-    colour: "grey",
-    name: "Prototype",
-    text: "This is a prototype. Some parts may not work yet."
-  }) }}
+  {{ env(environment) if environment }}
   {{ serviceheader({
     service: {
       name: serviceName,
