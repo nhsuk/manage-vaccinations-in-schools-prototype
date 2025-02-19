@@ -120,7 +120,7 @@
         {% set patientSessionRows = patientSessionRows | push([
           {
             header: __("session.location.label"),
-            html: link(patientSession.uri, patientSession.session.location.name)
+            html: link(patientSession.session.uri, patientSession.session.location.name)
           },
           {
             header: __("session.dates.label"),
