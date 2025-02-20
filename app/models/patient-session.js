@@ -301,12 +301,12 @@ export class PatientSession {
   }
 
   /**
-   * Get triage notes for consent health answers
+   * Get responses with triage notes for consent health answers
    *
    * @returns {Array} - Triage notes
    */
-  get consentTriageNotes() {
-    return this.responses.flatMap((response) => response.triageNote)
+  get responsesWithTriageNotes() {
+    return this.responses.filter((response) => response.triageNote)
   }
 
   /**
@@ -661,6 +661,7 @@ export class PatientSession {
       name: event.name,
       note: event.note,
       outcome: event.outcome,
+      createdAt: event.createdAt,
       createdBy_uid: event.createdBy_uid,
       programme_pids: this.session.programme_pids
     })
