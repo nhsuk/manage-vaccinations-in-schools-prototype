@@ -19,7 +19,7 @@ import { generateParent } from './parent.js'
  * @param {import('../models/session.js').Session} session - Session
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @param {number} index - Reply
- * @param {Date} lastConsentCreatedAt - Date previous consent response created
+ * @param {Date} [lastConsentCreatedAt] - Date previous consent response created
  * @returns {Consent|undefined} - Consent
  */
 export function generateConsent(
