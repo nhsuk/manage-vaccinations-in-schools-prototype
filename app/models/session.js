@@ -329,26 +329,30 @@ export class Session {
   /**
    * Get clinic
    *
-   * @returns {Clinic} - Clinic
+   * @returns {Clinic|undefined}} - Clinic
    */
   get clinic() {
-    try {
-      return Clinic.read(this.clinic_id, this.context)
-    } catch (error) {
-      console.error('Session.clinic', error.message)
+    if (this.clinic_id) {
+      try {
+        return Clinic.read(this.clinic_id, this.context)
+      } catch (error) {
+        console.error('Session.clinic', error.message)
+      }
     }
   }
 
   /**
    * Get school
    *
-   * @returns {School} - School
+   * @returns {School|undefined} - School
    */
   get school() {
-    try {
-      return School.read(this.school_urn, this.context)
-    } catch (error) {
-      console.error('Session.school', error.message)
+    if (this.school_urn) {
+      try {
+        return School.read(this.school_urn, this.context)
+      } catch (error) {
+        console.error('Session.school', error.message)
+      }
     }
   }
 
