@@ -333,10 +333,7 @@ export class Session {
    */
   get clinic() {
     try {
-      const clinic = this.context?.clinics[this.clinic_id]
-      if (clinic) {
-        return new Clinic(clinic, this.context)
-      }
+      return Clinic.read(this.clinic_id, this.context)
     } catch (error) {
       console.error('Session.clinic', error.message)
     }
@@ -349,10 +346,7 @@ export class Session {
    */
   get school() {
     try {
-      const school = this.context?.schools[this.school_urn]
-      if (school) {
-        return new School(school, this.context)
-      }
+      return School.read(this.school_urn, this.context)
     } catch (error) {
       console.error('Session.school', error.message)
     }
@@ -590,11 +584,7 @@ export class Session {
   get location() {
     const type = this.type === SessionType.School ? 'school' : 'clinic'
 
-    if (this[type]) {
-      return this[type].location
-    }
-
-    return 'Unknown location'
+    return this[type].location
   }
 
   /**
