@@ -17,7 +17,6 @@ import { Parent } from './parent.js'
 import { PatientSession } from './patient-session.js'
 import { Record } from './record.js'
 import { Reply } from './reply.js'
-import { Vaccination } from './vaccination.js'
 
 /**
  * @readonly
@@ -407,7 +406,7 @@ export class Patient extends Record {
     this.addEvent({
       type: EventType.Invite,
       name: `Invited to the ${patientSession.session.name}`,
-      createdAt: patientSession.session.createdAt,
+      createdAt: patientSession.createdAt,
       createdBy_uid: patientSession.createdBy_uid,
       programme_pids: patientSession.session.programme_pids
     })
@@ -456,7 +455,6 @@ export class Patient extends Record {
     this.vaccination_uuids.push(vaccination.uuid)
 
     let name
-    vaccination = new Vaccination(vaccination)
     if (vaccination.given) {
       name = vaccination.updatedAt
         ? `Vaccination record for ${vaccination.formatted.vaccine_snomed} updated`
@@ -471,7 +469,7 @@ export class Patient extends Record {
       note: vaccination.note,
       createdAt: vaccination.updatedAt || vaccination.createdAt,
       createdBy_uid: vaccination.createdBy_uid,
-      programme_pid: vaccination.programme_pid
+      programme_pids: [vaccination.programme_pid]
     })
   }
 
