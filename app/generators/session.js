@@ -55,6 +55,14 @@ export function generateSession(programme_pids, term, user, options) {
   }
 
   if (firstSessionDate) {
+    // Clinic sessions happen after the school term has finished
+    if (clinic_id) {
+      firstSessionDate = faker.date.between({
+        from: term.to,
+        to: addDays(term.to, 30)
+      })
+    }
+
     firstSessionDate = setMidday(firstSessionDate)
 
     // Don’t create sessions during weekends
