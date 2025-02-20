@@ -83,7 +83,9 @@ export const patientSessionController = {
           patientSession.programme.name,
           patientSession.nextActivity
         ),
-        href: `${patientSession.uri}?activity=${activity}`,
+        href: activity
+          ? `${patientSession.uri}?activity=${activity}`
+          : patientSession.uri,
         current: view !== 'events' && patientSession.programme_pid === pid
       })),
       ...[
@@ -97,7 +99,9 @@ export const patientSessionController = {
               )
             )
           ),
-          href: `${patientSession.uri}/events?activity=${activity}`,
+          href: activity
+            ? `${patientSession.uri}/events?activity=${activity}`
+            : `${patientSession.uri}/events`,
           current: view === 'events'
         }
       ]
