@@ -272,10 +272,7 @@ export class Vaccination {
    */
   get programme() {
     try {
-      const programme = this.context?.programmes[this.programme_pid]
-      if (programme) {
-        return new Programme(programme)
-      }
+      return Programme.read(this.programme_pid, this.context)
     } catch (error) {
       console.error('Vaccination.programme', error.message)
     }
