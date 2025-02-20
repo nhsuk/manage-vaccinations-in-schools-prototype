@@ -397,12 +397,20 @@ export class Patient extends Record {
   }
 
   /**
-   * Invite patient to session
+   * Add patient to session
+   *
+   * @param {import('./patient-session.js').PatientSession} patientSession - Patient session
+   */
+  addToSession(patientSession) {
+    this.patientSession_uuids.push(patientSession.uuid)
+  }
+
+  /**
+   * Invite parent to give consent
    *
    * @param {import('./patient-session.js').PatientSession} patientSession - Patient session
    */
   inviteToSession(patientSession) {
-    this.patientSession_uuids.push(patientSession.uuid)
     this.addEvent({
       type: EventType.Invite,
       name: `Invited to the ${patientSession.session.name}`,

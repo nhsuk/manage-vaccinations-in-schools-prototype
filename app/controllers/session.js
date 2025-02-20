@@ -332,7 +332,7 @@ export const sessionController = {
         patientSession.removeFromSession({
           ...(data.token && { createdBy_uid: data.token?.uid })
         })
-        patient.inviteToSession(clinic)
+        patient.addToSession(clinic.id)
         patient.update({}, data)
       }
     }
