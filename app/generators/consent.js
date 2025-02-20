@@ -3,7 +3,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import healthConditions from '../datasets/health-conditions.js'
 import { Consent } from '../models/consent.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
-import { today } from '../utils/date.js'
+import { removeDays, today } from '../utils/date.js'
 import {
   getHealthAnswers,
   getRefusalReason,
@@ -72,7 +72,7 @@ export function generateConsent(
       lastConsentCreatedAt ||
       faker.date.between({
         from: session.openAt,
-        to: sessionClosedBeforeToday ? session.closeAt : nowAt
+        to: sessionClosedBeforeToday ? removeDays(session.firstDate, 2) : nowAt
       }),
     child,
     parent,
