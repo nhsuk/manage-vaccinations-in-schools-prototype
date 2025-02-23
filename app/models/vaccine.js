@@ -83,6 +83,7 @@ export const VaccineMethod = {
  * @property {number} dose - Dosage
  * @property {number} sequenceLimit - Maximum doses in sequence
  * @property {VaccineMethod} method - Method
+ * @property {Array<string>} sideEffects - Side effects
  * @property {Array<string>} healthQuestionKeys - Health question keys
  * @property {Array<string>} preScreenQuestionKeys - Pre-screening question keys
  */
@@ -97,6 +98,7 @@ export class Vaccine {
     this.dose = options.dose
     this.sequenceLimit = options.sequenceLimit
     this.method = options.method
+    this.sideEffects = options.sideEffects
     this.healthQuestionKeys = options.healthQuestionKeys
     this.preScreenQuestionKeys = options.preScreenQuestionKeys
   }
@@ -157,6 +159,7 @@ export class Vaccine {
       snomed: formatMonospace(this.snomed),
       healthQuestions: formatList(this.healthQuestions),
       preScreenQuestions: formatList(this.preScreenQuestions),
+      sideEffects: formatList(this.sideEffects),
       dose: formatMillilitres(this.dose)
     }
   }
