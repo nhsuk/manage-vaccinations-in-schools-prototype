@@ -18,6 +18,7 @@ import {
 } from '../utils/reply.js'
 import {
   formatLink,
+  formatLinkWithSecondaryText,
   formatTag,
   formatTagWithSecondaryText
 } from '../utils/string.js'
@@ -444,7 +445,14 @@ export class PatientSession {
    */
   get link() {
     return {
-      fullName: formatLink(this.uri, this.patient.fullName)
+      fullName: formatLink(this.uri, this.patient.fullName),
+      fullAndPreferredName: this.patient.preferredName
+        ? formatLinkWithSecondaryText(
+            this.uri,
+            this.patient.fullName,
+            this.patient.preferredName
+          )
+        : formatLink(this.uri, this.patient.fullName)
     }
   }
 
