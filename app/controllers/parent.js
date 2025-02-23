@@ -11,6 +11,7 @@ import {
   getHealthQuestionKey,
   getHealthQuestionPaths
 } from '../utils/consent.js'
+import { formatList } from '../utils/string.js'
 
 export const parentController = {
   read(request, response, next) {
@@ -57,6 +58,17 @@ export const parentController = {
         },
         data
       )
+
+      response.locals.programme = session.programmes[0]
+
+      const combinedSideEffects = new Set()
+      for (const programme of session.programmes) {
+        for (const sideEffect of programme.vaccine.sideEffects) {
+          combinedSideEffects.add(sideEffect)
+        }
+      }
+
+      response.locals.combinedSideEffects = formatList([...combinedSideEffects])
     }
 
     response.render(`parent/${view}`)

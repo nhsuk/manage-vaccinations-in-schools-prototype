@@ -734,6 +734,10 @@ export const en = {
       },
       'record-vaccinated': {
         label: 'Vaccinated',
+        name: 'Your child had their {{programme.name}} vaccination today'
+      },
+      'record-vaccinated-many': {
+        label: 'Vaccinated (many)',
         name: 'Your child had their {{session.vaccination}} today'
       },
       'record-could-not-vaccinate': {
