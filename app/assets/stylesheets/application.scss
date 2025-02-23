@@ -96,6 +96,7 @@ $color_app-dark-orange: color.scale(color.mix($color_nhsuk-red, $color_nhsuk-war
 .app-signed-in {
   .nhsuk-width-container,
   .nhsuk-header__navigation-list,
+  .nhsuk-header__drop-down .nhsuk-header__navigation-link,
   .nhsuk-header__container {
     max-width: $app-page-width;
 
