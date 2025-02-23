@@ -233,7 +233,7 @@ export const getPreferredNames = (replies) => {
     }
   })
 
-  return names.size ? [...names].join(', ') : false
+  return names.size && [...names].join(', ')
 }
 
 /**
