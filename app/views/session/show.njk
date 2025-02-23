@@ -74,9 +74,13 @@
             changeText: __("actions.review"),
             href: session.uri + "/consents"
           },
-          patientsToConsent: {
+          patientsToGetConsent: {
             changeText: __("actions.review"),
             href: session.uri + "/consent?consent=" + ConsentOutcome.NoResponse
+          },
+          patientsToResolveConsent: {
+            changeText: __("actions.review"),
+            href: session.uri + "/consent?consent=" + ConsentOutcome.Inconsistent
           },
           patientsToTriage: {
             changeText: __("actions.review"),

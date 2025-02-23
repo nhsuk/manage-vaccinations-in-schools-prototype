@@ -1600,8 +1600,11 @@ export const en = {
     patientsVaccinated: {
       label: 'Vaccinations'
     },
-    patientsToConsent: {
+    patientsToGetConsent: {
       label: 'Get consent'
+    },
+    patientsToResolveConsent: {
+      label: 'Resolve conflicting consent'
     },
     patientsToTriage: {
       label: 'Triage health questions'

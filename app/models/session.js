@@ -374,7 +374,7 @@ export class Session {
   /**
    * Get patients
    *
-   * @returns {Array<PatientSession>} - Patients
+   * @returns {Array<PatientSession>} - Patient sessions
    */
   get patients() {
     return _.uniqBy(this.patientSessions, 'patient.nhsn')
@@ -383,7 +383,7 @@ export class Session {
   /**
    * Get vaccinated patients
    *
-   * @returns {Array<PatientSession>} - Patients
+   * @returns {Array<PatientSession>} - Patient sessions
    */
   get patientsVaccinated() {
     if (!this.isUnplanned) {
@@ -396,18 +396,29 @@ export class Session {
   /**
    * Get patients with no consent response
    *
-   * @returns {Array<PatientSession>} - Patients
+   * @returns {Array<PatientSession>} - Patient sessions
    */
-  get patientsToConsent() {
+  get patientsToGetConsent() {
     return this.patientSessions.filter(
       ({ consent }) => consent === ConsentOutcome.NoResponse
     )
   }
 
   /**
+   * Get patients with conflicting consent response
+   *
+   * @returns {Array<PatientSession>} - Patient sessions
+   */
+  get patientsToResolveConsent() {
+    return this.patientSessions.filter(
+      ({ consent }) => consent === ConsentOutcome.Inconsistent
+    )
+  }
+
+  /**
    * Get patients needing triage
    *
-   * @returns {Array<PatientSession>} - Patients
+   * @returns {Array<PatientSession>} - Patient sessions
    */
   get patientsToTriage() {
     return this.patientSessions.filter(
@@ -418,7 +429,7 @@ export class Session {
   /**
    * Get patients awaiting registration
    *
-   * @returns {Array<PatientSession>} - Patients
+   * @returns {Array<PatientSession>} - Patient sessions
    */
   get patientsToRegister() {
     if (this.isActive) {
@@ -431,7 +442,7 @@ export class Session {
   /**
    * Get patients awaiting vaccination
    *
-   * @returns {Array<PatientSession>} - Patients
+   * @returns {Array<PatientSession>} - Patient sessions
    */
   get patientsToRecord() {
     if (this.isActive) {
@@ -747,12 +758,19 @@ export class Session {
             'vaccination'
           )} given`
         : undefined,
-      patientsToConsent:
-        this.patientsToConsent?.length > 0
+      patientsToGetConsent:
+        this.patientsToGetConsent?.length > 0
           ? `${filters.plural(
-              this.patientsToConsent.length,
+              this.patientsToGetConsent.length,
               'child'
             )} without a response`
+          : undefined,
+      patientsToResolveConsent:
+        this.patientsToResolveConsent?.length > 0
+          ? `${filters.plural(
+              this.patientsToResolveConsent.length,
+              'child'
+            )} with conflicting consent`
           : undefined,
       patientsToTriage:
         this.patientsToTriage?.length > 0
