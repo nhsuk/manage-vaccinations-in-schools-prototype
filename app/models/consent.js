@@ -1,3 +1,4 @@
+import { getRepliesWithHealthAnswers } from '../utils/reply.js'
 import { formatLinkWithSecondaryText } from '../utils/string.js'
 
 import { Reply } from './reply.js'
@@ -7,6 +8,16 @@ import { Reply } from './reply.js'
  * @augments Reply
  */
 export class Consent extends Reply {
+  /**
+   * Answers in this consent response need triage
+   *
+   * @returns {boolean} - Answers need triage
+   */
+  get answersNeedsTriage() {
+    const healthAnswers = getRepliesWithHealthAnswers([this])
+    return healthAnswers.length > 0
+  }
+
   /**
    * Get formatted links
    *

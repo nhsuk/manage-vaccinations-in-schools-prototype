@@ -622,16 +622,9 @@ export const en = {
         [ReplyDecision.Refused]:
           'You’ve told us that you do not want {{consent.child.fullName}} to get the {{session.vaccination}} at school'
       },
-      description: {
-        [ReplyDecision.Given]:
-          'We’ll send a confirmation once the vaccination has been given.\n\nIf the vaccination does not take place due to illness or absence, we’ll contact you about a catch-up session.',
-        [ReplyDecision.OnlyMenACWY]:
-          'We’ll send a confirmation once the vaccination has been given.\n\nIf the vaccination does not take place due to illness or absence, we’ll contact you about a catch-up session.',
-        [ReplyDecision.OnlyTdIPV]:
-          'We’ll send a confirmation once the vaccination has been given.\n\nIf the vaccination does not take place due to illness or absence, we’ll contact you about a catch-up session.',
-        [ReplyDecision.Refused]:
-          'We’ve sent a confirmation to {{consent.parent.email}}.'
-      }
+      triage:
+        'As you answered ‘yes’ to some of the health questions, we need to check the vaccination is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
+      description: 'We’ve sent a confirmation to <{{consent.parent.email}}>.'
     },
     actions: {
       label: 'Actions'
