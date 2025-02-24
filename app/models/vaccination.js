@@ -358,7 +358,7 @@ export class Vaccination {
       batch: this.batch?.summary,
       batch_id: formatMonospace(this.batch_id),
       dose: formatMillilitres(this.dose),
-      vaccine_snomed: this.vaccine_snomed && this.vaccine?.brandWithType,
+      vaccine_snomed: this.vaccine_snomed && this.vaccine?.brand,
       note: formatMarkdown(this.note),
       outcome: formatTag(this.outcomeStatus),
       programme: this.programme && this.programme.nameTag,

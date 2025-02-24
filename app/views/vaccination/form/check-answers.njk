@@ -14,8 +14,8 @@
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(vaccination, {
-        vaccine_snomed: {},
         programme: {},
+        vaccine_snomed: {},
         method: {
           href: vaccination.uri + "/new/administer" if vaccination.vaccine.method == VaccineMethod.Injection
         },
