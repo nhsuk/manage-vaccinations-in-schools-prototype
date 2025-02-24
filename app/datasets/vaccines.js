@@ -155,6 +155,7 @@ export default {
       vaccineSideEffect.Headache
     ],
     healthQuestionKeys: [
+      'Allergy',
       'Bleeding',
       'RecentTdIpvVaccination',
       'PreviousReaction',
@@ -194,6 +195,7 @@ export default {
       vaccineSideEffect.Unwell
     ],
     healthQuestionKeys: [
+      'Allergy',
       'Bleeding',
       'RecentMenAcwyVaccination',
       'PreviousReaction',
