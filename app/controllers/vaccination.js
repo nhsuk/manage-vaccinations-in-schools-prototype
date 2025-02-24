@@ -155,7 +155,10 @@ export const vaccinationController = {
     const { data, referrer } = request.session
     const { __, programme } = response.locals
 
-    const vaccination = Vaccination.read(uuid, data.wizard)
+    const vaccination = new Vaccination(
+      Vaccination.read(uuid, data.wizard),
+      data
+    )
     response.locals.vaccination = vaccination
 
     const patientSession = PatientSession.read(data.patientSession_uuid, data)
