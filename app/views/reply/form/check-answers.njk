@@ -15,11 +15,11 @@
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(reply, {
-        method: {
-          href: reply.uri + "/new/method"
-        },
         programme: {
           href: reply.uri + "/new/programme" if isMultiProgrammeSession
+        },
+        method: {
+          href: reply.uri + "/new/method"
         },
         decision: {
           href: reply.uri + "/new/decision"

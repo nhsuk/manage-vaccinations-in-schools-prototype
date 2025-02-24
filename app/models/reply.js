@@ -307,11 +307,11 @@ export class Reply {
    * @returns {object} - Formatted values
    */
   get formatted() {
-    let formattedDecision = formatTag(this.status)
+    let decisionStatus = formatTag(this.status)
     if (this.invalid) {
-      formattedDecision = formatTagWithSecondaryText(this.status, 'Invalid')
+      decisionStatus = formatTagWithSecondaryText(this.status, 'Invalid')
     } else if (this.confirmed) {
-      formattedDecision = formatTagWithSecondaryText(this.status, 'Confirmed')
+      decisionStatus = formatTagWithSecondaryText(this.status, 'Confirmed')
     }
 
     return {
@@ -327,8 +327,8 @@ export class Reply {
         dateStyle: 'long'
       }),
       createdBy: this.createdBy?.fullName || '',
-      decision: formattedDecision,
-      programme: this.programme?.name,
+      decisionStatus,
+      programme: this.programme?.nameTag,
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
       refusalReasonDetails: formatMarkdown(this.refusalReasonDetails),
       note: formatMarkdown(this.note)

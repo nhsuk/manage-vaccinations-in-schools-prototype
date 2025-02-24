@@ -29,13 +29,8 @@
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
         rows: summaryRows(consent, {
+          programme: {},
           createdAt: {},
-          programme: {
-            value: tag({
-              classes: "nhsuk-tag--white",
-              text: consent.programme.name
-            })
-          },
           decision: {},
           refusalReason: {},
           refusalReasonDetails: {}
