@@ -4,6 +4,12 @@
     border-color: shade($color_app-dark-orange, 50%);
     color: shade($color_app-dark-orange, 50%);
   }
+
+  &--transparent {
+    background-color: transparent;
+    border-color: currentColor;
+    color: currentColor;
+  }
 }
 
 .nhsuk-tag + .nhsuk-u-secondary-text-color {
