@@ -2,12 +2,11 @@ import { Consent } from '../models/consent.js'
 import { Move } from '../models/move.js'
 import { Notice } from '../models/notice.js'
 import { Organisation } from '../models/organisation.js'
-import { ProgrammeType } from '../models/programme.js'
 import { Session } from '../models/session.js'
 import { Upload } from '../models/upload.js'
 import { User, UserRole } from '../models/user.js'
 import { formatDate, today } from '../utils/date.js'
-import { getProgrammeSession } from '../utils/session.js'
+import { getSessionConsentUrl } from '../utils/session.js'
 
 export const navigation = (request, response, next) => {
   const { data } = request.session
@@ -48,7 +47,7 @@ export const navigation = (request, response, next) => {
         items: [
           {
             label: { text: __('account.sign-in.title') },
-            href: '/'
+            href: '/start'
           }
         ]
       }
@@ -108,69 +107,14 @@ export const navigation = (request, response, next) => {
         ]
       : []
 
-  const fluSession = getProgrammeSession(sessions, ProgrammeType.Flu)
-  const hpvSession = getProgrammeSession(sessions, ProgrammeType.HPV)
-  const tioSession = getProgrammeSession(sessions, ProgrammeType.TdIPV)
-
   response.locals.navigation = {
     account,
     primaryLinks,
-    footerLinks: [
-      ...(fluSession
-        ? [
-            [
-              {
-                URL: `${fluSession.consentUrl}/start`,
-                label: 'Flu consent'
-              },
-              {
-                URL: `${fluSession.consentUrl}/emails`,
-                label: 'Flu consent emails'
-              },
-              {
-                URL: `${fluSession.consentUrl}/texts`,
-                label: 'Flu consent texts'
-              }
-            ]
-          ]
-        : []),
-      ...(hpvSession
-        ? [
-            [
-              {
-                URL: `${hpvSession.consentUrl}/start`,
-                label: 'HPV consent'
-              },
-              {
-                URL: `${hpvSession.consentUrl}/emails`,
-                label: 'HPV consent emails'
-              },
-              {
-                URL: `${hpvSession.consentUrl}/texts`,
-                label: 'HPV consent texts'
-              }
-            ]
-          ]
-        : []),
-      ...(tioSession
-        ? [
-            [
-              {
-                URL: `${tioSession.consentUrl}/start`,
-                label: 'MenACWY & Td/IPV consent'
-              },
-              {
-                URL: `${tioSession.consentUrl}/emails`,
-                label: 'MenACWY & Td/IPV consent emails'
-              },
-              {
-                URL: `${tioSession.consentUrl}/texts`,
-                label: 'MenACWY & Td/IPV consent texts'
-              }
-            ]
-          ]
-        : [])
-    ]
+    consentUrl: {
+      SeasonalFlu: getSessionConsentUrl(sessions, 'SeasonalFlu'),
+      HPV: getSessionConsentUrl(sessions, 'HPV'),
+      Doubles: getSessionConsentUrl(sessions, 'Doubles')
+    }
   }
 
   // Show environment date in footer

@@ -6,7 +6,7 @@ import { Consent } from '../models/consent.js'
 import { ParentalRelationship } from '../models/parent.js'
 import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
-import { ConsentWindow, Session, SessionType } from '../models/session.js'
+import { Session, SessionType } from '../models/session.js'
 import { getHealthQuestionPaths } from '../utils/consent.js'
 import { formatList, kebabToCamelCase } from '../utils/string.js'
 
@@ -27,11 +27,7 @@ export const parentController = {
   redirect(request, response) {
     const { session } = response.locals
 
-    response.redirect(
-      session.consentWindow === ConsentWindow.Closed
-        ? `${session.consentUrl}/closed`
-        : `${session.consentUrl}/start`
-    )
+    response.redirect(`${session.consentUrl}/start`)
   },
 
   show(request, response) {
