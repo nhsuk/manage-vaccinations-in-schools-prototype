@@ -24,31 +24,27 @@
   {% endif %}
 
   {# Actions #}
-  <div class="app-button-group">
-    {{ button({
+  {{ buttonGroup({
+    buttons: [{
       classes: "app-button--secondary",
       text: __("remind.new.title"),
       attributes: {
         formaction: patientSession.uri + "/new/remind",
         formmethod: "post"
       }
-    }) if options.canRemind }}
-
-    {{ button({
+    } if options.canRemind, {
       classes: "app-button--secondary",
       text: __("patientSession.invite.label"),
       attributes: {
         formmethod: patientSession.uri + "/new/invite",
         formaction: "post"
       }
-    }) if options.canInvite }}
-
-    {{ button({
+    } if options.canInvite, {
       classes: "app-button--secondary",
       text: __("reply.new.title"),
       href: patientSession.uri + "/replies/new?referrer=" + referrer
-    }) if options.canRespond }}
-  </div>
+    } if options.canRespond]
+  }) }}
 
   {# Gillick #}
   {% if options.canGillick %}
@@ -61,14 +57,12 @@
 
     {{ status(patientSession.gillick.status) }}
 
-    <div class="app-button-group">
-      {% set form = "edit" if patientSession.gillick.competent else "new" %}
-      {{ button({
-        classes: "app-button--secondary",
-        text: __("patientSession.gillick." + form + ".title"),
-        href: patientSession.uri + "/" + form + "/gillick?referrer=" + referrer
-      }) }}
-    </div>
+    {% set form = "edit" if patientSession.gillick.competent else "new" %}
+    {{ button({
+      classes: "app-button--secondary",
+      text: __("patientSession.gillick." + form + ".title"),
+      href: patientSession.uri + "/" + form + "/gillick?referrer=" + referrer
+    }) }}
   {% endif %}
 
   {# Decision table #}

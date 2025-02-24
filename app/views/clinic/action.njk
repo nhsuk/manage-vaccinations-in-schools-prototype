@@ -10,16 +10,17 @@
 {% endblock %}
 
 {% block afterForm %}
-  <div class="app-button-group">
-    {{ button({
+  {{ buttonGroup({
+    buttons: [{
       classes: "nhsuk-button--warning",
       text: __("clinic.action.confirm", type),
       attributes: {
         formAction: clinic.uri + "/" + type
       }
-    }) }}
-    <a class="nhsuk-link" href="{{ paths.back }}">
-      {{ __("clinic.action.cancel") }}
-    </a>
-  </div>
+    }],
+    links: [{
+      text: __("clinic.action.cancel"),
+      href: paths.back
+    }]
+  }) }}
 {% endblock %}

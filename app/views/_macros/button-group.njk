@@ -1,0 +1,14 @@
+{%- from "components/button/macro.njk" import button -%}
+
+{% macro buttonGroup(params) -%}
+{% if params.buttons | removeEmpty | length %}
+<div class="app-button-group">
+{% for item in params.buttons -%}
+{{- button(item) if item -}}
+{%- endfor -%}
+{%- for item in params.links -%}
+{{- link(item.href, item.text) | safe if item -}}
+{%- endfor %}
+</div>
+{% endif %}
+{% endmacro %}

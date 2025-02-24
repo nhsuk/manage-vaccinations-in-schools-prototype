@@ -71,13 +71,11 @@
       })
     }) }}
 
-    <div class="app-button-group">
-      {{ button({
-        classes: "app-button--secondary nhsuk-u-margin-0",
-        text: __("patient.edit.title"),
-        href: patient.uri + "/edit?referrer=" + referrer
-      }) }}
-    </div>
+    {{ button({
+      classes: "app-button--secondary nhsuk-u-margin-0",
+      text: __("patient.edit.title"),
+      href: patient.uri + "/edit?referrer=" + referrer
+    }) }}
   {% endset %}
 
   {{ card({

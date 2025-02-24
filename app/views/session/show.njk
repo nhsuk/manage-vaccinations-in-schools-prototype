@@ -98,24 +98,21 @@
       }) }}
     {% endif %}
 
-    <div class="app-button-group">
-      {{ button({
+    {{ buttonGroup({
+      buttons: [{
         classes: "app-button--secondary",
         text: __("session.schedule.title") if session.isUnplanned else __("session.edit.title"),
         href: session.uri + "/edit"
-      }) }}
-
-      {{ button({
+      }, {
         classes: "app-button--secondary",
         text: __("session.close.title"),
         href: session.uri + "/close"
-      }) if session.isCompleted }}
-
-      {{ link(
-        session.uri + "/offline",
-        __("session.offline.title")
-      ) | safe if not session.isUnplanned }}
-    </div>
+      } if session.isCompleted],
+      links: [{
+        text: __("session.offline.title"),
+        href: session.uri + "/offline"
+      } if not session.isUnplanned]
+    }) }}
   {% endset %}
 
   <div class="nhsuk-grid-row">

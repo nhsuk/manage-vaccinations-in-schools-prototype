@@ -12,16 +12,17 @@
 {% endblock %}
 
 {% block afterForm %}
-  <div class="app-button-group">
-    {{ button({
+  {{ buttonGroup({
+    buttons: [{
       classes: "nhsuk-button--warning",
       text: __("batch.action.confirm", type),
       attributes: {
         formAction: batch.uri + "/" + type
       }
-    }) }}
-    <a class="nhsuk-link" href="{{ batch.uri }}">
-      {{ __("batch.action.cancel") }}
-    </a>
-  </div>
+    }],
+    links: [{
+      text: __("batch.action.cancel"),
+      href: batch.uri
+    }]
+  }) }}
 {% endblock %}

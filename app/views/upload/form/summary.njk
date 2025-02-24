@@ -24,14 +24,15 @@
 {% endblock %}
 
 {% block afterForm %}
-  <div class="app-button-group">
-    {{ button({
+  {{ buttonGroup({
+    buttons: [{
       text: __("upload.summary.confirm", {
         type: upload.type | lower
       })
-    }) }}
-    <a class="nhsuk-link" href="{{ batch.uri }}">
-      {{ __("upload.summary.cancel") }}
-    </a>
-  </div>
+    }],
+    links: [{
+      text: __("upload.summary.cancel"),
+      href: "/uploads"
+    }]
+  }) }}
 {% endblock %}

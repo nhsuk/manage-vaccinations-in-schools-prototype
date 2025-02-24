@@ -9,15 +9,11 @@
   {{ patientSession.status.screen.description | nhsukMarkdown }}
 
   {# Actions #}
-  {% if options.hasTriage %}
-    <div class="app-button-group">
-      {{ button({
-        classes: "app-button--secondary",
-        text: __("triage.edit.title"),
-        href: patientSession.uri + "/edit/triage?referrer=" + referrer
-      }) }}
-    </div>
-  {% endif %}
+  {{ button({
+    classes: "app-button--secondary",
+    text: __("triage.edit.title"),
+    href: patientSession.uri + "/edit/triage?referrer=" + referrer
+  }) if options.hasTriage }}
 
   {# Decision table #}
   {% set triageNoteRows = [] %}

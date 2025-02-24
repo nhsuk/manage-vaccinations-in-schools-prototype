@@ -12,16 +12,17 @@
 {% endblock %}
 
 {% block afterForm %}
-  <div class="app-button-group">
-    {{ button({
+  {{ buttonGroup({
+    buttons: [{
       classes: "nhsuk-button--warning",
       text: __("vaccine.action.confirm", type),
       attributes: {
         formAction: vaccine.uri + "/" + type
       }
-    }) }}
-    <a class="nhsuk-link" href="{{ vaccine.uri }}">
-      {{ __("vaccine.action.cancel") }}
-    </a>
-  </div>
+    }],
+    links: [{
+      text: __("vaccine.action.cancel"),
+      href: vaccine.uri
+    }]
+  }) }}
 {% endblock %}

@@ -5,12 +5,13 @@
 {%- from "components/button/macro.njk" import button with context -%}
 {%- from "components/card/macro.njk" import card with context -%}
 {%- from "components/details/macro.njk" import details with context -%}
+{%- from "_macros/button-group.njk" import buttonGroup with context -%}
 {%- from "_macros/search-input.njk" import searchInput with context -%}
 
 {% macro patientSearch(params) %}
   {% set filterButtonGroup %}
-    <div class="app-button-group">
-      {{ button({
+    {{ buttonGroup({
+      buttons: [{
         classes: "app-button--small nhsuk-button--secondary",
         text: __("search.confirm"),
         attributes: {
@@ -18,14 +19,12 @@
           formmethod: "post",
           role: "search"
         }
-      }) }}
-
-      {{ button({
+      }, {
         classes: "app-button--small app-button--secondary",
         text: __("search.clear"),
         href: params.clear or "/patients"
-      }) if data.q or data.programme or data.yearGroup or data.dob or data.status or data.hasMissingNhsNumber }}
-    </div>
+      } if data.q or data.programme or data.yearGroup or data.dob or data.status or data.hasMissingNhsNumber]
+    }) }}
   {% endset %}
 
   {% set searchCardHtml %}

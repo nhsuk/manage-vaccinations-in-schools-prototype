@@ -169,5 +169,15 @@ export default (env) => {
     return array.filter((item) => _.get(item, key) === value)
   }
 
+  /**
+   * Remove empty items from array
+   *
+   * @param {Array} array - Array
+   * @returns {Array} Filtered array
+   */
+  filters.removeEmpty = (array) => {
+    return array.filter((item) => item !== '')
+  }
+
   return filters
 }
