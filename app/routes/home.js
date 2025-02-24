@@ -6,5 +6,6 @@ const router = express.Router({ strict: true })
 
 router.get('/home', homeController.redirect)
 router.get('/dashboard', homeController.dashboard)
+router.get('/start', homeController.start)
 
 export const homeRoutes = router
