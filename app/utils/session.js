@@ -35,14 +35,29 @@ export const getConsentWindow = (session) => {
   }
 }
 
-export const getProgrammeSession = (sessions, id, isSchool = true) => {
+/**
+ * Get consent URL
+ *
+ * @param {import('../models/session.js').Session[]} sessions - Sessions
+ * @param {string} [programmePreset] - Programme preset name
+ * @param {boolean} [isSchool] - Get school session
+ * @returns {object} Consent window key and value
+ */
+export const getSessionConsentUrl = (
+  sessions,
+  programmePreset = 'SeasonalFlu',
+  isSchool = true
+) => {
   const sessionType = isSchool ? SessionType.School : SessionType.Clinic
 
-  return Object.values(sessions)
-    .filter((session) => session?.primaryProgramme_ids?.includes(id))
+  const session = Object.values(sessions)
+    .filter((session) => session?.programmePreset === programmePreset)
     .filter((session) => session.type === sessionType)
-    .filter((session) => session.status !== SessionStatus.Unplanned)
-    .at(-1)
+    .find((session) => session.status !== SessionStatus.Unplanned)
+
+  if (session) {
+    return session.consentUrl
+  }
 }
 
 /**
