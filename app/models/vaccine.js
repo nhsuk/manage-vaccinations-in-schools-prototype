@@ -38,7 +38,7 @@ export const HealthQuestion = {
   RecentFluVaccination:
     'Has the child had a flu vaccination in the last 5 months?',
   RecentMenAcwyVaccination:
-    'Has the child already had the teenage meningitis vaccination (MenACWY)?',
+    'Has the child had a meningitis (MenACWY) vaccination in the last 5 years?',
   RecentTdIpvVaccination:
     'Has the child had a tetanus, diphtheria and polio vaccination in the last 5 years?',
   Support: 'Does the child need extra support during vaccination sessions?'

@@ -591,7 +591,7 @@ export const en = {
         MedicationAllergies: false,
         RecentFluVaccination: false,
         RecentMenAcwyVaccination:
-          'This is different from the meningitis vaccines given to babies and young children. It’s usually given once in Year 9 or 10. Some children may have had it before travelling abroad.',
+          'It’s usually given once in Year 9 or 10. Some children may have had it before travelling abroad.',
         RecentTdIpvVaccination:
           'Most children will not have had this vaccination since their 4-in-1 pre-school booster',
         Support: 'For example, they’re autistic, or extremely anxious'
