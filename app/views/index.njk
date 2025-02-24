@@ -1,6 +1,7 @@
 {% extends "_layouts/default.njk" %}
 
-{% set assetsName = "public" %}
+{% set assetsName = "prototype" %}
+{% set environment = false %}
 {% set title = serviceName + " (Mavis)" %}
 {% set headerOptions = {
   service: {
@@ -8,31 +9,52 @@
   }
 } %}
 
-{% block content %}
-  <div class="nhsuk-grid-row">
-    <div class="nhsuk-grid-column-two-thirds">
+{% block main %}
+  {{ hero({
+    heading: serviceName + " prototype",
+    text: "Manage vaccinations in schools (Mavis) is a digital tool designed to help school age immunisation service (SAIS) teams manage their vaccination programmes end to end."
+  }) }}
+
+  <div class="nhsuk-width-container">
+    <main class="nhsuk-main-wrapper" id="maincontent" role="main">
       {{ appHeading({
-        size: "xl",
-        title: title
+        level: 2,
+        title: serviceName,
+        size: "m"
       }) }}
 
-      {% filter nhsukMarkdown %}
-Use this service to:
-
-- import cohort lists
-- manage vaccination sessions
-- triage answers to health questions
-- record vaccinations
-- view and download performance reports
-      {% endfilter %}
-
-      {{ button({
-        classes: "nhsuk-button--login nhsuk-u-margin-bottom-4",
-        html: "Log in with my Care Identity",
-        href: "/account/cis2"
+      {{ actionLink({
+        text: "Start page for nurses and administrators",
+        href: "/start"
       }) }}
 
-      {{ link("https://manage-care-identities.care-identity-service2.nhs.uk/#/self-service/unlock-authenticator", __("account.cis2.unlock")) | nhsukMarkdown }}
-    </div>
+      <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+
+      {{ appHeading({
+        level: 2,
+        title: "Give or refuse consent for vaccinations",
+        size: "m"
+      }) }}
+
+      {% for programmePreset, preset in ProgrammePreset %}
+        {% if preset.active %}
+          {{ actionLink({
+            text: "Start page for parents to give or refuse consent for " + preset.name | replace("Flu", "flu"),
+            href: navigation.consentUrl[programmePreset] + "/start"
+          }) }}
+
+          {{ contentsList({
+            classes: "nhsuk-u-margin-left-1",
+            items: [{
+              href: navigation.consentUrl[programmePreset] + "/emails",
+              text: preset.name + " consent emails"
+            }, {
+              href: navigation.consentUrl[programmePreset] + "/texts",
+              text: preset.name + " consent text messages"
+            }]
+          }) }}
+        {% endif %}
+      {% endfor %}
+    </main>
   </div>
 {% endblock %}

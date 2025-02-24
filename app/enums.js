@@ -237,17 +237,20 @@ export const SchoolTerm = {
  */
 export const ProgrammePreset = {
   SeasonalFlu: {
+    name: 'Flu',
     active: true,
     primaryProgrammeTypes: [ProgrammeType.Flu],
     term: SchoolTerm.Autumn
   },
   HPV: {
+    name: 'HPV',
     active: false,
     adolescent: true,
     primaryProgrammeTypes: [ProgrammeType.HPV],
     term: SchoolTerm.Spring
   },
   Doubles: {
+    name: 'MenACWY & Td/IPV',
     active: false,
     adolescent: true,
     primaryProgrammeTypes: [ProgrammeType.MenACWY, ProgrammeType.TdIPV],

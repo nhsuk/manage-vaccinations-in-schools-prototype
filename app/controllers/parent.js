@@ -1,7 +1,6 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import {
-  ConsentWindow,
   ParentalRelationship,
   ProgrammeType,
   ReplyDecision,
@@ -35,11 +34,7 @@ export const parentController = {
   redirect(request, response) {
     const { session } = response.locals
 
-    response.redirect(
-      session.consentWindow === ConsentWindow.Closed
-        ? `${session.consentUrl}/closed`
-        : `${session.consentUrl}/start`
-    )
+    response.redirect(`${session.consentUrl}/start`)
   },
 
   show(request, response) {

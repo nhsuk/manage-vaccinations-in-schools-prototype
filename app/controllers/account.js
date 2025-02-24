@@ -22,6 +22,6 @@ export const accountController = {
   logout(request, response) {
     delete request.session.data.token
 
-    response.redirect('/')
+    response.redirect('/start')
   }
 }

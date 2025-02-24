@@ -20,5 +20,9 @@ export const homeController = {
     }
 
     response.render('views/dashboard')
+  },
+
+  start(request, response) {
+    response.render('views/start')
   }
 }
