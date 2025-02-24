@@ -360,7 +360,7 @@ export class Vaccination {
       dose: formatMillilitres(this.dose),
       vaccine_snomed: this.vaccine_snomed && this.vaccine?.brand,
       note: formatMarkdown(this.note),
-      outcome: formatTag(this.outcomeStatus),
+      outcomeStatus: formatTag(this.outcomeStatus),
       programme: this.programme && this.programme.nameTag,
       school: this.school && this.school.name
     }
