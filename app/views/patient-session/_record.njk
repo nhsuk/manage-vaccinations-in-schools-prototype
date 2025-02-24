@@ -5,14 +5,14 @@
 }) }}
 
 {% set preScreenDescriptionHtml %}
-  {% for key in preScreenQuestionKeys(session, patient) %}
+  {% for id, question in preScreenQuestions(session, patient) %}
     {{ radios({
       classes: "nhsuk-radios--inline",
       fieldset: {
-        legend: { text: PreScreenQuestion[key] }
+        legend: { text: question }
       },
       items: booleanItems,
-      decorate: ["patientSession", "preScreen", key]
+      decorate: ["patientSession", "preScreen", id]
     }) }}
   {% endfor %}
 

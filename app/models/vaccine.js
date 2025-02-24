@@ -48,23 +48,6 @@ export const HealthQuestion = {
  * @readonly
  * @enum {string}
  */
-export const PreScreenQuestion = {
-  isAllergic:
-    'Has the child confirmed they have no allergies which would prevent vaccination?',
-  isPregnant: 'Has the child confirmed they’re not pregnant?',
-  isMedicated:
-    'Has the child confirmed they’re not taking any medication which prevents vaccination?',
-  isVaccinated:
-    'Has the child confirmed they have not already had this vaccination?',
-  isWell: 'Is the child is feeling well?',
-  isHappy:
-    'Does the child know what the vaccination is for, and are they happy to have it?'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
 export const VaccineMethod = {
   Nasal: 'Nasal spray',
   Injection: 'Injection'
@@ -85,7 +68,7 @@ export const VaccineMethod = {
  * @property {VaccineMethod} method - Method
  * @property {Array<string>} sideEffects - Side effects
  * @property {Array<string>} healthQuestionKeys - Health question keys
- * @property {Array<string>} preScreenQuestionKeys - Pre-screening question keys
+ * @property {Array<string>} preScreenQuestions - Pre-screening questions
  */
 export class Vaccine {
   constructor(options, context) {
@@ -100,7 +83,7 @@ export class Vaccine {
     this.method = options.method
     this.sideEffects = options.sideEffects
     this.healthQuestionKeys = options.healthQuestionKeys
-    this.preScreenQuestionKeys = options.preScreenQuestionKeys
+    this.preScreenQuestions = options.preScreenQuestions
   }
 
   /**
@@ -120,17 +103,6 @@ export class Vaccine {
   get healthQuestions() {
     return vaccines[this.snomed].healthQuestionKeys.map(
       (key) => HealthQuestion[key]
-    )
-  }
-
-  /**
-   * Get pre-screening questions
-   *
-   * @returns {Array} - Pre-screening questions
-   */
-  get preScreenQuestions() {
-    return vaccines[this.snomed].preScreenQuestionKeys.map(
-      (key) => PreScreenQuestion[key]
     )
   }
 

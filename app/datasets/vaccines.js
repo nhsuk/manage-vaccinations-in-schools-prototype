@@ -21,6 +21,23 @@ const VaccineSideEffect = {
   Unwell: 'generally feeling unwell'
 }
 
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const PreScreenQuestion = {
+  IsAllergic:
+    'Has the child confirmed they have no allergies which would prevent vaccination?',
+  IsPregnant: 'Has the child confirmed they’re not pregnant?',
+  IsMedicated:
+    'Has the child confirmed they’re not taking any medication which prevents vaccination?',
+  IsVaccinated:
+    'Has the child confirmed they have not already had this vaccination?',
+  IsWell: 'Is the child is feeling well?',
+  IsHappy:
+    'Does the child know what the vaccination is for, and are they happy to have it?'
+}
+
 export default {
   // Flu vaccines
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1107978/Influenza-green-book-chapter19-16September22.pdf
@@ -53,12 +70,12 @@ export default {
       'Aspirin',
       'Support'
     ],
-    preScreenQuestionKeys: [
-      'isHappy',
-      'isVaccinated',
-      'isWell',
-      'isAllergic',
-      'isMedicated'
+    preScreenQuestions: [
+      PreScreenQuestion.IsHappy,
+      PreScreenQuestion.IsVaccinated,
+      PreScreenQuestion.IsWell,
+      PreScreenQuestion.IsAllergic,
+      PreScreenQuestion.IsMedicated
     ]
   },
   '40085011000001101': {
@@ -90,12 +107,12 @@ export default {
       'PreviousReaction',
       'Support'
     ],
-    preScreenQuestionKeys: [
-      'isHappy',
-      'isVaccinated',
-      'isWell',
-      'isAllergic',
-      'isMedicated'
+    preScreenQuestions: [
+      PreScreenQuestion.IsHappy,
+      PreScreenQuestion.IsVaccinated,
+      PreScreenQuestion.IsWell,
+      PreScreenQuestion.IsAllergic,
+      PreScreenQuestion.IsMedicated
     ]
   },
   // HPV vaccines
@@ -125,12 +142,12 @@ export default {
       'PreviousReaction',
       'Support'
     ],
-    preScreenQuestionKeys: [
-      'isHappy',
-      'isVaccinated',
-      'isWell',
-      'isAllergic',
-      'isPregnant'
+    preScreenQuestions: [
+      PreScreenQuestion.IsHappy,
+      PreScreenQuestion.IsVaccinated,
+      PreScreenQuestion.IsWell,
+      PreScreenQuestion.IsAllergic,
+      PreScreenQuestion.IsPregnant
     ]
   },
   // 3-in-1 vaccines
@@ -161,13 +178,13 @@ export default {
       'PreviousReaction',
       'Support'
     ],
-    preScreenQuestionKeys: [
-      'isHappy',
-      'isVaccinated',
-      'isWell',
-      'isAllergic',
-      'isMedicated',
-      'isPregnant'
+    preScreenQuestions: [
+      PreScreenQuestion.IsHappy,
+      PreScreenQuestion.IsVaccinated,
+      PreScreenQuestion.IsWell,
+      PreScreenQuestion.IsAllergic,
+      PreScreenQuestion.IsMedicated,
+      PreScreenQuestion.IsPregnant
     ]
   },
   // MenACWY vaccines
@@ -201,12 +218,12 @@ export default {
       'PreviousReaction',
       'Support'
     ],
-    preScreenQuestionKeys: [
-      'isHappy',
-      'isVaccinated',
-      'isWell',
-      'isAllergic',
-      'isMedicated'
+    preScreenQuestions: [
+      PreScreenQuestion.IsHappy,
+      PreScreenQuestion.IsVaccinated,
+      PreScreenQuestion.IsWell,
+      PreScreenQuestion.IsAllergic,
+      PreScreenQuestion.IsMedicated
     ]
   }
 }

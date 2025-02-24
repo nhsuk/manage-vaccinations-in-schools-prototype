@@ -1,6 +1,7 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
+import { PreScreenQuestion } from './datasets/vaccines.js'
 import { Gender } from './models/child.js'
 import {
   ConsentOutcome,
@@ -215,17 +216,19 @@ export default () => {
   /**
    * Show relevant pre-screening questions based on gender of the patient
    *
-   * @param {import('./models/session.js').Session} session - Programme
+   * @param {import('./models/session.js').Session} session - Session
    * @param {import('./models/patient.js').Patient} patient - Patient
-   * @returns {Array<string>|undefined} Pre-screening question keys
+   * @returns {object|undefined} Pre-screening questions
    */
-  globals.preScreenQuestionKeys = function (session, patient) {
+  globals.preScreenQuestions = function (session, patient) {
     if (!session) {
       return
     }
 
-    return session.preScreenQuestionKeys.filter((value) =>
-      patient.gender === Gender.Male ? value !== 'isPregnant' : value
+    return Object.entries(session.preScreenQuestions).filter(([_, question]) =>
+      patient.gender === Gender.Male
+        ? question !== PreScreenQuestion.IsPregnant
+        : question
     )
   }
 

@@ -31,11 +31,7 @@ import {
   VaccinationSequence,
   VaccinationSite
 } from '../models/vaccination.js'
-import {
-  HealthQuestion,
-  PreScreenQuestion,
-  VaccineMethod
-} from '../models/vaccine.js'
+import { HealthQuestion, VaccineMethod } from '../models/vaccine.js'
 
 export const enumeration = (request, response, next) => {
   response.locals.AcademicYear = AcademicYear
@@ -52,7 +48,6 @@ export const enumeration = (request, response, next) => {
   response.locals.NoticeType = NoticeType
   response.locals.ParentalRelationship = ParentalRelationship
   response.locals.PatientOutcome = PatientOutcome
-  response.locals.PreScreenQuestion = PreScreenQuestion
   response.locals.ProgrammeType = ProgrammeType
   response.locals.RegistrationOutcome = RegistrationOutcome
   response.locals.ReplyDecision = ReplyDecision
