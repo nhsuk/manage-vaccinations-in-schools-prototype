@@ -2,7 +2,7 @@
  * @readonly
  * @enum {string}
  */
-const vaccineSideEffect = {
+const VaccineSideEffect = {
   AppetiteLoss: 'loss of appetite',
   BlockedNose: 'a runny or blocked nose',
   Bruising: 'bruising or itching at the site of the injection',
@@ -36,10 +36,10 @@ export default {
     method: 'Nasal spray',
     dose: 0.2,
     sideEffects: [
-      vaccineSideEffect.BlockedNose,
-      vaccineSideEffect.Headache,
-      vaccineSideEffect.Tiredness,
-      vaccineSideEffect.AppetiteLoss
+      VaccineSideEffect.BlockedNose,
+      VaccineSideEffect.Headache,
+      VaccineSideEffect.Tiredness,
+      VaccineSideEffect.AppetiteLoss
     ],
     healthQuestionKeys: [
       'Asthma',
@@ -73,16 +73,16 @@ export default {
     method: 'Injection',
     dose: 0.5,
     sideEffects: [
-      vaccineSideEffect.PainSite,
-      vaccineSideEffect.Headache,
-      vaccineSideEffect.Dizzy,
-      vaccineSideEffect.Sick,
-      vaccineSideEffect.Rash,
-      vaccineSideEffect.Irritable,
-      vaccineSideEffect.Drowsy,
-      vaccineSideEffect.AppetiteLoss,
-      vaccineSideEffect.Temperature,
-      vaccineSideEffect.Unwell
+      VaccineSideEffect.PainSite,
+      VaccineSideEffect.Headache,
+      VaccineSideEffect.Dizzy,
+      VaccineSideEffect.Sick,
+      VaccineSideEffect.Rash,
+      VaccineSideEffect.Irritable,
+      VaccineSideEffect.Drowsy,
+      VaccineSideEffect.AppetiteLoss,
+      VaccineSideEffect.Temperature,
+      VaccineSideEffect.Unwell
     ],
     healthQuestionKeys: [
       'Allergy',
@@ -114,10 +114,10 @@ export default {
     dose: 0.5,
     sequenceLimit: 3,
     sideEffects: [
-      vaccineSideEffect.Bruising,
-      vaccineSideEffect.TemperatureShiver,
-      vaccineSideEffect.SickFeeling,
-      vaccineSideEffect.PainArms
+      VaccineSideEffect.Bruising,
+      VaccineSideEffect.TemperatureShiver,
+      VaccineSideEffect.SickFeeling,
+      VaccineSideEffect.PainArms
     ],
     healthQuestionKeys: [
       'Allergy',
@@ -148,11 +148,11 @@ export default {
     method: 'Injection',
     dose: 0.5,
     sideEffects: [
-      vaccineSideEffect.PainSite,
-      vaccineSideEffect.Dizzy,
-      vaccineSideEffect.SickFeeling,
-      vaccineSideEffect.Temperature,
-      vaccineSideEffect.Headache
+      VaccineSideEffect.PainSite,
+      VaccineSideEffect.Dizzy,
+      VaccineSideEffect.SickFeeling,
+      VaccineSideEffect.Temperature,
+      VaccineSideEffect.Headache
     ],
     healthQuestionKeys: [
       'Allergy',
@@ -185,14 +185,14 @@ export default {
     method: 'Injection',
     dose: 0.5,
     sideEffects: [
-      vaccineSideEffect.PainSite,
-      vaccineSideEffect.Headache,
-      vaccineSideEffect.SickFeeling,
-      vaccineSideEffect.Rash,
-      vaccineSideEffect.Irritable,
-      vaccineSideEffect.Drowsy,
-      vaccineSideEffect.AppetiteLoss,
-      vaccineSideEffect.Unwell
+      VaccineSideEffect.PainSite,
+      VaccineSideEffect.Headache,
+      VaccineSideEffect.SickFeeling,
+      VaccineSideEffect.Rash,
+      VaccineSideEffect.Irritable,
+      VaccineSideEffect.Drowsy,
+      VaccineSideEffect.AppetiteLoss,
+      VaccineSideEffect.Unwell
     ],
     healthQuestionKeys: [
       'Allergy',
