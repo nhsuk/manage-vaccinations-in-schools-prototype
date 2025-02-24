@@ -502,7 +502,7 @@ export class PatientSession {
    */
   get formatted() {
     return {
-      programme: formatTag({ text: this.programme.name, colour: 'white' }),
+      programme: this.programme.nameTag,
       status: {
         consent: this.reason.consent
           ? formatTagWithSecondaryText(this.status.consent, this.reason.consent)

@@ -2,7 +2,7 @@ import { isAfter } from 'date-fns'
 
 import vaccines from '../datasets/vaccines.js'
 import { isBetweenDates, today } from '../utils/date.js'
-import { formatLink } from '../utils/string.js'
+import { formatLink, formatTag } from '../utils/string.js'
 
 import { Cohort } from './cohort.js'
 import { PatientSession } from './patient-session.js'
@@ -133,6 +133,18 @@ export class Programme {
     this.cohort_uids = options?.cohort_uids || []
     this.vaccine_smomeds =
       options?.type && programmeTypes[options.type]?.vaccine_smomeds
+  }
+
+  /**
+   * Get programme name shown within tag component
+   *
+   * @returns {string} - Tag component HTML
+   */
+  get nameTag() {
+    return formatTag({
+      text: this.name,
+      colour: 'transparent'
+    })
   }
 
   /**

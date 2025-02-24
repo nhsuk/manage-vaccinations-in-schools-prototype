@@ -157,9 +157,7 @@ export class AuditEvent {
       datetime,
       note: this.note && `<blockquote>${this.note}</blockquote>`,
       outcome: this.outcome && formatTag(this.outcomeStatus),
-      programmes: this.programmes
-        .flatMap(({ name }) => formatTag({ colour: 'white', text: name }))
-        .join(' ')
+      programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' ')
     }
   }
 

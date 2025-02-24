@@ -784,9 +784,7 @@ export class Session {
         this.patientsToRegister?.length > 0
           ? filters.plural(this.patientsToRecord.length, 'child')
           : undefined,
-      programmes: this.programmes
-        .flatMap(({ name }) => formatTag({ colour: 'white', text: name }))
-        .join(' '),
+      programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' '),
       consentUrl:
         this.consentUrl &&
         formatLink(

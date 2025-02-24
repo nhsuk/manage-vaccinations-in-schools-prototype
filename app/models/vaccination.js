@@ -361,10 +361,8 @@ export class Vaccination {
       vaccine_snomed: this.vaccine_snomed && this.vaccine?.brandWithType,
       note: formatMarkdown(this.note),
       outcome: formatTag(this.outcomeStatus),
-      programme:
-        this.programme &&
-        formatTag({ text: this.programme.name, colour: 'white' }),
-      school: this?.school && this.school.name
+      programme: this.programme && this.programme.nameTag,
+      school: this.school && this.school.name
     }
   }
 
