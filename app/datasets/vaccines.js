@@ -1,6 +1,7 @@
 import {
   HealthQuestion,
   PreScreenQuestion,
+  VaccineMethod,
   VaccineSideEffect
 } from '../models/vaccine.js'
 
@@ -16,7 +17,7 @@ export default {
       url: 'https://www.medicines.org.uk/emc/files/pil.15790.pdf',
       size: '197KB'
     },
-    method: 'Nasal spray',
+    method: VaccineMethod.Nasal,
     dose: 0.2,
     sideEffects: [
       VaccineSideEffect.BlockedNose,
@@ -52,7 +53,7 @@ export default {
       url: 'https://www.medicines.org.uk/emc/files/pil.12882.pdf',
       size: '174KB'
     },
-    method: 'Injection',
+    method: VaccineMethod.Injection,
     dose: 0.5,
     sideEffects: [
       VaccineSideEffect.PainSite,
@@ -91,7 +92,7 @@ export default {
       url: 'https://www.medicines.org.uk/emc/files/pil.7330.pdf',
       size: '110KB'
     },
-    method: 'Injection',
+    method: VaccineMethod.Injection,
     dose: 0.5,
     sequenceLimit: 3,
     sideEffects: [
@@ -125,7 +126,7 @@ export default {
       url: 'https://www.medicines.org.uk/emc/files/pil.5581.pdf',
       size: '2.64MB'
     },
-    method: 'Injection',
+    method: VaccineMethod.Injection,
     dose: 0.5,
     sideEffects: [
       VaccineSideEffect.PainSite,
@@ -161,7 +162,7 @@ export default {
       url: 'https://www.medicines.org.uk/emc/files/pil.12818.pdf',
       size: '177KB'
     },
-    method: 'Injection',
+    method: VaccineMethod.Injection,
     dose: 0.5,
     sideEffects: [
       VaccineSideEffect.PainSite,
