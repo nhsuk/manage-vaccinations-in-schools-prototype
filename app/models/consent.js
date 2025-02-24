@@ -1,4 +1,3 @@
-import { getRepliesWithHealthAnswers } from '../utils/reply.js'
 import { formatLinkWithSecondaryText } from '../utils/string.js'
 
 import { Reply } from './reply.js'
@@ -13,9 +12,8 @@ export class Consent extends Reply {
    *
    * @returns {boolean} - Answers need triage
    */
-  get answersNeedsTriage() {
-    const healthAnswers = getRepliesWithHealthAnswers([this])
-    return healthAnswers.length > 0
+  get hasAnswersNeedingTriage() {
+    return Object.values(this.healthAnswers).find((answer) => answer)
   }
 
   /**

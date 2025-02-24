@@ -622,8 +622,16 @@ export const en = {
         [ReplyDecision.Refused]:
           'You’ve told us that you do not want {{consent.child.fullName}} to get the {{session.vaccination}} at school'
       },
-      triage:
-        'As you answered ‘yes’ to some of the health questions, we need to check the vaccination is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
+      triage: {
+        // TODO: Parent may have given consent for two vaccinations for doubles
+        // so text should say either ‘vaccination is’ or ‘vaccinations are’
+        [ReplyDecision.Given]:
+          'As you answered ‘yes’ to some of the health questions, we need to check the {{session.vaccination}} is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
+        [ReplyDecision.OnlyMenACWY]:
+          'As you answered ‘yes’ to some of the health questions, we need to check the MenACWY vaccination is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
+        [ReplyDecision.OnlyTdIPV]:
+          'As you answered ‘yes’ to some of the health questions, we need to check the Td/IPV vaccination is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.'
+      },
       description: 'We’ve sent a confirmation to <{{consent.parent.email}}>.'
     },
     actions: {

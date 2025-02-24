@@ -208,11 +208,11 @@ export const getHealthAnswers = (vaccine, healthCondition) => {
  * @returns {string} Triage note
  */
 export const getTriageNote = (healthAnswers, healthCondition) => {
-  const healthAnswersNeedsTriage = Object.values(healthAnswers)
-    .flatMap((answer) => answer !== false)
-    .includes(true)
+  const hasAnswersNeedingTriage = Object.values(healthAnswers).find(
+    (answer) => answer
+  )
 
-  if (healthAnswersNeedsTriage) {
+  if (hasAnswersNeedingTriage) {
     return healthConditions[healthCondition].triageNote
   }
 }
