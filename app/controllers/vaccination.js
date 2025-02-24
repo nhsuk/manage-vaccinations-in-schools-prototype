@@ -2,7 +2,7 @@ import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { Batch } from '../models/batch.js'
 import { PatientSession } from '../models/patient-session.js'
-import { Programme } from '../models/programme.js'
+import { Programme, ProgrammeType } from '../models/programme.js'
 import { User } from '../models/user.js'
 import {
   Vaccination,
@@ -164,6 +164,13 @@ export const vaccinationController = {
     const patientSession = PatientSession.read(data.patientSession_uuid, data)
     response.locals.patientSession = patientSession
 
+    const askForSequence = [
+      ProgrammeType.MenACWY,
+      ProgrammeType.TdIPV
+    ].includes(programme.type)
+
+    const askForLocation = !patientSession.session?.address
+
     const journey = {
       [`/`]: {},
       ...(data.startPath === 'decline'
@@ -172,15 +179,14 @@ export const vaccinationController = {
             [`/${uuid}/${form}/check-answers`]: {}
           }
         : {
-            [`/${uuid}/${form}/administer`]: {
-              [`/${uuid}/${form}/check-answers`]: () => {
-                return data.defaultBatchId
-              }
-            },
+            [`/${uuid}/${form}/administer`]: {},
             [`/${uuid}/${form}/batch-id`]: () => {
               return !data.defaultBatchId
             },
-            ...(!patientSession.session?.address && {
+            ...(askForSequence && {
+              [`/${uuid}/${form}/sequence`]: {}
+            }),
+            ...(askForLocation && {
               [`/${uuid}/${form}/location`]: {}
             }),
             [`/${uuid}/${form}/check-answers`]: {}
@@ -199,9 +205,7 @@ export const vaccinationController = {
     // If first page in journey, return to page that initiated recording
     const currentPath = request.path.split('/').at(-1)
     if (currentPath === data.startPath) {
-      response.locals.paths = {
-        back: referrer || vaccination.uri
-      }
+      response.locals.paths.back = referrer || vaccination.uri
     }
 
     response.locals.batchItems = Batch.readAll(data)
