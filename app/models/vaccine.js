@@ -105,9 +105,9 @@ export const VaccineMethod = {
  * @property {number} dose - Dosage
  * @property {number} sequenceLimit - Maximum doses in sequence
  * @property {VaccineMethod} method - Method
- * @property {Array<string>} sideEffects - Side effects
- * @property {Array<string>} healthQuestions - Health questions
- * @property {Array<string>} preScreenQuestions - Pre-screening questions
+ * @property {Array<VaccineSideEffect>} sideEffects - Side effects
+ * @property {Array<HealthQuestion>} healthQuestions - Health questions
+ * @property {Array<PreScreenQuestion>} preScreenQuestions - Pre-screening questions
  */
 export class Vaccine {
   constructor(options, context) {
