@@ -1,6 +1,12 @@
 // Import NHS.UK Frontend
 @forward "vendor/nhsuk-frontend";
 
+// Prototype-specific NHS.UK Frontend components
+@forward "nhsuk-frontend/packages/components/action-link";
+@forward "nhsuk-frontend/packages/components/contents-list";
+@forward "nhsuk-frontend/packages/components/hero";
+
 // Prototype-specific components
+@forward "components/env";
 @forward "components/sub-navigation";
 @forward "prototype-components";
