@@ -3,7 +3,7 @@ import { default as filters } from '@x-govuk/govuk-prototype-filters'
 import { isAfter } from 'date-fns'
 import _ from 'lodash'
 
-import { HealthQuestion } from '../datasets/vaccines.js'
+import { HealthQuestion } from '../models/vaccine.js'
 import {
   removeDays,
   convertIsoDateToObject,

@@ -2,12 +2,12 @@ import { faker } from '@faker-js/faker'
 import _ from 'lodash'
 
 import healthConditions from '../datasets/health-conditions.js'
-import { HealthQuestion } from '../datasets/vaccines.js'
 import { Child } from '../models/child.js'
 import { ParentalRelationship } from '../models/parent.js'
 import { ConsentOutcome } from '../models/patient-session.js'
 import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
+import { HealthQuestion } from '../models/vaccine.js'
 
 import { formatParentalRelationship } from './string.js'
 

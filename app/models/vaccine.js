@@ -12,6 +12,81 @@ import { Batch } from './batch.js'
  * @readonly
  * @enum {string}
  */
+export const VaccineSideEffect = {
+  AppetiteLoss: 'loss of appetite',
+  BlockedNose: 'a runny or blocked nose',
+  Bruising: 'bruising or itching at the site of the injection',
+  Dizzy: 'dizziness',
+  Drowsy: 'feeling drowsy',
+  Headache: 'a headache',
+  Irritable: 'feeling irritable',
+  PainArms: 'pain in the arms, hands, fingers',
+  PainSite: 'pain, swelling or itchiness where the injection was given',
+  Rash: 'a rash',
+  Sick: 'feeling or being sick',
+  SickFeeling: 'feeling sick (nausea)',
+  Tiredness: 'general tiredness',
+  Temperature: 'a high temperature',
+  TemperatureShiver: 'a high temperature, or feeling hot and shivery',
+  Unwell: 'generally feeling unwell'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const HealthQuestion = {
+  Aspirin: 'Does the child take regular aspirin?',
+  Allergy: 'Does the child have any severe allergies?',
+  Asthma: 'Has the child been diagnosed with asthma?',
+  AsthmaAdmitted:
+    'Has the child been admitted to intensive care for their asthma?',
+  AsthmaSteroids:
+    'Has the child taken any oral steroids for their asthma in the last 2 weeks?',
+  Bleeding:
+    'Does the child have a bleeding disorder or another medical condition they receive treatment for?',
+  EggAllergy:
+    'Has the child ever been admitted to intensive care due an allergic reaction to egg?',
+  Immunosuppressant: 'Does the child take any immunosuppressant medication?',
+  ImmuneSystem:
+    'Does the child have a disease or treatment that severely affects their immune system?',
+  HouseholdImmuneSystem:
+    'Is anyone in the child’s household currently having treatment that severely affects their immune system?',
+  MedicationAllergies: 'Does the child have any allergies to medication?',
+  MedicalConditions:
+    'Does the child have any medical conditions for which they receive treatment?',
+  PreviousReaction:
+    'Has the child ever had a severe reaction to any medicines, including vaccines?',
+  RecentFluVaccination:
+    'Has the child had a flu vaccination in the last 5 months?',
+  RecentMenAcwyVaccination:
+    'Has the child had a meningitis (MenACWY) vaccination in the last 5 years?',
+  RecentTdIpvVaccination:
+    'Has the child had a tetanus, diphtheria and polio vaccination in the last 5 years?',
+  Support: 'Does the child need extra support during vaccination sessions?'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const PreScreenQuestion = {
+  IsAllergic:
+    'Has the child confirmed they have no allergies which would prevent vaccination?',
+  IsPregnant: 'Has the child confirmed they’re not pregnant?',
+  IsMedicated:
+    'Has the child confirmed they’re not taking any medication which prevents vaccination?',
+  IsVaccinated:
+    'Has the child confirmed they have not already had this vaccination?',
+  IsWell: 'Is the child is feeling well?',
+  IsHappy:
+    'Does the child know what the vaccination is for, and are they happy to have it?'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const VaccineMethod = {
   Nasal: 'Nasal spray',
   Injection: 'Injection'

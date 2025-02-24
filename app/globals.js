@@ -1,13 +1,13 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
-import { HealthQuestion, PreScreenQuestion } from './datasets/vaccines.js'
 import { Gender } from './models/child.js'
 import {
   ConsentOutcome,
   PatientOutcome,
   ScreenOutcome
 } from './models/patient-session.js'
+import { HealthQuestion, PreScreenQuestion } from './models/vaccine.js'
 import { formatLink, formatParent, pascalToKebabCase } from './utils/string.js'
 
 /**

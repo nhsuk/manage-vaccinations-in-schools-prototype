@@ -1,5 +1,5 @@
-import { HealthQuestion } from '../datasets/vaccines.js'
 import { ReplyDecision } from '../models/reply.js'
+import { HealthQuestion } from '../models/vaccine.js'
 
 import { pascalToKebabCase } from './string.js'
 

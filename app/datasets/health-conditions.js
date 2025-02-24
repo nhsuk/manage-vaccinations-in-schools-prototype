@@ -1,4 +1,4 @@
-import { HealthQuestion } from '../datasets/vaccines.js'
+import { HealthQuestion } from '../models/vaccine.js'
 
 export default {
   adhd: {

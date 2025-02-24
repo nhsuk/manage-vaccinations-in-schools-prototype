@@ -1,6 +1,5 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
-import { HealthQuestion } from '../datasets/vaccines.js'
 import { generateChild } from '../generators/child.js'
 import { generateParent } from '../generators/parent.js'
 import { Consent } from '../models/consent.js'
@@ -8,6 +7,7 @@ import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { School } from '../models/school.js'
 import { ConsentWindow, Session, SessionType } from '../models/session.js'
+import { HealthQuestion } from '../models/vaccine.js'
 import { getHealthQuestionPaths } from '../utils/consent.js'
 import { formatList, kebabToPascalCase } from '../utils/string.js'
 
