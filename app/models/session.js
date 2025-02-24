@@ -3,7 +3,7 @@ import { default as filters } from '@x-govuk/govuk-prototype-filters'
 import { isAfter } from 'date-fns'
 import _ from 'lodash'
 
-import { getHealthQuestionKeys } from '../utils/consent.js'
+import { HealthQuestion } from '../datasets/vaccines.js'
 import {
   removeDays,
   convertIsoDateToObject,
@@ -472,12 +472,22 @@ export class Session {
   }
 
   /**
-   * Get health questions from across all programme vaccines
+   * Get health questions for all programme vaccines
    *
-   * @returns {Array} - Programmes
+   * @returns {Array<string>} - Health questions
    */
-  get healthQuestionKeys() {
-    return getHealthQuestionKeys(this.vaccines)
+  get healthQuestions() {
+    const healthQuestions = new Set()
+    for (const vaccine of this.vaccines) {
+      for (const question of vaccine.healthQuestions) {
+        healthQuestions.add(question)
+      }
+    }
+
+    // Always ask support question last
+    healthQuestions.add(HealthQuestion.Support)
+
+    return [...healthQuestions]
   }
 
   /**

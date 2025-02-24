@@ -1,8 +1,7 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = HealthQuestion[key] | replace ("the child", "your child") %}
+{% set title = healthQuestion %}
 {% set hint = __("consent.healthAnswers.hint." + key) %}
-{% set more = __("consent.healthAnswers.more." + key) %}
 
 {% block form %}
   {{ radios({

@@ -25,6 +25,41 @@ const VaccineSideEffect = {
  * @readonly
  * @enum {string}
  */
+export const HealthQuestion = {
+  Aspirin: 'Does the child take regular aspirin?',
+  Allergy: 'Does the child have any severe allergies?',
+  Asthma: 'Has the child been diagnosed with asthma?',
+  AsthmaAdmitted:
+    'Has the child been admitted to intensive care for their asthma?',
+  AsthmaSteroids:
+    'Has the child taken any oral steroids for their asthma in the last 2 weeks?',
+  Bleeding:
+    'Does the child have a bleeding disorder or another medical condition they receive treatment for?',
+  EggAllergy:
+    'Has the child ever been admitted to intensive care due an allergic reaction to egg?',
+  Immunosuppressant: 'Does the child take any immunosuppressant medication?',
+  ImmuneSystem:
+    'Does the child have a disease or treatment that severely affects their immune system?',
+  HouseholdImmuneSystem:
+    'Is anyone in the child’s household currently having treatment that severely affects their immune system?',
+  MedicationAllergies: 'Does the child have any allergies to medication?',
+  MedicalConditions:
+    'Does the child have any medical conditions for which they receive treatment?',
+  PreviousReaction:
+    'Has the child ever had a severe reaction to any medicines, including vaccines?',
+  RecentFluVaccination:
+    'Has the child had a flu vaccination in the last 5 months?',
+  RecentMenAcwyVaccination:
+    'Has the child had a meningitis (MenACWY) vaccination in the last 5 years?',
+  RecentTdIpvVaccination:
+    'Has the child had a tetanus, diphtheria and polio vaccination in the last 5 years?',
+  Support: 'Does the child need extra support during vaccination sessions?'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const PreScreenQuestion = {
   IsAllergic:
     'Has the child confirmed they have no allergies which would prevent vaccination?',
@@ -58,17 +93,16 @@ export default {
       VaccineSideEffect.Tiredness,
       VaccineSideEffect.AppetiteLoss
     ],
-    healthQuestionKeys: [
-      'Asthma',
-      'AsthmaSteroids',
-      'AsthmaAdmitted',
-      'RecentFluVaccination',
-      'ImmuneSystem',
-      'HouseholdImmuneSystem',
-      'EggAllergy',
-      'MedicationAllergies',
-      'Aspirin',
-      'Support'
+    healthQuestions: [
+      HealthQuestion.Asthma,
+      HealthQuestion.AsthmaSteroids,
+      HealthQuestion.AsthmaAdmitted,
+      HealthQuestion.RecentFluVaccination,
+      HealthQuestion.ImmuneSystem,
+      HealthQuestion.HouseholdImmuneSystem,
+      HealthQuestion.EggAllergy,
+      HealthQuestion.MedicationAllergies,
+      HealthQuestion.Aspirin
     ],
     preScreenQuestions: [
       PreScreenQuestion.IsHappy,
@@ -101,11 +135,10 @@ export default {
       VaccineSideEffect.Temperature,
       VaccineSideEffect.Unwell
     ],
-    healthQuestionKeys: [
-      'Allergy',
-      'MedicalConditions',
-      'PreviousReaction',
-      'Support'
+    healthQuestions: [
+      HealthQuestion.Allergy,
+      HealthQuestion.MedicalConditions,
+      HealthQuestion.PreviousReaction
     ],
     preScreenQuestions: [
       PreScreenQuestion.IsHappy,
@@ -136,11 +169,10 @@ export default {
       VaccineSideEffect.SickFeeling,
       VaccineSideEffect.PainArms
     ],
-    healthQuestionKeys: [
-      'Allergy',
-      'MedicalConditions',
-      'PreviousReaction',
-      'Support'
+    healthQuestions: [
+      HealthQuestion.Allergy,
+      HealthQuestion.MedicalConditions,
+      HealthQuestion.PreviousReaction
     ],
     preScreenQuestions: [
       PreScreenQuestion.IsHappy,
@@ -171,12 +203,11 @@ export default {
       VaccineSideEffect.Temperature,
       VaccineSideEffect.Headache
     ],
-    healthQuestionKeys: [
-      'Allergy',
-      'Bleeding',
-      'RecentTdIpvVaccination',
-      'PreviousReaction',
-      'Support'
+    healthQuestions: [
+      HealthQuestion.Bleeding,
+      HealthQuestion.Allergy,
+      HealthQuestion.PreviousReaction,
+      HealthQuestion.RecentTdIpvVaccination
     ],
     preScreenQuestions: [
       PreScreenQuestion.IsHappy,
@@ -211,12 +242,11 @@ export default {
       VaccineSideEffect.AppetiteLoss,
       VaccineSideEffect.Unwell
     ],
-    healthQuestionKeys: [
-      'Allergy',
-      'Bleeding',
-      'RecentMenAcwyVaccination',
-      'PreviousReaction',
-      'Support'
+    healthQuestions: [
+      HealthQuestion.Bleeding,
+      HealthQuestion.Allergy,
+      HealthQuestion.PreviousReaction,
+      HealthQuestion.RecentMenAcwyVaccination
     ],
     preScreenQuestions: [
       PreScreenQuestion.IsHappy,

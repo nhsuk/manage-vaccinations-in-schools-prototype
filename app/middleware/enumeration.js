@@ -31,7 +31,7 @@ import {
   VaccinationSequence,
   VaccinationSite
 } from '../models/vaccination.js'
-import { HealthQuestion, VaccineMethod } from '../models/vaccine.js'
+import { VaccineMethod } from '../models/vaccine.js'
 
 export const enumeration = (request, response, next) => {
   response.locals.AcademicYear = AcademicYear
@@ -42,7 +42,6 @@ export const enumeration = (request, response, next) => {
   response.locals.EventType = EventType
   response.locals.Gender = Gender
   response.locals.GillickCompetent = GillickCompetent
-  response.locals.HealthQuestion = HealthQuestion
   response.locals.MoveSource = MoveSource
   response.locals.Activity = Activity
   response.locals.NoticeType = NoticeType

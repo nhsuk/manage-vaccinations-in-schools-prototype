@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 import _ from 'lodash'
 
 import healthConditions from '../datasets/health-conditions.js'
+import { HealthQuestion } from '../datasets/vaccines.js'
 import { Child } from '../models/child.js'
 import { ParentalRelationship } from '../models/parent.js'
 import { ConsentOutcome } from '../models/patient-session.js'
@@ -13,15 +14,15 @@ import { formatParentalRelationship } from './string.js'
 /**
  * Add example answers to health questions
  *
- * @param {string} key - Health question key
+ * @param {string} question - Health question
  * @param {string} healthCondition - Health condition
  * @returns {string|boolean} Health answer, or `false`
  */
-const enrichWithRealisticAnswer = (key, healthCondition) => {
+const enrichWithRealisticAnswer = (question, healthCondition) => {
   const useAnswer = faker.helpers.maybe(() => true, { probability: 0.2 })
 
-  if (healthConditions[healthCondition][key] && useAnswer) {
-    return healthConditions[healthCondition][key]
+  if (healthConditions[healthCondition][question] && useAnswer) {
+    return healthConditions[healthCondition][question]
   }
 
   return false
@@ -193,8 +194,11 @@ export const getConsentRefusalReasons = (patientSession) => {
 export const getHealthAnswers = (vaccine, healthCondition) => {
   const answers = {}
 
-  for (const key of vaccine.healthQuestionKeys) {
-    answers[key] = enrichWithRealisticAnswer(key, healthCondition)
+  for (const question of vaccine.healthQuestions) {
+    const key = Object.keys(HealthQuestion).find(
+      (key) => HealthQuestion[key] === question
+    )
+    answers[key] = enrichWithRealisticAnswer(question, healthCondition)
   }
 
   return answers

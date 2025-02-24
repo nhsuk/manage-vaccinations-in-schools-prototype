@@ -8,11 +8,11 @@
     title: title
   }) }}
 
-  {% for key in programme.vaccine.healthQuestionKeys %}
+  {% for key, healthQuestion in healthQuestions(programme) %}
     {{ radios({
       classes: "nhsuk-radios--inline",
       fieldset: {
-        legend: { text: HealthQuestion[key] }
+        legend: { text: healthQuestion }
       },
       items: [
         {

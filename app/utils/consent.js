@@ -1,34 +1,7 @@
-import { ProgrammeType } from '../models/programme.js'
+import { HealthQuestion } from '../datasets/vaccines.js'
 import { ReplyDecision } from '../models/reply.js'
 
-import { kebabToPascalCase, pascalToKebabCase } from './string.js'
-
-/**
- * Get health question keys
- *
- * @param {Array<import('../models/vaccine.js').Vaccine>} vaccines - Vaccine
- * @returns {Array<string>}
- */
-export const getHealthQuestionKeys = (vaccines) => {
-  const healthQuestionKeys = new Set()
-  for (const vaccine of vaccines) {
-    for (const key of vaccine.healthQuestionKeys) {
-      healthQuestionKeys.add(key)
-    }
-  }
-
-  return [...healthQuestionKeys].sort()
-}
-
-/**
- * Get health question key from view name
- *
- * @param {string} view - View name
- * @returns {string} Health question key
- */
-export const getHealthQuestionKey = (view) => {
-  return kebabToPascalCase(view.replace('health-question-', ''))
-}
+import { pascalToKebabCase } from './string.js'
 
 /**
  * Get health question paths for given vaccines
@@ -42,25 +15,19 @@ export const getHealthQuestionPaths = (pathPrefix, session, decision) => {
   const paths = {}
 
   // Only get health question paths for vaccines with consent
-  let vaccines
-  switch (decision) {
-    case ReplyDecision.OnlyMenACWY:
-      vaccines = session.vaccines.filter(
-        (vaccine) => vaccine.type !== ProgrammeType.TdIPV
-      )
-      break
-    case ReplyDecision.OnlyTdIPV:
-      vaccines = session.vaccines.filter(
-        (vaccine) => vaccine.type !== ProgrammeType.MenACWY
-      )
-      break
-    default:
-      vaccines = session.vaccines
+  const healthQuestions = new Set(session.healthQuestions)
+  if (decision === ReplyDecision.OnlyMenACWY) {
+    healthQuestions.delete(HealthQuestion.RecentTdIpvVaccination)
+  } else if (decision === ReplyDecision.OnlyTdIPV) {
+    healthQuestions.delete(HealthQuestion.RecentMenAcwyVaccination)
   }
 
-  const healthQuestionKeys = getHealthQuestionKeys(vaccines)
-  for (const key of healthQuestionKeys) {
+  for (const question of [...healthQuestions]) {
+    const key = Object.keys(HealthQuestion).find(
+      (key) => HealthQuestion[key] === question
+    )
     const slug = pascalToKebabCase(key)
+
     paths[`${pathPrefix}health-question-${slug}`] = {}
   }
 

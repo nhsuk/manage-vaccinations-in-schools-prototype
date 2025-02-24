@@ -1,14 +1,13 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
-import { PreScreenQuestion } from './datasets/vaccines.js'
+import { HealthQuestion, PreScreenQuestion } from './datasets/vaccines.js'
 import { Gender } from './models/child.js'
 import {
   ConsentOutcome,
   PatientOutcome,
   ScreenOutcome
 } from './models/patient-session.js'
-import { HealthQuestion } from './models/vaccine.js'
 import { formatLink, formatParent, pascalToKebabCase } from './utils/string.js'
 
 /**
@@ -229,6 +228,28 @@ export default () => {
       patient.gender === Gender.Male
         ? question !== PreScreenQuestion.IsPregnant
         : question
+    )
+  }
+
+  /**
+   * Show health questions
+   *
+   * @param {import('./models/programme.js').Programme} programme - Programme
+   * @returns {object|undefined} Health questions
+   */
+  globals.healthQuestions = function (programme) {
+    if (!programme) {
+      return
+    }
+
+    return Object.entries(programme.vaccine.healthQuestions).map(
+      ([key, question]) => {
+        key = Object.keys(HealthQuestion).find(
+          (key) => HealthQuestion[key] === question
+        )
+
+        return [key, question]
+      }
     )
   }
 

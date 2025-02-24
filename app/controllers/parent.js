@@ -1,5 +1,6 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
+import { HealthQuestion } from '../datasets/vaccines.js'
 import { generateChild } from '../generators/child.js'
 import { generateParent } from '../generators/parent.js'
 import { Consent } from '../models/consent.js'
@@ -7,11 +8,8 @@ import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { School } from '../models/school.js'
 import { ConsentWindow, Session, SessionType } from '../models/session.js'
-import {
-  getHealthQuestionKey,
-  getHealthQuestionPaths
-} from '../utils/consent.js'
-import { formatList } from '../utils/string.js'
+import { getHealthQuestionPaths } from '../utils/consent.js'
+import { formatList, kebabToPascalCase } from '../utils/string.js'
 
 export const parentController = {
   read(request, response, next) {
@@ -205,10 +203,18 @@ export const parentController = {
 
   showForm(request, response) {
     let { form, view } = request.params
-    const key = getHealthQuestionKey(view)
+
+    // Get health question key from view name
+    const key = kebabToPascalCase(view.replace('health-question-', ''))
+    const healthQuestion = HealthQuestion[key]?.replace(
+      'the child',
+      'your child'
+    )
+
+    // All health questions use the same view
     view = view.startsWith('health-question-') ? 'health-question' : view
 
-    response.render(`parent/form/${view}`, { form, key })
+    response.render(`parent/form/${view}`, { form, key, healthQuestion })
   },
 
   updateForm(request, response) {
