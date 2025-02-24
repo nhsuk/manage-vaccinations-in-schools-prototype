@@ -227,6 +227,27 @@ export const patientSessionController = {
     )
   },
 
+  vaccination(request, response) {
+    const { data } = request.session
+    const { patient, patientSession, session, programme } = response.locals
+
+    // Vaccination
+    const vaccination = new Vaccination({
+      outcome: VaccinationOutcome.AlreadyVaccinated,
+      patient_uuid: patient.uuid,
+      programme_pid: programme.pid,
+      session_id: session.id,
+      ...(data.token && { createdBy_uid: data.token?.uid })
+    })
+
+    vaccination.create(vaccination, data.wizard)
+    patient.recordVaccination(vaccination)
+
+    response.redirect(
+      `${programme.uri}/vaccinations/${vaccination.uuid}/new/check-answers?referrer=${patientSession.uri}`
+    )
+  },
+
   invite(request, response) {
     const { data } = request.session
     const { __, back, patient, patientSession } = response.locals

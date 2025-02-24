@@ -14,8 +14,18 @@
     }, {
       text: __("patientSession.registration.title"),
       href: params.patientSession.uri + "/edit/registration"
-    } if params.patientSession.registration != RegistrationOutcome.Complete]
+    } if params.patientSession.registration != RegistrationOutcome.Complete, {
+      text: __("patientSession.record.title"),
+      href: "#"
+    } if not params.patientSession.session.isActive and params.patientSession.outcome != PatientOutcome.Vaccinated]
   }) if params.patientSession.session.isActive }}
+
+  {{ actionList({
+    items: [{
+      text: __("patientSession.vaccination.title"),
+      href: params.patientSession.uri + "/new/vaccination"
+    }]
+  }) if not params.patientSession.session.isActive and params.patientSession.outcome != PatientOutcome.Vaccinated }}
 
   {{ secondaryNavigation({
     classes: "app-secondary-navigation--sticky",

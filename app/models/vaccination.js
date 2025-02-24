@@ -117,7 +117,7 @@ export class Vaccination {
     this.createdAt_ = options?.createdAt_
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
-    this.location = options?.location
+    this.location = options?.location || 'Unknown location'
     this.outcome = options?.outcome
     this.given =
       this.outcome === VaccinationOutcome.Vaccinated ||
@@ -199,9 +199,9 @@ export class Vaccination {
    * @returns {object|undefined} - Vaccine
    */
   get vaccine() {
-    if (!this.vaccine_snomed) return
-
-    return new Vaccine(vaccines[this.vaccine_snomed])
+    if (this.vaccine_snomed) {
+      return new Vaccine(vaccines[this.vaccine_snomed])
+    }
   }
 
   /**
@@ -358,7 +358,7 @@ export class Vaccination {
       batch: this.batch?.summary,
       batch_id: formatMonospace(this.batch_id),
       dose: formatMillilitres(this.dose),
-      vaccine_snomed: this.vaccine?.brandWithType,
+      vaccine_snomed: this.vaccine_snomed && this.vaccine?.brandWithType,
       note: formatMarkdown(this.note),
       outcome: formatTag(this.outcomeStatus),
       programme:

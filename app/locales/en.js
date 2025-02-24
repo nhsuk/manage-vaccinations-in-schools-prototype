@@ -1169,6 +1169,9 @@ export const en = {
         label: 'Pre-screening notes'
       }
     },
+    vaccination: {
+      title: 'Record as already vaccinated'
+    },
     registration: {
       label: 'Is {{patient.fullName}} attending today’s session?',
       title: 'Update attendance',
