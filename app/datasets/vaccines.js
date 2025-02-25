@@ -94,7 +94,6 @@ export default {
     },
     method: VaccineMethod.Injection,
     dose: 0.5,
-    sequenceLimit: 3,
     sideEffects: [
       VaccineSideEffect.Bruising,
       VaccineSideEffect.TemperatureShiver,

@@ -1,4 +1,6 @@
+import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import wizard from '@x-govuk/govuk-prototype-wizard'
+import _ from 'lodash'
 
 import { Batch } from '../models/batch.js'
 import { PatientSession } from '../models/patient-session.js'
@@ -225,6 +227,17 @@ export const vaccinationController = {
         text: VaccinationSite[key],
         value
       }))
+
+    response.locals.sequenceItems = Object.entries(programme.sequence).map(
+      ([index, value]) => {
+        const ordinal = prototypeFilters.ordinal(Number(index) + 1)
+        return {
+          text: `${_.startCase(ordinal)} dose`,
+          hint: { text: value },
+          value
+        }
+      }
+    )
 
     response.locals.userItems = User.readAll(data)
       .map((user) => ({

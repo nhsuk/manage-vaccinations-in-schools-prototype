@@ -32,12 +32,6 @@
     decorate: "vaccination.dosage"
   }) }}
 
-  {{ input({
-    type: "hidden",
-    value: VaccinationSequence.P1,
-    decorate: "vaccination.sequence"
-  }) if programme.vaccine.sequenceLimit }}
-
   {{ radios({
     fieldset: {
       legend: {

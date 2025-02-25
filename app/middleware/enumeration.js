@@ -28,7 +28,6 @@ import {
   VaccinationMethod,
   VaccinationOutcome,
   VaccinationProtocol,
-  VaccinationSequence,
   VaccinationSite
 } from '../models/vaccination.js'
 import { VaccineMethod } from '../models/vaccine.js'
@@ -64,7 +63,6 @@ export const enumeration = (request, response, next) => {
   response.locals.VaccinationMethod = VaccinationMethod
   response.locals.VaccinationOutcome = VaccinationOutcome
   response.locals.VaccinationProtocol = VaccinationProtocol
-  response.locals.VaccinationSequence = VaccinationSequence
   response.locals.VaccinationSite = VaccinationSite
   response.locals.VaccineMethod = VaccineMethod
 

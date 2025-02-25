@@ -3,11 +3,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import vaccines from '../datasets/vaccines.js'
 import { ConsentOutcome, ScreenOutcome } from '../models/patient-session.js'
 import { ProgrammeType } from '../models/programme.js'
-import {
-  Vaccination,
-  VaccinationOutcome,
-  VaccinationSequence
-} from '../models/vaccination.js'
+import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
 
 /**
  * Generate fake vaccination
@@ -48,8 +44,8 @@ export function generateVaccination(
     outcome = VaccinationOutcome.NoConsent
   }
 
-  if (programme.type === ProgrammeType.HPV) {
-    sequence = VaccinationSequence.P1
+  if (programme.type !== ProgrammeType.Flu) {
+    sequence = programme.sequence.at(-1)
   }
 
   const vaccinated =

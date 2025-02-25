@@ -55,16 +55,6 @@ export const VaccinationMethod = {
  * @readonly
  * @enum {string}
  */
-export const VaccinationSequence = {
-  P1: 'First',
-  P2: 'Second',
-  P3: 'Third'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
 export const VaccinationSite = {
   Nose: 'Nose',
   ArmLeftUpper: 'Left arm (upper position)',
@@ -99,7 +89,7 @@ export const VaccinationProtocol = {
  * @property {VaccinationMethod} [injectionMethod] - Injection method
  * @property {VaccinationSite} [injectionSite] - Injection site on body
  * @property {number} [dose] - Dosage (ml)
- * @property {VaccinationSequence} [sequence] - Dose sequence
+ * @property {string} [sequence] - Dose sequence
  * @property {string} [protocol] - Protocol
  * @property {string} [note] - Note
  * @property {string} [school_urn] - School URN
