@@ -4,6 +4,8 @@
 
 {% extends "_layouts/form.njk" %}
 
+{% set bodyClasses = "app-body--patient-banner" %}
+{% set mainClasses = "app-main-wrapper--patient-banner" %}
 {% set gridColumns = "three-quarters" %}
 {% set hideConfirmButton = true %}
 {% set title = patient.initials + " – " + session.location.name %}

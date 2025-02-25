@@ -19,7 +19,6 @@ import {
 import {
   formatLink,
   formatProgrammeStatus,
-  formatTag,
   formatTagWithSecondaryText
 } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'

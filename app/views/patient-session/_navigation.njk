@@ -3,10 +3,21 @@
 {% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
 
 {% macro patientSessionNavigation(params) %}
-  {{ heading({
-    title: params.patientSession.patient.fullName,
-    summary: params.patientSession.patient.formatted.yearGroup
-  }) }}
+  <is-sticky class="app-patient-banner">
+    <div class="nhsuk-width-container">
+      {{ heading({
+        title: params.patientSession.patient.fullName
+      }) }}
+
+      {{ secondaryNavigation({
+        items: navigationItems
+      }) if navigationItems }}
+    </div>
+  </is-sticky>
+
+  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+    {{ __("patientSession." + params.view + ".title") }}
+  </h2>
 
   {{ actionList({
     items: [{
@@ -26,13 +37,4 @@
       href: params.patientSession.uri + "/new/vaccination"
     }]
   }) if not params.patientSession.session.isActive and params.patientSession.outcome != PatientOutcome.Vaccinated }}
-
-  {{ secondaryNavigation({
-    classes: "app-secondary-navigation--sticky",
-    items: navigationItems
-  }) }}
-
-  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("patientSession." + params.view + ".title") }}
-  </h2>
 {% endmacro %}

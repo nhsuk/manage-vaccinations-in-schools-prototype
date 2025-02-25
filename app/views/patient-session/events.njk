@@ -2,6 +2,8 @@
 
 {% extends "_layouts/default.njk" %}
 
+{% set bodyClasses = "app-body--patient-banner" %}
+{% set mainClasses = "app-main-wrapper--patient-banner" %}
 {% set title = patient.fullName + " – " + __("patient.events.title") %}
 {% set view = "events" %}
 

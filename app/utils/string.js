@@ -113,23 +113,6 @@ export function formatWithSecondaryText(text, secondary) {
 }
 
 /**
- * Format navigation item with optional secondary text
- *
- * @param {string} text - Hyperlink text
- * @param {string} [secondary] - Secondary text
- * @returns {string} HTML navigation text
- */
-export function formatNavigationItemWithSecondaryText(text, secondary) {
-  let html = text
-
-  if (secondary) {
-    html += `<span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">${secondary}</span>`
-  }
-
-  return html
-}
-
-/**
  * Format tag
  *
  * @param {object} options - Tag options
