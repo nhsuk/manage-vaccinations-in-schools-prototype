@@ -233,7 +233,6 @@ export const vaccinationController = {
         const ordinal = prototypeFilters.ordinal(Number(index) + 1)
         return {
           text: `${_.startCase(ordinal)} dose`,
-          hint: { text: value },
           value
         }
       }
