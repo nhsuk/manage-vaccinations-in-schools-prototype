@@ -15,7 +15,6 @@ import {
   VaccinationSite
 } from '../models/vaccination.js'
 import { today } from '../utils/date.js'
-import { formatNavigationItemWithSecondaryText } from '../utils/string.js'
 
 export const patientSessionController = {
   read(request, response, next) {
@@ -79,10 +78,7 @@ export const patientSessionController = {
     const view = request.path.split('/').at(-1)
     response.locals.navigationItems = [
       ...patientSession.siblingPatientSessions.map((patientSession) => ({
-        text: formatNavigationItemWithSecondaryText(
-          patientSession.programme.name,
-          patientSession.nextActivity
-        ),
+        text: patientSession.programme.name,
         href: activity
           ? `${patientSession.uri}?activity=${activity}`
           : patientSession.uri,
@@ -90,15 +86,7 @@ export const patientSessionController = {
       })),
       ...[
         {
-          text: formatNavigationItemWithSecondaryText(
-            __('patientSession.events.title'),
-            String(
-              __n(
-                'patientSession.events.count',
-                patientSession.auditEvents.length
-              )
-            )
-          ),
+          text: __('patientSession.events.title'),
           href: activity
             ? `${patientSession.uri}/events?activity=${activity}`
             : `${patientSession.uri}/events`,
