@@ -99,7 +99,9 @@ export class Reply {
       ReplyDecision.OnlyMenACWY,
       ReplyDecision.OnlyTdIPV
     ].includes(this.decision)
-    this.consultation = !this.given && stringToBoolean(options?.consultation)
+    this.consultation = !this.given
+      ? stringToBoolean(options?.consultation)
+      : undefined
     this.healthAnswers = this.given && options?.healthAnswers
     this.triageNote = this.given && options?.triageNote
     this.invalid =
