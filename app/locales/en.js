@@ -1727,7 +1727,7 @@ export const en = {
       invite: {
         label: 'Invitation',
         name: 'Inviting parent to give or refuse consent',
-        text: 'Give or refuse consent for your child’s {{session.vaccination}} by going to [https://give-or-refuse-consent.nhs.uk/{{session.id}}]({{session.consentUrl}}/start). You need to do this by {{session.formatted.openAt}}.\n\nResponding will take less than 5 minutes.'
+        text: 'Give or refuse consent for {{consent.child.fullName}} to have their {{session.vaccination}}:\n\n[https://give-or-refuse-consent.nhs.uk/{{session.id}}]({{session.consentUrl}}/start)\n\nYou need to do this by {{session.formatted.openAt}}.\n\nResponding will take less than 5 minutes.'
       },
       'invite-clinic': {
         label: 'Clinic booking',
@@ -1752,7 +1752,7 @@ export const en = {
       'consent-given': {
         label: 'Consent given',
         name: 'Confirmation that consent has been given',
-        text: 'You’ve given consent for {{consent.child.firstName}} to get their {{session.vaccination}} at school on {{session.summary.remainingDates}}. Please let them know what to expect.'
+        text: 'You’ve given consent for {{consent.child.firstName}} to get their {{session.vaccination}} at school on {{session.summary.remainingDates}}. Please let them know what to expect.\n\nIf anything changes, phone {{organisation.tel}}.'
       },
       'consent-given-child': {
         label: 'Consent given (child)',
@@ -1762,7 +1762,7 @@ export const en = {
       'consent-refused': {
         label: 'Consent refused',
         name: 'Confirmation that consent has been refused',
-        text: 'You’ve refused to give consent for {{consent.child.fullName}} to have their {{session.vaccination}}.'
+        text: 'You’ve refused to give consent for {{consent.child.fullName}} to have their {{session.vaccination}}.\n\nYou can give feedback about the ‘Give or refuse consent’ service by completing our short survey:\n\n<https://feedback.digital.nhs.uk/jfe/form/SV_3fICo6frMvUZX1k>\n\nYour feedback will help us improve the service.'
       },
       'record-reminder': {
         label: 'Reminder',

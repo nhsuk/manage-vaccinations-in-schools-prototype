@@ -37,6 +37,10 @@ $text-message-background-color: color.mix($color_nhsuk-grey-4, $color_nhsuk-whit
   padding: nhsuk-spacing(3);
   position: relative;
 
+  a {
+    word-break: break-all;
+  }
+
   &::before {
     background: $text-message-background-color;
     border-bottom-right-radius: nhsuk-spacing(3);
