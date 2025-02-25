@@ -76,6 +76,7 @@ $color_app-dark-orange: color.scale(color.mix($color_nhsuk-red, $color_nhsuk-war
 @import "header";
 @import "heading-group";
 @import "highlight";
+@import "is-sticky";
 @import "list";
 @import "message";
 @import "password-input";
