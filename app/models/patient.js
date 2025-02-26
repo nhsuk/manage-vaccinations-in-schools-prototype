@@ -52,6 +52,15 @@ export class Patient extends Record {
   }
 
   /**
+   * Get full name, formatted as LASTNAME, Firstname
+   *
+   * @returns {string} - Full name
+   */
+  get fullName() {
+    return [this.lastName.toUpperCase(), this.firstName].join(', ')
+  }
+
+  /**
    * Get preferred names (from replies)
    *
    * @returns {string|boolean} - Full name
