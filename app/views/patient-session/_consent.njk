@@ -4,13 +4,6 @@
   title: __("session.consent.label")
 }) }}
 
-{{ warningCallout({
-  heading: __("consent.list.title"),
-  HTML: link(patientSession.session.uri + "/consents", __n("consent.warning.text", patientSession.session.consents.length), {
-    classes: "nhsuk-link--no-visited-state"
-  }) | nhsukMarkdown
-}) if patientSession.session.consents | length }}
-
 {% set cardDescriptionHtml %}
   {# Description #}
   {% if session.consentWindow == ConsentWindow.Opening %}
