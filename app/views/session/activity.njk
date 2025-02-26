@@ -116,7 +116,7 @@
           HTML: link(session.uri + "/consents", __n("consent.warning.text", session.consents.length), {
             classes: "nhsuk-link--no-visited-state"
           }) | nhsukMarkdown
-        }) if session.consents.length and view == "consent" }}
+        }) if session.consents.length }}
 
         {% if patientSessions.length %}
           {{ actionTable({
