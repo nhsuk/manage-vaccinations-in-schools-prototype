@@ -1532,7 +1532,8 @@ export const en = {
       information: 'You can register attendance when a session is in progress.'
     },
     record: {
-      label: 'Record'
+      label: 'Record',
+      information: 'You can record vaccinations when a session is in progress.'
     },
     outcome: {
       label: 'Outcome'
