@@ -41,6 +41,8 @@
 
   {% if view == "register" and not session.isActive %}
     {{ __("session.register.information") | nhsukMarkdown }}
+  {% elif view == "record" and not session.isActive %}
+    {{ __("session.record.information") | nhsukMarkdown }}
   {% else %}
     <div class="app-grid-row">
       <div class="app-grid-column-filters">
