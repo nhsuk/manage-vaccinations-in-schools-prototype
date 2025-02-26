@@ -91,7 +91,9 @@ export const sessionController = {
     // Only show patients ready to vaccinate
     if (view === 'record') {
       patientSessions = patientSessions.filter(
-        (patientSession) => patientSession.nextActivity === Activity.Record
+        ({ nextActivity, registration }) =>
+          nextActivity === Activity.Record &&
+          registration === RegistrationOutcome.Present
       )
     }
 
