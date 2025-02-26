@@ -16,3 +16,10 @@
     top: 0;
   }
 }
+
+.app-grid-column--sticky-below-secondary-navigation {
+  @include mq($from: desktop) {
+    position: sticky;
+    top: #{nhsuk-spacing(9) + nhsuk-spacing(3)};
+  }
+}

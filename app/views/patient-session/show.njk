@@ -4,9 +4,7 @@
 
 {% extends "_layouts/form.njk" %}
 
-{% set bodyClasses = "app-body--patient-banner" %}
-{% set mainClasses = "app-main-wrapper--patient-banner" %}
-{% set gridColumns = "three-quarters" %}
+{% set gridColumns = "full" %}
 {% set hideConfirmButton = true %}
 {% set title = patient.initials + " – " + session.location.name %}
 
@@ -48,55 +46,39 @@
     view: "show"
   }) }}
 
-  {% set patientDescriptionHtml %}
-    {{ status({
-      text: patient.notice.name,
-      icon: "warning",
-      colour: "blue"
-    }) if patient.notice }}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-three-quarters">
+      {% include "patient-session/_consent.njk" %}
 
-    {{ summaryList({
-      rows: summaryRows(patient, {
-        nhsn: {
-          changeLabel: "the child’s NHS number",
-          href: patient.uri + "/edit/nhsn?referrer=" + patientSession.uri if patient.hasMissingNhsNumber
-        },
-        fullName: {},
-        preferredNames: { value: patient.preferredNames },
-        dob: { value: patient.dobWithAge },
-        gender: {},
-        address: {},
-        school: {},
-        yearGroupWithRegistration: {},
-        gpSurgery: {},
-        parents: {}
-      })
-    }) }}
+      {% if options.canTriage %}
+        {% include "patient-session/_triage.njk" %}
+      {% endif %}
 
-    {{ button({
-      classes: "app-button--secondary nhsuk-u-margin-0",
-      text: __("patient.edit.title"),
-      href: patient.uri + "/edit?referrer=" + referrer
-    }) }}
-  {% endset %}
+      {% if options.canRecord %}
+        {% include "patient-session/_record.njk" %}
+      {% endif %}
 
-  {{ card({
-    heading: __("patient.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: patientDescriptionHtml
-  }) }}
+      {% if options.canOutcome %}
+        {% include "patient-session/_outcome.njk" %}
+      {% endif %}
+    </div>
 
-  {% include "patient-session/_consent.njk" %}
-
-  {% if options.canTriage %}
-    {% include "patient-session/_triage.njk" %}
-  {% endif %}
-
-  {% if options.canRecord %}
-    {% include "patient-session/_record.njk" %}
-  {% endif %}
-
-  {% if options.canOutcome %}
-    {% include "patient-session/_outcome.njk" %}
-  {% endif %}
+    <div class="nhsuk-grid-column-one-quarter app-grid-column--sticky-below-secondary-navigation">
+      {{ heading({
+        classes: "nhsuk-u-margin-top-1",
+        level: 3,
+        size: "s",
+        title: patientSession.patient.fullName
+      }) }}
+      {{ summaryList({
+        classes: "nhsuk-u-margin-bottom-2 nhsuk-summary-list--no-border app-summary-list--full-width",
+        rows: summaryRows(patient, {
+          dob: {},
+          yearGroupWithRegistration: {},
+          gender: {}
+        })
+      }) }}
+      {{ link(patient.uri + "?referrer=" + referrer, "View full child record") | nhsukMarkdown }}
+    </div>
+  </div>
 {% endblock %}
