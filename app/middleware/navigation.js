@@ -15,7 +15,11 @@ export const navigation = (request, response, next) => {
 
   const organisation = new Organisation(data.organisation)
   const user = new User(data.token)
-  const root = request.path.split('/')[1]
+
+  let root = request.path.split('/')[1]
+  if (root === 'programmes' && request.query.activity) {
+    root = 'sessions'
+  }
 
   const consents = Consent.readAll(data)
   const moves = Move.readAll(data)
