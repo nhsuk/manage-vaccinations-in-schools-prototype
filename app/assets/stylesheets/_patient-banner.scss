@@ -25,5 +25,5 @@
 
 .app-patient-banner[data-stuck="true"] {
   border-bottom-color: $color_nhsuk-grey-3;
-  box-shadow: 0 $nhsuk-border-width 0 color.scale($color_nhsuk-grey-4, $alpha: -50%);
+  box-shadow: 0 $nhsuk-border-width 0 color.scale($color_nhsuk-grey-3, $alpha: -50%);
 }
