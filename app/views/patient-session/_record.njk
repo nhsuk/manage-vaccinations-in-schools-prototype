@@ -5,16 +5,16 @@
 }) }}
 
 {% set preScreenDescriptionHtml %}
-  {% for id, question in preScreenQuestions(session, patient) %}
-    {{ radios({
-      classes: "nhsuk-radios--inline",
-      fieldset: {
-        legend: { text: question }
-      },
-      items: booleanItems,
-      decorate: ["patientSession", "preScreen", id]
-    }) }}
-  {% endfor %}
+  {{ checkboxes({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("patientSession.preScreen.questions.label", {
+        patient: patient
+      }) }
+    },
+    items: preScreenQuestionItems,
+    decorate: ["patientSession", "preScreen", "questions"]
+  }) }}
 
   {{ textarea({
     label: { text: __("patientSession.preScreen.note.label") + " (Optional)" },
@@ -28,7 +28,10 @@
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--m",
-        text: __("patientSession.preScreen.ready.label", { patient: patient })
+        text: __("patientSession.preScreen.ready.label", {
+          patient: patient,
+          programme: programme
+        }) | safe
       }
     },
     items: [

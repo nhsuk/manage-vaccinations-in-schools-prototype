@@ -103,6 +103,19 @@ export const patientSessionController = {
     response.locals.patient = patient
     response.locals.session = session
 
+    response.locals.preScreenQuestionItems = Object.entries(
+      session.preScreenQuestions
+    ).map(([key, value]) => ({
+      text:
+        session.programmes.length > 1
+          ? value
+              .replace('the vaccination is', 'these vaccinations are')
+              .replace('this vaccination', 'these vaccinations')
+              .replace('have it', 'have them')
+          : value,
+      value: key
+    }))
+
     next()
   },
 

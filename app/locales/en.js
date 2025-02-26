@@ -1153,12 +1153,13 @@ export const en = {
       label: 'Consent responses'
     },
     preScreen: {
-      label: 'Pre-screening questions',
+      label: 'Session pre-screen',
       questions: {
-        label: 'Have you asked {{patient.firstName}} if:'
+        label: '{{patient.firstName}} has confirmed that they:'
       },
       ready: {
-        label: 'Is {{patient.firstName}} ready to vaccinate in this session?',
+        label:
+          'Is {{patient.firstName}} ready for their {{programme.name}} vaccination?',
         yes: 'Yes',
         no: 'No'
       },

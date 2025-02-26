@@ -71,16 +71,12 @@ export const HealthQuestion = {
  * @enum {string}
  */
 export const PreScreenQuestion = {
-  IsAllergic:
-    'Has the child confirmed they have no allergies which would prevent vaccination?',
-  IsPregnant: 'Has the child confirmed they’re not pregnant?',
-  IsMedicated:
-    'Has the child confirmed they’re not taking any medication which prevents vaccination?',
-  IsVaccinated:
-    'Has the child confirmed they have not already had this vaccination?',
-  IsWell: 'Is the child is feeling well?',
-  IsHappy:
-    'Does the child know what the vaccination is for, and are they happy to have it?'
+  IsAllergic: 'have no allergies which would prevent vaccination',
+  IsPregnant: 'are not pregnant',
+  IsMedicated: 'are not taking any medication which prevents vaccination',
+  IsVaccinated: 'have not already had this vaccination',
+  IsWell: 'are feeling well',
+  IsHappy: 'know what the vaccination is for, and are happy to have it'
 }
 
 /**
