@@ -1,4 +1,4 @@
-{%- from "components/button/macro.njk" import button -%}
+{%- from "x-nhsuk/decorated/button/macro.njk" import button with context %}
 
 {% macro buttonGroup(params) -%}
 {% if params.buttons | removeEmpty | length %}
