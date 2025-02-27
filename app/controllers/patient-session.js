@@ -21,7 +21,7 @@ export const patientSessionController = {
     const { pid, nhsn } = request.params
     const { activity } = request.query
     const { data } = request.session
-    const { __, __n } = response.locals
+    const { __ } = response.locals
 
     const patientSession = PatientSession.readAll(data)
       .filter(({ programme_pid }) => programme_pid === pid)
