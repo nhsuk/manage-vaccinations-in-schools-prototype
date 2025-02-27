@@ -169,6 +169,10 @@ export const sessionController = {
     // Clean up session data
     delete data.hasMissingNhsNumber
     delete data.q
+    delete data.consent
+    delete data.screen
+    delete data.register
+    delete data.outcome
 
     next()
   },
