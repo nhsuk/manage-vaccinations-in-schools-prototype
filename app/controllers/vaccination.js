@@ -105,7 +105,7 @@ export const vaccinationController = {
       ...(data.token && { createdBy_uid: data.token?.uid }),
       ...(injectionSite && {
         dose: programme.vaccine.dose,
-        injectionMethod: VaccinationMethod.Subcutaneous,
+        injectionMethod: VaccinationMethod.Intramuscular,
         injectionSite,
         outcome: VaccinationOutcome.Vaccinated
       }),
