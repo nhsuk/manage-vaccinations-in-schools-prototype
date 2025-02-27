@@ -399,9 +399,10 @@ export class Session {
    */
   get patientsVaccinated() {
     if (!this.isUnplanned) {
-      return this.patients.filter(
+      const patientSessions = this.patientSessions.filter(
         ({ outcome }) => outcome === PatientOutcome.Vaccinated
       )
+      return _.uniqBy(patientSessions, 'patient.nhsn')
     }
   }
 
@@ -411,9 +412,10 @@ export class Session {
    * @returns {Array<PatientSession>} - Patient sessions
    */
   get patientsToGetConsent() {
-    return this.patientSessions.filter(
+    const patientSessions = this.patientSessions.filter(
       ({ consent }) => consent === ConsentOutcome.NoResponse
     )
+    return _.uniqBy(patientSessions, 'patient.nhsn')
   }
 
   /**
@@ -422,9 +424,10 @@ export class Session {
    * @returns {Array<PatientSession>} - Patient sessions
    */
   get patientsToResolveConsent() {
-    return this.patientSessions.filter(
+    const patientSessions = this.patientSessions.filter(
       ({ consent }) => consent === ConsentOutcome.Inconsistent
     )
+    return _.uniqBy(patientSessions, 'patient.nhsn')
   }
 
   /**
@@ -433,9 +436,10 @@ export class Session {
    * @returns {Array<PatientSession>} - Patient sessions
    */
   get patientsToTriage() {
-    return this.patientSessions.filter(
+    const patientSessions = this.patientSessions.filter(
       ({ triage }) => triage === TriageOutcome.Needed
     )
+    return _.uniqBy(patientSessions, 'patient.nhsn')
   }
 
   /**
@@ -458,11 +462,12 @@ export class Session {
    */
   get patientsToRecord() {
     if (this.isActive) {
-      return this.patients.filter(
+      const patientSessions = this.patients.filter(
         ({ nextActivity, registration }) =>
           nextActivity === Activity.Record &&
           registration === RegistrationOutcome.Present
       )
+      return _.uniqBy(patientSessions, 'patient.nhsn')
     }
   }
 
