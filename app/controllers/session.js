@@ -102,7 +102,7 @@ export const sessionController = {
     }
 
     // Sort
-    patientSessions = _.sortBy(patientSessions, 'patient.firstName')
+    patientSessions = _.sortBy(patientSessions, 'patient.lastName')
 
     // Results
     response.locals.patientSessions = patientSessions
