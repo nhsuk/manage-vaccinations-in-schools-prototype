@@ -1,17 +1,11 @@
 {{ heading({
   level: 2,
   size: "m",
-  title: __("session.record.label")
+  title: __("session.record.title")
 }) }}
 
 {% set preScreenDescriptionHtml %}
   {{ checkboxes({
-    classes: "nhsuk-radios--inline",
-    fieldset: {
-      legend: { text: __("patientSession.preScreen.questions.label", {
-        patient: patient
-      }) }
-    },
     items: preScreenQuestionItems,
     decorate: ["patientSession", "preScreen", "questions"]
   }) }}
@@ -65,7 +59,9 @@
 {% endset %}
 
 {{ card({
-  heading: __("patientSession.preScreen.label"),
+  heading: __("patientSession.preScreen.questions.label", {
+    patient: patient
+  }),
   headingClasses: "nhsuk-heading-m",
   descriptionHtml: preScreenDescriptionHtml
 }) }}

@@ -136,7 +136,10 @@ export const vaccinationController = {
       vaccination.note = note
     }
 
-    request.flash('success', __(`vaccination.${form}.success`))
+    request.flash(
+      'success',
+      __(`vaccination.${form}.success`, { programme: vaccination.programme })
+    )
 
     // Clean up session data
     delete data.batch_id

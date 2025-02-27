@@ -1,7 +1,7 @@
 {{ heading({
   level: 2,
   size: "m",
-  title: __("session.consent.label")
+  title: __("session.consent.title")
 }) }}
 
 {% set cardDescriptionHtml %}
@@ -104,7 +104,7 @@
 {{ card({
   classes: "app-card--" + patientSession.status.consent.colour,
   feature: true,
-  heading: programme.name + ": " + patientSession.status.consent.text,
+  heading: programme.name + ": " + (patientSession.status.consent.text | lower),
   headingClasses: "nhsuk-u-font-size-24",
   headingLevel: 3,
   descriptionHtml: cardDescriptionHtml

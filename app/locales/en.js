@@ -6,6 +6,7 @@ import {
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient-session.js'
+import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 
 /**
@@ -1520,13 +1521,16 @@ export const en = {
       success: '{{session.name}} updated'
     },
     consent: {
-      label: 'Consent'
+      label: 'Consent',
+      title: 'Consent'
     },
     triage: {
-      label: 'Triage'
+      label: 'Triage',
+      title: 'Triage'
     },
     screen: {
-      label: 'Triage'
+      label: 'Triage',
+      title: 'Triage'
     },
     register: {
       label: 'Register',
@@ -1534,10 +1538,12 @@ export const en = {
     },
     record: {
       label: 'Record',
+      title: 'Record vaccination',
       information: 'You can record vaccinations when a session is in progress.'
     },
     outcome: {
-      label: 'Outcome'
+      label: 'Outcome',
+      title: 'Outcome'
     },
     'upload-class-list': {
       title: 'Import class lists'
@@ -2080,10 +2086,10 @@ export const en = {
       other: '[0] No vaccination records|%s vaccination records'
     },
     administer: {
-      title: 'How was the {{programme.name}} vaccine given?'
+      title: 'How was the {{programme.name}} vaccination given?'
     },
     decline: {
-      title: 'Why was the {{programme.name}} vaccine not given?'
+      title: 'Why was the {{programme.name}} vaccination not given?'
     },
     upload: {
       label: 'Import vaccination records'
@@ -2094,7 +2100,7 @@ export const en = {
         summary: 'Vaccination details',
         callout: 'Vaccination was not given'
       },
-      success: 'Vaccination recorded'
+      success: '{{programme.name}} vaccination recorded'
     },
     edit: {
       title: 'Edit vaccination record',
@@ -2103,7 +2109,7 @@ export const en = {
     },
     createdAt: {
       label: 'Vaccination date',
-      title: 'When was the vaccination given?'
+      title: 'When was the {{programme.name}} vaccination given?'
     },
     createdAt_date: {
       label: 'Date',
@@ -2122,7 +2128,7 @@ export const en = {
     },
     location: {
       label: 'Location',
-      title: 'Where was the vaccination given?',
+      title: 'Where was the {{programme.name}} vaccination given?',
       hint: 'Enter name and address'
     },
     outcome: {
@@ -2138,7 +2144,7 @@ export const en = {
       Unwell: 'They were not well enough'
     },
     injection: {
-      title: 'How was the vaccination was given?'
+      title: 'How was the {{programme.name}} vaccination given?'
     },
     method: {
       label: 'Method'
@@ -2157,7 +2163,7 @@ export const en = {
       title: 'Batch'
     },
     batch_id: {
-      title: 'Which batch did you use?',
+      title: 'Which batch did you use for the {{programme.name}} vaccination?',
       label: 'Batch ID',
       default: 'Default to this batch for this session'
     },
@@ -2168,7 +2174,7 @@ export const en = {
     },
     dose: {
       label: 'Dose volume',
-      title: 'What was the dose amount?'
+      title: 'What was the dose amount for the {{programme.name}} vaccination?'
     },
     dosage: {
       title: 'Did they get the full dose?',
@@ -2176,8 +2182,14 @@ export const en = {
       half: 'No, they got half a dose'
     },
     sequence: {
-      label: 'Dose number',
-      title: 'Which dose was this?'
+      label: 'Dose sequence',
+      title: {
+        [ProgrammeType.HPV]: 'Which does of the HPV vaccination was this?',
+        [ProgrammeType.MenACWY]:
+          'Which dose of a meningococcal vaccine was this?',
+        [ProgrammeType.TdIPV]:
+          'Which dose of a tetanus-containing vaccine was this?'
+      }
     },
     vaccine_snomed: {
       title: 'Vaccine',

@@ -1,7 +1,7 @@
 {{ heading({
   level: 2,
   size: "m",
-  title: __("session.outcome.label")
+  title: __("session.outcome.title")
 }) }}
 
 {% set cardDescriptionHtml %}
@@ -45,7 +45,7 @@
 {{ card({
   classes: "app-card--" + patientSession.status.outcome.colour,
   feature: true,
-  heading: programme.name + ": " + patientSession.status.outcome.text,
+  heading: programme.name + ": " + (patientSession.status.outcome.text | lower),
   headingClasses: "nhsuk-u-font-size-24",
   descriptionHtml: cardDescriptionHtml
 }) }}
