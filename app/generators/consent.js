@@ -44,7 +44,7 @@ export function generateConsent(
 
   // Decision
   const decision = faker.helpers.weightedArrayElement([
-    { value: ReplyDecision.Given, weight: 6 },
+    { value: ReplyDecision.Given, weight: 10 },
     { value: ReplyDecision.Refused, weight: 1 }
   ])
   const method = faker.helpers.weightedArrayElement([
