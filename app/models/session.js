@@ -32,7 +32,6 @@ import {
   ConsentOutcome,
   PatientOutcome,
   PatientSession,
-  RegistrationOutcome,
   TriageOutcome
 } from './patient-session.js'
 import { Programme } from './programme.js'
@@ -71,6 +70,17 @@ export const SessionType = {
 }
 
 /**
+ * @readonly
+ * @enum {string}
+ */
+export const RegistrationOutcome = {
+  Pending: 'Not registered yet',
+  Present: 'Attending session',
+  Absent: 'Absent from session',
+  Complete: 'Completed session'
+}
+
+/**
  * @class Session
  * @param {object} options - Options
  * @param {object} [context] - Global context
@@ -86,6 +96,7 @@ export const SessionType = {
  * @property {object} [openAt_] - Date consent window opens (from `dateInput`)
  * @property {boolean} [closed] - Session closed
  * @property {number} [reminderWeeks] - Weeks before session to send reminders
+ * @property {object} [register] - Patient register
  * @property {object} [defaultBatch_ids] - Vaccine SNOMED code: Default batch ID
  * @property {Array<string>} [programme_pids] - Programme PIDs
  */
@@ -110,6 +121,7 @@ export class Session {
     this.closed = options?.closed || false
     this.reminderWeeks =
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
+    this.register = options?.register || {}
     this.defaultBatch_ids = options?.defaultBatch_ids || {}
     this.programme_pids = options?.programme_pids
       ? options.programme_pids.filter((pid) => pid !== '_unchecked')
@@ -1002,5 +1014,20 @@ export class Session {
    */
   delete(context) {
     delete context.sessions[this.id]
+  }
+
+  /**
+   * Update register
+   *
+   * @param {string} patient_uuid
+   * @param {RegistrationOutcome} registration
+   */
+  updateRegister(patient_uuid, registration) {
+    const register = {
+      ...this.register,
+      ...{ [patient_uuid]: registration }
+    }
+
+    this.update({ register }, this.context)
   }
 }

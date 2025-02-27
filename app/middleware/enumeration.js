@@ -14,14 +14,18 @@ import {
   ConsentOutcome,
   Activity,
   PatientOutcome,
-  RegistrationOutcome,
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient-session.js'
 import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { SchoolPhase } from '../models/school.js'
-import { ConsentWindow, SessionStatus, SessionType } from '../models/session.js'
+import {
+  ConsentWindow,
+  RegistrationOutcome,
+  SessionStatus,
+  SessionType
+} from '../models/session.js'
 import { UploadStatus, UploadType } from '../models/upload.js'
 import { UserRole } from '../models/user.js'
 import {

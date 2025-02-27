@@ -4,10 +4,10 @@ import {
   Activity,
   ConsentOutcome,
   PatientOutcome,
-  RegistrationOutcome,
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient-session.js'
+import { RegistrationOutcome } from '../models/session.js'
 import { VaccinationOutcome } from '../models/vaccination.js'
 
 /**
@@ -250,6 +250,24 @@ export const getOutcomeStatus = (patientSession) => {
     colour,
     text: outcome
   }
+}
+
+/**
+ * Get registration outcome
+ *
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @returns {RegistrationOutcome} - Registration outcome
+ */
+export const getRegistrationOutcome = (patientSession) => {
+  const { patient, session, outcome } = patientSession
+
+  if (outcome === PatientOutcome.Vaccinated) {
+    return RegistrationOutcome.Complete
+  } else if (session.register[patient.uuid]) {
+    return session.register[patient.uuid]
+  }
+
+  return RegistrationOutcome.Pending
 }
 
 export const getPatientOutcome = (patientSession) => {
