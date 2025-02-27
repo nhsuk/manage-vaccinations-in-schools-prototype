@@ -459,11 +459,11 @@ export class Session {
   get patientsToRecord() {
     if (this.isActive) {
       return this.patients.filter(
-        ({ nextActivity }) => nextActivity === Activity.Record
+        ({ nextActivity, registration }) =>
+          nextActivity === Activity.Record &&
+          registration === RegistrationOutcome.Present
       )
     }
-
-    return []
   }
 
   /**
@@ -803,7 +803,7 @@ export class Session {
           ? filters.plural(this.patientsToRegister.length, 'child')
           : undefined,
       patientsToRecord:
-        this.patientsToRegister?.length > 0
+        this.patientsToRecord?.length > 0
           ? filters.plural(this.patientsToRecord.length, 'child')
           : undefined,
       programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' '),
