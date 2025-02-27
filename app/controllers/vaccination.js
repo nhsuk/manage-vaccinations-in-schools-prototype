@@ -246,13 +246,7 @@ export const vaccinationController = {
         text: user.fullName,
         value: user.uid
       }))
-      .sort((a, b) => {
-        const textA = a.text.toUpperCase()
-        const textB = b.text.toUpperCase()
-        if (textA < textB) return -1
-        if (textA > textB) return 1
-        return 0
-      })
+      .sort((a, b) => a.text.localeCompare(b.text))
 
     response.locals.vaccineItems = Vaccine.readAll(data)
       .filter((vaccine) => programme.type.includes(vaccine.type))
