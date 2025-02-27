@@ -67,18 +67,12 @@ export const sessionController = {
 
     // Filter
     const filters = {
-      pid: request.query.pid || session.programmes[0].pid,
       consent: request.query.consent || 'none',
       screen: request.query.screen || 'none',
       register: request.query.register || 'none',
       record: request.query.record || 'none',
       outcome: request.query.outcome || 'none'
     }
-
-    // Filter by programme
-    patientSessions = patientSessions.filter(
-      ({ programme_pid }) => programme_pid === filters.pid
-    )
 
     // Filter by status
     if (filters[view] !== 'none') {
@@ -100,6 +94,9 @@ export const sessionController = {
           registration === RegistrationOutcome.Present
       )
     }
+
+    // Consolidate
+    patientSessions = _.uniqBy(patientSessions, 'patient.nhsn')
 
     // Sort
     patientSessions = _.sortBy(patientSessions, 'patient.lastName')
@@ -194,7 +191,6 @@ export const sessionController = {
     const params = {}
     for (const key of [
       'q',
-      'pid',
       'consent',
       'triage',
       'screen',
