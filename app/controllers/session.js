@@ -95,11 +95,16 @@ export const sessionController = {
       )
     }
 
-    // Consolidate
-    patientSessions = _.uniqBy(patientSessions, 'patient.nhsn')
-
     // Sort
     patientSessions = _.sortBy(patientSessions, 'patient.lastName')
+
+    // Ensure MenACWY is the patient session linked to from session activity
+    patientSessions = patientSessions.sort((a, b) =>
+      a.programme.name.localeCompare(b.programme.name)
+    )
+
+    // Show only one patient session per programme
+    patientSessions = _.uniqBy(patientSessions, 'patient.nhsn')
 
     // Results
     response.locals.patientSessions = patientSessions
