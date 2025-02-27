@@ -1,3 +1,4 @@
+import { Gender } from '../models/child.js'
 import { Gillick } from '../models/gillick.js'
 import {
   ConsentOutcome,
@@ -13,6 +14,7 @@ import {
   VaccinationOutcome,
   VaccinationSite
 } from '../models/vaccination.js'
+import { PreScreenQuestion } from '../models/vaccine.js'
 import { today } from '../utils/date.js'
 
 export const patientSessionController = {
@@ -104,16 +106,22 @@ export const patientSessionController = {
 
     response.locals.preScreenQuestionItems = Object.entries(
       session.preScreenQuestions
-    ).map(([key, value]) => ({
-      text:
-        session.programmes.length > 1
-          ? value
-              .replace('the vaccination is', 'these vaccinations are')
-              .replace('this vaccination', 'these vaccinations')
-              .replace('have it', 'have them')
-          : value,
-      value: key
-    }))
+    )
+      .filter(([key, value]) =>
+        patient.gender === Gender.Male
+          ? value !== PreScreenQuestion.IsPregnant
+          : value
+      )
+      .map(([key, value]) => ({
+        text:
+          session.programmes.length > 1
+            ? value
+                .replace('the vaccination is', 'these vaccinations are')
+                .replace('this vaccination', 'these vaccinations')
+                .replace('have it', 'have them')
+            : value,
+        value: key
+      }))
 
     next()
   },
