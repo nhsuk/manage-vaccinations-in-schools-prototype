@@ -221,6 +221,7 @@ export class PatientSession {
       return PatientSession.readAll(this.context)
         .filter(({ patient_uuid }) => patient_uuid === this.patient_uuid)
         .filter(({ session_id }) => session_id === this.session_id)
+        .sort((a, b) => a.programme.name.localeCompare(b.programme.name))
     } catch (error) {
       console.error('PatientSession.siblingPatientSessions', error.message)
     }
