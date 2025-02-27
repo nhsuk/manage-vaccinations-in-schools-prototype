@@ -39,7 +39,7 @@ export const Activity = {
   Triage: 'Triage',
   Register: 'Register attendance',
   Record: 'Record vaccination',
-  Report: 'Report'
+  Report: 'Report vaccination'
 }
 
 /**
