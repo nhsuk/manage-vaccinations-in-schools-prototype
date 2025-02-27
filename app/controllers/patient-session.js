@@ -4,11 +4,10 @@ import {
   PatientOutcome,
   PatientSession,
   ScreenOutcome,
-  RegistrationOutcome,
   TriageOutcome
 } from '../models/patient-session.js'
 import { Programme, ProgrammeType } from '../models/programme.js'
-import { ConsentWindow } from '../models/session.js'
+import { ConsentWindow, RegistrationOutcome } from '../models/session.js'
 import {
   Vaccination,
   VaccinationOutcome,

@@ -5,6 +5,7 @@ import {
   getNextActivity,
   getConsentStatus,
   getOutcomeStatus,
+  getRegistrationOutcome,
   getPatientOutcome,
   getRecordStatus,
   getRegistrationStatus,
@@ -27,7 +28,7 @@ import { EventType } from './audit-event.js'
 import { Gillick } from './gillick.js'
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
-import { Session } from './session.js'
+import { RegistrationOutcome, Session } from './session.js'
 
 /**
  * @readonly
@@ -79,17 +80,6 @@ export const ScreenOutcome = {
  * @readonly
  * @enum {string}
  */
-export const RegistrationOutcome = {
-  Pending: 'Not registered yet',
-  Present: 'Attending session',
-  Absent: 'Absent from session',
-  Complete: 'Completed session'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
 export const PatientOutcome = {
   Vaccinated: 'Vaccinated',
   CouldNotVaccinate: 'Could not vaccinate',
@@ -105,7 +95,6 @@ export const PatientOutcome = {
  * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created patient session
  * @property {Date} [updatedAt] - Updated date
- * @property {RegistrationOutcome} [registration] - Registration outcome
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {string} patient_uuid - Patient UUID
  * @property {string} programme_pid - Programme PID
@@ -118,7 +107,6 @@ export class PatientSession {
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
-    this.registration = options?.registration || RegistrationOutcome.Pending
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.patient_uuid = options?.patient_uuid
     this.programme_pid = options?.programme_pid
@@ -333,6 +321,15 @@ export class PatientSession {
    */
   get triage() {
     return getTriageOutcome(this)
+  }
+
+  /**
+   * Get registration outcome
+   *
+   * @returns {RegistrationOutcome} - Registration outcome
+   */
+  get registration() {
+    return getRegistrationOutcome(this)
   }
 
   /**
@@ -678,7 +675,8 @@ export class PatientSession {
    * @param {RegistrationOutcome} registration - Registration
    */
   registerAttendance(event, registration) {
-    this.registration = registration
+    this.session.updateRegister(this.patient.uuid, registration)
+
     this.patient.addEvent({
       type: EventType.Register,
       name: this.status.register.description,
@@ -686,10 +684,6 @@ export class PatientSession {
       createdBy_uid: event.createdBy_uid,
       programme_pids: this.session.programme_pids
     })
-
-    for (const patientSession of this.siblingPatientSessions) {
-      patientSession.update({ registration }, this.context)
-    }
   }
 
   /**

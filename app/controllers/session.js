@@ -5,13 +5,17 @@ import {
   Activity,
   ConsentOutcome,
   PatientOutcome,
-  RegistrationOutcome,
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
 import { programmeTypes } from '../models/programme.js'
-import { Session, SessionStatus, SessionType } from '../models/session.js'
+import {
+  RegistrationOutcome,
+  Session,
+  SessionStatus,
+  SessionType
+} from '../models/session.js'
 import { VaccinationOutcome } from '../models/vaccination.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
