@@ -1,8 +1,9 @@
 $button-shadow-size: 2px;
 
 .app-search-input {
+  @include nhsuk-responsive-margin(4, "bottom");
   display: flex;
-  margin-bottom: nhsuk-spacing(4);
+  gap: nhsuk-spacing(1);
 
   .nhsuk-input {
     &[type="search"]::-webkit-search-cancel-button {
@@ -16,6 +17,7 @@ $button-shadow-size: 2px;
   }
 
   .nhsuk-form-group {
+    display: flex;
     flex: 1;
     margin: 0;
   }
@@ -25,37 +27,20 @@ $button-shadow-size: 2px;
   // Reduce shadow size to align with input border
   box-shadow: 0 $button-shadow-size 0 $nhsuk-secondary-button-shadow-color;
 
+  // Keep button remains aligned with input
   display: flex;
-
-  // Reduce font weight
-  font-weight: normal;
+  flex: 0;
 
   // Adjust bottom margin to offset shadow size given flex-end alignment
   margin-bottom: $button-shadow-size;
 
-  // Add margin to top so that button doesn’t obscure input’s focus style
-  margin-top: nhsuk-spacing(1);
+  // Adjust inline padding
+  padding: 0 nhsuk-spacing(2);
 
-  // Adjust padding to match size of input
-  padding: #{nhsuk-spacing(1) + 2px};
-
-  // Make full width at smaller breakpoints
-  width: 100%;
+  // Align icon in center of button
+  place-items: center;
 
   &:active {
     top: $button-shadow-size;
-  }
-
-  @include mq($from: mobile) {
-    // Move spacing from top to the left
-    margin-left: nhsuk-spacing(1);
-    margin-top: 0;
-
-    // Adjust padding to account for smaller shadow
-    padding-bottom: #{nhsuk-spacing(1) - $button-shadow-size};
-    padding-top: nhsuk-spacing(1);
-
-    // Reset width
-    width: auto;
   }
 }
