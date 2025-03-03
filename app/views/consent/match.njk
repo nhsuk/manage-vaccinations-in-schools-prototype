@@ -49,38 +49,42 @@
         clear: "/consents/" + consent.uuid + "/match"
       }) }}
 
-      <h2 class="nhsuk-heading-m nhsuk-u-margin-bottom-2">Search results</h2>
-      {% if patients.length %}
-        {{ __("patient.results", { results: results }) | nhsukMarkdown }}
+      {{ heading({
+        level: 2,
+        size: "m",
+        title: __("search.results"),
+        summary: __mf("patient.results", {
+          from: results.from,
+          to: results.to,
+          count: results.count
+        }) | safe
+      }) }}
 
-        {% for patient in results.page %}
-          {{ card({
-            classes: "app-card--patient",
-            heading: patient.fullName | highlightQuery(data.q),
-            headingClasses: "nhsuk-heading-s",
-            clickable: true,
-            href: consentPath + "/link?nhsn=" + patient.nhsn,
-            descriptionHtml: summaryList({
-              rows: summaryRows(patient, {
-                dob: {},
-                postalCode: {
-                  value: patient.postalCode | highlightQuery(data.q)
-                },
-                school: {
-                  value: patient.school.name | highlightQuery(data.q)
-                },
-                parents: {
-                  value: patient.formatted.parents | highlightQuery(data.q)
-                }
-              })
+      {% for patient in results.page %}
+        {{ card({
+          classes: "app-card--patient",
+          heading: patient.fullName | highlightQuery(data.q),
+          headingClasses: "nhsuk-heading-s",
+          clickable: true,
+          href: consentPath + "/link?nhsn=" + patient.nhsn,
+          descriptionHtml: summaryList({
+            rows: summaryRows(patient, {
+              dob: {},
+              postalCode: {
+                value: patient.postalCode | highlightQuery(data.q)
+              },
+              school: {
+                value: patient.school.name | highlightQuery(data.q)
+              },
+              parents: {
+                value: patient.formatted.parents | highlightQuery(data.q)
+              }
             })
-          }) }}
-        {% endfor %}
+          })
+        }) }}
+      {% endfor %}
 
-        {{ govukPagination(pages) }}
-      {% else %}
-        {{ __("patient.search.empty") | nhsukMarkdown }}
-      {% endif %}
+      {{ govukPagination(pages) }}
     </div>
   </div>
 {% endblock %}

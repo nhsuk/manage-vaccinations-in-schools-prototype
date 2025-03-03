@@ -56,5 +56,9 @@
 
   {{ govukPagination(pages) }}
 
-  {{ __("record.results", { results: results }) | nhsukMarkdown }}
+  {{ __mf("record.results", {
+    from: results.from,
+    to: results.to,
+    count: results.count
+  }) | nhsukMarkdown }}
 {% endblock %}

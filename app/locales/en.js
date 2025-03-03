@@ -283,7 +283,7 @@ export const en = {
       }
     },
     results:
-      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> responses',
+      '{count, plural, =0{No responses matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> response} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> responses}}',
     [ConsentOutcome.NoResponse]: {
       label: 'No response',
       title: 'No response',
@@ -965,7 +965,7 @@ export const en = {
       label: 'Triage notes'
     },
     results:
-      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> children',
+      '{count, plural, =0{No children matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> records}}',
     count: {
       one: '%s child',
       other: '[0] No children|%s children'
@@ -973,8 +973,7 @@ export const en = {
     search: {
       label: 'Find children',
       dob: 'Child’s date of birth',
-      hasMissingNhsNumber: 'Missing NHS number',
-      empty: 'No children matching search criteria found'
+      hasMissingNhsNumber: 'Missing NHS number'
     },
     nhsn: {
       label: 'NHS number',
@@ -1271,7 +1270,7 @@ export const en = {
       summary: 'Details'
     },
     results:
-      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> records',
+      '{count, plural, =0{No records matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> records}}',
     count: {
       one: '%s record',
       other: '%s records'
@@ -1496,6 +1495,7 @@ export const en = {
     label: 'Search',
     options: 'Options',
     advanced: 'Advanced filters',
+    results: 'Search results',
     confirm: 'Update results',
     clear: 'Clear filters'
   },
@@ -2030,7 +2030,7 @@ export const en = {
       other: '[0] No school moves|%s school moves'
     },
     results:
-      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> school moves',
+      '{count, plural, =0{No school moves matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> school move} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> school moves}}',
     createdAt: {
       label: 'Updated'
     },
@@ -2080,7 +2080,7 @@ export const en = {
       summary: 'Vaccination details'
     },
     results:
-      'Showing <b>{{results.from}}</b> to <b>{{results.to}}</b> of <b>{{results.count}}</b> vaccinations',
+      '{count, plural, =0{No vaccinations matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> vaccination} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> vaccinations}}',
     count: {
       one: '%s vaccination record',
       other: '[0] No vaccination records|%s vaccination records'

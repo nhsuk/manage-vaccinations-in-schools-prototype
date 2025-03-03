@@ -61,13 +61,21 @@
 
     {{ govukPagination(pages) }}
 
-    {{ __("patient.results", { results: results }) | nhsukMarkdown }}
+    {{ __mf("record.results", {
+      from: results.from,
+      to: results.to,
+      count: results.count
+    }) | nhsukMarkdown }}
   {% else %}
     {{ card({
       heading: __n("patient.count", patients.length),
       headingClasses: "nhsuk-heading-s",
       feature: true,
-      description: __("patient.search.empty")
+      description: __mf("record.results", {
+        from: results.from,
+        to: results.to,
+        count: results.count
+      })
     }) }}
   {% endif %}
 {% endblock %}

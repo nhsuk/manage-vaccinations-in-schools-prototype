@@ -60,76 +60,81 @@
           }) | nhsukMarkdown
         }) if session.consents.length }}
 
-        <h2 class="nhsuk-heading-m nhsuk-u-margin-bottom-2">Search results</h2>
-        {% if patientSessions.length %}
-          {{ __("patient.results", { results: results }) | nhsukMarkdown }}
+        {{ heading({
+          level: 2,
+          size: "m",
+          title: __("search.results"),
+          summary: __mf("patient.results", {
+            from: results.from,
+            to: results.to,
+            count: results.count
+          }) | safe
+        }) }}
 
-          {% for patientSession in results.page %}
-            {% set statusHtml %}
-            {% if view == "register" %}
-              {{ patientSession.formatted.status.register | safe }}
-            {% else %}
-              {% for patientSession in patientSession.siblingPatientSessions %}
-                {% if patientSession.formatted.status[view] %}
-                  <p>{{ patientSession.formatted.status[view] | safe }}</p>
-                {% endif %}
-              {% endfor %}
-            {% endif %}
-            {% endset %}
+        {% for patientSession in results.page %}
+          {% set statusHtml %}
+          {% if view == "register" %}
+            {{ patientSession.formatted.status.register | safe }}
+          {% else %}
+            {% for patientSession in patientSession.siblingPatientSessions %}
+              {% if patientSession.formatted.status[view] %}
+                <p>{{ patientSession.formatted.status[view] | safe }}</p>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {% endset %}
 
-            {% set cardDescriptionHtml %}
-              {{ summaryList({
-                rows: summaryRows(patientSession.patient, {
-                  dob: {},
-                  yearGroupWithRegistration: {},
-                  status: {
-                    value: statusHtml,
-                    href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.registration != RegistrationOutcome.Pending
-                  },
-                  registration: {
-                    label: __("patientSession.registration.actions.label"),
-                    value: registrationButtonHtml
-                  } if view == "register" and patientSession.registration == RegistrationOutcome.Pending
-                })
-              }) }}
-
-              {{ buttonGroup({
-                buttons: [{
-                  classes: "app-button--secondary app-button--small",
-                  text: __("patientSession.registration.actions.present.label"),
-                  decorate: "patientSession.registration",
-                  value: RegistrationOutcome.Present,
-                  attributes: {
-                    "aria-label": __("patientSession.registration.actions.present.title", { patient: patientSession.patient }),
-                    formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
-                    formmethod: "post"
-                  }
-                }, {
-                  classes: "app-button--secondary-warning app-button--small",
-                  text: __("patientSession.registration.actions.absent.label"),
-                  decorate: "patientSession.registration",
-                  value: RegistrationOutcome.Absent,
-                  attributes: {
-                    "aria-label": __("patientSession.registration.actions.absent.title", { patient: patientSession.patient }),
-                    formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
-                    formmethod: "post"
-                  }
-                }]
-              }) if view == "register" and patientSession.registration == RegistrationOutcome.Pending }}
-            {% endset %}
-            {{ card({
-              classes: "app-card--patient",
-              heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
-              headingClasses: "nhsuk-heading-s",
-              href: patientSession.uri + "?activity=" + view,
-              descriptionHtml: cardDescriptionHtml
+          {% set cardDescriptionHtml %}
+            {{ summaryList({
+              rows: summaryRows(patientSession.patient, {
+                dob: {},
+                yearGroupWithRegistration: {},
+                status: {
+                  value: statusHtml,
+                  href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.registration != RegistrationOutcome.Pending
+                },
+                registration: {
+                  label: __("patientSession.registration.actions.label"),
+                  value: registrationButtonHtml
+                } if view == "register" and patientSession.registration == RegistrationOutcome.Pending
+              })
             }) }}
-          {% endfor %}
 
-          {{ govukPagination(pages) }}
-        {% else %}
-          {{ __("patient.search.empty") | nhsukMarkdown }}
-        {% endif %}
+            {{ buttonGroup({
+              buttons: [{
+                classes: "app-button--secondary app-button--small",
+                text: __("patientSession.registration.actions.present.label"),
+                decorate: "patientSession.registration",
+                value: RegistrationOutcome.Present,
+                attributes: {
+                  "aria-label": __("patientSession.registration.actions.present.title", { patient: patientSession.patient }),
+                  formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
+                  formmethod: "post"
+                }
+              }, {
+                classes: "app-button--secondary-warning app-button--small",
+                text: __("patientSession.registration.actions.absent.label"),
+                decorate: "patientSession.registration",
+                value: RegistrationOutcome.Absent,
+                attributes: {
+                  "aria-label": __("patientSession.registration.actions.absent.title", { patient: patientSession.patient }),
+                  formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
+                  formmethod: "post"
+                }
+              }]
+            }) if view == "register" and patientSession.registration == RegistrationOutcome.Pending }}
+          {% endset %}
+
+          {{ card({
+            classes: "app-card--patient",
+            heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
+            headingClasses: "nhsuk-heading-s",
+            href: patientSession.uri + "?activity=" + view,
+            descriptionHtml: cardDescriptionHtml
+          }) }}
+        {% endfor %}
+
+        {{ govukPagination(pages) }}
       </div>
     </div>
   {% endif %}

@@ -45,58 +45,36 @@
     </div>
 
     <div class="app-grid-column-results">
-      {% if results.page.length %}
-        {% set resultRows = [] %}
-        {% for patientSession in results.page %}
-          {% set resultRows = resultRows | push([
-            {
-              header: __("patient.fullName.label"),
-              html: patientSession.link.fullName | highlightQuery(data.q),
-              attributes: {
-                "data-sort": patientSession.patient.fullName
-              }
-            },
-            {
-              header: __("patient.dob.label"),
-              html: patientSession.patient.formatted.dob or "Not provided"
-            },
-            {
-              header: __("patientSession.outcome.label"),
-              html: patientSession.formatted.outcome
-            }
-          ]) %}
-        {% endfor %}
+      {{ heading({
+        level: 2,
+        size: "m",
+        title: __("search.results"),
+        summary: __mf("patient.results", {
+          from: results.from,
+          to: results.to,
+          count: results.count
+        }) | safe
+      }) }}
 
-        {{ actionTable({
-          id: "programme-patients",
-          sort: "name",
-          heading: __n("patient.count", results.count),
-          headingClasses: "nhsuk-u-font-size-22",
-          responsive: true,
-          panel: true,
-          head: [
-            { text: __("patient.fullName.label"),
-              attributes: {
-                "data-col": "name"
-              }
-            },
-            { text: __("patient.dob.label") },
-            { text: __("patientSession.outcome.label") }
-          ],
-          rows: resultRows
-        }) }}
-
-        {{ govukPagination(pages) }}
-
-        {{ __("patient.results", { results: results }) | nhsukMarkdown }}
-      {% else %}
+      {% for patientSession in results.page %}
         {{ card({
-          heading: __n("patient.count", results.count),
+          classes: "app-card--patient",
+          heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
           headingClasses: "nhsuk-heading-s",
-          feature: true,
-          description: __("patient.search.empty")
+          href: patientSession.uri + "?activity=" + view,
+          descriptionHtml: summaryList({
+            rows: summaryRows(patientSession.patient, {
+              dob: {},
+              yearGroup: {},
+              status: {
+                value: patientSession.formatted.status.outcome
+              }
+            })
+          })
         }) }}
-      {% endif %}
+      {% endfor %}
+
+      {{ govukPagination(pages) }}
     </div>
   </div>
 {% endblock %}

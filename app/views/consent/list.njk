@@ -73,8 +73,12 @@
 
     {{ govukPagination(pages) }}
 
-    {{ __("consent.results", { results: results }) | nhsukMarkdown }}
+    {{ __mf("consent.results", {
+      from: results.from,
+      to: results.to,
+      count: results.count
+    }) | nhsukMarkdown }}
   {% else %}
-    {{ __n("consent.count", results.length) | nhsukMarkdown }}
+    {{ __n("consent.count", 0) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

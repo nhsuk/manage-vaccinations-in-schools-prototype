@@ -12,14 +12,14 @@ export function getResults(items, query, limit = 50) {
 
   const count = items.length
   const skip = (page - 1) * limit
-  const resultsFrom = (page - 1) * limit + 1
-  let resultsTo = resultsFrom - 1 + limit
-  resultsTo = resultsTo > count ? count : resultsTo
+  const from = (page - 1) * limit + 1
+  let to = from - 1 + limit
+  to = to > count ? count : to
 
   return {
     page: items.slice(skip, skip + limit),
-    to: resultsTo,
-    from: resultsFrom,
+    ...(count > 0 && { to }),
+    ...(count > 0 && { from }),
     count
   }
 }

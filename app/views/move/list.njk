@@ -58,11 +58,15 @@
       ],
       rows: resultRows
     }) }}
+
+    {{ govukPagination(pages) }}
+
+    {{ __mf("move.results", {
+      from: results.from,
+      to: results.to,
+      count: results.count
+    }) | nhsukMarkdown }}
   {% else %}
     {{ __n("move.count", 0) | nhsukMarkdown }}
   {% endif %}
-
-  {{ govukPagination(pages) }}
-
-  {{ __("move.results", { results: results }) | nhsukMarkdown }}
 {% endblock %}

@@ -85,6 +85,10 @@
 
     {{ govukPagination(pages) }}
 
-    {{ __("vaccination.results", { results: results }) | nhsukMarkdown }}
+    {{ __mf("vaccination.results", {
+      from: results.from,
+      to: results.to,
+      count: results.count
+    }) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}
