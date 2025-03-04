@@ -11,7 +11,6 @@ import { users } from './middleware/users.js'
 import { accountRoutes } from './routes/account.js'
 import { batchRoutes } from './routes/batch.js'
 import { clinicRoutes } from './routes/clinic.js'
-import { cohortRoutes } from './routes/cohort.js'
 import { consentRoutes } from './routes/consent.js'
 import { downloadRoutes } from './routes/download.js'
 import { homeRoutes } from './routes/home.js'
@@ -41,7 +40,6 @@ router.use(referrer)
 
 router.use('/', homeRoutes)
 router.use('/account', accountRoutes)
-router.use('/cohorts', cohortRoutes)
 router.use('/consents', consentRoutes)
 router.use('/give-or-refuse-consent', parentRoutes)
 router.use('/moves', moveRoutes)
@@ -49,7 +47,6 @@ router.use('/organisations', organisationRoutes)
 router.use('/organisations/:code/clinics', clinicRoutes)
 router.use('/patients', patientRoutes)
 router.use('/programmes', programmeRoutes)
-router.use('/programmes/:pid/cohorts', cohortRoutes)
 router.use('/programmes/:pid/download', downloadRoutes)
 router.use('/programmes/:pid/patients', patientSessionRoutes)
 router.use('/programmes/:pid/patients/:nhsn/replies', replyRoutes)

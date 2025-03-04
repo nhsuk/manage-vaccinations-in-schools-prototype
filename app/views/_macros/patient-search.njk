@@ -41,6 +41,17 @@
       fieldset: {
         legend: {
           classes: "nhsuk-fieldset__legend--s",
+          text: __("patientSession.nextActivity.label")
+        }
+      },
+      items: activityItems,
+      decorate: "activity"
+    }) if activityItems }}
+
+    {{ radios({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
           text: __("patientSession." + params.outcome + ".label")
         }
       },
@@ -66,8 +77,9 @@
           text: __("patient.yearGroup.label")
         }
       },
-      items: yearGroupItems,
-      decorate: "yearGroup"
+      id: "year-group",
+      name: "yearGroup",
+      items: yearGroupItems
     }) if yearGroupItems }}
 
     {% set searchDetailsHtml %}
