@@ -137,7 +137,7 @@ export const vaccinationController = {
     }
 
     request.flash(
-      'success',
+      vaccination.given ? 'success' : 'message',
       __(`vaccination.${form}.success`, { programme: vaccination.programme })
     )
 
