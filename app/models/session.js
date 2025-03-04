@@ -419,6 +419,18 @@ export class Session {
   }
 
   /**
+   * Get patients with no consent response
+   *
+   * @returns {Array<PatientSession>} - Patient sessions
+   */
+  get patientsToFollowUpRefusal() {
+    const patientSessions = this.patientSessions.filter(
+      ({ consent }) => consent === ConsentOutcome.Refused
+    )
+    return _.uniqBy(patientSessions, 'patient.nhsn')
+  }
+
+  /**
    * Get patients with conflicting consent response
    *
    * @returns {Array<PatientSession>} - Patient sessions
@@ -777,7 +789,7 @@ export class Session {
       patients: filters.plural(this.patients.length, 'child'),
       consents:
         this.consents.length > 0
-          ? filters.plural(this.consents.length, 'unmatched response')
+          ? filters.plural(this.consents.length, 'unmatched consent response')
           : undefined,
       patientsVaccinated: this.patientsVaccinated?.length
         ? `${filters.plural(
@@ -798,6 +810,13 @@ export class Session {
               this.patientsToResolveConsent.length,
               'child'
             )} with conflicting consent`
+          : undefined,
+      patientsToFollowUpRefusal:
+        this.patientsToFollowUpRefusal?.length > 0
+          ? `${filters.plural(
+              this.patientsToFollowUpRefusal.length,
+              'child'
+            )} with consent refused`
           : undefined,
       patientsToTriage:
         this.patientsToTriage?.length > 0

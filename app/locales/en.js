@@ -1591,7 +1591,7 @@ export const en = {
       }
     },
     consents: {
-      label: 'Match consent responses',
+      label: 'Match responses',
       warning: 'You need to review unmatched consent responses for this session'
     },
     address: {
@@ -1621,10 +1621,13 @@ export const en = {
       label: 'Get consent'
     },
     patientsToResolveConsent: {
-      label: 'Resolve conflicting consent'
+      label: 'Resolve consent'
+    },
+    patientsToFollowUpRefusal: {
+      label: 'Follow up refusal'
     },
     patientsToTriage: {
-      label: 'Triage health questions'
+      label: 'Triage'
     },
     patientsToRegister: {
       label: 'Register attendance'
