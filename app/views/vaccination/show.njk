@@ -1,6 +1,7 @@
 {% extends "_layouts/default.njk" %}
 
 {% set title = vaccination.patient.fullName %}
+{% set paths = { back: vaccination.patientSession.uri } %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -10,12 +11,9 @@
     }, {
       text: __("programme.list.title"),
       href: "/programmes"
-    }, {
-      text: data.programmes[vaccination.programme_id].type,
-      href: "/programmes/" + vaccination.programme_id
     }],
-    text: __("programme.vaccinations.title"),
-    href: "/programmes/" + vaccination.programme_id + "/vaccinations"
+    text: data.programmes[vaccination.programme_id].type,
+    href: "/programmes/" + vaccination.programme_id
   }) }}
 {% endblock %}
 
