@@ -19,16 +19,24 @@
           html: programme.link.name
         },
         {
-          header: __("programme.vaccines.label"),
-          html: programme.formatted.vaccines or "Not provided"
+          header: __("programme.patients.label"),
+          text: programme.patientSessions.length or "0",
+          format: "numeric"
         },
         {
-          header: __("programme.patientSessions.label"),
-          html: programme.patientSessions.length or "None"
+          header: PatientOutcome.Vaccinated,
+          text: programme.report(PatientOutcome.Vaccinated).length or "0",
+          format: "numeric"
         },
         {
-          header: __("programme.vaccinations.label"),
-          html: programme.vaccinations.length or "None"
+          header: PatientOutcome.CouldNotVaccinate,
+          text: programme.report(PatientOutcome.CouldNotVaccinate).length or "0",
+          format: "numeric"
+        },
+        {
+          header: PatientOutcome.NoOutcomeYet,
+          text: programme.report(PatientOutcome.NoOutcomeYet).length or "0",
+          format: "numeric"
         }
       ]) %}
     {% endfor %}
@@ -40,10 +48,28 @@
       panel: true,
       responsive: true,
       head: [
-        { text: __("programme.name.label") },
-        { text: __("programme.vaccines.label") },
-        { text: __("programme.patientSessions.label") },
-        { text: __("programme.vaccinations.label") }
+        {
+          text: __("programme.name.label"),
+          attributes: {
+            style: "width: 33%"
+          }
+        },
+        {
+          text: __("programme.patients.label"),
+          format: "numeric"
+        },
+        {
+          text: PatientOutcome.Vaccinated,
+          format: "numeric"
+        },
+        {
+          text: PatientOutcome.CouldNotVaccinate,
+          format: "numeric"
+        },
+        {
+          text: PatientOutcome.NoOutcomeYet,
+          format: "numeric"
+        }
       ],
       rows: programmeRows
     }) }}

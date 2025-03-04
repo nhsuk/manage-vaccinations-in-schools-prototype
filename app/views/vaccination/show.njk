@@ -1,6 +1,7 @@
 {% extends "_layouts/default.njk" %}
 
 {% set title = vaccination.patient.fullName %}
+{% set paths = { back: vaccination.patientSession.uri } %}
 
 {% block beforeContent %}
   {{ breadcrumb({

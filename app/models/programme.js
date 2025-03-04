@@ -195,6 +195,18 @@ export class Programme {
   }
 
   /**
+   * Get patient (programme) outcomes
+   *
+   * @param {import('./patient-session.js').PatientOutcome} patientOutcome - Patient outcome
+   * @returns {Array<PatientSession>} - Patient sessions
+   */
+  report(patientOutcome) {
+    return this.patientSessions.filter(
+      ({ report }) => report === patientOutcome
+    )
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values
