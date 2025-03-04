@@ -223,13 +223,13 @@ export class Programme {
   }
 
   /**
-   * Get patient sessions
+   * Get patient sessions (children invited to a session)
    *
    * @returns {Array<PatientSession>} - Patient sessions
    */
   get patientSessions() {
-    return PatientSession.readAll(this.context).filter(({ session }) =>
-      session.programme_pids.includes(this.pid)
+    return PatientSession.readAll(this.context).filter(
+      ({ programme_pid }) => programme_pid === this.pid
     )
   }
 
@@ -252,6 +252,18 @@ export class Programme {
   get vaccinations() {
     return Vaccination.readAll(this.context).filter(
       ({ programme_pid }) => programme_pid === this.pid
+    )
+  }
+
+  /**
+   * Get patient session outcomes
+   *
+   * @param {import('./patient-session.js').PatientOutcome} patientOutcome - Patient outcome
+   * @returns {Array<PatientSession>} - Patient sessions
+   */
+  outcome(patientOutcome) {
+    return this.patientSessions.filter(
+      ({ outcome }) => outcome === patientOutcome
     )
   }
 

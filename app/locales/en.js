@@ -197,13 +197,7 @@ export const en = {
     }
   },
   cohort: {
-    label: 'Cohorts',
-    list: {
-      title: 'All cohorts'
-    },
-    upload: {
-      label: 'Import child records'
-    },
+    label: 'Cohort',
     unselect: {
       confirm: 'Remove from cohort',
       success: '{{patient.fullName}} removed from {{cohort.name}} cohort'
@@ -213,16 +207,6 @@ export const en = {
         one: '%s child',
         other: '[0] No children|%s children'
       }
-    },
-    yearGroup: {
-      label: 'Year group'
-    },
-    count: {
-      one: '%s cohort',
-      other: '[0] No cohorts|%s cohorts'
-    },
-    name: {
-      label: 'Name'
     }
   },
   child: {
@@ -1072,6 +1056,12 @@ export const en = {
       label: 'Second parent or guardian',
       title: 'Details for second parent or guardian'
     },
+    nextActivity: {
+      label: 'Action required'
+    },
+    outcome: {
+      label: 'Programme outcome'
+    },
     status: {
       label: 'Status'
     }
@@ -1102,6 +1092,9 @@ export const en = {
     },
     report: {
       label: 'Programme outcome'
+    },
+    nextActivity: {
+      label: 'Action required'
     },
     information: {
       label: 'Notes'
@@ -1210,22 +1203,16 @@ export const en = {
     },
     show: {
       label: 'Overview',
-      title: 'Overview'
-    },
-    cohorts: {
-      label: 'Cohorts',
-      title: 'Cohorts'
+      title: 'Overview',
+      cohorts: 'Cohorts',
+      responses: 'Consent responses'
     },
     consentPdf: {
       label: 'Paper consent form'
     },
-    patientSessions: {
+    patients: {
       label: 'Children',
-      title: 'Children',
-      count: {
-        one: '%s child',
-        other: '[0] No children|%s children'
-      }
+      title: 'Children'
     },
     sessions: {
       label: 'Sessions',
@@ -2061,8 +2048,6 @@ export const en = {
     show: {
       summary: 'Vaccination details'
     },
-    results:
-      '{count, plural, =0{No vaccinations matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> vaccination} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> vaccinations}}',
     count: {
       one: '%s vaccination record',
       other: '[0] No vaccination records|%s vaccination records'
@@ -2072,9 +2057,6 @@ export const en = {
     },
     decline: {
       title: 'Why was the {{programme.name}} vaccination not given?'
-    },
-    upload: {
-      label: 'Import vaccination records'
     },
     new: {
       'check-answers': {
