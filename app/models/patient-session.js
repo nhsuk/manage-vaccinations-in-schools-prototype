@@ -156,6 +156,19 @@ export class PatientSession {
   }
 
   /**
+   * Get triage notes
+   *
+   * @returns {Array<import('./audit-event.js').AuditEvent>} - Audit events
+   */
+  get triageNotes() {
+    return this.auditEvents
+      .filter(({ programme_pids }) =>
+        programme_pids.includes(this.programme_pid)
+      )
+      .filter(({ type }) => type === EventType.Screen)
+  }
+
+  /**
    * Get replies for patient session
    *
    * @returns {Array<import('./reply.js').Reply>} - Replies
@@ -665,7 +678,7 @@ export class PatientSession {
       outcome: event.outcome,
       createdAt: event.createdAt,
       createdBy_uid: event.createdBy_uid,
-      programme_pids: this.session.programme_pids
+      programme_pids: [this.programme_pid]
     })
   }
 

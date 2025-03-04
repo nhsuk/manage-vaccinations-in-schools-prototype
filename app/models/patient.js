@@ -117,17 +117,6 @@ export class Patient extends Record {
   }
 
   /**
-   * Get triage notes
-   *
-   * @returns {Array<AuditEvent>} - Audit events
-   */
-  get triageNotes() {
-    return this.auditEvents.filter(
-      (auditEvent) => auditEvent.type === EventType.Screen
-    )
-  }
-
-  /**
    * Get reminders sent
    *
    * @returns {Array} - Reminders sent

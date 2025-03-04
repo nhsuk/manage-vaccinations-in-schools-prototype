@@ -127,9 +127,9 @@ export const getTriageStatus = (patientSession) => {
  * @returns {object} - Screen status properties
  */
 export const getScreenStatus = (patientSession) => {
-  const { screen, patient } = patientSession
+  const { patient, screen, triageNotes } = patientSession
 
-  const triageNote = patient.triageNotes.at(-1)
+  const triageNote = triageNotes.at(-1)
   const user = triageNote?.createdBy || { fullName: 'Jane Joy' }
 
   let colour

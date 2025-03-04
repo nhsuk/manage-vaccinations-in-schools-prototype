@@ -25,7 +25,7 @@ export const getScreenOutcome = (patientSession) => {
   }
 
   if (responsesToTriage.length > 0) {
-    const lastTriageNoteWithOutcome = patientSession.patient.triageNotes
+    const lastTriageNoteWithOutcome = patientSession.triageNotes
       .filter((event) => event.outcome)
       .at(-1)
 

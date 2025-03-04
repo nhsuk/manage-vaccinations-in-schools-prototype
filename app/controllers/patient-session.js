@@ -29,7 +29,8 @@ export const patientSessionController = {
       .find(({ patient }) => patient.nhsn === nhsn)
 
     const { patient, session, programme } = patientSession
-    const { consent, screen, triage, registration, outcome } = patientSession
+    const { consent, screen, triage, triageNotes, registration, outcome } =
+      patientSession
 
     response.locals.options = {
       // Invite to session
@@ -51,7 +52,7 @@ export const patientSessionController = {
       // Patient requires triage
       canTriage: triage !== TriageOutcome.NotNeeded,
       // Patient already triaged
-      hasTriage: patient.triageNotes.length > 0,
+      hasTriage: triageNotes.length > 0,
       canRecord:
         session.isActive &&
         registration === RegistrationOutcome.Present &&

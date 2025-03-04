@@ -17,7 +17,7 @@
 
   {# Decision table #}
   {% set triageNoteRows = [] %}
-  {% for triageNote in patientSession.patient.triageNotes | reverse %}
+  {% for triageNote in patientSession.triageNotes | reverse %}
     {% set triageNoteRows = triageNoteRows | push([
       {
         header: __("event.createdAt.label"),
@@ -37,7 +37,7 @@
   {% if options.hasTriage %}
     {{ actionTable({
       id: "triage-notes",
-      caption: __("patient.triageNotes.label"),
+      caption: __("triage.note.label"),
       sort: "createdAt",
       responsive: true,
       head: [

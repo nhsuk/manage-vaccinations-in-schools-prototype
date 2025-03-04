@@ -961,9 +961,6 @@ export const en = {
     lastReminderDate: {
       label: 'Last reminder sent'
     },
-    triageNotes: {
-      label: 'Triage notes'
-    },
     results:
       '{count, plural, =0{No children matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> records}}',
     count: {
