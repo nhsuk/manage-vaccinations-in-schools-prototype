@@ -1615,7 +1615,7 @@ export const en = {
       }
     },
     patientsVaccinated: {
-      label: 'Vaccinations'
+      label: 'Vaccinated'
     },
     patientsToGetConsent: {
       label: 'Get consent'
@@ -1633,7 +1633,7 @@ export const en = {
       label: 'Register attendance'
     },
     patientsToRecord: {
-      label: 'Record vaccinations'
+      label: 'Ready for vaccinator'
     },
     activities: {
       label: 'Action required'

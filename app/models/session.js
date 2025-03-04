@@ -393,20 +393,6 @@ export class Session {
   }
 
   /**
-   * Get vaccinated patients
-   *
-   * @returns {Array<PatientSession>} - Patient sessions
-   */
-  get patientsVaccinated() {
-    if (!this.isUnplanned) {
-      const patientSessions = this.patientSessions.filter(
-        ({ outcome }) => outcome === PatientOutcome.Vaccinated
-      )
-      return _.uniqBy(patientSessions, 'patient.nhsn')
-    }
-  }
-
-  /**
    * Get patients with no consent response
    *
    * @returns {Array<PatientSession>} - Patient sessions
@@ -468,18 +454,36 @@ export class Session {
   }
 
   /**
-   * Get patients awaiting vaccination
+   * Get patients awaiting vaccination, per programme
    *
-   * @returns {Array<PatientSession>} - Patient sessions
+   * @returns {object} - Patient sessions per programme
    */
   get patientsToRecord() {
-    if (this.isActive) {
-      const patientSessions = this.patients.filter(
-        ({ nextActivity, registration }) =>
-          nextActivity === Activity.Record &&
-          registration === RegistrationOutcome.Present
-      )
-      return _.uniqBy(patientSessions, 'patient.nhsn')
+    const programmes = {}
+    for (const programme of this.programmes) {
+      programmes[programme.name] = this.patientSessions
+        .filter(({ programme_pid }) => programme_pid === programme.pid)
+        .filter(({ nextActivity }) => nextActivity === Activity.Record)
+    }
+
+    return programmes
+  }
+
+  /**
+   * Get vaccinated patients, per programme
+   *
+   * @returns {object} - Patient sessions per programme
+   */
+  get patientsVaccinated() {
+    const programmes = {}
+    if (!this.isUnplanned) {
+      for (const programme of this.programmes) {
+        programmes[programme.name] = this.patientSessions.filter(
+          ({ outcome }) => outcome === PatientOutcome.Vaccinated
+        )
+      }
+
+      return programmes
     }
   }
 
@@ -766,6 +770,20 @@ export class Session {
 
     const reminderWeeks = filters.plural(this.reminderWeeks, 'week')
 
+    const patientsToRecord = Object.entries(this.patientsToRecord).map(
+      ([name, patientSessions]) =>
+        this.programmes.length > 1
+          ? `${filters.plural(patientSessions.length, 'child')} (${name})`
+          : `${filters.plural(patientSessions.length, 'child')}`
+    )
+
+    const patientsVaccinated = Object.entries(this.patientsVaccinated).map(
+      ([name, patientSessions]) =>
+        this.programmes.length > 1
+          ? `${filters.plural(patientSessions.length, 'vaccination')} given (${name})`
+          : `${filters.plural(patientSessions.length, 'vaccination')} given`
+    )
+
     return {
       address: this.address?.formatted.multiline,
       dates: formatList(formattedDates).replace(
@@ -791,12 +809,6 @@ export class Session {
         this.consents.length > 0
           ? filters.plural(this.consents.length, 'unmatched consent response')
           : undefined,
-      patientsVaccinated: this.patientsVaccinated?.length
-        ? `${filters.plural(
-            this.patientsVaccinated.length,
-            'vaccination'
-          )} given`
-        : undefined,
       patientsToGetConsent:
         this.patientsToGetConsent?.length > 0
           ? `${filters.plural(
@@ -827,8 +839,12 @@ export class Session {
           ? filters.plural(this.patientsToRegister.length, 'child')
           : undefined,
       patientsToRecord:
-        this.patientsToRecord?.length > 0
-          ? filters.plural(this.patientsToRecord.length, 'child')
+        this.patientSessions?.length > 0
+          ? patientsToRecord.join('<br>')
+          : undefined,
+      patientsVaccinated:
+        this.patientSessions?.length > 0
+          ? patientsVaccinated.join('<br>')
           : undefined,
       programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' '),
       consentUrl:
