@@ -1,4 +1,5 @@
 {% from "components/button/macro.njk" import button %}
+{% from "_macros/count.njk" import count %}
 {% from "_macros/heading.njk" import heading %}
 {% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
 
@@ -15,21 +16,13 @@
         href: params.programme.uri,
         current: params.view == "show"
       }, {
-        text: __("programme.cohorts.label"),
-        href: params.programme.uri + "/cohorts",
-        current: params.view == "cohorts"
-      }, {
-        text: __("programme.sessions.label"),
+        text: (__("programme.sessions.label") + " " + count(programme.sessions.length)) | safe,
         href: params.programme.uri + "/sessions",
         current: params.view == "sessions"
       }, {
-        text: __("programme.patientSessions.label"),
+        text: (__("programme.patients.label") + " " + count(programme.patientSessions.length)) | safe,
         href: params.programme.uri + "/patients",
         current: params.view == "patients"
-      }, {
-        text: __("programme.vaccinations.label"),
-        href: params.programme.uri + "/vaccinations",
-        current: params.view == "vaccinations"
       }]
     }) }}
 
