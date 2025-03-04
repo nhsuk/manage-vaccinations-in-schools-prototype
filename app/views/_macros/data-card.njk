@@ -1,0 +1,21 @@
+{%- from "nhsuk/components/card/macro.njk" import card -%}
+
+{% macro appDataCard(params) %}
+{% set descriptionHtml %}
+  <p class="nhsuk-card__description app-card__count">
+    {{- params.data | default(0) -}}
+  </p>
+  {% if params.meta %}
+    <p class="nhsuk-body-s">{{ params.meta }}</p>
+  {% endif %}
+{% endset %}
+{{ card({
+  classes: "app-card--" + params.colour if params.colour,
+  clickable: true if params.href and params.data > 0,
+  href: params.href,
+  heading: params.heading,
+  headingClasses: "nhsuk-heading-xs",
+  headingLevel: params.headingLevel | default(5),
+  descriptionHtml: descriptionHtml
+}) }}
+{% endmacro %}

@@ -29,12 +29,6 @@
     view: "patients"
   }) }}
 
-  {{ button({
-    classes: "nhsuk-button--secondary",
-    text: __("programme.patientSessions.upload.label"),
-    href: programme.uri + "/uploads/new?type=" + UploadType.Cohort
-  }) }}
-
   <div class="nhsuk-grid-row">
     <auto-submit class="app-grid-column-filters">
       {{ appPatientSearch({

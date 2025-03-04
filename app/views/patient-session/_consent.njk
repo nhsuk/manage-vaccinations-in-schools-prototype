@@ -107,9 +107,9 @@
 {% endset %}
 
 {{ card({
-  classes: "app-card--" + patientSession.status.consent.colour,
   feature: true,
   heading: programme.name + ": " + (patientSession.status.consent.text | lower),
+  headingClasses: "app-card__heading--" + patientSession.status.consent.colour,
   headingLevel: 4,
   descriptionHtml: cardDescriptionHtml
 }) }}
