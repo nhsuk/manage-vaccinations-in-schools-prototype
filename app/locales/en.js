@@ -1531,6 +1531,7 @@ export const en = {
     },
     register: {
       label: 'Register',
+      title: 'Register',
       information: 'You can register attendance when a session is in progress.'
     },
     record: {
