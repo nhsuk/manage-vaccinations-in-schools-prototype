@@ -64,6 +64,7 @@ export const programmeTypes = {
     },
     term: SchoolTerm.Spring,
     sequence: ['1P', '2P', '3P'],
+    sequenceDefault: '1P',
     yearGroups: [8, 9, 10, 11],
     vaccine_smomeds: ['33493111000001108']
   },
@@ -81,6 +82,7 @@ export const programmeTypes = {
     },
     term: SchoolTerm.Summer,
     sequence: ['1P', '2P', '3P', '1B', '2B'],
+    sequenceDefault: '2B',
     yearGroups: [9, 10, 11],
     vaccine_smomeds: ['7374311000001101']
   },
@@ -97,7 +99,6 @@ export const programmeTypes = {
       url: 'https://www.nhs.uk/vaccinations/menacwy-vaccine/'
     },
     term: SchoolTerm.Summer,
-    sequence: ['1P', '1B', '2B'],
     yearGroups: [9, 10, 11],
     vaccine_smomeds: ['39779611000001104']
   }
@@ -115,6 +116,7 @@ export const programmeTypes = {
  * @property {SchoolTerm} term - School term administered in
  * @property {ProgrammeType} type - Programme type
  * @property {Array<string>} sequence - Vaccine dose sequence
+ * @property {string} sequenceDefault - Default vaccine dose sequence
  * @property {Array<number>} yearGroups - Year groups available to
  * @property {Array<string>} cohort_uids - Cohort UIDs
  * @property {Array<string>} vaccine_smomeds - Vaccines administered
@@ -134,6 +136,8 @@ export class Programme {
     this.term = options?.type && programmeTypes[options.type]?.term
     this.type = options?.type
     this.sequence = options?.type && programmeTypes[options.type]?.sequence
+    this.sequenceDefault =
+      options?.type && programmeTypes[options.type]?.sequenceDefault
     this.yearGroups = options?.type && programmeTypes[options.type]?.yearGroups
     this.cohort_uids = options?.cohort_uids || []
     this.vaccine_smomeds =

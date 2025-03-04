@@ -2185,8 +2185,6 @@ export const en = {
       label: 'Dose sequence',
       title: {
         [ProgrammeType.HPV]: 'Which does of the HPV vaccination was this?',
-        [ProgrammeType.MenACWY]:
-          'Which dose of a meningococcal vaccine was this?',
         [ProgrammeType.TdIPV]:
           'Which dose of a tetanus-containing vaccine was this?'
       }

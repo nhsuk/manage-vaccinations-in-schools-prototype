@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import { Batch } from '../models/batch.js'
 import { PatientSession } from '../models/patient-session.js'
-import { Programme, ProgrammeType } from '../models/programme.js'
+import { Programme } from '../models/programme.js'
 import { User } from '../models/user.js'
 import {
   Vaccination,
@@ -109,6 +109,9 @@ export const vaccinationController = {
         injectionSite,
         outcome: VaccinationOutcome.Vaccinated
       }),
+      ...(programme.sequence && {
+        sequence: programme.sequenceDefault
+      }),
       ...(defaultBatchId && {
         batch_id: defaultBatchId
       })
@@ -169,13 +172,6 @@ export const vaccinationController = {
     const patientSession = PatientSession.read(data.patientSession_uuid, data)
     response.locals.patientSession = patientSession
 
-    const askForSequence = [
-      ProgrammeType.MenACWY,
-      ProgrammeType.TdIPV
-    ].includes(programme.type)
-
-    const askForLocation = !patientSession.session?.address
-
     const journey = {
       [`/`]: {},
       ...(data.startPath === 'decline'
@@ -188,10 +184,7 @@ export const vaccinationController = {
             [`/${uuid}/${form}/batch-id`]: () => {
               return !data.defaultBatchId
             },
-            ...(askForSequence && {
-              [`/${uuid}/${form}/sequence`]: {}
-            }),
-            ...(askForLocation && {
+            ...(!patientSession.session?.address && {
               [`/${uuid}/${form}/location`]: {}
             }),
             [`/${uuid}/${form}/check-answers`]: {}
@@ -231,15 +224,15 @@ export const vaccinationController = {
         value
       }))
 
-    response.locals.sequenceItems = Object.entries(programme.sequence).map(
-      ([index, value]) => {
+    response.locals.sequenceItems =
+      programme.sequence &&
+      Object.entries(programme.sequence).map(([index, value]) => {
         const ordinal = prototypeFilters.ordinal(Number(index) + 1)
         return {
           text: `${_.startCase(ordinal)} dose`,
           value
         }
-      }
-    )
+      })
 
     response.locals.userItems = User.readAll(data)
       .map((user) => ({

@@ -1,4 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import prototypeFilters from '@x-govuk/govuk-prototype-filters'
+import _ from 'lodash'
 
 import schools from '../datasets/schools.js'
 import vaccines from '../datasets/vaccines.js'
@@ -324,6 +326,13 @@ export class Vaccination {
    * @returns {object} - Formatted values
    */
   get formatted() {
+    let sequence
+    if (this.sequence && this.programme?.sequence) {
+      sequence = this.programme.sequence.indexOf(this.sequence)
+      sequence = prototypeFilters.ordinal(Number(sequence) + 1)
+      sequence = `${_.startCase(sequence)} dose`
+    }
+
     return {
       createdAt: formatDate(this.createdAt, {
         day: 'numeric',
@@ -348,6 +357,7 @@ export class Vaccination {
       batch: this.batch?.summary,
       batch_id: formatMonospace(this.batch_id),
       dose: formatMillilitres(this.dose),
+      sequence,
       vaccine_snomed: this.vaccine_snomed && this.vaccine?.brand,
       note: formatMarkdown(this.note),
       outcomeStatus: formatTag(this.outcomeStatus),
