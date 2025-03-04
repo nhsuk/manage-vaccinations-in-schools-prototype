@@ -15,13 +15,13 @@
         href: params.programme.uri,
         current: params.view == "show"
       }, {
+        text: __("programme.patients.label"),
+        href: params.programme.uri + "/patients",
+        current: params.view == "patients"
+      }, {
         text: __("programme.sessions.label"),
         href: params.programme.uri + "/sessions",
         current: params.view == "sessions"
-      }, {
-        text: __("programme.patientSessions.label"),
-        href: params.programme.uri + "/patients",
-        current: params.view == "patients"
       }]
     }) }}
 
