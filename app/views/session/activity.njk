@@ -106,7 +106,11 @@
                 registration: {
                   label: __("patientSession.registration.actions.label"),
                   value: registrationButtonHtml
-                } if view == "register" and patientSession.registration == RegistrationOutcome.Pending
+                } if view == "register" and patientSession.registration == RegistrationOutcome.Pending,
+                nextActivityPerProgramme: {
+                  label: __("patientSession.nextActivityPerProgramme.label"),
+                  value: patientSession.formatted.nextActivityPerProgramme
+                } if view == "register"
               })
             }) }}
 

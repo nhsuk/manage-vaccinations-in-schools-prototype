@@ -20,6 +20,7 @@ import {
 import {
   formatLink,
   formatProgrammeStatus,
+  formatTag,
   formatTagWithSecondaryText
 } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
@@ -267,6 +268,21 @@ export class PatientSession {
   }
 
   /**
+   * Get next activity, per programme
+   *
+   * @returns {object} - Patient sessions per programme
+   */
+  get nextActivityPerProgramme() {
+    const programmes = {}
+    for (const patientSession of this.siblingPatientSessions) {
+      programmes[patientSession.programme.name] =
+        getNextActivity(patientSession)
+    }
+
+    return programmes
+  }
+
+  /**
    * Get reason could not vaccinate
    *
    * @returns {string|undefined} Reason could not vaccinate
@@ -503,6 +519,17 @@ export class PatientSession {
    * @returns {object} - Formatted values
    */
   get formatted() {
+    const nextActivityPerProgramme = Object.entries(
+      this.nextActivityPerProgramme
+    )
+      .map(([name, nextActivity]) =>
+        formatTagWithSecondaryText(
+          { colour: 'transparent', text: name },
+          nextActivity
+        )
+      )
+      .join('<br>')
+
     return {
       programme: this.programme.nameTag,
       status: {
@@ -518,10 +545,7 @@ export class PatientSession {
             this.status.screen,
             this.reason.screen
           ),
-        register: formatTagWithSecondaryText(
-          this.status.register,
-          this.nextActivity
-        ),
+        register: formatTag(this.status.register),
         record: formatProgrammeStatus(
           this.programme,
           this.status.outcome,
@@ -533,6 +557,7 @@ export class PatientSession {
           this.status.record.text
         )
       },
+      nextActivityPerProgramme,
       outcome: formatProgrammeStatus(
         this.programme,
         this.outcomeStatus,
