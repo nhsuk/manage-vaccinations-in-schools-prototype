@@ -19,9 +19,9 @@ import {
 } from '../utils/reply.js'
 import {
   formatLink,
+  formatList,
   formatProgrammeStatus,
-  formatTag,
-  formatTagWithSecondaryText
+  formatTag
 } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 
@@ -29,7 +29,7 @@ import { EventType } from './audit-event.js'
 import { Gillick } from './gillick.js'
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
-import { RegistrationOutcome, Session } from './session.js'
+import { Session } from './session.js'
 
 /**
  * @readonly
@@ -37,7 +37,7 @@ import { RegistrationOutcome, Session } from './session.js'
  */
 export const Activity = {
   Consent: 'Get consent',
-  Triage: 'Triage',
+  Triage: 'Triage health questions',
   Register: 'Register attendance',
   Record: 'Record vaccination',
   Report: 'Report vaccination'
@@ -356,41 +356,10 @@ export class PatientSession {
   /**
    * Get registration outcome
    *
-   * @returns {RegistrationOutcome} - Registration outcome
+   * @returns {import('./session.js').RegistrationOutcome} - Registration outcome
    */
   get registration() {
     return getRegistrationOutcome(this)
-  }
-
-  /**
-   * Get registration status properties
-   *
-   * @returns {object} - Status properties
-   */
-  get registrationStatus() {
-    let colour
-    let description
-    switch (this.registration) {
-      case RegistrationOutcome.Present:
-        colour = 'green'
-        description = `Registered as attending today’s session at ${this.session.location.name}`
-        break
-      case RegistrationOutcome.Absent:
-        colour = 'red'
-        description = `Registered as absent from today’s session at ${this.session.location.name}`
-        break
-      case RegistrationOutcome.Complete:
-        colour = 'white'
-        break
-      default:
-        colour = 'blue'
-    }
-
-    return {
-      colour,
-      description,
-      text: this.registration
-    }
   }
 
   /**
@@ -418,49 +387,12 @@ export class PatientSession {
   }
 
   /**
-   * Get last recorded vaccination status properties
-   *
-   * @returns {object} - Status properties
-   */
-  get recordStatus() {
-    if (this.lastRecordedVaccination) {
-      return this.lastRecordedVaccination.outcomeStatus
-    }
-  }
-
-  /**
    * Get patient outcome
    *
    * @returns {PatientOutcome} - Overall patient outcome
    */
   get outcome() {
     return getPatientOutcome(this)
-  }
-
-  /**
-   * Get patient outcome status properties
-   *
-   * @returns {object} - Status properties
-   */
-  get outcomeStatus() {
-    let colour
-    switch (this.outcome) {
-      case PatientOutcome.Vaccinated:
-        colour = 'green'
-        break
-      case PatientOutcome.CouldNotVaccinate:
-        colour = 'red'
-        break
-      case PatientOutcome.NoOutcomeYet:
-        colour = 'grey'
-        break
-      default:
-    }
-
-    return {
-      colour,
-      text: this.outcome
-    }
   }
 
   /**
@@ -519,16 +451,11 @@ export class PatientSession {
    * @returns {object} - Formatted values
    */
   get formatted() {
-    const nextActivityPerProgramme = Object.entries(
-      this.nextActivityPerProgramme
-    )
-      .map(([name, nextActivity]) =>
-        formatTagWithSecondaryText(
-          { colour: 'transparent', text: name },
-          nextActivity
-        )
+    const nextActivityPerProgramme = this.siblingPatientSessions
+      .filter(({ nextActivity }) => nextActivity !== Activity.Report)
+      .map(
+        ({ nextActivity, programme }) => `${nextActivity} for ${programme.name}`
       )
-      .join('<br>')
 
     return {
       programme: this.programme.nameTag,
@@ -557,10 +484,10 @@ export class PatientSession {
           this.status.record.text
         )
       },
-      nextActivityPerProgramme,
+      nextActivityPerProgramme: formatList(nextActivityPerProgramme),
       outcome: formatProgrammeStatus(
         this.programme,
-        this.outcomeStatus,
+        this.status.outcome,
         this.record
       )
     }
@@ -711,7 +638,7 @@ export class PatientSession {
    * Register attendance
    *
    * @param {import('./audit-event.js').AuditEvent} event - Event
-   * @param {RegistrationOutcome} registration - Registration
+   * @param {import('./session.js').RegistrationOutcome} registration - Registration
    */
   registerAttendance(event, registration) {
     this.session.updateRegister(this.patient.uuid, registration)

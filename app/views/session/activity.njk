@@ -98,19 +98,15 @@
               rows: summaryRows(patientSession.patient, {
                 dob: {},
                 yearGroupWithRegistration: {},
+                nextActivityPerProgramme: {
+                  label: __("patientSession.nextActivityPerProgramme.label"),
+                  value: patientSession.formatted.nextActivityPerProgramme
+                } if (view == "register" and patientSession.registration != RegistrationOutcome.Absent) or view == "record",
                 status: {
                   label: __("patientSession." + view + ".label"),
                   value: statusHtml,
                   href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.registration != RegistrationOutcome.Pending
-                },
-                registration: {
-                  label: __("patientSession.registration.actions.label"),
-                  value: registrationButtonHtml
-                } if view == "register" and patientSession.registration == RegistrationOutcome.Pending,
-                nextActivityPerProgramme: {
-                  label: __("patientSession.nextActivityPerProgramme.label"),
-                  value: patientSession.formatted.nextActivityPerProgramme
-                } if view == "register"
+                }
               })
             }) }}
 

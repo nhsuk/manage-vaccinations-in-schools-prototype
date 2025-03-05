@@ -176,7 +176,7 @@ export const getRegistrationStatus = (patientSession) => {
   let description
   switch (patientSession.registration) {
     case RegistrationOutcome.Present:
-      colour = 'green'
+      colour = 'blue'
       description = `Registered as attending today’s session at ${patientSession.session.location.name}`
       break
     case RegistrationOutcome.Absent:
@@ -187,7 +187,7 @@ export const getRegistrationStatus = (patientSession) => {
       colour = 'white'
       break
     default:
-      colour = 'blue'
+      colour = 'grey'
   }
 
   return {

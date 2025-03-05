@@ -191,7 +191,7 @@ export const patientSessionController = {
 
     request.flash(
       'message',
-      __(`patientSession.registration.success.${patientSession.nextActivity}`, {
+      __(`patientSession.registration.success.${patientSession.registration}`, {
         patientSession
       })
     )

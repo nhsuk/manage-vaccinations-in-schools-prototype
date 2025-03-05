@@ -1189,18 +1189,10 @@ export const en = {
         }
       },
       success: {
-        [Activity.Consent]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is attending today’s session. They still need consent to vaccinate.',
-        [Activity.Triage]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is attending today’s session. A nurse needs to triage their record.',
-        [Activity.Register]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is absent from today’s session.',
-        [Activity.Record]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is attending today’s session. They are ready for the vaccinator.',
-        [Activity.Report]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is attending today’s session, but they have already been vaccinated.',
+        [RegistrationOutcome.Present]:
+          '{{patientSession.patient.fullName}} is attending today’s session.',
         [RegistrationOutcome.Absent]:
-          '[{{patientSession.patient.fullName}}]({{patientSession.uri}}?activity=register) is absent from today’s session.'
+          '{{patientSession.patient.fullName}} has been recorded as absent from today’s session.'
       }
     }
   },
@@ -1517,7 +1509,7 @@ export const en = {
     },
     record: {
       label: 'Record',
-      title: 'Record vaccinations',
+      title: 'Record vaccination',
       information: 'You can record vaccinations when a session is in progress.'
     },
     outcome: {
