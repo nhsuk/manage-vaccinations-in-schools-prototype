@@ -127,8 +127,9 @@ export const vaccinationController = {
     const { note } = request.body.vaccination
     const { form, uuid } = request.params
     const { data, referrer } = request.session
-    const { __ } = response.locals
+    const { __mf } = response.locals
 
+    const patientSession = PatientSession.read(data.patientSession_uuid, data)
     const vaccination = new Vaccination(
       Vaccination.read(uuid, data.wizard),
       data
@@ -141,7 +142,11 @@ export const vaccinationController = {
 
     request.flash(
       vaccination.given ? 'success' : 'message',
-      __(`vaccination.${form}.success`, { programme: vaccination.programme })
+      __mf(`vaccination.${form}.success`, {
+        recordedName: vaccination.programme.name,
+        outstandingName: patientSession.formatted.outstandingVaccinations,
+        count: patientSession.outstandingVaccinations.length
+      })
     )
 
     // Clean up session data

@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import filters from '@x-govuk/govuk-prototype-filters'
 
 import { getDateValueDifference, today } from '../utils/date.js'
 import {
@@ -283,6 +284,17 @@ export class PatientSession {
   }
 
   /**
+   * Get next activity, per programme
+   *
+   * @returns {Array<PatientSession>} - Patient sessions per programme
+   */
+  get outstandingVaccinations() {
+    return this.siblingPatientSessions
+      .filter(({ uuid }) => uuid !== this.uuid)
+      .filter(({ nextActivity }) => nextActivity === Activity.Record)
+  }
+
+  /**
    * Get reason could not vaccinate
    *
    * @returns {string|undefined} Reason could not vaccinate
@@ -457,6 +469,10 @@ export class PatientSession {
         ({ nextActivity, programme }) => `${nextActivity} for ${programme.name}`
       )
 
+    const outstandingVaccinations = this.outstandingVaccinations.map(
+      ({ programme }) => programme.name
+    )
+
     return {
       programme: this.programme.nameTag,
       status: {
@@ -485,6 +501,7 @@ export class PatientSession {
         )
       },
       nextActivityPerProgramme: formatList(nextActivityPerProgramme),
+      outstandingVaccinations: filters.formatList(outstandingVaccinations),
       outcome: formatProgrammeStatus(
         this.programme,
         this.status.outcome,

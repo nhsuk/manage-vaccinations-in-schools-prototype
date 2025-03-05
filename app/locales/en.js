@@ -2074,7 +2074,8 @@ export const en = {
         summary: 'Vaccination details',
         callout: 'Vaccination was not given'
       },
-      success: '{{programme.name}} vaccination recorded'
+      success:
+        '{count, plural, =0{Vaccination outcome recorded for {recordedName}. All vaccinations for this session have been recorded} one{Vaccination outcome recorded for {recordedName}. You still need to record an outcome for {outstandingName}} other{Vaccination outcome recorded for {recordedName}. You still need to record outcomes for {outstandingName}}}.'
     },
     edit: {
       title: 'Edit vaccination record',
