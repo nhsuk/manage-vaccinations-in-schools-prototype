@@ -55,7 +55,7 @@ export const sessionController = {
     const session = Session.read(id, data)
     response.locals.session = session
 
-    let patientSessions = session.patientSessions
+    let results = session.patientSessions
 
     // Convert year groups query into an array of numbers
     let yearGroups
@@ -66,7 +66,7 @@ export const sessionController = {
 
     // Query
     if (q) {
-      patientSessions = session.patientSessions.filter(({ patient }) =>
+      results = results.filter(({ patient }) =>
         patient.tokenized.includes(String(q).toLowerCase())
       )
     }
@@ -82,33 +82,29 @@ export const sessionController = {
 
     // Filter by status
     if (filters[view] !== 'none') {
-      patientSessions = patientSessions.filter(
+      results = results.filter(
         (patientSession) => patientSession[view] === filters[view]
       )
     }
 
     // Filter by year group
     if (yearGroup) {
-      patientSessions = patientSessions.filter(({ patient }) =>
+      results = results.filter(({ patient }) =>
         yearGroups.includes(patient.yearGroup)
       )
     }
 
     // Filter by missing NHS number
     if (hasMissingNhsNumber) {
-      patientSessions = patientSessions.filter(
-        ({ patient }) => patient.hasMissingNhsNumber
-      )
+      results = results.filter(({ patient }) => patient.hasMissingNhsNumber)
     }
 
     // Remove patient sessions where outcome returns false
-    patientSessions = patientSessions.filter(
-      (patientSession) => patientSession[view] !== false
-    )
+    results = results.filter((patientSession) => patientSession[view] !== false)
 
     // Only show patients ready to vaccinate
     if (view === 'record') {
-      patientSessions = patientSessions.filter(
+      results = results.filter(
         ({ nextActivity, registration }) =>
           nextActivity === Activity.Record &&
           registration === RegistrationOutcome.Present
@@ -116,20 +112,19 @@ export const sessionController = {
     }
 
     // Sort
-    patientSessions = _.sortBy(patientSessions, 'patient.lastName')
+    results = _.sortBy(results, 'patient.lastName')
 
     // Ensure MenACWY is the patient session linked to from session activity
-    patientSessions = patientSessions.sort((a, b) =>
+    results = results.sort((a, b) =>
       a.programme.name.localeCompare(b.programme.name)
     )
 
     // Show only one patient session per programme
-    patientSessions = _.uniqBy(patientSessions, 'patient.nhsn')
+    results = _.uniqBy(results, 'patient.nhsn')
 
     // Results
-    response.locals.patientSessions = patientSessions
-    response.locals.results = getResults(patientSessions, request.query)
-    response.locals.pages = getPagination(patientSessions, request.query)
+    response.locals.results = getResults(results, request.query)
+    response.locals.pages = getPagination(results, request.query)
 
     // Used when updating the default batch
     if (snomed) {
