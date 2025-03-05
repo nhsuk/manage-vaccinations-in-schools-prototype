@@ -39,10 +39,13 @@
     html: defaultBatchHtml
   }) if view == "record" and session.defaultBatch.length }}
 
-  {% if view == "register" and not session.isActive %}
-    {{ __("session.register.information") | nhsukMarkdown }}
-  {% elif view == "record" and not session.isActive %}
-    {{ __("session.record.information") | nhsukMarkdown }}
+  {% if (view == "register" or view == "record") and not session.isActive %}
+    {{ heading({
+      level: 2,
+      size: "m",
+      title: __("session." + view + ".title"),
+      summary: __("session." + view + ".information") | safe
+    }) }}
   {% else %}
     <div class="app-grid-row">
       <div class="app-grid-column-filters">
@@ -60,10 +63,16 @@
           }) | nhsukMarkdown
         }) if session.consents.length }}
 
+        {% if data[view] and data[view] != "none" %}
+          {% set title = __("patientSession." + view + ".label") + ": " + data[view] %}
+        {% else %}
+          {% set title = __("session." + view + ".title") %}
+        {% endif %}
+
         {{ heading({
           level: 2,
           size: "m",
-          title: __("search.results"),
+          title: title,
           summary: __mf("patient.results", {
             from: results.from,
             to: results.to,

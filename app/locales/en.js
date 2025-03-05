@@ -962,7 +962,7 @@ export const en = {
       label: 'Last reminder sent'
     },
     results:
-      '{count, plural, =0{No children matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> records}}',
+      '{count, plural, =0{No children matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> children}}',
     count: {
       one: '%s child',
       other: '[0] No children|%s children'
@@ -1501,29 +1501,25 @@ export const en = {
     },
     consent: {
       label: 'Consent',
-      title: 'Consent'
-    },
-    triage: {
-      label: 'Triage',
-      title: 'Triage'
+      title: 'Review consent responses'
     },
     screen: {
       label: 'Triage',
-      title: 'Triage'
+      title: 'Review triage statuses'
     },
     register: {
       label: 'Register',
-      title: 'Register',
+      title: 'Register attendance',
       information: 'You can register attendance when a session is in progress.'
     },
     record: {
       label: 'Record',
-      title: 'Record vaccination',
+      title: 'Record vaccinations',
       information: 'You can record vaccinations when a session is in progress.'
     },
     outcome: {
       label: 'Outcome',
-      title: 'Outcome'
+      title: 'Review programme outcomes'
     },
     'upload-class-list': {
       title: 'Import class lists'
