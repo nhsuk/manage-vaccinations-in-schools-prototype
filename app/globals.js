@@ -1,11 +1,6 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
-import {
-  ConsentOutcome,
-  PatientOutcome,
-  ScreenOutcome
-} from './models/patient-session.js'
 import { HealthQuestion } from './models/vaccine.js'
 import { formatLink, formatParent, pascalToKebabCase } from './utils/string.js'
 
@@ -139,64 +134,6 @@ export default () => {
 
   globals.parent = function (parent) {
     return formatParent(parent)
-  }
-
-  /**
-   * Get status details for a patient
-   *
-   * @param {import('./models/patient-session.js').PatientSession} patientSession - Patient session
-   * @returns {object} Patient status
-   */
-  globals.patientStatus = function (patientSession) {
-    const { consent, screen, outcome } = patientSession
-
-    let colour
-    let description
-    let title
-
-    if (!outcome) {
-      // If no outcome, use status colour and title for consent/triage outcome
-
-      if (screen === ScreenOutcome.NeedsTriage) {
-        // Patient needs triage
-        colour = patientSession.status.screen.colour
-        description = patientSession.status.screen.description
-        title = patientSession.status.screen.text
-      } else if (screen === ScreenOutcome.Vaccinate) {
-        // Patient needs triage
-        colour = patientSession.status.screen.colour
-        description = patientSession.status.screen.description
-        title = patientSession.status.screen.text
-      } else {
-        // Patient requires consent
-        colour = patientSession.status.consent.colour
-        description = patientSession.status.consent.description
-        title = patientSession.status.consent.text
-      }
-    } else {
-      // If outcome, use status colour and title for that outcome
-      colour = patientSession.status.report.colour
-      title = patientSession.status.report.text
-
-      // If could not vaccinate, provide a description for why
-      if (outcome === PatientOutcome.CouldNotVaccinate) {
-        if (
-          screen === ScreenOutcome.DelayVaccination ||
-          screen === ScreenOutcome.DoNotVaccinate
-        ) {
-          // Patient had a triage outcome that prevented vaccination
-          description = patientSession.status.screen.description
-        } else if (
-          // Patient wasn’t able to get consent for vaccination
-          consent === ConsentOutcome.Inconsistent ||
-          consent === ConsentOutcome.Refused
-        ) {
-          description = patientSession.status.consent.description
-        }
-      }
-    }
-
-    return { colour, description, title }
   }
 
   /**
