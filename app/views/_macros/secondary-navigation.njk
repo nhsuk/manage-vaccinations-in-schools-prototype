@@ -1,3 +1,4 @@
+{%- from "_macros/icon.njk" import icon -%}
 {% macro secondaryNavigation(params) %}
 <nav class="app-secondary-navigation {%- if params.classes %} {{ params.classes }}{% endif -%}" {% if params.labelledBy %}aria-labelledby="{{ params.labelledBy }}"{% else %}aria-label="{{ params.visuallyHiddenTitle or "Secondary menu" }}"{% endif %} {%- for attribute, value in params.attributes %} {{ attribute }}="{{ value }}"{% endfor %}>
   <ul class="app-secondary-navigation__list">
@@ -9,6 +10,9 @@
         <strong class="app-secondary-navigation__current">{{ item.text | safe }}</strong>
       {%- else -%}
         {{- item.text | safe -}}
+      {%- endif -%}
+      {%- if item.icon -%}
+        {{- icon(item.icon) -}}
       {%- endif -%}
       </a>
     </li>

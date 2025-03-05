@@ -80,6 +80,9 @@ export const patientSessionController = {
     const view = request.path.split('/').at(-1)
     response.locals.navigationItems = [
       ...patientSession.siblingPatientSessions.map((patientSession) => ({
+        ...(patientSession.outcome === PatientOutcome.Vaccinated && {
+          icon: { icon: 'tick' }
+        }),
         text: patientSession.programme.name,
         href: activity
           ? `${patientSession.uri}?activity=${activity}`
