@@ -47,7 +47,7 @@ export const sessionController = {
 
   read(request, response, next) {
     const { id, view } = request.params
-    const { snomed, q } = request.query
+    const { hasMissingNhsNumber, snomed, q, yearGroup } = request.query
     const { data } = request.session
 
     response.locals.view = view
@@ -56,6 +56,13 @@ export const sessionController = {
     response.locals.session = session
 
     let patientSessions = session.patientSessions
+
+    // Convert year groups query into an array of numbers
+    let yearGroups
+    if (yearGroup) {
+      yearGroups = Array.isArray(yearGroup) ? yearGroup : [yearGroup]
+      yearGroups = yearGroups.map((year) => Number(year))
+    }
 
     // Query
     if (q) {
@@ -77,6 +84,20 @@ export const sessionController = {
     if (filters[view] !== 'none') {
       patientSessions = patientSessions.filter(
         (patientSession) => patientSession[view] === filters[view]
+      )
+    }
+
+    // Filter by year group
+    if (yearGroup) {
+      patientSessions = patientSessions.filter(({ patient }) =>
+        yearGroups.includes(patient.yearGroup)
+      )
+    }
+
+    // Filter by missing NHS number
+    if (hasMissingNhsNumber) {
+      patientSessions = patientSessions.filter(
+        ({ patient }) => patient.hasMissingNhsNumber
       )
     }
 
@@ -163,7 +184,8 @@ export const sessionController = {
       response.locals.yearGroupItems = session.school.yearGroups.map(
         (yearGroup) => ({
           text: formatYearGroup(yearGroup),
-          value: yearGroup
+          value: yearGroup,
+          checked: yearGroups?.includes(yearGroup)
         })
       )
     }
@@ -193,8 +215,9 @@ export const sessionController = {
 
   search(request, response) {
     const { id, view } = request.params
+    const { hasMissingNhsNumber, yearGroup } = request.body
 
-    const params = {}
+    const params = new URLSearchParams()
     for (const key of [
       'q',
       'consent',
@@ -206,14 +229,24 @@ export const sessionController = {
     ]) {
       const param = request.body[key]
       if (param) {
-        params[key] = String(param)
+        params.append(key, String(param))
       }
     }
 
-    // @ts-ignore
-    const queryString = new URLSearchParams(params).toString()
+    if (yearGroup) {
+      const yearGroups = Array.isArray(yearGroup) ? yearGroup : [yearGroup]
+      yearGroups
+        .filter((item) => item !== '_unchecked')
+        .forEach((year) => {
+          params.append('yearGroup', String(year))
+        })
+    }
 
-    response.redirect(`/sessions/${id}/${view}?${queryString}`)
+    if (hasMissingNhsNumber?.includes('true')) {
+      params.append('hasMissingNhsNumber', 'true')
+    }
+
+    response.redirect(`/sessions/${id}/${view}?${params}`)
   },
 
   edit(request, response) {

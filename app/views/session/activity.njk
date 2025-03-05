@@ -48,12 +48,12 @@
     }) }}
   {% else %}
     <div class="app-grid-row">
-      <div class="app-grid-column-filters">
+      <auto-submit class="app-grid-column-filters">
         {{ patientSearch({
           clear: session.uri + "/" + view,
           status: view
         }) }}
-      </div>
+      </auto-submit>
 
       <div class="app-grid-column-results">
         {{ warningCallout({

@@ -36,13 +36,13 @@
   }) }}
 
   <div class="app-grid-row">
-    <div class="app-grid-column-filters">
+    <auto-submit class="app-grid-column-filters">
       {{ patientSearch({
         clear: programme.uri + "/patients",
         outcome: "outcome",
         status: "record"
       }) }}
-    </div>
+    </auto-submit>
 
     <div class="app-grid-column-results">
       {{ heading({

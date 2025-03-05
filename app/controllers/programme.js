@@ -134,7 +134,7 @@ export const programmeController = {
       }
     }
 
-    if (hasMissingNhsNumber.includes('true')) {
+    if (hasMissingNhsNumber?.includes('true')) {
       params.hasMissingNhsNumber = true
     }
 

@@ -4,6 +4,10 @@ $app-cis2-button-active-color: #003087;
 $app-cis2-button-shadow-color: #003087;
 $button-shadow-size: 4px;
 
+.nhsuk-button[hidden] {
+  display: none;
+}
+
 .app-button--cis2 {
   align-items: center;
   background-color: $app-cis2-button-color;
