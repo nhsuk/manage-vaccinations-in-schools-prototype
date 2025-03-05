@@ -409,7 +409,7 @@ export class Session {
    *
    * @returns {Array<PatientSession>} - Patient sessions
    */
-  get patientsToFollowUpRefusal() {
+  get patientsRefused() {
     const patientSessions = this.patientSessions.filter(
       ({ consent }) => consent === ConsentOutcome.Refused
     )
@@ -773,14 +773,14 @@ export class Session {
     const patientsToRecord = Object.entries(this.patientsToRecord).map(
       ([name, patientSessions]) =>
         this.programmes.length > 1
-          ? `${filters.plural(patientSessions.length, 'child')} (${name})`
+          ? `${filters.plural(patientSessions.length, 'child')} for ${name}`
           : `${filters.plural(patientSessions.length, 'child')}`
     )
 
     const patientsVaccinated = Object.entries(this.patientsVaccinated).map(
       ([name, patientSessions]) =>
         this.programmes.length > 1
-          ? `${filters.plural(patientSessions.length, 'vaccination')} given (${name})`
+          ? `${filters.plural(patientSessions.length, 'vaccination')} given for ${name}`
           : `${filters.plural(patientSessions.length, 'vaccination')} given`
     )
 
@@ -807,28 +807,19 @@ export class Session {
       patients: filters.plural(this.patients.length, 'child'),
       consents:
         this.consents.length > 0
-          ? filters.plural(this.consents.length, 'unmatched consent response')
+          ? filters.plural(this.consents.length, 'child')
           : undefined,
       patientsToGetConsent:
         this.patientsToGetConsent?.length > 0
-          ? `${filters.plural(
-              this.patientsToGetConsent.length,
-              'child'
-            )} without a response`
+          ? filters.plural(this.patientsToGetConsent.length, 'child')
           : undefined,
       patientsToResolveConsent:
         this.patientsToResolveConsent?.length > 0
-          ? `${filters.plural(
-              this.patientsToResolveConsent.length,
-              'child'
-            )} with conflicting consent`
+          ? filters.plural(this.patientsToResolveConsent.length, 'child')
           : undefined,
-      patientsToFollowUpRefusal:
-        this.patientsToFollowUpRefusal?.length > 0
-          ? `${filters.plural(
-              this.patientsToFollowUpRefusal.length,
-              'child'
-            )} with consent refused`
+      patientsRefused:
+        this.patientsRefused?.length > 0
+          ? filters.plural(this.patientsRefused.length, 'child')
           : undefined,
       patientsToTriage:
         this.patientsToTriage?.length > 0

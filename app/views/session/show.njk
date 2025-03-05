@@ -52,7 +52,11 @@
           changeText: __("session.upload-class-list.title"),
           href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn if session.type == SessionType.School
         },
-        patientsToRecord: {},
+        patientsRefused: {
+          changeText: __("actions.review"),
+          href: session.uri + "/consent?consent=" + ConsentOutcome.Refused
+        },
+        patientsAttending: {},
         patientsVaccinated: {
           changeText: __("actions.review"),
           href: session.uri + "/outcome?outcome=" + VaccinationOutcome.Vaccinated
@@ -82,10 +86,6 @@
             changeText: __("actions.review"),
             href: session.uri + "/consent?consent=" + ConsentOutcome.Inconsistent
           },
-          patientsToFollowUpRefusal: {
-            changeText: __("actions.review"),
-            href: session.uri + "/consent?consent=" + ConsentOutcome.Refused
-          },
           patientsToTriage: {
             changeText: __("actions.review"),
             href: session.uri + "/screen?screen=" + ScreenOutcome.NeedsTriage
@@ -93,6 +93,10 @@
           patientsToRegister: {
             changeText: __("actions.review"),
             href: session.uri + "/register"
+          },
+          patientsToRecord: {
+            changeText: __("actions.review"),
+            href: session.uri + "/record"
           }
         })
       }) }}

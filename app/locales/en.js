@@ -1481,7 +1481,7 @@ export const en = {
     },
     show: {
       label: 'Overview',
-      summary: 'Session details'
+      summary: 'Session overview'
     },
     edit: {
       title: 'Edit session',
@@ -1509,7 +1509,7 @@ export const en = {
     },
     record: {
       label: 'Record',
-      title: 'Record vaccination',
+      title: 'Record vaccinations',
       information: 'You can record vaccinations when a session is in progress.'
     },
     outcome: {
@@ -1565,7 +1565,7 @@ export const en = {
       }
     },
     consents: {
-      label: 'Match responses',
+      label: 'Unmatched responses',
       warning: 'You need to review unmatched consent responses for this session'
     },
     address: {
@@ -1588,20 +1588,20 @@ export const en = {
         other: '[0] No children in session cohort|%s children in session cohort'
       }
     },
+    patientsRefused: {
+      label: 'Consent refused'
+    },
     patientsVaccinated: {
       label: 'Vaccinated'
     },
     patientsToGetConsent: {
-      label: 'Get consent'
+      label: 'No consent response'
     },
     patientsToResolveConsent: {
-      label: 'Resolve consent'
-    },
-    patientsToFollowUpRefusal: {
-      label: 'Follow up refusal'
+      label: 'Conflicting consent'
     },
     patientsToTriage: {
-      label: 'Triage'
+      label: 'Triage needed'
     },
     patientsToRegister: {
       label: 'Register attendance'
