@@ -121,10 +121,7 @@ export const sessionController = {
     // Filters
     const statusItems = {
       consent: ConsentOutcome,
-      triage: TriageOutcome,
-      register: RegistrationOutcome,
-      record: PatientOutcome,
-      outcome: PatientOutcome
+      register: RegistrationOutcome
     }
 
     if (statusItems[view]) {
@@ -144,7 +141,8 @@ export const sessionController = {
 
     const outcomeItems = {
       screen: ScreenOutcome,
-      outcome: VaccinationOutcome
+      record: VaccinationOutcome,
+      outcome: PatientOutcome
     }
 
     if (outcomeItems[view]) {

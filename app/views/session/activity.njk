@@ -90,6 +90,7 @@
                 dob: {},
                 yearGroupWithRegistration: {},
                 status: {
+                  label: __("patientSession." + view + ".label"),
                   value: statusHtml,
                   href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.registration != RegistrationOutcome.Pending
                 },

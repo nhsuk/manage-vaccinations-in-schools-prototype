@@ -1091,17 +1091,14 @@ export const en = {
       title: 'Consent for %s',
       label: 'Consent status'
     },
-    triage: {
-      label: 'Triage status'
-    },
     screen: {
-      label: 'Triage outcome'
+      label: 'Triage status'
     },
     register: {
       label: 'Registration status'
     },
     record: {
-      label: 'Vaccination status'
+      label: 'Session outcome'
     },
     outcome: {
       label: 'Programme outcome'
@@ -1471,21 +1468,6 @@ export const en = {
         one: '%s child',
         other: '[0] No children|%s children'
       }
-    }
-  },
-  screen: {
-    label: 'Triage outcome',
-    [ScreenOutcome.NeedsTriage]: {
-      title: 'Needs triage'
-    },
-    [ScreenOutcome.DelayVaccination]: {
-      title: 'Delay vaccination to a later date'
-    },
-    [ScreenOutcome.DoNotVaccinate]: {
-      title: 'Do not vaccinate in year’s programme'
-    },
-    [ScreenOutcome.Vaccinate]: {
-      title: 'Ready for vaccinator'
     }
   },
   search: {
