@@ -5,8 +5,7 @@ import {
   Activity,
   ConsentOutcome,
   PatientOutcome,
-  ScreenOutcome,
-  TriageOutcome
+  ScreenOutcome
 } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
 import { programmeTypes } from '../models/programme.js'
