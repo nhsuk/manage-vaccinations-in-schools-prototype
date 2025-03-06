@@ -101,11 +101,11 @@
                 nextActivityPerProgramme: {
                   label: __("patientSession.nextActivityPerProgramme.label"),
                   value: patientSession.formatted.nextActivityPerProgramme
-                } if (view == "register" and patientSession.registration != RegistrationOutcome.Absent) or view == "record",
+                } if (view == "register" and patientSession.register != RegistrationOutcome.Absent) or view == "record",
                 status: {
                   label: __("patientSession." + view + ".label"),
                   value: statusHtml,
-                  href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.registration != RegistrationOutcome.Pending
+                  href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.register != RegistrationOutcome.Pending
                 }
               })
             }) }}
@@ -114,25 +114,25 @@
               buttons: [{
                 classes: "app-button--secondary app-button--small",
                 text: __("patientSession.registration.actions.present.label"),
-                decorate: "patientSession.registration",
+                decorate: "patientSession.register",
                 value: RegistrationOutcome.Present,
                 attributes: {
                   "aria-label": __("patientSession.registration.actions.present.title", { patient: patientSession.patient }),
-                  formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
+                  formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view + "&register=" + data.register,
                   formmethod: "post"
                 }
               }, {
                 classes: "app-button--secondary-warning app-button--small",
                 text: __("patientSession.registration.actions.absent.label"),
-                decorate: "patientSession.registration",
+                decorate: "patientSession.register",
                 value: RegistrationOutcome.Absent,
                 attributes: {
                   "aria-label": __("patientSession.registration.actions.absent.title", { patient: patientSession.patient }),
-                  formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view,
+                  formaction: patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view + "&register=" + data.register,
                   formmethod: "post"
                 }
               }]
-            }) if view == "register" and patientSession.registration == RegistrationOutcome.Pending }}
+            }) if view == "register" and patientSession.register == RegistrationOutcome.Pending }}
           {% endset %}
 
           {{ card({

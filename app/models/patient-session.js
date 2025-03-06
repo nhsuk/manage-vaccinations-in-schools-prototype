@@ -370,7 +370,7 @@ export class PatientSession {
    *
    * @returns {import('./session.js').RegistrationOutcome} - Registration outcome
    */
-  get registration() {
+  get register() {
     return getRegistrationOutcome(this)
   }
 
@@ -655,10 +655,10 @@ export class PatientSession {
    * Register attendance
    *
    * @param {import('./audit-event.js').AuditEvent} event - Event
-   * @param {import('./session.js').RegistrationOutcome} registration - Registration
+   * @param {import('./session.js').RegistrationOutcome} register - Registration
    */
-  registerAttendance(event, registration) {
-    this.session.updateRegister(this.patient.uuid, registration)
+  registerAttendance(event, register) {
+    this.session.updateRegister(this.patient.uuid, register)
 
     this.patient.addEvent({
       type: EventType.Register,

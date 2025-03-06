@@ -448,7 +448,7 @@ export class Session {
   get patientsToRegister() {
     if (this.isActive) {
       return this.patients.filter(
-        ({ registration }) => registration === RegistrationOutcome.Pending
+        ({ register }) => register === RegistrationOutcome.Pending
       )
     }
   }

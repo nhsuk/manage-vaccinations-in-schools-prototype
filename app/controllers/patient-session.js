@@ -29,7 +29,7 @@ export const patientSessionController = {
       .find(({ patient }) => patient.nhsn === nhsn)
 
     const { patient, session, programme } = patientSession
-    const { consent, screen, triage, triageNotes, registration, outcome } =
+    const { consent, screen, triage, triageNotes, register, outcome } =
       patientSession
 
     response.locals.options = {
@@ -55,7 +55,7 @@ export const patientSessionController = {
       hasTriage: triageNotes.length > 0,
       canRecord:
         session.isActive &&
-        registration === RegistrationOutcome.Present &&
+        register === RegistrationOutcome.Present &&
         triage !== TriageOutcome.Needed &&
         screen !== ScreenOutcome.DoNotVaccinate &&
         outcome !== PatientOutcome.Vaccinated,
@@ -155,19 +155,24 @@ export const patientSessionController = {
   },
 
   register(request, response) {
-    const { registration } = request.body.patientSession
+    const { register } = request.body.patientSession
     const { data } = request.session
-    const { __, patient, patientSession, session, back } = response.locals
+    let { __, patient, patientSession, session, back } = response.locals
+
+    // Maintain session activity filter, if present
+    if (request.query.register) {
+      back = `${back}?register=${request.query.register}`
+    }
 
     patientSession.registerAttendance(
       {
         ...(data.token && { createdBy_uid: data.token?.uid })
       },
-      registration
+      register
     )
 
     if (
-      registration === RegistrationOutcome.Absent &&
+      register === RegistrationOutcome.Absent &&
       patientSession.outcome !== PatientOutcome.CouldNotVaccinate
     ) {
       // Record vaccination outcome as absent from session if safe to vaccinate
@@ -187,11 +192,11 @@ export const patientSessionController = {
     }
 
     // Clean up session data
-    delete data.patientSession?.registration
+    delete data.patientSession?.register
 
     request.flash(
       'message',
-      __(`patientSession.registration.success.${patientSession.registration}`, {
+      __(`patientSession.registration.success.${patientSession.register}`, {
         patientSession
       })
     )

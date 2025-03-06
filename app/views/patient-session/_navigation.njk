@@ -14,7 +14,7 @@
     }, {
       text: __("patientSession.registration.title"),
       href: params.patientSession.uri + "/edit/registration"
-    } if params.patientSession.registration != RegistrationOutcome.Complete, {
+    } if params.patientSession.register != RegistrationOutcome.Complete, {
       text: __("patientSession.record.title"),
       href: "#"
     } if not params.patientSession.session.isActive and params.patientSession.outcome != PatientOutcome.Vaccinated]

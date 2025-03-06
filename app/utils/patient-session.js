@@ -174,7 +174,7 @@ export const getScreenStatus = (patientSession) => {
 export const getRegistrationStatus = (patientSession) => {
   let colour
   let description
-  switch (patientSession.registration) {
+  switch (patientSession.register) {
     case RegistrationOutcome.Present:
       colour = 'blue'
       description = `Registered as attending today’s session at ${patientSession.session.location.name}`
@@ -193,7 +193,7 @@ export const getRegistrationStatus = (patientSession) => {
   return {
     colour,
     description,
-    text: patientSession.registration
+    text: patientSession.register
   }
 }
 
