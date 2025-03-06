@@ -1109,6 +1109,10 @@ export const en = {
     nextActivityPerProgramme: {
       label: 'Action required'
     },
+    outstandingVaccinations: {
+      message:
+        '{count, plural, one{You still need to record an outcome for {names}} other{You still need to record outcomes for {names}}}'
+    },
     gillick: {
       label: 'Gillick assessment',
       text: 'Before you make your assessment, you should give {{patient.firstName}} a chance to ask questions.',
@@ -2078,8 +2082,7 @@ export const en = {
         summary: 'Vaccination details',
         callout: 'Vaccination was not given'
       },
-      success:
-        '{count, plural, =0{Vaccination outcome recorded for {recordedName}. All vaccinations for this session have been recorded} one{Vaccination outcome recorded for {recordedName}. You still need to record an outcome for {outstandingName}} other{Vaccination outcome recorded for {recordedName}. You still need to record outcomes for {outstandingName}}}.'
+      success: 'Vaccination outcome recorded for {{programme.name}}'
     },
     edit: {
       title: 'Edit vaccination record',

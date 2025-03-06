@@ -4,7 +4,6 @@ import { Batch } from '../models/batch.js'
 import {
   Activity,
   ConsentOutcome,
-  PatientOutcome,
   ScreenOutcome
 } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'

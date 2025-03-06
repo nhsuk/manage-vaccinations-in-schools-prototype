@@ -33,7 +33,18 @@ export const patientSessionController = {
     const { consent, nextActivity, triage, triageNotes, report } =
       patientSession
 
+    const outcomed = patientSession.siblingPatientSessions.filter(
+      ({ outcome }) => outcome !== PatientOutcome.NoOutcomeYet
+    )
+
+    const notOutcomed = patientSession.siblingPatientSessions.filter(
+      ({ outcome }) => outcome === PatientOutcome.NoOutcomeYet
+    )
+
     response.locals.options = {
+      // Show outstanding vaccinations
+      showOutstandingVaccinations:
+        outcomed.length > 0 && notOutcomed.length > 0,
       // Invite to session
       canInvite: consent === ConsentOutcome.NoRequest,
       // Send a reminder to give consent

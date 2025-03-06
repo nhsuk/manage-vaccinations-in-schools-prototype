@@ -290,9 +290,9 @@ export class PatientSession {
    * @returns {Array<PatientSession>} - Patient sessions per programme
    */
   get outstandingVaccinations() {
-    return this.siblingPatientSessions
-      .filter(({ uuid }) => uuid !== this.uuid)
-      .filter(({ nextActivity }) => nextActivity === Activity.Record)
+    return this.siblingPatientSessions.filter(
+      ({ nextActivity }) => nextActivity === Activity.Record
+    )
   }
 
   /**

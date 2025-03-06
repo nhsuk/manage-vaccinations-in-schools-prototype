@@ -41,6 +41,13 @@
 {% block form %}
   {{ super() }}
 
+  {{ govukNotificationBanner({
+    text: __mf("patientSession.outstandingVaccinations.message", {
+      count: patientSession.outstandingVaccinations.length,
+      names: patientSession.formatted.outstandingVaccinations
+    })
+  }) if options.showOutstandingVaccinations }}
+
   {{ patientSessionNavigation({
     patientSession: patientSession,
     view: "show"
@@ -54,12 +61,12 @@
         {% include "patient-session/_triage.njk" %}
       {% endif %}
 
-      {% if options.canRecord %}
-        {% include "patient-session/_record.njk" %}
-      {% endif %}
-
       {% if options.canReport %}
         {% include "patient-session/_report.njk" %}
+      {% endif %}
+
+      {% if options.canRecord %}
+        {% include "patient-session/_record.njk" %}
       {% endif %}
     </div>
 
