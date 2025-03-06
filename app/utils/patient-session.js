@@ -17,12 +17,20 @@ import { VaccinationOutcome } from '../models/vaccination.js'
  * @returns {Activity} Activity
  */
 export const getNextActivity = ({ consent, triage, screen, outcome }) => {
-  if (![ConsentOutcome.Given, ConsentOutcome.FinalRefusal].includes(consent)) {
+  if ([ConsentOutcome.Refused, ConsentOutcome.FinalRefusal].includes(consent)) {
+    return Activity.DoNotRecord
+  }
+
+  if (consent !== ConsentOutcome.Given) {
     return Activity.Consent
   }
 
   if (triage === TriageOutcome.Needed) {
     return Activity.Triage
+  }
+
+  if (screen === ScreenOutcome.DoNotVaccinate) {
+    return Activity.DoNotRecord
   }
 
   if (

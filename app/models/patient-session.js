@@ -41,6 +41,7 @@ export const Activity = {
   Triage: 'Triage health questions',
   Register: 'Register attendance',
   Record: 'Record vaccination',
+  DoNotRecord: 'Do not vaccinate',
   Report: 'Report vaccination'
 }
 
