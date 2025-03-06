@@ -1508,13 +1508,13 @@ export const en = {
       information: 'You can register attendance when a session is in progress.'
     },
     record: {
-      label: 'Record',
+      label: 'Record vaccinations',
       title: 'Record vaccinations',
       information: 'You can record vaccinations when a session is in progress.'
     },
     outcome: {
-      label: 'Outcome',
-      title: 'Review programme outcomes'
+      label: 'Session outcomes',
+      title: 'Review session outcomes'
     },
     'upload-class-list': {
       title: 'Import class lists'
