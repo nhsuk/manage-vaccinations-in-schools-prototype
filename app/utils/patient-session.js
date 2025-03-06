@@ -16,7 +16,7 @@ import { VaccinationOutcome } from '../models/vaccination.js'
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @returns {Activity} Activity
  */
-export const getNextActivity = ({ consent, triage, screen, outcome }) => {
+export const getNextActivity = ({ consent, triage, screen, report }) => {
   if ([ConsentOutcome.Refused, ConsentOutcome.FinalRefusal].includes(consent)) {
     return Activity.DoNotRecord
   }
@@ -33,16 +33,11 @@ export const getNextActivity = ({ consent, triage, screen, outcome }) => {
     return Activity.DoNotRecord
   }
 
-  if (
-    screen !== ScreenOutcome.NeedsTriage &&
-    outcome === PatientOutcome.NoOutcomeYet
-  ) {
-    return Activity.Record
-  }
-
-  if (outcome !== PatientOutcome.NoOutcomeYet) {
+  if (report === PatientOutcome.Vaccinated) {
     return Activity.Report
   }
+
+  return Activity.Record
 }
 
 /**
@@ -206,20 +201,29 @@ export const getRegistrationStatus = (patientSession) => {
 }
 
 /**
- * Get vaccination record status properties
+ * Get vaccination (session) outcome status properties
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} - Vaccination record status properties
+ * @returns {object} - Vaccination (session) outcome status properties
  */
-export const getRecordStatus = (patientSession) => {
-  const { record } = patientSession
+export const getOutcomeStatus = (patientSession) => {
+  const { outcome } = patientSession
 
   let colour
-  switch (String(record)) {
+  switch (String(outcome)) {
     case VaccinationOutcome.Vaccinated:
     case VaccinationOutcome.PartVaccinated:
     case VaccinationOutcome.AlreadyVaccinated:
       colour = 'green'
+      break
+    case VaccinationOutcome.Contraindications:
+    case VaccinationOutcome.Refused:
+    case VaccinationOutcome.AbsentSchool:
+    case VaccinationOutcome.AbsentSession:
+    case VaccinationOutcome.Unwell:
+    case VaccinationOutcome.NoConsent:
+    case VaccinationOutcome.LateConsent:
+      colour = 'dark-orange'
       break
     default:
       colour = 'white'
@@ -227,21 +231,21 @@ export const getRecordStatus = (patientSession) => {
 
   return {
     colour,
-    text: record
+    text: outcome
   }
 }
 
 /**
- * Get patient outcome status properties
+ * Get patient (programme) outcome status properties
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} - Patient outcome status properties
+ * @returns {object} - Patient (programme) outcome status properties
  */
-export const getOutcomeStatus = (patientSession) => {
-  const { outcome } = patientSession
+export const getReportStatus = (patientSession) => {
+  const { report } = patientSession
 
   let colour
-  switch (outcome) {
+  switch (report) {
     case PatientOutcome.Vaccinated:
       colour = 'green'
       break
@@ -256,7 +260,7 @@ export const getOutcomeStatus = (patientSession) => {
 
   return {
     colour,
-    text: outcome
+    text: report
   }
 }
 
@@ -267,9 +271,9 @@ export const getOutcomeStatus = (patientSession) => {
  * @returns {RegistrationOutcome} - Registration outcome
  */
 export const getRegistrationOutcome = (patientSession) => {
-  const { patient, session, outcome } = patientSession
+  const { patient, session, report } = patientSession
 
-  if (outcome === PatientOutcome.Vaccinated) {
+  if (report === PatientOutcome.Vaccinated) {
     return RegistrationOutcome.Complete
   } else if (session.register[patient.uuid]) {
     return session.register[patient.uuid]
@@ -278,7 +282,7 @@ export const getRegistrationOutcome = (patientSession) => {
   return RegistrationOutcome.Pending
 }
 
-export const getPatientOutcome = (patientSession) => {
+export const getReportOutcome = (patientSession) => {
   if (patientSession.vaccinations.length > 0) {
     if (patientSession.vaccinations.at(-1).given) {
       return PatientOutcome.Vaccinated

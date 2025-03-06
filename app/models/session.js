@@ -463,6 +463,7 @@ export class Session {
     for (const programme of this.programmes) {
       programmes[programme.name] = this.patientSessions
         .filter(({ programme_pid }) => programme_pid === programme.pid)
+        .filter(({ register }) => register !== RegistrationOutcome.Pending)
         .filter(({ nextActivity }) => nextActivity === Activity.Record)
     }
 
@@ -479,7 +480,7 @@ export class Session {
     if (!this.isUnplanned) {
       for (const programme of this.programmes) {
         programmes[programme.name] = this.patientSessions.filter(
-          ({ outcome }) => outcome === PatientOutcome.Vaccinated
+          ({ report }) => report === PatientOutcome.Vaccinated
         )
       }
 
@@ -695,9 +696,9 @@ export class Session {
         ({ consent }) => consent === ConsentOutcome.NoResponse
       ),
       couldNotVaccinate: this.patients.filter(
-        ({ consent, outcome }) =>
+        ({ consent, report }) =>
           consent === ConsentOutcome.Given &&
-          outcome !== PatientOutcome.Vaccinated
+          report !== PatientOutcome.Vaccinated
       )
     }
   }
@@ -716,11 +717,11 @@ export class Session {
           ConsentOutcome.Given
         ].includes(consent)
       )
-      .filter(({ outcome }) =>
+      .filter(({ report }) =>
         [
           PatientOutcome.CouldNotVaccinate,
           PatientOutcome.NoOutcomeYet
-        ].includes(outcome)
+        ].includes(report)
       )
   }
 

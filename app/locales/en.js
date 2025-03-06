@@ -874,15 +874,15 @@ export const en = {
       hint: 'Use this password to unlock offline vaccination spreadsheets. Don’t share it with anyone outside your team.'
     }
   },
-  outcome: {
-    label: 'Outcome',
+  report: {
+    label: 'Programme outcome',
     [PatientOutcome.NoOutcomeYet]: {
-      title: 'No outcome yet',
-      label: 'No outcome yet',
+      title: 'No programme outcome yet',
+      label: 'No programme yet',
       count: {
-        one: '%s child without an outcome yet',
+        one: '%s child without a programme outcome yet',
         other:
-          '[0] No children without an outcome|%s children without an outcome yet'
+          '[0] No children without a programme outcome|%s children without a programme outcome yet'
       }
     },
     [PatientOutcome.Vaccinated]: {
@@ -1097,10 +1097,10 @@ export const en = {
     register: {
       label: 'Registration status'
     },
-    record: {
+    outcome: {
       label: 'Session outcome'
     },
-    outcome: {
+    report: {
       label: 'Programme outcome'
     },
     information: {
@@ -1515,6 +1515,10 @@ export const en = {
     outcome: {
       label: 'Session outcomes',
       title: 'Review session outcomes'
+    },
+    report: {
+      label: 'Programme outcome',
+      title: 'Programme outcome'
     },
     'upload-class-list': {
       title: 'Import class lists'

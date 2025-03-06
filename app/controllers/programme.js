@@ -2,7 +2,6 @@ import _ from 'lodash'
 
 import { PatientOutcome } from '../models/patient-session.js'
 import { Programme } from '../models/programme.js'
-import { VaccinationOutcome } from '../models/vaccination.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
@@ -21,7 +20,7 @@ export const programmeController = {
 
   read(request, response, next) {
     const { pid } = request.params
-    const { hasMissingNhsNumber, q, outcome, record } = request.query
+    const { hasMissingNhsNumber, q, record, report } = request.query
     const { data } = request.session
 
     const programme = Programme.read(pid, data)
@@ -31,8 +30,8 @@ export const programmeController = {
     let results = []
 
     const filters = {
-      outcome: outcome || 'none',
-      record: record || 'none'
+      record: record || 'none',
+      report: report || 'none'
     }
 
     // Search
@@ -41,9 +40,9 @@ export const programmeController = {
       results = programme.patientSessions
 
       // Filter by programme outcome
-      if (filters.outcome !== 'none') {
+      if (filters.report !== 'none') {
         results = results.filter(
-          (patientSession) => patientSession.outcome === filters.outcome
+          (patientSession) => patientSession.report === filters.report
         )
       }
 
@@ -77,26 +76,13 @@ export const programmeController = {
     response.locals.pages = getPagination(results, request.query)
 
     // Filter option items
-    response.locals.outcomeItems = [
-      {
-        text: 'All',
-        value: 'none',
-        checked: filters.outcome === 'none'
-      },
-      ...Object.values(PatientOutcome).map((value) => ({
-        text: value,
-        value,
-        checked: value === filters.outcome
-      }))
-    ]
-
     response.locals.statusItems = [
       {
         text: 'All',
         value: 'none',
         checked: filters.record === 'none'
       },
-      ...Object.values(VaccinationOutcome).map((value) => ({
+      ...Object.values(PatientOutcome).map((value) => ({
         text: value,
         value,
         checked: value === filters.record
@@ -127,7 +113,7 @@ export const programmeController = {
 
     const params = {}
 
-    for (const key of ['q', 'outcome', 'record']) {
+    for (const key of ['q', 'record', 'report']) {
       const param = request.body[key]
       if (param) {
         params[key] = String(param)

@@ -40,7 +40,7 @@
     {% set noResponse = session.patients | where("consent", ConsentOutcome.NoResponse) | length %}
     {% set percentageNoResponse = percentage(noResponse, session.patients.length) %}
     {% set triageNeeded = session.patients | where("triage", TriageOutcome.Needed) | length %}
-    {% set vaccinated = session.patients | where("outcome", PatientOutcome.Vaccinated) | length %}
+    {% set vaccinated = session.patients | where("report", PatientOutcome.Vaccinated) | length %}
     {% set percentageVaccinated = percentage(vaccinated, session.patients.length) %}
     {% set sessionRows = sessionRows | push([
       {
@@ -69,7 +69,7 @@
         }
       },
       {
-        header: __("outcome." + PatientOutcome.Vaccinated + ".label"),
+        header: __("report." + PatientOutcome.Vaccinated + ".label"),
         text: count(vaccinated, percentageVaccinated),
         attributes: {
           "data-sort": vaccinated
@@ -110,7 +110,7 @@
         }
       },
       {
-        text: __("outcome." + PatientOutcome.Vaccinated + ".label"),
+        text: __("report." + PatientOutcome.Vaccinated + ".label"),
         attributes: {
           "style": "width: 15%"
         }

@@ -51,7 +51,7 @@
       <auto-submit class="app-grid-column-filters">
         {{ patientSearch({
           clear: session.uri + "/" + view,
-          status: view
+          status: view if view != "record"
         }) }}
       </auto-submit>
 
@@ -106,7 +106,7 @@
                   label: __("patientSession." + view + ".label"),
                   value: statusHtml,
                   href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.register != RegistrationOutcome.Pending
-                }
+                } if view != "record"
               })
             }) }}
 

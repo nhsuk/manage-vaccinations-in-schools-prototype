@@ -39,8 +39,7 @@
     <auto-submit class="app-grid-column-filters">
       {{ patientSearch({
         clear: programme.uri + "/patients",
-        outcome: "outcome",
-        status: "record"
+        status: "report"
       }) }}
     </auto-submit>
 
@@ -67,8 +66,8 @@
               dob: {},
               yearGroup: {},
               status: {
-                label: __("patientSession.outcome.label"),
-                value: patientSession.formatted.status.outcome
+                label: __("patientSession.report.label"),
+                value: patientSession.formatted.status.report
               }
             })
           })

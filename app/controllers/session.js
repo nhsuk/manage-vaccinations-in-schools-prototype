@@ -76,7 +76,6 @@ export const sessionController = {
       consent: request.query.consent || 'none',
       screen: request.query.screen || 'none',
       register: request.query.register || 'none',
-      record: request.query.record || 'none',
       outcome: request.query.outcome || 'none'
     }
 
@@ -107,7 +106,7 @@ export const sessionController = {
       results = results.filter(
         ({ nextActivity, register }) =>
           nextActivity === Activity.Record &&
-          register === RegistrationOutcome.Present
+          register !== RegistrationOutcome.Pending
       )
     }
 
@@ -136,7 +135,9 @@ export const sessionController = {
     // Filters
     const statusItems = {
       consent: ConsentOutcome,
-      register: RegistrationOutcome
+      screen: ScreenOutcome,
+      register: RegistrationOutcome,
+      outcome: VaccinationOutcome
     }
 
     if (statusItems[view]) {
@@ -147,27 +148,6 @@ export const sessionController = {
           checked: filters[view] === 'none'
         },
         ...Object.values(statusItems[view]).map((value) => ({
-          text: value,
-          value,
-          checked: value === filters[view]
-        }))
-      ]
-    }
-
-    const outcomeItems = {
-      screen: ScreenOutcome,
-      record: VaccinationOutcome,
-      outcome: PatientOutcome
-    }
-
-    if (outcomeItems[view]) {
-      response.locals.statusItems = [
-        {
-          text: 'All',
-          value: 'none',
-          checked: filters[view] === 'none'
-        },
-        ...Object.values(outcomeItems[view]).map((value) => ({
           text: value,
           value,
           checked: value === filters[view]
@@ -191,7 +171,7 @@ export const sessionController = {
     delete data.consent
     delete data.screen
     delete data.register
-    delete data.outcome
+    delete data.report
 
     next()
   },
@@ -219,7 +199,6 @@ export const sessionController = {
       'triage',
       'screen',
       'register',
-      'record',
       'outcome'
     ]) {
       const param = request.body[key]

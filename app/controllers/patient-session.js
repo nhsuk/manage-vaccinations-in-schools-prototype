@@ -1,6 +1,7 @@
 import { Gender } from '../models/child.js'
 import { Gillick } from '../models/gillick.js'
 import {
+  Activity,
   ConsentOutcome,
   PatientOutcome,
   PatientSession,
@@ -29,7 +30,7 @@ export const patientSessionController = {
       .find(({ patient }) => patient.nhsn === nhsn)
 
     const { patient, session, programme } = patientSession
-    const { consent, screen, triage, triageNotes, register, outcome } =
+    const { consent, nextActivity, triage, triageNotes, report } =
       patientSession
 
     response.locals.options = {
@@ -53,14 +54,9 @@ export const patientSessionController = {
       canTriage: triage !== TriageOutcome.NotNeeded,
       // Patient already triaged
       hasTriage: triageNotes.length > 0,
-      canRecord:
-        session.isActive &&
-        register === RegistrationOutcome.Present &&
-        triage !== TriageOutcome.Needed &&
-        screen !== ScreenOutcome.DoNotVaccinate &&
-        outcome !== PatientOutcome.Vaccinated,
-      canOutcome:
-        outcome !== PatientOutcome.NoOutcomeYet &&
+      canRecord: nextActivity === Activity.Record,
+      canReport:
+        report !== PatientOutcome.NoOutcomeYet &&
         patientSession.lastRecordedVaccination
     }
 
@@ -80,7 +76,7 @@ export const patientSessionController = {
     const view = request.path.split('/').at(-1)
     response.locals.navigationItems = [
       ...patientSession.siblingPatientSessions.map((patientSession) => ({
-        ...(patientSession.outcome === PatientOutcome.Vaccinated && {
+        ...(patientSession.report === PatientOutcome.Vaccinated && {
           icon: { icon: 'tick' }
         }),
         text: patientSession.programme.name,
@@ -160,7 +156,7 @@ export const patientSessionController = {
     let { __, patient, patientSession, session, back } = response.locals
 
     // Maintain session activity filter, if present
-    if (request.query.register) {
+    if (request.query.register !== 'undefined') {
       back = `${back}?register=${request.query.register}`
     }
 
@@ -173,7 +169,7 @@ export const patientSessionController = {
 
     if (
       register === RegistrationOutcome.Absent &&
-      patientSession.outcome !== PatientOutcome.CouldNotVaccinate
+      patientSession.report !== PatientOutcome.CouldNotVaccinate
     ) {
       // Record vaccination outcome as absent from session if safe to vaccinate
       const programme = Programme.read(session.programme_pids[0], data)

@@ -17,7 +17,7 @@
     } if params.patientSession.register != RegistrationOutcome.Complete, {
       text: __("patientSession.record.title"),
       href: "#"
-    } if not params.patientSession.session.isActive and params.patientSession.outcome != PatientOutcome.Vaccinated]
+    } if not params.patientSession.session.isActive and params.patientSession.report != PatientOutcome.Vaccinated]
   }) if params.patientSession.session.isActive }}
 
   {{ actionList({
@@ -25,7 +25,7 @@
       text: __("patientSession.vaccination.title"),
       href: params.patientSession.uri + "/new/vaccination"
     }]
-  }) if not params.patientSession.session.isActive and params.patientSession.outcome != PatientOutcome.Vaccinated }}
+  }) if not params.patientSession.session.isActive and params.patientSession.report != PatientOutcome.Vaccinated }}
 
   <is-sticky class="app-patient-banner">
     <div class="nhsuk-width-container">

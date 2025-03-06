@@ -4,12 +4,12 @@ import filters from '@x-govuk/govuk-prototype-filters'
 import { getDateValueDifference, today } from '../utils/date.js'
 import {
   getNextActivity,
+  getRegistrationOutcome,
+  getReportOutcome,
   getConsentStatus,
   getOutcomeStatus,
-  getRegistrationOutcome,
-  getPatientOutcome,
-  getRecordStatus,
   getRegistrationStatus,
+  getReportStatus,
   getScreenStatus,
   getTriageStatus
 } from '../utils/patient-session.js'
@@ -301,14 +301,14 @@ export class PatientSession {
    * @returns {string|undefined} Reason could not vaccinate
    */
   get couldNotVaccinateReason() {
-    if (!this.screen) {
+    if (this.vaccinations.length) {
+      return this.vaccinations[0].outcome
+    } else if (this.screen && this.consent !== ConsentOutcome.Given) {
       return this.status.consent.reason
     } else if (this.screen && this.screen !== ScreenOutcome.Vaccinate) {
       return this.status.screen.reason
-    } else if (this.screen && this.consent !== ConsentOutcome.Given) {
+    } else if (!this.screen) {
       return this.status.consent.reason
-    } else if (this.vaccinations.length) {
-      return this.vaccinations[0].outcome
     }
   }
 
@@ -387,11 +387,11 @@ export class PatientSession {
   }
 
   /**
-   * Get last recorded vaccination outcome
+   * Get vaccination (session) outcome
    *
-   * @returns {import('./vaccination.js').VaccinationOutcome|PatientOutcome} - Vaccination outcome
+   * @returns {import('./vaccination.js').VaccinationOutcome|PatientOutcome} - Vaccination (session) outcome
    */
-  get record() {
+  get outcome() {
     if (this.lastRecordedVaccination) {
       return this.lastRecordedVaccination.outcome
     }
@@ -400,12 +400,12 @@ export class PatientSession {
   }
 
   /**
-   * Get patient outcome
+   * Get patient (programme) outcome
    *
-   * @returns {PatientOutcome} - Overall patient outcome
+   * @returns {PatientOutcome} - Overall patient (programme) outcome
    */
-  get outcome() {
-    return getPatientOutcome(this)
+  get report() {
+    return getReportOutcome(this)
   }
 
   /**
@@ -430,8 +430,8 @@ export class PatientSession {
       triage: getTriageStatus(this),
       screen: getScreenStatus(this),
       register: getRegistrationStatus(this),
-      record: getRecordStatus(this),
-      outcome: getOutcomeStatus(this)
+      outcome: getOutcomeStatus(this),
+      report: getReportStatus(this)
     }
   }
 
@@ -451,9 +451,8 @@ export class PatientSession {
       consent,
       triage:
         this.triage === TriageOutcome.Completed && this.status.screen.reason,
-      record: this.screen ? String(this.screen) : this.consent,
-      outcome:
-        this.outcome === PatientOutcome.CouldNotVaccinate &&
+      report:
+        this.report === PatientOutcome.CouldNotVaccinate &&
         this.couldNotVaccinateReason
     }
   }
@@ -490,24 +489,11 @@ export class PatientSession {
             this.reason.screen
           ),
         register: formatTag(this.status.register),
-        record: formatProgrammeStatus(
-          this.programme,
-          this.status.outcome,
-          this.reason.record
-        ),
-        outcome: formatProgrammeStatus(
-          this.programme,
-          this.status.outcome,
-          this.status.record.text
-        )
+        outcome: formatProgrammeStatus(this.programme, this.status.outcome),
+        report: formatProgrammeStatus(this.programme, this.status.report)
       },
       nextActivityPerProgramme: formatList(nextActivityPerProgramme),
-      outstandingVaccinations: filters.formatList(outstandingVaccinations),
-      outcome: formatProgrammeStatus(
-        this.programme,
-        this.status.outcome,
-        this.record
-      )
+      outstandingVaccinations: filters.formatList(outstandingVaccinations)
     }
   }
 
