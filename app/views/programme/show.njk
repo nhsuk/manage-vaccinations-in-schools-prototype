@@ -26,47 +26,74 @@
     view: "show"
   }) }}
 
-  {{ button({
-    classes: "app-button--secondary",
+  <div class="nhsuk-grid-row nhsuk-card-group">
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data app-card--reversed-green",
+        clickable: true if not isDataConsumer,
+        heading: PatientOutcome.Vaccinated,
+        headingClasses: "nhsuk-heading-xs",
+        href: programme.uri + "/patients?outcome=" + PatientOutcome.Vaccinated if not isDataConsumer,
+        description: programme.outcome(PatientOutcome.Vaccinated).length or "0"
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data app-card--reversed-red",
+        clickable: true if not isDataConsumer,
+        heading: PatientOutcome.CouldNotVaccinate,
+        headingClasses: "nhsuk-heading-xs",
+        href: programme.uri + "/patients?outcome=" + PatientOutcome.CouldNotVaccinate if not isDataConsumer,
+        description: programme.outcome(PatientOutcome.CouldNotVaccinate).length or "0"
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data app-card--reversed-grey",
+        clickable: true if not isDataConsumer,
+        heading: PatientOutcome.NoOutcomeYet,
+        headingClasses: "nhsuk-heading-xs",
+        href: programme.uri + "/patients?outcome=" + PatientOutcome.NoOutcomeYet if not isDataConsumer,
+        description: programme.outcome(PatientOutcome.NoOutcomeYet).length or "0"
+      }) }}
+    </div>
+  </div>
+
+  {{ actionLink({
     text: __("download.new.label"),
     href: programme.uri + "/download/new"
   }) if programme.vaccinations.length }}
 
-  <div class="nhsuk-grid-row nhsuk-card-group">
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        classes: "app-card--data app-card--reversed",
-        clickable: true if not isDataConsumer,
-        heading: __("programme.patientSessions.label"),
-        headingClasses: "nhsuk-heading-xs",
-        href: programme.uri + "/patients" if not isDataConsumer,
-        description: programme.patientSessions.length or "0"
-      }) }}
-    </div>
+  {{ heading({
+    level: 2,
+    size: "m",
+    title: __("programme.show.cohorts")
+  }) }}
 
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+  <ul class="nhsuk-grid-row nhsuk-card-group">
+  {% for cohort in programme.cohorts | sort(false, false, "yearGroup") %}
+    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
       {{ card({
-        classes: "app-card--data app-card--reversed",
-        clickable: true if not isDataConsumer,
-        heading: __("programme.sessions.label"),
-        headingClasses: "nhsuk-heading-xs",
-        href: programme.uri + "/sessions" if not isDataConsumer,
-        description: programme.sessions.length or "0"
+        clickable: true,
+        heading: cohort.formatted.yearGroup,
+        headingClasses: "nhsuk-heading-m",
+        href: programme.uri + "/patients?yearGroup=" + cohort.yearGroup,
+        descriptionHtml: __n("cohort.patients.count", cohort.patients.length)
       }) }}
-    </div>
-
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        classes: "app-card--data app-card--reversed",
-        clickable: true if not isDataConsumer,
-        heading: __("programme.vaccinations.label"),
-        headingClasses: "nhsuk-heading-xs",
-        href: programme.uri + "/vaccinations" if not isDataConsumer,
-        description: programme.vaccinations.length or "0"
-      }) }}
-    </div>
+    </li>
+  {% endfor %}
+  </ul>
 
 {% if programme.sessions.length %}
+  {{ heading({
+    level: 2,
+    size: "m",
+    title: __("programme.show.responses")
+  }) }}
+
+  <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         classes: "app-card--data",
@@ -93,10 +120,8 @@
         description: "98%"
       }) }}
     </div>
-{% endif %}
   </div>
 
-{% if programme.sessions.length %}
   {{ table({
     heading: "Reasons for refusal",
     panel: true,

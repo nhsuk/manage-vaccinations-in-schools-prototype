@@ -37,7 +37,7 @@ export const VaccinationOutcome = {
   Contraindications: 'Had contraindications',
   Refused: 'Refused vaccine',
   AbsentSchool: 'Absent from school',
-  AbsentSession: 'Absent from the session',
+  AbsentSession: 'Absent from session',
   Unwell: 'Unwell',
   NoConsent: 'Unable to contact parent',
   LateConsent: 'Consent received too late'
