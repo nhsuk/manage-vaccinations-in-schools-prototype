@@ -493,15 +493,9 @@ export class Session {
    * @returns {Array<Programme>} - Programmes
    */
   get programmes() {
-    if (this.context?.programmes && this.programme_pids) {
-      return this.programme_pids
-        .sort()
-        .map(
-          (pid) => new Programme(this.context?.programmes[pid], this.context)
-        )
-    }
-
-    return []
+    return this.programme_pids
+      .map((pid) => Programme.read(pid, this.context))
+      .sort((a, b) => a.name.localeCompare(b.name))
   }
 
   /**
@@ -770,19 +764,27 @@ export class Session {
 
     const reminderWeeks = filters.plural(this.reminderWeeks, 'week')
 
-    const patientsToRecord = Object.entries(this.patientsToRecord).map(
-      ([name, patientSessions]) =>
-        this.programmes.length > 1
-          ? `${filters.plural(patientSessions.length, 'child')} for ${name}`
-          : `${filters.plural(patientSessions.length, 'child')}`
-    )
+    let patientsToRecord
+    if (this.patientsToRecord) {
+      patientsToRecord = Object.entries(this.patientsToRecord).map(
+        ([name, patientSessions]) =>
+          this.programmes.length > 1
+            ? `${filters.plural(patientSessions.length, 'child')} for ${name}`
+            : `${filters.plural(patientSessions.length, 'child')}`
+      )
+    }
 
-    const patientsVaccinated = Object.entries(this.patientsVaccinated).map(
-      ([name, patientSessions]) =>
-        this.programmes.length > 1
-          ? `${filters.plural(patientSessions.length, 'vaccination')} given for ${name}`
-          : `${filters.plural(patientSessions.length, 'vaccination')} given`
-    )
+    let patientsVaccinated
+    if (this.patientsVaccinated) {
+      patientsVaccinated =
+        this.patientsVaccinated &&
+        Object.entries(this.patientsVaccinated).map(
+          ([name, patientSessions]) =>
+            this.programmes.length > 1
+              ? `${filters.plural(patientSessions.length, 'vaccination')} given for ${name}`
+              : `${filters.plural(patientSessions.length, 'vaccination')} given`
+        )
+    }
 
     return {
       address: this.address?.formatted.multiline,
@@ -829,14 +831,12 @@ export class Session {
         this.patientsToRegister?.length > 0
           ? filters.plural(this.patientsToRegister.length, 'child')
           : undefined,
-      patientsToRecord:
-        this.patientSessions?.length > 0
-          ? patientsToRecord.join('<br>')
-          : undefined,
-      patientsVaccinated:
-        this.patientSessions?.length > 0
-          ? patientsVaccinated.join('<br>')
-          : undefined,
+      patientsToRecord: patientsToRecord
+        ? patientsToRecord.join('<br>')
+        : undefined,
+      patientsVaccinated: patientsVaccinated
+        ? patientsVaccinated.join('<br>')
+        : undefined,
       programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' '),
       consentUrl:
         this.consentUrl &&
