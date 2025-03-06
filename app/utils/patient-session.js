@@ -187,7 +187,7 @@ export const getRegistrationStatus = (patientSession) => {
       description = `Registered as absent from today’s session at ${patientSession.session.location.name}`
       break
     case RegistrationOutcome.Complete:
-      colour = 'white'
+      colour = 'green'
       break
     default:
       colour = 'grey'
