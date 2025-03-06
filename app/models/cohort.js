@@ -130,7 +130,7 @@ export class Cohort {
    * @returns {string} - URI
    */
   get uri() {
-    return `/programmes/${this.programme_pid}/cohorts/${this.uid}`
+    return `/programmes/${this.programme_pid}/patients?yearGroup=${this.yearGroup}`
   }
 
   /**

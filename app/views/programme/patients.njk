@@ -29,12 +29,6 @@
     view: "patients"
   }) }}
 
-  {{ button({
-    classes: "app-button--secondary",
-    text: __("cohort.upload.label"),
-    href: programme.uri + "/uploads/new?type=" + UploadType.Cohort
-  }) }}
-
   <div class="app-grid-row">
     <auto-submit class="app-grid-column-filters">
       {{ patientSearch({
@@ -60,11 +54,14 @@
           classes: "app-card--patient",
           heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
           headingClasses: "nhsuk-heading-s",
-          href: patientSession.uri + "?activity=" + view,
+          href: patientSession.uri,
           descriptionHtml: summaryList({
             rows: summaryRows(patientSession.patient, {
               dob: {},
               yearGroup: {},
+              nextActivity: {
+                value: patientSession.nextActivity
+              },
               status: {
                 label: __("patientSession.report.label"),
                 value: patientSession.formatted.status.report
