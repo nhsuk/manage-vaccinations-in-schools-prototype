@@ -78,7 +78,7 @@ export const programmeController = {
     // Filter option items
     response.locals.statusItems = [
       {
-        text: 'All',
+        text: 'Any',
         value: 'none',
         checked: filters.record === 'none'
       },

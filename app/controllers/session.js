@@ -142,7 +142,7 @@ export const sessionController = {
     if (statusItems[view]) {
       response.locals.statusItems = [
         {
-          text: 'All',
+          text: 'Any',
           value: 'none',
           checked: filters[view] === 'none'
         },
