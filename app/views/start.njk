@@ -1,0 +1,48 @@
+{% from "_macros/logo.njk" import logo %}
+
+{% extends "_layouts/default.njk" %}
+
+{% set public = true %}
+{% set title = serviceName + " (Mavis)" %}
+{% set transactional = true %}
+{% set transactionalService = {
+  name: serviceName,
+  href: "/"
+} %}
+
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      {{ heading({
+        size: "xl",
+        title: title
+      }) }}
+
+      {% filter nhsukMarkdown %}
+Use this service to:
+
+- import cohort lists
+- manage vaccination sessions
+- triage answers to health questions
+- record vaccinations
+- view and download performance reports
+      {% endfilter %}
+
+      {% set buttonHtml %}
+        {{ logo(27) }}
+        <div>
+          <span>Log in with my </span>
+          Care Identity
+        </div>
+      {% endset %}
+
+      {{ button({
+        classes: "app-button--cis2 nhsuk-u-margin-bottom-4",
+        html: buttonHtml,
+        href: "/account/cis2"
+      }) }}
+
+      {{ link("https://manage-care-identities.care-identity-service2.nhs.uk/#/self-service/unlock-authenticator", __("account.cis2.unlock")) | nhsukMarkdown }}
+    </div>
+  </div>
+{% endblock %}

@@ -1,48 +1,73 @@
-{% from "_macros/logo.njk" import logo %}
-
 {% extends "_layouts/default.njk" %}
 
 {% set public = true %}
-{% set title = serviceName + " (Mavis)" %}
-{% set transactional = true %}
-{% set transactionalService = {
-  name: serviceName,
-  href: "/"
-} %}
 
-{% block content %}
-  <div class="nhsuk-grid-row">
-    <div class="nhsuk-grid-column-two-thirds">
+{% block main %}
+  {{ hero({
+    heading: serviceName + " prototype"
+  }) }}
+
+  <div class="nhsuk-width-container">
+    <main class="nhsuk-main-wrapper" id="maincontent" role="main">
       {{ heading({
-        size: "xl",
-        title: title
+        level: 2,
+        title: serviceName,
+        size: "l"
       }) }}
 
-      {% filter nhsukMarkdown %}
-Use this service to:
-
-- import cohort lists
-- manage vaccination sessions
-- triage answers to health questions
-- record vaccinations
-- view and download performance reports
-      {% endfilter %}
-
-      {% set buttonHtml %}
-        {{ logo(27) }}
-        <div>
-          <span>Log in with my </span>
-          Care Identity
-        </div>
-      {% endset %}
-
-      {{ button({
-        classes: "app-button--cis2 nhsuk-u-margin-bottom-4",
-        html: buttonHtml,
-        href: "/account/cis2"
+      {{ contentsList({
+        items: [{
+          text: "Start page for nurses and administrators",
+          href: "/start"
+        }]
       }) }}
 
-      {{ link("https://manage-care-identities.care-identity-service2.nhs.uk/#/self-service/unlock-authenticator", __("account.cis2.unlock")) | nhsukMarkdown }}
-    </div>
+      {{ heading({
+        level: 2,
+        title: "Give or refuse consent for vaccinations",
+        size: "l"
+      }) }}
+
+      {% for id, programme in data.programmes %}
+        {% if id != "menacwy" and id != "td-ipv" %}
+          {{ heading({
+            level: 3,
+            title: programme.name,
+            size: "m"
+          }) }}
+
+          {{ contentsList({
+            items: [{
+              text: "Give or refuse consent for " + programme.name,
+              href: navigation.consentUrl[programme.type]
+            }, {
+              href: navigation.consentUrl[programme.type] + "/emails",
+              text: programme.name + " consent emails"
+            }, {
+              href: navigation.consentUrl[programme.type] + "/texts",
+              text: programme.name + " consent text messages"
+            }]
+          }) }}
+        {% endif %}
+      {% endfor %}
+      {{ heading({
+        level: 3,
+        title: "MenACWY and Td/IPV (doubles)",
+        size: "m"
+      }) }}
+
+      {{ contentsList({
+        items: [{
+          text: "Give or refuse consent for MenACWY and Td/IPV",
+          href: navigation.consentUrl[ProgrammeType.MenACWY]
+        }, {
+          href: navigation.consentUrl[ProgrammeType.MenACWY] + "/emails",
+          text: "MenACWY and Td/IPV consent emails"
+        }, {
+          href: navigation.consentUrl[ProgrammeType.MenACWY] + "/texts",
+          text: "MenACWY and Td/IPV  consent text messages"
+        }]
+      }) }}
+    </main>
   </div>
 {% endblock %}
