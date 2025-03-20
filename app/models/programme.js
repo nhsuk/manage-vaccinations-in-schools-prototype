@@ -62,6 +62,10 @@ export const programmeTypes = {
         'The HPV vaccine helps protect boys and girls against cancers caused by HPV, including:\n- cervical cancer\n- some mouth and throat (head and neck) cancers\n- some cancers of the anal and genital areas\n\nThe HPV vaccine has been given to girls since 2008. Following its success at helping prevent cervical cancers, it was introduced to boys in 2019 to help prevent HPV-related cancers that affect them.\n\nYoung people usually only need 1 dose.',
       url: 'https://www.nhs.uk/conditions/vaccinations/hpv-human-papillomavirus-vaccine/'
     },
+    leaflet: {
+      html: 'https://www.gov.uk/government/publications/hpv-vaccine-vaccination-guide-leaflet/information-on-the-hpv-vaccination-from-september-2023',
+      pdf: 'https://assets.publishing.service.gov.uk/media/64919b26103ca6000c03a212/HPV_Vaccination_For_All_-_English_Leaflet_from_September_2023.pdf'
+    },
     term: SchoolTerm.Spring,
     sequence: ['1P', '2P', '3P'],
     sequenceDefault: '1P',
@@ -79,6 +83,10 @@ export const programmeTypes = {
       description:
         'The Td/IPV vaccine (also called the 3-in-1 teenage booster) helps protect against tetanus, diphtheria and polio.\n\nIt’s offered at around 13 or 14 years old (school year 9 or 10). It boosts the protection provided by the [6-in-1 vaccine](https://www.nhs.uk/vaccinations/6-in-1-vaccine/) and [4-in-1 pre-school booster vaccine](https://www.nhs.uk/vaccinations/4-in-1-preschool-booster-vaccine/).',
       url: 'https://www.nhs.uk/vaccinations/td-ipv-vaccine-3-in-1-teenage-booster/'
+    },
+    leaflet: {
+      html: 'https://www.gov.uk/government/publications/a-guide-to-the-3-in-1-teenage-booster-tdipv/a-guide-to-the-3-in-1-teenage-booster-tdipv-vaccine',
+      pdf: 'https://assets.publishing.service.gov.uk/media/64d125a5e5491a00134b596b/UKHSA_12658_Teenage_3-in-1_booster_guide___TdIPV_05_WEB.pdf'
     },
     term: SchoolTerm.Summer,
     sequence: ['1P', '2P', '3P', '1B', '2B'],
@@ -98,6 +106,10 @@ export const programmeTypes = {
         'The MenACWY vaccine helps protect against life-threatening illnesses including meningitis, sepsis and septicaemia (blood poisoning).\n\nIt is recommended for all teenagers. Most people only need 1 dose of the vaccine.',
       url: 'https://www.nhs.uk/vaccinations/menacwy-vaccine/'
     },
+    leaflet: {
+      html: 'https://www.gov.uk/government/publications/menacwy-vaccine-information-for-young-people/a-guide-to-the-menacwy-vaccine',
+      pdf: 'https://assets.publishing.service.gov.uk/media/667308097d0f95cd08d0db6a/UKHSA_12972_MenACWY_vaccine_leaflet_July2024__WEB.pdf'
+    },
     term: SchoolTerm.Summer,
     yearGroups: [9, 10, 11],
     vaccine_smomeds: ['39779611000001104']
@@ -110,6 +122,8 @@ export const programmeTypes = {
  * @param {object} [context] - Context
  * @property {object} [context] - Context
  * @property {string} name - Name
+ * @property {object} information - NHS.UK programme information
+ * @property {object} leaflet - UKHSA programme information leaflets
  * @property {boolean} active - Active programme
  * @property {boolean} seasonal - Seasonal programme
  * @property {ProgrammeStatus} status - Status
@@ -130,6 +144,7 @@ export class Programme {
     this.name = options?.type && programmeTypes[options.type]?.name
     this.information =
       options?.type && programmeTypes[options.type]?.information
+    this.leaflet = options?.type && programmeTypes[options.type]?.leaflet
     this.active = options?.type && programmeTypes[options.type]?.active
     this.seasonal = options?.type && programmeTypes[options.type]?.seasonal
     this.year = options?.year || SchoolYear.Y2024
