@@ -281,6 +281,34 @@ export const getRegistrationOutcome = (patientSession) => {
   return RegistrationOutcome.Pending
 }
 
+/**
+ * Get vaccination (session) outcome
+ *
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @returns {VaccinationOutcome|PatientOutcome} - Vaccination (session) outcome
+ */
+export const getSessionOutcome = (patientSession) => {
+  if (patientSession.lastRecordedVaccination) {
+    return patientSession.lastRecordedVaccination.outcome
+  } else if (
+    [ConsentOutcome.Refused, ConsentOutcome.FinalRefusal].includes(
+      patientSession.consent
+    )
+  ) {
+    return VaccinationOutcome.Refused
+  } else if (patientSession.screen === ScreenOutcome.DoNotVaccinate) {
+    return VaccinationOutcome.Contraindications
+  }
+
+  return PatientOutcome.NoOutcomeYet
+}
+
+/**
+ * Get patient (programme) outcome
+ *
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @returns {PatientOutcome} - Overall patient (programme) outcome
+ */
 export const getReportOutcome = (patientSession) => {
   if (patientSession.vaccinations.length > 0) {
     if (patientSession.vaccinations.at(-1).given) {

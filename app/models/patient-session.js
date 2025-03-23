@@ -10,6 +10,7 @@ import {
   getOutcomeStatus,
   getRegistrationStatus,
   getReportStatus,
+  getSessionOutcome,
   getScreenStatus,
   getTriageStatus
 } from '../utils/patient-session.js'
@@ -392,11 +393,7 @@ export class PatientSession {
    * @returns {import('./vaccination.js').VaccinationOutcome|PatientOutcome} - Vaccination (session) outcome
    */
   get outcome() {
-    if (this.lastRecordedVaccination) {
-      return this.lastRecordedVaccination.outcome
-    }
-
-    return PatientOutcome.NoOutcomeYet
+    return getSessionOutcome(this)
   }
 
   /**
