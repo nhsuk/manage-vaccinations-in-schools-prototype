@@ -218,8 +218,7 @@ export const getOutcomeStatus = (patientSession) => {
       break
     case VaccinationOutcome.Contraindications:
     case VaccinationOutcome.Refused:
-    case VaccinationOutcome.AbsentSchool:
-    case VaccinationOutcome.AbsentSession:
+    case VaccinationOutcome.Absent:
     case VaccinationOutcome.Unwell:
     case VaccinationOutcome.NoConsent:
     case VaccinationOutcome.LateConsent:

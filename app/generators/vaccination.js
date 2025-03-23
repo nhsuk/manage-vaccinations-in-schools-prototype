@@ -35,8 +35,7 @@ export function generateVaccination(
       { value: VaccinationOutcome.Vaccinated, weight: 7 },
       { value: VaccinationOutcome.PartVaccinated, weight: 1 },
       { value: VaccinationOutcome.Refused, weight: 1 },
-      { value: VaccinationOutcome.AbsentSchool, weight: 1 },
-      { value: VaccinationOutcome.AbsentSession, weight: 1 },
+      { value: VaccinationOutcome.Absent, weight: 1 },
       { value: VaccinationOutcome.Unwell, weight: 1 }
     ])
   } else {

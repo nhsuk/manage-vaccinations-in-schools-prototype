@@ -174,12 +174,12 @@ export const patientSessionController = {
       register === RegistrationOutcome.Absent &&
       patientSession.report !== PatientOutcome.CouldNotVaccinate
     ) {
-      // Record vaccination outcome as absent from session if safe to vaccinate
+      // Record vaccination outcome as absent if safe to vaccinate
       const programme = Programme.read(session.programme_pids[0], data)
       const vaccination = new Vaccination({
         location: session.location.name,
         school_urn: session.school_urn,
-        outcome: VaccinationOutcome.AbsentSession,
+        outcome: VaccinationOutcome.Absent,
         patient_uuid: patient.uuid,
         programme_pid: programme.pid,
         session_id: session.id,
