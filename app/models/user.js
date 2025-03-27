@@ -32,12 +32,12 @@ export class User {
   }
 
   /**
-   * Get full name
+   * Get full name, formatted as LASTNAME, Firstname
    *
    * @returns {string} - Full name
    */
   get fullName() {
-    return [this.firstName, this.lastName].join(' ')
+    return [this.lastName.toUpperCase(), this.firstName].join(', ')
   }
 
   /**
