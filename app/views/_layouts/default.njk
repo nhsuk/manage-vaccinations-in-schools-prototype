@@ -50,7 +50,11 @@
 {% endblock %}
 
 {% set bodyAttributes = {"data-module": "edge"} %}
-{% set bodyClasses = bodyClasses + " app-signed-in" if not public %}
+{% if bodyClasses %}
+  {% set bodyClasses = bodyClasses + " app-signed-in" if not public %}
+{% elif not public %}
+  {% set bodyClasses = "app-signed-in" %}
+{% endif %}
 
 {% block header %}
   {{ env(environment) if environment }}
