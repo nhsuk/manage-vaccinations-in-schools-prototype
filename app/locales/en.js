@@ -1889,8 +1889,14 @@ export const en = {
     },
     file: {
       title: 'Import {{type}}',
-      hint: '{{prefix}}Make sure the CSV you import has the same format as your usual template for {{type}}.',
-      format: 'How to format your CSV for {{type}}',
+      label: 'Upload file',
+      description: {
+        report:
+          'You can import vaccination records by uploading:\n\n- a Mavis CSV file\n- a SystmOne file',
+        other:
+          'The file you upload should use the Mavis CSV format for {{type}}'
+      },
+      format: 'How to format your Mavis CSV file for {{type}}',
       errors: {
         invalid: 'The selected file must be a CSV'
       }

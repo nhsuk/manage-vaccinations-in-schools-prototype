@@ -21,47 +21,30 @@
     errorList: errorList(errors)
   }) if errors }}
 
+  {{ heading({
+    title: title
+  }) }}
+
   {% if upload.type == UploadType.Report %}
-    {% if programme.type == ProgrammeType.Flu %}
-      {% set hintText = __("upload.file.hint", {
-        type: upload.type | lower,
-        prefix: "These will go to NHS England and GPs. "
-      }) %}
-    {% elif programme.type == ProgrammeType.HPV %}
-      {% set hintText = __("upload.file.hint", {
-        type: upload.type | lower,
-        prefix: "These will go to NHS England. "
-      }) %}
-    {% else %}
-      {% set hintText = __("upload.file.hint", {
-        type: upload.type | lower
-      }) %}
-    {% endif %}
+    {{ __("upload.file.description.report") | nhsukMarkdown }}
   {% else %}
-    {% set hintText = __("upload.file.hint", {
-      type: upload.type | lower
-    }) %}
+    {{ __("upload.file.description.other", { type: upload.type | lower }) | nhsukMarkdown }}
   {% endif %}
+
+  {{ details({
+    text: __("upload.file.format", { type: upload.type | lower }),
+    HTML: templateFormat
+  }) }}
 
   {{ govukFileUpload({
     id: "upload",
     name: "upload",
     label: {
       classes: "nhsuk-label--m",
-      html: heading({
-        title: title
-      })
-    },
-    hint: {
-      text: hintText
+      text: __("upload.file.label")
     },
     errorMessage: {
       text: errors.upload
     } if errors.upload
   }) | replace("govuk-", "nhsuk-") }}
-
-  {{ details({
-    text: __("upload.file.format", { type: upload.type | lower }),
-    HTML: templateFormat
-  }) }}
 {% endblock %}
