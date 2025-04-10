@@ -519,22 +519,6 @@ export class Session {
   }
 
   /**
-   * Get pre-screen questions for all programme vaccines
-   *
-   * @returns {Array<string>} - Pre-screen questions
-   */
-  get preScreenQuestions() {
-    const preScreenQuestions = new Set()
-    for (const vaccine of this.vaccines) {
-      for (const key of vaccine.preScreenQuestions) {
-        preScreenQuestions.add(key)
-      }
-    }
-
-    return [...preScreenQuestions]
-  }
-
-  /**
    * Get session vaccines
    *
    * @returns {Array<Vaccine>} - Vaccines

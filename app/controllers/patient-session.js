@@ -14,6 +14,7 @@ import {
   VaccinationOutcome,
   VaccinationSite
 } from '../models/vaccination.js'
+import { PreScreenQuestion } from '../models/vaccine.js'
 import { today } from '../utils/date.js'
 
 export const patientSessionController = {
@@ -27,9 +28,17 @@ export const patientSessionController = {
       .filter(({ programme_pid }) => programme_pid === pid)
       .find(({ patient }) => patient.nhsn === nhsn)
 
-    const { patient, session, programme } = patientSession
-    const { consent, nextActivity, register, triage, triageNotes, report } =
-      patientSession
+    const {
+      consent,
+      nextActivity,
+      patient,
+      programme,
+      register,
+      report,
+      session,
+      triage,
+      triageNotes
+    } = patientSession
 
     const outcomed = patientSession.siblingPatientSessions.filter(
       ({ outcome }) => outcome !== PatientOutcome.NoOutcomeYet
@@ -115,18 +124,20 @@ export const patientSessionController = {
     response.locals.patient = patient
     response.locals.session = session
 
+    // Use different values for pre-screening questions
+    // `IsWell` and `IsPregnant` should persist per patient
     response.locals.preScreenQuestionItems = Object.entries(
-      session.preScreenQuestions
-    ).map(([key, value]) => ({
-      text:
-        session.programmes.length > 1
-          ? value
-              .replace('the vaccination is', 'these vaccinations are')
-              .replace('this vaccination', 'these vaccinations')
-              .replace('have it', 'have them')
-          : value,
-      value: key
-    }))
+      programme.vaccine.preScreenQuestions
+    ).map(([key, text]) => {
+      let value = `${programme.pid}-${key}`
+      if (text === PreScreenQuestion.IsWell) {
+        value = `${nhsn}-is-well`
+      } else if (text === PreScreenQuestion.IsPregnant) {
+        value = `${nhsn}-is-pregnant`
+      }
+
+      return { text, value }
+    })
 
     next()
   },

@@ -37,11 +37,11 @@ export default {
       HealthQuestion.Aspirin
     ],
     preScreenQuestions: [
-      PreScreenQuestion.IsHappy,
-      PreScreenQuestion.IsVaccinated,
       PreScreenQuestion.IsWell,
+      PreScreenQuestion.IsMedicated,
       PreScreenQuestion.IsAllergic,
-      PreScreenQuestion.IsMedicated
+      PreScreenQuestion.IsVaccinated,
+      PreScreenQuestion.IsHappy
     ]
   },
   '40085011000001101': {
@@ -73,11 +73,11 @@ export default {
       HealthQuestion.PreviousReaction
     ],
     preScreenQuestions: [
-      PreScreenQuestion.IsHappy,
-      PreScreenQuestion.IsVaccinated,
       PreScreenQuestion.IsWell,
+      PreScreenQuestion.IsMedicated,
       PreScreenQuestion.IsAllergic,
-      PreScreenQuestion.IsMedicated
+      PreScreenQuestion.IsVaccinated,
+      PreScreenQuestion.IsHappy
     ]
   },
   // HPV vaccines
@@ -106,11 +106,11 @@ export default {
       HealthQuestion.PreviousReaction
     ],
     preScreenQuestions: [
-      PreScreenQuestion.IsHappy,
-      PreScreenQuestion.IsVaccinated,
       PreScreenQuestion.IsWell,
+      PreScreenQuestion.IsPregnant,
       PreScreenQuestion.IsAllergic,
-      PreScreenQuestion.IsPregnant
+      PreScreenQuestion.IsVaccinated,
+      PreScreenQuestion.IsHappy
     ]
   },
   // 3-in-1 vaccines
@@ -141,12 +141,12 @@ export default {
       HealthQuestion.RecentTdIpvVaccination
     ],
     preScreenQuestions: [
-      PreScreenQuestion.IsHappy,
-      PreScreenQuestion.IsVaccinated,
       PreScreenQuestion.IsWell,
-      PreScreenQuestion.IsAllergic,
+      PreScreenQuestion.IsPregnant,
       PreScreenQuestion.IsMedicated,
-      PreScreenQuestion.IsPregnant
+      PreScreenQuestion.IsAllergic,
+      PreScreenQuestion.IsVaccinated,
+      PreScreenQuestion.IsHappy
     ]
   },
   // MenACWY vaccines
@@ -180,11 +180,11 @@ export default {
       HealthQuestion.RecentMenAcwyVaccination
     ],
     preScreenQuestions: [
-      PreScreenQuestion.IsHappy,
-      PreScreenQuestion.IsVaccinated,
       PreScreenQuestion.IsWell,
+      PreScreenQuestion.IsMedicated,
       PreScreenQuestion.IsAllergic,
-      PreScreenQuestion.IsMedicated
+      PreScreenQuestion.IsVaccinated,
+      PreScreenQuestion.IsHappy
     ]
   }
 }
