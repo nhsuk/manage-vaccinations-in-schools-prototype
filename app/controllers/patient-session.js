@@ -28,7 +28,7 @@ export const patientSessionController = {
       .find(({ patient }) => patient.nhsn === nhsn)
 
     const { patient, session, programme } = patientSession
-    const { consent, nextActivity, triage, triageNotes, report } =
+    const { consent, nextActivity, register, triage, triageNotes, report } =
       patientSession
 
     const outcomed = patientSession.siblingPatientSessions.filter(
@@ -63,7 +63,9 @@ export const patientSessionController = {
       canTriage: triage !== TriageOutcome.NotNeeded,
       // Patient already triaged
       hasTriage: triageNotes.length > 0,
-      canRecord: nextActivity === Activity.Record,
+      canRecord:
+        register === RegistrationOutcome.Present &&
+        nextActivity === Activity.Record,
       canReport:
         report !== PatientOutcome.NoOutcomeYet &&
         patientSession.lastRecordedVaccination
