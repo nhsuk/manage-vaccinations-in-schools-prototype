@@ -9,7 +9,7 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 export function kebabToPascalCase(string) {
   return string.replace(/(^\w|-\w)/g, (string) =>
     string.replace(/-/, '').toUpperCase()
-  )
+  );
 }
 
 /**
@@ -19,7 +19,7 @@ export function kebabToPascalCase(string) {
  * @returns {string} kebab-case string
  */
 export function pascalToKebabCase(string) {
-  return string.replace(/([a-z0–9])([A-Z])/g, '$1-$2').toLowerCase()
+  return string.replace(/([a-z0–9])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
 /**

@@ -25,5 +25,5 @@ export function generateOrganisation() {
       memorable: true,
       length: 16
     })
-  })
+  });
 }
