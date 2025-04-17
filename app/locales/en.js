@@ -1154,13 +1154,18 @@ export const en = {
       label: 'Consent responses'
     },
     preScreen: {
-      label: 'Session pre-screen',
-      questions: {
-        label: '{{patient.firstName}} has confirmed that they:'
+      label: 'Pre-screening checks',
+      description: '{{patient.firstName}} has confirmed that they:',
+      check: {
+        error:
+          'Select if the child has confirmed all pre-screening statements are true',
+        label:
+          '{{patient.firstName}} has confirmed the above statements are true'
       },
       ready: {
         label:
           'Is {{patient.firstName}} ready for their {{programme.name}} vaccination?',
+        hint: 'Pre-screening checks must be completed for vaccination to go ahead',
         yes: 'Yes',
         no: 'No'
       },
