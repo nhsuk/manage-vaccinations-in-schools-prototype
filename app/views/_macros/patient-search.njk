@@ -37,6 +37,18 @@
       decorate: "q"
     }) }}
 
+    {{ checkboxes({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("programme.label")
+        }
+      },
+      id: "pid",
+      name: "pid",
+      items: programmeItems
+    }) if programmeItems }}
+
     {{ radios({
       fieldset: {
         legend: {

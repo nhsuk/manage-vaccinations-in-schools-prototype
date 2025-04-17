@@ -1,3 +1,4 @@
+import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
 import { formatDate } from './utils/date.js'
@@ -167,6 +168,16 @@ export default (env) => {
    */
   filters.where = (array, key, value) => {
     return array.filter((item) => _.get(item, key) === value)
+  }
+
+  /**
+   * Filter array where array includes value
+   *
+   * @param {Array} array - Array
+   * @param {string} value - Value to check
+   */
+  filters.includes = (array, value) => {
+    return prototypeFilters.arrayOrStringIncludes(array, value)
   }
 
   /**
