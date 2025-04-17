@@ -36,6 +36,28 @@ export default () => {
   }
 
   /**
+   * Get form field items for a given outcome Enum
+   *
+   * @param {object} Enum - Enumerable name
+   * @param {string} selected - Selected value
+   * @returns {object} Form field items
+   */
+  globals.outcomeItems = function (Enum, selected) {
+    return [
+      {
+        text: 'Any',
+        value: 'none',
+        checked: !selected || selected === 'none'
+      },
+      ...Object.values(Enum).map((value) => ({
+        text: value,
+        value,
+        checked: value === selected
+      }))
+    ]
+  }
+
+  /**
    * Convert errors object to array for errorSummary component
    *
    * @param {object} errors - Error messages

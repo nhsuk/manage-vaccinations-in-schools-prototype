@@ -39,7 +39,11 @@
     <auto-submit class="app-grid-column-filters">
       {{ patientSearch({
         clear: programme.uri + "/patients",
-        status: "report"
+        outcomes: {
+          consent: ConsentOutcome,
+          screen: ScreenOutcome,
+          report: PatientOutcome
+        }
       }) }}
     </auto-submit>
 
@@ -65,6 +69,14 @@
             rows: summaryRows(patientSession.patient, {
               dob: {},
               yearGroup: {},
+              consent: {
+                label: __("patientSession.consent.label"),
+                value: patientSession.formatted.status.consent
+              },
+              screen: {
+                label: __("patientSession.screen.label"),
+                value: patientSession.formatted.status.screen
+              },
               status: {
                 label: __("patientSession.report.label"),
                 value: patientSession.formatted.status.report

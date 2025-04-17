@@ -1,6 +1,5 @@
 import _ from 'lodash'
 
-import { PatientOutcome } from '../models/patient-session.js'
 import { Programme } from '../models/programme.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
@@ -20,12 +19,19 @@ export const programmeController = {
 
   read(request, response, next) {
     const { pid } = request.params
-    const { hasMissingNhsNumber, q, report } = request.query
+    const { hasMissingNhsNumber, q, yearGroup } = request.query
     const { data } = request.session
 
     const programme = Programme.read(pid, data)
 
     response.locals.programme = programme
+
+    // Convert year groups query into an array of numbers
+    let yearGroups
+    if (yearGroup) {
+      yearGroups = Array.isArray(yearGroup) ? yearGroup : [yearGroup]
+      yearGroups = yearGroups.map((year) => Number(year))
+    }
 
     let results = []
 
@@ -34,10 +40,20 @@ export const programmeController = {
     if (view === 'patients') {
       results = programme.patientSessions
 
-      // Filter by programme outcome
-      if (report && report !== 'none') {
-        results = results.filter(
-          (patientSession) => patientSession.report === report
+      // Filter by outcome
+      for (const name of ['consent', 'screen', 'report']) {
+        const outcome = request.query[name]
+        if (outcome && outcome !== 'none') {
+          results = results.filter(
+            (patientSession) => patientSession[name] === outcome
+          )
+        }
+      }
+
+      // Filter by year group
+      if (yearGroup) {
+        results = results.filter(({ patient }) =>
+          yearGroups.includes(patient.yearGroup)
         )
       }
 
@@ -63,28 +79,19 @@ export const programmeController = {
     response.locals.results = getResults(results, request.query)
     response.locals.pages = getPagination(results, request.query)
 
-    // Filter option items
-    response.locals.statusItems = [
-      {
-        text: 'Any',
-        value: 'none',
-        checked: report === 'none'
-      },
-      ...Object.values(PatientOutcome).map((value) => ({
-        text: value,
-        value,
-        checked: value === report
-      }))
-    ]
-
+    // Filters
     response.locals.yearGroupItems = programme.cohorts.map((cohort) => ({
       text: formatYearGroup(cohort.yearGroup),
-      value: cohort.yearGroup
+      value: cohort.yearGroup,
+      checked: yearGroups?.includes(cohort.yearGroup)
     }))
 
     // Clean up session data
     delete data.hasMissingNhsNumber
     delete data.q
+    delete data.consent
+    delete data.screen
+    delete data.report
 
     next()
   },
@@ -97,19 +104,27 @@ export const programmeController = {
 
   updatePatients(request, response) {
     const { pid } = request.params
-    const { hasMissingNhsNumber } = request.body
+    const { hasMissingNhsNumber, yearGroup } = request.body
 
-    const params = {}
-
-    for (const key of ['q', 'report']) {
+    const params = new URLSearchParams()
+    for (const key of ['q', 'consent', 'screen', 'report']) {
       const param = request.body[key]
       if (param) {
-        params[key] = String(param)
+        params.append(key, String(param))
       }
     }
 
+    if (yearGroup) {
+      const yearGroups = Array.isArray(yearGroup) ? yearGroup : [yearGroup]
+      yearGroups
+        .filter((item) => item !== '_unchecked')
+        .forEach((year) => {
+          params.append('yearGroup', String(year))
+        })
+    }
+
     if (hasMissingNhsNumber?.includes('true')) {
-      params.hasMissingNhsNumber = true
+      params.append('hasMissingNhsNumber', 'true')
     }
 
     // @ts-ignore

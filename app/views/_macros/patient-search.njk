@@ -60,6 +60,19 @@
       decorate: params.status
     }) if params.status }}
 
+    {% for name, enums in params.outcomes %}
+      {{ radios({
+        fieldset: {
+          legend: {
+            classes: "nhsuk-fieldset__legend--s",
+            text: __("patientSession." + name + ".label")
+          }
+        },
+        items: outcomeItems(enums, data[name]),
+        decorate: name
+      }) }}
+    {% endfor %}
+
     {{ checkboxes({
       fieldset: {
         legend: {
