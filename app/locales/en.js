@@ -1154,9 +1154,11 @@ export const en = {
       label: 'Consent responses'
     },
     preScreen: {
-      label: 'Session pre-screen',
+      label: 'Pre-screening questions',
+      description: '{{patient.firstName}} has confirmed that they:',
       questions: {
-        label: '{{patient.firstName}} has confirmed that they:'
+        label:
+          '{{patient.firstName}} has confirmed the above statements are true'
       },
       ready: {
         label:

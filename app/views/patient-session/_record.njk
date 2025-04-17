@@ -5,8 +5,17 @@
 }) }}
 
 {% set preScreenDescriptionHtml %}
+{% filter nhsukMarkdown %}
+{{ __("patientSession.preScreen.description", { patient: patient }) }}
+{% for question in programme.vaccine.preScreenQuestions %}
+- {{ question }}
+{%- endfor %}
+{% endfilter %}
+
   {{ checkboxes({
-    items: preScreenQuestionItems,
+    items: [{
+      text: __("patientSession.preScreen.questions.label")
+    }],
     decorate: ["patientSession", "preScreen", "questions"]
   }) }}
 
@@ -59,7 +68,7 @@
 {% endset %}
 
 {{ card({
-  heading: __("patientSession.preScreen.questions.label", {
+  heading: __("patientSession.preScreen.label", {
     patient: patient
   }),
   headingClasses: "nhsuk-heading-m",

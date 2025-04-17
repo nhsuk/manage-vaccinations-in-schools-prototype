@@ -71,7 +71,7 @@ export const HealthQuestion = {
  * @enum {string}
  */
 export const PreScreenQuestion = {
-  IsWell: 'are feeling well',
+  IsWell: 'are not acutely unwell',
   IsPregnant: 'are not pregnant',
   IsMedicated: 'are not taking any medication which prevents vaccination',
   IsAllergic: 'have no allergies which would prevent vaccination',
