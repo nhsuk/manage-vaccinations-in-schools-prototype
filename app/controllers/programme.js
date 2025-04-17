@@ -20,7 +20,7 @@ export const programmeController = {
 
   read(request, response, next) {
     const { pid } = request.params
-    const { hasMissingNhsNumber, q, record, report } = request.query
+    const { hasMissingNhsNumber, q, report } = request.query
     const { data } = request.session
 
     const programme = Programme.read(pid, data)
@@ -29,27 +29,15 @@ export const programmeController = {
 
     let results = []
 
-    const filters = {
-      record: record || 'none',
-      report: report || 'none'
-    }
-
     // Search
     const view = request.path.split('/').at(-1)
     if (view === 'patients') {
       results = programme.patientSessions
 
       // Filter by programme outcome
-      if (filters.report !== 'none') {
+      if (report && report !== 'none') {
         results = results.filter(
-          (patientSession) => patientSession.report === filters.report
-        )
-      }
-
-      // Filter by vaccination record status
-      if (filters.record !== 'none') {
-        results = results.filter(
-          (patientSession) => patientSession.record === filters.record
+          (patientSession) => patientSession.report === report
         )
       }
 
@@ -80,12 +68,12 @@ export const programmeController = {
       {
         text: 'Any',
         value: 'none',
-        checked: filters.record === 'none'
+        checked: report === 'none'
       },
       ...Object.values(PatientOutcome).map((value) => ({
         text: value,
         value,
-        checked: value === filters.record
+        checked: value === report
       }))
     ]
 
@@ -113,7 +101,7 @@ export const programmeController = {
 
     const params = {}
 
-    for (const key of ['q', 'record', 'report']) {
+    for (const key of ['q', 'report']) {
       const param = request.body[key]
       if (param) {
         params[key] = String(param)
