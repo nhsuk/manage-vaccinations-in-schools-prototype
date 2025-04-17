@@ -291,7 +291,7 @@ export class Download {
             PERFORMING_PROFESSIONAL: vaccination.createdBy?.fullName
           }[header]
 
-          return `"${(value || '').toString().replace(/"/g, '""')}"`;
+          return `"${(value || '').toString().replace(/"/g, '""')}"`
         })
         .join(',')
     )

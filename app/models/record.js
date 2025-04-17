@@ -69,7 +69,7 @@ export class Record extends Child {
    * @returns {boolean} - Has missing NHS number
    */
   get hasMissingNhsNumber() {
-    return !this.nhsn.match(/^\d{10}$/);
+    return !this.nhsn.match(/^\d{10}$/)
   }
 
   /**
