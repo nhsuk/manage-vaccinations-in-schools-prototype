@@ -82,15 +82,18 @@
 
         {% for patientSession in results.page %}
           {% set statusHtml %}
-          {% if view == "register" %}
-            {{ patientSession.formatted.status.register | safe }}
-          {% else %}
-            {% for patientSession in patientSession.siblingPatientSessions %}
-              {% if patientSession.formatted.status[view] %}
-                <p>{{ patientSession.formatted.status[view] | safe }}</p>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
+            {% if view == "register" %}
+              {{ patientSession.formatted.status.register | safe }}
+            {% else %}
+              {% set pids = data.pids or session.programme_pids %}
+              {% for patientSession in patientSession.siblingPatientSessions %}
+                {% if pids | includes(patientSession.programme_pid) %}
+                  {% if patientSession.formatted.status[view] %}
+                    <p>{{ patientSession.formatted.status[view] | safe }}</p>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            {% endif %}
           {% endset %}
 
           {% set cardDescriptionHtml %}

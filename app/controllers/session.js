@@ -46,7 +46,7 @@ export const sessionController = {
 
   read(request, response, next) {
     const { id, view } = request.params
-    const { hasMissingNhsNumber, snomed, q, yearGroup } = request.query
+    const { hasMissingNhsNumber, snomed, pids, q, yearGroup } = request.query
     const { data } = request.session
 
     response.locals.view = view
@@ -70,7 +70,14 @@ export const sessionController = {
       )
     }
 
-    // Filter
+    // Filter by programme
+    if (pids) {
+      results = results.filter((patientSession) =>
+        pids.includes(patientSession.programme_pid)
+      )
+    }
+
+    // Filter by status
     const filters = {
       consent: request.query.consent || 'none',
       screen: request.query.screen || 'none',
@@ -78,7 +85,6 @@ export const sessionController = {
       outcome: request.query.outcome || 'none'
     }
 
-    // Filter by status
     if (filters[view] !== 'none') {
       results = results.filter(
         (patientSession) => patientSession[view] === filters[view]
@@ -132,6 +138,14 @@ export const sessionController = {
     }
 
     // Filters
+    if (session.programmes.length > 1) {
+      response.locals.programmeItems = session.programmes.map((programme) => ({
+        text: programme.name,
+        value: programme.pid,
+        checked: pids?.includes(programme.pid)
+      }))
+    }
+
     const statusItems = {
       consent: ConsentOutcome,
       screen: ScreenOutcome,
@@ -166,6 +180,7 @@ export const sessionController = {
 
     // Clean up session data
     delete data.hasMissingNhsNumber
+    delete data.pids
     delete data.q
     delete data.consent
     delete data.screen
@@ -189,7 +204,7 @@ export const sessionController = {
 
   search(request, response) {
     const { id, view } = request.params
-    const { hasMissingNhsNumber, yearGroup } = request.body
+    const { hasMissingNhsNumber, pid, yearGroup } = request.body
 
     const params = new URLSearchParams()
     for (const key of [
@@ -204,6 +219,15 @@ export const sessionController = {
       if (param) {
         params.append(key, String(param))
       }
+    }
+
+    if (pid) {
+      const pids = Array.isArray(pid) ? pid : [pid]
+      pids
+        .filter((item) => item !== '_unchecked')
+        .forEach((pid) => {
+          params.append('pids', pid)
+        })
     }
 
     if (yearGroup) {
