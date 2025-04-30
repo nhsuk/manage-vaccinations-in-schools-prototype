@@ -15,10 +15,7 @@ router.get(
 router.all('/:nhsn/?:form(new|edit)/:view', patientSessionController.readForm)
 router.get('/:nhsn/?:form(new|edit)/:view', patientSessionController.showForm)
 router.post('/:nhsn/?:form(new|edit)/gillick', patientSessionController.gillick)
-router.post(
-  '/:nhsn/?:form(new|edit)/pre-screen',
-  patientSessionController.preScreen
-)
+router.post('/:nhsn/new/pre-screen', patientSessionController.preScreen)
 router.post(
   '/:nhsn/?:form(new|edit)/registration',
   patientSessionController.register

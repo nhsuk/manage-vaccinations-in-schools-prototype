@@ -17,9 +17,8 @@
       text: __("patientSession.preScreen.check.label", { patient: patient })
     }],
     decorate: ["patientSession", "preScreen", "check"],
-    validate: {
+    _validate: {
       presence: {
-        name: "dave",
         message: __("patientSession.preScreen.check.error")
       }
     }
@@ -56,7 +55,16 @@
               legend: { text: __("patientSession.preScreen.injectionSite.label") }
             },
             items: injectionSiteItems,
-            decorate: "patientSession.preScreen.injectionSite"
+            decorate: "patientSession.preScreen.injectionSite",
+            _validate: {
+              conditional: {
+                dependentOn: {
+                  name: "[patientSession][preScreen][ready]",
+                  value: true
+                },
+                message: __("patientSession.preScreen.injectionSite.error")
+              }
+            }
           })
         }
       },
@@ -65,7 +73,14 @@
         value: false
       }
     ],
-    decorate: "patientSession.preScreen.ready"
+    decorate: "patientSession.preScreen.ready",
+    _validate: {
+      presence: {
+        message: __("patientSession.preScreen.ready.error", {
+          programme: programme
+        })
+      }
+    }
   }) }}
 
   {{ button({

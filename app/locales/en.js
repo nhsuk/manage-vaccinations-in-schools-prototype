@@ -1163,6 +1163,8 @@ export const en = {
           '{{patient.firstName}} has confirmed the above statements are true'
       },
       ready: {
+        error:
+          'Select if the child is ready for their {{programme.name}} vaccination',
         label:
           'Is {{patient.firstName}} ready for their {{programme.name}} vaccination?',
         hint: 'Pre-screening checks must be completed for vaccination to go ahead',
@@ -1170,6 +1172,7 @@ export const en = {
         no: 'No'
       },
       injectionSite: {
+        error: 'Select an injection site',
         label: 'Where will the injection be given?'
       },
       confirm: 'Continue',
