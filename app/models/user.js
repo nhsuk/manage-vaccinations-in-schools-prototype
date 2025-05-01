@@ -58,6 +58,7 @@ export class User {
    */
   get link() {
     return {
+      email: formatLink(`mailto:${this.email}`, this.fullName),
       fullName: formatLink(this.uri, this.fullName)
     }
   }

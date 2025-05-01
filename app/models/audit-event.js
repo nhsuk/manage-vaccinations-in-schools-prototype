@@ -118,7 +118,7 @@ export class AuditEvent {
         this.createdBy &&
         formatWithSecondaryText(
           this.formatted.createdAt,
-          this.createdBy.link.fullName
+          this.createdBy.link.email
         )
     }
   }
@@ -126,7 +126,7 @@ export class AuditEvent {
   get summary() {
     let createdAtAndBy = this.formatted.datetime
     if (this.createdBy) {
-      createdAtAndBy += ` · ${this.createdBy.link.fullName}`
+      createdAtAndBy += ` · ${this.createdBy.link.email}`
     }
 
     return {
