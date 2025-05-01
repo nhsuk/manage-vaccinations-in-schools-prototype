@@ -29,6 +29,11 @@ export function pascalToKebabCase(string) {
  * @returns {boolean|any} Boolean
  */
 export function stringToBoolean(value) {
+  // Ensure single checkbox returns boolean not an array with _unchecked
+  if (Array.isArray(value)) {
+    value = value.filter((item) => item !== '_unchecked')[0]
+  }
+
   return typeof value === 'string' ? value === 'true' : value
 }
 
