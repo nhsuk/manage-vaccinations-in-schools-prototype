@@ -660,7 +660,7 @@ export class PatientSession {
    */
   preScreen(event) {
     this.patient.addEvent({
-      type: EventType.Screen,
+      type: EventType.Record,
       name: 'Completed pre-screening checks',
       note: event.note,
       createdBy_uid: event.createdBy_uid,
