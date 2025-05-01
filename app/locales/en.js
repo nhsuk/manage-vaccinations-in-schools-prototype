@@ -16,6 +16,7 @@ export const en = {
   actions: {
     label: 'Actions',
     change: 'Change',
+    remove: 'Remove',
     review: 'Review',
     update: 'Update',
     archive: 'Archive'
