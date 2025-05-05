@@ -1,13 +1,13 @@
 import express from 'express'
 
-import { userController } from '../controllers/user.js'
+import { userController as user } from '../controllers/user.js'
 
 const router = express.Router({ strict: true })
 
-router.all('/*', userController.readAll)
-router.get('/', userController.showAll)
+router.get('/', user.readAll, user.list)
 
-router.all('/:uid*', userController.read)
-router.get('/:uid/:view?', userController.show)
+router.param('user_uid', user.read)
+
+router.get('/:user_uid/:view?', user.show)
 
 export const userRoutes = router
