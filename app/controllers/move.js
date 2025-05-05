@@ -4,10 +4,14 @@ import { Move } from '../models/move.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const moveController = {
-  readAll(request, response, next) {
-    const { data } = request.session
+  read(request, response, next, move_uuid) {
+    response.locals.move = Move.read(move_uuid, request.session.data)
 
-    let moves = Move.readAll(data)
+    next()
+  },
+
+  readAll(request, response, next) {
+    let moves = Move.readAll(request.session.data)
 
     // Sort
     moves = _.sortBy(moves, 'createdAt')
@@ -19,21 +23,12 @@ export const moveController = {
     next()
   },
 
-  showAll(request, response) {
-    response.render('move/list')
-  },
-
-  read(request, response, next) {
-    const { uuid } = request.params
-    const { data } = request.session
-
-    response.locals.move = Move.read(uuid, data)
-
-    next()
-  },
-
   show(request, response) {
     response.render('move/show')
+  },
+
+  list(request, response) {
+    response.render('move/list')
   },
 
   update(request, response) {
@@ -41,13 +36,13 @@ export const moveController = {
     const { data } = request.session
     const { __, move } = response.locals
 
+    request.flash('success', __(`move.${decision}.success`, { move }))
+
     // Clean up session data
     delete data.decision
 
     // Ignore or switch schools
     decision === 'ignore' ? move.ignore(data) : move.switch(data)
-
-    request.flash('success', __(`move.${decision}.success`, { move }))
 
     response.redirect('/moves')
   }

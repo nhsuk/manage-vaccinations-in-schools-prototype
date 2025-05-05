@@ -1,15 +1,14 @@
 import express from 'express'
 
-import { moveController } from '../controllers/move.js'
+import { moveController as move } from '../controllers/move.js'
 
 const router = express.Router({ strict: true, mergeParams: true })
 
-router.all('/*', moveController.readAll)
-router.get('/', moveController.showAll)
+router.get('/', move.readAll, move.list)
 
-router.all('/:uuid*', moveController.read)
-router.get('/:uuid/:view?', moveController.show)
+router.param('move_uuid', move.read)
 
-router.post('/*', moveController.update)
+router.get('/:move_uuid', move.show)
+router.post('/:move_uuid', move.update)
 
 export const moveRoutes = router
