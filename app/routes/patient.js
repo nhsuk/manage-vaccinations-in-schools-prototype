@@ -1,23 +1,23 @@
 import express from 'express'
 
-import { patientController } from '../controllers/patient.js'
+import { patientController as patient } from '../controllers/patient.js'
 
 const router = express.Router({ strict: true, mergeParams: true })
 
-router.all('/*', patientController.readAll)
-router.get('/', patientController.showAll)
-router.post('/', patientController.updateAll)
+router.get('/', patient.readAll, patient.list)
+router.post('/', patient.filterList)
 
-router.all('/:nhsn*', patientController.read)
-router.get(['/:nhsn', '/:nhsn/?:view(events)'], patientController.show)
+router.param('nhsn', patient.read)
 
-router.get('/:nhsn/?:form(edit)', patientController.edit)
-router.post('/:nhsn/?:form(edit)', patientController.update)
+router.get('/:nhsn/edit', patient.edit)
+router.post('/:nhsn/edit', patient.update)
 
-router.all('/:nhsn/?:form(new|edit)/:view', patientController.readForm)
-router.get('/:nhsn/?:form(new|edit)/:view', patientController.showForm)
-router.post('/:nhsn/?:form(new|edit)/:view', patientController.updateForm)
+router.all('/:nhsn/edit/:view', patient.readForm)
+router.get('/:nhsn/edit/:view', patient.showForm)
+router.post('/:nhsn/edit/:view', patient.updateForm)
 
-router.post('/:nhsn/reject', patientController.reject)
+router.post('/:nhsn/unselect', patient.unselect)
+
+router.get('/:nhsn/:view?', patient.show)
 
 export const patientRoutes = router

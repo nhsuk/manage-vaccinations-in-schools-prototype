@@ -7,6 +7,22 @@ import { School } from '../models/school.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const patientController = {
+  read(request, response, next, nhsn) {
+    const { data } = request.session
+
+    let patient = Patient.read(nhsn, data)
+
+    // If no patient found, use CHIS record (patient not imported yet)
+    if (!patient) {
+      const record = Record.readAll(data).find((record) => record.nhsn === nhsn)
+      patient = new Patient(record, data)
+    }
+
+    response.locals.patient = patient
+
+    next()
+  },
+
   readAll(request, response, next) {
     const { q, hasMissingNhsNumber } = request.query
     const { data } = request.session
@@ -39,7 +55,17 @@ export const patientController = {
     next()
   },
 
-  updateAll(request, response) {
+  show(request, response) {
+    const view = request.params.view || 'show'
+
+    response.render(`patient/${view}`)
+  },
+
+  list(request, response) {
+    response.render('patient/list')
+  },
+
+  filterList(request, response) {
     const { hasMissingNhsNumber, q } = request.body
     const params = new URLSearchParams()
 
@@ -52,33 +78,6 @@ export const patientController = {
     }
 
     response.redirect(`/patients?${params}`)
-  },
-
-  showAll(request, response) {
-    response.render('patient/list')
-  },
-
-  read(request, response, next) {
-    const { nhsn } = request.params
-    const { data } = request.session
-
-    let patient = Patient.read(nhsn, data)
-
-    // If no patient found, use CHIS record (patient not imported yet)
-    if (!patient) {
-      const record = Record.readAll(data).find((record) => record.nhsn === nhsn)
-      patient = new Patient(record, data)
-    }
-
-    response.locals.patient = patient
-
-    next()
-  },
-
-  show(request, response) {
-    const view = request.params.view || 'show'
-
-    response.render(`patient/${view}`)
   },
 
   edit(request, response) {
@@ -118,17 +117,15 @@ export const patientController = {
   },
 
   readForm(request, response, next) {
-    const { form, nhsn } = request.params
+    const { nhsn } = request.params
     const { data } = request.session
 
     const patient = Patient.read(nhsn, data.wizard)
     response.locals.patient = patient
 
     response.locals.paths = {
-      ...(form === 'edit' && {
-        back: `${patient.uri}/edit`,
-        next: `${patient.uri}/edit`
-      })
+      back: `${patient.uri}/edit`,
+      next: `${patient.uri}/edit`
     }
 
     response.locals.urnItems = Object.values(data.schools)
@@ -147,7 +144,7 @@ export const patientController = {
   },
 
   showForm(request, response) {
-    let { form, view } = request.params
+    let { view } = request.params
 
     // Parent forms share same view
     if (view.includes('parent')) {
@@ -155,7 +152,7 @@ export const patientController = {
       view = 'parent'
     }
 
-    response.render(`patient/form/${view}`, { form })
+    response.render(`patient/form/${view}`)
   },
 
   updateForm(request, response) {
@@ -167,14 +164,14 @@ export const patientController = {
     response.redirect(paths.next)
   },
 
-  reject(request, response) {
+  unselect(request, response) {
     const { data } = request.session
     const { uid } = request.body
     const { __, patient } = response.locals
 
-    // Reject patient from cohort
+    // Unselect patient from cohort
     const cohort = Cohort.read(uid, data)
-    patient.rejectFromCohort(cohort, data)
+    patient.unselectFromCohort(cohort, data)
 
     request.flash('success', __(`cohort.unselect.success`, { cohort, patient }))
 
