@@ -20,39 +20,67 @@ import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
 export const sessionController = {
-  list(request, response) {
-    const view = request.params.view || 'active'
-    const { data } = request.session
+  read(request, response, next, session_id) {
+    response.locals.session = Session.read(session_id, request.session.data)
 
-    const statuses = {
-      closed: SessionStatus.Closed,
-      completed: SessionStatus.Completed,
-      planned: SessionStatus.Planned,
-      unplanned: SessionStatus.Unplanned
-    }
+    next()
+  },
 
-    let sessions = Session.readAll(data).sort((a, b) =>
+  readAll(request, response, next) {
+    let sessions = Session.readAll(request.session.data)
+
+    // Sort
+    sessions = sessions.sort((a, b) =>
       getDateValueDifference(a.firstDate, b.firstDate)
     )
 
-    if (view === 'active') {
-      sessions = sessions.filter((session) => session.isActive)
-    } else {
-      sessions = sessions.filter((session) => session.status === statuses[view])
-    }
+    response.locals.sessions = sessions
 
-    response.render('session/list', { sessions, view })
+    next()
   },
 
-  read(request, response, next) {
-    const { id, view } = request.params
+  show(request, response) {
+    let { view } = request.params
+
+    if (['consent', 'screen', 'register', 'record', 'outcome'].includes(view)) {
+      view = 'activity'
+    } else if (!view) {
+      view = 'show'
+    }
+
+    response.render(`session/${view}`)
+  },
+
+  list(view) {
+    return (request, response) => {
+      let { sessions } = response.locals
+
+      const statuses = {
+        closed: SessionStatus.Closed,
+        completed: SessionStatus.Completed,
+        planned: SessionStatus.Planned,
+        unplanned: SessionStatus.Unplanned
+      }
+
+      if (view === 'active') {
+        sessions = sessions.filter((session) => session.isActive)
+      } else {
+        sessions = sessions.filter(
+          (session) => session.status === statuses[view]
+        )
+      }
+
+      response.render('session/list', { sessions, view })
+    }
+  },
+
+  readPatientSessions(request, response, next) {
+    const { view } = request.params
     const { hasMissingNhsNumber, snomed, pids, q, yearGroup } = request.query
     const { data } = request.session
+    const { session } = response.locals
 
     response.locals.view = view
-
-    const session = Session.read(id, data)
-    response.locals.session = session
 
     let results = session.patientSessions
 
@@ -190,20 +218,8 @@ export const sessionController = {
     next()
   },
 
-  show(request, response) {
-    let { view } = request.params
-
-    if (['consent', 'screen', 'register', 'record', 'outcome'].includes(view)) {
-      view = 'activity'
-    } else if (!view) {
-      view = 'show'
-    }
-
-    response.render(`session/${view}`)
-  },
-
-  search(request, response) {
-    const { id, view } = request.params
+  filterPatientSessions(request, response) {
+    const { session_id, view } = request.params
     const { hasMissingNhsNumber, pid, yearGroup } = request.body
     const params = new URLSearchParams()
 
@@ -243,16 +259,16 @@ export const sessionController = {
       params.append('hasMissingNhsNumber', 'true')
     }
 
-    response.redirect(`/sessions/${id}/${view}?${params}`)
+    response.redirect(`/sessions/${session_id}/${view}?${params}`)
   },
 
   edit(request, response) {
-    const { id } = request.params
+    const { session_id } = request.params
     const { data } = request.session
     const { session } = response.locals
 
     // Setup wizard if not already setup
-    if (!Session.read(id, data.wizard)) {
+    if (!Session.read(session_id, data.wizard)) {
       session.create(session, data.wizard)
     }
 
@@ -263,7 +279,7 @@ export const sessionController = {
   },
 
   update(request, response) {
-    const { id } = request.params
+    const { session_id } = request.params
     const { data } = request.session
     const { __, session } = response.locals
 
@@ -276,27 +292,20 @@ export const sessionController = {
     // Update session data
     session.update(session, data)
 
-    response.redirect(`/sessions/${id}`)
+    response.redirect(`/sessions/${session_id}`)
   },
 
   readForm(request, response, next) {
-    const { form, id } = request.params
+    const { session_id } = request.params
     const { data } = request.session
 
-    let session
-    if (form === 'edit') {
-      session = Session.read(id, data)
-    } else {
-      session = new Session(Session.read(id, data.wizard), data)
-    }
+    const session = Session.read(session_id, data)
 
     response.locals.session = session
 
     response.locals.paths = {
-      ...(form === 'edit' && {
-        back: `${session.uri}/edit`,
-        next: `${session.uri}/edit`
-      })
+      back: `${session.uri}/edit`,
+      next: `${session.uri}/edit`
     }
 
     response.locals.programmePidsItems = Object.values(programmeTypes).map(

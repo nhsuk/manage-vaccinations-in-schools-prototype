@@ -8,18 +8,19 @@ import { getResults, getPagination } from '../utils/pagination.js'
 
 export const consentController = {
   read(request, response, next, consent_uuid) {
-    // TODO: Rename `id` to `session_id`
-    const { id } = request.params
+    const { session_id } = request.params
     const { nhsn } = request.query
     const { referrer } = request.session
 
     const consent = Consent.read(consent_uuid, request.session.data)
-    const back = id ? `/sessions/${consent.session_id}/consents` : '/consents'
+    const back = session_id
+      ? `/sessions/${consent.session_id}/consents`
+      : '/consents'
 
     response.locals.back = referrer || back
     response.locals.consent = consent
     response.locals.patient = Patient.read(nhsn, request.session.data)
-    response.locals.consentPath = id
+    response.locals.consentPath = session_id
       ? `/sessions/${consent.session_id}${consent.uri}`
       : consent.uri
 
@@ -29,24 +30,23 @@ export const consentController = {
   },
 
   readAll(request, response, next) {
-    // TODO: Rename `id` to `session_id`
-    const { id } = request.params
-    const { data } = request.session
-
-    let consents = Consent.readAll(data)
+    const { session_id } = request.params
+    let consents = Consent.readAll(request.session.data)
 
     // Sort
     consents = _.sortBy(consents, 'createdAt')
 
     // Session consents
-    if (id) {
-      const session = Session.read(id, data)
+    if (session_id) {
+      const session = Session.read(session_id, request.session.data)
       consents = session.consents
       response.locals.session = session
     }
 
     response.locals.consents = consents
-    response.locals.consentsPath = id ? `/sessions/${id}/consents` : '/consents'
+    response.locals.consentsPath = session_id
+      ? `/sessions/${session_id}/consents`
+      : '/consents'
     response.locals.results = getResults(consents, request.query)
     response.locals.pages = getPagination(consents, request.query)
 

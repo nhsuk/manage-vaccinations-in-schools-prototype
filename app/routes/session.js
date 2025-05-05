@@ -1,28 +1,32 @@
 import express from 'express'
 
-import { sessionController } from '../controllers/session.js'
+import { sessionController as session } from '../controllers/session.js'
 
 const router = express.Router({ strict: true })
 
-router.get(
-  ['/', '/:view(active|completed|planned|unplanned|closed)'],
-  sessionController.list
-)
+router.get('/', session.readAll, session.list('active'))
+router.get('/completed', session.readAll, session.list('completed'))
+router.get('/planned', session.readAll, session.list('planned'))
+router.get('/unplanned', session.readAll, session.list('unplanned'))
+router.get('/closed', session.readAll, session.list('closed'))
 
-router.all(['/:id', '/:id/:view'], sessionController.read)
-router.get(['/:id', '/:id/:view'], sessionController.show)
+router.param('session_id', session.read)
 
-router.post('/:id/offline', sessionController.downloadFile)
+router.post('/:session_id/offline', session.downloadFile)
 
-router.get('/:id/?:form(edit)', sessionController.edit)
-router.post('/:id/?:form(edit)', sessionController.update)
+router.get('/:session_id/edit', session.edit)
+router.post('/:session_id/edit', session.update)
 
-router.all('/:id/?:form(new|edit)/:view', sessionController.readForm)
-router.get('/:id/?:form(new|edit)/:view', sessionController.showForm)
-router.post('/:id/?:form(new|edit)/:view', sessionController.updateForm)
+router.all('/:session_id/edit/:view', session.readForm)
+router.get('/:session_id/edit/:view', session.showForm)
+router.post('/:session_id/edit/:view', session.updateForm)
 
-router.post('/:id/close', sessionController.close)
-router.post('/:id/default-batch', sessionController.updateDefaultBatch)
-router.post('/:id/:view', sessionController.search)
+router.post('/:session_id/close', session.close)
+router.post('/:session_id/default-batch', session.updateDefaultBatch)
+
+router.all('/:session_id/:view', session.readPatientSessions)
+router.post('/:session_id/:view', session.filterPatientSessions)
+
+router.get('/:session_id/:view?', session.show)
 
 export const sessionRoutes = router

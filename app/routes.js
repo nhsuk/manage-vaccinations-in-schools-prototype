@@ -62,7 +62,7 @@ router.use(
 )
 router.use('/records', recordRoutes)
 router.use('/schools', schoolRoutes)
-router.use('/sessions/:id/consents', consentRoutes)
+router.use('/sessions/:session_id/consents', consentRoutes)
 router.use('/sessions', sessionRoutes)
 router.use('/uploads/notices', noticeRoutes)
 router.use('/uploads/reviews', reviewRoutes)
