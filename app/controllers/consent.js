@@ -78,7 +78,7 @@ export const consentController = {
 
   readMatches(request, response, next) {
     const { uuid } = request.params
-    let { page, limit, q } = request.query
+    let { hasMissingNhsNumber, page, limit, q } = request.query
     const { data } = request.session
 
     let patients = Patient.readAll(data)
@@ -97,7 +97,13 @@ export const consentController = {
       )
     }
 
+    // Filter by missing NHS number
+    if (hasMissingNhsNumber) {
+      patients = patients.filter((patient) => patient.hasMissingNhsNumber)
+    }
+
     // Clean up session data
+    delete data.hasMissingNhsNumber
     delete data.q
 
     response.locals.consent = Consent.read(uuid, data)
@@ -109,19 +115,19 @@ export const consentController = {
   },
 
   updateMatches(request, response) {
-    const { q } = request.body
+    const { hasMissingNhsNumber, q } = request.body
     const { consent } = response.locals
+    const params = new URLSearchParams()
 
-    // Update query
-    const params = {}
     if (q) {
-      params.q = String(q)
+      params.append('q', String(q))
     }
 
-    // @ts-ignore
-    const queryString = new URLSearchParams(params).toString()
+    if (hasMissingNhsNumber?.includes('true')) {
+      params.append('hasMissingNhsNumber', 'true')
+    }
 
-    response.redirect(`${consent.uri}/match?${queryString}`)
+    response.redirect(`${consent.uri}/match?${params}`)
   },
 
   link(request, response) {

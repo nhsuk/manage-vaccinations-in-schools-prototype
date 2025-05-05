@@ -16,16 +16,16 @@ export const patientController = {
     // Sort
     patients = _.sortBy(patients, 'lastName')
 
-    // Filter
-    if (hasMissingNhsNumber) {
-      patients = patients.filter((patient) => patient.hasMissingNhsNumber)
-    }
-
     // Query
     if (q) {
       patients = patients.filter((patient) =>
         patient.tokenized.includes(String(q).toLowerCase())
       )
+    }
+
+    // Filter by missing NHS number
+    if (hasMissingNhsNumber) {
+      patients = patients.filter((patient) => patient.hasMissingNhsNumber)
     }
 
     // Clean up session data
@@ -41,21 +41,17 @@ export const patientController = {
 
   updateAll(request, response) {
     const { hasMissingNhsNumber, q } = request.body
-
-    const params = {}
+    const params = new URLSearchParams()
 
     if (q) {
-      params.q = String(q)
+      params.append('q', String(q))
     }
 
     if (hasMissingNhsNumber?.includes('true')) {
-      params.hasMissingNhsNumber = true
+      params.append('hasMissingNhsNumber', 'true')
     }
 
-    // @ts-ignore
-    const queryString = new URLSearchParams(params).toString()
-
-    response.redirect(`/patients?${queryString}`)
+    response.redirect(`/patients?${params}`)
   },
 
   showAll(request, response) {

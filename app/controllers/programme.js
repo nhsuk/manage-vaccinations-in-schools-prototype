@@ -40,6 +40,13 @@ export const programmeController = {
     if (view === 'patients') {
       results = programme.patientSessions
 
+      // Query
+      if (q) {
+        results = results.filter(({ patient }) =>
+          patient.tokenized.includes(String(q).toLowerCase())
+        )
+      }
+
       // Filter by outcome
       for (const name of ['consent', 'screen', 'report']) {
         const outcome = request.query[name]
@@ -60,13 +67,6 @@ export const programmeController = {
       // Filter by missing NHS number
       if (hasMissingNhsNumber) {
         results = results.filter(({ patient }) => patient.hasMissingNhsNumber)
-      }
-
-      // Query
-      if (q) {
-        results = results.filter(({ patient }) =>
-          patient.tokenized.includes(String(q).toLowerCase())
-        )
       }
 
       // Sort
@@ -105,8 +105,8 @@ export const programmeController = {
   updatePatients(request, response) {
     const { pid } = request.params
     const { hasMissingNhsNumber, yearGroup } = request.body
-
     const params = new URLSearchParams()
+
     for (const key of ['q', 'consent', 'screen', 'report']) {
       const param = request.body[key]
       if (param) {
@@ -127,9 +127,6 @@ export const programmeController = {
       params.append('hasMissingNhsNumber', 'true')
     }
 
-    // @ts-ignore
-    const queryString = new URLSearchParams(params).toString()
-
-    response.redirect(`/programmes/${pid}/patients?${queryString}`)
+    response.redirect(`/programmes/${pid}/patients?${params}`)
   }
 }

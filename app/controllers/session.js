@@ -205,8 +205,8 @@ export const sessionController = {
   search(request, response) {
     const { id, view } = request.params
     const { hasMissingNhsNumber, pid, yearGroup } = request.body
-
     const params = new URLSearchParams()
+
     for (const key of [
       'q',
       'consent',
