@@ -11,28 +11,30 @@
     view: "reviews"
   }) }}
 
-  {% if reviews.length %}
+  {% if pendingReviews %}
     {% set reviewRows = [] %}
-    {% for record in reviews %}
-      {% set reviewRows = reviewRows | push([
-        {
-          header: __("record.fullName.label"),
-          html: record.fullName or "Not provided"
-        },
-        {
-          header: __("upload.issue.label"),
-          html: __("upload.issue.text")
-        },
-        {
-          header: __("actions.label"),
-          html: actionList({
-            items: [{
-              text: __("actions.review"),
-              href: "#"
-            }]
-          })
-        }
-      ]) %}
+    {% for id, pendingRecords in pendingReviews %}
+      {% for record in pendingRecords %}
+        {% set reviewRows = reviewRows | push([
+          {
+            header: __("record.fullName.label"),
+            html: record.fullName or "Not provided"
+          },
+          {
+            header: __("upload.issue.label"),
+            html: __("upload.issue.text")
+          },
+          {
+            header: __("actions.label"),
+            html: actionList({
+              items: [{
+                text: __("actions.review"),
+                href: "/uploads/reviews/" + id + "/" + record.nhsn + "?referrer=/uploads/reviews/"
+              }]
+            })
+          }
+        ]) %}
+      {% endfor %}
     {% endfor %}
 
     {{ actionTable({

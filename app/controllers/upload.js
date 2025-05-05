@@ -1,7 +1,6 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { Notice } from '../models/notice.js'
-import { Record } from '../models/record.js'
 import { School } from '../models/school.js'
 import { Upload, UploadType } from '../models/upload.js'
 import { getDateValueDifference } from '../utils/date.js'
@@ -20,7 +19,7 @@ export const uploadController = {
 
     response.locals.notices = Notice.readAll(data)
     response.locals.uploads = uploads
-    response.locals.reviews = uploads.flatMap((upload) => upload.duplicate)
+    response.locals.reviews = uploads.flatMap((upload) => upload.duplicates)
 
     next()
   },
@@ -180,44 +179,5 @@ export const uploadController = {
     upload.update(request.body.upload, data.wizard)
 
     response.redirect(paths.next)
-  },
-
-  readReview(request, response, next) {
-    const { nhsn } = request.params
-    const { data, referrer } = request.session
-    const { upload } = response.locals
-
-    const record = upload.records.find((record) => record.nhsn === nhsn)
-
-    // Show back link to referring page, else upload page
-    response.locals.back = referrer || upload.uri
-
-    response.locals.record = new Record(record, data)
-
-    response.locals.duplicateRecord = new Record(
-      {
-        ...record,
-        ...record?.pendingChanges
-      },
-      data
-    )
-
-    next()
-  },
-
-  showReview(request, response) {
-    response.render('upload/review')
-  },
-
-  updateReview(request, response) {
-    const { decision } = request.body
-    const { __, back } = response.locals
-
-    // Doesn’t change any values, but shows a confirmation message
-    if (decision === 'duplicate') {
-      request.flash('success', __('upload.review.success'))
-    }
-
-    response.redirect(back)
   }
 }

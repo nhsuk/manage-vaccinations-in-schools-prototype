@@ -19,7 +19,7 @@ export const noticeController = {
 
     // Required to show number of reviews in upload section navigation
     response.locals.reviews = Upload.readAll(request.session.data).flatMap(
-      (upload) => upload.duplicate
+      (upload) => upload.duplicates
     )
 
     next()

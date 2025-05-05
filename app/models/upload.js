@@ -126,11 +126,11 @@ export class Upload {
   }
 
   /**
-   * Get number of duplicate records
+   * Get duplicate records in upload that need review
    *
    * @returns {Array<Record>|undefined} - Records with pending changes
    */
-  get duplicate() {
+  get duplicates() {
     if (this.status === UploadStatus.Complete) {
       if (this.records) {
         return this.records.filter((record) => record.hasPendingChanges)
@@ -222,7 +222,7 @@ export class Upload {
       }),
       ...(this.status === UploadStatus.Complete && {
         devoid: `${prototypeFilters.plural(this.devoid, 'previously imported record')} omitted`,
-        duplicate: `${prototypeFilters.plural(this.duplicate.length, 'duplicate record')} need review`
+        duplicates: `${prototypeFilters.plural(this.duplicates.length, 'duplicate record')} need review`
       }),
       ...(this.status === UploadStatus.Complete &&
         this.type === UploadType.Report && {

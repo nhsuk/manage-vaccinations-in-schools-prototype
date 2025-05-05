@@ -51,13 +51,13 @@
         yearGroups: {},
         invalid: {},
         devoid: {},
-        duplicate: {}
+        duplicates: {}
       })
     })
   }) }}
 
   {% set duplicateRecordRows = [] %}
-  {% for record in upload.duplicate %}
+  {% for record in upload.duplicates %}
     {% set duplicateRecordRows = duplicateRecordRows | push([
       {
         header: __("record.fullName.label"),
@@ -72,7 +72,7 @@
         html: actionList({
           items: [{
             text: __("actions.review"),
-            href: upload.uri + "/review/" + record.nhsn
+            href: "/uploads/reviews/" + upload.id + "/" + record.nhsn
           }]
         })
       }
@@ -83,7 +83,7 @@
     id: "duplicate-records",
     sort: "name",
     panel: true,
-    heading: upload.formatted.duplicate,
+    heading: upload.formatted.duplicates,
     responsive: true,
     head: [
       {
@@ -100,7 +100,7 @@
       }
     ],
     rows: duplicateRecordRows
-  }) if upload.duplicate.length }}
+  }) if upload.duplicates.length }}
 
   {% set recordRows = [] %}
   {% for record in upload.records %}

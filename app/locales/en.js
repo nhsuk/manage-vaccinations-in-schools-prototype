@@ -1933,7 +1933,7 @@ export const en = {
       label: 'Omitted records',
       description: 'All records in this CSV file had already been imported.'
     },
-    duplicate: {
+    duplicates: {
       label: 'Duplicate records'
     },
     invalid: {

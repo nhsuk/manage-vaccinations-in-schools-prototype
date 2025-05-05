@@ -24,7 +24,7 @@ export const navigation = (request, response, next) => {
   const consents = Consent.readAll(data)
   const moves = Move.readAll(data)
   const notices = Notice.readAll(data)
-  const reviews = Upload.readAll(data).flatMap((upload) => upload.duplicate)
+  const reviews = Upload.readAll(data).flatMap((upload) => upload.duplicates)
 
   // Get account navigation
   const account = data.token
