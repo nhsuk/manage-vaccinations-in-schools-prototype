@@ -1,12 +1,13 @@
 import express from 'express'
 
-import { accountController } from '../controllers/account.js'
+import { accountController as account } from '../controllers/account.js'
 
 const router = express.Router({ strict: true })
 
-router.post(['/sign-in', '/cis2'], accountController.login)
-router.post(['/change-role'], accountController.changeRole)
+router.post(['/sign-in', '/cis2'], account.login)
 
-router.get('/sign-out', accountController.logout)
+router.post(['/change-role'], account.changeRole)
+
+router.get('/sign-out', account.logout)
 
 export const accountRoutes = router
