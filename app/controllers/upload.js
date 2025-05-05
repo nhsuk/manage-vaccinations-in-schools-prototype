@@ -7,40 +7,37 @@ import { getDateValueDifference } from '../utils/date.js'
 import { formatYearGroup } from '../utils/string.js'
 
 export const uploadController = {
-  readAll(request, response, next) {
-    const { data } = request.session
-
-    let uploads = Upload.readAll(data)
-
-    // Sort
-    uploads = uploads.sort((a, b) =>
-      getDateValueDifference(b.createdAt, a.createdAt)
-    )
-
-    response.locals.notices = Notice.readAll(data)
-    response.locals.uploads = uploads
-    response.locals.reviews = uploads.flatMap((upload) => upload.duplicates)
+  read(request, response, next, upload_id) {
+    response.locals.upload = Upload.read(upload_id, request.session.data)
 
     next()
   },
 
-  showAll(request, response) {
-    const view = request.params.view || 'list'
-
-    response.render(`upload/${view}`)
-  },
-
-  read(request, response, next) {
-    const { id } = request.params
+  readAll(request, response, next) {
     const { data } = request.session
+    let uploads = Upload.readAll(data)
 
-    response.locals.upload = Upload.read(id, data)
+    uploads = uploads.sort((a, b) =>
+      getDateValueDifference(b.createdAt, a.createdAt)
+    )
+
+    response.locals.uploads = uploads
+
+    // Required to show number of notices in upload section navigation
+    response.locals.notices = Notice.readAll(data)
+
+    // Required to show number of reviews in upload section navigation
+    response.locals.reviews = uploads.flatMap((upload) => upload.duplicates)
 
     next()
   },
 
   show(request, response) {
     response.render('upload/show')
+  },
+
+  list(request, response) {
+    response.render(`upload/list`)
   },
 
   new(request, response) {
@@ -71,11 +68,11 @@ export const uploadController = {
   },
 
   update(request, response) {
-    const { id } = request.params
+    const { upload_id } = request.params
     const { data, referrer } = request.session
     const { __ } = response.locals
 
-    const upload = new Upload(Upload.read(id, data.wizard), data)
+    const upload = new Upload(Upload.read(upload_id, data.wizard), data)
 
     request.flash('success', __('upload.new.success'))
 
@@ -90,49 +87,43 @@ export const uploadController = {
   },
 
   readForm(request, response, next) {
-    const { form, id } = request.params
+    const { upload_id } = request.params
     const { data } = request.session
     let { __, upload } = response.locals
 
     // Setup wizard if not already setup
-    if (!Upload.read(id, data.wizard)) {
+    if (!Upload.read(upload_id, data.wizard)) {
       upload.create(upload, data.wizard)
     }
 
-    upload = new Upload(Upload.read(id, data.wizard), data)
+    upload = new Upload(Upload.read(upload_id, data.wizard), data)
     response.locals.upload = upload
 
     const journey = {
       [`/`]: {},
       ...(data.startPath === 'type'
         ? {
-            [`/${id}/${form}/type`]: {
-              [`/${id}/${form}/file`]: {
+            [`/${upload_id}/new/type`]: {
+              [`/${upload_id}/new/file`]: {
                 data: 'upload.type',
                 excludedValue: UploadType.School
               }
             },
-            [`/${id}/${form}/school`]: {},
-            [`/${id}/${form}/year-groups`]: {},
-            [`/${id}/${form}/file`]: {},
-            [`/${id}/${form}/summary`]: {}
+            [`/${upload_id}/new/school`]: {},
+            [`/${upload_id}/new/year-groups`]: {},
+            [`/${upload_id}/new/file`]: {},
+            [`/${upload_id}/new/summary`]: {}
           }
         : {
-            [`/${id}/${form}/school`]: {},
-            [`/${id}/${form}/year-groups`]: {},
-            [`/${id}/${form}/file`]: {},
-            [`/${id}/${form}/summary`]: {}
+            [`/${upload_id}/new/school`]: {},
+            [`/${upload_id}/new/year-groups`]: {},
+            [`/${upload_id}/new/file`]: {},
+            [`/${upload_id}/new/summary`]: {}
           }),
-      [`/${id}`]: {}
+      [`/${upload_id}`]: {}
     }
 
-    response.locals.paths = {
-      ...wizard(journey, request),
-      ...(form === 'edit' && {
-        back: `${upload.uri}/edit`,
-        next: `${upload.uri}/edit`
-      })
-    }
+    response.locals.paths = wizard(journey, request)
 
     response.locals.typeItems = Object.entries(UploadType).map(
       ([key, value]) => ({

@@ -1,21 +1,21 @@
 import express from 'express'
 
-import { uploadController } from '../controllers/upload.js'
+import { uploadController as upload } from '../controllers/upload.js'
 
 const router = express.Router({ strict: true, mergeParams: true })
 
-router.all('/*', uploadController.readAll)
-router.get('/', uploadController.showAll)
+router.get('/', upload.readAll, upload.list)
 
-router.get('/new', uploadController.new)
+router.get('/new', upload.new)
 
-router.all('/:id*', uploadController.read)
-router.get('/:id', uploadController.show)
+router.param('upload_id', upload.read)
 
-router.post('/:id/?:form(new|edit)/summary', uploadController.update)
+router.post('/:upload_id/new/summary', upload.update)
 
-router.all('/:id/?:form(new|edit)/:view', uploadController.readForm)
-router.get('/:id/?:form(new|edit)/:view', uploadController.showForm)
-router.post('/:id/?:form(new|edit)/:view', uploadController.updateForm)
+router.all('/:upload_id/new/:view', upload.readForm)
+router.get('/:upload_id/new/:view', upload.showForm)
+router.post('/:upload_id/new/:view', upload.updateForm)
+
+router.get('/:upload_id', upload.show)
 
 export const uploadRoutes = router
