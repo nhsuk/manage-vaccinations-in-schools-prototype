@@ -114,12 +114,12 @@ export class AuditEvent {
 
   get link() {
     return {
-      createdAtAndBy:
-        this.createdBy &&
-        formatWithSecondaryText(
-          this.formatted.createdAt,
-          this.createdBy.link.email
-        )
+      createdAtAndBy: this.createdBy
+        ? formatWithSecondaryText(
+            this.formatted.createdAt,
+            this.createdBy.link.email
+          )
+        : this.formatted.createdAt
     }
   }
 
