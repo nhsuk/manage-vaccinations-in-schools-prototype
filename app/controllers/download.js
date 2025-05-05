@@ -6,6 +6,38 @@ import { Programme } from '../models/programme.js'
 import { UserRole } from '../models/user.js'
 
 export const downloadController = {
+  readForm(request, response, next, download_id) {
+    const { data } = request.session
+
+    const journey = {
+      [`/`]: {},
+      [`/${download_id}/new/dates`]: {
+        [`/${download_id}/new/format`]: () =>
+          data.token?.role !== UserRole.DataConsumer
+      },
+      [`/${download_id}/new/organisations`]: {},
+      [`/${download_id}/new/format`]: {},
+      [`/${download_id}/new/check-answers`]: {},
+      [`/${download_id}`]: {}
+    }
+
+    response.locals.download = new Download(
+      Download.read(download_id, data?.wizard),
+      data
+    )
+
+    response.locals.organisationItems = Organisation.readAll(data).map(
+      (organisation) => ({
+        text: organisation.name,
+        value: organisation.code
+      })
+    )
+
+    response.locals.paths = wizard(journey, request)
+
+    next()
+  },
+
   redirect(request, response) {
     const { pid } = request.params
 
@@ -13,6 +45,7 @@ export const downloadController = {
   },
 
   new(request, response) {
+    // TODO: Rename `pid` to `programme_pid`
     const { pid } = request.params
     const { data } = request.session
 
@@ -26,46 +59,6 @@ export const downloadController = {
     download.create(download, data.wizard)
 
     response.redirect(`${download.uri}/new/dates`)
-  },
-
-  readForm(request, response, next) {
-    const { form, id } = request.params
-    const { data } = request.session
-    const { download } = response.locals
-
-    const journey = {
-      [`/`]: {},
-      [`/${id}/${form}/dates`]: {
-        [`/${id}/${form}/format`]: () =>
-          data.token?.role !== UserRole.DataConsumer
-      },
-      [`/${id}/${form}/organisations`]: {},
-      [`/${id}/${form}/format`]: {},
-      [`/${id}/${form}/check-answers`]: {},
-      [`/${id}`]: {}
-    }
-
-    response.locals.download = new Download(
-      Download.read(id, data?.wizard),
-      data
-    )
-
-    response.locals.organisationItems = Organisation.readAll(data).map(
-      (organisation) => ({
-        text: organisation.name,
-        value: organisation.code
-      })
-    )
-
-    response.locals.paths = {
-      ...wizard(journey, request),
-      ...(form === 'edit' && {
-        back: `${download.uri}/edit`,
-        next: `${download.uri}/edit`
-      })
-    }
-
-    next()
   },
 
   showForm(request, response) {
