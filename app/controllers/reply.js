@@ -2,6 +2,7 @@ import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { GillickCompetent } from '../models/gillick.js'
 import { Parent } from '../models/parent.js'
+import { PatientSession } from '../models/patient-session.js'
 import { Programme } from '../models/programme.js'
 import {
   Reply,
@@ -14,17 +15,21 @@ import { today } from '../utils/date.js'
 import { formatParent } from '../utils/string.js'
 
 export const replyController = {
-  read(request, response, next) {
-    const { uuid } = request.params
-    const { data } = request.session
+  read(request, response, next, reply_uuid) {
+    const { nhsn, pid } = request.params
 
-    response.locals.reply = Reply.read(uuid, data)
+    response.locals.reply = Reply.read(reply_uuid, request.session.data)
+    response.locals.patientSession = PatientSession.readAll(
+      request.session.data
+    )
+      .filter(({ programme }) => programme.pid === pid)
+      .find(({ patient }) => patient.nhsn === nhsn)
 
     next()
   },
 
   redirect(request, response) {
-    const { pid, nhsn } = request.params
+    const { nhsn, pid } = request.params
 
     response.redirect(`/programmes/${pid}/patients/${nhsn}`)
   },
@@ -53,187 +58,196 @@ export const replyController = {
     response.redirect(`${reply.uri}/new/respondent`)
   },
 
-  update(request, response) {
-    const { form, uuid } = request.params
-    const { data } = request.session
-    const { __, activity, patientSession, triage } = response.locals
+  update(type) {
+    return (request, response) => {
+      const { reply_uuid } = request.params
+      const { data } = request.session
+      const { __, activity, patientSession, triage } = response.locals
 
-    let reply
-    let next
-    if (form === 'edit') {
-      reply = Reply.read(uuid, data)
-      next = reply.uri
+      let reply
+      let next
+      if (type === 'edit') {
+        reply = Reply.read(reply_uuid, data)
+        next = reply.uri
 
-      reply.update(request.body.reply, data)
-    } else {
-      reply = new Reply(Reply.read(uuid, data.wizard), data)
-      next = `${patientSession.uri}?activity=${activity || 'consent'}`
+        reply.update(request.body.reply, data)
+      } else {
+        reply = new Reply(Reply.read(reply_uuid, data.wizard), data)
+        next = `${patientSession.uri}?activity=${activity || 'consent'}`
 
-      // Remove any parent details in reply if self consent
-      if (reply.selfConsent) {
-        delete reply.parent
+        // Remove any parent details in reply if self consent
+        if (reply.selfConsent) {
+          delete reply.parent
+        }
+
+        if (triage?.outcome) {
+          patientSession.recordTriage({
+            ...triage,
+            ...data?.wizard?.triage, // Wizard values
+            ...(data.token && { createdBy_uid: data.token?.uid }),
+            createdAt: today()
+          })
+        }
+
+        patientSession.patient.addReply(reply)
+
+        // Update session data
+        reply.update(reply, data)
       }
 
-      if (triage?.outcome) {
-        patientSession.recordTriage({
-          ...triage,
-          ...data?.wizard?.triage, // Wizard values
-          ...(data.token && { createdBy_uid: data.token?.uid })
-        })
-      }
+      // Clean up session data
+      delete data.reply
+      delete data.triage
 
-      patientSession.patient.addReply(reply)
+      request.flash(
+        'success',
+        __(`reply.${type}.success`, { reply, patientSession })
+      )
 
-      // Update session data
-      reply.update(reply, data)
+      response.redirect(next)
     }
-
-    // Clean up session data
-    delete data.reply
-    delete data.triage
-
-    request.flash('success', __(`reply.new.success`, { reply, patientSession }))
-
-    response.redirect(next)
   },
 
-  readForm(request, response, next) {
-    const { form, uuid } = request.params
-    const { data, referrer } = request.session
-    const { patientSession, triage } = response.locals
+  readForm(type) {
+    return (request, response, next) => {
+      const { reply_uuid } = request.params
+      const { data, referrer } = request.session
+      const { patientSession, triage } = response.locals
 
-    let reply
-    if (form === 'edit') {
-      reply = Reply.read(uuid, data)
-    } else {
-      reply = new Reply(Reply.read(uuid, data.wizard), data)
-    }
+      let reply
+      if (type === 'edit') {
+        reply = Reply.read(reply_uuid, data)
+      } else {
+        reply = new Reply(Reply.read(reply_uuid, data.wizard), data)
+      }
 
-    response.locals.reply = reply
+      response.locals.reply = reply
 
-    // Child can self consent if assessed as Gillick competent
-    const canSelfConsent =
-      patientSession.gillick?.competent === GillickCompetent.True
+      // Child can self consent if assessed as Gillick competent
+      const canSelfConsent =
+        patientSession.gillick?.competent === GillickCompetent.True
 
-    // Only ask for programme if more than 1 administered in a session
-    const isMultiProgrammeSession = patientSession.session.programmes.length > 1
-    response.locals.isMultiProgrammeSession = isMultiProgrammeSession
+      // Only ask for programme if more than 1 administered in a session
+      const isMultiProgrammeSession =
+        patientSession.session.programmes.length > 1
+      response.locals.isMultiProgrammeSession = isMultiProgrammeSession
 
-    response.locals.programme = isMultiProgrammeSession
-      ? reply.programme_pid && Programme.read(reply.programme_pid, data)
-      : patientSession.session.programmes[0]
+      response.locals.programme = isMultiProgrammeSession
+        ? reply.programme_pid && Programme.read(reply.programme_pid, data)
+        : patientSession.session.programmes[0]
 
-    response.locals.triage = {
-      ...(form === 'edit' && triage), // Previous values
-      ...data?.wizard?.triage // Wizard values
-    }
+      response.locals.triage = {
+        ...(type === 'edit' && triage), // Previous values
+        ...data?.wizard?.triage // Wizard values
+      }
 
-    const replyNeedsTriage = (reply) => {
-      return reply?.healthAnswers
-        ? Object.values(reply.healthAnswers).find((answer) => answer !== '')
-        : false
-    }
+      const replyNeedsTriage = (reply) => {
+        return reply?.healthAnswers
+          ? Object.values(reply.healthAnswers).find((answer) => answer !== '')
+          : false
+      }
 
-    const journey = {
-      [`/`]: {},
-      [`/${uuid}/${form}/respondent`]: {},
-      ...(data.respondent !== 'self' &&
-        !reply.selfConsent && {
-          [`/${uuid}/${form}/parent`]: {}
+      const journey = {
+        [`/`]: {},
+        [`/${reply_uuid}/${type}/respondent`]: {},
+        ...(data.respondent !== 'self' &&
+          !reply.selfConsent && {
+            [`/${reply_uuid}/${type}/parent`]: {}
+          }),
+        ...(isMultiProgrammeSession && {
+          [`/${reply_uuid}/${type}/programme`]: {}
         }),
-      ...(isMultiProgrammeSession && {
-        [`/${uuid}/${form}/programme`]: {}
-      }),
-      [`/${uuid}/${form}/decision`]: {
-        [`/${uuid}/${form}/${reply?.selfConsent ? 'notify-parent' : 'health-answers'}`]:
-          {
+        [`/${reply_uuid}/${type}/decision`]: {
+          [`/${reply_uuid}/${type}/${reply?.selfConsent ? 'notify-parent' : 'health-answers'}`]:
+            {
+              data: 'reply.decision',
+              value: ReplyDecision.Given
+            },
+          [`/${reply_uuid}/${type}/refusal-reason`]: {
             data: 'reply.decision',
-            value: ReplyDecision.Given
+            value: ReplyDecision.Refused
           },
-        [`/${uuid}/${form}/refusal-reason`]: {
-          data: 'reply.decision',
-          value: ReplyDecision.Refused
+          [`/${reply_uuid}/${type}/note`]: {
+            data: 'reply.decision',
+            value: ReplyDecision.NoResponse
+          }
         },
-        [`/${uuid}/${form}/note`]: {
-          data: 'reply.decision',
-          value: ReplyDecision.NoResponse
-        }
-      },
-      [`/${uuid}/${form}/notify-parent`]: {},
-      [`/${uuid}/${form}/health-answers`]: {
-        [`/${uuid}/${form}/${replyNeedsTriage(request.session.data.reply) ? 'triage' : 'check-answers'}`]: true
-      },
-      [`/${uuid}/${form}/refusal-reason`]: {
-        [`/${uuid}/${form}/refusal-reason-details`]: {
-          data: 'reply.refusalReason',
-          values: [
-            ReplyRefusal.AlreadyGiven,
-            ReplyRefusal.GettingElsewhere,
-            ReplyRefusal.Medical
-          ]
+        [`/${reply_uuid}/${type}/notify-parent`]: {},
+        [`/${reply_uuid}/${type}/health-answers`]: {
+          [`/${reply_uuid}/${type}/${replyNeedsTriage(request.session.data.reply) ? 'triage' : 'check-answers'}`]: true
         },
-        [`/${uuid}/${form}/check-answers`]: true
-      },
-      [`/${uuid}/${form}/refusal-reason-details`]: {
-        [`/${uuid}/${form}/check-answers`]: true
-      },
-      [`/${uuid}/${form}/triage`]: {
-        [`/${uuid}/${form}/check-answers`]: true
-      },
-      [`/${uuid}/${form}/note`]: {
-        [`/${uuid}/${form}/check-answers`]: true
-      },
-      [`/${uuid}`]: {}
-    }
+        [`/${reply_uuid}/${type}/refusal-reason`]: {
+          [`/${reply_uuid}/${type}/refusal-reason-details`]: {
+            data: 'reply.refusalReason',
+            values: [
+              ReplyRefusal.AlreadyGiven,
+              ReplyRefusal.GettingElsewhere,
+              ReplyRefusal.Medical
+            ]
+          },
+          [`/${reply_uuid}/${type}/check-answers`]: true
+        },
+        [`/${reply_uuid}/${type}/refusal-reason-details`]: {
+          [`/${reply_uuid}/${type}/check-answers`]: true
+        },
+        [`/${reply_uuid}/${type}/triage`]: {
+          [`/${reply_uuid}/${type}/check-answers`]: true
+        },
+        [`/${reply_uuid}/${type}/note`]: {
+          [`/${reply_uuid}/${type}/check-answers`]: true
+        },
+        [`/${reply_uuid}`]: {}
+      }
 
-    response.locals.paths = {
-      ...wizard(journey, request),
-      ...(form === 'edit' && {
-        back: `${patientSession.uri}/replies/${uuid}/edit`,
-        next: `${patientSession.uri}/replies/${uuid}/edit`
-      }),
-      ...(referrer && { back: referrer })
-    }
+      response.locals.paths = {
+        ...wizard(journey, request),
+        ...(type === 'edit' && {
+          back: `${patientSession.uri}/replies/${reply_uuid}/edit`,
+          next: `${patientSession.uri}/replies/${reply_uuid}/edit`
+        }),
+        ...(referrer && { back: referrer })
+      }
 
-    const consentRefusals = Object.values(patientSession.replies).filter(
-      (reply) => reply.decision === ReplyDecision.Refused
-    )
-
-    if (Object.values(consentRefusals).length > 0) {
-      response.locals.respondentItems = consentRefusals.map(
-        ({ parent, uuid }) => ({
-          text: `${parent.fullName} (${parent.relationship})`,
-          hint: { text: parent.tel },
-          value: uuid
-        })
+      const consentRefusals = Object.values(patientSession.replies).filter(
+        (reply) => reply.decision === ReplyDecision.Refused
       )
-    } else {
-      response.locals.respondentItems = patientSession.patient.parents.map(
-        (parent, index) => ({
-          text: formatParent(parent, false),
-          hint: { text: parent.tel },
-          value: `parent-${index + 1}`
+
+      if (Object.values(consentRefusals).length > 0) {
+        response.locals.respondentItems = consentRefusals.map(
+          ({ parent, uuid }) => ({
+            text: `${parent.fullName} (${parent.relationship})`,
+            hint: { text: parent.tel },
+            value: uuid
+          })
+        )
+      } else {
+        response.locals.respondentItems = patientSession.patient.parents.map(
+          (parent, index) => ({
+            text: formatParent(parent, false),
+            hint: { text: parent.tel },
+            value: `parent-${index + 1}`
+          })
+        )
+      }
+
+      if (canSelfConsent) {
+        response.locals.respondentItems.unshift({
+          text: 'Child (Gillick competent)',
+          value: 'self'
         })
-      )
-    }
+      }
 
-    if (canSelfConsent) {
-      response.locals.respondentItems.unshift({
-        text: 'Child (Gillick competent)',
-        value: 'self'
-      })
-    }
+      if (isMultiProgrammeSession) {
+        response.locals.programmeItems = patientSession.session.programmes.map(
+          (programme) => ({
+            text: programme.name,
+            value: programme.pid
+          })
+        )
+      }
 
-    if (isMultiProgrammeSession) {
-      response.locals.programmeItems = patientSession.session.programmes.map(
-        (programme) => ({
-          text: programme.name,
-          value: programme.pid
-        })
-      )
+      next()
     }
-
-    next()
   },
 
   showForm(request, response) {
@@ -244,7 +258,7 @@ export const replyController = {
 
   updateForm(request, response) {
     const { respondent } = request.body
-    const { uuid } = request.params
+    const { reply_uuid } = request.params
     const { data } = request.session
     const { paths, patient, patientSession, reply, session, triage } =
       response.locals
@@ -307,7 +321,8 @@ export const replyController = {
     }
 
     response.redirect(
-      paths.next || `${patientSession.uri}/replies/${uuid}/new/check-answers`
+      paths.next ||
+        `${patientSession.uri}/replies/${reply_uuid}/new/check-answers`
     )
   },
 
