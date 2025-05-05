@@ -1,28 +1,30 @@
 import { Organisation } from '../models/organisation.js'
 
 export const organisationController = {
-  redirect(request, response, next) {
-    const { code } = request.params
-
-    response.redirect(`${code}/contact`)
-  },
-
-  read(request, response, next) {
-    const { code, view } = request.params
-    const { data } = request.session
+  read(request, response, next, organisation_code) {
+    const { view } = request.params
     const { __ } = response.locals
 
-    const organisation = Organisation.read(code, data)
+    const organisation = Organisation.read(
+      organisation_code,
+      request.session.data
+    )
     response.locals.organisation = organisation
 
     const sections = ['contact', 'clinics', 'schools', 'sessions']
     response.locals.navigationItems = sections.map((item) => ({
       text: __(`organisation.${item}.title`),
       href: `${organisation.uri}/${item}`,
-      current: view.includes(item)
+      current: view?.includes(item)
     }))
 
     next()
+  },
+
+  redirect(request, response, next) {
+    const { organisation_code } = request.params
+
+    response.redirect(`${organisation_code}/contact`)
   },
 
   show(request, response) {
@@ -59,13 +61,13 @@ export const organisationController = {
     const { data } = request.session
     const { __, paths, organisation } = response.locals
 
+    request.flash('success', __(`organisation.edit.success`))
+
     // Clean up session data
     delete data.organisation
 
     // Update session data
     organisation.update(request.body.organisation, data)
-
-    request.flash('success', __(`organisation.edit.success`))
 
     response.redirect(paths.next)
   }

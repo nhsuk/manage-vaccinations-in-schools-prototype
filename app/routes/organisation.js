@@ -1,16 +1,17 @@
 import express from 'express'
 
-import { organisationController } from '../controllers/organisation.js'
+import { organisationController as organisation } from '../controllers/organisation.js'
 
 const router = express.Router({ strict: true })
 
-router.all('/:code', organisationController.redirect)
+router.param('organisation_code', organisation.read)
 
-router.all(['/:code/:view?', '/:code/:form/:view'], organisationController.read)
-router.get('/:code/:view?', organisationController.show)
+router.get('/:organisation_code', organisation.redirect)
 
-router.all('/:code/?:form(edit)/:view', organisationController.readForm)
-router.get('/:code/?:form(edit)/:view', organisationController.showForm)
-router.post('/:code/?:form(edit)/:view', organisationController.updateForm)
+router.all('/:organisation_code/edit/:view', organisation.readForm)
+router.get('/:organisation_code/edit/:view', organisation.showForm)
+router.post('/:organisation_code/edit/:view', organisation.updateForm)
+
+router.get('/:organisation_code/:view?', organisation.show)
 
 export const organisationRoutes = router
