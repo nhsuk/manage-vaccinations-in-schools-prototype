@@ -1,28 +1,23 @@
 import { Cohort } from '../models/cohort.js'
 
 export const cohortController = {
-  readAll(request, response, next) {
-    const { data } = request.session
-
-    response.locals.cohorts = Cohort.readAll(data)
+  read(request, response, next, cohort_uid) {
+    response.locals.cohort = Cohort.read(cohort_uid, request.session.data)
 
     next()
   },
 
-  showAll(request, response) {
-    response.render('cohort/list')
-  },
-
-  read(request, response, next) {
-    const { uid } = request.params
-    const { data } = request.session
-
-    response.locals.cohort = Cohort.read(uid, data)
+  readAll(request, response, next) {
+    response.locals.cohorts = Cohort.readAll(request.session.data)
 
     next()
   },
 
   show(request, response) {
     response.render('cohort/show')
+  },
+
+  list(request, response) {
+    response.render('cohort/list')
   }
 }
