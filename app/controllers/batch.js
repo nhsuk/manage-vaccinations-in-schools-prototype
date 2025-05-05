@@ -2,10 +2,28 @@ import { Batch } from '../models/batch.js'
 import { Session } from '../models/session.js'
 
 export const batchController = {
-  show(request, response) {
-    const { form } = request.params
+  read(request, response, next, batch_id) {
+    const batch = Batch.read(batch_id, request.session.data)
 
-    response.render('batch/form', { form })
+    response.locals.batch = batch
+    response.locals.paths = {
+      back: '/vaccines',
+      next: '/vaccines'
+    }
+
+    next()
+  },
+
+  form(type) {
+    return (request, response) => {
+      response.render('batch/form', { type })
+    }
+  },
+
+  action(type) {
+    return (request, response) => {
+      response.render('batch/action', { type })
+    }
   },
 
   create(request, response) {
@@ -25,19 +43,6 @@ export const batchController = {
     response.redirect('/vaccines')
   },
 
-  read(request, response, next) {
-    const { id } = request.params
-    const { data } = request.session
-
-    response.locals.batch = Batch.read(id, data)
-    response.locals.paths = {
-      back: `/vaccines`,
-      next: `/vaccines`
-    }
-
-    next()
-  },
-
   update(request, response) {
     const { data } = request.session
     const { __, batch, paths } = response.locals
@@ -53,14 +58,7 @@ export const batchController = {
     response.redirect(paths.next)
   },
 
-  action(type) {
-    return (request, response) => {
-      response.render('batch/action', { type })
-    }
-  },
-
   archive(request, response) {
-    const { id } = request.params
     const { data } = request.session
     const { __, batch } = response.locals
 
@@ -71,7 +69,9 @@ export const batchController = {
     // Find session with batch set as default
     const sessionsWithDefaultBatch = Session.readAll(data).filter(
       ({ defaultBatch_ids }) =>
-        Object.entries(defaultBatch_ids).map(([, batch_id]) => batch_id === id)
+        Object.entries(defaultBatch_ids).map(
+          ([, batch_id]) => batch_id === batch.id
+        )
     )
 
     // Remove batch from session defaults
