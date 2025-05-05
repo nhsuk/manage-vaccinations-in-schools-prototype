@@ -64,7 +64,7 @@
           classes: "app-card--patient",
           heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
           headingClasses: "nhsuk-heading-s",
-          href: patientSession.uri + "?activity=" + view,
+          href: patientSession.uri,
           descriptionHtml: summaryList({
             rows: summaryRows(patientSession.patient, {
               dob: {},

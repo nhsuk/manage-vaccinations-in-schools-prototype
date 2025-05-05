@@ -122,6 +122,7 @@ export const patientSessionController = {
       : patientSession.uri
     response.locals.patientSession = patientSession
     response.locals.patient = patient
+    response.locals.programme = programme
     response.locals.session = session
 
     // Use different values for pre-screening questions

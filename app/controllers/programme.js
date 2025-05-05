@@ -5,26 +5,33 @@ import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
 export const programmeController = {
-  readAll(request, response, next) {
-    const { data } = request.session
-
-    response.locals.programmes = Programme.readAll(data)
+  read(request, response, next, pid) {
+    response.locals.programme = Programme.read(pid, request.session.data)
 
     next()
   },
 
-  showAll(request, response) {
+  readAll(request, response, next) {
+    response.locals.programmes = Programme.readAll(request.session.data)
+
+    next()
+  },
+
+  show(request, response) {
+    const view = request.params.view || 'show'
+
+    response.render(`programme/${view}`)
+  },
+
+  list(request, response) {
     response.render('programme/list')
   },
 
-  read(request, response, next) {
-    const { pid } = request.params
+  readPatients(request, response, next) {
     const { hasMissingNhsNumber, q, yearGroup } = request.query
     const { data } = request.session
-
-    const programme = Programme.read(pid, data)
-
-    response.locals.programme = programme
+    const { programme } = response.locals
+    let patientSessions = programme.patientSessions
 
     // Convert year groups query into an array of numbers
     let yearGroups
@@ -33,51 +40,43 @@ export const programmeController = {
       yearGroups = yearGroups.map((year) => Number(year))
     }
 
-    let results = []
-
-    // Search
-    const view = request.path.split('/').at(-1)
-    if (view === 'patients') {
-      results = programme.patientSessions
-
-      // Query
-      if (q) {
-        results = results.filter(({ patient }) =>
-          patient.tokenized.includes(String(q).toLowerCase())
-        )
-      }
-
-      // Filter by outcome
-      for (const name of ['consent', 'screen', 'report']) {
-        const outcome = request.query[name]
-        if (outcome && outcome !== 'none') {
-          results = results.filter(
-            (patientSession) => patientSession[name] === outcome
-          )
-        }
-      }
-
-      // Filter by year group
-      if (yearGroup) {
-        results = results.filter(({ patient }) =>
-          yearGroups.includes(patient.yearGroup)
-        )
-      }
-
-      // Filter by missing NHS number
-      if (hasMissingNhsNumber) {
-        results = results.filter(({ patient }) => patient.hasMissingNhsNumber)
-      }
-
-      // Sort
-      results = _.sortBy(results, 'lastName')
-    } else if (view === 'vaccinations') {
-      results = _.sortBy(programme.vaccinations, 'createdAt').reverse()
+    // Query
+    if (q) {
+      patientSessions = patientSessions.filter(({ patient }) =>
+        patient.tokenized.includes(String(q).toLowerCase())
+      )
     }
 
+    // Filter by outcome
+    for (const name of ['consent', 'screen', 'report']) {
+      const outcome = request.query[name]
+      if (outcome && outcome !== 'none') {
+        patientSessions = patientSessions.filter(
+          (patientSession) => patientSession[name] === outcome
+        )
+      }
+    }
+
+    // Filter by year group
+    if (yearGroup) {
+      patientSessions = patientSessions.filter(({ patient }) =>
+        yearGroups.includes(patient.yearGroup)
+      )
+    }
+
+    // Filter by missing NHS number
+    if (hasMissingNhsNumber) {
+      patientSessions = patientSessions.filter(
+        ({ patient }) => patient.hasMissingNhsNumber
+      )
+    }
+
+    // Sort
+    patientSessions = _.sortBy(patientSessions, 'lastName')
+
     // Results
-    response.locals.results = getResults(results, request.query)
-    response.locals.pages = getPagination(results, request.query)
+    response.locals.results = getResults(patientSessions, request.query)
+    response.locals.pages = getPagination(patientSessions, request.query)
 
     // Filters
     response.locals.yearGroupItems = programme.cohorts.map((cohort) => ({
@@ -96,13 +95,7 @@ export const programmeController = {
     next()
   },
 
-  show(request, response) {
-    const view = request.params.view || 'show'
-
-    response.render(`programme/${view}`)
-  },
-
-  updatePatients(request, response) {
+  filterPatients(request, response) {
     const { pid } = request.params
     const { hasMissingNhsNumber, yearGroup } = request.body
     const params = new URLSearchParams()
@@ -128,5 +121,19 @@ export const programmeController = {
     }
 
     response.redirect(`/programmes/${pid}/patients?${params}`)
+  },
+
+  readVaccinations(request, response, next) {
+    const { programme } = response.locals
+    let vaccinations = programme.vaccinations
+
+    // Sort
+    vaccinations = _.sortBy(vaccinations, 'createdAt').reverse()
+
+    // Results
+    response.locals.results = getResults(vaccinations, request.query)
+    response.locals.pages = getPagination(vaccinations, request.query)
+
+    next()
   }
 }

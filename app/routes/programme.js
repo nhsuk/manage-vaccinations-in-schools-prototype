@@ -1,15 +1,18 @@
 import express from 'express'
 
-import { programmeController } from '../controllers/programme.js'
+import { programmeController as programme } from '../controllers/programme.js'
 
-const router = express.Router({ strict: true })
+const router = express.Router({ strict: true, mergeParams: true })
 
-router.all('/*', programmeController.readAll)
-router.get('/', programmeController.showAll)
+router.get('/', programme.readAll, programme.list)
 
-router.all('/:pid*', programmeController.read)
-router.get('/:pid/:view?', programmeController.show)
+router.param('pid', programme.read)
 
-router.post('/:pid/patients', programmeController.updatePatients)
+router.all('/:pid/patients', programme.readPatients)
+router.post('/:pid/patients', programme.filterPatients)
+
+router.all('/:pid/vaccinations', programme.readVaccinations)
+
+router.get('/:pid/:view?', programme.show)
 
 export const programmeRoutes = router
