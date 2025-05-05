@@ -1,28 +1,23 @@
 import { School } from '../models/school.js'
 
 export const schoolController = {
-  readAll(request, response, next) {
-    const { data } = request.session
-
-    response.locals.schools = School.readAll(data)
+  read(request, response, next, school_urn) {
+    response.locals.school = School.read(school_urn, request.session.data)
 
     next()
   },
 
-  showAll(request, response) {
-    response.render('school/list')
-  },
-
-  read(request, response, next) {
-    const { urn } = request.params
-    const { data } = request.session
-
-    response.locals.school = School.read(urn, data)
+  readAll(request, response, next) {
+    response.locals.schools = School.readAll(request.session.data)
 
     next()
   },
 
   show(request, response) {
     response.render(`school/show`)
+  },
+
+  list(request, response) {
+    response.render('school/list')
   }
 }

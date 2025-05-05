@@ -1,13 +1,13 @@
 import express from 'express'
 
-import { schoolController } from '../controllers/school.js'
+import { schoolController as school } from '../controllers/school.js'
 
 const router = express.Router({ strict: true })
 
-router.all('/*', schoolController.readAll)
-router.get('/', schoolController.showAll)
+router.get('/', school.readAll, school.list)
 
-router.all('/:urn*', schoolController.read)
-router.get('/:urn/:view?', schoolController.show)
+router.param('school_urn', school.read)
+
+router.get('/:school_urn/:view?', school.show)
 
 export const schoolRoutes = router
