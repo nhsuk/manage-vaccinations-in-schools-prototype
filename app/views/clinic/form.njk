@@ -1,7 +1,7 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("clinic." + form + ".title") %}
-{% set confirmButtonText = __("clinic." + form + ".confirm") %}
+{% set title = __("clinic." + type + ".title") %}
+{% set confirmButtonText = __("clinic." + type + ".confirm") %}
 
 {% block form %}
   {% call fieldset({

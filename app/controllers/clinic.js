@@ -1,49 +1,45 @@
 import { Clinic } from '../models/clinic.js'
 
 export const clinicController = {
-  new(request, response) {
-    const { code } = request.params
+  read(request, response, next, clinic_id) {
+    const clinic = Clinic.read(clinic_id, request.session.data)
 
-    const clinic = new Clinic()
+    response.locals.clinic = clinic
+    response.locals.paths = {
+      back: `/organisations/${clinic.organisation_code}/clinics`,
+      next: `/organisations/${clinic.organisation_code}/clinics`
+    }
 
-    response.redirect(`/organisations/${code}/clinics/${clinic.id}/new`)
+    next()
+  },
+
+  form(type) {
+    return (request, response) => {
+      response.render('clinic/form', { type })
+    }
+  },
+
+  action(type) {
+    return (request, response) => {
+      response.render('clinic/action', { type })
+    }
   },
 
   create(request, response) {
-    const { code, id } = request.params
+    const { organisation_code } = request.params
     const { data } = request.session
-    const { __, paths } = response.locals
+    const { __ } = response.locals
 
     const clinic = new Clinic({
       ...request.body.clinic,
-      ...{ id },
-      organisation_code: code
+      organisation_code
     })
 
     request.flash('success', __(`clinic.new.success`, { clinic }))
 
     clinic.create(clinic, data)
 
-    response.redirect(paths.next)
-  },
-
-  read(request, response, next) {
-    const { code, id } = request.params
-    const { data } = request.session
-
-    response.locals.clinic = Clinic.read(id, data)
-    response.locals.paths = {
-      back: `/organisations/${code}/clinics`,
-      next: `/organisations/${code}/clinics`
-    }
-
-    next()
-  },
-
-  show(request, response) {
-    const { form } = request.params
-
-    response.render('clinic/form', { form })
+    response.redirect(`/organisations/${clinic.organisation_code}/clinics`)
   },
 
   update(request, response) {
@@ -59,12 +55,6 @@ export const clinicController = {
     request.flash('success', __(`clinic.edit.success`, { clinic }))
 
     response.redirect(paths.next)
-  },
-
-  action(type) {
-    return (request, response) => {
-      response.render('clinic/action', { type })
-    }
   },
 
   delete(request, response) {
