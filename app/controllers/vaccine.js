@@ -1,29 +1,24 @@
 import { Vaccine } from '../models/vaccine.js'
 
 export const vaccineController = {
-  readAll(request, response, next) {
-    const { data } = request.session
-
-    response.locals.vaccines = Vaccine.readAll(data)
+  read(request, response, next, snomed) {
+    response.locals.vaccine = Vaccine.read(snomed, request.session.data)
 
     next()
   },
 
-  showAll(request, response) {
-    response.render('vaccine/list')
-  },
-
-  read(request, response, next) {
-    const { snomed } = request.params
-    const { data } = request.session
-
-    response.locals.vaccine = Vaccine.read(snomed, data)
+  readAll(request, response, next) {
+    response.locals.vaccines = Vaccine.readAll(request.session.data)
 
     next()
   },
 
   show(request, response) {
     response.render('vaccine/show')
+  },
+
+  list(request, response) {
+    response.render('vaccine/list')
   },
 
   action(type) {

@@ -1,16 +1,16 @@
 import express from 'express'
 
-import { vaccineController } from '../controllers/vaccine.js'
+import { vaccineController as vaccine } from '../controllers/vaccine.js'
 
 const router = express.Router({ strict: true })
 
-router.all('/*', vaccineController.readAll)
-router.get('/', vaccineController.showAll)
+router.get('/', vaccine.readAll, vaccine.list)
 
-router.all('/:snomed*', vaccineController.read)
-router.get('/:snomed', vaccineController.show)
+router.param('snomed', vaccine.read)
 
-router.get('/:snomed/delete', vaccineController.action('delete'))
-router.post('/:snomed/delete', vaccineController.delete)
+router.get('/:snomed/delete', vaccine.action('delete'))
+router.post('/:snomed/delete', vaccine.delete)
+
+router.get('/:snomed', vaccine.show)
 
 export const vaccineRoutes = router
