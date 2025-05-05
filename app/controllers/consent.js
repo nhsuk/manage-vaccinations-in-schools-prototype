@@ -7,7 +7,29 @@ import { Session } from '../models/session.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const consentController = {
+  read(request, response, next, consent_uuid) {
+    // TODO: Rename `id` to `session_id`
+    const { id } = request.params
+    const { nhsn } = request.query
+    const { referrer } = request.session
+
+    const consent = Consent.read(consent_uuid, request.session.data)
+    const back = id ? `/sessions/${consent.session_id}/consents` : '/consents'
+
+    response.locals.back = referrer || back
+    response.locals.consent = consent
+    response.locals.patient = Patient.read(nhsn, request.session.data)
+    response.locals.consentPath = id
+      ? `/sessions/${consent.session_id}${consent.uri}`
+      : consent.uri
+
+    delete request.session.referrer
+
+    next()
+  },
+
   readAll(request, response, next) {
+    // TODO: Rename `id` to `session_id`
     const { id } = request.params
     const { data } = request.session
 
@@ -24,31 +46,9 @@ export const consentController = {
     }
 
     response.locals.consents = consents
+    response.locals.consentsPath = id ? `/sessions/${id}/consents` : '/consents'
     response.locals.results = getResults(consents, request.query)
     response.locals.pages = getPagination(consents, request.query)
-    response.locals.rootPath = id ? `/sessions/${id}/consents` : '/consents'
-
-    next()
-  },
-
-  showAll(request, response) {
-    response.render('consent/list')
-  },
-
-  read(request, response, next) {
-    const { id, uuid } = request.params
-    const { nhsn } = request.query
-    const { data, referrer } = request.session
-
-    const back = id ? `/sessions/${id}/consents` : ''
-    const consent = Consent.read(uuid, data)
-
-    response.locals.back = referrer || back
-    response.locals.consent = consent
-    response.locals.patient = Patient.read(nhsn, data)
-    response.locals.consentPath = id
-      ? `/sessions/${id}${consent.uri}`
-      : consent.uri
 
     next()
   },
@@ -59,25 +59,11 @@ export const consentController = {
     response.render(`consent/${view}`)
   },
 
-  edit(request, response) {
-    response.render('consent/edit')
-  },
-
-  new(request, response) {
-    const { session } = request.app.locals
-    const { data } = request.session
-
-    const consent = new Consent({
-      session_id: session.id
-    })
-
-    consent.create(consent, data.wizard)
-
-    response.redirect(`${consent.uri}/new/child`)
+  list(request, response) {
+    response.render('consent/list')
   },
 
   readMatches(request, response, next) {
-    const { uuid } = request.params
     let { hasMissingNhsNumber, page, limit, q } = request.query
     const { data } = request.session
 
@@ -106,7 +92,6 @@ export const consentController = {
     delete data.hasMissingNhsNumber
     delete data.q
 
-    response.locals.consent = Consent.read(uuid, data)
     response.locals.patients = patients
     response.locals.results = getResults(patients, page, limit)
     response.locals.pages = getPagination(patients, request.query)
@@ -114,7 +99,7 @@ export const consentController = {
     next()
   },
 
-  updateMatches(request, response) {
+  filterMatches(request, response) {
     const { hasMissingNhsNumber, q } = request.body
     const { consent } = response.locals
     const params = new URLSearchParams()
@@ -132,19 +117,19 @@ export const consentController = {
 
   link(request, response) {
     const { data } = request.session
-    const { __, consent, patient, rootPath } = response.locals
+    const { __, consent, patient, consentsPath } = response.locals
 
     // Link consent with patient record
     consent.linkToPatient(patient, data)
 
     request.flash('success', __(`consent.link.success`, { consent, patient }))
 
-    response.redirect(rootPath)
+    response.redirect(consentsPath)
   },
 
   add(request, response) {
     const { data } = request.session
-    const { __, consent, rootPath } = response.locals
+    const { __, consent, consentsPath } = response.locals
 
     // Create and add patient
     const patient = new Patient(consent.child)
@@ -176,13 +161,13 @@ export const consentController = {
 
     request.flash('success', __(`consent.add.success`, { consent, patient }))
 
-    response.redirect(rootPath)
+    response.redirect(consentsPath)
   },
 
   invalidate(request, response) {
     const { note } = request.body.consent
     const { data } = request.session
-    const { __, consent, rootPath } = response.locals
+    const { __, consent, consentsPath } = response.locals
 
     consent.update({ invalid: true, note }, data)
 
@@ -191,6 +176,6 @@ export const consentController = {
 
     request.flash('success', __(`consent.invalidate.success`, { consent }))
 
-    response.redirect(rootPath)
+    response.redirect(consentsPath)
   }
 }

@@ -28,7 +28,7 @@
           })
         }) }}
 
-        {{ link(consentPath, "View full consent response") | nhsukMarkdown }}
+        {{ link(consentPath + "?referrer=" + consentPath + "/match", "View full consent response") | nhsukMarkdown }}
 
         {{ button({
           href: consentPath + "/add",

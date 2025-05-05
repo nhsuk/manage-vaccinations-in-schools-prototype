@@ -30,7 +30,7 @@
     {% set consentRows = consentRows | push([
       {
         header: __("consent.summary.label"),
-        html: consent.link.summary | replace("/consents", rootPath)
+        html: consent.link.summary | replace("/consents", consentsPath)
       },
       {
         header: __("consent.createdAt.label"),
@@ -45,10 +45,10 @@
         html: actionList({
           items: [{
             text: __("consent.match.label"),
-            href: rootPath + "/" + consent.uuid + "/match?referrer=" + rootPath
+            href: consentsPath + "/" + consent.uuid + "/match?referrer=" + consentsPath
           }, {
             text: __("consent.invalidate.label"),
-            href: rootPath + "/" + consent.uuid + "/invalidate?referrer=" + rootPath
+            href: consentsPath + "/" + consent.uuid + "/invalidate?referrer=" + consentsPath
           }]
         })
       }

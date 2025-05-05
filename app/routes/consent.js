@@ -1,20 +1,20 @@
 import express from 'express'
 
-import { consentController } from '../controllers/consent.js'
+import { consentController as consent } from '../controllers/consent.js'
 
 const router = express.Router({ strict: true, mergeParams: true })
 
-router.all('/*', consentController.readAll)
-router.get('/', consentController.showAll)
+router.get('/', consent.readAll, consent.list)
 
-router.all('/:uuid*', consentController.read)
-router.get('/:uuid/match', consentController.readMatches)
+router.param('consent_uuid', consent.read)
 
-router.get('/:uuid/:view?', consentController.show)
+router.all('/:consent_uuid/match', consent.readMatches)
+router.post('/:consent_uuid/match', consent.filterMatches)
 
-router.post('/:uuid/invalidate', consentController.invalidate)
-router.post('/:uuid/link', consentController.link)
-router.post('/:uuid/add', consentController.add)
-router.post('/:uuid/match', consentController.updateMatches)
+router.post('/:consent_uuid/invalidate', consent.invalidate)
+router.post('/:consent_uuid/link', consent.link)
+router.post('/:consent_uuid/add', consent.add)
+
+router.get('/:consent_uuid/:view?', consent.show)
 
 export const consentRoutes = router
