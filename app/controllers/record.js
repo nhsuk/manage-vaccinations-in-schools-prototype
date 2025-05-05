@@ -4,10 +4,14 @@ import { Record } from '../models/record.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const recordController = {
-  readAll(request, response, next) {
-    const { data } = request.session
+  read(request, response, next, nhsn) {
+    response.locals.record = Record.read(nhsn, request.session.data)
 
-    let records = Record.readAll(data)
+    next()
+  },
+
+  readAll(request, response, next) {
+    let records = Record.readAll(request.session.data)
 
     // Sort
     records = _.sortBy(records, 'lastName')
@@ -19,17 +23,8 @@ export const recordController = {
     next()
   },
 
-  showAll(request, response) {
+  list(request, response) {
     response.render('record/list')
-  },
-
-  read(request, response, next) {
-    const { nhsn } = request.params
-    const { data } = request.session
-
-    response.locals.record = Record.read(nhsn, data)
-
-    next()
   },
 
   show(request, response) {

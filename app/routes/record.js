@@ -1,13 +1,13 @@
 import express from 'express'
 
-import { recordController } from '../controllers/record.js'
+import { recordController as record } from '../controllers/record.js'
 
 const router = express.Router({ strict: true })
 
-router.all('/*', recordController.readAll)
-router.get('/', recordController.showAll)
+router.get('/', record.readAll, record.list)
 
-router.all('/:nhsn*', recordController.read)
-router.get('/:nhsn/:view?', recordController.show)
+router.param('nhsn', record.read)
+
+router.get('/:nhsn/:view?', record.show)
 
 export const recordRoutes = router
