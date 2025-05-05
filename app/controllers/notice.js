@@ -1,17 +1,32 @@
 import { Notice } from '../models/notice.js'
+import { Upload } from '../models/upload.js'
 
 export const noticeController = {
-  read(request, response, next) {
-    const { uuid } = request.params
-    const { data } = request.session
+  read(request, response, next, notice_uuid) {
+    const notice = Notice.read(notice_uuid, request.session.data)
 
-    response.locals.notice = Notice.read(uuid, data)
+    response.locals.notice = notice
     response.locals.paths = {
-      back: `/notices`,
-      next: `/notices`
+      back: `/uploads/notices`,
+      next: `/uploads/notices`
     }
 
     next()
+  },
+
+  readAll(request, response, next) {
+    response.locals.notices = Notice.readAll(request.session.data)
+
+    // Required to show number of reviews in upload section navigation
+    response.locals.reviews = Upload.readAll(request.session.data).flatMap(
+      (upload) => upload.duplicate
+    )
+
+    next()
+  },
+
+  list(request, response) {
+    response.render('notice/list')
   },
 
   action(type) {
