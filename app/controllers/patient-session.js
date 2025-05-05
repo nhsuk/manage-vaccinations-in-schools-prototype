@@ -169,12 +169,7 @@ export const patientSessionController = {
   register(request, response) {
     const { register } = request.body.patientSession
     const { data } = request.session
-    let { __, patient, patientSession, session, back } = response.locals
-
-    // Maintain session activity filter, if present
-    if (request.query.register !== 'undefined') {
-      back = `${back}?register=${request.query.register}`
-    }
+    const { __, patient, patientSession, session, back } = response.locals
 
     patientSession.registerAttendance(
       {

@@ -13,7 +13,7 @@
       tag: statusTag(params.patientSession.status.register)
     }, {
       text: __("patientSession.registration.title"),
-      href: params.patientSession.uri + "/edit/registration"
+      href: params.patientSession.uri + "/edit/registration?referrer=" + referrer
     } if params.patientSession.register != RegistrationOutcome.Complete, {
       text: __("patientSession.record.title"),
       href: "#"
