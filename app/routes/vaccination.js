@@ -1,22 +1,27 @@
 import express from 'express'
 
-import { vaccinationController } from '../controllers/vaccination.js'
+import { vaccinationController as vaccination } from '../controllers/vaccination.js'
 
 const router = express.Router({ strict: true, mergeParams: true })
 
-router.get('/', vaccinationController.redirect)
+router.get('/', vaccination.redirect)
 
-router.get('/new', vaccinationController.new)
-router.post('/:uuid/?:form(new)/check-answers', vaccinationController.update)
+router.get('/new', vaccination.new)
 
-router.all('/:uuid*', vaccinationController.read)
-router.get('/:uuid', vaccinationController.show)
+router.param('vaccination_uuid', vaccination.read)
 
-router.get('/:uuid/?:form(edit)', vaccinationController.edit)
-router.post('/:uuid/?:form(edit)', vaccinationController.update)
+router.all('/:vaccination_uuid/new/:view', vaccination.readForm('new'))
+router.get('/:vaccination_uuid/new/:view', vaccination.showForm('new'))
+router.post('/:vaccination_uuid/new/check-answers', vaccination.update('new'))
+router.post('/:vaccination_uuid/new/:view', vaccination.updateForm)
 
-router.all('/:uuid/?:form(new|edit)/:view', vaccinationController.readForm)
-router.get('/:uuid/?:form(new|edit)/:view', vaccinationController.showForm)
-router.post('/:uuid/?:form(new|edit)/:view', vaccinationController.updateForm)
+router.get('/:vaccination_uuid/edit', vaccination.edit)
+router.post('/:vaccination_uuid/edit', vaccination.update('edit'))
+
+router.all('/:vaccination_uuid/edit/:view', vaccination.readForm('edit'))
+router.get('/:vaccination_uuid/edit/:view', vaccination.showForm('edit'))
+router.post('/:vaccination_uuid/edit/:view', vaccination.updateForm)
+
+router.get('/:vaccination_uuid', vaccination.show)
 
 export const vaccinationRoutes = router

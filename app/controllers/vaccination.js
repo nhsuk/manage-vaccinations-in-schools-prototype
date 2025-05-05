@@ -15,12 +15,11 @@ import {
 import { Vaccine } from '../models/vaccine.js'
 
 export const vaccinationController = {
-  read(request, response, next) {
-    const { pid, uuid } = request.params
-    const { data } = request.session
+  read(request, response, next, vaccination_uuid) {
+    const { pid } = request.params
 
-    const programme = Programme.read(pid, data)
-    const vaccination = Vaccination.read(uuid, data)
+    const programme = Programme.read(pid, request.session.data)
+    const vaccination = Vaccination.read(vaccination_uuid, request.session.data)
     const { session } = vaccination
 
     response.locals.vaccination = vaccination
@@ -30,30 +29,30 @@ export const vaccinationController = {
     next()
   },
 
-  show(request, response) {
-    response.render('vaccination/show')
-  },
-
   redirect(request, response) {
     const { id, nhsn } = request.params
 
     response.redirect(`/sessions/${id}/${nhsn}`)
   },
 
+  show(request, response) {
+    response.render('vaccination/show')
+  },
+
   edit(request, response) {
-    const { uuid } = request.params
+    const { vaccination_uuid } = request.params
     const { data, referrer } = request.session
     const { vaccination } = response.locals
 
     // Setup wizard if not already setup
-    if (!Vaccination.read(uuid, data.wizard)) {
+    if (!Vaccination.read(vaccination_uuid, data.wizard)) {
       vaccination.create(vaccination, data.wizard)
     }
 
     // Show back link to referring page, else vaccination page
     response.locals.back = referrer || vaccination.uri
     response.locals.vaccination = new Vaccination(
-      Vaccination.read(uuid, data.wizard),
+      Vaccination.read(vaccination_uuid, data.wizard),
       data
     )
 
@@ -63,9 +62,11 @@ export const vaccinationController = {
   new(request, response) {
     const { patientSession_uuid } = request.query
     const { data } = request.session
-    const { programme } = response.locals
 
-    const { patient, session } = PatientSession.read(patientSession_uuid, data)
+    const { patient, session, programme } = PatientSession.read(
+      patientSession_uuid,
+      data
+    )
     const { injectionSite, ready } = data.patientSession.preScreen
 
     // Check for default batch
@@ -123,151 +124,156 @@ export const vaccinationController = {
     response.redirect(`${vaccination.uri}/new/${data.startPath}`)
   },
 
-  update(request, response) {
-    const { note } = request.body.vaccination
-    const { form, uuid } = request.params
-    const { data, referrer } = request.session
-    const { __ } = response.locals
+  update(type) {
+    return (request, response) => {
+      const { vaccination_uuid } = request.params
+      const { data, referrer } = request.session
+      const { __ } = response.locals
 
-    const vaccination = new Vaccination(
-      Vaccination.read(uuid, data.wizard),
-      data
-    )
-
-    // Add note on check answers page
-    if (note) {
-      vaccination.note = note
-    }
-
-    request.flash(
-      'success',
-      __(`vaccination.${form}.success`, { programme: vaccination.programme })
-    )
-
-    // Clean up session data
-    delete data.batch_id
-    delete data.defaultBatchId
-    delete data.patientSession_uuid
-    delete data.startPath
-    delete data.vaccination
-    delete data.wizard
-
-    // Update session data
-    vaccination.update(vaccination, data)
-
-    response.redirect(referrer || vaccination.uri)
-  },
-
-  readForm(request, response, next) {
-    const { form, uuid } = request.params
-    const { data, referrer } = request.session
-    const { __, programme } = response.locals
-
-    const vaccination = new Vaccination(
-      Vaccination.read(uuid, data.wizard),
-      data
-    )
-    response.locals.vaccination = vaccination
-
-    const patientSession = PatientSession.read(data.patientSession_uuid, data)
-    response.locals.patientSession = patientSession
-
-    const journey = {
-      [`/`]: {},
-      ...(data.startPath === 'decline'
-        ? {
-            [`/${uuid}/${form}/decline`]: {},
-            [`/${uuid}/${form}/check-answers`]: {}
-          }
-        : {
-            [`/${uuid}/${form}/administer`]: {},
-            [`/${uuid}/${form}/batch-id`]: () => {
-              return !data.defaultBatchId
-            },
-            ...(!patientSession.session?.address && {
-              [`/${uuid}/${form}/location`]: {}
-            }),
-            [`/${uuid}/${form}/check-answers`]: {}
-          }),
-      [`/${uuid}`]: {}
-    }
-
-    response.locals.paths = {
-      ...wizard(journey, request),
-      ...(form === 'edit' && {
-        back: `${vaccination.uri}/edit`,
-        next: `${vaccination.uri}/edit`
-      })
-    }
-
-    // If first page in journey, return to page that initiated recording
-    const currentPath = request.path.split('/').at(-1)
-    if (currentPath === data.startPath) {
-      response.locals.paths.back = referrer || vaccination.uri
-    }
-
-    response.locals.batchItems = Batch.readAll(data)
-      .filter((batch) => batch.vaccine.type === programme.type)
-      .filter((batch) => !batch.archivedAt)
-
-    response.locals.injectionMethodItems = Object.entries(VaccinationMethod)
-      .filter(([, value]) => value !== VaccinationMethod.Nasal)
-      .map(([key, value]) => ({
-        text: VaccinationMethod[key],
-        value
-      }))
-
-    response.locals.injectionSiteItems = Object.entries(VaccinationSite)
-      .filter(([, value]) => value !== VaccinationSite.Nose)
-      .map(([key, value]) => ({
-        text: VaccinationSite[key],
-        value
-      }))
-
-    response.locals.sequenceItems =
-      programme.sequence &&
-      Object.entries(programme.sequence).map(([index, value]) => {
-        const ordinal = prototypeFilters.ordinal(Number(index) + 1)
-        return {
-          text: `${_.startCase(ordinal)} dose`,
-          value
-        }
-      })
-
-    response.locals.userItems = User.readAll(data)
-      .map((user) => ({
-        text: user.fullName,
-        value: user.uid
-      }))
-      .sort((a, b) => a.text.localeCompare(b.text))
-
-    response.locals.vaccineItems = Vaccine.readAll(data)
-      .filter((vaccine) => programme.type.includes(vaccine.type))
-      .map((vaccine) => ({
-        text: vaccine.brandWithType,
-        value: vaccine.snomed
-      }))
-
-    response.locals.declineItems = Object.entries(VaccinationOutcome)
-      .filter(
-        ([, value]) =>
-          value === VaccinationOutcome.AlreadyVaccinated ||
-          value === VaccinationOutcome.Contraindications ||
-          value === VaccinationOutcome.Refused ||
-          value === VaccinationOutcome.Unwell
+      const vaccination = new Vaccination(
+        Vaccination.read(vaccination_uuid, data.wizard),
+        data
       )
-      .map(([key, value]) => ({
-        text: __(`vaccination.outcome.${key}`),
-        value
-      }))
 
-    next()
+      // Add note on check answers page
+      if (request.body?.vaccination?.note) {
+        vaccination.note = request.body.vaccination.note
+      }
+
+      request.flash(
+        'success',
+        __(`vaccination.${type}.success`, { programme: vaccination.programme })
+      )
+
+      // Clean up session data
+      delete data.batch_id
+      delete data.defaultBatchId
+      delete data.patientSession_uuid
+      delete data.startPath
+      delete data.vaccination
+      delete data.wizard
+
+      // Update session data
+      vaccination.update(vaccination, data)
+
+      response.redirect(referrer || vaccination.uri)
+    }
   },
 
-  showForm(request, response) {
-    const { form, view } = request.params
+  readForm(type) {
+    return (request, response, next) => {
+      const { vaccination_uuid } = request.params
+      const { data, referrer } = request.session
+      const { __, programme } = response.locals
 
-    response.render(`vaccination/form/${view}`, { form })
+      const vaccination = new Vaccination(
+        Vaccination.read(vaccination_uuid, data.wizard),
+        data
+      )
+      response.locals.vaccination = vaccination
+
+      const patientSession = PatientSession.read(data.patientSession_uuid, data)
+      response.locals.patientSession = patientSession
+
+      const journey = {
+        [`/`]: {},
+        ...(data.startPath === 'decline'
+          ? {
+              [`/${vaccination_uuid}/${type}/decline`]: {},
+              [`/${vaccination_uuid}/${type}/check-answers`]: {}
+            }
+          : {
+              [`/${vaccination_uuid}/${type}/administer`]: {},
+              [`/${vaccination_uuid}/${type}/batch-id`]: () => {
+                return !data.defaultBatchId
+              },
+              ...(!patientSession.session?.address && {
+                [`/${vaccination_uuid}/${type}/location`]: {}
+              }),
+              [`/${vaccination_uuid}/${type}/check-answers`]: {}
+            }),
+        [`/${vaccination_uuid}`]: {}
+      }
+
+      response.locals.paths = {
+        ...wizard(journey, request),
+        ...(type === 'edit' && {
+          back: `${vaccination.uri}/edit`,
+          next: `${vaccination.uri}/edit`
+        })
+      }
+
+      // If first page in journey, return to page that initiated recording
+      const currentPath = request.path.split('/').at(-1)
+      if (currentPath === data.startPath) {
+        response.locals.paths.back = referrer || vaccination.uri
+      }
+
+      response.locals.batchItems = Batch.readAll(data)
+        .filter((batch) => batch.vaccine.type === programme.type)
+        .filter((batch) => !batch.archivedAt)
+
+      response.locals.injectionMethodItems = Object.entries(VaccinationMethod)
+        .filter(([, value]) => value !== VaccinationMethod.Nasal)
+        .map(([key, value]) => ({
+          text: VaccinationMethod[key],
+          value
+        }))
+
+      response.locals.injectionSiteItems = Object.entries(VaccinationSite)
+        .filter(([, value]) => value !== VaccinationSite.Nose)
+        .map(([key, value]) => ({
+          text: VaccinationSite[key],
+          value
+        }))
+
+      response.locals.sequenceItems =
+        programme.sequence &&
+        Object.entries(programme.sequence).map(([index, value]) => {
+          const ordinal = prototypeFilters.ordinal(Number(index) + 1)
+          return {
+            text: `${_.startCase(ordinal)} dose`,
+            value
+          }
+        })
+
+      response.locals.userItems = User.readAll(data)
+        .map((user) => ({
+          text: user.fullName,
+          value: user.uid
+        }))
+        .sort((a, b) => a.text.localeCompare(b.text))
+
+      response.locals.vaccineItems = Vaccine.readAll(data)
+        .filter((vaccine) => programme.type.includes(vaccine.type))
+        .map((vaccine) => ({
+          text: vaccine.brandWithType,
+          value: vaccine.snomed
+        }))
+
+      response.locals.declineItems = Object.entries(VaccinationOutcome)
+        .filter(
+          ([, value]) =>
+            value === VaccinationOutcome.AlreadyVaccinated ||
+            value === VaccinationOutcome.Contraindications ||
+            value === VaccinationOutcome.Refused ||
+            value === VaccinationOutcome.Unwell
+        )
+        .map(([key, value]) => ({
+          text: __(`vaccination.outcome.${key}`),
+          value
+        }))
+
+      next()
+    }
+  },
+
+  showForm(type) {
+    return (request, response) => {
+      const { view } = request.params
+
+      response.render(`vaccination/form/${view}`, { type })
+    }
   },
 
   updateForm(request, response) {

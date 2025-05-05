@@ -56,7 +56,10 @@ router.use('/programmes/:pid/patients', patientSessionRoutes)
 router.use('/programmes/:pid/patients/:nhsn/replies', replyRoutes)
 router.use('/programmes/:pid/uploads', uploadRoutes)
 router.use('/programmes/:pid/vaccinations', vaccinationRoutes)
-router.use('/programmes/:pid/vaccinations/:uuid/patients', patientRoutes)
+router.use(
+  '/programmes/:pid/vaccinations/:vaccination_uuid/patients',
+  patientRoutes
+)
 router.use('/records', recordRoutes)
 router.use('/schools', schoolRoutes)
 router.use('/sessions/:id/consents', consentRoutes)
