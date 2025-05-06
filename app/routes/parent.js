@@ -1,21 +1,22 @@
 import express from 'express'
 
-import { parentController } from '../controllers/parent.js'
+import { parentController as parent } from '../controllers/parent.js'
 
 const router = express.Router({ strict: true })
 
-router.use('/:id*', parentController.read)
-router.get(['/:id', '/:id/'], parentController.redirect)
+router.param('session_id', parent.read)
 
-router.get('/:id/new', parentController.new)
+router.get(['/:session_id', '/:session_id/'], parent.redirect)
 
-router.get('/:id/:view?', parentController.show)
+router.get('/:session_id/new', parent.new)
 
-router.all('/:id/:uuid/?:form(new)/check-answers', parentController.readForm)
-router.post('/:id/:uuid/?:form(new)/check-answers', parentController.update)
+router.all('/:session_id/:consent_uuid/new/check-answers', parent.readForm)
+router.post('/:session_id/:consent_uuid/new/check-answers', parent.update)
 
-router.all('/:id/:uuid/?:form(new|edit)/:view', parentController.readForm)
-router.get('/:id/:uuid/?:form(new|edit)/:view', parentController.showForm)
-router.post('/:id/:uuid/?:form(new|edit)/:view', parentController.updateForm)
+router.all('/:session_id/:consent_uuid/new/:view', parent.readForm)
+router.get('/:session_id/:consent_uuid/new/:view', parent.showForm)
+router.post('/:session_id/:consent_uuid/new/:view', parent.updateForm)
+
+router.get('/:session_id/:view?', parent.show)
 
 export const parentRoutes = router

@@ -3,7 +3,9 @@
 {% set confirmButtonText = __("consent.new.check-answers.confirm") %}
 {% set title = __("consent.new.check-answers.title") %}
 {% set refusalReasonHasDetails = consent.refusalReason != RefusalReason.PersonalChoice or consent.refusalReason != RefusalReason.Other %}
-{% set editPath = session.consentUrl + "/" + consent.uuid + "/edit/" %}
+{% macro editPath(view) -%}
+  {{- view }}?referrer={{ session.consentUrl }}/{{ consent.uuid}}/new/check-answers
+{%- endmacro %}
 
 {% block form %}
   {{ heading({
@@ -18,7 +20,7 @@
         rows: summaryRows(consent, {
           decision: {
             value: ReplyDecision.Given,
-            href: editPath + "decision"
+            href: editPath("decision")
           }
         })
       })
@@ -31,13 +33,13 @@
         rows: summaryRows(consent, {
           decision: {
             value: ReplyDecision.Refused,
-            href: editPath + "decision"
+            href: editPath("decision")
           },
           refusalReason: {
-            href: editPath + "refusal-reason"
+            href: editPath("refusal-reason")
           },
           refusalReasonDetails: {
-            href: editPath + "refusal-reason-details"
+            href: editPath("refusal-reason-details")
           }
         })
       })
@@ -50,16 +52,16 @@
         rows: summaryRows(consent, {
           decision: {
             value: ReplyDecision.Refused,
-            href: editPath + "decision"
+            href: editPath("decision")
           },
           consultation: {
-            href: editPath + "consultation"
+            href: editPath("consultation")
           },
           refusalReason: {
-            href: editPath + "refusal-reason"
+            href: editPath("refusal-reason")
           },
           refusalReasonDetails: {
-            href: editPath + "refusal-reason-details"
+            href: editPath("refusal-reason-details")
           }
         })
       })
@@ -72,7 +74,7 @@
         rows: summaryRows(consent, {
           decision: {
             value: ReplyDecision.Given,
-            href: editPath + "decision"
+            href: editPath("decision")
           }
         })
       })
@@ -84,16 +86,16 @@
       descriptionHtml: summaryList({
         rows: summaryRows(consent, {
           decision: {
-            href: editPath + "decision"
+            href: editPath("decision")
           },
           consultation: {
-            href: editPath + "consultation"
+            href: editPath("consultation")
           },
           refusalReason: {
-            href: editPath + "refusal-reason"
+            href: editPath("refusal-reason")
           },
           refusalReasonDetails: {
-            href: editPath + "refusal-reason-details"
+            href: editPath("refusal-reason-details")
           }
         })
       })
@@ -106,24 +108,20 @@
     descriptionHtml: summaryList({
       rows: summaryRows(consent.child, {
         fullName: {
-          href: editPath + "child"
+          href: editPath("child")
         },
         preferredName: {
-          href: editPath + "child"
+          href: editPath("child")
         },
         dob: {
-          href: editPath + "dob"
+          href: editPath("dob")
         },
         address: {
-          href: editPath + "address"
-        } if consent.given,
-        gpSurgery: {
-          changeLabel: "GP surgery",
-          href: editPath + "gp-registered"
+          href: editPath("address")
         } if consent.given,
         school: {
           value: consent.child.formatted.school or session.location.name,
-          href: editPath + "school"
+          href: editPath("school")
         } if session.type === SessionType.School
       })
     })
@@ -135,25 +133,25 @@
     descriptionHtml: summaryList({
       rows: summaryRows(consent.parent, {
         fullName: {
-          href: editPath + "parent"
+          href: editPath("parent")
         },
         relationship: {
-          href: editPath + "parent"
+          href: editPath("parent")
         },
         hasParentalResponsibility: {
-          href: editPath + "parent"
+          href: editPath("parent")
         },
         email: {
-          href: editPath + "parent"
+          href: editPath("parent")
         },
         tel: {
-          href: editPath + "parent"
+          href: editPath("parent")
         },
         sms: {
-          href: editPath + "parent"
+          href: editPath("parent")
         },
         contactPreference: {
-          href: editPath + "contact-preference"
+          href: editPath("contact-preference")
         }
       })
     })
@@ -166,7 +164,7 @@
       classes: "app-summary-list--full-width",
       rows: healthAnswerRows(
         consent.healthAnswersForDecision,
-        editPath + "health-question-{{key}}"
+        editPath("health-question-{{key}}")
       )
     })
   }) if consent.given }}

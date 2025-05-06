@@ -12,11 +12,8 @@ import { getHealthQuestionPaths } from '../utils/consent.js'
 import { formatList, kebabToPascalCase } from '../utils/string.js'
 
 export const parentController = {
-  read(request, response, next) {
-    const { id } = request.params
-    const { data } = request.session
-
-    const session = Session.read(id, data)
+  read(request, response, next, session_id) {
+    const session = Session.read(session_id, request.session.data)
 
     response.locals.transactionalService = {
       name: 'Give or refuse consent for vaccinations',
@@ -101,52 +98,52 @@ export const parentController = {
   },
 
   readForm(request, response, next) {
-    const { form, id, uuid, view } = request.params
-    const { data } = request.session
+    const { session_id, consent_uuid } = request.params
+    const { data, referrer } = request.session
 
-    const consent = new Consent(Consent.read(uuid, data?.wizard), data)
+    const consent = new Consent(Consent.read(consent_uuid, data?.wizard), data)
     response.locals.consent = consent
 
     const journey = {
-      [`/${id}`]: {},
-      [`/${id}/${uuid}/${form}/child`]: {},
-      [`/${id}/${uuid}/${form}/dob`]: {},
-      ...(consent.session.type === SessionType.School
-        ? { [`/${id}/${uuid}/${form}/confirm-school`]: {} }
+      [`/${session_id}`]: {},
+      [`/${session_id}/${consent_uuid}/new/child`]: {},
+      [`/${session_id}/${consent_uuid}/new/dob`]: {},
+      ...(consent.session?.type === SessionType.School
+        ? { [`/${session_id}/${consent_uuid}/new/confirm-school`]: {} }
         : {}),
-      ...(consent.session.type === SessionType.School &&
+      ...(consent.session?.type === SessionType.School &&
       data.confirmSchool !== 'yes'
         ? {
-            [`/${id}/${uuid}/${form}/school`]: {}
+            [`/${session_id}/${consent_uuid}/new/school`]: {}
           }
         : {}),
-      [`/${id}/${uuid}/${form}/parent`]: {
-        [`/${id}/${uuid}/${form}/decision`]: () =>
+      [`/${session_id}/${consent_uuid}/new/parent`]: {
+        [`/${session_id}/${consent_uuid}/new/decision`]: () =>
           !request.session.data.consent?.parent?.tel
       },
-      [`/${id}/${uuid}/${form}/contact-preference`]: {},
-      [`/${id}/${uuid}/${form}/decision`]: {
-        [`${id}/${uuid}/${form}/consultation`]: {
+      [`/${session_id}/${consent_uuid}/new/contact-preference`]: {},
+      [`/${session_id}/${consent_uuid}/new/decision`]: {
+        [`${session_id}/${consent_uuid}/new/consultation`]: {
           data: 'consent.decision',
           value: ReplyDecision.Refused
         }
       },
-      [`/${id}/${uuid}/${form}/address`]: {},
+      [`/${session_id}/${consent_uuid}/new/address`]: {},
       ...getHealthQuestionPaths(
-        `/${id}/${uuid}/${form}/`,
+        `/${session_id}/${consent_uuid}/new/`,
         consent.session,
         consent.decision
       ),
-      [`/${id}/${uuid}/${form}/check-answers`]: {},
-      [`/${id}/${uuid}/new/confirmation`]: {},
-      [`/${id}/${uuid}/${form}/consultation`]: {
-        [`${id}/${uuid}/${form}/refusal-reason`]: {
+      [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
+      [`/${session_id}/${consent_uuid}/new/confirmation`]: {},
+      [`/${session_id}/${consent_uuid}/new/consultation`]: {
+        [`${session_id}/${consent_uuid}/new/refusal-reason`]: {
           data: 'consent.decision',
           value: ReplyDecision.Refused
         }
       },
-      [`/${id}/${uuid}/${form}/refusal-reason`]: {
-        [`/${id}/${uuid}/${form}/refusal-reason-details`]: {
+      [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
+        [`/${session_id}/${consent_uuid}/new/refusal-reason-details`]: {
           data: 'consent.refusalReason',
           values: [
             ReplyRefusal.AlreadyGiven,
@@ -154,23 +151,18 @@ export const parentController = {
             ReplyRefusal.Medical
           ]
         },
-        [`/${id}/${uuid}/${form}/check-answers`]: true
+        [`/${session_id}/${consent_uuid}/new/check-answers`]: true
       },
-      [`/${id}/${uuid}/${form}/refusal-reason-details`]: {
-        [`/${id}/${uuid}/${form}/check-answers`]: true
+      [`/${session_id}/${consent_uuid}/new/refusal-reason-details`]: {
+        [`/${session_id}/${consent_uuid}/new/check-answers`]: true
       },
-      [`/${id}/${uuid}/${form}/check-answers`]: {},
-      [`/${id}/${uuid}/${form}/confirmation`]: {}
+      [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
+      [`/${session_id}/${consent_uuid}/new/confirmation`]: {}
     }
 
-    response.locals.paths = {
-      ...wizard(journey, request),
-      ...(form === 'edit' &&
-        view !== 'check-answers' && {
-          back: `${consent.parentUri}/${form}/check-answers`,
-          next: `${consent.parentUri}/${form}/check-answers`
-        })
-    }
+    const paths = wizard(journey, request)
+    paths.back = referrer || paths.back
+    response.locals.paths = paths
 
     response.locals.programmeIsFlu = consent.session.programmes
       .map(({ type }) => type)
@@ -202,7 +194,7 @@ export const parentController = {
   },
 
   showForm(request, response) {
-    let { form, view } = request.params
+    let { view } = request.params
 
     // Get health question key from view name
     const key = kebabToPascalCase(view.replace('health-question-', ''))
@@ -214,7 +206,7 @@ export const parentController = {
     // All health questions use the same view
     view = view.startsWith('health-question-') ? 'health-question' : view
 
-    response.render(`parent/form/${view}`, { form, key, healthQuestion })
+    response.render(`parent/form/${view}`, { key, healthQuestion })
   },
 
   updateForm(request, response) {
