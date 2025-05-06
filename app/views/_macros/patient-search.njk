@@ -49,6 +49,17 @@
       items: programmeItems
     }) if programmeItems }}
 
+    {{ checkboxes({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("patientSession." + params.statuses + ".label")
+        }
+      },
+      items: statusesItems,
+      decorate: params.statuses
+    }) if params.statuses }}
+
     {{ radios({
       fieldset: {
         legend: {

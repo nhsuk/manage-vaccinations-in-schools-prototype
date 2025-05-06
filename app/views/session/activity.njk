@@ -51,7 +51,8 @@
       <auto-submit class="app-grid-column-filters">
         {{ patientSearch({
           clear: session.uri + "/" + view,
-          status: view if view != "record"
+          status: view if view != "record" and view != "consent",
+          statuses: view if view == "consent"
         }) }}
       </auto-submit>
 
@@ -72,7 +73,7 @@
         {{ heading({
           level: 2,
           size: "m",
-          title: title,
+          title: title | replace(",", " or "),
           summary: __mf("patient.results", {
             from: results.from,
             to: results.to,

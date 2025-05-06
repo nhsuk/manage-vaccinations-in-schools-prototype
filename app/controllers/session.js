@@ -76,7 +76,7 @@ export const sessionController = {
 
   readPatientSessions(request, response, next) {
     const { view } = request.params
-    const { hasMissingNhsNumber, snomed, programme_id, q, yearGroup } =
+    const { consent, hasMissingNhsNumber, snomed, programme_id, q, yearGroup } =
       request.query
     const { data } = request.session
     const { session } = response.locals
@@ -106,18 +106,26 @@ export const sessionController = {
       )
     }
 
-    // Filter by status
+    // Filter by consent status
+    if (consent) {
+      results = results.filter((patientSession) =>
+        consent.includes(patientSession.consent)
+      )
+    }
+
+    // Filter by screen/register/outcome status
     const filters = {
-      consent: request.query.consent || 'none',
       screen: request.query.screen || 'none',
       register: request.query.register || 'none',
       outcome: request.query.outcome || 'none'
     }
 
-    if (filters[view] !== 'none') {
-      results = results.filter(
-        (patientSession) => patientSession[view] === filters[view]
-      )
+    for (const activity of ['screen', 'register', 'outcome']) {
+      if (activity === view && filters[view] !== 'none') {
+        results = results.filter(
+          (patientSession) => patientSession[view] === filters[view]
+        )
+      }
     }
 
     // Filter by year group
@@ -166,7 +174,7 @@ export const sessionController = {
       )
     }
 
-    // Filters
+    // Programme filter options
     if (session.programmes.length > 1) {
       response.locals.programmeItems = session.programmes.map((programme) => ({
         text: programme.name,
@@ -175,26 +183,39 @@ export const sessionController = {
       }))
     }
 
-    const statusItems = {
-      consent: ConsentOutcome,
-      screen: ScreenOutcome,
-      register: RegistrationOutcome,
-      outcome: VaccinationOutcome
-    }
-
-    if (statusItems[view]) {
-      response.locals.statusItems = [
-        {
-          text: 'Any',
-          value: 'none',
-          checked: filters[view] === 'none'
-        },
-        ...Object.values(statusItems[view]).map((value) => ({
+    // Consent status filter options (select many)
+    if (view === 'consent') {
+      response.locals.statusesItems = Object.values(ConsentOutcome).map(
+        (value) => ({
           text: value,
           value,
-          checked: value === filters[view]
-        }))
-      ]
+          checked: value === request.query.consent
+        })
+      )
+    }
+
+    // Screen/register/outcome status filter options (select one)
+    for (const activity of ['screen', 'register', 'outcome']) {
+      const statusItems = {
+        screen: ScreenOutcome,
+        register: RegistrationOutcome,
+        outcome: VaccinationOutcome
+      }
+
+      if (view === activity && statusItems[view]) {
+        response.locals.statusItems = [
+          {
+            text: 'Any',
+            value: 'none',
+            checked: filters[view] === 'none'
+          },
+          ...Object.values(statusItems[view]).map((value) => ({
+            text: value,
+            value,
+            checked: value === filters[view]
+          }))
+        ]
+      }
     }
 
     if (session.school) {
@@ -221,41 +242,28 @@ export const sessionController = {
 
   filterPatientSessions(request, response) {
     const { session_id, view } = request.params
-    const { hasMissingNhsNumber, programme_id, yearGroup } = request.body
+    const { hasMissingNhsNumber } = request.body
     const params = new URLSearchParams()
 
-    for (const key of [
-      'q',
-      'consent',
-      'triage',
-      'screen',
-      'register',
-      'outcome'
-    ]) {
-      const param = request.body[key]
-      if (param) {
-        params.append(key, String(param))
+    // Radios
+    for (const key of ['q', 'triage', 'screen', 'register', 'outcome']) {
+      const value = request.body[key]
+      if (value) {
+        params.append(key, String(value))
       }
     }
 
-    if (programme_id) {
-      const programme_ids = Array.isArray(programme_id)
-        ? programme_id
-        : [programme_id]
-      programme_ids
-        .filter((item) => item !== '_unchecked')
-        .forEach((id) => {
-          params.append('programme_id', id)
-        })
-    }
-
-    if (yearGroup) {
-      const yearGroups = Array.isArray(yearGroup) ? yearGroup : [yearGroup]
-      yearGroups
-        .filter((item) => item !== '_unchecked')
-        .forEach((year) => {
-          params.append('yearGroup', String(year))
-        })
+    // Checkboxes
+    for (const key of ['consent', 'programme_id', 'yearGroup']) {
+      const value = request.body[key]
+      const values = Array.isArray(value) ? value : [value]
+      if (value) {
+        values
+          .filter((item) => item !== '_unchecked')
+          .forEach((value) => {
+            params.append(key, String(value))
+          })
+      }
     }
 
     if (hasMissingNhsNumber?.includes('true')) {
