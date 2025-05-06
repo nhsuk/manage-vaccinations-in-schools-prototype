@@ -92,7 +92,7 @@
         ]) %}
       {% endfor %}
 
-      {{ actionTable({
+      {{ table({
         id: "cohorts",
         sort: "name",
         responsive: true,
@@ -133,7 +133,7 @@
         ]) %}
       {% endfor %}
 
-      {{ actionTable({
+      {{ table({
         id: "patient-sessions",
         sort: "name",
         responsive: true,
@@ -183,9 +183,8 @@
         ]) %}
       {% endfor %}
 
-      {{ actionTable({
+      {{ table({
         id: "vaccinations",
-        classes: "nhsuk-u-margin-bottom-4",
         sort: "createdAt",
         responsive: true,
         head: [

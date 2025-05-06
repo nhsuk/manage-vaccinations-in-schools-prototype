@@ -35,7 +35,7 @@
   {% endfor %}
 
   {% if options.hasTriage %}
-    {{ actionTable({
+    {{ table({
       id: "triage-notes",
       caption: __("triage.note.label"),
       sort: "createdAt",
