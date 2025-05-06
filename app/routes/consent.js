@@ -15,6 +15,6 @@ router.post('/:consent_uuid/invalidate', consent.invalidate)
 router.post('/:consent_uuid/link', consent.link)
 router.post('/:consent_uuid/add', consent.add)
 
-router.get('/:consent_uuid/:view?', consent.show)
+router.get('/:consent_uuid{/:view}', consent.show)
 
 export const consentRoutes = router

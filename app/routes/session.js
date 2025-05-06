@@ -27,6 +27,6 @@ router.post('/:session_id/default-batch', session.updateDefaultBatch)
 router.all('/:session_id/:view', session.readPatientSessions)
 router.post('/:session_id/:view', session.filterPatientSessions)
 
-router.get('/:session_id/:view?', session.show)
+router.get('/:session_id{/:view}', session.show)
 
 export const sessionRoutes = router

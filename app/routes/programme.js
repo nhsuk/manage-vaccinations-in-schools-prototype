@@ -13,6 +13,6 @@ router.post('/:pid/patients', programme.filterPatients)
 
 router.all('/:pid/vaccinations', programme.readVaccinations)
 
-router.get('/:pid/:view?', programme.show)
+router.get('/:pid{/:view}', programme.show)
 
 export const programmeRoutes = router

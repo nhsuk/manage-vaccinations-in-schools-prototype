@@ -18,6 +18,6 @@ router.post('/:nhsn/edit/:view', patient.updateForm)
 
 router.post('/:nhsn/unselect', patient.unselect)
 
-router.get('/:nhsn/:view?', patient.show)
+router.get('/:nhsn{/:view}', patient.show)
 
 export const patientRoutes = router

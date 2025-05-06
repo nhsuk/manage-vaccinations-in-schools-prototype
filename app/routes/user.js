@@ -8,6 +8,6 @@ router.get('/', user.readAll, user.list)
 
 router.param('user_uid', user.read)
 
-router.get('/:user_uid/:view?', user.show)
+router.get('/:user_uid{/:view}', user.show)
 
 export const userRoutes = router

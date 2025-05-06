@@ -8,6 +8,6 @@ router.get('/', record.readAll, record.list)
 
 router.param('nhsn', record.read)
 
-router.get('/:nhsn/:view?', record.show)
+router.get('/:nhsn{/:view}', record.show)
 
 export const recordRoutes = router

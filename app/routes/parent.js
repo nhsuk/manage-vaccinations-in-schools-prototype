@@ -17,6 +17,6 @@ router.all('/:session_id/:consent_uuid/new/:view', parent.readForm)
 router.get('/:session_id/:consent_uuid/new/:view', parent.showForm)
 router.post('/:session_id/:consent_uuid/new/:view', parent.updateForm)
 
-router.get('/:session_id/:view?', parent.show)
+router.get('/:session_id{/:view}', parent.show)
 
 export const parentRoutes = router

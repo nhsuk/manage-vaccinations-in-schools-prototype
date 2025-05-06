@@ -23,6 +23,6 @@ router.post('/:nhsn/edit/gillick', patientSession.gillick('edit'))
 router.post('/:nhsn/edit/registration', patientSession.register)
 router.post('/:nhsn/edit/triage', patientSession.triage)
 
-router.get('/:nhsn/:view?', patientSession.show)
+router.get('/:nhsn{/:view}', patientSession.show)
 
 export const patientSessionRoutes = router
