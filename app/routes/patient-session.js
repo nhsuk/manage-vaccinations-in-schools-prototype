@@ -1,27 +1,28 @@
 import express from 'express'
 
-import { patientSessionController } from '../controllers/patient-session.js'
+import { patientSessionController as patientSession } from '../controllers/patient-session.js'
 
 const router = express.Router({ strict: true, mergeParams: true })
 
-router.all('/:nhsn*', patientSessionController.read)
-router.get(['/:nhsn', '/:nhsn/?:view(events)'], patientSessionController.show)
+router.param('nhsn', patientSession.read)
 
-router.get(
-  '/:nhsn/?:form(new|edit)/vaccination',
-  patientSessionController.vaccination
-)
+router.all('/:nhsn/new/:view', patientSession.readForm)
+router.get('/:nhsn/new/vaccination', patientSession.vaccination)
+router.get('/:nhsn/new/:view', patientSession.showForm('new'))
 
-router.all('/:nhsn/?:form(new|edit)/:view', patientSessionController.readForm)
-router.get('/:nhsn/?:form(new|edit)/:view', patientSessionController.showForm)
-router.post('/:nhsn/?:form(new|edit)/gillick', patientSessionController.gillick)
-router.post('/:nhsn/new/pre-screen', patientSessionController.preScreen)
-router.post(
-  '/:nhsn/?:form(new|edit)/registration',
-  patientSessionController.register
-)
-router.post('/:nhsn/?:form(new|edit)/invite', patientSessionController.invite)
-router.post('/:nhsn/?:form(new|edit)/remind', patientSessionController.remind)
-router.post('/:nhsn/?:form(new|edit)/triage', patientSessionController.triage)
+router.post('/:nhsn/new/gillick', patientSession.gillick('new'))
+router.post('/:nhsn/new/pre-screen', patientSession.preScreen)
+router.post('/:nhsn/new/invite', patientSession.invite)
+router.post('/:nhsn/new/remind', patientSession.remind)
+router.post('/:nhsn/new/triage', patientSession.triage)
+
+router.all('/:nhsn/edit/:view', patientSession.readForm)
+router.get('/:nhsn/edit/:view', patientSession.showForm('edit'))
+
+router.post('/:nhsn/edit/gillick', patientSession.gillick('edit'))
+router.post('/:nhsn/edit/registration', patientSession.register)
+router.post('/:nhsn/edit/triage', patientSession.triage)
+
+router.get('/:nhsn/:view?', patientSession.show)
 
 export const patientSessionRoutes = router

@@ -1,7 +1,7 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("patientSession.gillick." + form + ".title") %}
-{% set confirmButtonText = __("patientSession.gillick." + form + ".confirm") %}
+{% set title = __("patientSession.gillick." + type + ".title") %}
+{% set confirmButtonText = __("patientSession.gillick." + type + ".confirm") %}
 
 {% block form %}
   {{ heading({

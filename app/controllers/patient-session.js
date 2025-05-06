@@ -18,13 +18,12 @@ import { PreScreenQuestion } from '../models/vaccine.js'
 import { today } from '../utils/date.js'
 
 export const patientSessionController = {
-  read(request, response, next) {
-    const { pid, nhsn } = request.params
+  read(request, response, next, nhsn) {
+    const { pid } = request.params
     const { activity } = request.query
-    const { data } = request.session
     const { __ } = response.locals
 
-    const patientSession = PatientSession.readAll(data)
+    const patientSession = PatientSession.readAll(request.session.data)
       .filter(({ programme_pid }) => programme_pid === pid)
       .find(({ patient }) => patient.nhsn === nhsn)
 
@@ -150,21 +149,21 @@ export const patientSessionController = {
   },
 
   readForm(request, response, next) {
-    const { form } = request.params
     const { referrer } = request.session
     const { patientSession } = response.locals
 
     // Show back link to referring page, else patient session page
     response.locals.back = referrer || patientSession.uri
-    response.locals.form = form
 
     next()
   },
 
-  showForm(request, response) {
-    const view = request.params.view || 'show'
+  showForm(type) {
+    return (request, response) => {
+      const { view } = request.params
 
-    response.render(`patient-session/form/${view}`)
+      response.render(`patient-session/form/${view}`, { type })
+    }
   },
 
   register(request, response) {
@@ -212,28 +211,32 @@ export const patientSessionController = {
     response.redirect(back)
   },
 
-  gillick(request, response) {
-    const { gillick } = request.body.patientSession
-    const { data } = request.session
-    const { __, back, form, patientSession } = response.locals
+  gillick(type) {
+    return (request, response) => {
+      const { gillick } = request.body.patientSession
+      const { data } = request.session
+      const { __, back, patientSession } = response.locals
 
-    if (form === 'edit') {
-      gillick.updatedAt = today()
+      if (type === 'edit') {
+        gillick.updatedAt = today()
+      }
+
+      const name = __(`patientSession.gillick.${type}.success`)
+      request.flash('success', name)
+
+      patientSession.assessGillick(
+        {
+          name,
+          ...(data.token && { createdBy_uid: data.token?.uid })
+        },
+        new Gillick(gillick)
+      )
+
+      // Clean up session data
+      delete data.patientSession?.gillick
+
+      response.redirect(back)
     }
-
-    patientSession.assessGillick(
-      {
-        ...(data.token && { createdBy_uid: data.token?.uid })
-      },
-      new Gillick(gillick)
-    )
-
-    // Clean up session data
-    delete data.patientSession?.gillick
-
-    request.flash('success', __(`patientSession.gillick.${form}.success`))
-
-    response.redirect(back)
   },
 
   preScreen(request, response) {

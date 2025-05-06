@@ -607,7 +607,7 @@ export class PatientSession {
   assessGillick(event, gillick) {
     this.patient.addEvent({
       type: EventType.Consent,
-      name: gillick.status.description,
+      name: event.name,
       note: gillick.note,
       createdAt: gillick.createdAt,
       createdBy_uid: event.createdBy_uid,
