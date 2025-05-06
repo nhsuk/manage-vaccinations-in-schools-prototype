@@ -76,7 +76,8 @@ export const sessionController = {
 
   readPatientSessions(request, response, next) {
     const { view } = request.params
-    const { hasMissingNhsNumber, snomed, pids, q, yearGroup } = request.query
+    const { hasMissingNhsNumber, snomed, programme_id, q, yearGroup } =
+      request.query
     const { data } = request.session
     const { session } = response.locals
 
@@ -99,9 +100,9 @@ export const sessionController = {
     }
 
     // Filter by programme
-    if (pids) {
+    if (programme_id) {
       results = results.filter((patientSession) =>
-        pids.includes(patientSession.programme_pid)
+        programme_id.includes(patientSession.programme_id)
       )
     }
 
@@ -169,8 +170,8 @@ export const sessionController = {
     if (session.programmes.length > 1) {
       response.locals.programmeItems = session.programmes.map((programme) => ({
         text: programme.name,
-        value: programme.pid,
-        checked: pids?.includes(programme.pid)
+        value: programme.id,
+        checked: programme_id?.includes(programme.id)
       }))
     }
 
@@ -208,7 +209,7 @@ export const sessionController = {
 
     // Clean up session data
     delete data.hasMissingNhsNumber
-    delete data.pids
+    delete data.programme_id
     delete data.q
     delete data.consent
     delete data.screen
@@ -220,7 +221,7 @@ export const sessionController = {
 
   filterPatientSessions(request, response) {
     const { session_id, view } = request.params
-    const { hasMissingNhsNumber, pid, yearGroup } = request.body
+    const { hasMissingNhsNumber, programme_id, yearGroup } = request.body
     const params = new URLSearchParams()
 
     for (const key of [
@@ -237,12 +238,14 @@ export const sessionController = {
       }
     }
 
-    if (pid) {
-      const pids = Array.isArray(pid) ? pid : [pid]
-      pids
+    if (programme_id) {
+      const programme_ids = Array.isArray(programme_id)
+        ? programme_id
+        : [programme_id]
+      programme_ids
         .filter((item) => item !== '_unchecked')
-        .forEach((pid) => {
-          params.append('pids', pid)
+        .forEach((id) => {
+          params.append('programme_id', id)
         })
     }
 
@@ -308,10 +311,10 @@ export const sessionController = {
       next: `${session.uri}/edit`
     }
 
-    response.locals.programmePidsItems = Object.values(programmeTypes).map(
+    response.locals.programmeItems = Object.values(programmeTypes).map(
       (type) => ({
         text: type.name,
-        value: type.pid
+        value: type.id
       })
     )
 
@@ -357,8 +360,8 @@ export const sessionController = {
     // Find a clinic
     const clinic = Session.readAll(data)
       .filter(({ type }) => type === SessionType.Clinic)
-      .find(({ programme_pids }) =>
-        programme_pids.some((pid) => session.programme_pids.includes(pid))
+      .find(({ programme_ids }) =>
+        programme_ids.some((id) => session.programme_ids.includes(id))
       )
 
     // Move patients to clinic

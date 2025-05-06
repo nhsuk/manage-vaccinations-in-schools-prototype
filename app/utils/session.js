@@ -35,12 +35,12 @@ export const getConsentWindow = (session) => {
 
 export const getProgrammeSession = (sessions, type, isSchool = true) => {
   type = type || ProgrammeType.Flu
-  const { pid } = programmeTypes[type]
+  const { id } = programmeTypes[type]
   const sessionType = isSchool ? SessionType.School : SessionType.Clinic
 
   return Object.values(sessions)
     .map((session) => new Session(session))
-    .filter((session) => session.programme_pids.includes(pid))
+    .filter((session) => session.programme_ids.includes(id))
     .filter((session) => session.type === sessionType)
     .filter((session) => session.status !== SessionStatus.Unplanned)
     .at(-1)

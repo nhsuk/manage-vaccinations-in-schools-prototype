@@ -12,6 +12,6 @@ export function generateCohort(programme, yearGroup, user) {
   return new Cohort({
     createdBy_uid: user.uid,
     yearGroup,
-    programme_pid: programme.pid
+    programme_id: programme.id
   })
 }

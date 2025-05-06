@@ -19,12 +19,12 @@ import { today } from '../utils/date.js'
 
 export const patientSessionController = {
   read(request, response, next, nhsn) {
-    const { pid } = request.params
+    const { programme_id } = request.params
     const { activity } = request.query
     const { __ } = response.locals
 
     const patientSession = PatientSession.readAll(request.session.data)
-      .filter(({ programme_pid }) => programme_pid === pid)
+      .filter(({ programme }) => programme.id === programme_id)
       .find(({ patient }) => patient.nhsn === nhsn)
 
     const {
@@ -102,7 +102,8 @@ export const patientSessionController = {
         href: activity
           ? `${patientSession.uri}?activity=${activity}`
           : patientSession.uri,
-        current: view !== 'events' && patientSession.programme_pid === pid
+        current:
+          view !== 'events' && patientSession.programme_id === programme_id
       })),
       ...[
         {
@@ -129,7 +130,7 @@ export const patientSessionController = {
     response.locals.preScreenQuestionItems = Object.entries(
       programme.vaccine.preScreenQuestions
     ).map(([key, text]) => {
-      let value = `${programme.pid}-${key}`
+      let value = `${programme.id}-${key}`
       if (text === PreScreenQuestion.IsWell) {
         value = `${nhsn}-is-well`
       } else if (text === PreScreenQuestion.IsPregnant) {
@@ -183,13 +184,13 @@ export const patientSessionController = {
       patientSession.report !== PatientOutcome.CouldNotVaccinate
     ) {
       // Record vaccination outcome as absent if safe to vaccinate
-      const programme = Programme.read(session.programme_pids[0], data)
+      const programme = Programme.read(session.programme_ids[0], data)
       const vaccination = new Vaccination({
         location: session.location.name,
         school_urn: session.school_urn,
         outcome: VaccinationOutcome.Absent,
         patient_uuid: patient.uuid,
-        programme_pid: programme.pid,
+        programme_id: programme.id,
         session_id: session.id,
         vaccine_snomed: programme.vaccine.snomed,
         ...(data.token && { createdBy_uid: data.token?.uid })
@@ -263,7 +264,7 @@ export const patientSessionController = {
     const vaccination = new Vaccination({
       outcome: VaccinationOutcome.AlreadyVaccinated,
       patient_uuid: patient.uuid,
-      programme_pid: programme.pid,
+      programme_id: programme.id,
       session_id: session.id,
       ...(data.token && { createdBy_uid: data.token?.uid })
     })

@@ -96,7 +96,7 @@ export function generateConsent(
         refusalReasonOther: 'My family rejects vaccinations on principle.'
       })
     }),
-    programme_pid: programme.pid,
+    programme_id: programme.id,
     session_id: session.id
   })
 }

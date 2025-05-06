@@ -96,7 +96,7 @@ export const VaccinationProtocol = {
  * @property {string} [school_urn] - School URN
  * @property {string} [session_id] - Session ID
  * @property {string} [patient_uuid] - Patient UUID
- * @property {string} [programme_pid] - Programme ID
+ * @property {string} [programme_id] - Programme ID
  * @property {string} [batch_id] - Batch ID
  * @property {string} [vaccine_snomed] - Vaccine SNOMED code
  */
@@ -123,7 +123,7 @@ export class Vaccination {
     this.school_urn = options?.school_urn
     this.session_id = options?.session_id
     this.patient_uuid = options?.patient_uuid
-    this.programme_pid = options?.programme_pid
+    this.programme_id = options?.programme_id
     this.batch_id = this.given ? options?.batch_id || '' : undefined
     this.vaccine_snomed = options?.vaccine_snomed
   }
@@ -263,7 +263,7 @@ export class Vaccination {
    */
   get programme() {
     try {
-      return Programme.read(this.programme_pid, this.context)
+      return Programme.read(this.programme_id, this.context)
     } catch (error) {
       console.error('Vaccination.programme', error.message)
     }
@@ -391,7 +391,7 @@ export class Vaccination {
    * @returns {string} - URI
    */
   get uri() {
-    return `/programmes/${this.programme_pid}/vaccinations/${this.uuid}`
+    return `/programmes/${this.programme_id}/vaccinations/${this.uuid}`
   }
 
   /**

@@ -16,9 +16,9 @@ import { Vaccine } from '../models/vaccine.js'
 
 export const vaccinationController = {
   read(request, response, next, vaccination_uuid) {
-    const { pid } = request.params
+    const { programme_id } = request.params
 
-    const programme = Programme.read(pid, request.session.data)
+    const programme = Programme.read(programme_id, request.session.data)
     const vaccination = Vaccination.read(vaccination_uuid, request.session.data)
     const { session } = vaccination
 
@@ -99,7 +99,7 @@ export const vaccinationController = {
     const vaccination = new Vaccination({
       location: session.formatted.location,
       patient_uuid: patient.uuid,
-      programme_pid: programme.pid,
+      programme_id: programme.id,
       school_urn: session.school_urn,
       session_id: session.id,
       vaccine_snomed: programme.vaccine.snomed,

@@ -172,7 +172,7 @@ export const parentController = {
       (programme) => ({
         text: programme.name,
         value:
-          programme.pid === 'td-ipv'
+          programme.id === 'td-ipv'
             ? ReplyDecision.OnlyTdIPV
             : ReplyDecision.OnlyMenACWY
       })

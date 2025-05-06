@@ -39,19 +39,18 @@ export const downloadController = {
   },
 
   redirect(request, response) {
-    const { pid } = request.params
+    const { programme_id } = request.params
 
-    response.redirect(`/programmes/${pid}`)
+    response.redirect(`/programmes/${programme_id}`)
   },
 
   new(request, response) {
-    // TODO: Rename `pid` to `programme_pid`
-    const { pid } = request.params
+    const { programme_id } = request.params
     const { data } = request.session
 
-    const programme = Programme.read(pid, data)
+    const programme = Programme.read(programme_id, data)
     const download = new Download({
-      programme_pid: pid,
+      programme_id,
       vaccination_uuids: programme.vaccinations.map(({ uuid }) => uuid),
       ...(data.token && { createdBy_uid: data.token?.uid })
     })

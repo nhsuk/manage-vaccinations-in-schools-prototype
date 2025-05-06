@@ -41,12 +41,12 @@ export const uploadController = {
   },
 
   new(request, response) {
-    const { pid } = request.params
+    const { programme_id } = request.params
     const { type, urn } = request.query
     const { data } = request.session
 
     const upload = new Upload({
-      programme_pid: pid,
+      programme_id,
       type,
       ...(type === UploadType.School &&
         urn && {

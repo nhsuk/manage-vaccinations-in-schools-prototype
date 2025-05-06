@@ -11,11 +11,11 @@
       text: __("programme.list.title"),
       href: "/programmes"
     }, {
-      text: data.programmes[vaccination.programme_pid].type,
-      href: "/programmes/" + vaccination.programme_pid
+      text: data.programmes[vaccination.programme_id].type,
+      href: "/programmes/" + vaccination.programme_id
     }],
     text: __("programme.vaccinations.title"),
-    href: "/programmes/" + vaccination.programme_pid + "/vaccinations"
+    href: "/programmes/" + vaccination.programme_id + "/vaccinations"
   }) }}
 {% endblock %}
 

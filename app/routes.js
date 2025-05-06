@@ -50,14 +50,14 @@ router.use('/organisations', organisationRoutes)
 router.use('/organisations/:organisation_code/clinics', clinicRoutes)
 router.use('/patients', patientRoutes)
 router.use('/programmes', programmeRoutes)
-router.use('/programmes/:pid/cohorts', cohortRoutes)
-router.use('/programmes/:pid/download', downloadRoutes)
-router.use('/programmes/:pid/patients', patientSessionRoutes)
-router.use('/programmes/:pid/patients/:nhsn/replies', replyRoutes)
-router.use('/programmes/:pid/uploads', uploadRoutes)
-router.use('/programmes/:pid/vaccinations', vaccinationRoutes)
+router.use('/programmes/:programme_id/cohorts', cohortRoutes)
+router.use('/programmes/:programme_id/download', downloadRoutes)
+router.use('/programmes/:programme_id/patients', patientSessionRoutes)
+router.use('/programmes/:programme_id/patients/:nhsn/replies', replyRoutes)
+router.use('/programmes/:programme_id/uploads', uploadRoutes)
+router.use('/programmes/:programme_id/vaccinations', vaccinationRoutes)
 router.use(
-  '/programmes/:pid/vaccinations/:vaccination_uuid/patients',
+  '/programmes/:programme_id/vaccinations/:vaccination_uuid/patients',
   patientRoutes
 )
 router.use('/records', recordRoutes)

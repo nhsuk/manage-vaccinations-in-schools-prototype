@@ -16,22 +16,22 @@ import { formatParent } from '../utils/string.js'
 
 export const replyController = {
   read(request, response, next, reply_uuid) {
-    const { nhsn, pid } = request.params
+    const { nhsn, programme_id } = request.params
 
     response.locals.reply = Reply.read(reply_uuid, request.session.data)
     response.locals.patientSession = PatientSession.readAll(
       request.session.data
     )
-      .filter(({ programme }) => programme.pid === pid)
+      .filter(({ programme }) => programme.id === programme_id)
       .find(({ patient }) => patient.nhsn === nhsn)
 
     next()
   },
 
   redirect(request, response) {
-    const { nhsn, pid } = request.params
+    const { nhsn, programme_id } = request.params
 
-    response.redirect(`/programmes/${pid}/patients/${nhsn}`)
+    response.redirect(`/programmes/${programme_id}/patients/${nhsn}`)
   },
 
   show(request, response) {
@@ -46,7 +46,7 @@ export const replyController = {
       {
         child: patient,
         patient_uuid: patient.uuid,
-        programme_pid: programme.pid,
+        programme_id: programme.id,
         session_id: session.id,
         ...(data.token && { createdBy_uid: data.token?.uid })
       },
@@ -133,7 +133,7 @@ export const replyController = {
       response.locals.isMultiProgrammeSession = isMultiProgrammeSession
 
       response.locals.programme = isMultiProgrammeSession
-        ? reply.programme_pid && Programme.read(reply.programme_pid, data)
+        ? reply.programme_id && Programme.read(reply.programme_id, data)
         : patientSession.session.programmes[0]
 
       response.locals.triage = {
@@ -241,7 +241,7 @@ export const replyController = {
         response.locals.programmeItems = patientSession.session.programmes.map(
           (programme) => ({
             text: programme.name,
-            value: programme.pid
+            value: programme.id
           })
         )
       }
@@ -401,7 +401,7 @@ export const replyController = {
       const vaccination = new Vaccination({
         outcome: VaccinationOutcome.AlreadyVaccinated,
         patient_uuid: patient.uuid,
-        programme_pid: programme.pid,
+        programme_id: programme.id,
         session_id: session.id,
         ...(data.reply?.note && { note }),
         ...(data.token && { createdBy_uid: data.token?.uid })

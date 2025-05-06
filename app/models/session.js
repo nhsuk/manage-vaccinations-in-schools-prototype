@@ -98,7 +98,7 @@ export const RegistrationOutcome = {
  * @property {number} [reminderWeeks] - Weeks before session to send reminders
  * @property {object} [register] - Patient register
  * @property {object} [defaultBatch_ids] - Vaccine SNOMED code: Default batch ID
- * @property {Array<string>} [programme_pids] - Programme PIDs
+ * @property {Array<string>} [programme_ids] - Programme IDs
  */
 export class Session {
   constructor(options, context) {
@@ -123,8 +123,10 @@ export class Session {
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
     this.register = options?.register || {}
     this.defaultBatch_ids = options?.defaultBatch_ids || {}
-    this.programme_pids = options?.programme_pids
-      ? options.programme_pids.filter((pid) => pid !== '_unchecked')
+    this.programme_ids = options?.programme_ids
+      ? options.programme_ids.filter(
+          (programme_id) => programme_id !== '_unchecked'
+        )
       : []
   }
 
@@ -462,7 +464,7 @@ export class Session {
     const programmes = {}
     for (const programme of this.programmes) {
       programmes[programme.name] = this.patientSessions
-        .filter(({ programme_pid }) => programme_pid === programme.pid)
+        .filter(({ programme_id }) => programme_id === programme.id)
         .filter(({ register }) => register !== RegistrationOutcome.Pending)
         .filter(({ nextActivity }) => nextActivity === Activity.Record)
     }
@@ -494,8 +496,8 @@ export class Session {
    * @returns {Array<Programme>} - Programmes
    */
   get programmes() {
-    return this.programme_pids
-      .map((pid) => Programme.read(pid, this.context))
+    return this.programme_ids
+      .map((id) => Programme.read(id, this.context))
       .sort((a, b) => a.name.localeCompare(b.name))
   }
 

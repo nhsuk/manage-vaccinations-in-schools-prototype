@@ -372,7 +372,7 @@ export class Patient extends Record {
       name: `Selected for the ${cohort.name.replace('Flu', 'flu')} cohort`,
       createdAt: cohort.createdAt,
       createdBy_uid: cohort.createdBy_uid,
-      programme_pids: [cohort.programme_pid]
+      programme_ids: [cohort.programme_id]
     })
   }
 
@@ -390,7 +390,7 @@ export class Patient extends Record {
       type: EventType.Select,
       name: `Removed from the ${cohort.name.replace('Flu', 'flu')} cohort`,
       createdBy_uid: cohort.createdBy_uid,
-      programme_pids: [cohort.programme_pid]
+      programme_ids: [cohort.programme_id]
     })
   }
 
@@ -414,7 +414,7 @@ export class Patient extends Record {
       name: `Invited to the ${patientSession.session.name}`,
       createdAt: patientSession.session.openAt,
       createdBy_uid: patientSession.createdBy_uid,
-      programme_pids: patientSession.session.programme_pids
+      programme_ids: patientSession.session.programme_ids
     })
   }
 
@@ -448,7 +448,7 @@ export class Patient extends Record {
       name,
       createdAt: isNew ? reply.createdAt : today(),
       createdBy_uid: reply.createdBy_uid,
-      programme_pids: [reply.programme_pid]
+      programme_ids: [reply.programme_id]
     })
   }
 
@@ -475,7 +475,7 @@ export class Patient extends Record {
       note: vaccination.note,
       createdAt: vaccination.updatedAt || vaccination.createdAt,
       createdBy_uid: vaccination.createdBy_uid,
-      programme_pids: [vaccination.programme_pid]
+      programme_ids: [vaccination.programme_id]
     })
   }
 

@@ -85,9 +85,9 @@
             {% if view == "register" %}
               {{ patientSession.formatted.status.register | safe }}
             {% else %}
-              {% set pids = data.pids or session.programme_pids %}
+              {% set ids = data.programme_id or session.programme_ids %}
               {% for patientSession in patientSession.siblingPatientSessions %}
-                {% if pids | includes(patientSession.programme_pid) %}
+                {% if ids | includes(patientSession.programme_id) %}
                   {% if patientSession.formatted.status[view] %}
                     <p>{{ patientSession.formatted.status[view] | safe }}</p>
                   {% endif %}

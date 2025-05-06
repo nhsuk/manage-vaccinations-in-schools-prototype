@@ -80,7 +80,7 @@ export const ReplyRefusal = {
  * @property {boolean} [selfConsent] - Reply given by child
  * @property {string} [note] - Note about this response
  * @property {string} patient_uuid - Patient UUID
- * @property {string} [programme_pid] - Programme ID
+ * @property {string} [programme_id] - Programme ID
  * @property {string} session_id - Session ID
  */
 export class Reply {
@@ -112,7 +112,7 @@ export class Reply {
     this.selfConsent = options?.selfConsent
     this.note = options?.note || ''
     this.patient_uuid = options?.patient_uuid
-    this.programme_pid = options?.programme_pid
+    this.programme_id = options?.programme_id
     this.session_id = options?.session_id
 
     if (
@@ -253,8 +253,8 @@ export class Reply {
    */
   get programme() {
     try {
-      if (this.programme_pid) {
-        return Programme.read(this.programme_pid, this.context)
+      if (this.programme_id) {
+        return Programme.read(this.programme_id, this.context)
       }
     } catch (error) {
       console.error('Upload.programme', error.message)
@@ -369,7 +369,7 @@ export class Reply {
    * @returns {string} - URI
    */
   get uri() {
-    return `/programmes/${this.programme_pid}/patients/${this.patient.nhsn}/replies/${this.uuid}`
+    return `/programmes/${this.programme_id}/patients/${this.patient.nhsn}/replies/${this.uuid}`
   }
 
   /**

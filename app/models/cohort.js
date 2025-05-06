@@ -23,7 +23,7 @@ export const AcademicYear = {
  * @property {AcademicYear} year - Academic year
  * @property {number} yearGroup - Year group
  * @property {Array<string>} record_nhsns - CHIS record NHS numbers
- * @property {string} [programme_pid] - Programme ID
+ * @property {string} [programme_id] - Programme ID
  * @function ns - Namespace
  * @function uri - URL
  */
@@ -37,7 +37,7 @@ export class Cohort {
     this.year = year
     this.yearGroup = options?.yearGroup
     this.record_nhsns = options?.record_nhsns || []
-    this.programme_pid = options?.programme_pid
+    this.programme_id = options?.programme_id
   }
 
   /**
@@ -48,7 +48,7 @@ export class Cohort {
   get uid() {
     const yearGroup = String(this.yearGroup).padStart(2, '0')
 
-    return `${this.programme_pid}-${yearGroup}`
+    return `${this.programme_id}-${yearGroup}`
   }
 
   /**
@@ -58,7 +58,7 @@ export class Cohort {
    */
   get programme() {
     try {
-      const programme = this.context?.programmes[this.programme_pid]
+      const programme = this.context?.programmes[this.programme_id]
       if (programme) {
         return new Programme(programme)
       }
@@ -130,7 +130,7 @@ export class Cohort {
    * @returns {string} - URI
    */
   get uri() {
-    return `/programmes/${this.programme_pid}/cohorts/${this.uid}`
+    return `/programmes/${this.programme_id}/cohorts/${this.uid}`
   }
 
   /**

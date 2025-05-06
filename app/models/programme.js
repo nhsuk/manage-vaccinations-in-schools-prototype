@@ -34,7 +34,7 @@ export const ProgrammeType = {
 
 export const programmeTypes = {
   [ProgrammeType.Flu]: {
-    pid: 'flu',
+    id: 'flu',
     name: 'Flu',
     active: false,
     information: {
@@ -51,7 +51,7 @@ export const programmeTypes = {
     vaccine_smomeds: ['43208811000001106', '40085011000001101']
   },
   [ProgrammeType.HPV]: {
-    pid: 'hpv',
+    id: 'hpv',
     name: 'HPV',
     active: true,
     information: {
@@ -73,7 +73,7 @@ export const programmeTypes = {
     vaccine_smomeds: ['33493111000001108']
   },
   [ProgrammeType.TdIPV]: {
-    pid: 'td-ipv',
+    id: 'td-ipv',
     name: 'Td/IPV',
     active: true,
     information: {
@@ -95,7 +95,7 @@ export const programmeTypes = {
     vaccine_smomeds: ['7374311000001101']
   },
   [ProgrammeType.MenACWY]: {
-    pid: 'menacwy',
+    id: 'menacwy',
     name: 'MenACWY',
     active: true,
     information: {
@@ -134,7 +134,7 @@ export const programmeTypes = {
  * @property {Array<number>} yearGroups - Year groups available to
  * @property {Array<string>} cohort_uids - Cohort UIDs
  * @property {Array<string>} vaccine_smomeds - Vaccines administered
- * @property {string} pid - Programme ID
+ * @property {string} id - Programme ID
  * @property {string} ns - Namespace
  * @property {string} uri - URL
  */
@@ -203,8 +203,8 @@ export class Programme {
    *
    * @returns {string} - Programme ID
    */
-  get pid() {
-    return programmeTypes[this.type].pid
+  get id() {
+    return programmeTypes[this.type].id
   }
 
   /**
@@ -234,7 +234,7 @@ export class Programme {
    * @returns {string} - Consent form PDF
    */
   get consentPdf() {
-    return `/public/downloads/${this.pid}-consent-form.pdf`
+    return `/public/downloads/${this.id}-consent-form.pdf`
   }
 
   /**
@@ -244,7 +244,7 @@ export class Programme {
    */
   get patientSessions() {
     return PatientSession.readAll(this.context).filter(({ session }) =>
-      session.programme_pids.includes(this.pid)
+      session.programme_ids.includes(this.id)
     )
   }
 
@@ -255,7 +255,7 @@ export class Programme {
    */
   get sessions() {
     return Session.readAll(this.context)
-      .filter(({ programme_pids }) => programme_pids.includes(this.pid))
+      .filter(({ programme_ids }) => programme_ids.includes(this.id))
       .filter(({ patients }) => patients.length > 0)
   }
 
@@ -266,7 +266,7 @@ export class Programme {
    */
   get vaccinations() {
     return Vaccination.readAll(this.context).filter(
-      ({ programme_pid }) => programme_pid === this.pid
+      ({ programme_id }) => programme_id === this.id
     )
   }
 
@@ -322,7 +322,7 @@ export class Programme {
    * @returns {string} - URI
    */
   get uri() {
-    return `/programmes/${this.pid}`
+    return `/programmes/${this.id}`
   }
 
   /**
@@ -341,14 +341,14 @@ export class Programme {
   /**
    * Read
    *
-   * @param {string} pid - Programme PID
+   * @param {string} id - Programme ID
    * @param {object} context - Context
    * @returns {Programme|undefined} Programme
    * @static
    */
-  static read(pid, context) {
+  static read(id, context) {
     if (context?.programmes) {
-      return new Programme(context.programmes[pid], context)
+      return new Programme(context.programmes[id], context)
     }
   }
 }

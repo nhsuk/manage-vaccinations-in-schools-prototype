@@ -10,9 +10,9 @@
     title: title
   }) }}
 
-  {% set cohorts = cohorts | sort(false, false, "programme_pid") %}
-  {% for pid, cohorts in cohorts | groupby("programme_pid") %}
-    <h2>{{ data.programmes[pid].name }}</h2>
+  {% set cohorts = cohorts | sort(false, false, "programme_id") %}
+  {% for programme_id, cohorts in cohorts | groupby("programme_id") %}
+    <h2>{{ data.programmes[programme_id].name }}</h2>
     <ul class="nhsuk-grid-row nhsuk-card-group">
     {% for cohort in cohorts | sort(false, false, "yearGroup") %}
       <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">

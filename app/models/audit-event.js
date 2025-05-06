@@ -34,7 +34,7 @@ export const EventType = {
  * @property {string} name - Name
  * @property {string} [note] - Note
  * @property {string} [outcome] - Outcome for activity type
- * @property {Array<string>} [programme_pids] - Programme PIDs
+ * @property {Array<string>} [programme_ids] - Programme IDs
  */
 export class AuditEvent {
   constructor(options, context) {
@@ -46,7 +46,7 @@ export class AuditEvent {
     this.name = options.name
     this.note = options.note
     this.outcome = options?.outcome
-    this.programme_pids = options?.programme_pids
+    this.programme_ids = options?.programme_ids
   }
 
   /**
@@ -70,9 +70,9 @@ export class AuditEvent {
    * @returns {Array<Programme>} - Programmes
    */
   get programmes() {
-    if (this.context?.programmes && this.programme_pids) {
-      return this.programme_pids.map(
-        (pid) => new Programme(this.context?.programmes[pid], this.context)
+    if (this.context?.programmes && this.programme_ids) {
+      return this.programme_ids.map(
+        (id) => new Programme(this.context?.programmes[id], this.context)
       )
     }
 

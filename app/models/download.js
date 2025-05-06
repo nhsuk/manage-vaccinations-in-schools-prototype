@@ -37,7 +37,7 @@ export const DownloadFormat = {
  * @property {Date} [endAt] - Date to end report
  * @property {object} [endAt_] - Date to end report (from `dateInput`)
  * @property {DownloadFormat} [format] - Downloaded file format
- * @property {string} [programme_pid] - Programme PID
+ * @property {string} [programme_id] - Programme ID
  * @property {Array<string>} [organisation_codes] - Organisation ODC codes
  * @property {Array<string>} [vaccination_uuids] - Vaccination UUIDs
  */
@@ -53,7 +53,7 @@ export class Download {
     this.endAt = options?.endAt && new Date(options.endAt)
     this.endAt_ = options?.endAt_
     this.format = options?.format || DownloadFormat.CSV
-    this.programme_pid = options?.programme_pid
+    this.programme_id = options?.programme_id
     this.organisation_codes = options?.organisation_codes
     this.vaccination_uuids = options?.vaccination_uuids || []
   }
@@ -118,7 +118,7 @@ export class Download {
    */
   get programme() {
     try {
-      const programme = this.context?.programmes[this.programme_pid]
+      const programme = this.context?.programmes[this.programme_id]
       if (programme) {
         return new Programme(programme)
       }
@@ -335,7 +335,7 @@ export class Download {
    * @returns {string} - URI
    */
   get uri() {
-    return `/programmes/${this.programme_pid}/download/${this.id}`
+    return `/programmes/${this.programme_id}/download/${this.id}`
   }
 
   /**

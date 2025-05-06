@@ -2,7 +2,7 @@
 
 {% extends "_layouts/form.njk" %}
 
-{% set programme = data.programmes[upload.programme_pid] %}
+{% set programme = data.programmes[upload.programme_id] %}
 {% set title = __("upload.file.title", { type: upload.type | lower }) %}
 
 {% set templateFormat %}

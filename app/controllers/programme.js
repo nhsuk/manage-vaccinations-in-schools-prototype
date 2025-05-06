@@ -5,8 +5,11 @@ import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
 export const programmeController = {
-  read(request, response, next, pid) {
-    response.locals.programme = Programme.read(pid, request.session.data)
+  read(request, response, next, programme_id) {
+    response.locals.programme = Programme.read(
+      programme_id,
+      request.session.data
+    )
 
     next()
   },
@@ -96,7 +99,7 @@ export const programmeController = {
   },
 
   filterPatients(request, response) {
-    const { pid } = request.params
+    const { programme_id } = request.params
     const { hasMissingNhsNumber, yearGroup } = request.body
     const params = new URLSearchParams()
 
@@ -120,7 +123,7 @@ export const programmeController = {
       params.append('hasMissingNhsNumber', 'true')
     }
 
-    response.redirect(`/programmes/${pid}/patients?${params}`)
+    response.redirect(`/programmes/${programme_id}/patients?${params}`)
   },
 
   readVaccinations(request, response, next) {

@@ -101,7 +101,7 @@ export const PatientOutcome = {
  * @property {Date} [updatedAt] - Updated date
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {string} patient_uuid - Patient UUID
- * @property {string} programme_pid - Programme PID
+ * @property {string} programme_id - Programme ID
  * @property {string} session_id - Session ID
  */
 export class PatientSession {
@@ -113,7 +113,7 @@ export class PatientSession {
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.patient_uuid = options?.patient_uuid
-    this.programme_pid = options?.programme_pid
+    this.programme_id = options?.programme_id
     this.session_id = options?.session_id
   }
 
@@ -139,8 +139,8 @@ export class PatientSession {
    * @returns {Array<import('./audit-event.js').AuditEvent>} - Audit events
    */
   get auditEvents() {
-    return this.patient.auditEvents.filter(({ programme_pids }) =>
-      programme_pids?.some((pid) => this.session.programme_pids.includes(pid))
+    return this.patient.auditEvents.filter(({ programme_ids }) =>
+      programme_ids?.some((id) => this.session.programme_ids.includes(id))
     )
   }
 
@@ -166,9 +166,7 @@ export class PatientSession {
    */
   get triageNotes() {
     return this.auditEvents
-      .filter(({ programme_pids }) =>
-        programme_pids.includes(this.programme_pid)
-      )
+      .filter(({ programme_ids }) => programme_ids.includes(this.programme_id))
       .filter(({ type }) => type === EventType.Screen)
   }
 
@@ -179,7 +177,7 @@ export class PatientSession {
    */
   get replies() {
     return this.patient.replies
-      .filter(({ programme_pid }) => programme_pid === this.programme_pid)
+      .filter(({ programme_id }) => programme_id === this.programme_id)
       .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
   }
 
@@ -209,7 +207,7 @@ export class PatientSession {
    */
   get programme() {
     try {
-      return Programme.read(this.programme_pid, this.context)
+      return Programme.read(this.programme_id, this.context)
     } catch (error) {
       console.error('PatientSession.programme', error.message)
     }
@@ -253,7 +251,7 @@ export class PatientSession {
     try {
       if (this.patient.vaccinations) {
         return this.patient.vaccinations.filter(
-          ({ programme_pid }) => programme_pid === this.programme_pid
+          ({ programme }) => programme.id === this.programme_id
         )
       }
     } catch (error) {
@@ -509,7 +507,7 @@ export class PatientSession {
    * @returns {string} - URI
    */
   get uri() {
-    return `/programmes/${this.programme_pid}/patients/${this.patient.nhsn}`
+    return `/programmes/${this.programme_id}/patients/${this.patient.nhsn}`
   }
 
   /**
@@ -594,7 +592,7 @@ export class PatientSession {
       type: EventType.Select,
       name: `Removed from the ${this.session.name}`,
       createdBy_uid: event.createdBy_uid,
-      programme_pids: this.session.programme_pids
+      programme_ids: this.session.programme_ids
     })
   }
 
@@ -611,7 +609,7 @@ export class PatientSession {
       note: gillick.note,
       createdAt: gillick.createdAt,
       createdBy_uid: event.createdBy_uid,
-      programme_pids: this.session.programme_pids
+      programme_ids: this.session.programme_ids
     })
 
     const patientSession = PatientSession.read(this.uuid, this.context)
@@ -631,7 +629,7 @@ export class PatientSession {
       outcome: event.outcome,
       createdAt: event.createdAt,
       createdBy_uid: event.createdBy_uid,
-      programme_pids: [this.programme_pid]
+      programme_ids: [this.programme_id]
     })
   }
 
@@ -649,7 +647,7 @@ export class PatientSession {
       name: this.status.register.description,
       createdAt: event.createdAt,
       createdBy_uid: event.createdBy_uid,
-      programme_pids: this.session.programme_pids
+      programme_ids: this.session.programme_ids
     })
   }
 
@@ -664,7 +662,7 @@ export class PatientSession {
       name: 'Completed pre-screening checks',
       note: event.note,
       createdBy_uid: event.createdBy_uid,
-      programme_pids: this.session.programme_pids
+      programme_ids: this.session.programme_ids
     })
   }
 
@@ -679,7 +677,7 @@ export class PatientSession {
       type: EventType.Remind,
       name: `Reminder to give consent sent to ${parent.fullName}`,
       createdBy_uid: event.createdBy_uid,
-      programme_pids: this.session.programme_pids
+      programme_ids: this.session.programme_ids
     })
   }
 }

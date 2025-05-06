@@ -9,13 +9,13 @@ import { addDays, removeDays, setMidday, today } from '../utils/date.js'
  *
  * @param {object} term - Term dates
  * @param {import('../models/user.js').User} user - User
- * @param {Array<string>} programme_pids - Programme PIDs
+ * @param {Array<string>} programme_ids - Programme IDs
  * @param {object} options - Options
  * @param {string} [options.clinic_id] - Clinic ID
  * @param {string} [options.school_urn] - School URN
  * @returns {Session} - Session
  */
-export function generateSession(programme_pids, term, user, options) {
+export function generateSession(programme_ids, term, user, options) {
   const { clinic_id, school_urn } = options
 
   let status
@@ -86,7 +86,7 @@ export function generateSession(programme_pids, term, user, options) {
     createdAt: removeDays(term.from, 60),
     createdBy_uid: user.uid,
     dates,
-    programme_pids,
+    programme_ids,
     ...(clinic_id && { clinic_id }),
     ...(school_urn && { school_urn })
   })
