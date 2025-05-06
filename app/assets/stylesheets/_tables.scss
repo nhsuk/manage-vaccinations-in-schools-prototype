@@ -56,26 +56,3 @@
     padding-left: nhsuk-spacing(3);
   }
 }
-
-.app-table--select-cohort {
-  .nhsuk-form-group {
-    margin-bottom: 0;
-  }
-
-  .nhsuk-table__cell,
-  th {
-    padding-bottom: nhsuk-spacing(1);
-    padding-top: nhsuk-spacing(1);
-    vertical-align: middle;
-  }
-
-  .nhsuk-checkboxes {
-    padding: 0;
-    transform: scale(0.75);
-    transform-origin: center left;
-  }
-
-  .nhsuk-checkboxes__item {
-    padding: 0;
-  }
-}
