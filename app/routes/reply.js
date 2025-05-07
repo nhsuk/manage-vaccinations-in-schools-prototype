@@ -15,12 +15,11 @@ router.get('/:reply_uuid/new/:view', reply.showForm)
 router.post('/:reply_uuid/new/check-answers', reply.update('new'))
 router.post('/:reply_uuid/new/:view', reply.updateForm)
 
+router.all('/:reply_uuid/edit/:view', reply.readForm('edit'))
+router.get('/:reply_uuid/edit/:view', reply.showForm)
 router.post('/:reply_uuid/edit/follow-up', reply.followUp)
 router.post('/:reply_uuid/edit/invalidate', reply.invalidate)
 router.post('/:reply_uuid/edit/withdraw', reply.withdraw)
-
-router.all('/:reply_uuid/edit/:view', reply.readForm('edit'))
-router.get('/:reply_uuid/edit/:view', reply.showForm)
 router.post('/:reply_uuid/edit/:view', reply.update('edit'))
 
 router.get('/:reply_uuid', reply.show)

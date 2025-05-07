@@ -39,15 +39,19 @@ export const replyController = {
   },
 
   new(request, response) {
+    const { programme_id, nhsn } = request.params
     const { data } = request.session
-    const { patient, programme, session } = response.locals
+
+    const patientSession = PatientSession.readAll(request.session.data)
+      .filter(({ programme }) => programme.id === programme_id)
+      .find(({ patient }) => patient.nhsn === nhsn)
 
     const reply = new Reply(
       {
-        child: patient,
-        patient_uuid: patient.uuid,
-        programme_id: programme.id,
-        session_id: session.id,
+        child: patientSession.patient,
+        patient_uuid: patientSession.patient.uuid,
+        programme_id: patientSession.programme.id,
+        session_id: patientSession.session.id,
         ...(data.token && { createdBy_uid: data.token?.uid })
       },
       data
@@ -260,8 +264,7 @@ export const replyController = {
     const { respondent } = request.body
     const { reply_uuid } = request.params
     const { data } = request.session
-    const { paths, patient, patientSession, reply, session, triage } =
-      response.locals
+    const { paths, patientSession, reply, triage } = response.locals
 
     const newReply = request.body?.reply || {}
 
@@ -280,12 +283,12 @@ export const replyController = {
           break
         case 'parent-1': // Consent response is from CHIS record
           newReply.method = ReplyMethod.Phone
-          newReply.parent = patient.parents[0]
+          newReply.parent = patientSession.patient.parents[0]
           newReply.selfConsent = false
           break
         case 'parent-2': // Consent response is from CHIS record
           newReply.method = ReplyMethod.Phone
-          newReply.parent = patient.parents[1]
+          newReply.parent = patientSession.patient.parents[1]
           newReply.selfConsent = false
           break
         default: // Consent response is an existing respondent
@@ -303,8 +306,8 @@ export const replyController = {
     if (request.body.reply?.refusalReason === ReplyRefusal.AlreadyGiven) {
       response.locals.vaccination = {
         outcome: VaccinationOutcome.AlreadyVaccinated,
-        patient_uuid: patient.uuid,
-        session_id: session.id,
+        patient_uuid: patientSession.patient.uuid,
+        session_id: patientSession.session.id,
         ...(data.reply?.note && { note: data.reply.note }),
         ...(data.token && { createdBy_uid: data.token?.uid })
       }
@@ -329,7 +332,7 @@ export const replyController = {
   followUp(request, response) {
     const { decision } = request.body
     const { data } = request.session
-    const { patient, reply, session } = response.locals
+    const { patientSession, reply } = response.locals
 
     if (decision === 'true') {
       response.redirect(`${reply.uri}/edit/outcome`)
@@ -340,16 +343,17 @@ export const replyController = {
 
       const newReply = new Reply(
         {
-          child: patient,
+          child: patientSession.patient,
           parent: reply.parent,
-          patient_uuid: patient.uuid,
-          session_id: session.id,
+          patient_uuid: patientSession.patient.uuid,
+          session_id: patientSession.session.id,
+          programme_id: patientSession.programme.id,
           method: ReplyMethod.Phone
         },
         data
       )
 
-      patient.addReply(newReply)
+      patientSession.patient.addReply(newReply)
       newReply.create(newReply, data.wizard)
 
       // Clean up session data
@@ -378,8 +382,7 @@ export const replyController = {
   withdraw(request, response) {
     const { refusalReason, refusalReasonOther, note } = request.body.reply
     const { data } = request.session
-    const { __, activity, programme, patient, patientSession, reply, session } =
-      response.locals
+    const { __, activity, patientSession, reply } = response.locals
 
     // Create a new reply
     const newReply = new Reply({
@@ -393,16 +396,16 @@ export const replyController = {
       ...(data.token && { createdBy_uid: data.token?.uid })
     })
 
-    patient.addReply(newReply)
+    patientSession.patient.addReply(newReply)
     newReply.create(newReply, data)
 
     // Add vaccination if refusal reason is already given
     if (refusalReason === ReplyRefusal.AlreadyGiven) {
       const vaccination = new Vaccination({
         outcome: VaccinationOutcome.AlreadyVaccinated,
-        patient_uuid: patient.uuid,
-        programme_id: programme.id,
-        session_id: session.id,
+        patient_uuid: patientSession.patient.uuid,
+        programme_id: patientSession.programme.id,
+        session_id: patientSession.session.id,
         ...(data.reply?.note && { note }),
         ...(data.token && { createdBy_uid: data.token?.uid })
       })
