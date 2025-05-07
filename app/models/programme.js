@@ -36,7 +36,7 @@ export const programmeTypes = {
   [ProgrammeType.Flu]: {
     id: 'flu',
     name: 'Flu',
-    active: false,
+    active: true,
     information: {
       title: 'Flu',
       startPage:
@@ -53,7 +53,7 @@ export const programmeTypes = {
   [ProgrammeType.HPV]: {
     id: 'hpv',
     name: 'HPV',
-    active: true,
+    active: false,
     information: {
       title: 'Human papillomavirus (HPV)',
       startPage:
