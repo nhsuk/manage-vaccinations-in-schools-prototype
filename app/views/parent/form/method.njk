@@ -1,0 +1,37 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("consent.method.title") %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ __("consent.method.description") | nhsukMarkdown }}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--s",
+          title: __("consent.method.legend")
+        })
+      }
+    },
+    items: [{
+      text: __("consent.method.yes"),
+      value: true
+    },
+    {
+      text: __("consent.method.no"),
+      value: false,
+      conditional: {
+        html: input({
+          label: { text: __("consent.method.details") },
+          decorate: "consent.methodOther"
+        })
+      }
+    }],
+    decorate: "consent.method"
+  }) }}
+{% endblock %}

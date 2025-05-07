@@ -550,6 +550,16 @@ export const en = {
       yes: 'Yes, I’m happy for someone to contact me',
       no: 'No'
     },
+    method: {
+      title: 'Your child may be able to have an injection instead',
+      description:
+        'If the nasal spray is not suitable, your child may be able to have an injection instead. This vaccine does not contain gelatine.',
+      label: 'Method',
+      legend: 'Do you agree to them having an injected flu vaccine?',
+      yes: 'Yes, I agree',
+      no: 'No',
+      details: 'Give details'
+    },
     refusalReason: {
       title: 'Please tell us why you do not agree to your child having the %s',
       label: 'Refusal reason',
@@ -560,6 +570,10 @@ export const en = {
       gettingElsewhere: {
         one: ReplyRefusal.GettingElsewhere,
         other: ReplyRefusal.GettingElsewhere.replace('Vaccine', 'Vaccines')
+      },
+      outsideSchool: {
+        one: ReplyRefusal.OutsideSchool,
+        other: ReplyRefusal.OutsideSchool.replace('vaccination', 'vaccinations')
       }
     },
     refusalReasonDetails: {

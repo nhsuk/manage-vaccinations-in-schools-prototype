@@ -123,7 +123,7 @@ export const parentController = {
       },
       [`/${session_id}/${consent_uuid}/new/contact-preference`]: {},
       [`/${session_id}/${consent_uuid}/new/decision`]: {
-        [`/${session_id}/${consent_uuid}/new/consultation`]: {
+        [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
           data: 'consent.decision',
           value: ReplyDecision.Refused
         }
@@ -136,13 +136,15 @@ export const parentController = {
       ),
       [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
       [`/${session_id}/${consent_uuid}/new/confirmation`]: {},
-      [`/${session_id}/${consent_uuid}/new/consultation`]: {
-        [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
-          data: 'consent.decision',
-          value: ReplyDecision.Refused
-        }
-      },
       [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
+        [`/${session_id}/${consent_uuid}/new/method`]: {
+          data: 'consent.refusalReason',
+          value: ReplyRefusal.Gelatine
+        },
+        [`/${session_id}/${consent_uuid}/new/consultation`]: {
+          data: 'consent.refusalReason',
+          value: ReplyRefusal.OutsideSchool
+        },
         [`/${session_id}/${consent_uuid}/new/refusal-reason-details`]: {
           data: 'consent.refusalReason',
           values: [
