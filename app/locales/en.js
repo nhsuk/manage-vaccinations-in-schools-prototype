@@ -1403,6 +1403,8 @@ export const en = {
     healthAnswers: {
       label: 'Answers to health questions',
       title: 'Answers to health questions',
+      yes: 'Yes',
+      no: 'No',
       details: 'Give details'
     },
     refusalReason: {
