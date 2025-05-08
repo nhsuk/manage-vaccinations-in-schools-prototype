@@ -7,25 +7,29 @@ import { ParentalRelationship } from '../models/parent.js'
 import { ConsentOutcome } from '../models/patient-session.js'
 import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
-import { HealthQuestion } from '../models/vaccine.js'
 
 import { formatParentalRelationship } from './string.js'
 
 /**
  * Add example answers to health questions
  *
- * @param {string} question - Health question
+ * @param {string} key - Health question key, i.e. aspirin
  * @param {string} healthCondition - Health condition
- * @returns {string|boolean} Health answer, or `false`
+ * @returns {object} Health answer
  */
-const enrichWithRealisticAnswer = (question, healthCondition) => {
+const enrichWithRealisticAnswer = (key, healthCondition) => {
   const useAnswer = faker.helpers.maybe(() => true, { probability: 0.2 })
 
-  if (healthConditions[healthCondition][question] && useAnswer) {
-    return healthConditions[healthCondition][question]
+  if (healthConditions[healthCondition][key] && useAnswer) {
+    return {
+      answer: 'Yes',
+      details: healthConditions[healthCondition][key]
+    }
   }
 
-  return false
+  return {
+    answer: 'No'
+  }
 }
 
 /**
@@ -51,7 +55,7 @@ export function getRepliesWithHealthAnswers(replies) {
  * @returns {object|boolean} Combined answers to health questions
  */
 export function getConsentHealthAnswers(patientSession) {
-  const answers = {}
+  const consentHealthAnswers = {}
 
   // Get consent responses with health answers
   const responsesWithHealthAnswers = Object.values(
@@ -63,29 +67,33 @@ export function getConsentHealthAnswers(patientSession) {
   }
 
   for (const response of responsesWithHealthAnswers) {
-    for (const [key, value] of Object.entries(response.healthAnswers)) {
-      if (!answers[key]) {
-        answers[key] = {}
+    for (const [key, healthAnswer] of Object.entries(response.healthAnswers)) {
+      if (!consentHealthAnswers[key]) {
+        consentHealthAnswers[key] = []
       }
 
       const hasSingleResponse = responsesWithHealthAnswers.length === 1
       const hasSameAnswers = responsesWithHealthAnswers.every(
-        (reply) => reply.healthAnswers[key] === value
+        (reply) => reply.healthAnswers[key].answer === healthAnswer.answer
       )
-      const relationship = formatParentalRelationship(response.parent)
+
+      healthAnswer.relationship = formatParentalRelationship(response.parent)
 
       if (hasSingleResponse) {
-        answers[key][relationship] = value
+        consentHealthAnswers[key].push(healthAnswer)
       } else if (hasSameAnswers) {
-        answers[key].All = value
+        if (consentHealthAnswers[key].length === 0) {
+          healthAnswer.relationship = 'All'
+          consentHealthAnswers[key].push(healthAnswer)
+        }
       } else {
         // TODO: Fix multiple consent responses for different programmes but from same parent getting merged.
-        answers[key][relationship] = value
+        consentHealthAnswers[key].push(healthAnswer)
       }
     }
   }
 
-  return answers
+  return consentHealthAnswers
 }
 
 /**
@@ -194,11 +202,8 @@ export const getConsentRefusalReasons = (patientSession) => {
 export const getHealthAnswers = (vaccine, healthCondition) => {
   const answers = {}
 
-  for (const question of vaccine.healthQuestions) {
-    const key = Object.keys(HealthQuestion).find(
-      (key) => HealthQuestion[key] === question
-    )
-    answers[key] = enrichWithRealisticAnswer(question, healthCondition)
+  for (const key of Object.keys(vaccine.healthQuestions)) {
+    answers[key] = enrichWithRealisticAnswer(key, healthCondition)
   }
 
   return answers

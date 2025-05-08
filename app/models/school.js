@@ -35,9 +35,9 @@ export const SchoolYear = {
 }
 
 export const schoolTerms = {
-  [SchoolTerm.Autumn]: { from: '2024-09-03', to: '2024-12-13' },
   [SchoolTerm.Spring]: { from: '2025-01-06', to: '2025-04-11' },
-  [SchoolTerm.Summer]: { from: '2025-04-28', to: '2025-07-21' }
+  [SchoolTerm.Summer]: { from: '2025-04-28', to: '2025-07-21' },
+  [SchoolTerm.Autumn]: { from: '2025-09-03', to: '2025-12-13' }
 }
 
 /**

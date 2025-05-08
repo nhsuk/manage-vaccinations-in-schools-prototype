@@ -51,6 +51,7 @@ export const ReplyRefusal = {
   AlreadyGiven: 'Vaccine already received',
   GettingElsewhere: 'Vaccine will be given elsewhere',
   Medical: 'Medical reasons',
+  OutsideSchool: 'Don’t want vaccination in school',
   Personal: 'Personal choice',
   Other: 'Other'
 }

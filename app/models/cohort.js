@@ -9,7 +9,8 @@ import { Programme, ProgrammeType } from './programme.js'
  * @enum {string}
  */
 export const AcademicYear = {
-  Y2024: '2024/25'
+  Y2024: '2024/25',
+  Y2025: '2025/26'
 }
 
 /**

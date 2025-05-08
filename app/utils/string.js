@@ -1,25 +1,27 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
+import { healthQuestions } from '../datasets/health-questions.js'
+
 /**
- * kebab-case to PascalCase
+ * kebab-case to camelCase
  *
  * @param {string} string - String to convert
- * @returns {string} PascalCase string
+ * @returns {string} camelCase string
  */
-export function kebabToPascalCase(string) {
-  return string.replace(/(^\w|-\w)/g, (string) =>
-    string.replace(/-/, '').toUpperCase()
-  )
+export function kebabToCamelCase(string) {
+  return string
+    .replace(/(^\w|-\w)/g, (match) => match.replace(/-/, '').toUpperCase())
+    .replace(/^./, (match) => match.toLowerCase())
 }
 
 /**
- * PascalCase to kebab-case
+ * camelCase to kebab-case
  *
  * @param {string} string - String to convert
  * @returns {string} kebab-case string
  */
-export function pascalToKebabCase(string) {
-  return string.replace(/([a-z0–9])([A-Z])/g, '$1-$2').toLowerCase()
+export function camelToKebabCase(string) {
+  return string.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
 }
 
 /**
@@ -171,6 +173,21 @@ export function formatProgrammeStatus(programme, status, note) {
   }
 
   return html
+}
+
+export function formatHealthQuestions(questions) {
+  const items = Object.entries(questions).map(([key, question]) => {
+    if (!question.conditional) {
+      return `- ${healthQuestions[key].label}`
+    }
+
+    const subList = Object.keys(question.conditional)
+      .map((conditionalKey) => `  - ${healthQuestions[conditionalKey].label}`)
+      .join('\n')
+    return `- ${healthQuestions[key].label}\n${subList}`
+  })
+
+  return formatMarkdown(items.join('\n'))
 }
 
 /**

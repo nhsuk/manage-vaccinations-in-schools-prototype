@@ -7,9 +7,8 @@ import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { School } from '../models/school.js'
 import { ConsentWindow, Session, SessionType } from '../models/session.js'
-import { HealthQuestion } from '../models/vaccine.js'
 import { getHealthQuestionPaths } from '../utils/consent.js'
-import { formatList, kebabToPascalCase } from '../utils/string.js'
+import { formatList, kebabToCamelCase } from '../utils/string.js'
 
 export const parentController = {
   read(request, response, next, session_id) {
@@ -123,7 +122,7 @@ export const parentController = {
       },
       [`/${session_id}/${consent_uuid}/new/contact-preference`]: {},
       [`/${session_id}/${consent_uuid}/new/decision`]: {
-        [`/${session_id}/${consent_uuid}/new/consultation`]: {
+        [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
           data: 'consent.decision',
           value: ReplyDecision.Refused
         }
@@ -136,13 +135,15 @@ export const parentController = {
       ),
       [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
       [`/${session_id}/${consent_uuid}/new/confirmation`]: {},
-      [`/${session_id}/${consent_uuid}/new/consultation`]: {
-        [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
-          data: 'consent.decision',
-          value: ReplyDecision.Refused
-        }
-      },
       [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
+        [`/${session_id}/${consent_uuid}/new/method`]: {
+          data: 'consent.refusalReason',
+          value: ReplyRefusal.Gelatine
+        },
+        [`/${session_id}/${consent_uuid}/new/consultation`]: {
+          data: 'consent.refusalReason',
+          value: ReplyRefusal.OutsideSchool
+        },
         [`/${session_id}/${consent_uuid}/new/refusal-reason-details`]: {
           data: 'consent.refusalReason',
           values: [
@@ -195,18 +196,19 @@ export const parentController = {
 
   showForm(request, response) {
     let { view } = request.params
+    const { consent } = response.locals
 
     // Get health question key from view name
-    const key = kebabToPascalCase(view.replace('health-question-', ''))
-    const healthQuestion = HealthQuestion[key]?.replace(
-      'the child',
-      'your child'
-    )
+    const key = kebabToCamelCase(view.replace('health-question-', ''))
 
     // All health questions use the same view
     view = view.startsWith('health-question-') ? 'health-question' : view
 
-    response.render(`parent/form/${view}`, { key, healthQuestion })
+    // Only ask for details if question does not have sub-questions
+    const healthQuestions = Object.fromEntries(consent.session.healthQuestions)
+    const hasSubQuestions = healthQuestions[key]?.conditional
+
+    response.render(`parent/form/${view}`, { key, hasSubQuestions })
   },
 
   updateForm(request, response) {
