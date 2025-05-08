@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import {
+  formatHealthQuestions,
   formatList,
   formatMillilitres,
   formatMonospace
@@ -29,41 +30,6 @@ export const VaccineSideEffect = {
   Temperature: 'a high temperature',
   TemperatureShiver: 'a high temperature, or feeling hot and shivery',
   Unwell: 'generally feeling unwell'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const HealthQuestion = {
-  Aspirin: 'Does the child take regular aspirin?',
-  Allergy: 'Does the child have any severe allergies?',
-  Asthma: 'Has the child been diagnosed with asthma?',
-  AsthmaAdmitted:
-    'Has the child been admitted to intensive care for their asthma?',
-  AsthmaSteroids:
-    'Has the child taken any oral steroids for their asthma in the last 2 weeks?',
-  Bleeding:
-    'Does the child have a bleeding disorder or another medical condition they receive treatment for?',
-  EggAllergy:
-    'Has the child ever been admitted to intensive care due an allergic reaction to egg?',
-  Immunosuppressant: 'Does the child take any immunosuppressant medication?',
-  ImmuneSystem:
-    'Does the child have a disease or treatment that severely affects their immune system?',
-  HouseholdImmuneSystem:
-    'Is anyone in the child’s household currently having treatment that severely affects their immune system?',
-  MedicationAllergies: 'Does the child have any allergies to medication?',
-  MedicalConditions:
-    'Does the child have any medical conditions for which they receive treatment?',
-  PreviousReaction:
-    'Has the child ever had a severe reaction to any medicines, including vaccines?',
-  RecentFluVaccination:
-    'Has the child had a flu vaccination in the last 5 months?',
-  RecentMenAcwyVaccination:
-    'Has the child had a meningitis (MenACWY) vaccination in the last 5 years?',
-  RecentTdIpvVaccination:
-    'Has the child had a tetanus, diphtheria and polio vaccination in the last 5 years?',
-  Support: 'Does the child need extra support during vaccination sessions?'
 }
 
 /**
@@ -101,7 +67,7 @@ export const VaccineMethod = {
  * @property {number} dose - Dosage
  * @property {VaccineMethod} method - Method
  * @property {Array<VaccineSideEffect>} sideEffects - Side effects
- * @property {Array<HealthQuestion>} healthQuestions - Health questions
+ * @property {object} healthQuestions - Health questions
  * @property {Array<PreScreenQuestion>} preScreenQuestions - Pre-screening questions
  */
 export class Vaccine {
@@ -144,6 +110,23 @@ export class Vaccine {
   }
 
   /**
+   * Get flattened health questions (moves sub-questions to top-level)
+   *
+   * @returns {object} - Health questions
+   */
+  get flatHealthQuestions() {
+    return Object.fromEntries(
+      Object.entries(this.healthQuestions).flatMap(([key, value]) => {
+        if (value.conditional) {
+          return [[key, {}], ...Object.entries(value.conditional)]
+        }
+
+        return [[key, value]]
+      })
+    )
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values
@@ -151,7 +134,7 @@ export class Vaccine {
   get formatted() {
     return {
       snomed: formatMonospace(this.snomed),
-      healthQuestions: formatList(this.healthQuestions),
+      healthQuestions: formatHealthQuestions(this.healthQuestions),
       preScreenQuestions: formatList(this.preScreenQuestions),
       sideEffects: formatList(this.sideEffects),
       dose: formatMillilitres(this.dose)

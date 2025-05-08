@@ -2,17 +2,11 @@
 
 {% set title = __("reply.healthAnswers.title") %}
 
-{% block form %}
-  {{ heading({
-    caption: patient.fullName,
-    title: title
-  }) }}
-
-  {% for key, healthQuestion in healthQuestions(programme) %}
+{% macro questions(healthQuestions) %}
+  {% for key, thing in healthQuestions %}
     {{ radios({
-      classes: "nhsuk-radios--inline",
       fieldset: {
-        legend: { text: healthQuestion }
+        legend: { text: __("healthQuestions." + key + ".label") }
       },
       items: [
         {
@@ -20,15 +14,26 @@
           conditional: {
             html: textarea({
               label: { text: __("reply.healthAnswers.details") },
-              decorate: ["reply", "healthAnswers", key]
+              decorate: ["reply", "healthAnswers", key, "details"]
             })
+          } if not programme.vaccine.healthQuestions[key].conditional else {
+            html: questions(programme.vaccine.healthQuestions[key].conditional)
           }
         },
         {
           text: __("reply.healthAnswers.no")
         }
       ],
-      decorate: ["healthAnswers", key]
+      decorate: ["reply", "healthAnswers", key, "answer"]
     }) }}
   {% endfor %}
+{% endmacro %}
+
+{% block form %}
+  {{ heading({
+    caption: patient.fullName,
+    title: title
+  }) }}
+
+  {{ questions(programme.vaccine.healthQuestions) }}
 {% endblock %}

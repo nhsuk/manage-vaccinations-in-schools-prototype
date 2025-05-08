@@ -13,7 +13,9 @@ export class Consent extends Reply {
    * @returns {boolean} - Answers need triage
    */
   get hasAnswersNeedingTriage() {
-    return Object.values(this.healthAnswers).find((answer) => answer)
+    return Object.values(this.healthAnswers).find(
+      (healthAnswer) => healthAnswer.answer === 'Yes'
+    )
   }
 
   /**

@@ -1,8 +1,12 @@
-import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
-import { HealthQuestion } from './models/vaccine.js'
-import { formatLink, formatParent, pascalToKebabCase } from './utils/string.js'
+import { healthQuestions } from './datasets/health-questions.js'
+import {
+  formatHealthAnswer,
+  formatLink,
+  formatParent,
+  camelToKebabCase
+} from './utils/string.js'
 
 /**
  * Prototype specific global functions for use in Nunjucks templates.
@@ -89,36 +93,29 @@ export default () => {
     }
 
     const rows = []
-    for (const [id, value] of Object.entries(healthAnswers)) {
+    for (const [key, healthAnswer] of Object.entries(healthAnswers)) {
       let html = ''
-      if (typeof value === 'object') {
-        // Answers across all replies
-        // Show the relationship of person of answered, as well as their answer
-        for (const [relationship, answer] of Object.entries(value)) {
-          html += answer
-            ? `<p>${relationship} responded: Yes:</p>\n<blockquote>${answer}</blockquote>`
-            : `<p>${relationship} responded: No<p>`
+
+      if (Array.isArray(healthAnswer)) {
+        // Answers in multiple replies
+        for (const answer of Object.values(healthAnswer)) {
+          html += formatHealthAnswer(answer)
         }
       } else {
-        // Answer in reply
-        // Only show the answer
-        html += value
-          ? `<p>Yes:</p>\n<blockquote>${String(prototypeFilters.govukMarkdown(value)).replaceAll('govuk-', 'nhsuk-')}</blockquote>`
-          : `<p>No<p>`
+        // Answer in single reply
+        html += formatHealthAnswer(healthAnswer)
       }
 
-      const key = pascalToKebabCase(id)
-
       rows.push({
-        key: { text: HealthQuestion[id] },
+        key: { text: healthQuestions[key].label },
         value: { html },
         ...(edit && {
           actions: {
             items: [
               {
-                href: edit.replace(`{{key}}`, key),
+                href: edit.replace(`{{key}}`, camelToKebabCase(key)),
                 text: 'Change',
-                visuallyHiddenText: HealthQuestion[id]
+                visuallyHiddenText: healthQuestions[key].label
               }
             ]
           }
@@ -168,28 +165,6 @@ export default () => {
   globals.percentage = function (total, number) {
     const percentage = (total / number) * 100
     return Math.round(percentage)
-  }
-
-  /**
-   * Show health questions
-   *
-   * @param {import('./models/programme.js').Programme} programme - Programme
-   * @returns {object|undefined} Health questions
-   */
-  globals.healthQuestions = function (programme) {
-    if (!programme) {
-      return
-    }
-
-    return Object.entries(programme.vaccine.healthQuestions).map(
-      ([key, question]) => {
-        key = Object.keys(HealthQuestion).find(
-          (key) => HealthQuestion[key] === question
-        )
-
-        return [key, question]
-      }
-    )
   }
 
   /**
