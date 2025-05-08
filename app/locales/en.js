@@ -1,3 +1,4 @@
+import { healthQuestions } from '../datasets/health-questions.js'
 import {
   Activity,
   ConsentOutcome,
@@ -591,28 +592,7 @@ export const en = {
       label: 'Answers to health questions',
       yes: 'Yes',
       no: 'No',
-      details: 'Give details',
-      hint: {
-        Allergy: false,
-        Aspirin: 'Also known as Salicylate therapy',
-        Asthma: false,
-        AsthmaSteroids: 'Include the steroid name, dose and length of course',
-        AsthmaAdmitted: false,
-        Bleeding: false,
-        EggAllergy: false,
-        ImmuneSystem: false,
-        Immunosuppressant: false,
-        HouseholdImmuneSystem: false,
-        PreviousReaction: false,
-        MedicalConditions: false,
-        MedicationAllergies: false,
-        RecentFluVaccination: false,
-        RecentMenAcwyVaccination:
-          'It’s usually given once in Year 9 or 10. Some children may have had it before travelling abroad.',
-        RecentTdIpvVaccination:
-          'Most children will not have had this vaccination since their 4-in-1 pre-school booster',
-        Support: 'For example, they’re autistic, or extremely anxious'
-      }
+      details: 'Give details'
     },
     note: {
       label: 'Notes'
@@ -789,6 +769,7 @@ export const en = {
   healthAnswers: {
     label: 'All answers to health questions'
   },
+  healthQuestions,
   home: {
     show: {
       title: 'Home'

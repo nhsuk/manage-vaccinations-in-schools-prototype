@@ -1,7 +1,7 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = healthQuestion %}
-{% set hint = __("consent.healthAnswers.hint." + key) %}
+{% set title = __("healthQuestions." + key + ".label") %}
+{% set hint = __("healthQuestions." + key + ".hint") %}
 
 {% block form %}
   {{ radios({
@@ -9,7 +9,7 @@
       legend: {
         html: heading({
           classes: "nhsuk-fieldset__legend--l",
-          title: title
+          title: title | replace('the child', 'your child')
         })
       }
     },
@@ -19,13 +19,13 @@
       conditional: {
         html: textarea({
           label: { text: __("consent.healthAnswers.details") },
-          decorate: ["consent", "healthAnswers", key]
+          decorate: ["consent", "healthAnswers", key, "details"]
         })
-      }
+      } if not hasSubQuestions
     },
     {
       text: __("consent.healthAnswers.no")
     }],
-    decorate: ["healthAnswers", key]
+    decorate: ["consent", "healthAnswers", key, "answer"]
   }) }}
 {% endblock %}

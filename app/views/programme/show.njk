@@ -133,10 +133,10 @@
   }) }}
 
   {% set questionRows = [] %}
-  {% for healthQuestion in programme.vaccine.healthQuestions %}
+  {% for key, healthQuestion in programme.vaccine.flatHealthQuestions %}
     {% set questionRows = questionRows | push([
       {
-        text: healthQuestion
+        text: __("healthQuestions." + key + ".label")
       },
       {
         text: ["0.21","0.57","3.45","1.89"] | random + "%",
