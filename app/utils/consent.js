@@ -1,7 +1,10 @@
 import { ReplyDecision } from '../models/reply.js'
-import { HealthQuestion } from '../models/vaccine.js'
 
-import { pascalToKebabCase } from './string.js'
+import { camelToKebabCase } from './string.js'
+
+const getHealthQuestionPath = (key, pathPrefix) => {
+  return `${pathPrefix}health-question-${camelToKebabCase(key)}`
+}
 
 /**
  * Get health question paths for given vaccines
@@ -15,21 +18,41 @@ export const getHealthQuestionPaths = (pathPrefix, session, decision) => {
   const paths = {}
 
   // Only get health question paths for vaccines with consent
-  const healthQuestions = new Set(session.healthQuestions)
   if (decision === ReplyDecision.OnlyMenACWY) {
-    healthQuestions.delete(HealthQuestion.RecentTdIpvVaccination)
+    session.healthQuestions.delete('recentTdIpvVaccination')
   } else if (decision === ReplyDecision.OnlyTdIPV) {
-    healthQuestions.delete(HealthQuestion.RecentMenAcwyVaccination)
+    session.healthQuestions.delete('recentMenAcwyVaccination')
   }
 
-  for (const question of [...healthQuestions]) {
-    const key = Object.keys(HealthQuestion).find(
-      (key) => HealthQuestion[key] === question
-    )
-    const slug = pascalToKebabCase(key)
+  // Add paths for each health question, with forks for conditional questions
+  const healthQuestions = [...session.healthQuestions.entries()]
+  healthQuestions.forEach(([key, question], index) => {
+    const questionPath = getHealthQuestionPath(key, pathPrefix)
 
-    paths[`${pathPrefix}health-question-${slug}`] = {}
-  }
+    if (question.conditional) {
+      const nextQuestion = healthQuestions[index + 1]
+      if (nextQuestion) {
+        const forkPath = getHealthQuestionPath(nextQuestion[0], pathPrefix)
+
+        paths[questionPath] = {
+          [forkPath]: {
+            data: `consent.healthAnswers.${key}.answer`,
+            value: 'No'
+          }
+        }
+      } else {
+        paths[questionPath] = {}
+      }
+
+      // Add paths for conditional sub-questions
+      for (const subKey of Object.keys(question.conditional)) {
+        const subQuestionPath = getHealthQuestionPath(subKey, pathPrefix)
+        paths[subQuestionPath] = {}
+      }
+    } else {
+      paths[questionPath] = {}
+    }
+  })
 
   // Ask for refusal reason if consent only given for one vaccination
   if ([ReplyDecision.OnlyMenACWY, ReplyDecision.OnlyTdIPV].includes(decision)) {

@@ -147,7 +147,9 @@ export const replyController = {
 
       const replyNeedsTriage = (reply) => {
         return reply?.healthAnswers
-          ? Object.values(reply.healthAnswers).find((answer) => answer !== '')
+          ? Object.values(reply.healthAnswers).find(
+              (healthAnswer) => healthAnswer.answer !== 'No'
+            )
           : false
       }
 
