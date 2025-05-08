@@ -1,5 +1,4 @@
 import {
-  HealthQuestion,
   PreScreenQuestion,
   VaccineMethod,
   VaccineSideEffect
@@ -25,17 +24,20 @@ export default {
       VaccineSideEffect.Tiredness,
       VaccineSideEffect.AppetiteLoss
     ],
-    healthQuestions: [
-      HealthQuestion.Asthma,
-      HealthQuestion.AsthmaSteroids,
-      HealthQuestion.AsthmaAdmitted,
-      HealthQuestion.RecentFluVaccination,
-      HealthQuestion.ImmuneSystem,
-      HealthQuestion.HouseholdImmuneSystem,
-      HealthQuestion.EggAllergy,
-      HealthQuestion.MedicationAllergies,
-      HealthQuestion.Aspirin
-    ],
+    healthQuestions: {
+      'asthma': {
+        conditional: {
+          'asthmaSteroids': {},
+          'asthmaAdmitted': {}
+        }
+      },
+      'recentFluVaccination': {},
+      'immuneSystem': {},
+      'householdImmuneSystem': {},
+      'eggAllergy': {},
+      'medicationAllergies': {},
+      'aspirin': {}
+    },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsMedicated,
@@ -67,11 +69,11 @@ export default {
       VaccineSideEffect.Temperature,
       VaccineSideEffect.Unwell
     ],
-    healthQuestions: [
-      HealthQuestion.Allergy,
-      HealthQuestion.MedicalConditions,
-      HealthQuestion.PreviousReaction
-    ],
+    healthQuestions: {
+      'allergy': {},
+      'medicalConditions': {},
+      'previousReaction': {}
+    },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsMedicated,
@@ -100,11 +102,11 @@ export default {
       VaccineSideEffect.SickFeeling,
       VaccineSideEffect.PainArms
     ],
-    healthQuestions: [
-      HealthQuestion.Allergy,
-      HealthQuestion.MedicalConditions,
-      HealthQuestion.PreviousReaction
-    ],
+    healthQuestions: {
+      'allergy': {},
+      'medicalConditions': {},
+      'previousReaction': {}
+    },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsPregnant,
@@ -134,12 +136,12 @@ export default {
       VaccineSideEffect.Temperature,
       VaccineSideEffect.Headache
     ],
-    healthQuestions: [
-      HealthQuestion.Bleeding,
-      HealthQuestion.Allergy,
-      HealthQuestion.PreviousReaction,
-      HealthQuestion.RecentTdIpvVaccination
-    ],
+    healthQuestions: {
+      'bleeding': {},
+      'allergy': {},
+      'previousReaction': {},
+      'recentTdIpvVaccination': {}
+    },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsPregnant,
@@ -173,12 +175,12 @@ export default {
       VaccineSideEffect.AppetiteLoss,
       VaccineSideEffect.Unwell
     ],
-    healthQuestions: [
-      HealthQuestion.Bleeding,
-      HealthQuestion.Allergy,
-      HealthQuestion.PreviousReaction,
-      HealthQuestion.RecentMenAcwyVaccination
-    ],
+    healthQuestions: {
+      'bleeding': {},
+      'allergy': {},
+      'previousReaction': {},
+      'recentMenAcwyVaccination': {}
+    },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsMedicated,

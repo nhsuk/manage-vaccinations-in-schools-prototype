@@ -7,9 +7,8 @@ import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { School } from '../models/school.js'
 import { ConsentWindow, Session, SessionType } from '../models/session.js'
-import { HealthQuestion } from '../models/vaccine.js'
 import { getHealthQuestionPaths } from '../utils/consent.js'
-import { formatList, kebabToPascalCase } from '../utils/string.js'
+import { formatList, kebabToCamelCase } from '../utils/string.js'
 
 export const parentController = {
   read(request, response, next, session_id) {
@@ -197,18 +196,19 @@ export const parentController = {
 
   showForm(request, response) {
     let { view } = request.params
+    const { consent } = response.locals
 
     // Get health question key from view name
-    const key = kebabToPascalCase(view.replace('health-question-', ''))
-    const healthQuestion = HealthQuestion[key]?.replace(
-      'the child',
-      'your child'
-    )
+    const key = kebabToCamelCase(view.replace('health-question-', ''))
 
     // All health questions use the same view
     view = view.startsWith('health-question-') ? 'health-question' : view
 
-    response.render(`parent/form/${view}`, { key, healthQuestion })
+    // Only ask for details if question does not have sub-questions
+    const healthQuestions = Object.fromEntries(consent.session.healthQuestions)
+    const hasSubQuestions = healthQuestions[key]?.conditional
+
+    response.render(`parent/form/${view}`, { key, hasSubQuestions })
   },
 
   updateForm(request, response) {
@@ -216,6 +216,13 @@ export const parentController = {
     const { data } = request.session
     const { paths, consent } = response.locals
 
+    // Flu journey
+    if (request.body.consent?.healthAnswers?.asthma?.answer === 'No') {
+      delete consent?.healthAnswers?.asthmaSteroids
+      delete consent?.healthAnswers?.asthmaAdmitted
+    }
+
+    // MenACWY and Td/IPV consent journey
     const combinedDecisionGiven = [
       ReplyDecision.Given,
       ReplyDecision.Refused
