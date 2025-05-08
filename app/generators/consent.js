@@ -1,6 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import healthConditions from '../datasets/health-conditions.js'
+import { healthConditions } from '../datasets/health-conditions.js'
 import { Consent } from '../models/consent.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { removeDays, today } from '../utils/date.js'

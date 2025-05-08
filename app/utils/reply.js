@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import _ from 'lodash'
 
-import healthConditions from '../datasets/health-conditions.js'
+import { healthConditions } from '../datasets/health-conditions.js'
 import { Child } from '../models/child.js'
 import { ParentalRelationship } from '../models/parent.js'
 import { ConsentOutcome } from '../models/patient-session.js'

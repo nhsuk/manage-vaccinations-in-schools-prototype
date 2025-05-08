@@ -1,6 +1,6 @@
 import { HealthQuestion } from '../models/vaccine.js'
 
-export default {
+export const healthConditions = {
   adhd: {
     [HealthQuestion.MedicalConditions]:
       'My child was diagnosed with ADHD and has difficulty focusing and paying attention.',
