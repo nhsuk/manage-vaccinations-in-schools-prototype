@@ -10,6 +10,16 @@
     title: title
   }) }}
 
+  <div class="nhsuk-u-reading-width">
+    {{ __("move.list.introduction") | nhsukMarkdown }}
+
+    {{ button({
+      classes: "app-button--secondary",
+      text: __("move.download.label"),
+      href: "#"
+    }) }}
+  </div>
+
   {% set resultRows = [] %}
   {% for move in results.page %}
     {% set resultRows = resultRows | push([
