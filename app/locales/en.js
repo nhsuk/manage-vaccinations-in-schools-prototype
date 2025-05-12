@@ -1843,6 +1843,12 @@ export const en = {
       description:
         'Import child, cohort and vaccination records and see important notices'
     },
+    action: {
+      title: 'Are you sure you want to %s?',
+      description: 'This operation cannot be undone.',
+      cancel: 'No, return to import',
+      confirm: 'Yes, %s'
+    },
     recent: {
       label: 'Recent imports',
       title: 'Recent imports'
@@ -1911,6 +1917,18 @@ export const en = {
       errors: {
         invalid: 'The selected file must be a CSV'
       }
+    },
+    removeRelationships: {
+      title: 'Bulk remove relationships',
+      label: 'Bulk remove relationships',
+      description:
+        'If there is a problem in the class list import, you can bulk remove relationships between parents and children.',
+      nonConsenting:
+        'Remove relationships where parents haven’t given consent yet',
+      all: 'Remove relationships for all parents and children',
+      confirm: 'Continue',
+      cancel: 'Cancel',
+      success: 'Relationships removed'
     },
     school: {
       label: 'School',
