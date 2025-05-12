@@ -242,11 +242,7 @@ export const getHealthAnswers = (vaccine, healthCondition) => {
  * @returns {string} Triage note
  */
 export const getTriageNote = (healthAnswers, healthCondition) => {
-  const hasAnswersNeedingTriage = Object.values(healthAnswers).find(
-    (answer) => answer
-  )
-
-  if (hasAnswersNeedingTriage) {
+  if (hasAnswersNeedingTriage(healthAnswers)) {
     return healthConditions[healthCondition].triageNote
   }
 }
@@ -283,4 +279,21 @@ export const getRefusalReason = (type) => {
   )
 
   return faker.helpers.arrayElement(refusalReasons)
+}
+
+/**
+ * Has health answers needing triage
+ *
+ * @param {object} healthAnswers - Health answers
+ * @returns {boolean} Has health answers needing triage
+ */
+export const hasAnswersNeedingTriage = (healthAnswers) => {
+  // Ignore answer to asthma question, as only its sub-questions get triaged
+  const nonConditionalAnswers = Object.fromEntries(
+    Object.entries(healthAnswers).filter(([key]) => key !== 'asthma')
+  )
+
+  return Object.values(nonConditionalAnswers).find(
+    (answer) => answer.answer === 'Yes'
+  )
 }
