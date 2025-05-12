@@ -1,0 +1,25 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("upload.action.title", type) %}
+
+{% block form %}
+  {{ heading({
+    caption: __("upload.show.title", { upload: upload }),
+    title: title
+  }) }}
+
+  {{ __("upload.action.description") | nhsukMarkdown }}
+{% endblock %}
+
+{% block afterForm %}
+  {{ buttonGroup({
+    buttons: [{
+      classes: "nhsuk-button--warning",
+      text: __("upload.action.confirm", type)
+    }],
+    links: [{
+      text: __("upload.action.cancel"),
+      href: upload.uri
+    }]
+  }) }}
+{% endblock %}

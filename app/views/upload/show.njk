@@ -39,10 +39,8 @@
     {%- endif %}
   </p>
 
-  {{ card({
-    heading: __("upload.show.summary"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
+  {% set cardDescriptionHtml %}
+    {{ summaryList({
       rows: summaryRows(upload, {
         createdAt: {},
         createdBy: {},
@@ -53,7 +51,15 @@
         devoid: {},
         duplicates: {}
       })
-    })
+    }) }}
+
+    {{ link(upload.uri + "/bulk-remove-relationships", __("upload.removeRelationships.label")) | nhsukMarkdown }}
+  {% endset %}
+
+  {{ card({
+    heading: __("upload.show.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: cardDescriptionHtml
   }) }}
 
   {% set duplicateRecordRows = [] %}

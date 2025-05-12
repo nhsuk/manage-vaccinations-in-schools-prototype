@@ -33,11 +33,26 @@ export const uploadController = {
   },
 
   show(request, response) {
-    response.render('upload/show')
+    const view = request.params.view || 'show'
+
+    response.render(`upload/${view}`)
   },
 
   list(request, response) {
     response.render(`upload/list`)
+  },
+
+  action(type) {
+    return (request, response) => {
+      const { upload } = response.locals
+      let paths
+
+      if (type === 'bulk remove relationships') {
+        paths = { back: `${upload.uri}/bulk-remove-relationships` }
+      }
+
+      response.render('upload/action', { paths, type })
+    }
   },
 
   new(request, response) {
@@ -170,5 +185,13 @@ export const uploadController = {
     upload.update(request.body.upload, data.wizard)
 
     response.redirect(paths.next)
+  },
+
+  removeRelationships(request, response) {
+    const { __, upload } = response.locals
+
+    request.flash('success', __('upload.removeRelationships.success'))
+
+    response.redirect(upload.uri)
   }
 }
