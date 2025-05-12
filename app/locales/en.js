@@ -1996,7 +1996,9 @@ export const en = {
     list: {
       label: 'School moves',
       title: 'School moves',
-      description: 'Review children who have moved schools'
+      description: 'Review children who have moved schools',
+      introduction:
+        'When imported records or a new consent response indicates that a child has changed school, Mavis flags this as a school move.\n\nYou can then review the new information and confirm the school move or ignore it.'
     },
     show: {
       title: 'Review school move',
@@ -2012,6 +2014,9 @@ export const en = {
         clinic: 'No, keep them in the community clinic',
         school: 'Yes, move them to the upcoming school session'
       }
+    },
+    download: {
+      label: 'Download records'
     },
     ignore: {
       success: '{{move.patient.fullName}}’s school move ignored'
