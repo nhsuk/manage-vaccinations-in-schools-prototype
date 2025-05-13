@@ -14,7 +14,7 @@ import {
   SessionStatus,
   SessionType
 } from '../models/session.js'
-import { VaccinationOutcome } from '../models/vaccination.js'
+import { VaccinationMethod, VaccinationOutcome } from '../models/vaccination.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
@@ -76,8 +76,15 @@ export const sessionController = {
 
   readPatientSessions(request, response, next) {
     const { view } = request.params
-    const { consent, hasMissingNhsNumber, snomed, programme_id, q, yearGroup } =
-      request.query
+    const {
+      consent,
+      hasMissingNhsNumber,
+      snomed,
+      programme_id,
+      q,
+      vaccinationMethod,
+      yearGroup
+    } = request.query
     const { data } = request.session
     const { session } = response.locals
 
@@ -103,6 +110,13 @@ export const sessionController = {
     if (programme_id) {
       results = results.filter((patientSession) =>
         programme_id.includes(patientSession.programme_id)
+      )
+    }
+
+    // Filter by vaccine method
+    if (vaccinationMethod) {
+      results = results.filter(
+        (patientSession) => patientSession.programme_id === vaccinationMethod
       )
     }
 
@@ -183,6 +197,25 @@ export const sessionController = {
       }))
     }
 
+    // Vaccination method filter options
+    if (['register', 'record'].includes(view)) {
+      const vaccinationMethods = Object.values(VaccinationMethod).filter(
+        (value) => value !== VaccinationMethod.Subcutaneous
+      )
+      response.locals.vaccinationMethodItems = [
+        {
+          text: 'Any',
+          value: 'none',
+          checked: filters[view] === 'none'
+        },
+        ...Object.values(vaccinationMethods).map((value) => ({
+          text: value.replace(/\b[\w\s()-]*\binjection\b/gi, 'Injection'),
+          value,
+          checked: value === request.query.vaccinationMethodItems
+        }))
+      ]
+    }
+
     // Consent status filter options (select many)
     if (view === 'consent') {
       response.locals.statusesItems = Object.values(ConsentOutcome).map(
@@ -231,6 +264,7 @@ export const sessionController = {
     // Clean up session data
     delete data.hasMissingNhsNumber
     delete data.programme_id
+    delete data.vaccinationMethod
     delete data.q
     delete data.consent
     delete data.screen
@@ -246,7 +280,14 @@ export const sessionController = {
     const params = new URLSearchParams()
 
     // Radios
-    for (const key of ['q', 'triage', 'screen', 'register', 'outcome']) {
+    for (const key of [
+      'q',
+      'triage',
+      'screen',
+      'register',
+      'outcome',
+      'vaccinationMethod'
+    ]) {
       const value = request.body[key]
       if (value) {
         params.append(key, String(value))

@@ -32,6 +32,7 @@ import { Gillick } from './gillick.js'
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
 import { Session } from './session.js'
+import { VaccinationMethod } from './vaccination.js'
 
 /**
  * @readonly
@@ -181,6 +182,15 @@ export class PatientSession {
       .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
   }
 
+  /**
+   * Get responses (consent requests that were delivered)
+   *
+   * @returns {Array<import('./reply.js').Reply>} - Responses
+   */
+  get responses() {
+    return this.replies.filter((reply) => reply.delivered)
+  }
+
   /** Get parental relationships from valid replies
    *
    * @returns {Array<string>} - Parental relationships
@@ -191,13 +201,15 @@ export class PatientSession {
       .flatMap((reply) => reply.relationship || 'Parent or guardian')
   }
 
-  /**
-   * Get responses (consent requests that were delivered)
+  /** Get agreed upon vaccination method (flu programme only)
    *
-   * @returns {Array<import('./reply.js').Reply>} - Responses
+   * @todo This value needs to be resolved if refused or conflicting consent
+   * @returns {import('./vaccination.js').VaccinationMethod} - Vaccination method
    */
-  get responses() {
-    return this.replies.filter((reply) => reply.delivered)
+  get vaccinationMethod() {
+    if (this.programme_id === 'flu') {
+      return VaccinationMethod.Nasal
+    }
   }
 
   /**
