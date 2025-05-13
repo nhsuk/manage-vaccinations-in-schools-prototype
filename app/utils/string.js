@@ -381,3 +381,16 @@ export function formatYearGroup(yearGroup) {
 export function lowerCaseFirst(string) {
   return string.charAt(0).toLowerCase() + string.slice(1)
 }
+
+/**
+ * Get programme names that can be used in a sentence
+ *
+ * @param {string} string - String to change
+ * @returns {string} Sentence cased programme names
+ */
+export function sentenceCaseProgrammeName(string) {
+  return string
+    .replace('Children', 'children') // Children’s flu vaccine
+    .replace('Flu', 'flu') // Flu vaccination
+    .replace('Human', 'human') // Human papillomavirus
+}

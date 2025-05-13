@@ -1,11 +1,11 @@
 We wrote to you recently about a visit by our team to {{ session.location.name }} on {{ session.summary.dates }}.
 
-If you want your child to get the {{ session.vaccination }}, you need to give consent by {{ session.formatted.closeAt }}.
+If you want your child to get the {{ session.vaccinationNames.sentenceCase }}, you need to give consent by {{ session.formatted.closeAt }}.
 
 If you’ve already responded to the consent request, you can ignore this message.
 
 {% for programme in session.programmes %}
-## About the {{ programme.name | replace("Flu", "flu") }} vaccine
+## About the {{ programme.vaccineName.sentenceCase }}
 
 {{ programme.information.description }}
 
@@ -15,19 +15,19 @@ The vaccination is a quick and painless spray up the nose. Even if your child ha
 The nasal spray contains gelatine. If your child does not use gelatine products, they could have an injection instead.
 {% endif %}
 
-[Find out more about the {{ programme.name | replace("Flu", "flu") }} vaccine on NHS.UK]({{ programme.information.url }})
+[Find out more about the {{ programme.vaccineName.sentenceCase }} on NHS.UK]({{ programme.information.url }})
 {% endfor %}
 
 ## Please give or refuse consent
 
-[Give or refuse consent for the {{ session.vaccination }}]({{ session.consentUrl }}/start)
+[Give or refuse consent for the {{ session.vaccinationNames.sentenceCase }}]({{ session.consentUrl }}/start)
 
 Responding will take less than 5 minutes. If you do not give consent, it’s still important for you to respond.
 
 {% if programme.type != ProgrammeType.Flu %}
 ## Talk to your child about what they want
 
-We suggest you talk to your child about the {{vaccine__n}} before you respond to us.
+We suggest you talk to your child about the {{ vaccine__n }} before you respond to us.
 
 {% endif %}
 

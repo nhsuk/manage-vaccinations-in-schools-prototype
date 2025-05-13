@@ -2,7 +2,11 @@ import { isAfter } from 'date-fns'
 
 import vaccines from '../datasets/vaccines.js'
 import { isBetweenDates, today } from '../utils/date.js'
-import { formatLink, formatTag } from '../utils/string.js'
+import {
+  formatLink,
+  formatTag,
+  sentenceCaseProgrammeName
+} from '../utils/string.js'
 
 import { Cohort } from './cohort.js'
 import { PatientSession } from './patient-session.js'
@@ -37,6 +41,7 @@ export const programmeTypes = {
     id: 'flu',
     name: 'Flu',
     title: 'Children’s flu',
+    vaccineName: 'Children’s flu vaccine',
     active: true,
     information: {
       startPage:
@@ -54,6 +59,7 @@ export const programmeTypes = {
     id: 'hpv',
     name: 'HPV',
     title: 'Human papillomavirus (HPV)',
+    vaccineName: 'HPV vaccine',
     active: false,
     information: {
       startPage:
@@ -76,6 +82,7 @@ export const programmeTypes = {
     id: 'td-ipv',
     name: 'Td/IPV',
     title: 'Td/IPV (3-in-1 teenage booster)',
+    vaccineName: 'Td/IPV vaccine',
     active: true,
     information: {
       startPage:
@@ -98,6 +105,7 @@ export const programmeTypes = {
     id: 'menacwy',
     name: 'MenACWY',
     title: 'MenACWY',
+    vaccineName: 'MenACWY vaccine',
     active: true,
     information: {
       startPage:
@@ -219,6 +227,22 @@ export class Programme {
    */
   get vaccine() {
     return new Vaccine(vaccines[this.vaccine_smomeds[0]])
+  }
+
+  /**
+   * Get vaccine name
+   *
+   * @returns {object} - Vaccine name
+   * @example Children’s flu vaccine
+   * @example Td/IPV vaccine (3-in-1 teenage booster)
+   */
+  get vaccineName() {
+    const vaccineName = programmeTypes[this.type].vaccineName
+
+    return {
+      sentenceCase: sentenceCaseProgrammeName(vaccineName),
+      titleCase: vaccineName
+    }
   }
 
   /**

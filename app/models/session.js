@@ -19,7 +19,8 @@ import {
   formatList,
   formatTag,
   formatWithSecondaryText,
-  lowerCaseFirst
+  lowerCaseFirst,
+  sentenceCaseProgrammeName
 } from '../utils/string.js'
 
 import { Batch } from './batch.js'
@@ -554,53 +555,39 @@ export class Session {
   }
 
   /**
-   * Get vaccination name (sentence case)
+   * Get programme name(s)
    *
-   * @returns {string} - Vaccination name
-   * @example flu vaccination
-   * @example flu and HPV vaccinations
+   * @returns {object} - Programme name(s)
+   * @example Flu
+   * @example Td/IPV and MenACWY
    */
-  get vaccination() {
-    const pluralisation =
-      this.programmes.length === 1 ? 'vaccination' : 'vaccinations'
-
-    return `${this.immunisation} ${pluralisation}`
+  get programmeNames() {
+    return {
+      sentenceCase: filters.formatList(
+        this.programmes.map(({ name }) => sentenceCaseProgrammeName(name))
+      ),
+      titleCase: filters.formatList(this.programmes.map(({ name }) => name))
+    }
   }
 
   /**
-   * Get vaccination title (Title case)
+   * Get vaccination name(s)
    *
-   * @returns {string} - Vaccination title
+   * @returns {object} - Vaccination name(s)
    * @example Flu vaccination
-   * @example Flu and HPV vaccinations
+   * @example Td/IPV and MenACWY vaccinations
    */
-  get vaccinationTitle() {
+  get vaccinationNames() {
     const pluralisation =
       this.programmes.length === 1 ? 'vaccination' : 'vaccinations'
 
-    return `${this.programmeTitle.replace('flu', 'Flu')} ${pluralisation}`
-  }
-
-  /**
-   * Get programme immunisation
-   *
-   * @returns {string} - Programme immunisation
-   * @example flu
-   * @example flu and HPV
-   */
-  get immunisation() {
-    return filters.formatList(
-      this.programmes.map(({ name }) => name.replace('Flu', 'flu'))
-    )
-  }
-
-  /**
-   * Get programme title
-   *
-   * @returns {string} - Programme title
-   */
-  get programmeTitle() {
-    return filters.formatList(this.programmes.map(({ title }) => title))
+    return {
+      sentenceCase: `${filters.formatList(
+        this.programmes.map(({ name }) => sentenceCaseProgrammeName(name))
+      )} ${pluralisation}`,
+      titleCase: `${filters.formatList(this.programmes.map(({ name }) => name))}
+        ${pluralisation}`
+    }
   }
 
   /**
@@ -643,7 +630,7 @@ export class Session {
    */
   get name() {
     if (this.location) {
-      return `${this.immunisation} session at ${this.location.name}`
+      return `${this.programmeNames.titleCase} session at ${this.location.name}`
     }
   }
 
