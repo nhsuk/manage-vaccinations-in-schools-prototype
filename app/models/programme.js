@@ -36,9 +36,9 @@ export const programmeTypes = {
   [ProgrammeType.Flu]: {
     id: 'flu',
     name: 'Flu',
+    title: 'Children’s flu',
     active: true,
     information: {
-      title: 'Flu',
       startPage:
         'The vaccination helps to protect children against flu. It also protects others who are vulnerable to flu, such as babies and older people.',
       description:
@@ -53,9 +53,9 @@ export const programmeTypes = {
   [ProgrammeType.HPV]: {
     id: 'hpv',
     name: 'HPV',
+    title: 'Human papillomavirus (HPV)',
     active: false,
     information: {
-      title: 'Human papillomavirus (HPV)',
       startPage:
         'The HPV vaccine helps to prevent HPV related cancers from developing in boys and girls.\n\nThe number of doses you need depends on your age and how well your immune system works. Young people usually only need 1 dose.',
       description:
@@ -75,9 +75,9 @@ export const programmeTypes = {
   [ProgrammeType.TdIPV]: {
     id: 'td-ipv',
     name: 'Td/IPV',
+    title: 'Td/IPV (3-in-1 teenage booster)',
     active: true,
     information: {
-      title: 'Td/IPV (3-in-1 teenage booster)',
       startPage:
         'The Td/IPV vaccine (also called the 3-in-1 teenage booster) helps protect against tetanus, diphtheria and polio.\n\nIt boosts the protection provided by the [6-in-1 vaccine](https://www.nhs.uk/vaccinations/6-in-1-vaccine/) and [4-in-1 pre-school booster vaccine](https://www.nhs.uk/vaccinations/4-in-1-preschool-booster-vaccine/).',
       description:
@@ -97,9 +97,9 @@ export const programmeTypes = {
   [ProgrammeType.MenACWY]: {
     id: 'menacwy',
     name: 'MenACWY',
+    title: 'MenACWY',
     active: true,
     information: {
-      title: 'MenACWY',
       startPage:
         'The MenACWY vaccine helps protect against meningitis and sepsis. It is recommended for all teenagers. Most people only need one dose of the vaccine.',
       description:
@@ -122,6 +122,7 @@ export const programmeTypes = {
  * @param {object} [context] - Context
  * @property {object} [context] - Context
  * @property {string} name - Name
+ * @property {string} title - Title
  * @property {object} information - NHS.UK programme information
  * @property {object} leaflet - UKHSA programme information leaflets
  * @property {boolean} active - Active programme
@@ -142,6 +143,7 @@ export class Programme {
   constructor(options, context) {
     this.context = context
     this.name = options?.type && programmeTypes[options.type]?.name
+    this.title = options?.type && programmeTypes[options.type]?.title
     this.information =
       options?.type && programmeTypes[options.type]?.information
     this.leaflet = options?.type && programmeTypes[options.type]?.leaflet

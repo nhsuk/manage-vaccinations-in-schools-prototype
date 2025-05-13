@@ -12,7 +12,7 @@
 
       {% for programme in session.programmes %}
         {% if session.programmes.length != 1 %}
-          <h2 class="nhsuk-heading-m">{{ programme.information.title }}</h2>
+          <h2 class="nhsuk-heading-m">{{ programme.title }}</h2>
         {% endif %}
 
         {{ programme.information.startPage | nhsukMarkdown }}
