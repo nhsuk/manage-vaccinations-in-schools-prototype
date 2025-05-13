@@ -7,7 +7,8 @@ import { getPreferredNames } from '../utils/reply.js'
 import {
   formatLink,
   formatLinkWithSecondaryText,
-  formatParent
+  formatParent,
+  sentenceCaseProgrammeName
 } from '../utils/string.js'
 
 import { AuditEvent, EventType } from './audit-event.js'
@@ -369,7 +370,7 @@ export class Patient extends Record {
     this.cohort_uids.push(cohort.uid)
     this.addEvent({
       type: EventType.Select,
-      name: `Selected for the ${cohort.name.replace('Flu', 'flu')} cohort`,
+      name: `Selected for the ${cohort.name.sentenceCase} cohort`,
       createdAt: cohort.createdAt,
       createdBy_uid: cohort.createdBy_uid,
       programme_ids: [cohort.programme_id]
@@ -388,7 +389,7 @@ export class Patient extends Record {
 
     this.addEvent({
       type: EventType.Select,
-      name: `Removed from the ${cohort.name.replace('Flu', 'flu')} cohort`,
+      name: `Removed from the ${cohort.name.sentenceCase} cohort`,
       createdBy_uid: cohort.createdBy_uid,
       programme_ids: [cohort.programme_id]
     })
@@ -411,7 +412,7 @@ export class Patient extends Record {
   inviteToSession(patientSession) {
     this.addEvent({
       type: EventType.Invite,
-      name: `Invited to the ${patientSession.session.name}`,
+      name: `Invited to the ${sentenceCaseProgrammeName(patientSession.session.name)}`,
       createdAt: patientSession.session.openAt,
       createdBy_uid: patientSession.createdBy_uid,
       programme_ids: patientSession.session.programme_ids

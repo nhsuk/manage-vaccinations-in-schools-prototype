@@ -5,7 +5,7 @@
 {% macro sessionNavigation(params) %}
   {{ heading({
     title: params.session.location.name,
-    summary: params.session.immunisation
+    summary: params.session.programmeNames.titleCase
   }) }}
 
   {{ secondaryNavigation({

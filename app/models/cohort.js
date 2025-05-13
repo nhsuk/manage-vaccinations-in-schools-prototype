@@ -1,8 +1,12 @@
 import { createMap } from '../utils/object.js'
-import { formatLink, formatYearGroup } from '../utils/string.js'
+import {
+  formatLink,
+  formatYearGroup,
+  sentenceCaseProgrammeName
+} from '../utils/string.js'
 
 import { Patient } from './patient.js'
-import { Programme, ProgrammeType } from './programme.js'
+import { Programme } from './programme.js'
 
 /**
  * @readonly
@@ -86,12 +90,13 @@ export class Cohort {
   /**
    * Get name
    *
-   * @returns {string} - Name
+   * @returns {object} - Name
    */
   get name() {
-    const type = ProgrammeType[this.programme.type]
-
-    return `${type} ${this.formatted.yearGroup} (${this.year})`
+    return {
+      sentenceCase: `${sentenceCaseProgrammeName(this.programme.name)} ${this.formatted.yearGroup} (${this.year})`,
+      titleCase: `${this.programme.name} ${this.formatted.yearGroup} (${this.year})`
+    }
   }
 
   /**
@@ -112,7 +117,7 @@ export class Cohort {
    */
   get link() {
     return {
-      name: formatLink(this.uri, this.name)
+      name: formatLink(this.uri, this.name.titleCase)
     }
   }
 

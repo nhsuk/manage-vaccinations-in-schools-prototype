@@ -7,7 +7,7 @@
   {% set title = __("consent.refusalReason.title", "MenACWY vaccination") %}
   {% set vaccinations = 1 %}
 {% else %}
-  {% set title = __("consent.refusalReason.title", session.vaccination) %}
+  {% set title = __("consent.refusalReason.title", { session: session }) %}
   {% set vaccinations = session.programmes.length %}
 {% endif %}
 
