@@ -1,10 +1,10 @@
 {% if session.programmes.length == 1 %}
-We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to offer the {{ session.programmes[0].information.title }} vaccine to your child.
+We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to offer the {{ session.programmes[0].title }} vaccine to your child.
 {% else %}
 We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to offer the following vaccines to your child:
 
 {% for programme in session.programmes %}
-- {{ programme.information.title }}
+- {{ programme.title }}
 {%- endfor %}
 {% endif %}
 

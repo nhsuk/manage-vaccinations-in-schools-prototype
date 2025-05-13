@@ -600,9 +600,7 @@ export class Session {
    * @returns {string} - Programme title
    */
   get programmeTitle() {
-    return filters.formatList(
-      this.programmes.map(({ information }) => information.title)
-    )
+    return filters.formatList(this.programmes.map(({ title }) => title))
   }
 
   /**
