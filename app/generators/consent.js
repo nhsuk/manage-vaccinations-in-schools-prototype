@@ -3,6 +3,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { healthConditions } from '../datasets/health-conditions.js'
 import { Consent } from '../models/consent.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
+import { VaccineMethod } from '../models/vaccine.js'
 import { removeDays, today } from '../utils/date.js'
 import {
   getHealthAnswers,
@@ -67,6 +68,14 @@ export function generateConsent(
     return
   }
 
+  // If flu programme, some parents may request an alternative injection method
+  let vaccine_method
+  if (programme.id === 'flu') {
+    vaccine_method = faker.datatype.boolean(0.9)
+      ? VaccineMethod.Injection
+      : VaccineMethod.Nasal
+  }
+
   return new Consent({
     createdAt:
       lastConsentCreatedAt ||
@@ -97,6 +106,7 @@ export function generateConsent(
       })
     }),
     programme_id: programme.id,
-    session_id: session.id
+    session_id: session.id,
+    vaccine_method
   })
 }

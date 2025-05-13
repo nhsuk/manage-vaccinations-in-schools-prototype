@@ -83,6 +83,7 @@ export const ReplyRefusal = {
  * @property {string} patient_uuid - Patient UUID
  * @property {string} [programme_id] - Programme ID
  * @property {string} session_id - Session ID
+ * @property {import('./vaccine.js').VaccineMethod} [vaccine_method] - Requested vaccine method
  */
 export class Reply {
   constructor(options, context) {
@@ -135,6 +136,11 @@ export class Reply {
         )
       ) {
         this.refusalReasonDetails = options?.refusalReasonDetails || ''
+      }
+
+      // Only provide a value for vaccine method for replies in flu programme
+      if (this.programme_id === 'flu') {
+        this.vaccine_method = options?.vaccine_method
       }
     }
   }
