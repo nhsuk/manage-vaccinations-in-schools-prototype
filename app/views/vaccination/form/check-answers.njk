@@ -45,7 +45,7 @@
     })
   }) if vaccination.outcome == "Vaccinated" or vaccination.outcome == "Partially vaccinated" else warningCallout({
     heading: __("vaccination.new.check-answers.callout"),
-    HTML: summaryList({
+    html: summaryList({
       rows: summaryRows(vaccination, {
         programme: {},
         outcome: {
