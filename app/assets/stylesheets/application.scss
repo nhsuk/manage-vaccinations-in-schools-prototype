@@ -36,7 +36,7 @@ $govuk-colours: (
 @import "govuk-frontend/dist/govuk/components/pagination";
 
 // Import NHS.UK Frontend
-$_nhsuk-grid-widths: (
+$nhsuk-grid-widths: (
   one-quarter: 25%,
   one-third: 33.3333%,
   one-half: 50%,
@@ -45,7 +45,7 @@ $_nhsuk-grid-widths: (
   full: 100%,
   filters: 30%,
   results: 70%
-) !default;
+);
 
 @import "node_modules/nhsuk-frontend/packages/nhsuk";
 
