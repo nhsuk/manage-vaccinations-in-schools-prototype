@@ -1,4 +1,4 @@
-$text-message-background-color: color.mix($color_nhsuk-grey-4, $color_nhsuk-white, 50%);
+$_text-message-background-color: color.mix($color_nhsuk-grey-4, $color_nhsuk-white, 50%);
 
 .app-message--email {
   font-family: Helvetica, Arial, sans-serif;
@@ -30,7 +30,7 @@ $text-message-background-color: color.mix($color_nhsuk-grey-4, $color_nhsuk-whit
 }
 
 .app-message--text {
-  background-color: $text-message-background-color;
+  background-color: $_text-message-background-color;
   border-radius: nhsuk-spacing(3);
   font-family: Helvetica, Arial, sans-serif;
   max-width: 400px;
@@ -42,7 +42,7 @@ $text-message-background-color: color.mix($color_nhsuk-grey-4, $color_nhsuk-whit
   }
 
   &::before {
-    background: $text-message-background-color;
+    background: $_text-message-background-color;
     border-bottom-right-radius: nhsuk-spacing(3);
     bottom: 0;
     content: "";

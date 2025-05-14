@@ -54,7 +54,7 @@ $nhsuk-grid-widths: (
 @import "@x-govuk/govuk-prototype-components/x-govuk/components/sub-navigation/sub-navigation";
 
 // App options
-$app-page-width: 1100px;
+$_app-page-width: 1100px;
 // stylelint-disable-next-line scss/dollar-variable-pattern
 $color_app-dark-orange: color.scale(color.mix($color_nhsuk-red, $color_nhsuk-warm-yellow, 55%), $lightness: -10%);
 
@@ -100,13 +100,13 @@ $color_app-dark-orange: color.scale(color.mix($color_nhsuk-red, $color_nhsuk-war
   .nhsuk-header__container,
   .nhsuk-header__drop-down .nhsuk-header__navigation-link,
   .nhsuk-navigation {
-    max-width: $app-page-width;
+    max-width: $_app-page-width;
 
     @include nhsuk-media-query($from: desktop) {
       margin: 0 $nhsuk-gutter;
     }
 
-    @include nhsuk-media-query($and: "(min-width: #{($app-page-width + $nhsuk-gutter * 2)})") {
+    @include nhsuk-media-query($and: "(min-width: #{($_app-page-width + $nhsuk-gutter * 2)})") {
       margin: 0 auto;
     }
   }
