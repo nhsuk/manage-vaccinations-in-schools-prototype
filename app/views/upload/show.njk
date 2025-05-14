@@ -137,15 +137,13 @@
   {% endfor %}
 
   {{ actionTable({
-    tableClasses: "app-table--small",
     id: "vaccinations",
     sort: "name",
     panel: true,
     heading: __n("upload.records.count", upload.records.length),
     responsive: true,
     head: [
-      { text: __("record.fullName.label") },
-      { text: __("record.nhsn.label") },
+      { text: __("patient.fullNameAndNhsn.label") },
       { text: __("record.dob.label") },
       { text: __("record.postalCode.label") },
       { text: __("record.yearGroup.label") } if upload.type == UploadType.School,
