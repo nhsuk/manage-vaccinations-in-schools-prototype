@@ -104,11 +104,11 @@
 
     {{ buttonGroup({
       buttons: [{
-        classes: "app-button--secondary",
+        classes: "nhsuk-button--secondary",
         text: __("session.schedule.title") if session.isUnplanned else __("session.edit.title"),
         href: session.uri + "/edit"
       }, {
-        classes: "app-button--secondary",
+        classes: "nhsuk-button--secondary",
         text: __("session.close.title"),
         href: session.uri + "/close"
       } if session.isCompleted],

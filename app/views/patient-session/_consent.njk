@@ -19,21 +19,21 @@
   {# Actions #}
   {{ buttonGroup({
     buttons: [{
-      classes: "app-button--secondary",
+      classes: "nhsuk-button--secondary",
       text: __("remind.new.title"),
       attributes: {
         formaction: patientSession.uri + "/new/remind",
         formmethod: "post"
       }
     } if options.canRemind, {
-      classes: "app-button--secondary",
+      classes: "nhsuk-button--secondary",
       text: __("patientSession.invite.label"),
       attributes: {
         formmethod: patientSession.uri + "/new/invite",
         formaction: "post"
       }
     } if options.canInvite, {
-      classes: "app-button--secondary",
+      classes: "nhsuk-button--secondary",
       text: __("reply.new.title"),
       href: patientSession.uri + "/replies/new?referrer=" + referrer
     } if options.canRespond]
@@ -52,7 +52,7 @@
 
     {% set type = "edit" if patientSession.gillick.competent else "new" %}
     {{ button({
-      classes: "app-button--secondary",
+      classes: "nhsuk-button--secondary",
       text: __("patientSession.gillick." + type + ".title"),
       href: patientSession.uri + "/" + type + "/gillick?referrer=" + referrer
     }) }}

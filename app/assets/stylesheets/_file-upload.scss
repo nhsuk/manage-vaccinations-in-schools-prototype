@@ -4,8 +4,7 @@
   @include nhsuk-font(19, $line-height: 60px);
 
   &::file-selector-button {
-    @extend .nhsuk-button;
-    @extend .app-button--secondary;
+    @extend .nhsuk-button--secondary;
 
     font-family: inherit;
     margin-bottom: 0;
