@@ -47,7 +47,7 @@ $text-message-background-color: color.mix($color_nhsuk-grey-4, $color_nhsuk-whit
     bottom: 0;
     content: "";
     height: nhsuk-spacing(3);
-    left: #{nhsuk-spacing(2) * -1};
+    left: nhsuk-spacing(-2);
     position: absolute;
     width: nhsuk-spacing(4);
     z-index: 0;
@@ -59,7 +59,7 @@ $text-message-background-color: color.mix($color_nhsuk-grey-4, $color_nhsuk-whit
     bottom: 0;
     content: "";
     height: nhsuk-spacing(3);
-    left: #{nhsuk-spacing(2) * -1};
+    left: nhsuk-spacing(-2);
     position: absolute;
     width: nhsuk-spacing(2);
     z-index: 1;
