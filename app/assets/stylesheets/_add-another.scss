@@ -6,8 +6,8 @@ add-another {
 
 // Show focus state when heading receives focus
 h1:has(+ add-another):focus {
-  @include nhsuk-focused-text;
   display: inline-block;
+  @include nhsuk-focused-text;
 }
 
 .app-add-another__list {

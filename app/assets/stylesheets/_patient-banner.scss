@@ -1,7 +1,6 @@
 @use "sass:color";
 
 .app-patient-banner {
-  @include nhsuk-responsive-margin(5, "bottom");
   background: $color_nhsuk-grey-5;
   border-bottom: 1px solid $nhsuk-border-color;
   left: 0;
@@ -9,6 +8,7 @@
   margin-right: -50vw;
   right: 0;
   width: 100vw;
+  @include nhsuk-responsive-margin(5, "bottom");
 
   .app-secondary-navigation {
     margin: 0;
