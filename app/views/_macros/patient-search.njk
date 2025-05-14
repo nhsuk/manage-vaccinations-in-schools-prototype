@@ -12,7 +12,7 @@
   {% set filterButtonGroup %}
     {{ buttonGroup({
       buttons: [{
-        classes: "app-button--small nhsuk-button--secondary",
+        classes: "nhsuk-button--secondary app-button--small",
         text: __("search.confirm"),
         attributes: {
           formaction: params.formaction,
@@ -20,7 +20,7 @@
           role: "search"
         }
       }, {
-        classes: "app-button--small app-button--secondary",
+        classes: "nhsuk-button--secondary app-button--small",
         text: __("search.clear"),
         href: params.clear or "/patients"
       } if data.q or data.programme or data.yearGroup or data.dob or data.status or data.hasMissingNhsNumber]
