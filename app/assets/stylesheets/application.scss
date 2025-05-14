@@ -107,7 +107,7 @@ $color_app-dark-orange: color.scale(color.mix($color_nhsuk-red, $color_nhsuk-war
       margin: 0 $nhsuk-gutter;
     }
 
-    @include mq($and: "(min-width: #{($app-page-width + $nhsuk-gutter * 2)})") {
+    @include nhsuk-media-query($and: "(min-width: #{($app-page-width + $nhsuk-gutter * 2)})") {
       margin: 0 auto;
     }
   }
