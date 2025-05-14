@@ -129,7 +129,7 @@
     {{ details({
       text: __("search.advanced"),
       open: true if data.hasMissingNhsNumber,
-      HTML: searchDetailsHtml
+      html: searchDetailsHtml
     }) }}
 
     {{ filterButtonGroup | safe if programmeItems or statusItems }}

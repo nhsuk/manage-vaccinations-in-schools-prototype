@@ -59,7 +59,7 @@
       <div class="app-grid-column-results">
         {{ warningCallout({
           heading: __("consent.list.title"),
-          HTML: link(session.uri + "/consents", __n("consent.warning.text", session.consents.length), {
+          html: link(session.uri + "/consents", __n("consent.warning.text", session.consents.length), {
             classes: "nhsuk-link--no-visited-state"
           }) | nhsukMarkdown
         }) if session.consents.length }}
