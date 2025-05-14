@@ -16,7 +16,7 @@ $text-message-background-color: color.mix($color_nhsuk-grey-4, $color_nhsuk-whit
   }
 
   .nhsuk-heading-l {
-    @include nhsuk-font($size: 24, $weight: bold);
+    @include nhsuk-font($size: 26, $weight: bold);
   }
 
   .nhsuk-inset-text {

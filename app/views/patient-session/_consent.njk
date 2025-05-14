@@ -103,14 +103,14 @@
   classes: "app-card--" + patientSession.status.consent.colour,
   feature: true,
   heading: programme.name + ": " + (patientSession.status.consent.text | lower),
-  headingClasses: "nhsuk-u-font-size-24",
+  headingClasses: "nhsuk-u-font-size-26",
   headingLevel: 3,
   descriptionHtml: cardDescriptionHtml
 }) }}
 
 {{ card({
   heading: __("healthAnswers.label"),
-  headingClasses: "nhsuk-u-font-size-24",
+  headingClasses: "nhsuk-u-font-size-26",
   descriptionHtml: summaryList({
     classes: "app-summary-list--full-width",
     rows: healthAnswerRows(patientSession.consentHealthAnswers)
