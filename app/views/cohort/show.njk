@@ -31,12 +31,8 @@
     {% for patient in cohort.patients %}
       {% set patientRows = patientRows | push([
         {
-          header: __("patient.fullName.label"),
-          html: patient.fullName
-        },
-        {
-          header: __("patient.nhsn.label"),
-          html: patient.formatted.nhsn or "Not provided"
+          header: __("patient.fullNameAndNhsn.label"),
+          html: patient.link.fullNameAndNhsn
         },
         {
           header: __("patient.dob.label"),
@@ -54,17 +50,15 @@
     {% endfor %}
 
     {{ actionTable({
-      tableClasses: "app-table--small",
       id: "cohort",
       heading: __n("cohort.patients.count", cohort.patients.length),
       panel: true,
       responsive: true,
       head: [
-        { text: __("patient.fullName.label") },
-        { text: __("patient.nhsn.label") },
-        { text: __("patient.dob.label") },
+        { text: __("patient.fullNameAndNhsn.label") },
         { text: __("patient.postalCode.label") },
-        { text: __("patient.school.label") }
+        { text: __("patient.school.label") },
+        { text: __("patient.dob.label") }
       ],
       rows: patientRows
     }) }}
