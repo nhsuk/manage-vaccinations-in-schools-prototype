@@ -30,6 +30,10 @@
   {% set bodyClasses = "app-signed-in" %}
 {% endif %}
 
+{% block bodyStart %}
+  <script>document.body.className += 'noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '';</script>
+{% endblock %}
+
 {% block header %}
   {{ env(environment) if environment }}
   {{ appHeader({
