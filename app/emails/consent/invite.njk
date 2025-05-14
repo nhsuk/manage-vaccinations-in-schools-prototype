@@ -1,4 +1,6 @@
-{% if session.programmes.length == 1 %}
+{% if programme.type == ProgrammeType.Flu %}
+We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to give pupils their annual flu vaccination.
+{% elif session.programmes.length == 1 %}
 We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to offer the {{ session.programmeNames.sentenceCase }} vaccine to your child.
 {% else %}
 We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to offer the following vaccines to your child:
@@ -8,7 +10,7 @@ We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to 
 {%- endfor %}
 {% endif %}
 
-We would like your consent to vaccinate {{ consent.child.fullName }}. You can give this by filling in our online form (the link is below).
+We would like your consent to vaccinate {{ consent.child.firstName }}. You can give this by filling in our online form (the link is below).
 
 {% for programme in session.programmes %}
 ## About the {{ programme.vaccineName.sentenceCase }}
@@ -17,37 +19,8 @@ We would like your consent to vaccinate {{ consent.child.fullName }}. You can gi
 
 [Find out more about the {{ programme.vaccineName.sentenceCase }} on NHS.UK]({{ programme.information.url }})
 
-{% if programme.vaccine.leaflet %}
 [Read the patient information leaflet for the {{ programme.vaccineName.sentenceCase }} (PDF, {{ programme.vaccine.leaflet.size }})]({{ programme.vaccine.leaflet.url }})
-{% endif %}
 {% endfor %}
-
-## How to respond
-
-> It’s important to let us know whether you do or do not want your child to have {% if session.programmes.length == 1 %}this vaccination{% else %}these vaccinations{% endif %}. It will take less than 5 minutes to respond using the link below.
-
-[Respond to the consent request]({{ session.consentUrl }}/start)
-
-You need to respond by {{ session.formatted.firstDate }}.
-
-{% if programme.type != ProgrammeType.Flu %}
-## Talk to your child about what they want
-
-We suggest you talk to your child about the {{ vaccine__n }} before you respond to us.
-
-{% if programme.type != ProgrammeType.Flu %}
-Young people have the right to refuse vaccinations. Those who show ‘[Gillick competence](https://www.nhs.uk/conditions/consent-to-treatment/children)’ have the right to consent to vaccinations themselves. Our team may assess Gillick competence during vaccination sessions.
-{% endif %}
-
-{% endif %}
-
-## If you cannot use the online form
-
-If you cannot use the online form, you can respond over the phone using the contact details below.
-
-## Your data
-
-By responding, you’re agreeing to your data being processed as set out in our [privacy notice]({{ data.organisation.privacyPolicyUrl }}).
 
 {% if programme.type == ProgrammeType.Flu %}
 ## About the nasal spray
@@ -60,6 +33,32 @@ The nasal spray gives children the best protection against flu. However, the inj
 
 [Find out more about the use of gelatine in the flu vaccine (including the views of faith communities)](https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1107767/UKHSA-12462-vaccines-porcine-gelatine-English.pdf)
 {% endif %}
+
+## How to respond
+
+> It’s important to let us know whether you do or do not want your child to have {% if session.programmes.length == 1 %}this vaccination{% else %}these vaccinations{% endif %}. It will take less than 5 minutes to respond using the link below.
+
+[Respond to the consent request]({{ session.consentUrl }}/start)
+
+You need to respond by {{ session.formatted.firstDate }}.
+
+If you do not respond, you’ll be sent automatic reminders. Responding will stop reminders.
+
+## Talk to your child about what they want
+
+We suggest you talk to your child about the {{ vaccine__n }} before you respond to us.
+
+{% if consent.child.school.phase == SchoolPhase.Secondary %}
+Young people have the right to refuse vaccinations. Those who show ‘[Gillick competence](https://www.nhs.uk/conditions/consent-to-treatment/children)’ have the right to consent to vaccinations themselves. Our team may assess Gillick competence during vaccination sessions.
+{% endif %}
+
+## If you cannot use the online form
+
+If you cannot use the online form, you can respond over the phone using the contact details below.
+
+## Your data
+
+By responding, you’re agreeing to your data being processed as set out in our [privacy notice]({{ data.organisation.privacyPolicyUrl }}).
 
 ## Get in touch with us
 

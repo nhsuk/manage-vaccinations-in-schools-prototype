@@ -47,7 +47,7 @@ export const programmeTypes = {
       startPage:
         'Use this service to give or refuse consent for your child to have a flu vaccination.\n\nThis vaccination is recommended for school age children every year.\n\n## About the children’s flu vaccine\n\nThe children’s flu vaccine helps protect children against flu. Vaccinating children also protects others who are vulnerable to flu, such as babies and older people.\n\nThe vaccine is given as a nasal spray. This gives the most effective protection.\n\nSome children can have an injection instead, for example if they:\n\n- have had a serious allergic reaction to a previous dose of the nasal spray vaccine\n- have a severe egg allergy\n- have asthma that’s being treated with long-term steroid tablets',
       description:
-        'The vaccine protects against flu, which can cause serious health problems.\n\nBy preventing the spread of flu, the vaccine also protects others who are vulnerable, such as babies and older people. The vaccination is a quick and painless spray up the nose. Even if your child had the vaccine last year, the type of flu can vary each winter, so it is recommended to have it again this year.',
+        'The vaccine protects against flu, which can cause serious health problems such as bronchitis and pneumonia.\n\nBy preventing the spread of flu, the vaccine also protects others who are vulnerable, such as babies and older people.\n\nThe vaccination is a quick and painless spray up the nose. Even if your child had the vaccine last year, the type of flu can vary each winter, so we recommend they have it again this year.',
       url: 'https://www.nhs.uk/vaccinations/child-flu-vaccine/'
     },
     term: SchoolTerm.Autumn,
