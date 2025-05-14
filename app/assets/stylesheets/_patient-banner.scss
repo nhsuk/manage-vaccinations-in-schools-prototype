@@ -17,7 +17,7 @@
   .app-secondary-navigation__list {
     box-shadow: none;
 
-    @include mq($until: tablet) {
+    @include nhsuk-media-query($until: tablet) {
       margin-left: #{$nhsuk-gutter-half * -1};
     }
   }
