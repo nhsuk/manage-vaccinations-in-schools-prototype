@@ -1,0 +1,18 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("session.school.title") %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ xGovukAutocomplete({
+    id: "school-urn",
+    name: "[session][school_urn]",
+    value: session.school_urn,
+    allowEmpty: false,
+    label: { text: __("session.school_urn.title") },
+    items: schoolUrnItems
+  }) | replace("govuk-", "nhsuk-") }}
+{% endblock %}

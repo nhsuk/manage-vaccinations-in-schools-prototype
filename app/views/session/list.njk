@@ -1,3 +1,5 @@
+{% from "session/_list-navigation.njk" import sessionListNavigation with context %}
+
 {% extends "_layouts/default.njk" %}
 
 {% set title = __("session.list.title") + " – " + __("session.list." + view + ".label") %}
@@ -6,12 +8,10 @@
 {% block content %}
   {{ super() }}
 
-  {{ heading({
-    size: "xl",
-    title: __("session.list.title")
+  {{ sessionListNavigation({
+    session: session,
+    view: view
   }) }}
-
-  {% include "session/_list-navigation.njk" %}
 
   {% if sessions.length %}
     {% set sessionRows = [] %}

@@ -26,6 +26,12 @@
     view: "sessions"
   }) }}
 
+  {{ button({
+    classes: "nhsuk-button--secondary",
+    text: __("session.new.label"),
+    href: "/sessions/new"
+  }) }}
+
   {% macro count(number, percentage) %}
     <div>
       <span class="nhsuk-u-font-size-36 nhsuk-u-font-weight-bold">{{ number or "0" }}</span>

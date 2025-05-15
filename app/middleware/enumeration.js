@@ -17,7 +17,7 @@ import {
   ScreenOutcome,
   TriageOutcome
 } from '../models/patient-session.js'
-import { ProgrammeType } from '../models/programme.js'
+import { ProgrammeType, ProgrammePreset } from '../models/programme.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { SchoolPhase } from '../models/school.js'
 import {
@@ -51,6 +51,7 @@ export const enumeration = (request, response, next) => {
   response.locals.ParentalRelationship = ParentalRelationship
   response.locals.PatientOutcome = PatientOutcome
   response.locals.ProgrammeType = ProgrammeType
+  response.locals.ProgrammePreset = ProgrammePreset
   response.locals.RegistrationOutcome = RegistrationOutcome
   response.locals.ReplyDecision = ReplyDecision
   response.locals.ReplyMethod = ReplyMethod

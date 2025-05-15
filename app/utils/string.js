@@ -40,6 +40,17 @@ export function stringToBoolean(value) {
 }
 
 /**
+ * Convert string to array
+ *
+ * @param {any} value - Value to test
+ * @returns {Array} Array
+ */
+export function stringToArray(value) {
+  const array = Array.isArray(value) ? value : []
+  return array.filter((item) => item !== '_unchecked')
+}
+
+/**
  * Format highlight
  *
  * @param {object} healthAnswer - Health answer
@@ -226,7 +237,7 @@ export function formatList(array) {
 
   // Only use list if more than one item in array
   if (array.length === 1) {
-    return array[0]
+    return formatMarkdown(array[0])
   }
 
   const list = array.map((item) => `- ${item}`)

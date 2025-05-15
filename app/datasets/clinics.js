@@ -392,6 +392,7 @@ export default {
   X99999: {
     id: 'X99999',
     name: 'Community clinic',
+    addressLevel1: 'Coventry',
     organisation_code: 'RYG'
   }
 }

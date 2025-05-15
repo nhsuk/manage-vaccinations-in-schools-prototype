@@ -1,19 +1,44 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("session.edit.programme.title") %}
+{% set title = __("session.programmes.title") %}
 
 {% block form %}
-  {{ checkboxes({
+  {% macro catchupConditionalHtml(catchup) %}
+    {% set catchupItems = [] %}
+    {% for value in catchup %}
+      {% set catchupItems = catchupItems | push({
+        text: value,
+        value: value
+      }) %}
+    {% endfor %}
+    {{ checkboxes({
+      fieldset: {
+        legend: { text: __("session.catchupProgrammes.title") }
+      },
+      items: catchupItems,
+      decorate: "session.catchupProgrammeTypes"
+    }) }}
+  {% endmacro %}
+
+  {% set presetItems = [] %}
+  {% for key, value in ProgrammePreset %}
+    {% set presetItems = presetItems | push({
+      text: value.primaryProgrammeTypes | formatList,
+      value: key,
+      conditional: {
+        html: catchupConditionalHtml(value.catchupProgrammeTypes)
+      } if value.catchupProgrammeTypes
+    }) %}
+  {% endfor %}
+
+  {{ radios({
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--l",
-        html: heading({
-          caption: session.location.name,
-          title: title
-        })
+        text: title
       }
     },
-    items: programmeItems,
-    decorate: "session.programme_ids"
+    items: presetItems,
+    decorate: "session.programmePreset"
   }) }}
 {% endblock %}
