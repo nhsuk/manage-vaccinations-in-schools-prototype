@@ -71,7 +71,7 @@
         {
           classes: "app-table__cell--muted" if consent.invalid,
           header: __("consent.createdAt.label"),
-          html: consent.formatted.createdAt_date or "Not provided",
+          html: consent.formatted.createdAt or "Not provided",
           attributes: {
             "data-sort": consent.createdAt
           }
