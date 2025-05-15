@@ -1,22 +1,32 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { isAfter } from 'date-fns'
 
-import { Session, SessionStatus } from '../models/session.js'
+import { ProgrammePreset } from '../models/programme.js'
+import { schoolTerms } from '../models/school.js'
+import { Session, SessionStatus, SessionType } from '../models/session.js'
 import { addDays, removeDays, setMidday, today } from '../utils/date.js'
 
 /**
  * Generate fake session
  *
- * @param {object} term - Term dates
+ * @param {string} programmePreset - Programme preset
  * @param {import('../models/user.js').User} user - User
- * @param {Array<string>} programme_ids - Programme IDs
  * @param {object} options - Options
  * @param {string} [options.clinic_id] - Clinic ID
  * @param {string} [options.school_urn] - School URN
  * @returns {Session} - Session
  */
-export function generateSession(programme_ids, term, user, options) {
+export function generateSession(programmePreset, user, options) {
+  // Get programme preset
+  const preset = ProgrammePreset[programmePreset]
+
+  // Don’t generate sessions for inactive programme presets
+  if (!preset.active) {
+    return
+  }
+
   const { clinic_id, school_urn } = options
+  const term = schoolTerms[preset.term]
 
   let status
   if (isAfter(today(), term.to)) {
@@ -82,12 +92,17 @@ export function generateSession(programme_ids, term, user, options) {
     }
   }
 
+  const sessionHasCatchups = faker.datatype.boolean(0.5)
+
   return new Session({
     createdAt: removeDays(term.from, 60),
     createdBy_uid: user.uid,
     dates,
-    programme_ids,
-    ...(clinic_id && { clinic_id }),
-    ...(school_urn && { school_urn })
+    programmePreset,
+    ...(sessionHasCatchups && {
+      catchupProgrammeTypes: preset.catchupProgrammeTypes
+    }),
+    ...(clinic_id && { type: SessionType.Clinic, clinic_id }),
+    ...(school_urn && { type: SessionType.School, school_urn })
   })
 }

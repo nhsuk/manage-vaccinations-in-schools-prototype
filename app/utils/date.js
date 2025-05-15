@@ -93,7 +93,7 @@ export function convertIsoDateToObject(date) {
 /**
  * Add days to a date
  *
- * @param {Date} date - Date
+ * @param {Date|string} date - Date
  * @param {number} days - Number of days to add
  * @returns {Date} Date with days added
  */
@@ -107,7 +107,7 @@ export function addDays(date, days) {
 /**
  * Remove days from a date
  *
- * @param {Date} date - Date
+ * @param {Date|string} date - Date
  * @param {number} days - Number of days to remove
  * @returns {Date} Date with days removed
  */

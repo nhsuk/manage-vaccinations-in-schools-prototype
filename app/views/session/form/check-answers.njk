@@ -1,0 +1,43 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("session.new.check-answers.confirm") %}
+{% set title = __("session.new.check-answers.title") %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("session.new.check-answers.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(session, {
+        type: {
+          href: session.uri + "/new/type"
+        },
+        clinic: {
+          href: session.uri + "/new/clinic"
+        },
+        school: {
+          href: session.uri + "/new/school"
+        },
+        primaryProgrammes: {
+          href: session.uri + "/edit/programmes"
+        },
+        catchupProgrammes: {
+          href: session.uri + "/edit/programmes"
+        },
+        dates: {
+          href: session.uri + "/new/dates"
+        },
+        openAt: {
+          href: session.uri + "/new/open-at"
+        },
+        reminderWeeks: {
+          href: session.uri + "/new/reminders"
+        }
+      })
+    })
+  }) }}
+{% endblock %}

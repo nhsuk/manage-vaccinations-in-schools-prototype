@@ -3,6 +3,7 @@ import { Move } from '../models/move.js'
 import { Notice } from '../models/notice.js'
 import { Organisation } from '../models/organisation.js'
 import { ProgrammeType } from '../models/programme.js'
+import { Session } from '../models/session.js'
 import { Upload } from '../models/upload.js'
 import { User, UserRole } from '../models/user.js'
 import { formatDate, today } from '../utils/date.js'
@@ -11,7 +12,6 @@ import { getProgrammeSession } from '../utils/session.js'
 export const navigation = (request, response, next) => {
   const { data } = request.session
   const { __ } = response.locals
-  const { sessions } = data
 
   const organisation = new Organisation(data.organisation)
   const user = new User(data.token)
@@ -24,6 +24,7 @@ export const navigation = (request, response, next) => {
   const consents = Consent.readAll(data)
   const moves = Move.readAll(data)
   const notices = Notice.readAll(data)
+  const sessions = Session.readAll(data)
   const reviews = Upload.readAll(data).flatMap((upload) => upload.duplicates)
 
   // Get account navigation

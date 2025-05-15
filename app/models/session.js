@@ -20,7 +20,8 @@ import {
   formatTag,
   formatWithSecondaryText,
   lowerCaseFirst,
-  sentenceCaseProgrammeName
+  sentenceCaseProgrammeName,
+  stringToArray
 } from '../utils/string.js'
 
 import { Batch } from './batch.js'
@@ -34,7 +35,7 @@ import {
   PatientSession,
   TriageOutcome
 } from './patient-session.js'
-import { Programme } from './programme.js'
+import { Programme, ProgrammePreset, programmeTypes } from './programme.js'
 import { School } from './school.js'
 import { Vaccine } from './vaccine.js'
 
@@ -97,8 +98,9 @@ export const RegistrationOutcome = {
  * @property {boolean} [closed] - Session closed
  * @property {number} [reminderWeeks] - Weeks before session to send reminders
  * @property {object} [register] - Patient register
+ * @property {string} [programmePreset] - Programme preset name
+ * @property {Array<string>} [catchupProgrammeTypes] - Catchup programmes
  * @property {object} [defaultBatch_ids] - Vaccine SNOMED code: Default batch ID
- * @property {Array<string>} [programme_ids] - Programme IDs
  */
 export class Session {
   constructor(options, context) {
@@ -106,6 +108,7 @@ export class Session {
     this.id = options?.id || faker.helpers.replaceSymbols('###')
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
+    this.type = options?.type || SessionType.School
     this.clinic_id = options?.clinic_id
     this.school_urn = options?.school_urn
     this.dates = options?.dates
@@ -122,12 +125,9 @@ export class Session {
     this.reminderWeeks =
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
     this.register = options?.register || {}
+    this.programmePreset = options?.programmePreset
+    this.catchupProgrammeTypes = stringToArray(options?.catchupProgrammeTypes)
     this.defaultBatch_ids = options?.defaultBatch_ids || {}
-    this.programme_ids = options?.programme_ids
-      ? options.programme_ids.filter(
-          (programme_id) => programme_id !== '_unchecked'
-        )
-      : []
   }
 
   /**
@@ -491,6 +491,75 @@ export class Session {
   }
 
   /**
+   * Get primary programme ids
+   *
+   * @returns {Array<string>} - Programme IDs
+   */
+  get primaryProgramme_ids() {
+    const programme_ids = new Set()
+
+    if (this.programmePreset) {
+      const preset = ProgrammePreset[this.programmePreset]
+      for (const programmeType of preset.primaryProgrammeTypes) {
+        programme_ids.add(programmeTypes[programmeType].id)
+      }
+    }
+
+    return [...programme_ids]
+  }
+
+  /**
+   * Get catch-up programme ids
+   *
+   * @returns {Array<string>} - Programme IDs
+   */
+  get catchupProgramme_ids() {
+    const programme_ids = new Set()
+
+    if (this.catchupProgrammeTypes) {
+      const catchupProgrammeTypes = this.catchupProgrammeTypes?.filter(
+        (type) => type !== '_unchecked'
+      )
+      for (const programmeType of catchupProgrammeTypes) {
+        programme_ids.add(programmeTypes[programmeType].id)
+      }
+    }
+
+    return [...programme_ids]
+  }
+
+  /**
+   * Get programme ids
+   *
+   * @returns {Array<string>} - Programme IDs
+   */
+  get programme_ids() {
+    return [...this.primaryProgramme_ids, ...this.catchupProgramme_ids]
+  }
+
+  /**
+   * Get primary programmes
+   *
+   * @returns {Array<Programme>} - Programmes
+   */
+  get primaryProgrammes() {
+    return this.primaryProgramme_ids
+      .map((id) => Programme.read(id, this.context))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }
+
+  /**
+   * Get catch-up programmes
+   *
+   * @returns {Array<Programme>} - Programmes
+   */
+  get catchupProgrammes() {
+    return this.catchupProgramme_ids
+      .map((id) => Programme.read(id, this.context))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }
+
+  /**
    * Get session programmes
    *
    * @returns {Array<Programme>} - Programmes
@@ -572,15 +641,6 @@ export class Session {
   }
 
   /**
-   * Get type
-   *
-   * @returns {string} - Status
-   */
-  get type() {
-    return this.school_urn ? SessionType.School : SessionType.Clinic
-  }
-
-  /**
    * Get location
    *
    * @returns {object} - Location
@@ -588,7 +648,7 @@ export class Session {
   get location() {
     const type = this.type === SessionType.School ? 'school' : 'clinic'
 
-    return this[type].location
+    return this[type]?.location
   }
 
   /**
@@ -738,6 +798,9 @@ export class Session {
         )
     }
 
+    const programmePresetHasCatchups =
+      ProgrammePreset[this.programmePreset]?.catchupProgrammeTypes
+
     return {
       address: this.address?.formatted.multiline,
       dates: formatList(formattedDates).replace(
@@ -789,6 +852,14 @@ export class Session {
       patientsVaccinated: patientsVaccinated
         ? patientsVaccinated.join('<br>')
         : undefined,
+      primaryProgrammes: this.primaryProgrammes
+        .flatMap(({ nameTag }) => nameTag)
+        .join(' '),
+      catchupProgrammes: this.catchupProgrammes?.length
+        ? this.catchupProgrammes.flatMap(({ nameTag }) => nameTag).join(' ')
+        : programmePresetHasCatchups
+          ? null // Show row with link to add catch-up programmes
+          : '', // Hide row
       programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' '),
       consentUrl:
         this.consentUrl &&
@@ -800,9 +871,10 @@ export class Session {
           }
         ),
       consentWindow,
-      location: Object.values(this.location)
-        .filter((string) => string)
-        .join(', '),
+      // location: Object.values(this.location)
+      //   .filter((string) => string)
+      //   .join(', '),
+      school: this.school && this.school.name,
       school_urn: this.school && this.school.formatted.urn,
       status: formatTag(this.sessionStatus)
     }

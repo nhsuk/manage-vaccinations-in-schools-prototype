@@ -657,7 +657,7 @@ export const en = {
     },
     startAt: {
       label: 'From',
-      hint: 'For example, 27 10 2024'
+      hint: 'For example, 27 10 2025'
     },
     endAt: {
       label: 'Until',
@@ -1498,15 +1498,18 @@ export const en = {
       label: 'Overview',
       summary: 'Session overview'
     },
+    new: {
+      label: 'Add a new session',
+      'check-answers': {
+        confirm: 'Add session',
+        title: 'Check and confirm',
+        summary: 'Session details'
+      },
+      success: '{{session.name}} created'
+    },
     edit: {
       title: 'Edit session',
       summary: 'Session details',
-      programme: {
-        title: 'Which programmes is this session part of?'
-      },
-      dates: {
-        title: 'When will sessions be held?'
-      },
       success: '{{session.name}} updated'
     },
     consent: {
@@ -1633,28 +1636,44 @@ export const en = {
     },
     date: {
       label: 'Session date',
-      hint: 'For example, 27 3 2024'
+      hint: 'For example, 27 3 2025'
     },
     dates: {
-      label: 'Session dates'
+      label: 'Session dates',
+      title: 'When will sessions be held?'
     },
     school: {
-      label: 'School'
+      label: 'School',
+      title: 'Where is this school session taking place?'
     },
     school_urn: {
-      label: 'School URN'
+      label: 'School URN',
+      title: 'Select a school'
+    },
+    clinic: {
+      label: 'Clinic',
+      title: 'Where is this community clinic taking place?'
     },
     location: {
       label: 'Location'
     },
     programmes: {
+      label: 'Programmes',
+      title: 'Which programmes is this session part of?'
+    },
+    primaryProgrammes: {
       label: 'Programmes'
+    },
+    catchupProgrammes: {
+      label: 'Catch-ups',
+      title: 'Which catch-up programmes does this session support?'
     },
     status: {
       label: 'Status'
     },
     type: {
-      label: 'Type'
+      label: 'Type',
+      title: 'What type of session is this?'
     },
     consentUrl: {
       label: 'Online consent form'

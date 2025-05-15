@@ -36,13 +36,37 @@ export const ProgrammeType = {
   MenACWY: 'MenACWY'
 }
 
+/**
+ * @readonly
+ * @enum {object}
+ */
+export const ProgrammePreset = {
+  SeasonalFlu: {
+    active: true,
+    primaryProgrammeTypes: [ProgrammeType.Flu],
+    term: SchoolTerm.Autumn
+  },
+  HPV: {
+    active: true,
+    adolescent: true,
+    primaryProgrammeTypes: [ProgrammeType.HPV],
+    term: SchoolTerm.Spring
+  },
+  Doubles: {
+    active: true,
+    adolescent: true,
+    primaryProgrammeTypes: [ProgrammeType.MenACWY, ProgrammeType.TdIPV],
+    catchupProgrammeTypes: [ProgrammeType.HPV],
+    term: SchoolTerm.Summer
+  }
+}
+
 export const programmeTypes = {
   [ProgrammeType.Flu]: {
     id: 'flu',
     name: 'Flu',
     title: 'Children’s flu',
     vaccineName: 'Children’s flu vaccine',
-    active: true,
     information: {
       startPage:
         'Use this service to give or refuse consent for your child to have a flu vaccination.\n\nThis vaccination is recommended for school age children every year.\n\n## About the children’s flu vaccine\n\nThe children’s flu vaccine helps protect children against flu. Vaccinating children also protects others who are vulnerable to flu, such as babies and older people.\n\nThe vaccine is given as a nasal spray. This gives the most effective protection.\n\nSome children can have an injection instead, for example if they:\n\n- have had a serious allergic reaction to a previous dose of the nasal spray vaccine\n- have a severe egg allergy\n- have asthma that’s being treated with long-term steroid tablets',
@@ -54,8 +78,6 @@ export const programmeTypes = {
       url: 'https://www.gov.uk/government/publications/flu-vaccination-leaflets-and-posters',
       hint: 'with information available in different languages and alternative formats, including BSL and Braille'
     },
-    term: SchoolTerm.Autumn,
-    seasonal: true,
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
     vaccine_smomeds: ['43208811000001106', '40085011000001101']
   },
@@ -64,7 +86,6 @@ export const programmeTypes = {
     name: 'HPV',
     title: 'Human papillomavirus (HPV)',
     vaccineName: 'HPV vaccine',
-    active: false,
     information: {
       startPage:
         'The HPV vaccine helps to prevent HPV related cancers from developing in boys and girls.\n\nThe number of doses you need depends on your age and how well your immune system works. Young people usually only need 1 dose.',
@@ -76,7 +97,6 @@ export const programmeTypes = {
       url: 'https://www.gov.uk/government/publications/hpv-vaccine-vaccination-guide-leaflet',
       hint: 'with information available in different languages and alternative formats, including BSL and Braille'
     },
-    term: SchoolTerm.Spring,
     sequence: ['1P', '2P', '3P'],
     sequenceDefault: '1P',
     yearGroups: [8, 9, 10, 11],
@@ -87,7 +107,6 @@ export const programmeTypes = {
     name: 'Td/IPV',
     title: 'Td/IPV (3-in-1 teenage booster)',
     vaccineName: 'Td/IPV vaccine',
-    active: false,
     information: {
       startPage:
         'The Td/IPV vaccine (also called the 3-in-1 teenage booster) helps protect against tetanus, diphtheria and polio.\n\nIt boosts the protection provided by the [6-in-1 vaccine](https://www.nhs.uk/vaccinations/6-in-1-vaccine/) and [4-in-1 pre-school booster vaccine](https://www.nhs.uk/vaccinations/4-in-1-preschool-booster-vaccine/).',
@@ -99,7 +118,6 @@ export const programmeTypes = {
       url: 'https://www.gov.uk/government/publications/a-guide-to-the-3-in-1-teenage-booster-tdipv',
       hint: 'with links to information in other languages'
     },
-    term: SchoolTerm.Summer,
     sequence: ['1P', '2P', '3P', '1B', '2B'],
     sequenceDefault: '2B',
     yearGroups: [9, 10, 11],
@@ -110,7 +128,6 @@ export const programmeTypes = {
     name: 'MenACWY',
     title: 'MenACWY',
     vaccineName: 'MenACWY vaccine',
-    active: false,
     information: {
       startPage:
         'The MenACWY vaccine helps protect against meningitis and sepsis. It is recommended for all teenagers. Most people only need one dose of the vaccine.',
@@ -122,7 +139,6 @@ export const programmeTypes = {
       url: 'https://www.gov.uk/government/publications/menacwy-vaccine-information-for-young-people',
       hint: 'with links to information in other languages'
     },
-    term: SchoolTerm.Summer,
     yearGroups: [9, 10, 11],
     vaccine_smomeds: ['39779611000001104']
   }
@@ -137,10 +153,7 @@ export const programmeTypes = {
  * @property {string} title - Title
  * @property {object} information - NHS.UK programme information
  * @property {object} guidance - GOV.UK guidance
- * @property {boolean} active - Active programme
- * @property {boolean} seasonal - Seasonal programme
  * @property {ProgrammeStatus} status - Status
- * @property {SchoolTerm} term - School term administered in
  * @property {ProgrammeType} type - Programme type
  * @property {Array<string>} sequence - Vaccine dose sequence
  * @property {string} sequenceDefault - Default vaccine dose sequence
@@ -159,10 +172,7 @@ export class Programme {
     this.information =
       options?.type && programmeTypes[options.type]?.information
     this.guidance = options?.type && programmeTypes[options.type]?.guidance
-    this.active = options?.type && programmeTypes[options.type]?.active
-    this.seasonal = options?.type && programmeTypes[options.type]?.seasonal
     this.year = options?.year || SchoolYear.Y2024
-    this.term = options?.type && programmeTypes[options.type]?.term
     this.type = options?.type
     this.sequence = options?.type && programmeTypes[options.type]?.sequence
     this.sequenceDefault =
