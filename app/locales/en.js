@@ -521,7 +521,7 @@ export const en = {
     decision: {
       summary: 'Consent for the {{session.vaccinationNames.sentenceCase}}',
       title:
-        'Do you agree to your child having the {{session.vaccinationNames.sentenceCase}}?',
+        'Do you agree to your child having the {{session.vaccinationNames.sentenceCase}} in school?',
       label: 'Decision',
       yes: {
         label: 'Yes, I agree'
@@ -572,10 +572,6 @@ export const en = {
       gettingElsewhere: {
         one: ReplyRefusal.GettingElsewhere,
         other: ReplyRefusal.GettingElsewhere.replace('Vaccine', 'Vaccines')
-      },
-      outsideSchool: {
-        one: ReplyRefusal.OutsideSchool,
-        other: ReplyRefusal.OutsideSchool.replace('vaccination', 'vaccinations')
       }
     },
     refusalReasonDetails: {
@@ -604,6 +600,7 @@ export const en = {
     confirmation: {
       title: {
         [ReplyDecision.Given]: 'Consent confirmed',
+        [ReplyDecision.Consult]: 'Follow up requested',
         [ReplyDecision.OnlyFluInjection]:
           'Consent for the flu injection vaccination confirmed',
         [ReplyDecision.OnlyMenACWY]:
@@ -615,6 +612,8 @@ export const en = {
       text: {
         [ReplyDecision.Given]:
           '{{consent.child.fullName}} is due to get the {{session.vaccinationNames.sentenceCase}} at school on {{session.summary.datesDisjunction}}',
+        [ReplyDecision.Consult]:
+          'You’ve told us that you would you like a member of the team to contact you to discuss your options',
         [ReplyDecision.OnlyFluInjection]:
           '{{consent.child.fullName}} is due to get the flu injection at school on {{session.summary.datesDisjunction}}',
         [ReplyDecision.OnlyMenACWY]:
