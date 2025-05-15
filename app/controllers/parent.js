@@ -234,7 +234,7 @@ export const parentController = {
       .map(({ type }) => type)
       .includes(ProgrammeType.Flu)
 
-    response.locals.urnItems = Object.values(data.schools)
+    response.locals.schoolItems = Object.values(data.schools)
       .map((school) => new School(school))
       .map((school) => ({
         text: school.name,
