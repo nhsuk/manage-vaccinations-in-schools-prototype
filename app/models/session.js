@@ -102,10 +102,13 @@ export const RegistrationOutcome = {
  */
 export class Session {
   constructor(options, context) {
+    console.log(options)
+
     this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('###')
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
+    this.type = options?.type || SessionType.School
     this.clinic_id = options?.clinic_id
     this.school_urn = options?.school_urn
     this.dates = options?.dates
@@ -124,7 +127,7 @@ export class Session {
     this.register = options?.register || {}
     this.defaultBatch_ids = options?.defaultBatch_ids || {}
     this.programme_ids = options?.programme_ids
-      ? options.programme_ids.filter(
+      ? options.programme_ids?.filter(
           (programme_id) => programme_id !== '_unchecked'
         )
       : []
@@ -591,15 +594,6 @@ export class Session {
   }
 
   /**
-   * Get type
-   *
-   * @returns {string} - Status
-   */
-  get type() {
-    return this.school_urn ? SessionType.School : SessionType.Clinic
-  }
-
-  /**
    * Get location
    *
    * @returns {object} - Location
@@ -607,7 +601,7 @@ export class Session {
   get location() {
     const type = this.type === SessionType.School ? 'school' : 'clinic'
 
-    return this[type].location
+    return this[type]?.location
   }
 
   /**
@@ -822,6 +816,7 @@ export class Session {
       location: Object.values(this.location)
         .filter((string) => string)
         .join(', '),
+      school: this.school.name,
       school_urn: this.school && this.school.formatted.urn,
       status: formatTag(this.sessionStatus)
     }

@@ -17,6 +17,15 @@
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
       rows: summaryRows(session, {
+        type: {
+          href: session.uri + "/edit/type"
+        },
+        clinic: {
+          href: session.uri + "/edit/clinic"
+        },
+        school: {
+          href: session.uri + "/edit/school"
+        },
         programmes: {
           href: session.uri + "/edit/programmes"
         },

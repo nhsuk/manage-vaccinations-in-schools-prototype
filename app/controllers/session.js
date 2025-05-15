@@ -1,6 +1,9 @@
+import wizard from '@x-govuk/govuk-prototype-wizard'
 import _ from 'lodash'
 
 import { Batch } from '../models/batch.js'
+import { Clinic } from '../models/clinic.js'
+import { Organisation } from '../models/organisation.js'
 import {
   Activity,
   ConsentOutcome,
@@ -8,6 +11,7 @@ import {
 } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
 import { programmeTypes } from '../models/programme.js'
+import { School } from '../models/school.js'
 import {
   RegistrationOutcome,
   Session,
@@ -49,6 +53,21 @@ export const sessionController = {
     }
 
     response.render(`session/${view}`)
+  },
+
+  new(request, response) {
+    const { data } = request.session
+
+    const session = new Session(
+      {
+        ...(data.token && { createdBy_uid: data.token?.uid })
+      },
+      data
+    )
+
+    session.create(session, data.wizard)
+
+    response.redirect(`${session.uri}/new/type`)
   },
 
   list(view) {
@@ -306,27 +325,94 @@ export const sessionController = {
     response.redirect(`/sessions/${session_id}`)
   },
 
-  readForm(request, response, next) {
-    const { session_id } = request.params
-    const { data } = request.session
+  readForm(type) {
+    return (request, response, next) => {
+      const { session_id } = request.params
+      const { data, referrer } = request.session
+      let { organisation } = response.locals
 
-    const session = Session.read(session_id, data)
+      organisation = Organisation.read(organisation.code, data)
 
-    response.locals.session = session
+      let session
+      if (type === 'edit') {
+        session = Session.read(session_id, data)
+      } else {
+        session = new Session(Session.read(session_id, data.wizard), data)
+      }
 
-    response.locals.paths = {
-      back: `${session.uri}/edit`,
-      next: `${session.uri}/edit`
+      response.locals.session = session
+
+      const journey = {
+        [`/`]: {},
+        [`/${session_id}/${type}/type`]: {
+          [`/${session_id}/${type}/school`]: {
+            data: 'session.type',
+            value: SessionType.School
+          },
+          [`/${session_id}/${type}/clinic`]: {
+            data: 'session.type',
+            value: SessionType.Clinic
+          }
+        },
+        ...(session.type === SessionType.School
+          ? {
+              [`/${session_id}/${type}/school`]: {},
+              [`/${session_id}/${type}/programmes`]: {},
+              [`/${session_id}/${type}/dates`]: {},
+              [`/${session_id}/${type}/open-at`]: {},
+              [`/${session_id}/${type}/reminders`]: {}
+            }
+          : {
+              [`/${session_id}/${type}/clinic`]: {},
+              [`/${session_id}/${type}/programmes`]: {},
+              [`/${session_id}/${type}/dates`]: {}
+            }),
+        [`/${session_id}/${type}/check-answers`]: {},
+        [`/${session_id}`]: {}
+      }
+
+      response.locals.paths = {
+        ...wizard(journey, request),
+        ...(type === 'edit' && {
+          back: `${session.uri}/edit`,
+          next: `${session.uri}/edit`
+        }),
+        ...(referrer && { back: referrer })
+      }
+
+      response.locals.schoolUrnItems = Object.values(data.schools)
+        .map((school) => new School(school))
+        .map((school) => ({
+          text: school.name,
+          value: school.urn,
+          ...(school.address && {
+            attributes: {
+              'data-hint': school.address.formatted.singleline
+            }
+          })
+        }))
+
+      response.locals.clinicIdItems = Object.values(organisation.clinics)
+        .map((clinic) => new Clinic(clinic))
+        .map((clinic) => ({
+          text: clinic.name,
+          value: clinic.id,
+          ...(clinic.address && {
+            attributes: {
+              'data-hint': clinic.address.formatted.singleline
+            }
+          })
+        }))
+
+      response.locals.programmeItems = Object.values(programmeTypes).map(
+        (type) => ({
+          text: type.name,
+          value: type.id
+        })
+      )
+
+      next()
     }
-
-    response.locals.programmeItems = Object.values(programmeTypes).map(
-      (type) => ({
-        text: type.name,
-        value: type.id
-      })
-    )
-
-    next()
   },
 
   showForm(request, response) {

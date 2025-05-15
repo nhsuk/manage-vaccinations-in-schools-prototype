@@ -1501,6 +1501,16 @@ export const en = {
     edit: {
       title: 'Edit session',
       summary: 'Session details',
+      type: {
+        title: 'What type of session is this?'
+      },
+      school: {
+        title: 'Where is this school session taking place?',
+        label: 'Select a school'
+      },
+      clinic: {
+        title: 'Where is this community clinic taking place?'
+      },
       programme: {
         title: 'Which programmes is this session part of?'
       },

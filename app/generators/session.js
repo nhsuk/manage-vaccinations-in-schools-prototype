@@ -1,7 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { isAfter } from 'date-fns'
 
-import { Session, SessionStatus } from '../models/session.js'
+import { Session, SessionStatus, SessionType } from '../models/session.js'
 import { addDays, removeDays, setMidday, today } from '../utils/date.js'
 
 /**
@@ -87,7 +87,7 @@ export function generateSession(programme_ids, term, user, options) {
     createdBy_uid: user.uid,
     dates,
     programme_ids,
-    ...(clinic_id && { clinic_id }),
-    ...(school_urn && { school_urn })
+    ...(clinic_id && { type: SessionType.Clinic, clinic_id }),
+    ...(school_urn && { type: SessionType.School, school_urn })
   })
 }

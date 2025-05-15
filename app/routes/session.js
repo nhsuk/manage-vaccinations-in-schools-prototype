@@ -9,6 +9,7 @@ router.get('/completed', session.readAll, session.list('completed'))
 router.get('/planned', session.readAll, session.list('planned'))
 router.get('/unplanned', session.readAll, session.list('unplanned'))
 router.get('/closed', session.readAll, session.list('closed'))
+router.get('/new', session.new)
 
 router.param('session_id', session.read)
 
@@ -17,7 +18,11 @@ router.post('/:session_id/offline', session.downloadFile)
 router.get('/:session_id/edit', session.edit)
 router.post('/:session_id/edit', session.update)
 
-router.all('/:session_id/edit/:view', session.readForm)
+router.all('/:session_id/new/:view', session.readForm('new'))
+router.get('/:session_id/new/:view', session.showForm)
+router.post('/:session_id/new/:view', session.updateForm)
+
+router.all('/:session_id/edit/:view', session.readForm('edit'))
 router.get('/:session_id/edit/:view', session.showForm)
 router.post('/:session_id/edit/:view', session.updateForm)
 
