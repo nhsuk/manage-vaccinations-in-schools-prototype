@@ -26,6 +26,7 @@ import { User } from './user.js'
 export const ReplyDecision = {
   Given: 'Consent given',
   Refused: 'Consent refused',
+  Consult: 'Follow up requested',
   OnlyFluInjection: 'Consent given for flu injection',
   OnlyMenACWY: 'Consent given for MenACWY only',
   OnlyTdIPV: 'Consent given for Td/IPV only',
@@ -52,7 +53,6 @@ export const ReplyRefusal = {
   AlreadyGiven: 'Vaccine already received',
   GettingElsewhere: 'Vaccine will be given elsewhere',
   Medical: 'Medical reasons',
-  OutsideSchool: 'Don’t want vaccination in school',
   Personal: 'Personal choice',
   Other: 'Other'
 }
@@ -69,7 +69,6 @@ export const ReplyRefusal = {
  * @property {import('./child.js').Child} [child] - Child
  * @property {import('./parent.js').Parent} [parent] - Parent or guardian
  * @property {ReplyDecision} [decision] - Consent decision
- * @property {boolean} [consultation] - Parent wants consultation
  * @property {boolean} [confirmed] - Decision confirmed
  * @property {boolean} given - Reply gives consent
  * @property {boolean} invalid - Reply is invalid
@@ -102,9 +101,6 @@ export class Reply {
       ReplyDecision.OnlyMenACWY,
       ReplyDecision.OnlyTdIPV
     ].includes(this.decision)
-    this.consultation = !this.given
-      ? stringToBoolean(options?.consultation)
-      : undefined
     this.healthAnswers = this.given && options?.healthAnswers
     this.triageNote = this.given && options?.triageNote
     this.invalid =

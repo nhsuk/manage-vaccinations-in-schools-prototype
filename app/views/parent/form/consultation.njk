@@ -20,12 +20,12 @@
     },
     items: [{
       text: __("consent.consultation.yes"),
-      value: true
+      value: ReplyDecision.Consult
     },
     {
       text: __("consent.consultation.no"),
-      value: false
+      value: ReplyDecision.Refused
     }],
-    decorate: "consent.consultation"
+    decorate: "consent.decision"
   }) }}
 {% endblock %}
