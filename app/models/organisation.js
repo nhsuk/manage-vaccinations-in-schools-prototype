@@ -136,7 +136,7 @@ export class Organisation {
    * @static
    */
   static read(code, context) {
-    if (context?.organisation) {
+    if (context?.organisations) {
       return new Organisation(context.organisations[code], context)
     }
   }
