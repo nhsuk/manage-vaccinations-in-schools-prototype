@@ -2,6 +2,7 @@
 
 {% set confirmButtonText = __("consent.new.check-answers.confirm") %}
 {% set title = __("consent.new.check-answers.title") %}
+{% set gridColumns = "three-quarters" %}
 {% set refusalReasonHasDetails = consent.refusalReason != RefusalReason.PersonalChoice or consent.refusalReason != RefusalReason.Other %}
 {% macro editPath(view) -%}
   {{- view }}?referrer={{ session.consentUrl }}/{{ consent.uuid}}/new/check-answers
@@ -84,6 +85,9 @@
         rows: summaryRows(consent, {
           decision: {
             href: editPath("decision")
+          },
+          alternative: {
+            href: editPath("alternative")
           },
           refusalReason: {
             href: editPath("refusal-reason")

@@ -544,6 +544,11 @@ export const en = {
         label: 'No'
       }
     },
+    alternative: {
+      title:
+        'If your child cannot have the nasal spray, do you agree to them having the injected vaccine instead?',
+      label: 'Consent given for injected vaccine'
+    },
     consultation: {
       title: {
         one: 'Your child may be able to have the vaccination outside of school',
