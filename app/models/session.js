@@ -502,25 +502,6 @@ export class Session {
   }
 
   /**
-   * Get health questions for all programme vaccines
-   *
-   * @returns {object} - Health questions
-   */
-  get healthQuestions() {
-    const healthQuestions = new Map()
-    for (const vaccine of this.vaccines) {
-      for (const [key, value] of Object.entries(vaccine.healthQuestions)) {
-        healthQuestions.set(key, value)
-      }
-    }
-
-    // Always ask support question last
-    healthQuestions.set('support', {})
-
-    return healthQuestions
-  }
-
-  /**
    * Get session vaccines
    *
    * @returns {Array<Vaccine>} - Vaccines

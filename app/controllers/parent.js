@@ -99,6 +99,7 @@ export const parentController = {
   readForm(request, response, next) {
     const { session_id, consent_uuid } = request.params
     const { data, referrer } = request.session
+    const { __ } = response.locals
 
     const consent = new Consent(Consent.read(consent_uuid, data?.wizard), data)
     response.locals.consent = consent
@@ -128,18 +129,10 @@ export const parentController = {
         }
       },
       [`/${session_id}/${consent_uuid}/new/address`]: {},
-      ...getHealthQuestionPaths(
-        `/${session_id}/${consent_uuid}/new/`,
-        consent.session,
-        consent.decision
-      ),
+      ...getHealthQuestionPaths(`/${session_id}/${consent_uuid}/new/`, consent),
       [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
       [`/${session_id}/${consent_uuid}/new/confirmation`]: {},
       [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
-        [`/${session_id}/${consent_uuid}/new/method`]: {
-          data: 'consent.refusalReason',
-          value: ReplyRefusal.Gelatine
-        },
         [`/${session_id}/${consent_uuid}/new/consultation`]: {
           data: 'consent.refusalReason',
           value: ReplyRefusal.OutsideSchool
@@ -165,19 +158,71 @@ export const parentController = {
     paths.back = referrer || paths.back
     response.locals.paths = paths
 
+    const programmes = consent.session ? consent.session.programmes : []
+    if (programmes.length > 1) {
+      // MenACWY and Td/IPV: Ask for consent for none, one or all programmes
+      response.locals.decisionItems = [
+        {
+          text: __('consent.decision.both.label'),
+          value: ReplyDecision.Given
+        },
+        {
+          text: __('consent.decision.one.label'),
+          conditional: { html: {} } // Added in template
+        },
+        {
+          divider: 'or'
+        },
+        {
+          text: __('consent.decision.no.label'),
+          value: ReplyDecision.Refused
+        }
+      ]
+
+      response.locals.programmeItems = consent.session.programmes.map(
+        (programme) => ({
+          text: programme.name,
+          value:
+            programme.id === 'td-ipv'
+              ? ReplyDecision.OnlyTdIPV
+              : ReplyDecision.OnlyMenACWY
+        })
+      )
+    } else if (programmes[0]?.hasAlternativeVaccines) {
+      // Flu: Ask which vaccine the parent would prefer
+      response.locals.decisionItems = [
+        {
+          text: __('consent.decision.nasal.label'),
+          hint: { text: __('consent.decision.nasal.hint') },
+          value: ReplyDecision.Given
+        },
+        {
+          text: __('consent.decision.injection.label'),
+          hint: { text: __('consent.decision.injection.hint') },
+          value: ReplyDecision.OnlyFluInjection
+        },
+        {
+          text: __('consent.decision.no.label'),
+          value: ReplyDecision.Refused
+        }
+      ]
+    } else {
+      // HPV: Yes or no
+      response.locals.programmeItems = [
+        {
+          text: __('consent.decision.yes.label'),
+          value: ReplyDecision.Given
+        },
+        {
+          text: __('consent.decision.no.label'),
+          value: ReplyDecision.Refused
+        }
+      ]
+    }
+
     response.locals.programmeIsFlu = consent.session.programmes
       .map(({ type }) => type)
       .includes(ProgrammeType.Flu)
-
-    response.locals.programmeItems = consent.session.programmes.map(
-      (programme) => ({
-        text: programme.name,
-        value:
-          programme.id === 'td-ipv'
-            ? ReplyDecision.OnlyTdIPV
-            : ReplyDecision.OnlyMenACWY
-      })
-    )
 
     response.locals.urnItems = Object.values(data.schools)
       .map((school) => new School(school))
@@ -205,7 +250,9 @@ export const parentController = {
     view = view.startsWith('health-question-') ? 'health-question' : view
 
     // Only ask for details if question does not have sub-questions
-    const healthQuestions = Object.fromEntries(consent.session.healthQuestions)
+    const healthQuestions = Object.fromEntries(
+      consent.healthQuestionsForDecision
+    )
     const hasSubQuestions = healthQuestions[key]?.conditional
 
     response.render(`parent/form/${view}`, { key, hasSubQuestions })

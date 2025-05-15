@@ -229,6 +229,10 @@ export class Programme {
     return new Vaccine(vaccines[this.vaccine_smomeds[0]])
   }
 
+  get hasAlternativeVaccines() {
+    return this.vaccine_smomeds.length > 1
+  }
+
   /**
    * Get vaccine name
    *

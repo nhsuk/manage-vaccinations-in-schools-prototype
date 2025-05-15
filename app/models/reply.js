@@ -26,6 +26,7 @@ import { User } from './user.js'
 export const ReplyDecision = {
   Given: 'Consent given',
   Refused: 'Consent refused',
+  OnlyFluInjection: 'Consent given for flu injection',
   OnlyMenACWY: 'Consent given for MenACWY only',
   OnlyTdIPV: 'Consent given for Td/IPV only',
   NoResponse: 'No response'
@@ -97,6 +98,7 @@ export class Reply {
     this.confirmed = stringToBoolean(options?.confirmed)
     this.given = [
       ReplyDecision.Given,
+      ReplyDecision.OnlyFluInjection,
       ReplyDecision.OnlyMenACWY,
       ReplyDecision.OnlyTdIPV
     ].includes(this.decision)
@@ -183,37 +185,6 @@ export class Reply {
     } else if (this.child) {
       return 'Child (Gillick competent)'
     }
-  }
-
-  /**
-   * Get health answers for consented vaccinations
-   *
-   * @todo Shows correct health answers on parental consent journey.
-   * This shouldn’t really exist; if a parent were to change their decision,
-   * they should be asked any outstanding questions. The current flow doesn’t
-   * support complex branching when questions are edited.
-   * @returns {object|undefined} - Health answers for consented vaccinations
-   */
-  get healthAnswersForDecision() {
-    let healthAnswers = this.healthAnswers
-
-    if (this.decision === ReplyDecision.OnlyMenACWY) {
-      healthAnswers = Object.fromEntries(
-        Object.entries(this.healthAnswers).map(([key, value]) => [
-          key === 'RecentTdIpvVaccination' ? 'RecentMenAcwyVaccination' : key,
-          value
-        ])
-      )
-    } else if (this.decision === ReplyDecision.OnlyTdIPV) {
-      healthAnswers = Object.fromEntries(
-        Object.entries(this.healthAnswers).map(([key, value]) => [
-          key === 'RecentMenAcwyVaccination' ? 'RecentTdIpvVaccination' : key,
-          value
-        ])
-      )
-    }
-
-    return healthAnswers
   }
 
   /**

@@ -1,18 +1,18 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("consent.decision.title", { session: session }) | replace("the Flu", "a nasal flu") %}
-
-{% if programmeItems | length == 1 %}
-  {% set yesLabelText = __("consent.decision.yes.single") %}
-{% elif programmeItems | length == 2 %}
-  {% set yesLabelText = __("consent.decision.yes.double") %}
-  {% set someLabelText = __("consent.decision.some.double") %}
-{% else %}
-  {% set yesLabelText = __("consent.decision.yes.multiple") %}
-  {% set someLabelText = __("consent.decision.some.multiple") %}
-{% endif %}
+{% set title = __("consent.decision.title", { session: session }) | replace("the flu", "a nasal flu") %}
 
 {% block form %}
+  {%- set programmeRadiosHtml = radios({
+    fieldset: {
+      legend: {
+        text: "Which vaccinations do you give consent for?"
+      }
+    },
+    items: programmeItems,
+    decorate: "decision"
+  }) %}
+
   {{ radios({
     fieldset: {
       legend: {
@@ -22,31 +22,7 @@
         })
       }
     },
-    hint: { text: __("consent.decision.hint.Flu") } if programmeIsFlu,
-    items: [
-      {
-        text: yesLabelText,
-        value: ReplyDecision.Given
-      },
-      {
-        text: someLabelText,
-        conditional: {
-          html: radios({
-            fieldset: {
-              legend: {
-                text: "Which vaccinations do you give consent for?"
-              }
-            },
-            items: programmeItems,
-            decorate: "decision"
-          })
-        }
-      } if programmeItems | length > 1,
-      {
-        text: __("consent.decision.no"),
-        value: ReplyDecision.Refused
-      }
-    ],
+    items: injectConditionalHtml(decisionItems, 1, programmeRadiosHtml) if programmeItems else decisionItems,
     decorate: "consent.decision"
   }) }}
 {% endblock %}
