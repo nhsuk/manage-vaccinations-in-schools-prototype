@@ -523,19 +523,26 @@ export const en = {
       title:
         'Do you agree to your child having the {{session.vaccinationNames.sentenceCase}}?',
       label: 'Decision',
-      hint: {
-        Flu: 'The nasal flu spray contains gelatine which comes from pigs.'
-      },
       yes: {
-        single: 'Yes, I agree',
-        double: 'Yes, I agree to them having both vaccinations',
-        multiple: 'Yes, I agree to them having all vaccinations'
+        label: 'Yes, I agree'
       },
-      some: {
-        double: 'I agree to them having one of the vaccinations',
-        multiple: 'I agree to them having some of the vaccinations'
+      both: {
+        label: 'Yes, I agree to them having both vaccinations'
       },
-      no: 'No'
+      one: {
+        label: 'I agree to them having one of the vaccinations'
+      },
+      nasal: {
+        label: 'Yes, I agree',
+        hint: 'The nasal spray gives children the best protection against flu'
+      },
+      injection: {
+        label: 'Yes, I agree to the alternative flu injection',
+        hint: 'The injection is suitable for children who don’t use gelatine products, or the nasal spray is not suitable for medical reasons'
+      },
+      no: {
+        label: 'No'
+      }
     },
     consultation: {
       title: {
@@ -553,16 +560,6 @@ export const en = {
         'Would you like a member of the team to contact you to discuss your options?',
       yes: 'Yes, I’m happy for someone to contact me',
       no: 'No'
-    },
-    method: {
-      title: 'Your child may be able to have an injection instead',
-      description:
-        'If the nasal spray is not suitable, your child may be able to have an injection instead. This vaccine does not contain gelatine.',
-      label: 'Method',
-      legend: 'Do you agree to them having an injected flu vaccine?',
-      yes: 'Yes, I agree',
-      no: 'No',
-      details: 'Give details'
     },
     refusalReason: {
       title:
@@ -607,6 +604,8 @@ export const en = {
     confirmation: {
       title: {
         [ReplyDecision.Given]: 'Consent confirmed',
+        [ReplyDecision.OnlyFluInjection]:
+          'Consent for the flu injection vaccination confirmed',
         [ReplyDecision.OnlyMenACWY]:
           'Consent for the MenACWY vaccination confirmed',
         [ReplyDecision.OnlyTdIPV]:
@@ -616,6 +615,8 @@ export const en = {
       text: {
         [ReplyDecision.Given]:
           '{{consent.child.fullName}} is due to get the {{session.vaccinationNames.sentenceCase}} at school on {{session.summary.datesDisjunction}}',
+        [ReplyDecision.OnlyFluInjection]:
+          '{{consent.child.fullName}} is due to get the flu injection at school on {{session.summary.datesDisjunction}}',
         [ReplyDecision.OnlyMenACWY]:
           '{{consent.child.fullName}} is due to get the MenACWY vaccination at school on {{session.summary.datesDisjunction}}',
         [ReplyDecision.OnlyTdIPV]:
@@ -627,6 +628,8 @@ export const en = {
         // TODO: Parent may have given consent for two vaccinations for doubles
         // so text should say either ‘vaccination is’ or ‘vaccinations are’
         [ReplyDecision.Given]:
+          'As you answered ‘yes’ to one or more of the health questions, we need to check the {{session.vaccinationNames.sentenceCase}} is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
+        [ReplyDecision.OnlyFluInjection]:
           'As you answered ‘yes’ to one or more of the health questions, we need to check the {{session.vaccinationNames.sentenceCase}} is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
         [ReplyDecision.OnlyMenACWY]:
           'As you answered ‘yes’ to one or more of the health questions, we need to check the MenACWY vaccination is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
@@ -715,10 +718,6 @@ export const en = {
       },
       'consent-refused': {
         label: 'Consent refused',
-        name: '{{session.vaccinationNames.titleCase}} on {{session.summary.dates}}'
-      },
-      'consent-refused-injection': {
-        label: 'Consent refused (flu injection)',
         name: '{{session.vaccinationNames.titleCase}} on {{session.summary.dates}}'
       },
       'consent-needs-triage': {

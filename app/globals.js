@@ -40,6 +40,20 @@ export default () => {
   }
 
   /**
+   * Inject Nunjucks generated HTML into an object requiring conditional HTML
+   *
+   * @param {object} object
+   * @param {number} position
+   * @param {string} html
+   * @returns {object} Nunjucks parameters
+   */
+  globals.injectConditionalHtml = function (object, position, html) {
+    object[position].conditional.html = html
+
+    return object
+  }
+
+  /**
    * Get form field items for a given outcome Enum
    *
    * @param {object} Enum - Enumerable name

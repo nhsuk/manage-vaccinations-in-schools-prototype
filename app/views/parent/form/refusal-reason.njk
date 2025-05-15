@@ -23,9 +23,6 @@
     },
     items: [
       {
-        text: ReplyRefusal.Gelatine
-      } if programmeIsFlu,
-      {
         text: __n("consent.refusalReason.alreadyGiven", vaccinations),
         value: ReplyRefusal.AlreadyGiven
       },
@@ -33,6 +30,9 @@
         text: __n("consent.refusalReason.gettingElsewhere", vaccinations),
         value: ReplyRefusal.GettingElsewhere
       },
+      {
+        text: ReplyRefusal.Gelatine
+      } if programmeIsFlu,
       {
         text: __n("consent.refusalReason.outsideSchool", vaccinations),
         value: ReplyRefusal.OutsideSchool

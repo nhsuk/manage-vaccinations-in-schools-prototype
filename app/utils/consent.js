@@ -10,22 +10,17 @@ const getHealthQuestionPath = (key, pathPrefix) => {
  * Get health question paths for given vaccines
  *
  * @param {string} pathPrefix - Path prefix
- * @param {import('../models/session.js').Session} session - Session
- * @param {ReplyDecision} decision - Reply decision
+ * @param {import('../models/consent.js').Consent} consent - Consent
  * @returns {object} Health question paths
  */
-export const getHealthQuestionPaths = (pathPrefix, session, decision) => {
-  const paths = {}
-
-  // Only get health question paths for vaccines with consent
-  if (decision === ReplyDecision.OnlyMenACWY) {
-    session.healthQuestions.delete('recentTdIpvVaccination')
-  } else if (decision === ReplyDecision.OnlyTdIPV) {
-    session.healthQuestions.delete('recentMenAcwyVaccination')
+export const getHealthQuestionPaths = (pathPrefix, consent) => {
+  if (!consent.decision) {
+    return
   }
 
-  // Add paths for each health question, with forks for conditional questions
-  const healthQuestions = [...session.healthQuestions.entries()]
+  const paths = {}
+  const healthQuestions = [...consent.healthQuestionsForDecision.entries()]
+
   healthQuestions.forEach(([key, question], index) => {
     const questionPath = getHealthQuestionPath(key, pathPrefix)
 
@@ -55,7 +50,11 @@ export const getHealthQuestionPaths = (pathPrefix, session, decision) => {
   })
 
   // Ask for refusal reason if consent only given for one vaccination
-  if ([ReplyDecision.OnlyMenACWY, ReplyDecision.OnlyTdIPV].includes(decision)) {
+  if (
+    [ReplyDecision.OnlyMenACWY, ReplyDecision.OnlyTdIPV].includes(
+      consent.decision
+    )
+  ) {
     paths[`${pathPrefix}refusal-reason`] = {}
   }
 
