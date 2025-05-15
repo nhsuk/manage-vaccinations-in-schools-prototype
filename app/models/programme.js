@@ -83,7 +83,7 @@ export const programmeTypes = {
     name: 'Td/IPV',
     title: 'Td/IPV (3-in-1 teenage booster)',
     vaccineName: 'Td/IPV vaccine',
-    active: true,
+    active: false,
     information: {
       startPage:
         'The Td/IPV vaccine (also called the 3-in-1 teenage booster) helps protect against tetanus, diphtheria and polio.\n\nIt boosts the protection provided by the [6-in-1 vaccine](https://www.nhs.uk/vaccinations/6-in-1-vaccine/) and [4-in-1 pre-school booster vaccine](https://www.nhs.uk/vaccinations/4-in-1-preschool-booster-vaccine/).',
@@ -106,7 +106,7 @@ export const programmeTypes = {
     name: 'MenACWY',
     title: 'MenACWY',
     vaccineName: 'MenACWY vaccine',
-    active: true,
+    active: false,
     information: {
       startPage:
         'The MenACWY vaccine helps protect against meningitis and sepsis. It is recommended for all teenagers. Most people only need one dose of the vaccine.',
