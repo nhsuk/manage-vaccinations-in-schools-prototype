@@ -69,6 +69,7 @@ export const ReplyRefusal = {
  * @property {import('./child.js').Child} [child] - Child
  * @property {import('./parent.js').Parent} [parent] - Parent or guardian
  * @property {ReplyDecision} [decision] - Consent decision
+ * @property {boolean} [alternative] - Consent for alternative vaccine
  * @property {boolean} [confirmed] - Decision confirmed
  * @property {boolean} given - Reply gives consent
  * @property {boolean} invalid - Reply is invalid
@@ -94,6 +95,8 @@ export class Reply {
     this.child = options?.child && new Child(options.child)
     this.parent = options?.parent && new Parent(options.parent)
     this.decision = options?.decision
+    this.alternative =
+      options?.alternative && stringToBoolean(options?.alternative)
     this.confirmed = stringToBoolean(options?.confirmed)
     this.given = [
       ReplyDecision.Given,
