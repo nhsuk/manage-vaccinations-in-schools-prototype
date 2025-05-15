@@ -1,4 +1,4 @@
-import schoolsData from '../datasets/schools.js'
+import schools from '../datasets/schools.js'
 
 export default [
   {
@@ -9,6 +9,6 @@ export default [
     privacyPolicyUrl: 'https://www.covwarkpt.nhs.uk/download.cfm?ver=8286',
     password: 'secret',
     clinic_ids: ['X99999'],
-    school_urns: Object.keys(schoolsData)
+    school_urns: Object.keys(schools)
   }
 ]
