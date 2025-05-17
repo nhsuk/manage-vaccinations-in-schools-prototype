@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("consent.decision.title", { session: session }) | replace("the flu", "a nasal flu") %}
+{% set title = __("consent.decision.title", { session: session }) %}
 
 {% block form %}
   {%- set programmeRadiosHtml = radios({

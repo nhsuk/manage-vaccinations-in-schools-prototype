@@ -533,12 +533,12 @@ export const en = {
         label: 'I agree to them having one of the vaccinations'
       },
       nasal: {
-        label: 'Yes, I agree',
-        hint: 'The nasal spray gives children the best protection against flu'
+        label: 'Yes, I agree to them having the nasal spray vaccine',
+        hint: 'This is the recommended option and gives the best protection against flu'
       },
       injection: {
         label: 'Yes, I agree to the alternative flu injection',
-        hint: 'The injection is suitable for children who don’t use gelatine products, or the nasal spray is not suitable for medical reasons'
+        hint: 'This is suitable for children who do not use gelatine products, or if they cannot have the nasal spray vaccine for medical reasons'
       },
       no: {
         label: 'No'
