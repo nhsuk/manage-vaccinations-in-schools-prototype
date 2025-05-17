@@ -162,7 +162,8 @@
       classes: "app-summary-list--full-width",
       rows: healthAnswerRows(
         consent.healthAnswers,
-        editPath("health-question-{{key}}")
+        editPath("health-question-{{key}}"),
+        true
       )
     })
   }) if consent.given }}

@@ -99,9 +99,10 @@ export default () => {
    *
    * @param {object} healthAnswers - Health answers
    * @param {string} edit - Edit link
+   * @param {string} [parentFacing] - Use parent-facing questions (‘your child’)
    * @returns {Array|undefined} Parameters for summary list component
    */
-  globals.healthAnswerRows = function (healthAnswers, edit) {
+  globals.healthAnswerRows = function (healthAnswers, edit, parentFacing) {
     if (healthAnswers.length === 0) {
       return
     }
@@ -120,8 +121,12 @@ export default () => {
         html += formatHealthAnswer(healthAnswer)
       }
 
+      const keyText = parentFacing
+        ? healthQuestions[key].label.replace('the child', 'your child')
+        : healthQuestions[key].label
+
       rows.push({
-        key: { text: healthQuestions[key].label },
+        key: { text: keyText },
         value: { html },
         ...(edit && {
           actions: {
