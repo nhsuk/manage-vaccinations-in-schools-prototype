@@ -555,11 +555,7 @@ export const en = {
         other:
           'Your child may be able to have the vaccinations outside of school'
       },
-      description: {
-        one: 'For example, they may be able to have the vaccination in a clinic.',
-        other:
-          'For example, they may be able to have the vaccinations in a clinic.'
-      },
+      description: 'For example, in a community clinic.',
       label: 'Discuss options',
       legend:
         'Would you like a member of the team to contact you to discuss your options?',
