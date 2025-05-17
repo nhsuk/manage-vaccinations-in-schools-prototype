@@ -1,13 +1,13 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __n("consent.consultation.title", programmeItems.length) %}
+{% set title = __n("consent.consultation.title", session.programmes.length) %}
 
 {% block form %}
   {{ heading({
     title: title
   }) }}
 
-  {{ __n("consent.consultation.description", programmeItems.length) | nhsukMarkdown }}
+  {{ __n("consent.consultation.description", session.programmes.length) | nhsukMarkdown }}
 
   {{ radios({
     fieldset: {
