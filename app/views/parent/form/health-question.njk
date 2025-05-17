@@ -2,6 +2,7 @@
 
 {% set title = __("healthQuestions." + key + ".label") %}
 {% set hint = __("healthQuestions." + key + ".hint") %}
+{% set detailsHint = __("healthQuestions." + key + ".detailsHint") %}
 
 {% block form %}
   {{ radios({
@@ -19,6 +20,7 @@
       conditional: {
         html: textarea({
           label: { text: __("consent.healthAnswers.details") },
+          hint: { text: detailsHint } if detailsHint,
           decorate: ["consent", "healthAnswers", key, "details"]
         })
       } if not hasSubQuestions
