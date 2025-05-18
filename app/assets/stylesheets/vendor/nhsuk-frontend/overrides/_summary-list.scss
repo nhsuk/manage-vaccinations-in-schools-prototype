@@ -1,0 +1,36 @@
+@use "sass:color";
+@use "../core" as *;
+
+// Ensure width of value cell not affected by presence of actions cell
+.nhsuk-summary-list:where(:not(:has(.nhsuk-summary-list__actions))) {
+  .nhsuk-summary-list__value {
+    @include nhsuk-media-query($from: tablet) {
+      width: 70%;
+    }
+  }
+}
+
+// Remove bottom border on last row of last child
+.nhsuk-summary-list:last-child {
+  .nhsuk-summary-list__row:last-of-type > *,
+  .nhsuk-summary-list__row:last-of-type::after {
+    border: none;
+  }
+}
+
+// Show border if row does not contain action cell
+.nhsuk-summary-list__row:not(:has(.nhsuk-summary-list__actions))::after {
+  border-bottom: 1px solid $nhsuk-border-color;
+  content: "";
+  display: table-cell;
+}
+
+// Ensure border colour inside warning callout can be seen and matches
+.nhsuk-warning-callout {
+  .nhsuk-summary-list__key,
+  .nhsuk-summary-list__value,
+  .nhsuk-summary-list__actions,
+  .nhsuk-summary-list__row::after {
+    border-color: color.scale(color.mix($nhsuk-border-color, $color_nhsuk-yellow, 50%), $lightness: -10%);
+  }
+}

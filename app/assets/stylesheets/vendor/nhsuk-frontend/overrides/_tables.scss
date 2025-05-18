@@ -1,0 +1,14 @@
+@use "../core" as *;
+
+.nhsuk-table__row:hover {
+  background: none;
+}
+
+.nhsuk-table__cell .nhsuk-button {
+  margin-bottom: 0;
+  margin-top: -4px;
+
+  &:active {
+    margin-top: -3px;
+  }
+}

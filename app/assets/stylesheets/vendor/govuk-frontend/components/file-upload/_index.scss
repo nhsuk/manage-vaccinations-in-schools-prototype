@@ -1,0 +1,12 @@
+@use "../../base" as *;
+
+// Use @import as GOV.UK Frontend is not compatible with Sass modules
+@import "govuk-frontend/dist/govuk/components/file-upload";
+
+.govuk-label.nhsuk-label--m {
+  @extend .nhsuk-label--m;
+}
+
+.govuk-form-group {
+  @extend .nhsuk-form-group;
+}
