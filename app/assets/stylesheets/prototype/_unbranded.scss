@@ -1,0 +1,18 @@
+@use "../vendor/nhsuk-frontend" as *;
+
+html:has(.prototype-unbranded__body) {
+  background-color: $color_nhsuk-white;
+  font-family: system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+
+  // Override pagination link style
+  .govuk-link {
+    font-family: system-ui, sans-serif;
+  }
+}
+
+.prototype-unbranded__body {
+  background-color: transparent;
+  min-height: 100%;
+  min-height: 100dvh;
+}

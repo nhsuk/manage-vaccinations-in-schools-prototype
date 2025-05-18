@@ -1,0 +1,38 @@
+@use "../nhsuk-frontend" as *;
+@use "accessible-autocomplete/src/autocomplete";
+
+.autocomplete__input {
+  background-color: $nhsuk-form-element-background-color;
+
+  .nhsuk-form-group--error & {
+    border-color: $nhsuk-error-color;
+  }
+
+  &:focus,
+  &--focused {
+    @include nhsuk-focused-input;
+  }
+}
+
+.autocomplete__option {
+  margin-bottom: 0;
+
+  &--odd {
+    background-color: $color_nhsuk-grey-5;
+  }
+
+  &--focused,
+  &:hover {
+    background-color: $nhsuk-link-color;
+    border-color: $nhsuk-border-color;
+  }
+}
+
+.autocomplete__option-hint {
+  color: $nhsuk-secondary-text-color;
+
+  .autocomplete__option:hover &,
+  .autocomplete__option:focus & {
+    color: $color_nhsuk-grey-5;
+  }
+}

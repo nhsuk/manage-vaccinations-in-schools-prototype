@@ -1,0 +1,6 @@
+@use "../core" as *;
+
+// Ensure consistent margin for small fieldset legend
+.nhsuk-fieldset__legend--s {
+  margin-bottom: nhsuk-spacing(2);
+}

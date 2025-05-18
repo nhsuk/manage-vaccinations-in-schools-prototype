@@ -1,0 +1,67 @@
+@use "sass:math";
+@use "../../base" as *;
+@use "../../../../vendor/nhsuk-frontend" as nhsuk;
+
+// Use @import as GOV.UK Frontend is not compatible with Sass modules
+@import "govuk-frontend/dist/govuk/components/password-input";
+
+// Component dynamically inserts elements that use .govuk-visually-hidden
+.govuk-visually-hidden {
+  @include nhsuk.visually-hidden;
+}
+
+// Override styles used for show/hide button
+$_button-border-radius: nhsuk.$nhsuk-border-width-form-element * 2;
+$_button-shadow-size: $_button-border-radius;
+
+.govuk-button {
+  @extend .nhsuk-button;
+  border-radius: $_button-border-radius;
+
+  &::before {
+    bottom: -(nhsuk.$nhsuk-border-width-form-element + $_button-shadow-size);
+    border: nhsuk.$nhsuk-border-width-form-element solid transparent;
+    background-color: transparent;
+  }
+}
+
+.govuk-button--secondary {
+  @extend .nhsuk-button--secondary;
+  background-color: transparent;
+  box-shadow: none;
+
+  &,
+  &:link,
+  &:visited,
+  &:active,
+  &:hover {
+    color: nhsuk.$nhsuk-secondary-button-text-color;
+  }
+
+  &:hover {
+    background-color: nhsuk.$nhsuk-secondary-button-hover-color;
+  }
+
+  &:active {
+    background-color: nhsuk.$nhsuk-secondary-button-active-color;
+    border-color: nhsuk.$nhsuk-secondary-button-border-color;
+    box-shadow: none;
+  }
+
+  &:not(:focus):not(:active)::before {
+    border-color: nhsuk.$nhsuk-secondary-button-border-color;
+  }
+
+  &:not(:focus):not(:active)::after {
+    left: 0;
+    right: 0;
+    box-shadow: 0 $_button-shadow-size 0 nhsuk.$nhsuk-secondary-button-shadow-color;
+    border-radius: math.div($_button-border-radius, 2);
+  }
+}
+
+.govuk-input {
+  &:focus {
+    @include nhsuk.nhsuk-focused-input;
+  }
+}

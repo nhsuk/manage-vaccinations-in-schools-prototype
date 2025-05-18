@@ -1,0 +1,4 @@
+@use "sass:color";
+
+$page-width: 1100px;
+$color_dark-orange: color.scale(color.mix(red, yellow, 55%), $lightness: -10%);

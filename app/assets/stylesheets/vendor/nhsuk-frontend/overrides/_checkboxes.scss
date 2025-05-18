@@ -1,0 +1,4 @@
+// Fix checkbox check sizing
+.nhsuk-checkboxes__label::after {
+  box-sizing: border-box;
+}

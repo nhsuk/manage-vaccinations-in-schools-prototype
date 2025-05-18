@@ -1,0 +1,10 @@
+@use "../core" as *;
+
+// Ensure expander shares same padding with cards
+.nhsuk-expander {
+  .nhsuk-details__summary,
+  .nhsuk-details__text {
+    @include nhsuk-responsive-padding(5, "left");
+    @include nhsuk-responsive-padding(5, "right");
+  }
+}

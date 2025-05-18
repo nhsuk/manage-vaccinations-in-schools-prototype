@@ -1,132 +1,14 @@
-@use "sass:color";
+// Import GOV.UK Frontend components
+@forward "vendor/govuk-frontend";
 
-// GOV.UK Frontend options
-$govuk-font-family: "Frutiger W01", arial, sans-serif;
-$govuk-border-colour: #d8dde0;
-$govuk-global-styles: false;
-$govuk-new-organisation-colours: true;
-$govuk-colours: (
-  "red": #d5281b,
-  "yellow": #ffeb3b,
-  "green": #007f3b,
-  "blue": #005eb8,
-  "dark-blue": #002f5c,
-  "light-blue": #41b6e6,
-  "purple": #330072,
-  "black": #212b32,
-  "dark-grey": #4c6272,
-  "mid-grey": #aeb7bd,
-  "light-grey": #f0f4f5,
-  "white": #ffffff,
-  "light-purple": #6f72af,
-  "bright-purple": #912b88,
-  "pink": #ae2573,
-  "light-pink": #f499be,
-  "orange": #ed8b00,
-  "brown": #b58840,
-  "light-green": #78be20,
-  "turquoise": #00a499
-);
-
-// Import GOV.UK Frontend
-@import "govuk-frontend/dist/govuk/base";
-@import "govuk-frontend/dist/govuk/core";
-@import "govuk-frontend/dist/govuk/utilities/visually-hidden";
-@import "govuk-frontend/dist/govuk/components/notification-banner";
-@import "govuk-frontend/dist/govuk/components/pagination";
+// Accessible autocomplete component
+@forward "vendor/accessible-autocomplete";
 
 // Import NHS.UK Frontend
-$nhsuk-grid-widths: (
-  one-quarter: 25%,
-  one-third: 33.3333%,
-  one-half: 50%,
-  two-thirds: 66.6666%,
-  three-quarters: 75%,
-  full: 100%,
-  filters: 30%,
-  results: 70%
-);
+@forward "vendor/nhsuk-frontend";
 
-@import "node_modules/nhsuk-frontend/packages/nhsuk";
+// App-specific components
+@forward "components";
 
-// Import GOV.UK Prototype Components
-@import "@x-govuk/govuk-prototype-components/x-govuk/components/autocomplete/autocomplete";
-@import "@x-govuk/govuk-prototype-components/x-govuk/components/sub-navigation/sub-navigation";
-
-// App options
-$_app-page-width: 1100px;
-// stylelint-disable-next-line scss/dollar-variable-pattern
-$color_app-dark-orange: color.scale(color.mix($color_nhsuk-red, $color_nhsuk-warm-yellow, 55%), $lightness: -10%);
-
-// Import app helpers
-@import "helpers/link";
-
-// Import app components
-@import "action-list";
-@import "action-table";
-@import "add-another";
-@import "autocomplete";
-@import "button";
-@import "button-group";
-@import "card";
-@import "count";
-@import "env";
-@import "file-upload";
-@import "filters";
-@import "grid";
-@import "header";
-@import "heading-group";
-@import "highlight";
-@import "is-sticky";
-@import "list";
-@import "message";
-@import "password-input";
-@import "patient-banner";
-@import "search-input";
-@import "secondary-navigation";
-@import "status";
-@import "sub-navigation";
-@import "summary-list";
-@import "tables";
-@import "tabs";
-@import "tag";
-@import "typography";
-@import "unbranded";
-@import "utilities";
-
-// `$nhsuk-page-width` isn’t globally editable, so need to apply manually
-.app-signed-in {
-  .nhsuk-width-container,
-  .nhsuk-header__container,
-  .nhsuk-header__drop-down .nhsuk-header__navigation-link,
-  .nhsuk-navigation {
-    max-width: $_app-page-width;
-
-    @include nhsuk-media-query($from: desktop) {
-      margin: 0 $nhsuk-gutter;
-    }
-
-    @include nhsuk-media-query($and: "(min-width: #{($_app-page-width + $nhsuk-gutter * 2)})") {
-      margin: 0 auto;
-    }
-  }
-}
-
-// Fix checkbox check sizing
-.nhsuk-checkboxes__label::after {
-  box-sizing: border-box;
-}
-
-// Ensure consistent margin for small fieldset legend
-.nhsuk-fieldset__legend--s {
-  margin-bottom: nhsuk-spacing(2);
-}
-
-// Ensure expander shares same padding with cards
-.nhsuk-expander {
-  .nhsuk-details__summary,
-  .nhsuk-details__text {
-    @include nhsuk-responsive-padding(5, "left");
-    @include nhsuk-responsive-padding(5, "right");
-  }
-}
+// Prototype components (not to be used in production)
+@forward "prototype";
