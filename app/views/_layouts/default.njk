@@ -7,7 +7,6 @@
 
 {#- GOV.UK Prototype Components -#}
 {% from "x-govuk/components/autocomplete/macro.njk" import xGovukAutocomplete with context %}
-{% from "x-govuk/components/sub-navigation/macro.njk" import xGovukSubNavigation %}
 
 {#- App macros -#}
 {% from "_macros/action-list.njk" import actionList %}
@@ -17,12 +16,13 @@
 {% from "_macros/count.njk" import count %}
 {% from "_macros/env.njk" import env %}
 {% from "_macros/event.njk" import event %}
-{% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
 {% from "_macros/header.njk" import appHeader %}
 {% from "_macros/heading.njk" import heading %}
 {% from "_macros/icon.njk" import icon %}
 {% from "_macros/search-input.njk" import searchInput with context %}
+{% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
 {% from "_macros/status.njk" import status %}
+{% from "_macros/sub-navigation.njk" import subNavigation %}
 
 {% if bodyClasses %}
   {% set bodyClasses = bodyClasses + " app-signed-in" if not public %}
