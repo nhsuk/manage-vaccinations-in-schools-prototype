@@ -40,7 +40,7 @@ export default (env) => {
     const html = string
       .replace(
         /^\n\n\n\n<div class="nhsuk-card/,
-        '<button class="nhsuk-card nhsuk-card--button'
+        '<button class="nhsuk-card prototype-card--button'
       )
       .replace(/<\/div>\n$/, '</button>')
 
