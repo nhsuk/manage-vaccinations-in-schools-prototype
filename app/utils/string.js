@@ -389,8 +389,10 @@ export function lowerCaseFirst(string) {
  * @returns {string} Sentence cased programme names
  */
 export function sentenceCaseProgrammeName(string) {
+  if (!string) return
+
   return string
-    .replace('Children', 'children') // Children’s flu vaccine
-    .replace('Flu', 'flu') // Flu vaccination
-    .replace('Human', 'human') // Human papillomavirus
+    .replaceAll('Children', 'children') // Children’s flu vaccine
+    .replaceAll('Flu', 'flu') // Flu vaccination
+    .replaceAll('Human', 'human') // Human papillomavirus
 }
