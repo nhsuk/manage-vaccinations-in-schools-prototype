@@ -7,32 +7,19 @@ If you want your child to be vaccinated in school, you need to give your consent
 
 {{ programme.information.description }}
 
-{% if programme.type == ProgrammeType.Flu %}
-The vaccination is a quick and painless spray up the nose. Even if your child had the vaccine last year, the type of flu can vary each winter, so we recommend they have it again this year.
-
-The nasal spray contains gelatine. If your child does not use gelatine products, they could have an injection instead.
-{% endif %}
-
 [Find out more about the {{ programme.vaccineName.sentenceCase }} on NHS.UK]({{ programme.information.url }})
 {% endfor %}
 
-## Please give or refuse consent
-
-[Give or refuse consent for the {{ session.vaccinationNames.sentenceCase }}]({{ session.consentUrl }}/start)
-
-Responding will take less than 5 minutes.
-
-{% if programme.type != ProgrammeType.Flu %}
-## Talk to your child about what they want
-
-We suggest you talk to your child about the {{vaccine__n}} before you respond to us.
-
+{% if programme.type == ProgrammeType.Flu %}
+{% include "emails/consent/_about-the-nasal-spray.njk" %}
 {% endif %}
 
-## If you have trouble using the online form
+{% include "emails/consent/_how-to-respond.njk" %}
 
-If you have any trouble using the online form, you can respond over the phone using the contact details below.
+{% include "emails/consent/_talk-to-your-child.njk" %}
 
-## Get in touch with us
+{% include "emails/consent/_trouble-using-online-form.njk" %}
 
-Speak to a member of our team by calling {{ data.organisation.tel }}, or email {{ data.organisation.email }}.
+{% include "emails/consent/_your-data.njk" %}
+
+{% include "emails/consent/_get-in-touch.njk" %}
