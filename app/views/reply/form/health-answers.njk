@@ -3,7 +3,7 @@
 {% set title = __("reply.healthAnswers.title") %}
 
 {% macro questions(healthQuestions) %}
-  {% for key, thing in healthQuestions %}
+  {% for key, value in healthQuestions %}
     {{ radios({
       fieldset: {
         legend: { text: __("healthQuestions." + key + ".label") }
