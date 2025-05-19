@@ -679,11 +679,11 @@ export const en = {
     consent: {
       invite: {
         label: 'Invitation',
-        name: 'Vaccinations on {{session.summary.dates}}'
+        name: '{{session.vaccinationNames.titleCase}} on {{session.summary.dates}}'
       },
       'invite-catch-up': {
         label: 'Invitation (catch-up)',
-        name: 'Vaccinations on {{session.summary.dates}}'
+        name: '{{session.vaccinationNames.titleCase}} on {{session.summary.dates}}'
       },
       'invite-reminder': {
         label: 'Reminder',
@@ -691,7 +691,7 @@ export const en = {
       },
       'invite-subsequent-reminder': {
         label: 'Subsequent reminder',
-        name: 'There’s still time for your child to be vaccinated against {{session.programmeNames.sentenceCase}}'
+        name: 'There’s still time for your child to get their {{session.vaccinationNames.sentenceCase}}'
       },
       'invite-clinic': {
         label: 'Clinic booking',
