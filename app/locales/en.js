@@ -1102,6 +1102,9 @@ export const en = {
     nextActivityPerProgramme: {
       label: 'Action required'
     },
+    vaccineMethod: {
+      label: 'Vaccination method'
+    },
     outstandingVaccinations: {
       message:
         '{count, plural, one{You still need to record an outcome for {names}} other{You still need to record outcomes for {names}}}'

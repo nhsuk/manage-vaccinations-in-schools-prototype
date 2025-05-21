@@ -30,8 +30,10 @@ import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 import { EventType } from './audit-event.js'
 import { Gillick } from './gillick.js'
 import { Patient } from './patient.js'
-import { Programme } from './programme.js'
+import { Programme, ProgrammeType } from './programme.js'
+import { ReplyDecision } from './reply.js'
 import { Session } from './session.js'
+import { VaccineMethod } from './vaccine.js'
 
 /**
  * @readonly
@@ -210,6 +212,33 @@ export class PatientSession {
    */
   get responses() {
     return this.replies.filter((reply) => reply.delivered)
+  }
+
+  /**
+   * Get agreed upon vaccination method
+   *
+   * For all programmes besides flu, this will be an injection.
+   * For the flu programme:
+   * - All parents consent to nasal spray: nasal spray
+   * - All parents consent to injection: injection
+   * - All parents consent to injection OR injection as alternative: injection
+   *
+   * @returns {VaccineMethod} - Vaccine method
+   */
+  get vaccineMethod() {
+    if (this.programme.type !== ProgrammeType.Flu) {
+      return VaccineMethod.Injection
+    }
+
+    const allResponsesGiveConsentForInjection = this.responses.every(
+      (response) =>
+        response.decision === ReplyDecision.OnlyFluInjection ||
+        (ReplyDecision.Given && response.alternative)
+    )
+
+    return allResponsesGiveConsentForInjection
+      ? VaccineMethod.Injection
+      : VaccineMethod.Nasal
   }
 
   /**
@@ -452,6 +481,11 @@ export class PatientSession {
       )
     ) {
       consent = this.consentRefusalReasons.join('<br>')
+    } else if (
+      this.consent === ConsentOutcome.Given &&
+      this.programme.type === ProgrammeType.Flu
+    ) {
+      consent = this.vaccineMethod
     }
 
     return {

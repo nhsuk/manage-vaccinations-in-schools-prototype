@@ -131,6 +131,10 @@ export const getConfirmedConsentOutcome = (reply) => {
     return ConsentOutcome.FinalRefusal
   }
 
+  if (reply.given) {
+    return ConsentOutcome.Given
+  }
+
   return reply.decision
 }
 
