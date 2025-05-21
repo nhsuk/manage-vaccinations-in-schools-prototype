@@ -208,6 +208,15 @@ export class Reply {
   }
 
   /**
+   * Has parent given consent for an injected vaccine?
+   *
+   * @returns {boolean} Consent given for an injected vaccine
+   */
+  get hasConsentForInjection() {
+    return this.decision === ReplyDecision.OnlyFluInjection || this.alternative
+  }
+
+  /**
    * Get patient
    *
    * @returns {Patient} - Patient

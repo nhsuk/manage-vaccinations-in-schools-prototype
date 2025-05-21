@@ -1393,6 +1393,9 @@ export const en = {
           'Do they agree to {{patient.firstName}} having the {{programme.vaccineName.sentenceCase}}?'
       }
     },
+    alternative: {
+      label: 'Consent given for injected vaccine'
+    },
     invalid: {
       label: 'Invalid response'
     },
@@ -1820,10 +1823,18 @@ export const en = {
     outcome: {
       label: 'Outcome',
       [ScreenOutcome.Vaccinate]: 'Yes, it’s safe to vaccinate',
+      [ScreenOutcome.VaccinateInjection]:
+        'Yes, it’s safe to vaccinate (with injected vaccine only)',
       [ScreenOutcome.DoNotVaccinate]: 'No, do not vaccinate',
       [ScreenOutcome.DelayVaccination]:
         'No, delay vaccination (and invite to clinic)',
       [ScreenOutcome.NeedsTriage]: 'No, keep in triage'
+    },
+    injection: {
+      consentGiven:
+        'The parent has consented to the injected vaccine being offered instead',
+      consentRefused:
+        'The parent has not given consent for the injected vaccine'
     },
     [TriageOutcome.Needed]: {
       label: 'Triage needed',
