@@ -1,5 +1,5 @@
 {{ heading({
-  level: 2,
+  level: 3,
   size: "m",
   title: __("session.report.label")
 }) }}
@@ -46,5 +46,6 @@
   classes: "app-card--" + patientSession.status.report.colour,
   feature: true,
   heading: programme.name + ": " + (patientSession.status.report.text | lower),
+  headingLevel: 4,
   descriptionHtml: cardDescriptionHtml
 }) }}

@@ -1,5 +1,5 @@
 {{ heading({
-  level: 2,
+  level: 3,
   size: "m",
   title: "Record vaccination"
 }) }}
@@ -35,7 +35,7 @@
   {{ radios({
     fieldset: {
       legend: {
-        classes: "nhsuk-fieldset__legend--m",
+        classes: "nhsuk-fieldset__legend--m nhsuk-u-font-size-22",
         text: __("patientSession.preScreen.ready.label", {
           patient: patient,
           programme: programme
@@ -95,6 +95,6 @@
   heading: __("patientSession.preScreen.label", {
     patient: patient
   }),
-  headingClasses: "nhsuk-heading-m",
+  headingLevel: 4,
   descriptionHtml: preScreenDescriptionHtml
 }) }}

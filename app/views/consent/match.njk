@@ -40,7 +40,7 @@
       {{ card({
         feature: true,
         heading: __("consent.label"),
-        headingClasses: "nhsuk-heading-s",
+        headingLevel: 3,
         descriptionHtml: consentChildHtml
       }) }}
     </div>
@@ -50,7 +50,7 @@
       }) }}
 
       {{ heading({
-        level: 2,
+        level: 3,
         size: "m",
         title: __("search.results"),
         summary: __mf("patient.results", {
@@ -64,7 +64,7 @@
         {{ card({
           classes: "app-card--patient",
           heading: patient.fullName | highlightQuery(data.q),
-          headingClasses: "nhsuk-heading-s",
+          headingLevel: 4,
           clickable: true,
           href: consentPath + "/link?nhsn=" + patient.nhsn,
           descriptionHtml: summaryList({

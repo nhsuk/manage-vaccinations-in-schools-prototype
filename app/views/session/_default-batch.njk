@@ -6,9 +6,9 @@
   }) | safe -}}
 </a>
 {%- endmacro %}
-<h2 class="nhsuk-heading-s nhsuk-u-margin-bottom-2">
+<h3 class="nhsuk-heading-m nhsuk-u-margin-bottom-2">
   {{ __n("session.defaultBatch.count", defaultBatch.length) }}
-</h2>
+</h3>
 {% if session.defaultBatch.length == 1 %}
   <p class="nhsuk-body">
     {{ defaultBatch(session.defaultBatch[0], session) }}

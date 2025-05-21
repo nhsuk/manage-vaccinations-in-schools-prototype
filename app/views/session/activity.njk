@@ -71,7 +71,7 @@
         {% endif %}
 
         {{ heading({
-          level: 2,
+          level: 3,
           size: "m",
           title: title | replace(",", " or "),
           summary: __mf("patient.results", {
@@ -143,6 +143,7 @@
             classes: "app-card--patient",
             heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
             headingClasses: "nhsuk-heading-s",
+            headingLevel: 4,
             href: patientSession.uri + "?activity=" + view,
             descriptionHtml: cardDescriptionHtml
           }) }}

@@ -50,7 +50,7 @@
       {% for auditEvent in auditEvents %}
         {{ card({
           heading: auditEvent.name,
-          headingClasses: "nhsuk-heading-s",
+          headingLevel: 4,
           descriptionHtml: event(auditEvent),
           attributes: {
             id: auditEvent.uuid

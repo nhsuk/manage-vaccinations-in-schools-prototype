@@ -1,5 +1,5 @@
 {{ heading({
-  level: 2,
+  level: 3,
   size: "m",
   title: __("session.consent.label")
 }) }}
@@ -103,13 +103,13 @@
   classes: "app-card--" + patientSession.status.consent.colour,
   feature: true,
   heading: programme.name + ": " + (patientSession.status.consent.text | lower),
-  headingLevel: 3,
+  headingLevel: 4,
   descriptionHtml: cardDescriptionHtml
 }) }}
 
 {{ card({
   heading: __("healthAnswers.label"),
-  headingClasses: "nhsuk-heading-m",
+  headingLevel: 4,
   descriptionHtml: summaryList({
     classes: "app-summary-list--full-width",
     rows: healthAnswerRows(patientSession.consentHealthAnswers)

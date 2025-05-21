@@ -90,6 +90,7 @@
     sort: "name",
     panel: true,
     heading: upload.formatted.duplicates,
+    headingLevel: 2,
     responsive: true,
     head: [
       {
@@ -141,6 +142,7 @@
     sort: "name",
     panel: true,
     heading: __n("upload.records.count", upload.records.length),
+    headingLevel: 2,
     responsive: true,
     head: [
       { text: __("patient.fullNameAndNhsn.label") },
@@ -155,6 +157,7 @@
   {{ card({
     heading: __n("upload.records.count", upload.records.length),
     headingClasses: "nhsuk-heading-m",
+    headingLevel: 2,
     feature: true,
     description: __("upload.devoid.description")
   }) if upload.records.length == 0 and upload.status == UploadStatus.Complete }}
@@ -184,6 +187,7 @@
       classes: "app-card--red",
       heading: __("upload.errors.title"),
       headingClasses: "nhsuk-heading-m",
+      headingLevel: 2,
       descriptionHtml: cardDescriptionHtml,
       feature: true
     }) }}
