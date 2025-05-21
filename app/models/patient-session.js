@@ -55,6 +55,7 @@ export const ConsentOutcome = {
   NoResponse: 'No response',
   Inconsistent: 'Conflicting consent',
   Given: 'Consent given',
+  Declined: 'Follow up requested',
   Refused: 'Consent refused',
   FinalRefusal: 'Refusal confirmed'
 }
@@ -189,6 +190,17 @@ export class PatientSession {
     return this.responses
       .filter((reply) => !reply.invalid)
       .flatMap((reply) => reply.relationship || 'Parent or guardian')
+  }
+
+  /** Get names of parents who have requested a follow up
+   *
+   * @returns {Array<string>} - Parent names and relationships
+   */
+  get parentsRequestingFollowUp() {
+    return this.responses
+      .filter((reply) => !reply.invalid)
+      .filter((reply) => reply.declined)
+      .flatMap((reply) => reply.parent.formatted.fullNameAndRelationship)
   }
 
   /**

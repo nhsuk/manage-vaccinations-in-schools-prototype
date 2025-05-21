@@ -47,8 +47,10 @@ export const getNextActivity = ({ consent, triage, screen, report }) => {
  * @returns {object} - Consent status properties
  */
 export const getConsentStatus = (patientSession) => {
-  const { consent, patient, parentalRelationships } = patientSession
+  const { consent, patient, parentalRelationships, parentsRequestingFollowUp } =
+    patientSession
   const relationships = prototypeFilters.formatList(parentalRelationships)
+  const parentNames = prototypeFilters.formatList(parentsRequestingFollowUp)
 
   let colour
   let description
@@ -71,6 +73,11 @@ export const getConsentStatus = (patientSession) => {
       colour = 'aqua-green'
       description = `${patient.fullName} is ready for the vaccinator.`
       icon = 'tick'
+      break
+    case ConsentOutcome.Declined:
+      colour = 'warm-yellow'
+      description = `${parentNames} would like to speak to a member of the team about other options for their child’s vaccination.`
+      icon = 'info'
       break
     case ConsentOutcome.Refused:
       colour = 'red'
