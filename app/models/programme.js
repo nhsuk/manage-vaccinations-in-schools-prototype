@@ -232,17 +232,22 @@ export class Programme {
   }
 
   /**
-   * Get vaccine used by this programme
+   * Get vaccine(s) used by this programme
    *
-   * @todo A programme can use multiple vaccines, and one used for a patient
-   * will depend on answers to screening questions in consent flow. For now,
-   * however we’ll assume each programme administers one vaccine.
-   * @returns {import('./vaccine.js').Vaccine} Vaccine
+   * @returns {Array<import('./vaccine.js').Vaccine>} Vaccine
    */
-  get vaccine() {
-    return new Vaccine(vaccines[this.vaccine_smomeds[0]])
+  get vaccines() {
+    return this.vaccine_smomeds.map((smomed) =>
+      Vaccine.read(smomed, this.context)
+    )
   }
 
+  /**
+   * Check if programme offers an alternative vaccine
+   * For example, the flu programme offer both nasal and injection vaccines
+   *
+   * @returns {boolean} Has alternative vaccines
+   */
   get hasAlternativeVaccines() {
     return this.vaccine_smomeds.length > 1
   }

@@ -7,7 +7,7 @@
 {% set preScreenDescriptionHtml %}
 {% filter nhsukMarkdown %}
 {{ __("patientSession.preScreen.description", { patient: patient }) }}
-{% for question in programme.vaccine.preScreenQuestions %}
+{% for question in patientSession.vaccine.preScreenQuestions %}
 - {{ question }}
 {%- endfor %}
 {% endfilter %}
@@ -38,7 +38,8 @@
         classes: "nhsuk-fieldset__legend--m nhsuk-u-font-size-22",
         text: __("patientSession.preScreen.ready.label", {
           patient: patient,
-          programme: programme
+          session: session,
+          method: patientSession.vaccineMethod | lower
         }) | safe
       }
     },
@@ -54,7 +55,7 @@
             fieldset: {
               legend: { text: __("patientSession.preScreen.injectionSite.label") }
             },
-            items: injectionSiteItems,
+            items: vaccinationSiteItems,
             decorate: "patientSession.preScreen.injectionSite",
             _validate: {
               conditional: {
@@ -66,7 +67,7 @@
               }
             }
           })
-        }
+        } if vaccinationSiteItems
       },
       {
         text: __("patientSession.preScreen.ready.no"),
@@ -77,7 +78,7 @@
     _validate: {
       presence: {
         message: __("patientSession.preScreen.ready.error", {
-          programme: programme
+          session: session
         })
       }
     }

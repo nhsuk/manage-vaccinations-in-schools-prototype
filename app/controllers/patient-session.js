@@ -14,7 +14,7 @@ import {
   VaccinationOutcome,
   VaccinationSite
 } from '../models/vaccination.js'
-import { PreScreenQuestion } from '../models/vaccine.js'
+import { PreScreenQuestion, VaccineMethod } from '../models/vaccine.js'
 import { today } from '../utils/date.js'
 
 export const patientSessionController = {
@@ -36,7 +36,8 @@ export const patientSessionController = {
       report,
       session,
       triage,
-      triageNotes
+      triageNotes,
+      vaccine
     } = patientSession
 
     const outcomed = patientSession.siblingPatientSessions.filter(
@@ -79,18 +80,20 @@ export const patientSessionController = {
         patientSession.lastRecordedVaccination
     }
 
-    response.locals.injectionSiteItems = Object.entries(VaccinationSite)
-      .filter(([, value]) =>
-        [
-          VaccinationSite.ArmLeftUpper,
-          VaccinationSite.ArmRightUpper,
-          VaccinationSite.Other
-        ].includes(value)
-      )
-      .map(([key, value]) => ({
-        text: VaccinationSite[key],
-        value
-      }))
+    if (vaccine?.method === VaccineMethod.Injection) {
+      response.locals.vaccinationSiteItems = Object.entries(VaccinationSite)
+        .filter(([, value]) =>
+          [
+            VaccinationSite.ArmLeftUpper,
+            VaccinationSite.ArmRightUpper,
+            VaccinationSite.Other
+          ].includes(value)
+        )
+        .map(([key, value]) => ({
+          text: VaccinationSite[key],
+          value
+        }))
+    }
 
     const view = request.path.split('/').at(-1)
     response.locals.navigationItems = [
@@ -128,7 +131,7 @@ export const patientSessionController = {
     // Use different values for pre-screening questions
     // `IsWell` and `IsPregnant` should persist per patient
     response.locals.preScreenQuestionItems = Object.entries(
-      programme.vaccine.preScreenQuestions
+      vaccine.preScreenQuestions
     ).map(([key, text]) => {
       let value = `${programme.id}-${key}`
       if (text === PreScreenQuestion.IsWell) {
@@ -192,7 +195,7 @@ export const patientSessionController = {
         patient_uuid: patient.uuid,
         programme_id: programme.id,
         session_id: session.id,
-        vaccine_snomed: programme.vaccine.snomed,
+        vaccine_snomed: patientSession.vaccine.snomed,
         ...(data.token && { createdBy_uid: data.token?.uid })
       })
       vaccination.update(vaccination, data)

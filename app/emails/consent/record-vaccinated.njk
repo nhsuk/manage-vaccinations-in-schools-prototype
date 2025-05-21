@@ -5,7 +5,7 @@ Dear {{ consent.parent.fullName }},
 We suggest you record the following details {% if consent.child.school.phase == SchoolPhase.Primary %}in their red book (also known as their personal child health record){% else %}somewhere{% endif %}:
 
 > Vaccination: {{ programme.name }}<br>
-> Vaccine: {{ programme.vaccine.brand }}<br>
+> Vaccine: {{ programme.vaccines[0].brand }}<br>
 > Date of vaccination: {{ session.formatted.firstDate }}<br>
 > Batch number: AB1234
 
@@ -13,7 +13,7 @@ We suggest you record the following details {% if consent.child.school.phase == 
 
 Your child might have some of the following side effects:
 
-{{ programme.vaccine.formatted.sideEffects | safe }}
+{{ programme.vaccines[0].formatted.sideEffects | safe }}
 
 If you’re concerned about your child’s reaction to the vaccine, contact your GP in the usual way.
 

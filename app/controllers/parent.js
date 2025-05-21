@@ -58,7 +58,7 @@ export const parentController = {
 
       const combinedSideEffects = new Set()
       for (const programme of session.programmes) {
-        for (const sideEffect of programme.vaccine.sideEffects) {
+        for (const sideEffect of programme.vaccines[0].sideEffects) {
           combinedSideEffects.add(sideEffect)
         }
       }

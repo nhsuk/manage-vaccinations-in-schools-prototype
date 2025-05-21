@@ -12,7 +12,7 @@ import {
   VaccinationOutcome,
   VaccinationSite
 } from '../models/vaccination.js'
-import { Vaccine } from '../models/vaccine.js'
+import { Vaccine, VaccineMethod } from '../models/vaccine.js'
 
 export const vaccinationController = {
   read(request, response, next, vaccination_uuid) {
@@ -63,26 +63,28 @@ export const vaccinationController = {
     const { patientSession_uuid } = request.query
     const { data } = request.session
 
-    const { patient, session, programme } = PatientSession.read(
+    const { patient, session, programme, vaccine } = PatientSession.read(
       patientSession_uuid,
       data
     )
     const { injectionSite, ready } = data.patientSession.preScreen
 
     // Check for default batch
-    const defaultBatchId = session.defaultBatch_ids?.[programme.vaccine.snomed]
+    const defaultBatchId = session.defaultBatch_ids?.[vaccine.snomed]
 
     const readyToVaccine = ready === 'true'
     const injectionSiteGiven = [
       VaccinationSite.ArmLeftUpper,
       VaccinationSite.ArmRightUpper
     ].includes(injectionSite)
+    const isNasalSpray = vaccine.method === VaccineMethod.Nasal
+    const VaccinationSiteGiven = injectionSiteGiven || isNasalSpray
 
     switch (true) {
-      case readyToVaccine && injectionSiteGiven && defaultBatchId:
+      case readyToVaccine && VaccinationSiteGiven && defaultBatchId:
         data.startPath = 'check-answers'
         break
-      case readyToVaccine && injectionSiteGiven:
+      case readyToVaccine && VaccinationSiteGiven:
         data.startPath = 'batch-id'
         break
       case readyToVaccine:
@@ -102,12 +104,18 @@ export const vaccinationController = {
       programme_id: programme.id,
       school_urn: session.school_urn,
       session_id: session.id,
-      vaccine_snomed: programme.vaccine.snomed,
+      vaccine_snomed: vaccine.snomed,
       ...(data.token && { createdBy_uid: data.token?.uid }),
       ...(injectionSite && {
-        dose: programme.vaccine.dose,
+        dose: vaccine.dose,
         injectionMethod: VaccinationMethod.Intramuscular,
         injectionSite,
+        outcome: VaccinationOutcome.Vaccinated
+      }),
+      ...(isNasalSpray && {
+        dose: vaccine.dose,
+        injectionMethod: VaccinationMethod.Nasal,
+        injectionSite: VaccinationSite.Nose,
         outcome: VaccinationOutcome.Vaccinated
       }),
       ...(programme.sequence && {
@@ -128,7 +136,7 @@ export const vaccinationController = {
     return (request, response) => {
       const { vaccination_uuid } = request.params
       const { data, referrer } = request.session
-      const { __ } = response.locals
+      const { __, session } = response.locals
 
       const vaccination = new Vaccination(
         Vaccination.read(vaccination_uuid, data.wizard),
@@ -140,10 +148,7 @@ export const vaccinationController = {
         vaccination.note = request.body.vaccination.note
       }
 
-      request.flash(
-        'success',
-        __(`vaccination.${type}.success`, { programme: vaccination.programme })
-      )
+      request.flash('success', __(`vaccination.${type}.success`, { session }))
 
       // Clean up session data
       delete data.batch_id
@@ -174,6 +179,7 @@ export const vaccinationController = {
 
       const patientSession = PatientSession.read(data.patientSession_uuid, data)
       response.locals.patientSession = patientSession
+      response.locals.session = patientSession.session
 
       const journey = {
         [`/`]: {},
@@ -210,7 +216,9 @@ export const vaccinationController = {
       }
 
       response.locals.batchItems = Batch.readAll(data)
-        .filter((batch) => batch.vaccine.type === programme.type)
+        .filter(
+          (batch) => batch.vaccine.snomed === patientSession.vaccine.snomed
+        )
         .filter((batch) => !batch.archivedAt)
 
       response.locals.injectionMethodItems = Object.entries(VaccinationMethod)
@@ -278,13 +286,14 @@ export const vaccinationController = {
 
   updateForm(request, response) {
     const { data } = request.session
-    const { paths, patientSession, programme, vaccination } = response.locals
+    const { paths, patientSession, vaccination } = response.locals
+    const { vaccine } = patientSession
 
     // Add dose amount and vaccination outcome based on dosage answer
     const { dosage } = request.body.vaccination
     if (dosage) {
       request.body.vaccination.dose =
-        dosage === 'half' ? programme.vaccine.dose / 2 : programme.vaccine.dose
+        dosage === 'half' ? vaccine.dose / 2 : vaccine.dose
       request.body.vaccination.outcome =
         dosage === 'half'
           ? VaccinationOutcome.PartVaccinated
@@ -301,10 +310,9 @@ export const vaccinationController = {
     if (batch_id) {
       // Checkbox submits ['_unchecked', BATCH_ID]
       batch_id = Array.isArray(batch_id) ? batch_id.at(-1) : batch_id
-      const { snomed } = programme.vaccine
 
       patientSession.session.update(
-        { defaultBatch_ids: { [snomed]: batch_id } },
+        { defaultBatch_ids: { [vaccine.snomed]: batch_id } },
         data
       )
     }
