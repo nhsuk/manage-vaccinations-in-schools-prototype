@@ -186,7 +186,7 @@ export class PatientSession {
    * @returns {Array<string>} - Parental relationships
    */
   get parentalRelationships() {
-    return this.replies
+    return this.responses
       .filter((reply) => !reply.invalid)
       .flatMap((reply) => reply.relationship || 'Parent or guardian')
   }
