@@ -1392,9 +1392,9 @@ export const en = {
       label: 'Decision',
       title: {
         Child:
-          'Does the child agree to having the {{programme.programme.vaccineName.sentenceCase}}?',
+          'Does the child agree to having the {{programme.vaccineName.sentenceCase}}?',
         Parent:
-          'Do they agree to {{patient.firstName}} having the {{programme.programme.vaccineName.sentenceCase}}?'
+          'Do they agree to {{patient.firstName}} having the {{programme.vaccineName.sentenceCase}}?'
       }
     },
     invalid: {
