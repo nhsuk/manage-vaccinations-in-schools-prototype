@@ -393,7 +393,7 @@ export class Reply {
     // Remove reply context
     delete this.context
 
-    // Delete original download (with previous ID)
+    // Delete original reply (with previous UUID)
     delete context.replies[this.uuid]
 
     // Update context
