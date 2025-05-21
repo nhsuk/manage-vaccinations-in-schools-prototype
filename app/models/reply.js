@@ -15,9 +15,10 @@ import {
 import { Child } from './child.js'
 import { EmailStatus, Parent, SmsStatus } from './parent.js'
 import { Patient } from './patient.js'
-import { Programme } from './programme.js'
+import { Programme, ProgrammeType } from './programme.js'
 import { Session } from './session.js'
 import { User } from './user.js'
+import { VaccineMethod } from './vaccine.js'
 
 /**
  * @readonly
@@ -259,9 +260,14 @@ export class Reply {
    */
   get status() {
     let colour
+    let text = this.decision
     switch (this.decision) {
       case ReplyDecision.Given:
         colour = 'aqua-green'
+        break
+      case ReplyDecision.OnlyFluInjection:
+        colour = 'aqua-green'
+        text = ReplyDecision.Given
         break
       case ReplyDecision.Declined:
         colour = 'warm-yellow'
@@ -278,7 +284,7 @@ export class Reply {
 
     return {
       colour: this.invalid ? 'grey' : colour,
-      html: this.invalid ? `<s>${this.decision}</s>` : this.decision
+      html: this.invalid ? `<s>${text}</s>` : text
     }
   }
 
@@ -293,6 +299,18 @@ export class Reply {
       decisionStatus = formatTagWithSecondaryText(this.status, 'Invalid')
     } else if (this.confirmed) {
       decisionStatus = formatTagWithSecondaryText(this.status, 'Confirmed')
+    } else if (this.programme.type === ProgrammeType.Flu) {
+      if (this.decision === ReplyDecision.OnlyFluInjection) {
+        decisionStatus = formatTagWithSecondaryText(
+          this.status,
+          VaccineMethod.Injection
+        )
+      } else if (this.decision === ReplyDecision.Given) {
+        decisionStatus = formatTagWithSecondaryText(
+          this.status,
+          VaccineMethod.Nasal
+        )
+      }
     }
 
     return {

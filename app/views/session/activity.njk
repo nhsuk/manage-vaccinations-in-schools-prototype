@@ -106,6 +106,10 @@
                   label: __("patientSession.nextActivityPerProgramme.label"),
                   value: patientSession.formatted.nextActivityPerProgramme
                 } if (view == "register" and patientSession.register != RegistrationOutcome.Absent) or view == "record",
+                vaccineMethod: {
+                  label: __("patientSession.vaccineMethod.label"),
+                  value: patientSession.vaccineMethod
+                } if patientSession.vaccineMethod and view == "record" or view == "register",
                 status: {
                   label: __("patientSession." + view + ".label"),
                   value: statusHtml,
