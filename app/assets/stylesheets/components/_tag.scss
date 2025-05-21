@@ -8,6 +8,12 @@
     color: nhsuk-shade(app.$color_dark-orange, 50%);
   }
 
+  &--warm-yellow {
+    background-color: nhsuk-tint($color_nhsuk-warm-yellow, 80%);
+    border-color: nhsuk-shade($color_nhsuk-warm-yellow, 50%);
+    color: nhsuk-shade($color_nhsuk-warm-yellow, 50%);
+  }
+
   &--transparent {
     background-color: transparent;
     border-color: currentcolor;

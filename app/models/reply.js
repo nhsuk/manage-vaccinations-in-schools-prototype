@@ -72,6 +72,7 @@ export const ReplyRefusal = {
  * @property {boolean} [alternative] - Consent for alternative vaccine
  * @property {boolean} [confirmed] - Decision confirmed
  * @property {boolean} given - Reply gives consent
+ * @property {boolean} consult - Reply requires follow up
  * @property {boolean} invalid - Reply is invalid
  * @property {ReplyMethod} [method] - Reply method
  * @property {object} [healthAnswers] - Answers to health questions
@@ -104,6 +105,7 @@ export class Reply {
       ReplyDecision.OnlyMenACWY,
       ReplyDecision.OnlyTdIPV
     ].includes(this.decision)
+    this.consult = this.decision === ReplyDecision.Consult
     this.healthAnswers = this.given && options?.healthAnswers
     this.triageNote = this.given && options?.triageNote
     this.invalid =
@@ -257,6 +259,9 @@ export class Reply {
     switch (this.decision) {
       case ReplyDecision.Given:
         colour = 'aqua-green'
+        break
+      case ReplyDecision.Consult:
+        colour = 'warm-yellow'
         break
       case ReplyDecision.Refused:
         colour = 'red'

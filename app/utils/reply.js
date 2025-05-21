@@ -176,6 +176,13 @@ export const getConsentOutcome = (patientSession) => {
         return getConfirmedConsentOutcome(childReply)
       }
 
+      // If one of the replies has requested a follow up, show this over
+      // showing responses as inconsistent
+      const followUpRequested = decisions.find((reply) => reply.consult)
+      if (followUpRequested) {
+        return ConsentOutcome.Consult
+      }
+
       return ConsentOutcome.Inconsistent
     }
     return getConfirmedConsentOutcome(decisions[0])

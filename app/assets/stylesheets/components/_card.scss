@@ -38,6 +38,13 @@
     }
   }
 
+  &--warm-yellow {
+    .nhsuk-card__heading--feature {
+      background-color: $color_nhsuk-warm-yellow;
+      color: $nhsuk-text-color;
+    }
+  }
+
   &--reversed {
     background-color: $color_nhsuk-blue;
     border-color: nhsuk-shade($nhsuk-link-color, 25%);
