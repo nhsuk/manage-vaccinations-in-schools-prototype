@@ -12,6 +12,7 @@ import {
 } from '../models/reply.js'
 import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
 import { today } from '../utils/date.js'
+import { hasAnswersNeedingTriage } from '../utils/reply.js'
 import { formatParent } from '../utils/string.js'
 
 export const replyController = {
@@ -126,6 +127,7 @@ export const replyController = {
       }
 
       response.locals.reply = reply
+      response.locals.patient = patientSession.patient
 
       // Child can self consent if assessed as Gillick competent
       const canSelfConsent =
@@ -143,14 +145,6 @@ export const replyController = {
       response.locals.triage = {
         ...(type === 'edit' && triage), // Previous values
         ...data?.wizard?.triage // Wizard values
-      }
-
-      const replyNeedsTriage = (reply) => {
-        return reply?.healthAnswers
-          ? Object.values(reply.healthAnswers).find(
-              (healthAnswer) => healthAnswer.answer !== 'No'
-            )
-          : false
       }
 
       const journey = {
@@ -180,7 +174,7 @@ export const replyController = {
         },
         [`/${reply_uuid}/${type}/notify-parent`]: {},
         [`/${reply_uuid}/${type}/health-answers`]: {
-          [`/${reply_uuid}/${type}/${replyNeedsTriage(request.session.data.reply) ? 'triage' : 'check-answers'}`]: true
+          [`/${reply_uuid}/${type}/${hasAnswersNeedingTriage(request.session.data.reply?.healthAnswers) ? 'triage' : 'check-answers'}`]: true
         },
         [`/${reply_uuid}/${type}/refusal-reason`]: {
           [`/${reply_uuid}/${type}/refusal-reason-details`]: {
@@ -268,35 +262,35 @@ export const replyController = {
     const { data } = request.session
     const { paths, patientSession, reply, triage } = response.locals
 
-    const newReply = request.body?.reply || {}
+    reply.update(request.body.reply, data.wizard)
 
     // Create parent based on choice of respondent
     if (respondent) {
       switch (respondent) {
         case 'new': // Consent response is from a new contact
-          newReply.method = ReplyMethod.Phone
-          newReply.parent = new Parent({})
-          newReply.selfConsent = false
+          reply.method = ReplyMethod.Phone
+          reply.parent = new Parent({})
+          reply.selfConsent = false
           break
         case 'self':
-          newReply.method = ReplyMethod.InPerson
-          newReply.parent = false
-          newReply.selfConsent = true
+          reply.method = ReplyMethod.InPerson
+          reply.parent = false
+          reply.selfConsent = true
           break
         case 'parent-1': // Consent response is from CHIS record
-          newReply.method = ReplyMethod.Phone
-          newReply.parent = patientSession.patient.parents[0]
-          newReply.selfConsent = false
+          reply.method = ReplyMethod.Phone
+          reply.parent = patientSession.patient.parents[0]
+          reply.selfConsent = false
           break
         case 'parent-2': // Consent response is from CHIS record
-          newReply.method = ReplyMethod.Phone
-          newReply.parent = patientSession.patient.parents[1]
-          newReply.selfConsent = false
+          reply.method = ReplyMethod.Phone
+          reply.parent = patientSession.patient.parents[1]
+          reply.selfConsent = false
           break
         default: // Consent response is an existing respondent
-          newReply.method = ReplyMethod.Phone
-          newReply.parent = Reply.read(respondent, data).parent
-          newReply.selfConsent = false
+          reply.method = ReplyMethod.Phone
+          reply.parent = Reply.read(respondent, data).parent
+          reply.selfConsent = false
 
           // Store reply that needs marked as invalid
           // We only want to do this when submitting replacement reply
@@ -318,7 +312,7 @@ export const replyController = {
     delete data.healthAnswers
     delete data.respondent
 
-    reply.update(newReply, data.wizard)
+    reply.update(reply, data.wizard)
 
     data.wizard.triage = {
       ...triage, // Previous values
@@ -355,12 +349,10 @@ export const replyController = {
         data
       )
 
-      patientSession.patient.addReply(newReply)
       newReply.create(newReply, data.wizard)
 
       // Clean up session data
       delete data.decision
-      delete data.wizard
 
       response.redirect(`${newReply.uri}/new/decision?referrer=${reply.uri}`)
     }

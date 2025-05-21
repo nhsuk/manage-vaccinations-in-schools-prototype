@@ -75,14 +75,19 @@ export function getConsentHealthAnswers(patientSession) {
         consentHealthAnswers[key] = []
       }
 
+      // As we are not validating forms, handle cases where no answer given
+      if (!healthAnswer.answer) {
+        healthAnswer.answer = 'No'
+      }
+
       const hasSingleResponse = responsesWithHealthAnswers.length === 1
       const hasSameAnswers = responsesWithHealthAnswers.every(
-        (reply) => reply.healthAnswers[key].answer === healthAnswer.answer
+        (reply) => reply.healthAnswers[key]?.answer === healthAnswer.answer
       )
       const hasSameAnswersWithDetails = responsesWithHealthAnswers.some(
         (reply) =>
-          reply.healthAnswers[key].details &&
-          reply.healthAnswers[key].answer === healthAnswer.answer
+          reply.healthAnswers[key]?.details &&
+          reply.healthAnswers[key]?.answer === healthAnswer.answer
       )
 
       // Don’t modify original health answer
@@ -287,6 +292,10 @@ export const getRefusalReason = (type) => {
  * @returns {boolean} Has health answers needing triage
  */
 export const hasAnswersNeedingTriage = (healthAnswers) => {
+  if (!healthAnswers) {
+    return false
+  }
+
   // Ignore answer to asthma question, as only its sub-questions get triaged
   const nonConditionalAnswers = Object.fromEntries(
     Object.entries(healthAnswers).filter(([key]) => key !== 'asthma')
