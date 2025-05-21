@@ -31,7 +31,9 @@ import { EventType } from './audit-event.js'
 import { Gillick } from './gillick.js'
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
+import { ReplyDecision } from './reply.js'
 import { Session } from './session.js'
+import { VaccineMethod } from './vaccine.js'
 
 /**
  * @readonly
@@ -210,6 +212,24 @@ export class PatientSession {
    */
   get responses() {
     return this.replies.filter((reply) => reply.delivered)
+  }
+
+  /** Get agreed upon vaccination method (flu programme only)
+   *
+   * @todo This value needs to be resolved if refused or conflicting consent
+   * @returns {VaccineMethod} - Vaccine method
+   */
+  get vaccineMethod() {
+    if (this.programme_id === 'flu' && this.nextActivity === Activity.Record) {
+      if (
+        this.responses.some(
+          ({ decision }) => decision === ReplyDecision.OnlyFluInjection
+        )
+      ) {
+        return VaccineMethod.Injection
+      }
+      return VaccineMethod.Nasal
+    }
   }
 
   /**

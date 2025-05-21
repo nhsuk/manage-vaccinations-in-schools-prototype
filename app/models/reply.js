@@ -256,9 +256,14 @@ export class Reply {
    */
   get status() {
     let colour
+    let text = this.decision
     switch (this.decision) {
       case ReplyDecision.Given:
         colour = 'aqua-green'
+        break
+      case ReplyDecision.OnlyFluInjection:
+        colour = 'aqua-green'
+        text = ReplyDecision.Given
         break
       case ReplyDecision.Consult:
         colour = 'warm-yellow'
@@ -275,7 +280,7 @@ export class Reply {
 
     return {
       colour: this.invalid ? 'grey' : colour,
-      html: this.invalid ? `<s>${this.decision}</s>` : this.decision
+      html: this.invalid ? `<s>${text}</s>` : text
     }
   }
 
@@ -290,6 +295,8 @@ export class Reply {
       decisionStatus = formatTagWithSecondaryText(this.status, 'Invalid')
     } else if (this.confirmed) {
       decisionStatus = formatTagWithSecondaryText(this.status, 'Confirmed')
+    } else if (this.decision === ReplyDecision.OnlyFluInjection) {
+      decisionStatus = formatTagWithSecondaryText(this.status, 'Injection')
     }
 
     return {
