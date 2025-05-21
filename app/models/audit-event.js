@@ -1,7 +1,11 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { formatDate, today } from '../utils/date.js'
-import { formatTag, formatWithSecondaryText } from '../utils/string.js'
+import {
+  formatTag,
+  formatWithSecondaryText,
+  formatTagWithSecondaryText
+} from '../utils/string.js'
 
 import { ScreenOutcome } from './patient-session.js'
 import { Programme } from './programme.js'
@@ -84,10 +88,10 @@ export class AuditEvent {
    *
    * @returns {object} - Status properties
    */
-  get outcomeStatus() {
+  get status() {
     if (this.type === EventType.Screen) {
       let colour
-      let description
+      let text = this.outcome
       switch (this.outcome) {
         case ScreenOutcome.NeedsTriage:
           colour = 'blue'
@@ -101,13 +105,16 @@ export class AuditEvent {
         case ScreenOutcome.Vaccinate:
           colour = 'aqua-green'
           break
+        case ScreenOutcome.VaccinateInjection:
+          colour = 'aqua-green'
+          text = ScreenOutcome.Vaccinate
+          break
         default:
       }
 
       return {
         colour,
-        description,
-        text: this.outcome
+        text
       }
     }
   }
@@ -149,6 +156,11 @@ export class AuditEvent {
       hour12: true
     })
 
+    let outcomeStatus = formatTag(this.status)
+    if (this.outcome === ScreenOutcome.VaccinateInjection) {
+      outcomeStatus = formatTagWithSecondaryText(this.status, 'Injection only')
+    }
+
     return {
       createdAt: formatDate(this.createdAt, { dateStyle: 'long' }),
       createdAtAndBy: this.createdBy
@@ -156,7 +168,7 @@ export class AuditEvent {
         : datetime,
       datetime,
       note: this.note && `<blockquote>${this.note}</blockquote>`,
-      outcome: this.outcome && formatTag(this.outcomeStatus),
+      outcomeStatus,
       programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' ')
     }
   }

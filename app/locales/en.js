@@ -1833,6 +1833,8 @@ export const en = {
     outcome: {
       label: 'Outcome',
       [ScreenOutcome.Vaccinate]: 'Yes, it’s safe to vaccinate',
+      [ScreenOutcome.VaccinateInjection]:
+        'Yes, it’s safe to vaccinate (with injected vaccine only)',
       [ScreenOutcome.DoNotVaccinate]: 'No, do not vaccinate',
       [ScreenOutcome.DelayVaccination]:
         'No, delay vaccination (and invite to clinic)',

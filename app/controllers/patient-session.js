@@ -95,6 +95,34 @@ export const patientSessionController = {
         }))
     }
 
+    let triageOutcomeItems = Object.entries(ScreenOutcome)
+      .filter(
+        ([, value]) => ![ScreenOutcome.VaccinateInjection].includes(value)
+      )
+      .map(([key, value]) => ({
+        text: __(`triage.outcome.${ScreenOutcome[key]}`),
+        value,
+        hint: {}
+      }))
+
+    // Add divider between yes and no outcomes
+    // @ts-ignore
+    triageOutcomeItems = triageOutcomeItems.toSpliced(1, 0, { divider: 'or' })
+
+    // Add ‘Safe to vaccinate (injected vaccine only)’ if flu programme
+    // @todo Determine consent for alternative from multiple responses
+    if (programme.type === ProgrammeType.Flu) {
+      triageOutcomeItems = triageOutcomeItems.toSpliced(1, 0, {
+        text: __(`triage.outcome.${ScreenOutcome.VaccinateInjection}`),
+        value: ScreenOutcome.VaccinateInjection,
+        hint: {
+          text: 'The parent has consented to the injected vaccine being offered instead'
+        }
+      })
+    }
+
+    response.locals.triageOutcomeItems = triageOutcomeItems
+
     const view = request.path.split('/').at(-1)
     response.locals.navigationItems = [
       ...patientSession.siblingPatientSessions.map((patientSession) => ({

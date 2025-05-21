@@ -77,10 +77,11 @@ export const TriageOutcome = {
  * @enum {string}
  */
 export const ScreenOutcome = {
+  Vaccinate: 'Safe to vaccinate',
+  VaccinateInjection: 'Safe to vaccinate (injected vaccine only)',
   NeedsTriage: 'Needs triage',
   DelayVaccination: 'Delay vaccination',
-  DoNotVaccinate: 'Do not vaccinate',
-  Vaccinate: 'Safe to vaccinate'
+  DoNotVaccinate: 'Do not vaccinate'
 }
 
 /**
@@ -221,15 +222,19 @@ export class PatientSession {
    */
   get vaccineMethod() {
     if (this.programme_id === 'flu') {
-      if (
-        this.responses.some(
-          ({ decision }) => decision === ReplyDecision.OnlyFluInjection
-        )
-      ) {
+      const consentInjection = this.responses.some(
+        ({ decision }) => decision === ReplyDecision.OnlyFluInjection
+      )
+      const triageInjection = this.screen === ScreenOutcome.VaccinateInjection
+
+      if (consentInjection || triageInjection) {
         return VaccineMethod.Injection
       }
+
       return VaccineMethod.Nasal
     }
+
+    return VaccineMethod.Injection
   }
 
   /**
