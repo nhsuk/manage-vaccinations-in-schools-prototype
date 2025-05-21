@@ -407,6 +407,18 @@ export class Session {
   }
 
   /**
+   * Get patients who requested a follow up
+   *
+   * @returns {Array<PatientSession>} - Patient sessions
+   */
+  get patientsToFollowUp() {
+    const patientSessions = this.patientSessions.filter(
+      ({ consent }) => consent === ConsentOutcome.Declined
+    )
+    return _.uniqBy(patientSessions, 'patient.nhsn')
+  }
+
+  /**
    * Get patients with no consent response
    *
    * @returns {Array<PatientSession>} - Patient sessions
@@ -829,6 +841,10 @@ export class Session {
       patientsToGetConsent:
         this.patientsToGetConsent?.length > 0
           ? filters.plural(this.patientsToGetConsent.length, 'child')
+          : undefined,
+      patientsToFollowUp:
+        this.patientsToFollowUp?.length > 0
+          ? filters.plural(this.patientsToFollowUp.length, 'child')
           : undefined,
       patientsToResolveConsent:
         this.patientsToResolveConsent?.length > 0

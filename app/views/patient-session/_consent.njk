@@ -62,19 +62,20 @@
   {% if patientSession.responses | length %}
     {% set consentRows = [] %}
     {% for consent in patientSession.responses %}
+      {% set consentCellModifier = ("app-table__cell--muted" if consent.invalid else "app-table__cell--highlighted") if consent.declined else "" %}
       {% set consentRows = consentRows | push([
         {
-          classes: "app-table__cell--muted" if consent.invalid,
+          classes: consentCellModifier,
           header: __("parent.fullName.label"),
           html: consent.link.fullNameAndRelationship
         },
         {
-          classes: "app-table__cell--muted" if consent.invalid,
+          classes: consentCellModifier,
           header: __("consent.createdAt.label"),
           html: consent.formatted.createdAt or "Not provided"
         },
         {
-          classes: "app-table__cell--muted" if consent.invalid,
+          classes: consentCellModifier,
           header: __("consent.decision.label"),
           html: consent.formatted.decisionStatus
         }

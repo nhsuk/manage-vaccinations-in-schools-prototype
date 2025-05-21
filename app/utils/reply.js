@@ -176,6 +176,12 @@ export const getConsentOutcome = (patientSession) => {
         return getConfirmedConsentOutcome(childReply)
       }
 
+      // If one of the replies has declined (requested follow up), show this
+      // status over showing responses as inconsistent
+      if (decisions.find((reply) => reply.declined)) {
+        return ConsentOutcome.Declined
+      }
+
       return ConsentOutcome.Inconsistent
     }
     return getConfirmedConsentOutcome(decisions[0])

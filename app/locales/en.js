@@ -312,6 +312,15 @@ export const en = {
           '[0] No children with consent given|%s children with consent given'
       }
     },
+    [ConsentOutcome.Declined]: {
+      label: 'Follow up requested',
+      title: 'Consent refused (follow up requested)',
+      count: {
+        one: '%s child with a follow up requested',
+        other:
+          '[0] No children with a follow up requested|%s children with a follow up requested'
+      }
+    },
     [ConsentOutcome.Refused]: {
       label: 'Refused',
       title: 'Consent refused',
@@ -1602,6 +1611,9 @@ export const en = {
     },
     patientsToGetConsent: {
       label: 'No consent response'
+    },
+    patientsToFollowUp: {
+      label: 'Requested follow up'
     },
     patientsToResolveConsent: {
       label: 'Conflicting consent'
