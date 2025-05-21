@@ -284,13 +284,26 @@ export class PatientSession {
   }
 
   /**
+   * Get vaccine to administer in this patient session
+   * In most cases, this will return the single available injected vaccine
+   * but for the flu programme, this may return the nasal spray
+   *
+   * @returns {import('./vaccine.js').Vaccine} - Vaccine
+   */
+  get vaccine() {
+    return this.programme.vaccines.find(
+      (vaccine) => vaccine.method === this.vaccineMethod
+    )
+  }
+
+  /**
    * Get vaccinations for patient session
    *
    * @returns {Array<import('./vaccination.js').Vaccination>|undefined} - Vaccinations
    */
   get vaccinations() {
     try {
-      if (this.patient.vaccinations) {
+      if (this.patient.vaccinations && this.programme_id) {
         return this.patient.vaccinations.filter(
           ({ programme }) => programme.id === this.programme_id
         )

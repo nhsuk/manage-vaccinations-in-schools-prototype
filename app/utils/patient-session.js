@@ -317,7 +317,7 @@ export const getSessionOutcome = (patientSession) => {
  * @returns {PatientOutcome} - Overall patient (programme) outcome
  */
 export const getReportOutcome = (patientSession) => {
-  if (patientSession.vaccinations.length > 0) {
+  if (patientSession.vaccinations?.length > 0) {
     if (patientSession.vaccinations.at(-1).given) {
       return PatientOutcome.Vaccinated
     }

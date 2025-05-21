@@ -67,7 +67,10 @@ export function generateConsent(
   ])
 
   const healthCondition = faker.helpers.objectKey(healthConditions)
-  const healthAnswers = getHealthAnswers(programme.vaccine, healthCondition)
+  const healthAnswers = getHealthAnswers(
+    patientSession.vaccine,
+    healthCondition
+  )
   const triageNote = getTriageNote(healthAnswers, healthCondition)
   const refusalReason = getRefusalReason(programme.type, decision)
 
