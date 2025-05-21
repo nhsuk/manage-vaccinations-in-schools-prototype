@@ -9,10 +9,12 @@
   {{ patientSession.status.screen.description | nhsukMarkdown }}
 
   {# Actions #}
-  {{ button({
-    classes: "nhsuk-button--secondary",
-    text: __("triage.edit.title"),
-    href: patientSession.uri + "/edit/triage?referrer=" + referrer
+  {{ buttonGroup({
+    buttons: [{
+      classes: "nhsuk-button--secondary",
+      text: __("triage.edit.title"),
+      href: patientSession.uri + "/edit/triage?referrer=" + referrer
+    }]
   }) if options.hasTriage }}
 
   {# Decision table #}
@@ -29,7 +31,7 @@
       },
       {
         header: __("event.outcome.label"),
-        html: triageNote.formatted.outcome
+        html: triageNote.formatted.outcomeStatus
       }
     ]) %}
   {% endfor %}
@@ -63,25 +65,14 @@
     {{ radios({
       fieldset: {
         legend: {
-          classes: "nhsuk-fieldset__legend--m",
+          classes: "nhsuk-fieldset__legend--m nhsuk-u-font-size-22",
           text: __("triage.label", { patient: patient })
         }
       },
-      items: [{
-        text: __("triage.outcome." + ScreenOutcome.Vaccinate),
-        value: ScreenOutcome.Vaccinate
-      }, {
-        divider: "or"
-      }, {
-        text: __("triage.outcome." + ScreenOutcome.DoNotVaccinate),
-        value: ScreenOutcome.DoNotVaccinate
-      }, {
-        text: __("triage.outcome." + ScreenOutcome.DelayVaccination),
-        value: ScreenOutcome.DelayVaccination
-      }, {
-        text: __("triage.outcome." + ScreenOutcome.NeedsTriage),
-        value: ScreenOutcome.NeedsTriage
-      }],
+      hint: {
+        text: __("triage.injection.consentRefused")
+      } if not patientSession.hasConsentForInjection,
+      items: triageOutcomeItems(patientSession),
       decorate: "triage.outcome"
     }) }}
 

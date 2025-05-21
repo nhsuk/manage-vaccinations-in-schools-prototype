@@ -77,10 +77,11 @@ export const TriageOutcome = {
  * @enum {string}
  */
 export const ScreenOutcome = {
+  Vaccinate: 'Safe to vaccinate',
+  VaccinateInjection: 'Safe to vaccinate (injection only)',
   NeedsTriage: 'Needs triage',
   DelayVaccination: 'Delay vaccination',
-  DoNotVaccinate: 'Do not vaccinate',
-  Vaccinate: 'Safe to vaccinate'
+  DoNotVaccinate: 'Do not vaccinate'
 }
 
 /**
@@ -215,13 +216,38 @@ export class PatientSession {
   }
 
   /**
+   * Has every parent given consent for an injected vaccine?
+   *
+   * Some parents may give consent for the nasal spray, but also given consent
+   * for the injection as an alternative
+   *
+   * @returns {boolean} Consent given for an injected vaccine
+   */
+  get hasConsentForInjection() {
+    return this.responses.every(
+      ({ hasConsentForInjection }) => hasConsentForInjection
+    )
+  }
+
+  /**
+   * Has every parent given consent only for an injected vaccine?
+   *
+   * We need this so that we don’t offer multiple triage outcomes if consent has
+   * only been given for the injected vaccine
+   *
+   * @returns {boolean} Consent given for an injected vaccine
+   */
+  get hasConsentForInjectionOnly() {
+    return this.responses.every(
+      ({ decision }) => decision === ReplyDecision.OnlyFluInjection
+    )
+  }
+
+  /**
    * Get agreed upon vaccination method
    *
    * For all programmes besides flu, this will be an injection.
-   * For the flu programme:
-   * - All parents consent to nasal spray: nasal spray
-   * - All parents consent to injection: injection
-   * - All parents consent to injection OR injection as alternative: injection
+   * For the flu programme, this depends on consent responses
    *
    * @returns {VaccineMethod} - Vaccine method
    */
@@ -230,13 +256,10 @@ export class PatientSession {
       return VaccineMethod.Injection
     }
 
-    const allResponsesGiveConsentForInjection = this.responses.every(
-      (response) =>
-        response.decision === ReplyDecision.OnlyFluInjection ||
-        (ReplyDecision.Given && response.alternative)
-    )
+    const hasScreenedForInjection =
+      this.screen === ScreenOutcome.VaccinateInjection
 
-    return allResponsesGiveConsentForInjection
+    return this.hasConsentForInjection || hasScreenedForInjection
       ? VaccineMethod.Injection
       : VaccineMethod.Nasal
   }

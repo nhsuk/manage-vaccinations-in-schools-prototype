@@ -12,21 +12,7 @@
     fieldset: {
       legend: { text: __("triage.label", { patient: patient }) }
     },
-    items: [{
-      text: __("triage.outcome." + ScreenOutcome.Vaccinate),
-      value: ScreenOutcome.Vaccinate
-    }, {
-      divider: "or"
-    }, {
-      text: __("triage.outcome." + ScreenOutcome.DoNotVaccinate),
-      value: ScreenOutcome.DoNotVaccinate
-    }, {
-      text: __("triage.outcome." + ScreenOutcome.DelayVaccination),
-      value: ScreenOutcome.DelayVaccination
-    }, {
-      text: __("triage.outcome." + ScreenOutcome.NeedsTriage),
-      value: ScreenOutcome.NeedsTriage
-    }],
+    items: triageOutcomeItems(patientSession),
     decorate: "triage.outcome"
   }) }}
 
