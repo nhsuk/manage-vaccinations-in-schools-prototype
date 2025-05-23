@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { healthConditions } from '../datasets/health-conditions.js'
 import { Consent } from '../models/consent.js'
+import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { removeDays, today } from '../utils/date.js'
 import {
@@ -45,7 +46,11 @@ export function generateConsent(
   // Decision
   const decision = faker.helpers.weightedArrayElement([
     { value: ReplyDecision.Given, weight: 10 },
-    { value: ReplyDecision.Refused, weight: 1 }
+    { value: ReplyDecision.Consult, weight: 2 },
+    { value: ReplyDecision.Refused, weight: 1 },
+    ...(programme.type === ProgrammeType.Flu
+      ? [{ value: ReplyDecision.OnlyFluInjection, weight: 3 }]
+      : [])
   ])
   const method = faker.helpers.weightedArrayElement([
     { value: ReplyMethod.Website, weight: 8 },

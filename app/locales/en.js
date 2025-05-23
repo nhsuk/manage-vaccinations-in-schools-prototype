@@ -312,6 +312,15 @@ export const en = {
           '[0] No children with consent given|%s children with consent given'
       }
     },
+    [ConsentOutcome.Consult]: {
+      label: 'Follow up requested',
+      title: 'Consent refused (follow up requested)',
+      count: {
+        one: '%s child with a follow up requested',
+        other:
+          '[0] No children with a follow up requested|%s children with a follow up requested'
+      }
+    },
     [ConsentOutcome.Refused]: {
       label: 'Refused',
       title: 'Consent refused',
@@ -1098,6 +1107,9 @@ export const en = {
     nextActivityPerProgramme: {
       label: 'Action required'
     },
+    vaccineMethod: {
+      label: 'Vaccination method'
+    },
     outstandingVaccinations: {
       message:
         '{count, plural, one{You still need to record an outcome for {names}} other{You still need to record outcomes for {names}}}'
@@ -1153,9 +1165,9 @@ export const en = {
       },
       ready: {
         error:
-          'Select if the child is ready for their {{programme.name}} vaccination',
+          'Select if the child is ready for their {{session.programmeNames.sentenceCase}} vaccination',
         label:
-          'Is {{patient.firstName}} ready for their {{programme.name}} vaccination?',
+          'Is {{patient.firstName}} ready for their {{session.programmeNames.sentenceCase}} vaccination?',
         hint: 'Pre-screening checks must be completed for vaccination to go ahead',
         yes: 'Yes',
         no: 'No'
@@ -1810,6 +1822,8 @@ export const en = {
     outcome: {
       label: 'Outcome',
       [ScreenOutcome.Vaccinate]: 'Yes, it’s safe to vaccinate',
+      [ScreenOutcome.VaccinateInjection]:
+        'Yes, it’s safe to vaccinate (with injected vaccine only)',
       [ScreenOutcome.DoNotVaccinate]: 'No, do not vaccinate',
       [ScreenOutcome.DelayVaccination]:
         'No, delay vaccination (and invite to clinic)',
@@ -2116,10 +2130,12 @@ export const en = {
       other: '[0] No vaccination records|%s vaccination records'
     },
     administer: {
-      title: 'How was the {{programme.name}} vaccination given?'
+      title:
+        'How was the {{session.programmeNames.sentenceCase}} vaccination given?'
     },
     decline: {
-      title: 'Why was the {{programme.name}} vaccination not given?'
+      title:
+        'Why was the {{session.programmeNames.sentenceCase}} vaccination not given?'
     },
     upload: {
       label: 'Import vaccination records'
@@ -2130,7 +2146,8 @@ export const en = {
         summary: 'Vaccination details',
         callout: 'Vaccination was not given'
       },
-      success: 'Vaccination outcome recorded for {{programme.name}}'
+      success:
+        'Vaccination outcome recorded for {{session.programmeNames.sentenceCase}}'
     },
     edit: {
       title: 'Edit vaccination record',
@@ -2139,7 +2156,8 @@ export const en = {
     },
     createdAt: {
       label: 'Vaccination date',
-      title: 'When was the {{programme.name}} vaccination given?'
+      title:
+        'When was the {{session.programmeNames.sentenceCase}} vaccination given?'
     },
     createdAt_date: {
       label: 'Date',
@@ -2158,7 +2176,8 @@ export const en = {
     },
     location: {
       label: 'Location',
-      title: 'Where was the {{programme.name}} vaccination given?',
+      title:
+        'Where was the {{session.programmeNames.sentenceCase}} vaccination given?',
       hint: 'Enter name and address'
     },
     outcome: {
@@ -2173,7 +2192,8 @@ export const en = {
       Unwell: 'They were not well enough'
     },
     injection: {
-      title: 'How was the {{programme.name}} vaccination given?'
+      title:
+        'How was the {{session.programmeNames.sentenceCase}} vaccination given?'
     },
     method: {
       label: 'Method'
@@ -2192,7 +2212,8 @@ export const en = {
       title: 'Batch'
     },
     batch_id: {
-      title: 'Which batch did you use for the {{programme.name}} vaccination?',
+      title:
+        'Which batch did you use for the {{session.programmeNames.sentenceCase}} vaccination?',
       label: 'Batch ID',
       default: 'Default to this batch for this session'
     },
@@ -2203,7 +2224,8 @@ export const en = {
     },
     dose: {
       label: 'Dose volume',
-      title: 'What was the dose amount for the {{programme.name}} vaccination?'
+      title:
+        'What was the dose amount for the {{session.programmeNames.sentenceCase}} vaccination?'
     },
     dosage: {
       title: 'Did they get the full dose?',

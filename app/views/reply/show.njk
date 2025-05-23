@@ -15,11 +15,11 @@
         {
           text: __("reply.withdraw.label"),
           href: reply.uri + "/edit/withdraw"
-        } if not reply.invalid and reply.decision == ReplyDecision.Given,
+        } if not reply.invalid and reply.given,
         {
           text: __("reply.follow-up.label"),
           href: reply.uri + "/edit/follow-up"
-        } if not reply.invalid and not reply.confirmed and reply.decision == ReplyDecision.Refused,
+        } if not reply.invalid and not reply.confirmed and not reply.given,
         {
           text: __("reply.invalidate.label"),
           href: reply.uri + "/edit/invalidate"

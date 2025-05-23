@@ -1,18 +1,18 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("vaccination.administer.title", { programme: programme }) %}
+{% set title = __("vaccination.administer.title", { session: session }) %}
 
 {% block form %}
   {{ heading({
     caption: vaccination.patient.fullName,
     title: title
-  }) if programme.vaccine.method == VaccineMethod.Injection }}
+  }) if patientSession.vaccine.method == VaccineMethod.Injection }}
 
   {{ input({
     type: "hidden",
     value: "full",
     decorate: "vaccination.dosage"
-  }) if programme.vaccine.method == VaccineMethod.Injection else radios({
+  }) if patientSession.vaccine.method == VaccineMethod.Injection else radios({
     fieldset: {
       legend: {
         html: heading({
@@ -41,7 +41,7 @@
     },
     items: injectionMethodItems,
     decorate: "vaccination.injectionMethod"
-  }) if programme.vaccine.method == VaccineMethod.Injection }}
+  }) if patientSession.vaccine.method == VaccineMethod.Injection }}
 
   {{ radios({
     fieldset: {
@@ -52,5 +52,5 @@
     },
     items: injectionSiteItems,
     decorate: "vaccination.injectionSite"
-  }) if programme.vaccine.method == VaccineMethod.Injection }}
+  }) if patientSession.vaccine.method == VaccineMethod.Injection }}
 {% endblock %}

@@ -31,7 +31,9 @@ import { EventType } from './audit-event.js'
 import { Gillick } from './gillick.js'
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
+import { ReplyDecision } from './reply.js'
 import { Session } from './session.js'
+import { VaccineMethod } from './vaccine.js'
 
 /**
  * @readonly
@@ -55,6 +57,7 @@ export const ConsentOutcome = {
   NoResponse: 'No response',
   Inconsistent: 'Conflicting consent',
   Given: 'Consent given',
+  Consult: 'Follow up requested',
   Refused: 'Consent refused',
   FinalRefusal: 'Refusal confirmed'
 }
@@ -74,10 +77,11 @@ export const TriageOutcome = {
  * @enum {string}
  */
 export const ScreenOutcome = {
+  Vaccinate: 'Safe to vaccinate',
+  VaccinateInjection: 'Safe to vaccinate (injected vaccine only)',
   NeedsTriage: 'Needs triage',
   DelayVaccination: 'Delay vaccination',
-  DoNotVaccinate: 'Do not vaccinate',
-  Vaccinate: 'Safe to vaccinate'
+  DoNotVaccinate: 'Do not vaccinate'
 }
 
 /**
@@ -191,6 +195,17 @@ export class PatientSession {
       .flatMap((reply) => reply.relationship || 'Parent or guardian')
   }
 
+  /** Get names of parents who have requested a follow up
+   *
+   * @returns {Array<string>} - Parent names and relationships
+   */
+  get parentsRequestingFollowUp() {
+    return this.responses
+      .filter((reply) => !reply.invalid)
+      .filter((reply) => reply.consult)
+      .flatMap((reply) => reply.parent.formatted.fullNameAndRelationship)
+  }
+
   /**
    * Get responses (consent requests that were delivered)
    *
@@ -198,6 +213,28 @@ export class PatientSession {
    */
   get responses() {
     return this.replies.filter((reply) => reply.delivered)
+  }
+
+  /** Get agreed upon vaccination method (flu programme only)
+   *
+   * @todo This value needs to be resolved if refused or conflicting consent
+   * @returns {VaccineMethod} - Vaccine method
+   */
+  get vaccineMethod() {
+    if (this.programme_id === 'flu') {
+      const consentInjection = this.responses.some(
+        ({ decision }) => decision === ReplyDecision.OnlyFluInjection
+      )
+      const triageInjection = this.screen === ScreenOutcome.VaccinateInjection
+
+      if (consentInjection || triageInjection) {
+        return VaccineMethod.Injection
+      }
+
+      return VaccineMethod.Nasal
+    }
+
+    return VaccineMethod.Injection
   }
 
   /**
@@ -243,13 +280,26 @@ export class PatientSession {
   }
 
   /**
+   * Get vaccine to administer in this patient session
+   * In most cases, this will return the single available injected vaccine
+   * but for the flu programme, this may return the nasal spray
+   *
+   * @returns {import('./vaccine.js').Vaccine} - Vaccine
+   */
+  get vaccine() {
+    return this.programme.vaccines.find(
+      (vaccine) => vaccine.method === this.vaccineMethod
+    )
+  }
+
+  /**
    * Get vaccinations for patient session
    *
    * @returns {Array<import('./vaccination.js').Vaccination>|undefined} - Vaccinations
    */
   get vaccinations() {
     try {
-      if (this.patient.vaccinations) {
+      if (this.patient.vaccinations && this.programme_id) {
         return this.patient.vaccinations.filter(
           ({ programme }) => programme.id === this.programme_id
         )

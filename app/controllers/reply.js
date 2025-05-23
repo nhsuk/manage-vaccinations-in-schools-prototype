@@ -2,8 +2,8 @@ import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { GillickCompetent } from '../models/gillick.js'
 import { Parent } from '../models/parent.js'
-import { PatientSession } from '../models/patient-session.js'
-import { Programme } from '../models/programme.js'
+import { ScreenOutcome, PatientSession } from '../models/patient-session.js'
+import { Programme, ProgrammeType } from '../models/programme.js'
 import {
   Reply,
   ReplyDecision,
@@ -117,7 +117,7 @@ export const replyController = {
     return (request, response, next) => {
       const { reply_uuid } = request.params
       const { data, referrer } = request.session
-      const { patientSession, triage } = response.locals
+      const { __, patientSession, triage } = response.locals
 
       let reply
       if (type === 'edit') {
@@ -245,6 +245,30 @@ export const replyController = {
           })
         )
       }
+
+      let triageOutcomeItems = Object.entries(ScreenOutcome)
+        .filter(
+          ([, value]) => ![ScreenOutcome.VaccinateInjection].includes(value)
+        )
+        .map(([key, value]) => ({
+          text: __(`triage.outcome.${ScreenOutcome[key]}`),
+          value
+        }))
+
+      // Add divider between yes and no outcomes
+      // @ts-ignore
+      triageOutcomeItems = triageOutcomeItems.toSpliced(1, 0, { divider: 'or' })
+
+      // Add ‘Safe to vaccinate (injected vaccine only)’ if flu programme
+      // @todo Determine consent for alternative from multiple responses
+      if (patientSession.programme.type === ProgrammeType.Flu) {
+        triageOutcomeItems = triageOutcomeItems.toSpliced(1, 0, {
+          text: __(`triage.outcome.${ScreenOutcome.VaccinateInjection}`),
+          value: ScreenOutcome.VaccinateInjection
+        })
+      }
+
+      response.locals.triageOutcomeItems = triageOutcomeItems
 
       next()
     }

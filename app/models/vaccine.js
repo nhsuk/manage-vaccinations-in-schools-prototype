@@ -50,8 +50,8 @@ export const PreScreenQuestion = {
  * @enum {string}
  */
 export const VaccineMethod = {
-  Nasal: 'Nasal spray',
-  Injection: 'Injection'
+  Injection: 'Injection',
+  Nasal: 'Nasal spray'
 }
 
 /**

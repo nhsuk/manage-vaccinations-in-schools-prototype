@@ -72,6 +72,7 @@ export const ReplyRefusal = {
  * @property {boolean} [alternative] - Consent for alternative vaccine
  * @property {boolean} [confirmed] - Decision confirmed
  * @property {boolean} given - Reply gives consent
+ * @property {boolean} consult - Reply requires follow up
  * @property {boolean} invalid - Reply is invalid
  * @property {ReplyMethod} [method] - Reply method
  * @property {object} [healthAnswers] - Answers to health questions
@@ -104,6 +105,7 @@ export class Reply {
       ReplyDecision.OnlyMenACWY,
       ReplyDecision.OnlyTdIPV
     ].includes(this.decision)
+    this.consult = this.decision === ReplyDecision.Consult
     this.healthAnswers = this.given && options?.healthAnswers
     this.triageNote = this.given && options?.triageNote
     this.invalid =
@@ -254,9 +256,17 @@ export class Reply {
    */
   get status() {
     let colour
+    let text = this.decision
     switch (this.decision) {
       case ReplyDecision.Given:
         colour = 'aqua-green'
+        break
+      case ReplyDecision.OnlyFluInjection:
+        colour = 'aqua-green'
+        text = ReplyDecision.Given
+        break
+      case ReplyDecision.Consult:
+        colour = 'warm-yellow'
         break
       case ReplyDecision.Refused:
         colour = 'red'
@@ -270,7 +280,7 @@ export class Reply {
 
     return {
       colour: this.invalid ? 'grey' : colour,
-      html: this.invalid ? `<s>${this.decision}</s>` : this.decision
+      html: this.invalid ? `<s>${text}</s>` : text
     }
   }
 
@@ -285,6 +295,8 @@ export class Reply {
       decisionStatus = formatTagWithSecondaryText(this.status, 'Invalid')
     } else if (this.confirmed) {
       decisionStatus = formatTagWithSecondaryText(this.status, 'Confirmed')
+    } else if (this.decision === ReplyDecision.OnlyFluInjection) {
+      decisionStatus = formatTagWithSecondaryText(this.status, 'Injection')
     }
 
     return {

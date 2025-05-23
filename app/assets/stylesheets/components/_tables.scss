@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../vendor/nhsuk-frontend" as *;
 
 .app-table--csv {
@@ -20,6 +21,10 @@
     font-weight: 500;
     padding: 2px;
   }
+}
+
+.app-table__cell--highlighted {
+  background-color: color.mix($color_nhsuk-white, $color_nhsuk-warm-yellow, 90%);
 }
 
 .app-table__cell--muted {

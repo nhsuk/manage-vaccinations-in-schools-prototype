@@ -18,6 +18,7 @@ import {
   SessionType
 } from '../models/session.js'
 import { VaccinationOutcome } from '../models/vaccination.js'
+import { VaccineMethod } from '../models/vaccine.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
@@ -94,8 +95,15 @@ export const sessionController = {
 
   readPatientSessions(request, response, next) {
     const { view } = request.params
-    const { consent, hasMissingNhsNumber, snomed, programme_id, q, yearGroup } =
-      request.query
+    const {
+      consent,
+      hasMissingNhsNumber,
+      snomed,
+      programme_id,
+      q,
+      vaccineMethod,
+      yearGroup
+    } = request.query
     const { data } = request.session
     const { session } = response.locals
 
@@ -121,6 +129,13 @@ export const sessionController = {
     if (programme_id) {
       results = results.filter((patientSession) =>
         programme_id.includes(patientSession.programme_id)
+      )
+    }
+
+    // Filter by vaccine method
+    if (vaccineMethod) {
+      results = results.filter(
+        (patientSession) => patientSession.vaccineMethod === vaccineMethod
       )
     }
 
@@ -201,6 +216,22 @@ export const sessionController = {
       }))
     }
 
+    // Vaccination method filter options
+    if (['register', 'record'].includes(view)) {
+      response.locals.vaccineMethodItems = [
+        {
+          text: 'Any',
+          value: 'none',
+          checked: filters[view] === 'none'
+        },
+        ...Object.values(VaccineMethod).map((value) => ({
+          text: value,
+          value,
+          checked: value === request.query.vaccineMethod
+        }))
+      ]
+    }
+
     // Consent status filter options (select many)
     if (view === 'consent') {
       response.locals.statusesItems = Object.values(ConsentOutcome).map(
@@ -249,6 +280,7 @@ export const sessionController = {
     // Clean up session data
     delete data.hasMissingNhsNumber
     delete data.programme_id
+    delete data.vaccineMethod
     delete data.q
     delete data.consent
     delete data.screen
@@ -264,7 +296,14 @@ export const sessionController = {
     const params = new URLSearchParams()
 
     // Radios
-    for (const key of ['q', 'triage', 'screen', 'register', 'outcome']) {
+    for (const key of [
+      'q',
+      'triage',
+      'screen',
+      'register',
+      'outcome',
+      'vaccineMethod'
+    ]) {
       const value = request.body[key]
       if (value) {
         params.append(key, String(value))
