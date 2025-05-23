@@ -22,7 +22,7 @@ const suggestion = (value, options) => {
 /**
  * @param {HTMLElement} $module - Module
  */
-export default function ($module) {
+export function Autocomplete($module) {
   this.init = () => {
     if (!$module) {
       return
@@ -54,4 +54,15 @@ export default function ($module) {
       }
     })
   }
+}
+
+export function initAll() {
+  const $autocompletes = document.querySelectorAll(
+    '[data-module="autocomplete"]'
+  )
+
+  document.querySelectorAll('[data-module="autocomplete"]')
+  $autocompletes.forEach(($autocomplete) => {
+    new Autocomplete($autocomplete).init()
+  })
 }

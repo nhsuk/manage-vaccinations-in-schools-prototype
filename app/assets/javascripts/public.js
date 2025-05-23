@@ -1,35 +1,22 @@
 import { PasswordInput, createAll } from 'govuk-frontend'
 import initButton from 'nhsuk-frontend/packages/components/button/button.js'
 import initCheckboxes from 'nhsuk-frontend/packages/components/checkboxes/checkboxes.js'
-import initDetails from 'nhsuk-frontend/packages/components/details/details.js'
 import initErrorSummary from 'nhsuk-frontend/packages/components/error-summary/error-summary.js'
-import initHeader from 'nhsuk-frontend/packages/components/header/header.js'
 import initRadios from 'nhsuk-frontend/packages/components/radios/radios.js'
 import initSkipLink from 'nhsuk-frontend/packages/components/skip-link/skip-link.js'
-import '@colinaut/action-table'
 
+// Autocomplete
 import { initAll as initAutocomplete } from './autocomplete/autocomplete.js'
-import { AddAnotherComponent } from './custom-elements/add-another.js'
-import { AutoSubmitComponent } from './custom-elements/auto-submit.js'
-import { IsStickyComponent } from './custom-elements/is-sticky.js'
 
 // Create all instances of a password input component
 createAll(PasswordInput)
 
-// Register custom elements
-customElements.define('auto-submit', AutoSubmitComponent)
-customElements.define('add-another', AddAnotherComponent)
-customElements.define('is-sticky', IsStickyComponent)
-
-// Initiate scripts on page load
+// Initialise components
 document.addEventListener('DOMContentLoaded', () => {
   initAutocomplete()
   initButton()
   initCheckboxes()
-  initDetails()
   initErrorSummary()
-  initHeader()
   initRadios()
   initSkipLink()
-  PasswordInput()
 })

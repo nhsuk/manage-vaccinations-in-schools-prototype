@@ -24,11 +24,15 @@
 {% from "_macros/status.njk" import status %}
 {% from "_macros/sub-navigation.njk" import subNavigation %}
 
-{% if bodyClasses %}
-  {% set bodyClasses = bodyClasses + " app-signed-in" if not public %}
-{% elif not public %}
-  {% set bodyClasses = "app-signed-in" %}
+{% block head %}
+{% if public %}
+  <link rel="stylesheet" href="/assets/public.css" media="all">
+  <script src="/assets/public.js" type="module"></script>
+{% else %}
+  <link rel="stylesheet" href="/assets/application.css" media="all">
+  <script src="/assets/application.js" type="module"></script>
 {% endif %}
+{% endblock %}
 
 {% block bodyStart %}
   <script>document.body.className += 'noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '';</script>
