@@ -55,6 +55,8 @@ export const parentController = {
 
       response.locals.programme = session.programmes[0]
 
+      response.locals.public = false
+
       const combinedSideEffects = new Set()
       for (const programme of session.programmes) {
         for (const sideEffect of programme.vaccine.sideEffects) {

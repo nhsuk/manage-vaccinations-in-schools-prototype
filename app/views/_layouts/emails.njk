@@ -1,11 +1,9 @@
-{% extends "_layouts/default.njk" %}
+{% extends "_layouts/meta.njk" %}
 
 {% from "_macros/logo.njk" import logo %}
 
-{% block skipLink %}{% endblock %}
-{% block header %}{% endblock %}
-
 {% set template = data.template or defaultTemplate %}
+{% set title = title or "Email messages" %}
 
 {% set navigationItems = [] %}
 {% for theme, items in templates %}
@@ -37,7 +35,7 @@
 {% block content %}
   {{ heading({
     caption: caption,
-    title: title or "Email messages"
+    title: title
   }) }}
 
   <div class="nhsuk-grid-row">

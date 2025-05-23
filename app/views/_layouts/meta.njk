@@ -1,0 +1,12 @@
+{% extends "_layouts/default.njk" %}
+
+{% block header %}{% endblock %}
+
+{% block pageTitle %}
+  {{- "Error: " if errors -}}
+  {{- title if title -}}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ backLink({ href: paths.back }) if paths.back }}
+{% endblock %}
