@@ -46,6 +46,10 @@
   }
 
   // Adjust sizing of checkbox and radio items
+  .nhsuk-fieldset__legend--s {
+    margin-bottom: nhsuk-spacing(2);
+  }
+
   & .nhsuk-checkboxes__item,
   & .nhsuk-radios__item {
     margin-bottom: 0;
@@ -63,6 +67,7 @@
     }
 
     &::after {
+      box-sizing: border-box;
       left: 3px;
       transform: rotate(-45deg) scale(0.6667);
     }

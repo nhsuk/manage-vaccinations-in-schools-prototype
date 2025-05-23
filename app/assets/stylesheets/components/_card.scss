@@ -48,7 +48,7 @@
     }
 
     .nhsuk-card__link {
-      @include app.link-style-inverse;
+      @include nhsuk-link-style-white;
     }
   }
 
