@@ -4,9 +4,9 @@ import { accountController as account } from '../controllers/account.js'
 
 const router = express.Router({ strict: true })
 
-router.post(['/sign-in', '/cis2'], account.login)
+router.post('/cis2', account.login)
 
-router.post(['/change-role'], account.changeRole)
+router.post('/change-role', account.changeRole)
 
 router.get('/sign-out', account.logout)
 

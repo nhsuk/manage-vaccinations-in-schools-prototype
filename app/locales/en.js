@@ -49,23 +49,12 @@ export const en = {
       title: 'Select a role',
       label: 'Change role'
     },
-    'reset-password': {
-      title: 'Reset your password',
-      confirm: 'Reset password'
-    },
     'sign-in': {
       title: 'Log in',
       confirm: 'Log in'
     },
     'sign-out': {
       title: 'Log out'
-    },
-    password: {
-      forgot: 'I’ve forgotten my password',
-      label: 'Password'
-    },
-    email: {
-      label: 'Email address'
     },
     cis2: {
       unlock: 'I need to unlock my smartcard',

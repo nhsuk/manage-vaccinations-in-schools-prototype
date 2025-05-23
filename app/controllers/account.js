@@ -8,17 +8,13 @@ export const accountController = {
   },
 
   login(request, response) {
-    const { email } = request.body
     const { data } = request.session
 
-    // Username/Password
-    const user = Object.values(data.users).find((user) => user.email === email)
-
     // CIS2
-    const cis2User = Object.values(data.users).at(-1)
-    cis2User.role = UserRole.ClinicalAdmin
+    const user = Object.values(data.users).at(-1)
+    user.role = UserRole.ClinicalAdmin
 
-    request.session.data.token = user || cis2User
+    request.session.data.token = user
 
     response.redirect('/account/change-role')
   },
