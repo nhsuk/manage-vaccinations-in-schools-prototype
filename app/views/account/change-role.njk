@@ -1,11 +1,16 @@
 {% extends "_layouts/form.njk" %}
 
 {% set hideConfirmButton = true %}
-{% set public = true %}
-{% set transactionalService = {
-  name: "CIS2 Authentication"
-} %}
 {% set title = __("account.change-role.title") %}
+
+{% block header %}
+  {{ env(environment) if environment }}
+  {{ header({
+    service: {
+      name: serviceName
+    }
+  }) }}
+{% endblock %}
 
 {% block form %}
   {{ heading({

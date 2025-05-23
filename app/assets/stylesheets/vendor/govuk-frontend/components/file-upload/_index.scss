@@ -2,13 +2,3 @@
 
 // Use @import as GOV.UK Frontend is not compatible with Sass modules
 @import "govuk-frontend/dist/govuk/components/file-upload";
-
-.govuk-label.nhsuk-label--m {
-  // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
-  @extend .nhsuk-label--m;
-}
-
-.govuk-form-group {
-  // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
-  @extend .nhsuk-form-group;
-}

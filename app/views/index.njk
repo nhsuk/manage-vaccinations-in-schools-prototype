@@ -1,8 +1,6 @@
-{% from "_macros/logo.njk" import logo %}
-
 {% extends "_layouts/default.njk" %}
 
-{% set public = true %}
+{% set assetsName = "public" %}
 {% set title = serviceName + " (Mavis)" %}
 {% set transactional = true %}
 {% set transactionalService = {
@@ -28,17 +26,9 @@ Use this service to:
 - view and download performance reports
       {% endfilter %}
 
-      {% set buttonHtml %}
-        {{ logo(27) }}
-        <div>
-          <span>Log in with my </span>
-          Care Identity
-        </div>
-      {% endset %}
-
       {{ button({
         classes: "nhsuk-button--login nhsuk-u-margin-bottom-4",
-        html: buttonHtml,
+        html: "Log in with my Care Identity",
         href: "/account/cis2"
       }) }}
 

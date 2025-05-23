@@ -21,11 +21,11 @@
 {% from "_macros/status.njk" import status %}
 {% from "_macros/sub-navigation.njk" import subNavigation %}
 
-{% if bodyClasses %}
-  {% set bodyClasses = bodyClasses + " app-signed-in" if not public %}
-{% elif not public %}
-  {% set bodyClasses = "app-signed-in" %}
-{% endif %}
+{% block head %}
+  {% set assetsName = assetsName | default("application") %}
+  <link rel="stylesheet" href="/assets/{{ assetsName }}.css" media="all">
+  <script src="/assets/{{ assetsName }}.js" type="module"></script>
+{% endblock %}
 
 {% block bodyStart %}
   <script>document.body.className += 'noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '';</script>
@@ -35,14 +35,13 @@
   {{ env(environment) if environment }}
   {{ appHeader({
     service: {
-      name: serviceName,
-      href: "/home" if not public else "/"
+      name: serviceName
     } if not transactionalService,
-    homeHref: "/home" if not public else "/",
+    homeHref: "/" if transactionalService else "/home",
     transactional: true if transactionalService,
     transactionalService: transactionalService,
-    primaryLinks: navigation.primaryLinks if not public,
-    account: navigation.account if not public
+    primaryLinks: navigation.primaryLinks if not transactionalService,
+    account: navigation.account if not transactionalService
   }) }}
 {% endblock %}
 

@@ -13,11 +13,11 @@ export const parentController = {
   read(request, response, next, session_id) {
     const session = Session.read(session_id, request.session.data)
 
+    response.locals.assetsName = 'public'
     response.locals.transactionalService = {
       name: 'Give or refuse consent for vaccinations',
       href: session.consentUrl
     }
-    response.locals.public = true
     response.locals.session = session
 
     next()
@@ -43,6 +43,8 @@ export const parentController = {
       const child = generateChild()
       const parent = generateParent(child.lastName)
 
+      response.locals.assetsName = 'prototype'
+
       response.locals.consent = new Consent(
         {
           child,
@@ -53,8 +55,6 @@ export const parentController = {
       )
 
       response.locals.programme = session.programmes[0]
-
-      response.locals.public = false
 
       const combinedSideEffects = new Set()
       for (const programme of session.programmes) {

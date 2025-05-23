@@ -39,8 +39,11 @@
   {{ govukFileUpload({
     id: "upload",
     name: "upload",
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-4"
+    },
     label: {
-      classes: "nhsuk-label--m",
+      classes: "govuk-label--m",
       text: __("upload.file.label")
     },
     errorMessage: {
