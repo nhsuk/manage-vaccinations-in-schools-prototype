@@ -17,6 +17,6 @@
     value: consent.child.school_urn,
     allowEmpty: false,
     label: { text: __("consent.child.school.label") },
-    items: schoolItems
+    items: schoolItems(data.schools)
   }) | replace("govuk-", "nhsuk-") }}
 {% endblock %}

@@ -3,7 +3,6 @@ import _ from 'lodash'
 import { Cohort } from '../models/cohort.js'
 import { Patient } from '../models/patient.js'
 import { Record } from '../models/record.js'
-import { School } from '../models/school.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const patientController = {
@@ -127,18 +126,6 @@ export const patientController = {
       back: `${patient.uri}/edit`,
       next: `${patient.uri}/edit`
     }
-
-    response.locals.schoolItems = Object.values(data.schools)
-      .map((school) => new School(school))
-      .map((school) => ({
-        text: school.name,
-        value: school.urn,
-        ...(school.address && {
-          attributes: {
-            'data-hint': school.address.formatted.singleline
-          }
-        })
-      }))
 
     next()
   },

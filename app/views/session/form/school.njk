@@ -13,6 +13,6 @@
     value: session.school_urn,
     allowEmpty: false,
     label: { text: __("session.school_urn.title") },
-    items: schoolUrnItems
+    items: schoolItems(data.schools)
   }) | replace("govuk-", "nhsuk-") }}
 {% endblock %}

@@ -5,7 +5,6 @@ import { generateParent } from '../generators/parent.js'
 import { Consent } from '../models/consent.js'
 import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
-import { School } from '../models/school.js'
 import { ConsentWindow, Session, SessionType } from '../models/session.js'
 import { getHealthQuestionPaths } from '../utils/consent.js'
 import { formatList, kebabToCamelCase } from '../utils/string.js'
@@ -235,18 +234,6 @@ export const parentController = {
     response.locals.programmeIsFlu = consent.session.programmes
       .map(({ type }) => type)
       .includes(ProgrammeType.Flu)
-
-    response.locals.schoolItems = Object.values(data.schools)
-      .map((school) => new School(school))
-      .map((school) => ({
-        text: school.name,
-        value: school.urn,
-        ...(school.address && {
-          attributes: {
-            'data-hint': school.address.formatted.singleline
-          }
-        })
-      }))
 
     next()
   },

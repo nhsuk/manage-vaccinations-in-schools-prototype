@@ -10,7 +10,6 @@ import {
   ScreenOutcome
 } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
-import { School } from '../models/school.js'
 import {
   RegistrationOutcome,
   Session,
@@ -377,18 +376,6 @@ export const sessionController = {
         }),
         ...(referrer && { back: referrer })
       }
-
-      response.locals.schoolUrnItems = Object.values(data.schools)
-        .map((school) => new School(school))
-        .map((school) => ({
-          text: school.name,
-          value: school.urn,
-          ...(school.address && {
-            attributes: {
-              'data-hint': school.address.formatted.singleline
-            }
-          })
-        }))
 
       response.locals.clinicIdItems = Object.values(organisation.clinics)
         .map((clinic) => new Clinic(clinic))

@@ -1,6 +1,7 @@
 import _ from 'lodash'
 
 import { healthQuestions } from './datasets/health-questions.js'
+import { School } from './models/school.js'
 import {
   formatHealthAnswer,
   formatLink,
@@ -37,6 +38,27 @@ export default () => {
       text: value,
       value
     }))
+  }
+
+  /**
+   * Get school form field items
+   *
+   * @param {object} schools - Schools data
+   * @returns {object} Form field items
+   */
+  globals.schoolItems = function (schools) {
+    return Object.values(schools)
+      .map((school) => new School(school))
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((school) => ({
+        text: school.name,
+        value: school.urn,
+        ...(school.address && {
+          attributes: {
+            'data-hint': school.address.formatted.singleline
+          }
+        })
+      }))
   }
 
   /**

@@ -1,7 +1,6 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { Notice } from '../models/notice.js'
-import { School } from '../models/school.js'
 import { Upload, UploadType } from '../models/upload.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { formatYearGroup } from '../utils/string.js'
@@ -147,18 +146,6 @@ export const uploadController = {
         value
       })
     )
-
-    response.locals.schoolItems = Object.values(data.schools)
-      .map((school) => new School(school))
-      .map((school) => ({
-        text: school.name,
-        value: school.urn,
-        ...(school.address && {
-          attributes: {
-            'data-hint': school.address.formatted.singleline
-          }
-        })
-      }))
 
     if (upload.school) {
       response.locals.yearGroupItems = upload.school.yearGroups.map(

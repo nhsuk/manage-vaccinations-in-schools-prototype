@@ -15,6 +15,6 @@
         title: title
       })
     },
-    items: schoolItems
+    items: schoolItems(data.schools)
   }) | replace("govuk-", "nhsuk-") }}
 {% endblock %}
