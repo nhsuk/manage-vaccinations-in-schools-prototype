@@ -4,14 +4,12 @@
 
 {% block form %}
   {{ autocomplete({
-    id: "school-urn",
-    name: "[upload][school_urn]",
-    value: upload.school_urn,
     label: {
       html: heading({
         title: title
       })
     },
-    items: schoolItems(data.schools, upload.school_urn)
+    items: schoolItems(data.schools, upload.school_urn),
+    decorate: "upload.school_urn"
   }) }}
 {% endblock %}

@@ -1,24 +1,6 @@
 {%- from "x-nhsuk/decorated/select/macro.njk" import select with context %}
-
 {% macro autocomplete(params) -%}
-{{ select({
-  id: params.id,
-  name: params.name,
-  value: params.value,
-  items: params.items,
-  describedBy: params.describedBy,
-  label: params.label,
-  hint: params.hint,
-  errorMessage: params.errorMessage,
-  formGroup: params.formGroup,
-  classes: params.classes,
-  attributes: {
-    "data-module": "autocomplete",
-    "data-autoselect": params.autoselect,
-    "data-display-menu": params.displayMenu,
-    "data-min-length": params.minLength,
-    "data-show-all-values": params.showAllValues,
-    "data-show-no-options-found": params.showNoOptionsFound
-  }
-}) }}
+<auto-complete>
+  {{ select(params) }}
+</auto-complete>
 {% endmacro %}

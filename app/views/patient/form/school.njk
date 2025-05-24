@@ -4,9 +4,6 @@
 
 {% block form %}
   {{ autocomplete({
-    id: "school-urn",
-    name: "[patient][school_urn]",
-    value: patient.school_urn,
     label: {
       classes: "nhsuk-label--l",
       html: heading({
@@ -14,6 +11,7 @@
         title: title
       })
     },
-    items: schoolItems(data.schools, patient.school_urn)
+    items: schoolItems(data.schools, patient.school_urn),
+    decorate: "patient.school_urn"
   }) }}
 {% endblock %}
