@@ -3,16 +3,15 @@
 {% set title = __("upload.school.title") %}
 
 {% block form %}
-  {{ xGovukAutocomplete({
+  {{ autocomplete({
     id: "school-urn",
     name: "[upload][school_urn]",
     value: upload.school_urn,
-    allowEmpty: false,
     label: {
       html: heading({
         title: title
       })
     },
-    items: schoolItems(data.schools)
-  }) | replace("govuk-", "nhsuk-") }}
+    items: schoolItems(data.schools, upload.school_urn)
+  }) }}
 {% endblock %}
