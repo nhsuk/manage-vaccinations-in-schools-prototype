@@ -1,4 +1,3 @@
-import { Edge } from '@x-govuk/govuk-prototype-components'
 import { initAll as GOVUKFrontend } from 'govuk-frontend'
 import '@colinaut/action-table'
 
@@ -11,12 +10,6 @@ import { IsStickyComponent } from './custom-elements/is-sticky.js'
 customElements.define('auto-submit', AutoSubmitComponent)
 customElements.define('add-another', AddAnotherComponent)
 customElements.define('is-sticky', IsStickyComponent)
-
-// Initiate edge detection
-const $edges = document.querySelectorAll('[data-module="edge"]')
-$edges.forEach(($edge) => {
-  new Edge($edge).init()
-})
 
 // Initiate autocompletes
 const $autocompletes = document.querySelectorAll('[data-module="autocomplete"]')
