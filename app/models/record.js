@@ -5,6 +5,7 @@ import {
   formatList,
   formatNhsNumber,
   formatParent,
+  formatWithSecondaryText,
   stringToBoolean
 } from '../utils/string.js'
 
@@ -44,6 +45,15 @@ export class Record extends Child {
     this.pendingChanges = options?.pendingChanges || {}
     this.invalid = invalid
     this.sensitive = sensitive
+  }
+
+  /**
+   * Get full name, formatted as LASTNAME, Firstname
+   *
+   * @returns {string} - Full name
+   */
+  get fullName() {
+    return [this.lastName.toUpperCase(), this.firstName].join(', ')
   }
 
   /**
@@ -121,9 +131,12 @@ export class Record extends Child {
     const formattedParents =
       this.parents && this.parents.map((parent) => formatParent(parent))
 
+    const formattedNhsn = formatNhsNumber(this.nhsn, this.invalid)
+
     return {
       ...super.formatted,
-      nhsn: formatNhsNumber(this.nhsn, this.invalid),
+      fullNameAndNhsn: formatWithSecondaryText(this.fullName, formattedNhsn),
+      nhsn: formattedNhsn,
       newUrn:
         this.pendingChanges?.school_urn &&
         schools[this.pendingChanges.school_urn].name,

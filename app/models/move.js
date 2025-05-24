@@ -2,7 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import schools from '../datasets/schools.js'
 import { Patient } from '../models/patient.js'
-import { formatDate, today } from '../utils/date.js'
+import { formatDate, getDateValueDifference, today } from '../utils/date.js'
 
 /**
  * @readonly
@@ -106,6 +106,7 @@ export class Move {
     return Object.values(context.moves)
       .map((move) => new Move(move, context))
       .filter((move) => !move.ignored)
+      .sort((a, b) => getDateValueDifference(a.createdAt, b.createdAt))
   }
 
   /**

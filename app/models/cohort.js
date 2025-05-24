@@ -79,9 +79,9 @@ export class Cohort {
    */
   get patients() {
     if (this.context?.records && this.record_nhsns) {
-      return this.record_nhsns.map(
-        (nhsn) => new Patient(this.context?.records[nhsn])
-      )
+      return this.record_nhsns
+        .map((nhsn) => new Patient(this.context?.records[nhsn]))
+        .sort((a, b) => a.lastName.localeCompare(b.lastName))
     }
 
     return []

@@ -23,10 +23,7 @@
         },
         {
           header: __("session.dates.label"),
-          html: session.formatted.dates or "None scheduled",
-          attributes: {
-            "data-sort": "session.firstDate"
-          }
+          html: session.formatted.dates or "None scheduled"
         } if showDates,
         {
           header: __("session.programmes.label"),
@@ -40,9 +37,8 @@
       ]) %}
     {% endfor %}
 
-    {{ actionTable({
+    {{ table({
       id: "sessions",
-      sort: "date",
       heading: __n("session.list." + view + ".count", sessions.length),
       panel: true,
       responsive: true,
@@ -55,10 +51,7 @@
         { text: __("session.programmes.label") },
         {
           text: __("session.patients.label"),
-          format: "numeric",
-          attributes: {
-            "no-sort": "no-sort"
-          }
+          format: "numeric"
         }
       ],
       rows: sessionRows

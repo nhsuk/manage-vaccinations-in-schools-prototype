@@ -162,11 +162,7 @@
         {% set vaccinationRows = vaccinationRows | push([
           {
             header: __("vaccination.createdAt.label"),
-            html: vaccination.link.createdAt_date,
-            attributes: {
-              "data-col": "createdAt",
-              "data-sort": vaccination.link.createdAt_date
-            }
+            html: vaccination.link.createdAt_date
           },
           {
             header: __("vaccination.location.label"),

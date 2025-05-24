@@ -44,12 +44,8 @@
     {% for vaccination in results.page %}
       {% set resultRows = resultRows | push([
         {
-          header: __("patient.fullName.label"),
-          html: link(vaccination.uri, vaccination.patient.fullName)
-        },
-        {
-          header: __("patient.nhsn.label"),
-          html: vaccination.patient.formatted.nhsn or "Not provided"
+          header: __("patient.fullNameAndNhsn.label"),
+          html: vaccination.link.fullNameAndNhsn
         },
         {
           header: __("patient.dob.label"),
@@ -66,16 +62,14 @@
       ]) %}
     {% endfor %}
 
-    {{ actionTable({
+    {{ table({
       classes: "nhsuk-u-margin-bottom-6",
       id: "vaccinations",
-      sort: "name",
       heading: __n("vaccination.count", programme.vaccinations.length),
       panel: true,
       responsive: true,
       head: [
-        { text: __("patient.fullName.label") },
-        { text: __("patient.nhsn.label") },
+        { text: __("patient.fullNameAndNhsn.label") },
         { text: __("patient.dob.label") },
         { text: __("patient.postalCode.label") },
         { text: __("vaccination.createdAt.label") }

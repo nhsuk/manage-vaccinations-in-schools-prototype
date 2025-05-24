@@ -56,9 +56,8 @@
   {% endfor %}
 
   {% if consents.length %}
-    {{ actionTable({
+    {{ table({
       id: "consents",
-      sort: "createdAt",
       heading: __n("consent.count", consents.length),
       headingLevel: 2,
       panel: true,

@@ -17,10 +17,7 @@
       {% set schoolRows = schoolRows | push([
         {
           header: __("school.name.label"),
-          html: school.link.name or "Not provided",
-          attributes: {
-            "data-sort": school.name
-          }
+          html: school.link.name or "Not provided"
         },
         {
           header: __("school.urn.label"),
@@ -33,10 +30,9 @@
       ]) %}
     {% endfor %}
 
-    {{ actionTable({
+    {{ table({
       classes: "nhsuk-u-margin-bottom-6",
       id: "schools",
-      sort: "name",
       caption: __n("school." + phase | lower + ".count", schools.length),
       responsive: true,
       head: [

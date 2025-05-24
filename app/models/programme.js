@@ -301,6 +301,7 @@ export class Programme {
     return Session.readAll(this.context)
       .filter(({ programme_ids }) => programme_ids.includes(this.id))
       .filter(({ patients }) => patients.length > 0)
+      .sort((a, b) => a.location?.name.localeCompare(b.location?.name))
   }
 
   /**
@@ -309,9 +310,9 @@ export class Programme {
    * @returns {Array<Vaccination>} - Vaccinations
    */
   get vaccinations() {
-    return Vaccination.readAll(this.context).filter(
-      ({ programme_id }) => programme_id === this.id
-    )
+    return Vaccination.readAll(this.context)
+      .filter(({ programme_id }) => programme_id === this.id)
+      .sort((a, b) => a.patient?.lastName.localeCompare(b.patient?.lastName))
   }
 
   /**

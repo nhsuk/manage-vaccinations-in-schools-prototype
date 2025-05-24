@@ -85,26 +85,16 @@
     ]) %}
   {% endfor %}
 
-  {{ actionTable({
+  {{ table({
     id: "duplicate-records",
-    sort: "name",
     panel: true,
     heading: upload.formatted.duplicates,
     headingLevel: 2,
     responsive: true,
     head: [
-      {
-        text: __("record.label"),
-        attributes: { "no-sort": "no-sort" }
-      },
-      {
-        text: __("upload.issue.label"),
-        attributes: { "no-sort": "no-sort" }
-      },
-      {
-        text: __("actions.label"),
-        attributes: { "no-sort": "no-sort" }
-      }
+      { text: __("record.label") },
+      { text: __("upload.issue.label") },
+      { text: __("actions.label") }
     ],
     rows: duplicateRecordRows
   }) if upload.duplicates.length }}
@@ -114,11 +104,7 @@
     {% set recordRows = recordRows | push([
       {
         header: __("record.fullName.label"),
-        html: link(record.vaccination.uri, record.fullName) if upload.type == UploadType.Report else record.fullName
-      },
-      {
-        header: __("record.nhsn.label"),
-        html: record.formatted.nhsn or "Not provided"
+        html: record.vaccination.link.fullNameAndNhsn if upload.type == UploadType.Report else record.formatted.fullNameAndNhsn
       },
       {
         header: __("record.dob.label"),
@@ -137,9 +123,8 @@
     ]) %}
   {% endfor %}
 
-  {{ actionTable({
-    id: "vaccinations",
-    sort: "name",
+  {{ table({
+    id: "records",
     panel: true,
     heading: __n("upload.records.count", upload.records.length),
     headingLevel: 2,

@@ -133,7 +133,9 @@ export class Upload {
   get duplicates() {
     if (this.status === UploadStatus.Complete) {
       if (this.records) {
-        return this.records.filter((record) => record.hasPendingChanges)
+        return this.records
+          .filter((record) => record.hasPendingChanges)
+          .sort((a, b) => a.firstName.localeCompare(b.firstName))
       }
 
       return []

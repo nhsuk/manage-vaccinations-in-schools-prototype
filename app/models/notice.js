@@ -1,6 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { formatDate, today } from '../utils/date.js'
+import { formatDate, getDateValueDifference, today } from '../utils/date.js'
 
 import { Patient } from './patient.js'
 
@@ -87,9 +87,9 @@ export class Notice {
    * @static
    */
   static readAll(context) {
-    return Object.values(context.notices).map(
-      (notice) => new Notice(notice, context)
-    )
+    return Object.values(context.notices)
+      .map((notice) => new Notice(notice, context))
+      .sort((a, b) => getDateValueDifference(a.createdAt, b.createdAt))
   }
 
   /**

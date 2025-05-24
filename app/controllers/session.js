@@ -29,14 +29,7 @@ export const sessionController = {
   },
 
   readAll(request, response, next) {
-    let sessions = Session.readAll(request.session.data)
-
-    // Sort
-    sessions = sessions.sort((a, b) =>
-      getDateValueDifference(a.firstDate, b.firstDate)
-    )
-
-    response.locals.sessions = sessions
+    response.locals.sessions = Session.readAll(request.session.data)
 
     next()
   },
@@ -86,6 +79,10 @@ export const sessionController = {
           (session) => session.status === statuses[view]
         )
       }
+
+      sessions = sessions.sort((a, b) =>
+        getDateValueDifference(a.firstDate, b.firstDate)
+      )
 
       response.render('session/list', { sessions, view })
     }

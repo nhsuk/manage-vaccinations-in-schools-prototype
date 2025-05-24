@@ -49,7 +49,7 @@
       ]) %}
     {% endfor %}
 
-    {{ actionTable({
+    {{ table({
       id: "cohort",
       heading: __n("cohort.patients.count", cohort.patients.length),
       headingLevel: 2,
@@ -57,9 +57,9 @@
       responsive: true,
       head: [
         { text: __("patient.fullNameAndNhsn.label") },
+        { text: __("patient.dob.label") },
         { text: __("patient.postalCode.label") },
-        { text: __("patient.school.label") },
-        { text: __("patient.dob.label") }
+        { text: __("patient.school.label") }
       ],
       rows: patientRows
     }) }}

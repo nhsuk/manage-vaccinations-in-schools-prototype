@@ -54,7 +54,9 @@ export class Organisation {
    */
   get clinics() {
     try {
-      return this?.clinic_ids.map((id) => new Clinic(this.context?.clinics[id]))
+      return this?.clinic_ids
+        .map((id) => new Clinic(this.context?.clinics[id]))
+        .sort((a, b) => a.name.localeCompare(b.name))
     } catch (error) {
       console.error('Organisation.clinics', error.message)
     }
@@ -67,9 +69,9 @@ export class Organisation {
    */
   get schools() {
     try {
-      return this?.school_urns.map(
-        (urn) => new School(this.context?.schools[urn])
-      )
+      return this?.school_urns
+        .map((urn) => new School(this.context?.schools[urn]))
+        .sort((a, b) => a.name.localeCompare(b.name))
     } catch (error) {
       console.error('Organisation.schools', error.message)
     }

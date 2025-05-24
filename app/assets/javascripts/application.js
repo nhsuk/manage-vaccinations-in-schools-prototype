@@ -1,5 +1,4 @@
 import { initAll as GOVUKFrontend } from 'govuk-frontend'
-import '@colinaut/action-table'
 
 import { AddAnotherComponent } from './custom-elements/add-another.js'
 import { AutoSubmitComponent } from './custom-elements/auto-submit.js'

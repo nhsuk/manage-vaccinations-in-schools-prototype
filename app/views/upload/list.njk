@@ -17,11 +17,7 @@
       {% set uploadRows = uploadRows | push([
         {
           header: __("upload.createdAt.label"),
-          html: link(upload.uri, upload.formatted.createdAt),
-          attributes: {
-            "data-col": "createdAt",
-            "data-sort": upload.createdAt
-          }
+          html: link(upload.uri, upload.formatted.createdAt)
         },
         {
           header: __("upload.type.label"),
@@ -39,9 +35,8 @@
       ]) %}
     {% endfor %}
 
-    {{ actionTable({
+    {{ table({
       id: "uploads",
-      sort: "createdAt",
       heading: __n("upload.count", uploads.length) ,
       panel: true,
       responsive: true,
@@ -51,10 +46,7 @@
         { text: __("upload.status.label") },
         {
           text: __("upload.records.label"),
-          format: "numeric",
-          attributes: {
-            "no-sort": "no-sort"
-          }
+          format: "numeric"
         }
       ],
       rows: uploadRows

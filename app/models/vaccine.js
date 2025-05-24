@@ -1,5 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import { getDateValueDifference } from '../utils/date.js'
 import {
   formatHealthQuestions,
   formatList,
@@ -104,6 +105,7 @@ export class Vaccine {
       return Object.values(this.context.batches)
         .filter((batch) => batch.vaccine_snomed === this.snomed)
         .map((batch) => new Batch(batch))
+        .sort((a, b) => getDateValueDifference(a.expiry, b.expiry))
     } catch (error) {
       console.error('Vaccine.batches', error.message)
     }

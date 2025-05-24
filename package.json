@@ -21,7 +21,6 @@
     "postinstall": "npm run create-data"
   },
   "dependencies": {
-    "@colinaut/action-table": "^2.4.6",
     "@faker-js/faker": "^9.0.0",
     "@x-govuk/govuk-prototype-wizard": "^0.4.0",
     "accessible-autocomplete": "^3.0.1",
@@ -32,7 +31,7 @@
     "i18n": "^0.15.1",
     "json-as-xlsx": "^2.5.6",
     "lodash": "^4.17.21",
-    "nhsuk-prototype-rig": "^0.6.0"
+    "nhsuk-prototype-rig": "^0.6.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.10",

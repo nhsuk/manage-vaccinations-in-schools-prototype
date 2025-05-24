@@ -33,20 +33,14 @@
       ]) %}
     {% endfor %}
 
-    {{ actionTable({
+    {{ table({
       id: "programmes",
-      sort: "name",
       heading: year,
       headingLevel: 2,
       panel: true,
       responsive: true,
       head: [
-        {
-          text: __("programme.name.label"),
-          attributes: {
-            style: "width: 40%"
-          }
-        },
+        { text: __("programme.name.label") },
         { text: __("programme.vaccines.label") },
         { text: __("programme.patientSessions.label") },
         { text: __("programme.vaccinations.label") }

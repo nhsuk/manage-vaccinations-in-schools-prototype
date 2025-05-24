@@ -26,7 +26,7 @@
       }) }}
 
       {% set batchRows = [] %}
-      {% for batch in vaccine.batches | rejectattr("archivedAt") | sort(false, false, "id") %}
+      {% for batch in vaccine.batches | rejectattr("archivedAt") %}
         {% set batchRows = batchRows | push([
           {
             header: __("batch.id.label"),
@@ -34,17 +34,11 @@
           },
           {
             header: __("batch.createdAt.label"),
-            html: batch.formatted.createdAt or "Not provided",
-            attributes: {
-              "data-sort": batch.createdAt
-            }
+            html: batch.formatted.createdAt or "Not provided"
           },
           {
             header: __("batch.expiry.label"),
-            html: batch.formatted.expiry or "Not provided",
-            attributes: {
-              "data-sort": batch.expiry
-            }
+            html: batch.formatted.expiry or "Not provided"
           },
           {
             header: __("actions.label"),
@@ -61,9 +55,8 @@
         ]) %}
       {% endfor %}
 
-      {{ actionTable({
+      {{ table({
         id: "vaccines",
-        sort: "batch",
         responsive: true,
         head: [
           { text: __("batch.id.label") },

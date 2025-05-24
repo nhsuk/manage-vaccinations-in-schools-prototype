@@ -24,16 +24,16 @@
         html: patient.link.fullNameAndNhsn | highlightQuery(data.q)
       },
       {
+        header: __("patient.dob.label"),
+        html: patient.formatted.dob or "Not provided"
+      },
+      {
         header: __("patient.postalCode.label"),
         html: patient.postalCode | highlightQuery(data.q) or "Not provided"
       },
       {
         header: __("patient.school.label"),
         html: patient.formatted.school | highlightQuery(data.q) or "Not provided"
-      },
-      {
-        header: __("patient.dob.label"),
-        html: patient.formatted.dob or "Not provided"
       }
     ]) %}
   {% endfor %}
@@ -52,9 +52,9 @@
       responsive: true,
       head: [
         { text: __("patient.fullNameAndNhsn.label") },
+        { text: __("patient.dob.label") },
         { text: __("patient.postalCode.label") },
-        { text: __("patient.school.label") },
-        { text: __("patient.dob.label") }
+        { text: __("patient.school.label") }
       ],
       rows: patientRows
     }) }}

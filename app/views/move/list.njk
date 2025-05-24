@@ -48,9 +48,8 @@
   {% endfor %}
 
   {% if moves.length %}
-    {{ actionTable({
+    {{ table({
       id: "moves",
-      sort: "name",
       heading: __n("move.count", moves.length),
       headingLevel: 2,
       panel: true,
@@ -58,14 +57,8 @@
       head: [
         { text: __("move.createdAt.label") },
         { text: __("child.label") },
-        {
-          text: __("move.movement.label"),
-          attributes: { "no-sort": "no-sort" }
-        },
-        {
-          text: __("actions.label"),
-          attributes: { "no-sort": "no-sort" }
-        }
+        { text: __("move.movement.label") },
+        { text: __("actions.label") }
       ],
       rows: resultRows
     }) }}

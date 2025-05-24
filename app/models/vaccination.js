@@ -12,6 +12,7 @@ import {
 } from '../utils/date.js'
 import {
   formatLink,
+  formatLinkWithSecondaryText,
   formatMillilitres,
   formatMarkdown,
   formatMonospace,
@@ -372,7 +373,13 @@ export class Vaccination {
    */
   get link() {
     return {
-      createdAt_date: formatLink(this.uri, this.formatted.createdAt_date)
+      createdAt_date: formatLink(this.uri, this.formatted.createdAt_date),
+      fullName: formatLink(this.uri, this.patient.fullName),
+      fullNameAndNhsn: formatLinkWithSecondaryText(
+        this.uri,
+        this.patient.fullName,
+        this.patient.formatted.nhsn || 'Missing NHS number'
+      )
     }
   }
 

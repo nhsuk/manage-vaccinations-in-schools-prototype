@@ -16,10 +16,7 @@
     {% set resultRows = resultRows | push([
       {
         header: __("record.fullName.label"),
-        html: link(record.uri, record.fullName) or "Not provided",
-        attributes: {
-          "data-sort": record.lastName
-        }
+        html: link(record.uri, record.fullName) or "Not provided"
       },
       {
         header: __("record.nhsn.label"),
@@ -27,10 +24,7 @@
       },
       {
         header: __("record.dob.label"),
-        html: record.formatted.dob or "Not provided",
-        attributes: {
-          "data-sort": record.dob
-        }
+        html: record.formatted.dob or "Not provided"
       },
       {
         header: __("record.gender.label"),
@@ -39,10 +33,9 @@
     ]) %}
   {% endfor %}
 
-  {{ actionTable({
+  {{ table({
     classes: "nhsuk-u-margin-bottom-6",
     id: "records",
-    sort: "full name",
     caption: __n("record.count", records.length),
     responsive: true,
     head: [

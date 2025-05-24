@@ -128,10 +128,7 @@ export const programmeController = {
 
   readVaccinations(request, response, next) {
     const { programme } = response.locals
-    let vaccinations = programme.vaccinations
-
-    // Sort
-    vaccinations = _.sortBy(vaccinations, 'createdAt').reverse()
+    const vaccinations = programme.vaccinations
 
     // Results
     response.locals.results = getResults(vaccinations, request.query)

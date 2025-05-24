@@ -42,7 +42,7 @@
   {% endmacro %}
 
   {% set sessionRows = [] %}
-  {% for session in programme.sessions | sort(false, false, "date") %}
+  {% for session in programme.sessions %}
     {% set noResponse = session.patients | where("consent", ConsentOutcome.NoResponse) | length %}
     {% set percentageNoResponse = percentage(noResponse, session.patients.length) %}
     {% set triageNeeded = session.patients | where("triage", TriageOutcome.Needed) | length %}
@@ -55,47 +55,31 @@
       },
       {
         header: __("session.patients.label"),
-        text: count(session.patients.length),
-        attributes: {
-          "data-sort": session.patients.length
-        }
+        text: count(session.patients.length)
       },
       {
         header: __("consent." + ConsentOutcome.NoResponse + ".label"),
-        text: count(noResponse, percentageNoResponse),
-        attributes: {
-          "data-sort": noResponse
-        }
+        text: count(noResponse, percentageNoResponse)
       },
       {
         header: __("triage." + + TriageOutcome.Needed + ".label"),
-        text: count(triageNeeded),
-        attributes: {
-          "data-sort": triageNeeded
-        }
+        text: count(triageNeeded)
       },
       {
         header: __("report." + PatientOutcome.Vaccinated + ".label"),
-        text: count(vaccinated, percentageVaccinated),
-        attributes: {
-          "data-sort": vaccinated
-        }
+        text: count(vaccinated, percentageVaccinated)
       }
     ]) %}
   {% endfor %}
 
-  {{ actionTable({
+  {{ table({
     id: "sessions",
-    sort: "date",
     panel: true,
     heading: __n("session.count", programme.sessions.length),
     responsive: true,
     head: [
       {
-        text: __("session.details.label"),
-        attributes: {
-          "no-sort": "no-sort"
-        }
+        text: __("session.details.label")
       },
       {
         text: __("session.patients.label"),

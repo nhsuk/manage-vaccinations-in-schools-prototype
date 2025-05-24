@@ -21,10 +21,7 @@
         },
         {
           header: __("notice.createdAt.label"),
-          html: notice.formatted.createdAt,
-          attributes: {
-            "data-sort": notice.createdAt
-          }
+          html: notice.formatted.createdAt
         },
         {
           header: __("notice.label"),
@@ -42,9 +39,8 @@
       ]) %}
     {% endfor %}
 
-    {{ actionTable({
+    {{ table({
       id: "notices",
-      sort: "date",
       heading: __n("notice.count", notices.length),
       panel: true,
       responsive: true,
@@ -52,10 +48,7 @@
         { text: __("record.label") },
         { text: __("notice.createdAt.label") },
         { text: __("notice.label") },
-        {
-          text: __("actions.label"),
-          attributes: { "no-sort": "no-sort" }
-        }
+        { text: __("actions.label") }
       ],
       rows: noticeRows
     }) }}

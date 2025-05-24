@@ -37,25 +37,15 @@
       {% endfor %}
     {% endfor %}
 
-    {{ actionTable({
+    {{ table({
       id: "reviews",
-      sort: "name",
       heading: __n("upload.reviews.count", reviews.length),
       panel: true,
       responsive: true,
       head: [
-        {
-          text: __("record.label"),
-          attributes: { "no-sort": "no-sort" }
-        },
-        {
-          text: __("upload.issue.label"),
-          attributes: { "no-sort": "no-sort" }
-        },
-        {
-          text: __("actions.label"),
-          attributes: { "no-sort": "no-sort" }
-        }
+        { text: __("record.label") },
+        { text: __("upload.issue.label") },
+        { text: __("actions.label") }
       ],
       rows: reviewRows
     }) }}
