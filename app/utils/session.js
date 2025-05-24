@@ -1,12 +1,7 @@
 import { isAfter, isBefore } from 'date-fns'
 
 import { ProgrammeType, programmeTypes } from '../models/programme.js'
-import {
-  ConsentWindow,
-  Session,
-  SessionStatus,
-  SessionType
-} from '../models/session.js'
+import { ConsentWindow, SessionStatus, SessionType } from '../models/session.js'
 import { today } from '../utils/date.js'
 
 /**
