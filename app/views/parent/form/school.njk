@@ -11,12 +11,9 @@
     organisation: data.organisation
   }) | nhsukMarkdown }}
 
-  {{ xGovukAutocomplete({
-    id: "school-urn",
-    name: "[consent][child][school_urn]",
-    value: consent.child.school_urn,
-    allowEmpty: false,
+  {{ autocomplete({
     label: { text: __("consent.child.school.label") },
-    items: schoolItems(data.schools)
-  }) | replace("govuk-", "nhsuk-") }}
+    items: schoolItems(data.schools, consent.child.school_urn),
+    decorate: "consent.child.school_urn"
+  }) }}
 {% endblock %}

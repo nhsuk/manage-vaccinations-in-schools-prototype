@@ -54,7 +54,7 @@ export const schoolTerms = {
 export class School {
   constructor(options, context) {
     this.context = context
-    this.urn = (options.urn && Number(options.urn)) || faker.string.numeric(6)
+    this.urn = (options.urn && String(options.urn)) || faker.string.numeric(6)
     this.name = options?.name
     this.phase = options?.phase
     this.address = options?.address && new Address(options.address)

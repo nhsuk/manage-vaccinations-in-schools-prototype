@@ -4,7 +4,7 @@ import { School } from '../models/school.js'
 /**
  * Generate school
  *
- * @param {number} urn - School URN
+ * @param {string} urn - School URN
  * @returns {School} - School
  */
 export function generateSchool(urn) {

@@ -64,7 +64,7 @@ export function generateChild() {
 
   // Add examples of children who are home-schooled or at an unknown school
   if (faker.datatype.boolean(0.01)) {
-    school_urn = faker.helpers.arrayElement([888888, 999999])
+    school_urn = faker.helpers.arrayElement(['888888', '999999'])
   }
 
   // GP surgery

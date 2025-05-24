@@ -7,12 +7,9 @@
     title: title
   }) }}
 
-  {{ xGovukAutocomplete({
-    id: "school-urn",
-    name: "[session][school_urn]",
-    value: session.school_urn,
-    allowEmpty: false,
+  {{ autocomplete({
     label: { text: __("session.school_urn.title") },
-    items: schoolItems(data.schools)
-  }) | replace("govuk-", "nhsuk-") }}
+    items: schoolItems(data.schools, session.school_urn),
+    decorate: "session.school_urn"
+  }) }}
 {% endblock %}

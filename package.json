@@ -23,8 +23,8 @@
   "dependencies": {
     "@colinaut/action-table": "^2.4.6",
     "@faker-js/faker": "^9.0.0",
-    "@x-govuk/govuk-prototype-components": "^4.0.0",
     "@x-govuk/govuk-prototype-wizard": "^0.4.0",
+    "accessible-autocomplete": "^3.0.1",
     "date-fns": "^4.0.0",
     "dotenv": "^16.4.5",
     "express-flash": "^0.0.2",

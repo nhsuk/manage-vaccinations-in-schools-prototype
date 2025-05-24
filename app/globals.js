@@ -44,21 +44,31 @@ export default () => {
    * Get school form field items
    *
    * @param {object} schools - Schools data
+   * @param {string} value - Current value
    * @returns {object} Form field items
    */
-  globals.schoolItems = function (schools) {
-    return Object.values(schools)
-      .map((school) => new School(school))
-      .sort((a, b) => a.name.localeCompare(b.name))
-      .map((school) => ({
-        text: school.name,
-        value: school.urn,
-        ...(school.address && {
-          attributes: {
-            'data-hint': school.address.formatted.singleline
-          }
-        })
-      }))
+  globals.schoolItems = function (schools, value) {
+    return [
+      {
+        value: '',
+        text: 'Select an option',
+        disabled: true,
+        ...(!value && { selected: true })
+      },
+      ...Object.values(schools)
+        .map((school) => new School(school))
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((school) => ({
+          text: school.name,
+          value: school.urn,
+          ...(value && { selected: value === school.urn }),
+          ...(school.address && {
+            attributes: {
+              'data-hint': school.address.formatted.singleline
+            }
+          })
+        }))
+    ]
   }
 
   /**

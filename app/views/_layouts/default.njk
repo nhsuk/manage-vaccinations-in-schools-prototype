@@ -5,13 +5,11 @@
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
 {% from "govuk/components/password-input/macro.njk" import govukPasswordInput %}
 
-{#- GOV.UK Prototype Components -#}
-{% from "x-govuk/components/autocomplete/macro.njk" import xGovukAutocomplete with context %}
-
 {#- App macros -#}
 {% from "_macros/action-list.njk" import actionList %}
 {% from "_macros/action-table.njk" import actionTable %}
 {% from "_macros/add-another.njk" import addAnother %}
+{% from "_macros/autocomplete.njk" import autocomplete with context %}
 {% from "_macros/button-group.njk" import buttonGroup with context %}
 {% from "_macros/count.njk" import count %}
 {% from "_macros/env.njk" import env %}

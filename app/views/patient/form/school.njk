@@ -3,11 +3,7 @@
 {% set title = __("patient.school.title") %}
 
 {% block form %}
-  {{ xGovukAutocomplete({
-    id: "school-urn",
-    name: "[patient][school_urn]",
-    value: patient.school_urn,
-    allowEmpty: false,
+  {{ autocomplete({
     label: {
       classes: "nhsuk-label--l",
       html: heading({
@@ -15,6 +11,7 @@
         title: title
       })
     },
-    items: schoolItems(data.schools)
-  }) | replace("govuk-", "nhsuk-") }}
+    items: schoolItems(data.schools, patient.school_urn),
+    decorate: "patient.school_urn"
+  }) }}
 {% endblock %}
