@@ -15,17 +15,19 @@ $_button-border-radius: nhsuk.$nhsuk-border-width-form-element * 2;
 $_button-shadow-size: $_button-border-radius;
 
 .govuk-button {
+  // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
   @extend .nhsuk-button;
   border-radius: $_button-border-radius;
 
   &::before {
-    bottom: -(nhsuk.$nhsuk-border-width-form-element + $_button-shadow-size);
-    border: nhsuk.$nhsuk-border-width-form-element solid transparent;
     background-color: transparent;
+    border: nhsuk.$nhsuk-border-width-form-element solid transparent;
+    bottom: -(nhsuk.$nhsuk-border-width-form-element + $_button-shadow-size);
   }
 }
 
 .govuk-button--secondary {
+  // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
   @extend .nhsuk-button--secondary;
   background-color: transparent;
   box-shadow: none;
@@ -53,10 +55,10 @@ $_button-shadow-size: $_button-border-radius;
   }
 
   &:not(:focus):not(:active)::after {
+    border-radius: math.div($_button-border-radius, 2);
+    box-shadow: 0 $_button-shadow-size 0 nhsuk.$nhsuk-secondary-button-shadow-color;
     left: 0;
     right: 0;
-    box-shadow: 0 $_button-shadow-size 0 nhsuk.$nhsuk-secondary-button-shadow-color;
-    border-radius: math.div($_button-border-radius, 2);
   }
 }
 

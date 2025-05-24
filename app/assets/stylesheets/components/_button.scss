@@ -5,6 +5,7 @@ $_button-shadow-size: $nhsuk-border-width-form-element * 2;
 $_secondary-warning-button-hover-color: color.change($nhsuk-warning-button-color, $alpha: 0.1);
 
 .app-button--secondary-warning {
+  // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
   @extend .nhsuk-button--secondary;
 
   &,
