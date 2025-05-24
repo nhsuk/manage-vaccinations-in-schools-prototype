@@ -871,9 +871,9 @@ export class Session {
           }
         ),
       consentWindow,
-      // location: Object.values(this.location)
-      //   .filter((string) => string)
-      //   .join(', '),
+      location: Object.values(this.location)
+        .filter((string) => string)
+        .join(', '),
       school: this.school && this.school.name,
       school_urn: this.school && this.school.formatted.urn,
       status: formatTag(this.sessionStatus)
