@@ -147,7 +147,7 @@ export const parentController = {
       [`/${session_id}/${consent_uuid}/new/consultation`]: {
         [`/${session_id}/${consent_uuid}/new/check-answers`]: {
           data: 'consent.decision',
-          value: ReplyDecision.Consult
+          value: ReplyDecision.Declined
         },
         [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
           data: 'consent.decision',

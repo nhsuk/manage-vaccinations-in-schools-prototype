@@ -591,19 +591,19 @@ export const en = {
     confirmation: {
       title: {
         [ReplyDecision.Given]: 'Consent confirmed',
-        [ReplyDecision.Consult]: 'Follow up requested',
         [ReplyDecision.OnlyFluInjection]:
           'Consent for the flu injection vaccination confirmed',
         [ReplyDecision.OnlyMenACWY]:
           'Consent for the MenACWY vaccination confirmed',
         [ReplyDecision.OnlyTdIPV]:
           'Consent for the Td/IPV vaccination confirmed',
+        [ReplyDecision.Declined]: 'Follow up requested',
         [ReplyDecision.Refused]: 'Refusal confirmed'
       },
       text: {
         [ReplyDecision.Given]:
           '{{consent.child.fullName}} is due to get the {{session.vaccinationNames.sentenceCase}} at school on {{session.summary.datesDisjunction}}',
-        [ReplyDecision.Consult]:
+        [ReplyDecision.Declined]:
           'You’ve told us that you would you like a member of the team to contact you to discuss your options',
         [ReplyDecision.OnlyFluInjection]:
           '{{consent.child.fullName}} is due to get the flu injection at school on {{session.summary.datesDisjunction}}',
