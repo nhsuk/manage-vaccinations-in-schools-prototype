@@ -7,6 +7,7 @@ import { Organisation } from '../models/organisation.js'
 import {
   Activity,
   ConsentOutcome,
+  PatientOutcome,
   ScreenOutcome
 } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
@@ -140,6 +141,13 @@ export const sessionController = {
           (patientSession) => patientSession[view] === filters[view]
         )
       }
+    }
+
+    // Don’t show screen outcome for children who have already been vaccinated
+    if (view === 'screen') {
+      results = results.filter(
+        (patientSession) => patientSession.outcome !== PatientOutcome.Vaccinated
+      )
     }
 
     // Filter by year group
