@@ -218,7 +218,7 @@ export const parentController = {
       ]
     } else {
       // HPV: Yes or no
-      response.locals.programmeItems = [
+      response.locals.decisionItems = [
         {
           text: __('consent.decision.yes.label'),
           value: ReplyDecision.Given
