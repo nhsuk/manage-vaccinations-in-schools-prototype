@@ -24,13 +24,13 @@ import { User } from './user.js'
  * @enum {string}
  */
 export const ReplyDecision = {
+  NoResponse: 'No response',
   Given: 'Consent given',
-  Refused: 'Consent refused',
-  Consult: 'Follow up requested',
   OnlyFluInjection: 'Consent given for flu injection',
   OnlyMenACWY: 'Consent given for MenACWY only',
   OnlyTdIPV: 'Consent given for Td/IPV only',
-  NoResponse: 'No response'
+  Declined: 'Follow up requested',
+  Refused: 'Consent refused'
 }
 
 /**
