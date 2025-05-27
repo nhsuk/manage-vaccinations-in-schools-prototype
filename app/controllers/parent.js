@@ -105,6 +105,14 @@ export const parentController = {
     const consent = new Consent(Consent.read(consent_uuid, data?.wizard), data)
     response.locals.consent = consent
 
+    const programmes = consent.session ? consent.session.programmes : []
+    const hasAlternativeVaccine = programmes[0]?.hasAlternativeVaccines
+
+    // If programme has alternative vaccine, and given consent has been given
+    // for the default, ask for consent for the alternative as well
+    const getConsentForAlternativeVaccine =
+      hasAlternativeVaccine && consent.decision === ReplyDecision.Given
+
     const journey = {
       [`/${session_id}`]: {},
       [`/${session_id}/${consent_uuid}/new/child`]: {},
@@ -131,7 +139,7 @@ export const parentController = {
       },
       [`/${session_id}/${consent_uuid}/new/address`]: {},
       ...getHealthQuestionPaths(`/${session_id}/${consent_uuid}/new/`, consent),
-      ...(consent.decision === ReplyDecision.Given && {
+      ...(getConsentForAlternativeVaccine && {
         [`/${session_id}/${consent_uuid}/new/alternative`]: {}
       }),
       [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
@@ -168,7 +176,6 @@ export const parentController = {
     paths.back = referrer || paths.back
     response.locals.paths = paths
 
-    const programmes = consent.session ? consent.session.programmes : []
     if (programmes.length > 1) {
       // MenACWY and Td/IPV: Ask for consent for none, one or all programmes
       response.locals.decisionItems = [
@@ -189,16 +196,14 @@ export const parentController = {
         }
       ]
 
-      response.locals.programmeItems = consent.session.programmes.map(
-        (programme) => ({
-          text: programme.name,
-          value:
-            programme.id === 'td-ipv'
-              ? ReplyDecision.OnlyTdIPV
-              : ReplyDecision.OnlyMenACWY
-        })
-      )
-    } else if (programmes[0]?.hasAlternativeVaccines) {
+      response.locals.programmeItems = programmes.map((programme) => ({
+        text: programme.name,
+        value:
+          programme.id === 'td-ipv'
+            ? ReplyDecision.OnlyTdIPV
+            : ReplyDecision.OnlyMenACWY
+      }))
+    } else if (hasAlternativeVaccine) {
       // Flu: Ask which vaccine the parent would prefer
       response.locals.decisionItems = [
         {
@@ -230,7 +235,7 @@ export const parentController = {
       ]
     }
 
-    response.locals.programmeIsFlu = consent.session.programmes
+    response.locals.programmeIsFlu = programmes
       .map(({ type }) => type)
       .includes(ProgrammeType.Flu)
 
