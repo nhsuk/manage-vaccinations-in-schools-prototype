@@ -510,7 +510,7 @@ export const en = {
     decision: {
       summary: 'Consent for the {{session.vaccinationNames.sentenceCase}}',
       title:
-        'Do you agree to your child having the {{session.vaccinationNames.sentenceCase}} in school?',
+        'Do you agree to your child having the {{session.vaccinationNames.sentenceCase}}?',
       label: 'Decision',
       yes: {
         label: 'Yes, I agree'
@@ -540,16 +540,11 @@ export const en = {
       hint: 'We may decide the nasal spray vaccine is not suitable. In this case, we may offer the injected vaccine instead.'
     },
     consultation: {
-      title: {
-        one: 'Your child may be able to have the vaccination outside of school',
-        other:
-          'Your child may be able to have the vaccinations outside of school'
-      },
-      description: 'For example, in a community clinic.',
+      title:
+        'Would you like a member of the team to contact you to discuss alternative options?',
+      hint: 'For example, it may be possible to vaccinate your child in a community clinic.',
       label: 'Discuss options',
-      legend:
-        'Would you like a member of the team to contact you to discuss your options?',
-      yes: 'Yes, I’m happy for someone to contact me',
+      yes: 'Yes, I would like someone to contact me',
       no: 'No'
     },
     refusalReason: {
@@ -597,14 +592,11 @@ export const en = {
           'Consent for the MenACWY vaccination confirmed',
         [ReplyDecision.OnlyTdIPV]:
           'Consent for the Td/IPV vaccination confirmed',
-        [ReplyDecision.Declined]: 'Follow up requested',
         [ReplyDecision.Refused]: 'Refusal confirmed'
       },
       text: {
         [ReplyDecision.Given]:
           '{{consent.child.fullName}} is due to get the {{session.vaccinationNames.sentenceCase}} at school on {{session.summary.datesDisjunction}}',
-        [ReplyDecision.Declined]:
-          'You’ve told us that you would you like a member of the team to contact you to discuss your options',
         [ReplyDecision.OnlyFluInjection]:
           '{{consent.child.fullName}} is due to get the flu injection at school on {{session.summary.datesDisjunction}}',
         [ReplyDecision.OnlyMenACWY]:
@@ -614,6 +606,8 @@ export const en = {
         [ReplyDecision.Refused]:
           'You’ve told us that you do not want {{consent.child.fullName}} to get the {{session.vaccinationNames.sentenceCase}} at school'
       },
+      consultation:
+        'A member of the team will contact you soon to discuss your options.',
       triage: {
         // TODO: Parent may have given consent for two vaccinations for doubles
         // so text should say either ‘vaccination is’ or ‘vaccinations are’

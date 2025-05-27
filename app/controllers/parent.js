@@ -132,7 +132,7 @@ export const parentController = {
       },
       [`/${session_id}/${consent_uuid}/new/contact-preference`]: {},
       [`/${session_id}/${consent_uuid}/new/decision`]: {
-        [`/${session_id}/${consent_uuid}/new/consultation`]: {
+        [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
           data: 'consent.decision',
           value: ReplyDecision.Refused
         }
@@ -144,16 +144,6 @@ export const parentController = {
       }),
       [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
       [`/${session_id}/${consent_uuid}/new/confirmation`]: {},
-      [`/${session_id}/${consent_uuid}/new/consultation`]: {
-        [`/${session_id}/${consent_uuid}/new/check-answers`]: {
-          data: 'consent.decision',
-          value: ReplyDecision.Declined
-        },
-        [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
-          data: 'consent.decision',
-          value: ReplyDecision.Refused
-        }
-      },
       [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
         [`/${session_id}/${consent_uuid}/new/refusal-reason-details`]: {
           data: 'consent.refusalReason',
@@ -163,9 +153,12 @@ export const parentController = {
             ReplyRefusal.Medical
           ]
         },
-        [`/${session_id}/${consent_uuid}/new/check-answers`]: true
+        [`/${session_id}/${consent_uuid}/new/consultation`]: true
       },
       [`/${session_id}/${consent_uuid}/new/refusal-reason-details`]: {
+        [`/${session_id}/${consent_uuid}/new/${consent.refusalReason === ReplyRefusal.Medical ? 'consultation' : 'check-answers'}`]: true
+      },
+      [`/${session_id}/${consent_uuid}/new/consultation`]: {
         [`/${session_id}/${consent_uuid}/new/check-answers`]: true
       },
       [`/${session_id}/${consent_uuid}/new/check-answers`]: {},

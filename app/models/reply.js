@@ -53,6 +53,7 @@ export const ReplyRefusal = {
   AlreadyGiven: 'Vaccine already received',
   GettingElsewhere: 'Vaccine will be given elsewhere',
   Medical: 'Medical reasons',
+  OutsideSchool: 'Don’t want vaccination in school',
   Personal: 'Personal choice',
   Other: 'Other'
 }
@@ -71,6 +72,8 @@ export const ReplyRefusal = {
  * @property {ReplyDecision} [decision] - Consent decision
  * @property {boolean} [alternative] - Consent for alternative vaccine
  * @property {boolean} [confirmed] - Decision confirmed
+ * @property {boolean} [consultation] - Consultation requested
+ * @property {boolean} declined - Reply declines consent
  * @property {boolean} given - Reply gives consent
  * @property {boolean} invalid - Reply is invalid
  * @property {ReplyMethod} [method] - Reply method
@@ -98,6 +101,8 @@ export class Reply {
     this.alternative =
       options?.alternative && stringToBoolean(options?.alternative)
     this.confirmed = stringToBoolean(options?.confirmed)
+    this.consultation = stringToBoolean(options?.consultation)
+    this.declined = this.decision === ReplyDecision.Refused && this.consultation
     this.given = [
       ReplyDecision.Given,
       ReplyDecision.OnlyFluInjection,
@@ -257,6 +262,9 @@ export class Reply {
     switch (this.decision) {
       case ReplyDecision.Given:
         colour = 'aqua-green'
+        break
+      case ReplyDecision.Declined:
+        colour = 'warm-yellow'
         break
       case ReplyDecision.Refused:
         colour = 'red'

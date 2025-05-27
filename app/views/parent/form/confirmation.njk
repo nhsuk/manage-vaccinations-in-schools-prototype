@@ -15,6 +15,8 @@
         text: text | safe if not consent.hasAnswersNeedingTriage
       }) }}
 
+      {{ __("consent.confirmation.consultation") | nhsukMarkdown if consent.consultation }}
+
       {{ __("consent.confirmation.triage." + consent.decision, {
         consent: consent,
         session: session
