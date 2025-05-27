@@ -68,6 +68,7 @@ export const replyController = {
       const { reply_uuid } = request.params
       const { data } = request.session
       const { __, activity, patientSession, triage } = response.locals
+      const { invalidUuid } = request.app.locals
 
       let reply
       let next
@@ -92,6 +93,14 @@ export const replyController = {
             ...(data.token && { createdBy_uid: data.token?.uid }),
             createdAt: today()
           })
+        }
+
+        // Invalidate any replaced response
+        if (invalidUuid) {
+          const invalidReply = Reply.read(invalidUuid, data)
+          invalidReply.update({ invalid: true }, data)
+
+          delete request.app.locals.invalidUuid
         }
 
         patientSession.patient.addReply(reply)
@@ -294,7 +303,7 @@ export const replyController = {
 
           // Store reply that needs marked as invalid
           // We only want to do this when submitting replacement reply
-          response.locals.invalidUuid = request.body.uuid
+          request.app.locals.invalidUuid = request.body.uuid
       }
     }
 
@@ -335,7 +344,7 @@ export const replyController = {
     } else {
       // Store reply that needs marked as invalid
       // We only want to do this when submitting replacement reply
-      response.locals.invalidUuid = reply.uuid
+      request.app.locals.invalidUuid = reply.uuid
 
       const newReply = new Reply(
         {
