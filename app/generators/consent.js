@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { healthConditions } from '../datasets/health-conditions.js'
 import { Consent } from '../models/consent.js'
+import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyMethod, ReplyRefusal } from '../models/reply.js'
 import { removeDays, today } from '../utils/date.js'
 import {
@@ -45,8 +46,20 @@ export function generateConsent(
   // Decision
   const decision = faker.helpers.weightedArrayElement([
     { value: ReplyDecision.Given, weight: 10 },
-    { value: ReplyDecision.Refused, weight: 1 }
+    { value: ReplyDecision.Declined, weight: 3 },
+    { value: ReplyDecision.Refused, weight: 1 },
+    ...(programme.type === ProgrammeType.Flu
+      ? [{ value: ReplyDecision.OnlyFluInjection, weight: 3 }]
+      : [])
   ])
+
+  // Has the parent given consent for alternative injected vaccine?
+  const alternative =
+    programme.type === ProgrammeType.Flu && decision === ReplyDecision.Given
+      ? faker.datatype.boolean(0.5)
+      : false
+
+  // Reply method
   const method = faker.helpers.weightedArrayElement([
     { value: ReplyMethod.Website, weight: 8 },
     { value: ReplyMethod.Phone, weight: 1 },
@@ -56,7 +69,17 @@ export function generateConsent(
   const healthCondition = faker.helpers.objectKey(healthConditions)
   const healthAnswers = getHealthAnswers(programme.vaccine, healthCondition)
   const triageNote = getTriageNote(healthAnswers, healthCondition)
-  const refusalReason = getRefusalReason(programme.type)
+  const refusalReason = getRefusalReason(programme.type, decision)
+
+  // If decision is declined then a follow-up consultation was requested
+  const consultation =
+    decision === ReplyDecision.Declined &&
+    [
+      ReplyRefusal.Medical,
+      ReplyRefusal.Other,
+      ReplyRefusal.OutsideSchool,
+      ReplyRefusal.Personal
+    ].includes(refusalReason)
 
   const nowAt = today()
   const sessionClosedBeforeToday = session.closeAt.valueOf() < nowAt.valueOf()
@@ -78,7 +101,10 @@ export function generateConsent(
     parent,
     decision,
     method,
-    ...(decision === ReplyDecision.Given && { healthAnswers, triageNote }),
+    ...(decision === ReplyDecision.Given && { alternative }),
+    ...([ReplyDecision.Given, ReplyDecision.OnlyFluInjection].includes(
+      decision
+    ) && { healthAnswers, triageNote }),
     ...(decision === ReplyDecision.Refused && {
       refusalReason,
       ...(refusalReason === ReplyRefusal.AlreadyGiven && {
@@ -94,7 +120,8 @@ export function generateConsent(
       }),
       ...(refusalReason === ReplyRefusal.Other && {
         refusalReasonOther: 'My family rejects vaccinations on principle.'
-      })
+      }),
+      consultation
     }),
     programme_id: programme.id,
     session_id: session.id
