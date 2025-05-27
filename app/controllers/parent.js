@@ -131,10 +131,9 @@ export const parentController = {
       },
       [`/${session_id}/${consent_uuid}/new/address`]: {},
       ...getHealthQuestionPaths(`/${session_id}/${consent_uuid}/new/`, consent),
-      ...(consent.hasAnswersNeedingTriage &&
-        consent.decision === ReplyDecision.Given && {
-          [`/${session_id}/${consent_uuid}/new/alternative`]: {}
-        }),
+      ...(consent.decision === ReplyDecision.Given && {
+        [`/${session_id}/${consent_uuid}/new/alternative`]: {}
+      }),
       [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
       [`/${session_id}/${consent_uuid}/new/confirmation`]: {},
       [`/${session_id}/${consent_uuid}/new/consultation`]: {
