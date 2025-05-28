@@ -510,7 +510,7 @@ export const en = {
     decision: {
       summary: 'Consent for the {{session.vaccinationNames.sentenceCase}}',
       title:
-        'Do you agree to your child having the {{session.vaccinationNames.sentenceCase}}?',
+        'Do you agree to your child having the {{session.vaccinationNames.sentenceCase}} in school?',
       label: 'Decision',
       yes: {
         label: 'Yes, I agree'
