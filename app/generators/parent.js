@@ -41,10 +41,6 @@ export function generateParent(childLastName, isMum) {
       lastName = faker.person.lastName().replace(`'`, '’')
   }
 
-  // Name and relationship may not be provided
-  const hasName = faker.datatype.boolean(0.9)
-  const hasRelationship = faker.datatype.boolean(0.7)
-
   // Contact details
   const phoneNumber = '07### ######'.replace(/#+/g, (m) =>
     faker.string.numeric(m.length)
@@ -70,8 +66,8 @@ export function generateParent(childLastName, isMum) {
   const contactPreference = faker.datatype.boolean(0.2)
 
   return new Parent({
-    ...(hasName && { fullName: `${firstName} ${lastName}` }),
-    ...(hasRelationship && { relationship }),
+    fullName: `${firstName} ${lastName}`,
+    relationship,
     ...(relationship === ParentalRelationship.Other && {
       relationshipOther: 'Foster parent'
     }),
