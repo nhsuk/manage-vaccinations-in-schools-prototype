@@ -104,6 +104,7 @@ export const PatientOutcome = {
  * @property {string} [createdBy_uid] - User who created patient session
  * @property {Date} [updatedAt] - Updated date
  * @property {Gillick} [gillick] - Gillick assessment
+ * @property {Array<AuditEvent>} [notes] - Session notes
  * @property {string} patient_uuid - Patient UUID
  * @property {string} programme_id - Programme ID
  * @property {string} session_id - Session ID
@@ -116,6 +117,7 @@ export class PatientSession {
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.gillick = options?.gillick && new Gillick(options.gillick)
+    this.notes = options?.notes || []
     this.patient_uuid = options?.patient_uuid
     this.programme_id = options?.programme_id
     this.session_id = options?.session_id
@@ -172,6 +174,17 @@ export class PatientSession {
     return this.auditEvents
       .filter(({ programme_ids }) => programme_ids.includes(this.programme_id))
       .filter(({ type }) => type === EventType.Screen)
+  }
+
+  /**
+   * Get latest session note
+   *
+   * @returns {import('./audit-event.js').AuditEvent} - Audit event
+   */
+  get latestNote() {
+    return this.auditEvents
+      .filter(({ programme_ids }) => programme_ids.includes(this.programme_id))
+      .find(({ type }) => type === EventType.Unknown)
   }
 
   /**
@@ -742,6 +755,21 @@ export class PatientSession {
     this.patient.addEvent({
       type: EventType.Record,
       name: 'Completed pre-screening checks',
+      note: event.note,
+      createdBy_uid: event.createdBy_uid,
+      programme_ids: this.session.programme_ids
+    })
+  }
+
+  /**
+   * Save session note
+   *
+   * @param {import('./audit-event.js').AuditEvent} event - Event
+   */
+  saveNote(event) {
+    this.patient.addEvent({
+      type: EventType.Unknown,
+      name: 'Note',
       note: event.note,
       createdBy_uid: event.createdBy_uid,
       programme_ids: this.session.programme_ids

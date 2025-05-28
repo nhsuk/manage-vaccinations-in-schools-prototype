@@ -332,5 +332,26 @@ export const patientSessionController = {
     request.flash('success', __(`triage.edit.success`, { patientSession }))
 
     response.redirect(back)
+  },
+
+  note(request, response) {
+    const { note } = request.body
+    const { data } = request.session
+    const { __, back, patientSession } = response.locals
+
+    patientSession.saveNote({
+      note,
+      createdBy_uid: data.token?.uid || '000123456789'
+    })
+
+    // Clean up session data
+    delete data.note
+
+    request.flash(
+      'success',
+      __(`patientSession.notes.new.success`, { patientSession })
+    )
+
+    response.redirect(back)
   }
 }

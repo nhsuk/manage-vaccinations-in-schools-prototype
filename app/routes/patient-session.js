@@ -15,6 +15,7 @@ router.post('/:nhsn/new/pre-screen', patientSession.preScreen)
 router.post('/:nhsn/new/invite', patientSession.invite)
 router.post('/:nhsn/new/remind', patientSession.remind)
 router.post('/:nhsn/new/triage', patientSession.triage)
+router.post('/:nhsn/new/note', patientSession.note)
 
 router.all('/:nhsn/edit/:view', patientSession.readForm)
 router.get('/:nhsn/edit/:view', patientSession.showForm('edit'))

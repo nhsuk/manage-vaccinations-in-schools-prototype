@@ -3,6 +3,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { formatDate, today } from '../utils/date.js'
 import {
   formatTag,
+  formatMarkdown,
   formatWithSecondaryText,
   formatTagWithSecondaryText
 } from '../utils/string.js'
@@ -23,7 +24,8 @@ export const EventType = {
   Screen: 'Screen',
   Register: 'Register',
   Record: 'Record',
-  Notice: 'Notice'
+  Notice: 'Notice',
+  Unknown: 'Unknown'
 }
 
 /**
@@ -167,7 +169,8 @@ export class AuditEvent {
         ? [datetime, this.createdBy.link.fullName].join(` · `)
         : datetime,
       datetime,
-      note: this.note && `<blockquote>${this.note}</blockquote>`,
+      note:
+        this.note && `<blockquote>${formatMarkdown(this.note)}</blockquote>`,
       outcomeStatus,
       programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' ')
     }
