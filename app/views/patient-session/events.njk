@@ -1,8 +1,10 @@
 {% from "patient-session/_navigation.njk" import patientSessionNavigation with context %}
 
-{% extends "_layouts/default.njk" %}
+{% extends "_layouts/form.njk" %}
 
 {% set title = patient.fullName + " – " + __("patient.events.title") %}
+{% set gridColumns = "three-quarters" %}
+{% set hideConfirmButton = true %}
 {% set view = "events" %}
 
 {% block beforeContent %}
@@ -35,28 +37,28 @@
   }) }}
 {% endblock %}
 
-{% block content %}
-  <div class="nhsuk-u-width-three-quarters">
-    {{ super() }}
+{% block form %}
+  {{ super() }}
 
-    {{ patientSessionNavigation({
-      patientSession: patientSession,
-      view: "events"
-    }) }}
+  {{ patientSessionNavigation({
+    patientSession: patientSession,
+    view: "events"
+  }) }}
 
-    {% for group, auditEvents in patientSession.auditEventLog %}
-      <h3 class="nhsuk-heading-xs nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal">{{ group }}</h3>
+  {% include "patient-session/_note.njk" %}
 
-      {% for auditEvent in auditEvents %}
-        {{ card({
-          heading: auditEvent.name,
-          headingLevel: 4,
-          descriptionHtml: event(auditEvent),
-          attributes: {
-            id: auditEvent.uuid
-          }
-        }) }}
-      {% endfor %}
+  {% for group, auditEvents in patientSession.auditEventLog %}
+    <h3 class="nhsuk-heading-xs nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal">{{ group }}</h3>
+
+    {% for auditEvent in auditEvents %}
+      {{ card({
+        heading: auditEvent.name,
+        headingLevel: 4,
+        descriptionHtml: event(auditEvent),
+        attributes: {
+          id: auditEvent.uuid
+        }
+      }) }}
     {% endfor %}
-  </div>
+  {% endfor %}
 {% endblock %}

@@ -114,7 +114,11 @@
                   label: __("patientSession." + view + ".label"),
                   value: statusHtml,
                   href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.register != RegistrationOutcome.Pending
-                } if view != "record"
+                } if view != "record",
+                notes: {
+                  label: __("patientSession.notes.label"),
+                  value: patientSession.latestNote.formatted.note
+                }
               })
             }) }}
 

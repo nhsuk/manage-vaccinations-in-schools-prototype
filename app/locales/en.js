@@ -1071,10 +1071,19 @@ export const en = {
       title: 'Child record'
     },
     events: {
-      title: 'Activity log',
+      title: 'Session activity and notes',
       count: {
         one: '%s event',
         other: '[0] No events|%s events'
+      }
+    },
+    notes: {
+      label: 'Notes',
+      new: {
+        title: 'Add a note',
+        label: 'Note',
+        confirm: 'Save note',
+        success: 'Note added'
       }
     },
     consent: {

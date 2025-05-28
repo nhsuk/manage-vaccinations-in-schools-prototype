@@ -1,0 +1,22 @@
+{% set cardDescriptionHtml %}
+  {{ textarea({
+    label: {
+      text: __("patientSession.notes.new.label")
+    },
+    rows: 5,
+    decorate: "note"
+  }) }}
+
+  {{ button({
+    text: __("patientSession.notes.new.confirm"),
+    attributes: {
+      formaction: patientSession.uri + "/new/note?referrer=" + patientSession.uri + "/events?activity=" + activity
+    }
+  }) }}
+{% endset %}
+
+{{ details({
+  classes: "nhsuk-expander",
+  text: __("patientSession.notes.new.title"),
+  html: cardDescriptionHtml
+}) }}
