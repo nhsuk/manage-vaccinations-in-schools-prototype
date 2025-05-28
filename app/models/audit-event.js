@@ -156,7 +156,7 @@ export class AuditEvent {
       hour12: true
     })
 
-    let outcomeStatus = formatTag(this.status)
+    let outcomeStatus = this.status && formatTag(this.status)
     if (this.outcome === ScreenOutcome.VaccinateInjection) {
       outcomeStatus = formatTagWithSecondaryText(this.status, 'Injection only')
     }
