@@ -257,7 +257,9 @@ export function formatMarkdown(string, headingsStartWith = 'l') {
   const markdown = prototypeFilters.govukMarkdown(string, {
     headingsStartWith
   })
-  const nhsukMarkdown = String(markdown).replaceAll('govuk-', 'nhsuk-')
+  const nhsukMarkdown = String(markdown)
+    .replaceAll('govuk-', 'nhsuk-')
+    .replaceAll('-!-', '-u-')
 
   return nhsukMarkdown
 }
