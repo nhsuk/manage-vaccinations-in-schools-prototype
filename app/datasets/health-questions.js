@@ -21,8 +21,8 @@ export const healthQuestions = {
     detailsHint: false
   },
   asthmaSteroids: {
-    label: 'Does the child take regular oral steroid tablets for their asthma?',
-    hint: false,
+    label: 'Does the child take steroid tablets for their asthma?',
+    hint: 'This does not include medicine taken through an inhaler',
     detailsHint: 'Include the steroid name, dose and length of course'
   },
   bleeding: {
