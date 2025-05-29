@@ -3,6 +3,7 @@ import wizard from '@x-govuk/govuk-prototype-wizard'
 import { generateChild } from '../generators/child.js'
 import { generateParent } from '../generators/parent.js'
 import { Consent } from '../models/consent.js'
+import { ParentalRelationship } from '../models/parent.js'
 import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { ConsentWindow, Session, SessionType } from '../models/session.js'
@@ -130,6 +131,10 @@ export const parentController = {
           }
         : {}),
       [`/${session_id}/${consent_uuid}/new/parent`]: {
+        [`/${session_id}/parental-responsibility`]: {
+          data: 'consent.parent.hasParentalResponsibility',
+          value: 'false'
+        },
         [`/${session_id}/${consent_uuid}/new/decision`]: () =>
           !request.session.data.consent?.parent?.tel
       },
@@ -171,6 +176,19 @@ export const parentController = {
     const paths = wizard(journey, request)
     paths.back = referrer || paths.back
     response.locals.paths = paths
+
+    response.locals.parentalRelationshipItems = Object.values(
+      ParentalRelationship
+    )
+      .filter((relationship) => relationship !== ParentalRelationship.Unknown)
+      .map((relationship) => ({
+        text: relationship,
+        value: relationship,
+        ...([
+          ParentalRelationship.Fosterer,
+          ParentalRelationship.Other
+        ].includes(relationship) && { conditional: { html: {} } }) // Added in template
+      }))
 
     if (programmes.length > 1) {
       // MenACWY and Td/IPV: Ask for consent for none, one or all programmes

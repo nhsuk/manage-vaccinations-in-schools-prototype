@@ -401,6 +401,11 @@ export const en = {
       description:
         'The deadline for responding has passed.\n\n## You can still book a clinic appointment\n\nContact {{organisation.email}} to book a clinic appointment.'
     },
+    'parental-responsibility': {
+      title: 'You cannot give or refuse consent through this service',
+      description:
+        'To give or refuse consent for a child’s vaccination, you need to have parental responsibility.\n\nIf you have any questions, please contact the local health organisation by calling {{organisation.tel}}, or email {{organisation.email}}.'
+    },
     new: {
       'check-answers': {
         confirm: 'Confirm',

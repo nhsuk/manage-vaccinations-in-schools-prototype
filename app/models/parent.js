@@ -63,7 +63,8 @@ export class Parent {
         ? options?.relationshipOther
         : undefined
     this.hasParentalResponsibility =
-      this.relationship === ParentalRelationship.Other
+      this.relationship === ParentalRelationship.Other ||
+      ParentalRelationship.Fosterer
         ? stringToBoolean(options.hasParentalResponsibility)
         : undefined
     this.notify = stringToBoolean(options?.notify)
