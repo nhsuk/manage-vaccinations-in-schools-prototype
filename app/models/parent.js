@@ -10,6 +10,7 @@ export const ParentalRelationship = {
   Mum: 'Mum',
   Dad: 'Dad',
   Guardian: 'Guardian',
+  Fosterer: 'Foster carer',
   Other: 'Other',
   Unknown: 'Unknown'
 }
