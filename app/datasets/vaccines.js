@@ -31,12 +31,12 @@ export default {
           'asthmaAdmitted': {}
         }
       },
-      'recentFluVaccination': {},
       'immuneSystem': {},
       'householdImmuneSystem': {},
       'eggAllergy': {},
       'medicationAllergies': {},
-      'aspirin': {}
+      'aspirin': {},
+      'recentFluVaccination': {}
     },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
@@ -72,7 +72,8 @@ export default {
     healthQuestions: {
       'allergy': {},
       'medicalConditions': {},
-      'previousReaction': {}
+      'previousReaction': {},
+      'recentFluVaccination': {}
     },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
