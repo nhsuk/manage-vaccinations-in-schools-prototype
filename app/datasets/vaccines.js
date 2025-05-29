@@ -35,6 +35,7 @@ export default {
       'householdImmuneSystem': {},
       'eggAllergy': {},
       'medicationAllergies': {},
+      'medicalConditions': {},
       'aspirin': {},
       'recentFluVaccination': {}
     },
