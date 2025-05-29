@@ -308,7 +308,7 @@ export class Reply {
       decisionStatus = formatTagWithSecondaryText(this.status, 'Invalid')
     } else if (this.confirmed) {
       decisionStatus = formatTagWithSecondaryText(this.status, 'Confirmed')
-    } else if (this.programme.type === ProgrammeType.Flu) {
+    } else if (this.programme?.type === ProgrammeType.Flu) {
       if (this.decision === ReplyDecision.OnlyFluInjection) {
         decisionStatus = formatTagWithSecondaryText(
           this.status,
