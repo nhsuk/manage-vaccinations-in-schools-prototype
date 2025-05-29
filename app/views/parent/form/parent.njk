@@ -12,27 +12,38 @@
     decorate: "consent.parent.fullName"
   }) }}
 
-  {# `pop` removes `Other` and `Unknown` from ParentalRelationship array #}
+  {%- set fosterCarerHtml = radios({
+    fieldset: {
+      legend: { text: __("consent.parent.hasParentalResponsibility.label") }
+    },
+    hint: { text: __("consent.parent.hasParentalResponsibility.hint") },
+    items: booleanItems,
+    decorate: "consent.parent.hasParentalResponsibility"
+  }) %}
+
+  {%- set otherHtml = input({
+    label: { text: __("consent.parent.relationshipOther.label") },
+    decorate: "consent.parent.relationshipOther"
+  }) + radios({
+    fieldset: {
+      legend: { text: __("consent.parent.hasParentalResponsibility.label") }
+    },
+    hint: { text: __("consent.parent.hasParentalResponsibility.hint") },
+    items: booleanItems,
+    decorate: "consent.parent.hasParentalResponsibility"
+  }) %}
+
+  {# Add conditional html for ‘Foster carer’ option #}
+  {% set items = injectConditionalHtml(parentalRelationshipItems, 3, fosterCarerHtml) %}
+
+  {# Add conditional html for ‘Other’ option #}
+  {% set items = injectConditionalHtml(items, 4, otherHtml) %}
+
   {{ radios({
     fieldset: {
       legend: { text: __("consent.parent.relationship.label") }
     },
-    items: enumItems(ParentalRelationship) | pop | pop | push({
-      text: ParentalRelationship.Other,
-      conditional: {
-        html: input({
-          label: { text: __("consent.parent.relationshipOther.label") },
-          decorate: "consent.parent.relationshipOther"
-        }) + radios({
-          fieldset: {
-            legend: { text: __("consent.parent.hasParentalResponsibility.label") }
-          },
-          hint: { text: __("consent.parent.hasParentalResponsibility.hint") },
-          items: booleanItems,
-          decorate: "consent.parent.hasParentalResponsibility"
-        })
-      }
-    }),
+    items: items,
     decorate: "consent.parent.relationship"
   }) }}
 
