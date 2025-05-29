@@ -505,8 +505,7 @@ export const en = {
         label: 'Give details'
       },
       relationshipOther: {
-        label: 'Relationship to the child',
-        hint: 'For example, carer'
+        label: 'Relationship to the child'
       },
       hasParentalResponsibility: {
         label: 'Do you have parental responsibility?',
@@ -923,8 +922,7 @@ export const en = {
       label: 'Communication needs'
     },
     relationshipOther: {
-      label: 'Give details',
-      hint: 'For example, carer'
+      label: 'Give details'
     },
     notify: {
       title:
@@ -1053,8 +1051,7 @@ export const en = {
         label: 'Phone number'
       },
       relationshipOther: {
-        label: 'Relationship to the child',
-        hint: 'For example, carer'
+        label: 'Relationship to the child'
       }
     },
     parent1: {
