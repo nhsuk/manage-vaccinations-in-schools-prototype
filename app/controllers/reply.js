@@ -144,12 +144,12 @@ export const replyController = {
 
       // Only ask for programme if more than 1 administered in a session
       const isMultiProgrammeSession =
-        patientSession.session.programmes.length > 1
+        patientSession.session.primaryProgrammes.length > 1
       response.locals.isMultiProgrammeSession = isMultiProgrammeSession
 
       response.locals.programme = isMultiProgrammeSession
         ? reply.programme_id && Programme.read(reply.programme_id, data)
-        : patientSession.session.programmes[0]
+        : patientSession.session.primaryProgrammes[0]
 
       response.locals.triage = {
         ...(type === 'edit' && triage), // Previous values

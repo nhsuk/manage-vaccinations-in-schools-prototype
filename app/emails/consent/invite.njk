@@ -1,11 +1,11 @@
 {% if programme.type == ProgrammeType.Flu %}
 We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to give pupils their annual flu vaccination.
-{% elif session.programmes.length == 1 %}
+{% elif session.primaryProgrammes.length == 1 %}
 We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to offer the {{ session.programmeNames.sentenceCase }} vaccine to your child.
 {% else %}
 We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to offer the following vaccines to your child:
 
-{% for programme in session.programmes %}
+{% for programme in session.primaryProgrammes %}
 - {{ programme.title }}
 {%- endfor %}
 {% endif %}
@@ -14,7 +14,7 @@ We would like your consent to vaccinate {{ consent.child.firstName }}. You can g
 
 Note that we’re unable to say on which of the above dates individual pupils will have the vaccination, due to the large number of children being vaccinated.
 
-{% for programme in session.programmes %}
+{% for programme in session.primaryProgrammes %}
 ## About the {{ programme.vaccineName.sentenceCase }}
 
 {{ programme.information.description }}

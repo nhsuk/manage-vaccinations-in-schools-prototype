@@ -633,7 +633,7 @@ export class Session {
   }
 
   /**
-   * Get vaccination name(s)
+   * Get primary vaccination name(s)
    *
    * @returns {object} - Vaccination name(s)
    * @example Flu vaccination
@@ -641,13 +641,15 @@ export class Session {
    */
   get vaccinationNames() {
     const pluralisation =
-      this.programmes.length === 1 ? 'vaccination' : 'vaccinations'
+      this.primaryProgrammes.length === 1 ? 'vaccination' : 'vaccinations'
 
     return {
       sentenceCase: `${filters.formatList(
-        this.programmes.map(({ name }) => sentenceCaseProgrammeName(name))
+        this.primaryProgrammes.map(({ name }) =>
+          sentenceCaseProgrammeName(name)
+        )
       )} ${pluralisation}`,
-      titleCase: `${filters.formatList(this.programmes.map(({ name }) => name))}
+      titleCase: `${filters.formatList(this.primaryProgrammes.map(({ name }) => name))}
         ${pluralisation}`
     }
   }

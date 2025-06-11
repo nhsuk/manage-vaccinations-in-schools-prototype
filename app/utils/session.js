@@ -34,7 +34,7 @@ export const getProgrammeSession = (sessions, type, isSchool = true) => {
   const sessionType = isSchool ? SessionType.School : SessionType.Clinic
 
   return Object.values(sessions)
-    .filter((session) => session?.programme_ids.includes(id))
+    .filter((session) => session?.primaryProgramme_ids.includes(id))
     .filter((session) => session.type === sessionType)
     .filter((session) => session.status !== SessionStatus.Unplanned)
     .at(-1)

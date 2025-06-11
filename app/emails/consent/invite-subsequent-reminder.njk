@@ -2,7 +2,7 @@ Our team are coming back to {{ session.location.name }} on {{ session.summary.da
 
 If you want your child to be vaccinated in school, you need to give your consent.
 
-{% for programme in session.programmes %}
+{% for programme in session.primaryProgrammes %}
 ## About the {{ programme.vaccineName.sentenceCase }}
 
 {{ programme.information.description }}

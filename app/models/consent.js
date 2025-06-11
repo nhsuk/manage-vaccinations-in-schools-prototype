@@ -19,7 +19,7 @@ export class Consent extends Reply {
   get healthQuestionsForDecision() {
     const { Flu, HPV, MenACWY, TdIPV } = ProgrammeType
     const { Injection, Nasal } = VaccineMethod
-    const programme = this.session.programmes[0]
+    const programme = this.session.primaryProgrammes[0]
 
     const healthQuestionsForDecision = new Map()
     let consentedMethod

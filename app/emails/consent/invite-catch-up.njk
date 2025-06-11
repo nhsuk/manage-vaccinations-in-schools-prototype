@@ -2,7 +2,7 @@ We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to 
 
 Our records show your child has not had their HPV vaccination. Pupils usually have this when they’re in Year 8.
 
-{% for programme in session.programmes %}
+{% for programme in session.primaryProgrammes %}
 ## About the {{ programme.vaccineName.sentenceCase }}
 
 {{ programme.information.description }}

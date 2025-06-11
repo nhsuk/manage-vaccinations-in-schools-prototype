@@ -55,10 +55,10 @@ export const parentController = {
         data
       )
 
-      response.locals.programme = session.programmes[0]
+      response.locals.programme = session.primaryProgrammes[0]
 
       const combinedSideEffects = new Set()
-      for (const programme of session.programmes) {
+      for (const programme of session.primaryProgrammes) {
         for (const sideEffect of programme.vaccines[0].sideEffects) {
           combinedSideEffects.add(sideEffect)
         }
@@ -109,7 +109,7 @@ export const parentController = {
     const consent = new Consent(Consent.read(consent_uuid, data?.wizard), data)
     response.locals.consent = consent
 
-    const programmes = consent.session ? consent.session.programmes : []
+    const programmes = consent.session ? consent.session.primaryProgrammes : []
     const hasAlternativeVaccine = programmes[0]?.hasAlternativeVaccines
 
     // If programme has alternative vaccine, and given consent has been given

@@ -1,6 +1,6 @@
 {% extends "_layouts/emails.njk" %}
 
-{% if session.programmes.length == 1 %}
+{% if session.primaryProgrammes.length == 1 %}
   {% set caption = __("consent.start.title.single", { session: session }) | safe %}
   {% set vaccine__n = "vaccine" %}
   {% set is__n = "is" %}
@@ -10,7 +10,7 @@
   {% set is__n = "are" %}
 {% endif %}
 
-{% set programme = session.programmes[0] %}
+{% set programme = session.primaryProgrammes[0] %}
 
 {% set placeholders = {
   from: {
@@ -56,7 +56,7 @@
   "Record": [
     "record-reminder",
     "record-vaccinated",
-    "record-vaccinated-many" if session.programmes.length > 1,
+    "record-vaccinated-many" if session.primaryProgrammes.length > 1,
     "record-could-not-vaccinate"
   ]
 } %}
