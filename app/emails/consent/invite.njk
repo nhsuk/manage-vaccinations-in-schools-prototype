@@ -34,7 +34,9 @@ You need to respond by {{ session.formatted.firstDate }}.
 
 If you do not respond, you’ll be sent automatic reminders. Responding will stop reminders.
 
+{% if consent.child.school.phase == SchoolPhase.Secondary %}
 {% include "emails/consent/_talk-to-your-child.njk" %}
+{% endif %}
 
 {% include "emails/consent/_trouble-using-online-form.njk" %}
 

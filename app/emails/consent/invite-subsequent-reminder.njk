@@ -16,7 +16,9 @@ If you want your child to be vaccinated in school, you need to give your consent
 
 {% include "emails/consent/_how-to-respond.njk" %}
 
+{% if consent.child.school.phase == SchoolPhase.Secondary %}
 {% include "emails/consent/_talk-to-your-child.njk" %}
+{% endif %}
 
 {% include "emails/consent/_trouble-using-online-form.njk" %}
 

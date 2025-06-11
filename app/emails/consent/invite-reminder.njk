@@ -18,7 +18,9 @@ If you’ve already responded to the consent request, you can ignore this messag
 
 {% include "emails/consent/_how-to-respond.njk" %}
 
+{% if consent.child.school.phase == SchoolPhase.Secondary %}
 {% include "emails/consent/_talk-to-your-child.njk" %}
+{% endif %}
 
 {% include "emails/consent/_trouble-using-online-form.njk" %}
 
