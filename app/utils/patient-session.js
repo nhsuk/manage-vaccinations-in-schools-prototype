@@ -283,6 +283,10 @@ export const getReportStatus = (patientSession) => {
 export const getRegistrationOutcome = (patientSession) => {
   const { patient, session, report } = patientSession
 
+  if (!session.registration) {
+    return RegistrationOutcome.Present
+  }
+
   if (report === PatientOutcome.Vaccinated) {
     return RegistrationOutcome.Complete
   } else if (session.register[patient.uuid]) {
