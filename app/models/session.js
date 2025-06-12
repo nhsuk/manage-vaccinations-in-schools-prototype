@@ -21,7 +21,8 @@ import {
   formatWithSecondaryText,
   lowerCaseFirst,
   sentenceCaseProgrammeName,
-  stringToArray
+  stringToArray,
+  stringToBoolean
 } from '../utils/string.js'
 
 import { Batch } from './batch.js'
@@ -97,6 +98,7 @@ export const RegistrationOutcome = {
  * @property {object} [openAt_] - Date consent window opens (from `dateInput`)
  * @property {boolean} [closed] - Session closed
  * @property {number} [reminderWeeks] - Weeks before session to send reminders
+ * @property {boolean} [registration] - Does session have registration?
  * @property {object} [register] - Patient register
  * @property {string} [programmePreset] - Programme preset name
  * @property {Array<string>} [catchupProgrammeTypes] - Catchup programmes
@@ -124,6 +126,7 @@ export class Session {
     this.closed = options?.closed || false
     this.reminderWeeks =
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
+    this.registration = stringToBoolean(options?.registration)
     this.register = options?.register || {}
     this.programmePreset = options?.programmePreset
     this.catchupProgrammeTypes = stringToArray(options?.catchupProgrammeTypes)
