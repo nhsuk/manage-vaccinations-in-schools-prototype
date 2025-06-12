@@ -53,6 +53,8 @@ export const sessionController = {
 
     const session = new Session(
       {
+        // TODO: This needs contextual organisation data to work
+        registration: data.organisation.sessionRegistration,
         ...(data.token && { createdBy_uid: data.token?.uid })
       },
       data
@@ -420,6 +422,10 @@ export const sessionController = {
         }),
         ...(referrer && { back: referrer })
       }
+
+      // Some questions are not asked during journey, so need explicit next path
+      response.locals.paths.next =
+        response.locals.paths.next || `${session.uri}/new/check-answers`
 
       response.locals.clinicIdItems = Object.values(organisation.clinics)
         .map((clinic) => new Clinic(clinic))

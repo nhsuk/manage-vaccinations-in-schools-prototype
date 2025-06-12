@@ -14,7 +14,7 @@
 
   {{ input({
     formGroup: {
-      classes: "nhsuk-u-margin-bottom-6"
+      classes: "nhsuk-u-margin-bottom-7"
     },
     classes: "nhsuk-input--width-2",
     label: {
@@ -27,6 +27,9 @@
   }) }}
 
   {{ input({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-7"
+    },
     classes: "nhsuk-input--width-2",
     label: {
       classes: "nhsuk-label--m",
@@ -35,5 +38,17 @@
     hint: { text: __("organisation.sessionReminderWeeks.hint") },
     suffix: "weeks",
     decorate: "organisation.sessionReminderWeeks"
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("organisation.sessionRegistration.title")
+      }
+    },
+    items: booleanItems,
+    decorate: "organisation.sessionRegistration"
   }) }}
 {% endblock %}

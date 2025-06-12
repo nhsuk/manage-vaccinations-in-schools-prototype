@@ -865,6 +865,10 @@ export const en = {
       label: 'Consent reminders',
       hint: 'Enter the number of weeks before a session takes place'
     },
+    sessionRegistration: {
+      title: 'Will children register their attendance at a session?',
+      label: 'Register attendance'
+    },
     password: {
       label: 'Shared password',
       title: 'Shared password',
@@ -1703,6 +1707,10 @@ export const en = {
       title: 'When should parents get a reminder to give consent?',
       label: 'Consent reminders',
       hint: 'Enter the number of weeks before a session takes place'
+    },
+    registration: {
+      title: 'Will children register their attendance at sessions?',
+      label: 'Register attendance'
     },
     offline: {
       title: 'Record offline',
