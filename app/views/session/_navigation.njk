@@ -29,7 +29,7 @@
         text: __("session.register.label"),
         href: params.session.uri + "/register",
         current: params.view == "register"
-      },
+      } if params.session.registration,
       {
         text: __("session.record.label"),
         href: params.session.uri + "/record",

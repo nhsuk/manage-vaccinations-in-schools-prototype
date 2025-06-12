@@ -1,0 +1,19 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("session.registration.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-label--l",
+        html: heading({
+          caption: session.location.name,
+          title: title
+        })
+      }
+    },
+    items: booleanItems,
+    decorate: "session.registration"
+  }) }}
+{% endblock %}

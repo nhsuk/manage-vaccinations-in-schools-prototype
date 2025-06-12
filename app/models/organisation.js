@@ -1,15 +1,18 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
+import { stringToBoolean } from '../utils/string.js'
+
 import { Clinic } from './clinic.js'
 import { School } from './school.js'
 
 /**
  * @readonly
- * @enum {number}
+ * @enum {boolean|number}
  */
 export const OrganisationDefaults = {
   SessionOpenWeeks: 3,
-  SessionReminderWeeks: 1
+  SessionReminderWeeks: 1,
+  SessionRegistration: true
 }
 
 /**
@@ -24,7 +27,8 @@ export const OrganisationDefaults = {
  * @property {string} [tel] - Phone number
  * @property {string} [privacyPolicyUrl] - Privacy policy URL
  * @property {number} [sessionOpenWeeks] - Weeks before session to request consent
- * @property {number} [SessionReminderWeeks] - Days before sending first reminder
+ * @property {number} [sessionReminderWeeks] - Days before sending first reminder
+ * @property {boolean} [sessionRegistration] - Should sessions have registration
  * @property {string} [password] - Shared password
  * @property {Array<string>} [clinic_ids] - Clinic organisation IDs
  * @property {Array<string>} [school_urns] - School URNs
@@ -39,9 +43,13 @@ export class Organisation {
     this.tel = options?.tel
     this.privacyPolicyUrl = options?.privacyPolicyUrl
     this.sessionOpenWeeks =
-      options?.sessionOpenWeeks || OrganisationDefaults.SessionOpenWeeks
+      Number(options?.sessionOpenWeeks) || OrganisationDefaults.SessionOpenWeeks
     this.sessionReminderWeeks =
-      options?.sessionReminderWeeks || OrganisationDefaults.SessionReminderWeeks
+      Number(options?.sessionReminderWeeks) ||
+      OrganisationDefaults.SessionReminderWeeks
+    this.sessionRegistration =
+      stringToBoolean(options.sessionRegistration) ||
+      OrganisationDefaults.SessionRegistration
     this.password = options?.password
     this.clinic_ids = options?.clinic_ids || []
     this.school_urns = options?.school_urns || []
