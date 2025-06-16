@@ -32,7 +32,8 @@ export default {
         }
       },
       'immuneSystem': {},
-      'householdImmuneSystem': {},
+      'immuneSystemCloseContact': {},
+      'bleeding': {},
       'eggAllergy': {},
       'medicationAllergies': {},
       'medicalConditions': {},
@@ -71,6 +72,7 @@ export default {
       VaccineSideEffect.Unwell
     ],
     healthQuestions: {
+      'bleeding': {},
       'allergy': {},
       'medicalConditions': {},
       'previousReaction': {},
@@ -105,6 +107,7 @@ export default {
       VaccineSideEffect.PainArms
     ],
     healthQuestions: {
+      'bleeding': {},
       'allergy': {},
       'medicalConditions': {},
       'previousReaction': {}

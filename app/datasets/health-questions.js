@@ -5,8 +5,9 @@ export const healthQuestions = {
     detailsHint: false
   },
   allergy: {
-    label: 'Does the child have any severe allergies?',
-    hint: false,
+    label:
+      'Has the child had a severe allergic reaction (anaphylaxis) to a previous dose of the nasal flu vaccine, or any ingredient of the vaccine?',
+    hint: 'This includes gelatine, neomycin or gentamicin',
     detailsHint: false
   },
   asthma: {
@@ -17,23 +18,23 @@ export const healthQuestions = {
   asthmaAdmitted: {
     label:
       'Has the child ever been admitted to intensive care because of their asthma?',
-    hint: false,
+    hint: 'This does not include visits to A&E or stays in hospital wards outside the intensive care unit',
     detailsHint: false
   },
   asthmaSteroids: {
-    label: 'Does the child take steroid tablets for their asthma?',
+    label: 'Does the child take oral steroids for their asthma?',
     hint: 'This does not include medicine taken through an inhaler',
-    detailsHint: 'Include the steroid name, dose and length of course'
+    detailsHint: 'Include the steroid name, dose and end date of the course'
   },
   bleeding: {
     label:
-      'Does the child have a bleeding disorder or another medical condition they receive treatment for?',
+      'Does the child have a bleeding disorder or are they taking anticoagulant therapy?',
     hint: false,
     detailsHint: false
   },
   eggAllergy: {
     label:
-      'Has the child ever been admitted to intensive care due to an allergic reaction to egg?',
+      'Has the child ever been admitted to intensive care due to a severe allergic reaction (anaphylaxis) to egg?',
     hint: false,
     detailsHint: false
   },
@@ -48,11 +49,12 @@ export const healthQuestions = {
     hint: false,
     detailsHint: false
   },
-  householdImmuneSystem: {
+  immuneSystemCloseContact: {
     label:
-      'Is anyone in the child’s household currently having treatment that severely affects their immune system?',
+      'Is the child in regular close contact with anyone currently having treatment that severely affects their immune system?',
     hint: false,
-    detailsHint: false
+    detailsHint:
+      'Let us know if they are able to avoid contact with the immunocompromised person for 2 weeks'
   },
   medicationAllergies: {
     label: 'Does the child have any allergies to medication?',
@@ -61,7 +63,7 @@ export const healthQuestions = {
   },
   medicalConditions: {
     label:
-      'Does the child have any medical conditions for which they receive treatment?',
+      'Does the child have any other medical conditions the immunisation team should be aware of?',
     hint: false,
     detailsHint: false
   },

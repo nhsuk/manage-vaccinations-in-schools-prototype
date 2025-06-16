@@ -103,7 +103,7 @@ export const healthConditions = {
       'Spoke with parent. Safe to vaccinate, but monitor for adverse reactions'
   },
   covid19: {
-    householdImmuneSystem:
+    immuneSystemCloseContact:
       'Their grandmother lives with us, and has recently got covid.',
     triageNote:
       'Spoke with parent. Child has sufficiently recovered. It is safe to vaccinate'
