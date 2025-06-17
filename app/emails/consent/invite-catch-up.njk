@@ -12,15 +12,15 @@ Our records show your child has not had their HPV vaccination. Pupils usually ha
 [Learn more about the {{ programme.vaccineName.sentenceCase }} on GOV.UK]({{ programme.guidance.url }}) ({{ programme.guidance.hint }})
 {% endfor %}
 
+{% if consent.child.school.phase == SchoolPhase.Secondary %}
+{% include "emails/consent/_talk-to-your-child.njk" %}
+{% endif %}
+
 {% include "emails/consent/_how-to-respond.njk" %}
 
 You need to respond by {{ session.formatted.firstDate }}.
 
 If you do not respond, you’ll be sent automatic reminders. Responding will stop reminders.
-
-{% if consent.child.school.phase == SchoolPhase.Secondary %}
-{% include "emails/consent/_talk-to-your-child.njk" %}
-{% endif %}
 
 {% include "emails/consent/_trouble-using-online-form.njk" %}
 
