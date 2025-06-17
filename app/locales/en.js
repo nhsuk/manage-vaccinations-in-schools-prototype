@@ -1167,7 +1167,24 @@ export const en = {
     },
     preScreen: {
       label: 'Pre-screening checks',
-      description: '{{patient.firstName}} has confirmed that they:',
+      description: 'Has {{patient.firstName}} confirmed that they:',
+      selfId: {
+        label: 'Has {{patient.firstName}} confirmed their identity?',
+        true: 'Yes',
+        false: 'No, it was confirmed by somebody else'
+      },
+      identifiedBy: {
+        label: 'Identified by',
+        name: {
+          label: 'Name',
+          title: 'What is the person’s name?'
+        },
+        relationship: {
+          label: 'Relationship to child',
+          title: 'What is their relationship to the child?',
+          hint: 'For example, parent, teacher or teaching assistant'
+        }
+      },
       check: {
         error:
           'Select if the child has confirmed all pre-screening statements are true',
@@ -2218,6 +2235,23 @@ export const en = {
       Contraindications: 'They had contraindications',
       Refused: 'They refused it',
       Unwell: 'They were not well enough'
+    },
+    selfId: {
+      true: 'The child',
+      false: 'Somebody else'
+    },
+    identifiedBy: {
+      title: 'Who confirmed {{patient.firstName}}’s identity?',
+      label: 'Child identified by',
+      name: {
+        label: 'Name',
+        title: 'What is the person’s name?'
+      },
+      relationship: {
+        label: 'Relationship to child',
+        title: 'What is their relationship to the child?',
+        hint: 'For example, parent, teacher or teaching assistant'
+      }
     },
     injection: {
       title:

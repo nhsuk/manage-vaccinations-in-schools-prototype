@@ -11,12 +11,14 @@ import {
   today
 } from '../utils/date.js'
 import {
+  formatIdentifier,
   formatLink,
   formatLinkWithSecondaryText,
   formatMillilitres,
   formatMarkdown,
   formatMonospace,
-  formatTag
+  formatTag,
+  stringToBoolean
 } from '../utils/string.js'
 
 import { Batch } from './batch.js'
@@ -87,6 +89,10 @@ export const VaccinationProtocol = {
  * @property {string} [createdBy_uid] - User who performed vaccination
  * @property {Date} [updatedAt] - Updated date
  * @property {string} [location] - Location
+ * @property {boolean} [selfId] - Child confirmed their identity?
+ * @property {object} [identifiedBy] - Who identified child
+ * @property {string} [identifiedBy.name] - Name of identifier
+ * @property {string} [identifiedBy.relationship] - Relationship of identifier
  * @property {VaccinationOutcome} [outcome] - Outcome
  * @property {VaccinationMethod} [injectionMethod] - Injection method
  * @property {VaccinationSite} [injectionSite] - Injection site on body
@@ -110,6 +116,8 @@ export class Vaccination {
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.location = options?.location || 'Unknown location'
+    this.selfId = options?.selfId && stringToBoolean(options.selfId)
+    this.identifiedBy = this.selfId !== true && options?.identifiedBy
     this.outcome = options?.outcome
     this.given =
       this.outcome === VaccinationOutcome.Vaccinated ||
@@ -362,7 +370,10 @@ export class Vaccination {
       note: formatMarkdown(this.note),
       outcomeStatus: formatTag(this.outcomeStatus),
       programme: this.programme && this.programme.nameTag,
-      school: this.school && this.school.name
+      school: this.school && this.school.name,
+      identifiedBy: this.selfId
+        ? 'The child'
+        : formatIdentifier(this.identifiedBy)
     }
   }
 

@@ -20,11 +20,10 @@ export const vaccinationController = {
 
     const programme = Programme.read(programme_id, request.session.data)
     const vaccination = Vaccination.read(vaccination_uuid, request.session.data)
-    const { session } = vaccination
 
     response.locals.vaccination = vaccination
     response.locals.programme = programme
-    response.locals.session = session
+    response.locals.session = vaccination?.session
 
     next()
   },
@@ -67,7 +66,8 @@ export const vaccinationController = {
       patientSession_uuid,
       data
     )
-    const { injectionSite, ready } = data.patientSession.preScreen
+    const { identifiedBy, injectionSite, ready, selfId } =
+      data.patientSession.preScreen
 
     // Check for default batch
     const defaultBatchId = session.defaultBatch_ids?.[vaccine.snomed]
@@ -99,6 +99,8 @@ export const vaccinationController = {
     data.patientSession_uuid = patientSession_uuid
 
     const vaccination = new Vaccination({
+      selfId,
+      identifiedBy,
       location: session.formatted.location,
       patient_uuid: patient.uuid,
       programme_id: programme.id,
@@ -128,6 +130,8 @@ export const vaccinationController = {
 
     vaccination.create(vaccination, data.wizard)
     patient.recordVaccination(vaccination)
+
+    // response.locals.vaccination = vaccination
 
     response.redirect(`${vaccination.uri}/new/${data.startPath}`)
   },
@@ -171,15 +175,23 @@ export const vaccinationController = {
       const { data, referrer } = request.session
       const { __, programme } = response.locals
 
-      const vaccination = new Vaccination(
-        Vaccination.read(vaccination_uuid, data.wizard),
-        data
-      )
+      let vaccination
+      if (type === 'edit') {
+        vaccination = Vaccination.read(vaccination_uuid, data)
+      } else {
+        vaccination = new Vaccination(
+          Vaccination.read(vaccination_uuid, data.wizard),
+          data
+        )
+      }
+
       response.locals.vaccination = vaccination
 
+      // Historical vaccinations may not return a patient session
       const patientSession = PatientSession.read(data.patientSession_uuid, data)
+
       response.locals.patientSession = patientSession
-      response.locals.session = patientSession.session
+      response.locals.session = patientSession?.session
 
       const journey = {
         [`/`]: {},
@@ -193,7 +205,7 @@ export const vaccinationController = {
               [`/${vaccination_uuid}/${type}/batch-id`]: () => {
                 return !data.defaultBatchId
               },
-              ...(!patientSession.session?.address && {
+              ...(!patientSession?.session?.address && {
                 [`/${vaccination_uuid}/${type}/location`]: {}
               }),
               [`/${vaccination_uuid}/${type}/check-answers`]: {}
@@ -217,7 +229,7 @@ export const vaccinationController = {
 
       response.locals.batchItems = Batch.readAll(data)
         .filter(
-          (batch) => batch.vaccine.snomed === patientSession.vaccine.snomed
+          (batch) => batch.vaccine.snomed === patientSession?.vaccine.snomed
         )
         .filter((batch) => !batch.archivedAt)
 
@@ -287,7 +299,7 @@ export const vaccinationController = {
   updateForm(request, response) {
     const { data } = request.session
     const { paths, patientSession, vaccination } = response.locals
-    const { vaccine } = patientSession
+    const { vaccine } = vaccination
 
     // Add dose amount and vaccination outcome based on dosage answer
     const { dosage } = request.body.vaccination
