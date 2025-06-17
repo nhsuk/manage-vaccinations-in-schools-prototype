@@ -10,7 +10,7 @@ export const healthQuestions = {
   },
   anaphylaxisInjectedFlu: {
     label:
-      'Has your child had a severe allergic reaction (anaphylaxis) to a previous dose of the injectable flu vaccine, or any component of the vaccine?',
+      'Has your child had a severe allergic reaction (anaphylaxis) to a previous dose of the injected flu vaccine, or any component of the vaccine?',
     detailsHint: false
   },
   anaphylaxisNasalFlu: {
