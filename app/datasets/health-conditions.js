@@ -8,16 +8,12 @@ export const healthConditions = {
   anaemia: {
     medicalConditions:
       'My child was diagnosed with anaemia and has low iron levels.',
-    medicationAllergies:
-      'My child takes iron supplements to manage their anaemia.',
     triageNote:
       'Spoke with parent, child diagnosed with anaemia and takes iron supplements. Vaccinator needs to be aware and ensure iron levels are monitored during and after vaccine administration.'
   },
   anxietyDisorder: {
     medicalConditions:
       'My child has an anxiety disorder and experiences excessive worry and fear on a regular basis.',
-    medicationAllergies:
-      'My child takes medication to manage their anxiety and prevent panic attacks.',
     support:
       'My child becomes extremely anxious in public settings. I’d like for them to be vaccinated in a private space and not rushed through the vaccination.',
     triageNote:
@@ -41,8 +37,6 @@ export const healthConditions = {
   autism: {
     medicalConditions:
       'My child has autism spectrum disorder and has difficulty with social interactions and communication.',
-    medicationAllergies:
-      'My child does not take medication, but receives therapy to help with their autism.',
     support:
       'My child becomes extremely anxious in public settings. I’d like for them to be vaccinated in a private space and not rushed through the vaccination.',
     triageNote:
@@ -69,8 +63,6 @@ export const healthConditions = {
       'My child has frequent nose bleeds, but our doctor says its nothing to be worried about.',
     medicalConditions:
       'My child has a bleeding disorder and can easily bruise or bleed.',
-    medicationAllergies:
-      'My child takes medication to manage their bleeding disorder and prevent excessive bleeding.',
     triageNote:
       'Spoke with parent, child has bleeding disorder and takes medication to manage. Vaccinator needs to be aware and cautious when administering vaccine to prevent excessive bleeding.'
   },
@@ -87,8 +79,6 @@ export const healthConditions = {
   chronicPain: {
     medicalConditions:
       'My child has chronic pain due to a previous injury and struggles with discomfort daily.',
-    medicationAllergies:
-      'My child takes pain medication to manage their chronic pain and improve their quality of life.',
     triageNote:
       'Spoke with parent, child has chronic pain due to previous injury and takes medication. Vaccinator should be aware of child’s condition and take extra care during vaccine administration to minimize any discomfort. Monitor for any adverse reactions during and after vaccine administration.'
   },
@@ -97,8 +87,6 @@ export const healthConditions = {
       'My child has coeliac disease and must follow a strict gluten-free diet.',
     medicalConditions:
       'My child has coeliac disease and must follow a strict gluten-free diet.',
-    medicationAllergies:
-      'My child does not take medication, but follows a strict gluten-free diet to manage their coeliac disease.',
     triageNote:
       'Spoke with parent. Safe to vaccinate, but monitor for adverse reactions'
   },
@@ -111,16 +99,12 @@ export const healthConditions = {
   depression: {
     medicalConditions:
       'My child has depression and experiences feelings of sadness and hopelessness on a regular basis.',
-    medicationAllergies:
-      'My child takes medication to manage their depression and improve their mood.',
     triageNote:
       'Spoke with parent. Child has depression, takes medication to manage it, has made progress with therapy. No medical issues that would impact vaccine administration. It is safe to vaccinate.'
   },
   diabetes: {
     medicalConditions:
       'My child has type 1 diabetes and requires daily insulin injections.',
-    medicationAllergies:
-      'My child takes insulin injections multiple times a day to manage their diabetes.',
     triageNote: 'Spoke with parent, it is safe to vaccinate'
   },
   dogBite: {
@@ -130,24 +114,18 @@ export const healthConditions = {
   dyslexia: {
     medicalConditions:
       'My child has dyslexia and has difficulty with reading and writing.',
-    medicationAllergies:
-      'My child does not take medication, but receives extra support in school to help with their dyslexia.',
     triageNote:
       'Spoke with parent. Child has dyslexia, does not take medication for it, receives extra support in school. No medical issues that would impact vaccine administration. It is safe to vaccinate.'
   },
   eczema: {
     medicalConditions:
       'My child has eczema and has skin irritation and redness on a regular basis.',
-    medicationAllergies:
-      'My child uses topical ointments to manage their eczema and prevent skin irritation.',
     triageNote:
       'Spoke with parent. Safe to vaccinate, but monitor for adverse reactions'
   },
   epilepsy: {
     medicalConditions:
       'My child has epilepsy and has seizures on a regular basis.',
-    medicationAllergies:
-      'My child takes anti-seizure medication twice a day to manage their epilepsy.',
     triageNote: 'Spoke with parent, it is safe to vaccinate'
   },
   fainting: {
@@ -163,23 +141,17 @@ export const healthConditions = {
       'My child has a food allergy to dairy products and had an anaphylactic reaction in the past.',
     eggAllergy:
       'My child has an allergy to dairy products and had an anaphylactic reaction in the past.',
-    medicationAllergies:
-      'My child carries an EpiPen with them at all times in case of another reaction.',
     triageNote:
       'Spoke with parent. Safe to vaccinate, but monitor for adverse reactions'
   },
   heartCondition: {
     medicalConditions:
       'My child was born with a heart condition and has had several surgeries to repair it.',
-    medicationAllergies:
-      'My child takes medication to manage their heart condition and prevent further issues.',
     triageNote: 'Spoke with parent, it is safe to vaccinate'
   },
   learningDisability: {
     medicalConditions:
       'My child has a learning disability and has difficulty with reading, writing, and other academic skills.',
-    medicationAllergies:
-      'My child does not take medication, but receives extra support in school to help with their learning disability.',
     support:
       'My child becomes extremely anxious in public settings. I’d like for them to be vaccinated in a private space and not rushed through the vaccination.',
     triageNote:
@@ -188,8 +160,6 @@ export const healthConditions = {
   migraines: {
     medicalConditions:
       'My child suffers from migraines and has severe headaches on a regular basis.',
-    medicationAllergies:
-      'My child takes medication to manage their migraines and prevent headaches.',
     triageNote:
       'Spoke with parent. Safe to vaccinate, but monitor for adverse reactions'
   },

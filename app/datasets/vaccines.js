@@ -35,7 +35,7 @@ export default {
       'immuneSystemCloseContact': {},
       'bleeding': {},
       'eggAllergy': {},
-      'medicationAllergies': {},
+      'anaphylaxisNasalFlu': {},
       'medicalConditions': {},
       'aspirin': {},
       'recentFluVaccination': {}
@@ -73,7 +73,7 @@ export default {
     ],
     healthQuestions: {
       'bleeding': {},
-      'allergy': {},
+      'anaphylaxisInjectedFlu': {},
       'medicalConditions': {},
       'recentFluVaccination': {}
     },

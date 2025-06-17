@@ -5,6 +5,15 @@ export const healthQuestions = {
     detailsHint: false
   },
   allergy: {
+    label: 'Does the child have any severe allergies?',
+    detailsHint: false
+  },
+  anaphylaxisInjectedFlu: {
+    label:
+      'Has your child had a severe allergic reaction (anaphylaxis) to a previous dose of the injectable flu vaccine, or any component of the vaccine?',
+    detailsHint: false
+  },
+  anaphylaxisNasalFlu: {
     label:
       'Has the child had a severe allergic reaction (anaphylaxis) to a previous dose of the nasal flu vaccine, or any ingredient of the vaccine?',
     hint: 'This includes gelatine, neomycin or gentamicin',
@@ -55,11 +64,6 @@ export const healthQuestions = {
     hint: false,
     detailsHint:
       'Let us know if they are able to avoid contact with the immunocompromised person for 2 weeks'
-  },
-  medicationAllergies: {
-    label: 'Does the child have any allergies to medication?',
-    hint: false,
-    detailsHint: false
   },
   medicalConditions: {
     label:
