@@ -184,6 +184,7 @@ export class PatientSession {
   get latestNote() {
     return this.auditEvents
       .filter(({ programme_ids }) => programme_ids.includes(this.programme_id))
+      .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
       .find(({ type }) => type === EventType.Unknown)
   }
 

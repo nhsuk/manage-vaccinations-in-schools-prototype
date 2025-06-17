@@ -54,7 +54,7 @@
       {{ card({
         heading: auditEvent.name,
         headingLevel: 4,
-        descriptionHtml: event(auditEvent),
+        descriptionHtml: event({ auditEvent: auditEvent }),
         attributes: {
           id: auditEvent.uuid
         }

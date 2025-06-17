@@ -1,9 +1,22 @@
-{% macro event(auditEvent, showProgrammes = true) -%}
-  {{ auditEvent.formatted.note | nhsukMarkdown }}
+{% macro event(params) -%}
+  {% if params.truncate %}
+    {% set truncatedNote = params.auditEvent.note | truncate(params.truncate) %}
+    <blockquote>
+      {{ truncatedNote | nhsukMarkdown  }}
+      {% if truncatedNote.includes("…") %}
+      <p class="nhsuk-body">
+        {{ link(params.patientSession.uri + "/events", "Continue reading") | safe }}
+        <span class="nhsuk-u-visually-hidden">note for {{ params.patientSession.patient.fullName }}</span>
+      </p>
+      {% endif %}
+    </blockquote>
+  {% else %}
+    {{ params.auditEvent.formatted.note | safe }}
+  {% endif %}
   <p class="nhsuk-body-s nhsuk-u-margin-0 nhsuk-u-secondary-text-color">
-    {% if auditEvent.formatted.programmes and showProgrammes %}
-      {{ auditEvent.formatted.programmes | safe }}&nbsp;
+    {% if params.auditEvent.formatted.programmes and params.showProgrammes %}
+      {{ params.auditEvent.formatted.programmes | safe }}&nbsp;
     {% endif %}
-    {{ auditEvent.formatted.createdAtAndBy | safe }}
+    {{ params.auditEvent.formatted.createdAtAndBy | safe }}
   </p>
 {%- endmacro %}
