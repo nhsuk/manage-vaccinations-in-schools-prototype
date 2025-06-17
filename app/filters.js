@@ -102,6 +102,21 @@ export default (env) => {
   }
 
   /**
+   * Truncate
+   *
+   * @param {string} string - String to truncate
+   * @param {number} length - When to truncate
+   * @returns {string} Truncated string
+   */
+  filters.truncate = (string, length) => {
+    return _.truncate(string, {
+      length,
+      omission: '…',
+      separator: ' '
+    })
+  }
+
+  /**
    * Format markdown
    *
    * @param {string} string - Markdown

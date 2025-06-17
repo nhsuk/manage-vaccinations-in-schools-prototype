@@ -117,8 +117,13 @@
                 } if view != "record",
                 notes: {
                   label: __("patientSession.notes.label"),
-                  value: patientSession.latestNote.formatted.note
-                }
+                  value: event({
+                    auditEvent: patientSession.latestNote,
+                    showProgrammes: false,
+                    truncate: 300,
+                    patientSession: patientSession
+                  })
+                } if patientSession.latestNote
               })
             }) }}
 
