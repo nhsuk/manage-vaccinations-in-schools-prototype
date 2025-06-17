@@ -75,7 +75,6 @@ export default {
       'bleeding': {},
       'allergy': {},
       'medicalConditions': {},
-      'previousReaction': {},
       'recentFluVaccination': {}
     },
     preScreenQuestions: [
