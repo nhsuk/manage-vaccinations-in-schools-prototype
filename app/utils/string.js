@@ -344,6 +344,25 @@ export function formatParent(parent, includeTelephone = true) {
 }
 
 /**
+ * Format identifier
+ *
+ * @param {object} identifiedBy - Identifier
+ * @returns {string|undefined} Formatted identifier HTML
+ */
+export function formatIdentifier(identifiedBy) {
+  if (!identifiedBy) return
+
+  let string = identifiedBy.name
+
+  // Add relationship, if provided
+  if (identifiedBy.name !== undefined && identifiedBy.relationship) {
+    string += ` (${identifiedBy.relationship})`
+  }
+
+  return string
+}
+
+/**
  * Format parental relationship, falling back to name else unknown
  *
  * @param {import('../models/parent.js').Parent} parent - Parent

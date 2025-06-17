@@ -1,0 +1,39 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("vaccination.identifiedBy.title", {
+  patient: vaccination.patient
+}) %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: vaccination.patient.fullName,
+          title: title
+        })
+      }
+    },
+    items: [{
+      text: __("vaccination.selfId.true"),
+      value: true
+    }, {
+      text: __("vaccination.selfId.false"),
+      value: false,
+      conditional: {
+        html: input({
+          classes: "nhsuk-input--width-20",
+          label: { text: __("vaccination.identifiedBy.name.title") },
+          decorate: "vaccination.identifiedBy.name"
+        }) + input({
+          classes: "nhsuk-input--width-20",
+          label: { text: __("vaccination.identifiedBy.relationship.title") },
+          hint: { text: __("vaccination.identifiedBy.relationship.hint") },
+          decorate: "vaccination.identifiedBy.relationship"
+        })
+      }
+    }],
+    decorate: "vaccination.selfId"
+  }) }}
+{% endblock %}

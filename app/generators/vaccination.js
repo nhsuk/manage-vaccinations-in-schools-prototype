@@ -55,6 +55,7 @@ export function generateVaccination(
     createdBy_uid: user.uid,
     outcome,
     location: session.location.name,
+    selfId: true,
     programme_id: programme.id,
     session_id: session.id,
     patient_uuid: patientSession.patient.uuid,
