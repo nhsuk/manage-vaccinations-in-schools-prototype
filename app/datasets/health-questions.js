@@ -6,11 +6,13 @@ export const healthQuestions = {
   },
   allergy: {
     label: 'Does the child have any severe allergies?',
+    hint: false,
     detailsHint: false
   },
   anaphylaxisInjectedFlu: {
     label:
       'Has your child had a severe allergic reaction (anaphylaxis) to a previous dose of the injected flu vaccine, or any component of the vaccine?',
+    hint: false,
     detailsHint: false
   },
   anaphylaxisNasalFlu: {
