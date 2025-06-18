@@ -75,7 +75,9 @@ export const VaccinationSite = {
  * @enum {string}
  */
 export const VaccinationProtocol = {
-  PGD: 'Patient Group Directions'
+  PGD: 'Patient Group Direction (PGD)',
+  PSD: 'Patient Specific Direction (PSD)',
+  National: 'National protocol'
 }
 
 /**
