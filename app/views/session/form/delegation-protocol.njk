@@ -1,0 +1,34 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("session.delegationProtocol.title") %}
+{% set hasNasalVaccine = session.delegationNasalProtocols.length > 1 %}
+
+{% block form %}
+  {{ radios({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-6"
+    } if hasNasalVaccine,
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--l",
+        html: heading({
+          caption: session.location.name,
+          title: title
+        })
+      }
+    },
+    items: delegationProtocolItems,
+    decorate: "session.delegationProtocol"
+  }) }}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("session.delegationNasalProtocol.title")
+      }
+    },
+    items: delegationNasalProtocolItems,
+    decorate: "session.delegationNasalProtocol"
+  }) if hasNasalVaccine }}
+{% endblock %}

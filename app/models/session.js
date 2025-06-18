@@ -14,6 +14,7 @@ import {
 } from '../utils/date.js'
 import { getConsentWindow } from '../utils/session.js'
 import {
+  formatDelegationProtocol,
   formatLink,
   formatLinkWithSecondaryText,
   formatList,
@@ -38,7 +39,7 @@ import {
 } from './patient-session.js'
 import { Programme, ProgrammePreset, programmeTypes } from './programme.js'
 import { School } from './school.js'
-import { Vaccine } from './vaccine.js'
+import { Vaccine, VaccineMethod } from './vaccine.js'
 
 /**
  * @readonly
@@ -102,6 +103,7 @@ export const RegistrationOutcome = {
  * @property {object} [register] - Patient register
  * @property {string} [programmePreset] - Programme preset name
  * @property {Array<string>} [catchupProgrammeTypes] - Catchup programmes
+ * @property {VaccinationProtocol} [delegationProtocol] - Delegation protocol
  * @property {object} [defaultBatch_ids] - Vaccine SNOMED code: Default batch ID
  */
 export class Session {
@@ -131,7 +133,12 @@ export class Session {
     this.register = options?.register || {}
     this.programmePreset = options?.programmePreset
     this.catchupProgrammeTypes = stringToArray(options?.catchupProgrammeTypes)
+    this.delegationProtocol = options?.delegationProtocol || false
     this.defaultBatch_ids = options?.defaultBatch_ids || {}
+
+    if (this.programmePreset === 'SeasonalFlu') {
+      this.delegationNasalProtocol = options?.delegationNasalProtocol || false
+    }
   }
 
   /**
@@ -609,6 +616,44 @@ export class Session {
     return []
   }
 
+  get delegationProtocols() {
+    const protocols = new Set()
+    for (const programme of this.programmes) {
+      const injectedVaccines = programme.vaccines.filter(
+        (vaccine) => vaccine.method === VaccineMethod.Injection
+      )
+
+      for (const vaccine of injectedVaccines) {
+        for (const protocol of vaccine.delegationProtocols) {
+          protocols.add(protocol)
+        }
+      }
+    }
+
+    protocols.add(false)
+
+    return [...protocols]
+  }
+
+  get delegationNasalProtocols() {
+    const protocols = new Set()
+    for (const programme of this.programmes) {
+      const injectedVaccines = programme.vaccines.filter(
+        (vaccine) => vaccine.method === VaccineMethod.Nasal
+      )
+
+      for (const vaccine of injectedVaccines) {
+        for (const protocol of vaccine.delegationProtocols) {
+          protocols.add(protocol)
+        }
+      }
+    }
+
+    protocols.add(false)
+
+    return [...protocols]
+  }
+
   /**
    * Get default batches
    *
@@ -898,7 +943,12 @@ export class Session {
         .join(', '),
       school: this.school && this.school.name,
       school_urn: this.school && this.school.formatted.urn,
-      status: formatTag(this.sessionStatus)
+      status: formatTag(this.sessionStatus),
+      delegationProtocol: formatDelegationProtocol(this.delegationProtocol),
+      delegationNasalProtocol:
+        this.programmePreset === 'SeasonalFlu'
+          ? formatDelegationProtocol(this.delegationNasalProtocol)
+          : undefined
     }
   }
 

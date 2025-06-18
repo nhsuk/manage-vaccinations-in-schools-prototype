@@ -9,6 +9,7 @@ import {
 import { ProgrammeType } from '../models/programme.js'
 import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
 import { RegistrationOutcome } from '../models/session.js'
+import { VaccinationProtocol } from '../models/vaccination.js'
 
 /**
  * @returns {import("i18n").LocaleCatalog}
@@ -1556,6 +1557,35 @@ export const en = {
       label: 'Register',
       title: 'Register attendance',
       information: 'You can register attendance when a session is in progress.'
+    },
+    delegationProtocol: {
+      label: 'Allow delegation',
+      title: 'Can healthcare assistants administer injected vaccines?',
+      [VaccinationProtocol.PGD]: {
+        hint: 'Healthcare assistants can administer injected vaccines supplied by a nurse'
+      },
+      [VaccinationProtocol.PSD]: {
+        hint: 'Healthcare assistants can supply and administer injected vaccines when instructed by a prescriber'
+      },
+      [VaccinationProtocol.National]: {
+        hint: 'Healthcare assistants can administer injected vaccines supplied by a nurse'
+      },
+      false: {
+        hint: 'Only nurses can administer injected vaccines'
+      }
+    },
+    delegationNasalProtocol: {
+      label: 'Allow delegation for nasal spray',
+      title: 'Can healthcare assistants administer nasal spray vaccines?',
+      [VaccinationProtocol.PGD]: {
+        hint: 'Healthcare assistants can administer nasal spray vaccines supplied by a nurse'
+      },
+      [VaccinationProtocol.PSD]: {
+        hint: 'Healthcare assistants can supply and administer nasal spray vaccines when instructed by a prescriber'
+      },
+      false: {
+        hint: 'Only nurses can administer nasal spray vaccines'
+      }
     },
     record: {
       label: 'Record vaccinations',

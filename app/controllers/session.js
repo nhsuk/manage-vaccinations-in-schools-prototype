@@ -21,7 +21,7 @@ import { VaccinationOutcome } from '../models/vaccination.js'
 import { VaccineMethod } from '../models/vaccine.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
-import { formatYearGroup } from '../utils/string.js'
+import { formatDelegationProtocol, formatYearGroup } from '../utils/string.js'
 
 export const sessionController = {
   read(request, response, next, session_id) {
@@ -381,7 +381,7 @@ export const sessionController = {
     return (request, response, next) => {
       const { session_id } = request.params
       const { data, referrer } = request.session
-      let { organisation } = response.locals
+      let { __, organisation } = response.locals
 
       organisation = Organisation.read(organisation?.code || 'RYG', data)
 
@@ -438,6 +438,26 @@ export const sessionController = {
             }
           })
         }))
+
+      response.locals.delegationProtocolItems = Object.values(
+        session.delegationProtocols
+      ).map((protocol) => ({
+        text: formatDelegationProtocol(protocol),
+        value: protocol,
+        hint: {
+          text: __(`session.delegationProtocol.${protocol}.hint`)
+        }
+      }))
+
+      response.locals.delegationNasalProtocolItems = Object.values(
+        session.delegationNasalProtocols
+      ).map((protocol) => ({
+        text: formatDelegationProtocol(protocol),
+        value: protocol,
+        hint: {
+          text: __(`session.delegationNasalProtocol.${protocol}.hint`)
+        }
+      }))
 
       next()
     }

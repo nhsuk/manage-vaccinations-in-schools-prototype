@@ -51,6 +51,16 @@ export function stringToArray(value) {
 }
 
 /**
+ * Format delegation protocol
+ *
+ * @param {string|boolean} protocol - Delegation protocol
+ * @returns {string} Formatted delegation protocol HTML
+ */
+export function formatDelegationProtocol(protocol) {
+  return protocol ? `Yes, using ${protocol}` : 'No'
+}
+
+/**
  * Format highlight
  *
  * @param {object} healthAnswer - Health answer
