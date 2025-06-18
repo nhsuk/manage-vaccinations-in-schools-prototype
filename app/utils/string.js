@@ -321,7 +321,7 @@ export function formatNhsNumber(string, invalid) {
 /**
  * Format parent with optional display of telephone number
  *
- * @param {import('../models/parent.js').Parent} parent - Patent
+ * @param {import('../models/parent.js').Parent} parent - Parent
  * @param {boolean} [includeTelephone] - Include telephone number
  * @returns {string|undefined} Formatted parent HTML
  */
@@ -346,7 +346,7 @@ export function formatParent(parent, includeTelephone = true) {
 /**
  * Format parental relationship, falling back to name else unknown
  *
- * @param {import('../models/parent.js').Parent} parent - Patent
+ * @param {import('../models/parent.js').Parent} parent - Parent
  * @returns {string|undefined} Formatted parent HTML
  */
 export function formatParentalRelationship(parent) {
