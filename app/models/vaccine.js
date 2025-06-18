@@ -67,6 +67,7 @@ export const VaccineMethod = {
  * @property {object} [leaflet] - Leaflet
  * @property {number} dose - Dosage
  * @property {VaccineMethod} method - Method
+ * @property {Array<VaccinationProtocol>} delegationProtocols - Delegation protocols
  * @property {Array<VaccineSideEffect>} sideEffects - Side effects
  * @property {object} healthQuestions - Health questions
  * @property {Array<PreScreenQuestion>} preScreenQuestions - Pre-screening questions
@@ -81,6 +82,7 @@ export class Vaccine {
     this.leaflet = options.leaflet
     this.dose = options.dose
     this.method = options.method
+    this.delegationProtocols = options.delegationProtocols || []
     this.sideEffects = options.sideEffects
     this.healthQuestions = options.healthQuestions
     this.preScreenQuestions = options.preScreenQuestions

@@ -1,3 +1,4 @@
+import { VaccinationProtocol } from '../models/vaccination.js'
 import {
   PreScreenQuestion,
   VaccineMethod,
@@ -17,6 +18,7 @@ export default {
       size: '197KB'
     },
     method: VaccineMethod.Nasal,
+    delegationProtocol: VaccinationProtocol.PSD,
     dose: 0.2,
     sideEffects: [
       VaccineSideEffect.BlockedNose,
@@ -58,6 +60,7 @@ export default {
       size: '174KB'
     },
     method: VaccineMethod.Injection,
+    delegationProtocol: VaccinationProtocol.National,
     dose: 0.5,
     sideEffects: [
       VaccineSideEffect.PainSite,
@@ -98,6 +101,7 @@ export default {
       size: '110KB'
     },
     method: VaccineMethod.Injection,
+    delegationProtocol: VaccinationProtocol.PSD,
     dose: 0.5,
     sideEffects: [
       VaccineSideEffect.Bruising,
@@ -132,6 +136,7 @@ export default {
       size: '2.64MB'
     },
     method: VaccineMethod.Injection,
+    delegationProtocol: VaccinationProtocol.PSD,
     dose: 0.5,
     sideEffects: [
       VaccineSideEffect.PainSite,
@@ -168,6 +173,7 @@ export default {
       size: '177KB'
     },
     method: VaccineMethod.Injection,
+    delegationProtocol: VaccinationProtocol.PSD,
     dose: 0.5,
     sideEffects: [
       VaccineSideEffect.PainSite,
