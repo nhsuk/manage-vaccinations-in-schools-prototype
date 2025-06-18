@@ -102,6 +102,8 @@ export const RegistrationOutcome = {
  * @property {object} [register] - Patient register
  * @property {string} [programmePreset] - Programme preset name
  * @property {Array<string>} [catchupProgrammeTypes] - Catchup programmes
+ * @property {boolean} [nationalProtocol] - Enable national protocol
+ * @property {boolean} [psdProtocol] - Enable PSD protocol
  * @property {object} [defaultBatch_ids] - Vaccine SNOMED code: Default batch ID
  */
 export class Session {
@@ -131,7 +133,13 @@ export class Session {
     this.register = options?.register || {}
     this.programmePreset = options?.programmePreset
     this.catchupProgrammeTypes = stringToArray(options?.catchupProgrammeTypes)
+    this.psdProtocol = stringToBoolean(options?.psdProtocol) || false
     this.defaultBatch_ids = options?.defaultBatch_ids || {}
+
+    if (this.programmePreset === 'SeasonalFlu') {
+      this.nationalProtocol =
+        stringToBoolean(options?.nationalProtocol) || false
+    }
   }
 
   /**
