@@ -628,7 +628,7 @@ export class PatientSession {
    * @static
    */
   static read(uuid, context) {
-    if (context?.patientSessions) {
+    if (context?.patientSessions?.[uuid]) {
       return new PatientSession(context.patientSessions[uuid], context)
     }
   }

@@ -118,7 +118,7 @@ export class Move {
    * @static
    */
   static read(uuid, context) {
-    if (context?.moves) {
+    if (context?.moves?.[uuid]) {
       return new Move(context.moves[uuid], context)
     }
   }

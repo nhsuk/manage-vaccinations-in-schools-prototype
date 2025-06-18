@@ -186,7 +186,7 @@ export class Record extends Child {
    * @static
    */
   static read(nhsn, context) {
-    if (context?.records) {
+    if (context?.records?.[nhsn]) {
       return new Record(context.records[nhsn], context)
     }
   }

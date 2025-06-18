@@ -184,7 +184,7 @@ export class School {
    * @static
    */
   static read(urn, context) {
-    if (context?.schools) {
+    if (context?.schools?.[urn]) {
       return new School(context.schools[urn], context)
     }
   }

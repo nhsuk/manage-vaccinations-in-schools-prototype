@@ -397,7 +397,7 @@ export class Programme {
    * @static
    */
   static read(id, context) {
-    if (context?.programmes) {
+    if (context?.programmes?.[id]) {
       return new Programme(context.programmes[id], context)
     }
   }

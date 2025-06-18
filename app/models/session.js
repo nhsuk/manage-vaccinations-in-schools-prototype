@@ -1027,7 +1027,7 @@ export class Session {
    * @static
    */
   static read(id, context) {
-    if (context?.sessions) {
+    if (context?.sessions?.[id]) {
       return new Session(context.sessions[id], context)
     }
   }

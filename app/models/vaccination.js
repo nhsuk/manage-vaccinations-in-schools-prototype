@@ -423,7 +423,7 @@ export class Vaccination {
    * @static
    */
   static read(uuid, context) {
-    if (context?.vaccinations) {
+    if (context?.vaccinations?.[uuid]) {
       return new Vaccination(context.vaccinations[uuid], context)
     }
   }

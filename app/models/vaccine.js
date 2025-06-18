@@ -183,7 +183,7 @@ export class Vaccine {
    * @static
    */
   static read(snomed, context) {
-    if (context?.vaccines) {
+    if (context?.vaccines?.[snomed]) {
       return new Vaccine(context.vaccines[snomed], context)
     }
   }

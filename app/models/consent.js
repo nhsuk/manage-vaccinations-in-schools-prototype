@@ -150,7 +150,7 @@ export class Consent extends Reply {
    * @static
    */
   static read(uuid, context) {
-    if (context?.replies) {
+    if (context?.replies?.[uuid]) {
       return new Consent(context.replies[uuid], context)
     }
   }

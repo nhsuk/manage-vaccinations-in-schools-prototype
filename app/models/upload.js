@@ -297,7 +297,7 @@ export class Upload {
    * @static
    */
   static read(id, context) {
-    if (context.uploads) {
+    if (context.uploads?.[id]) {
       return new Upload(context.uploads[id], context)
     }
   }

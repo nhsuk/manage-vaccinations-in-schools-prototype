@@ -101,7 +101,7 @@ export class User {
    * @static
    */
   static read(uid, context) {
-    if (context?.users) {
+    if (context?.users?.[uid]) {
       return new User(context.users[uid])
     }
   }

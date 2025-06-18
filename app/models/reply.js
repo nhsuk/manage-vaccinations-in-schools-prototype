@@ -397,7 +397,7 @@ export class Reply {
    * @static
    */
   static read(uuid, context) {
-    if (context?.replies) {
+    if (context?.replies?.[uuid]) {
       return new Reply(context.replies[uuid], context)
     }
   }

@@ -102,7 +102,7 @@ export class Clinic {
    * @static
    */
   static read(id, context) {
-    if (context?.clinics) {
+    if (context?.clinics?.[id]) {
       return new Clinic(context.clinics[id], context)
     }
   }

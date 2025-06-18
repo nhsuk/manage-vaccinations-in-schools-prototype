@@ -101,7 +101,7 @@ export class Notice {
    * @static
    */
   static read(uuid, context) {
-    if (context?.notices) {
+    if (context?.notices?.[uuid]) {
       return new Notice(context.notices[uuid], context)
     }
   }

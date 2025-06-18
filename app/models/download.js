@@ -347,7 +347,7 @@ export class Download {
    * @static
    */
   static read(id, context) {
-    if (context?.downloads) {
+    if (context?.downloads?.[id]) {
       return new Download(context.downloads[id], context)
     }
   }

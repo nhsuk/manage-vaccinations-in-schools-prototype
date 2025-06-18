@@ -146,7 +146,7 @@ export class Batch {
    * @static
    */
   static read(id, context) {
-    if (context?.batches) {
+    if (context?.batches?.[id]) {
       return new Batch(context.batches[id], context)
     }
   }

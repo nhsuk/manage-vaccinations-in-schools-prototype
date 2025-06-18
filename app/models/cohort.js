@@ -161,7 +161,7 @@ export class Cohort {
    * @static
    */
   static read(uid, context) {
-    if (context?.cohorts) {
+    if (context?.cohorts?.[uid]) {
       return new Cohort(context.cohorts[uid], context)
     }
   }
