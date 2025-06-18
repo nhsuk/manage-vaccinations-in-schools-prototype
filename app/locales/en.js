@@ -1580,6 +1580,35 @@ export const en = {
       title: 'Register attendance',
       information: 'You can register attendance when a session is in progress.'
     },
+    delegation: {
+      title: 'Delegation'
+    },
+    nationalProtocol: {
+      label: 'Use National protocol',
+      title:
+        'Can healthcare assistants administer the injected flu vaccine using the national protocol?',
+      yes: {
+        label: 'Yes',
+        hint: 'Healthcare assistants can administer an injected vaccine when supplied by a nurse'
+      },
+      no: {
+        label: 'No',
+        hint: 'Only nurses can administer the injected vaccine'
+      }
+    },
+    psdProtocol: {
+      label: 'Use Patient Specific Direction',
+      title:
+        'Can healthcare assistants administer the nasal spray using Patient Specific Direction (PSD)?',
+      yes: {
+        label: 'Yes',
+        hint: 'Healthcare assistants can supply and administer a nasal spray when instructed by a prescriber'
+      },
+      no: {
+        label: 'No',
+        hint: 'Healthcare assistants can only administer a nasal spray when supplied by a nurse'
+      }
+    },
     record: {
       label: 'Record vaccinations',
       title: 'Record vaccinations',

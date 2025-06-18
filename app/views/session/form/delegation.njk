@@ -1,0 +1,52 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("session.delegation.title") %}
+{% set hasNasalVaccine = session.delegationNasalProtocols.length > 0 %}
+
+{% block form %}
+  {{ heading({
+    caption: session.location.name,
+    title: title
+  }) }}
+
+  {{ radios({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-6"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("session.psdProtocol.title")
+      }
+    },
+    items: [{
+      text: "Yes",
+      hint: { text: __("session.psdProtocol.yes.hint") },
+      value: true
+    }, {
+      text: "No",
+      hint: { text: __("session.psdProtocol.no.hint") },
+      value: false
+    }],
+    decorate: "session.psdProtocol"
+  }) }}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("session.nationalProtocol.title")
+      }
+    },
+    items: [{
+      text: "Yes",
+      hint: { text: __("session.nationalProtocol.yes.hint") },
+      value: true
+    }, {
+      text: "No",
+      hint: { text: __("session.nationalProtocol.no.hint") },
+      value: false
+    }],
+    decorate: "session.nationalProtocol"
+  }) if session.programmePreset === "SeasonalFlu" }}
+{% endblock %}
