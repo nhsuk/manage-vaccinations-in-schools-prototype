@@ -16,9 +16,12 @@ $_current-indicator-width: 4px;
 .app-sub-navigation__link {
   padding-bottom: nhsuk-spacing(1);
   padding-top: nhsuk-spacing(1);
-  text-decoration: none;
   @include nhsuk-link-style-default;
   @include nhsuk-link-style-no-visited-state;
+
+  &:link {
+    text-decoration: none;
+  }
 
   &:not(:focus):hover {
     color: $nhsuk-link-color;
