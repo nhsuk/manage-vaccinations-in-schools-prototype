@@ -66,7 +66,7 @@ export const vaccinationController = {
       patientSession_uuid,
       data
     )
-    const { identifiedBy, injectionSite, ready, selfId } =
+    let { identifiedBy, injectionSite, ready, selfId, suppliedBy_uid } =
       data.patientSession.preScreen
 
     // Check for default batch
@@ -98,6 +98,10 @@ export const vaccinationController = {
     data.defaultBatchId = defaultBatchId
     data.patientSession_uuid = patientSession_uuid
 
+    // Used logged in user as vaccinator, or default to example user
+    const createdBy_uid = data.token?.uid || '000123456789'
+    suppliedBy_uid = suppliedBy_uid || createdBy_uid
+
     const vaccination = new Vaccination({
       selfId,
       identifiedBy,
@@ -107,17 +111,19 @@ export const vaccinationController = {
       school_urn: session.school_urn,
       session_id: session.id,
       vaccine_snomed: vaccine.snomed,
-      ...(data.token && { createdBy_uid: data.token?.uid }),
+      createdBy_uid,
       ...(injectionSite && {
         dose: vaccine.dose,
         injectionMethod: VaccinationMethod.Intramuscular,
         injectionSite,
+        suppliedBy_uid,
         outcome: VaccinationOutcome.Vaccinated
       }),
       ...(isNasalSpray && {
         dose: vaccine.dose,
         injectionMethod: VaccinationMethod.Nasal,
         injectionSite: VaccinationSite.Nose,
+        suppliedBy_uid,
         outcome: VaccinationOutcome.Vaccinated
       }),
       ...(programme.sequence && {
