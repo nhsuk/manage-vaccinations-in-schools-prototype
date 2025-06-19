@@ -1,3 +1,5 @@
+{% set isVaccinated = patientSession.report == PatientOutcome.Vaccinated %}
+
 {{ heading({
   level: 3,
   size: "m",
@@ -6,14 +8,16 @@
 
 {% set cardDescriptionHtml %}
   {# Description #}
-  {% if session.consentWindow == ConsentWindow.Opening %}
-    {{ session.formatted.consentWindow | nhsukMarkdown }}
-  {% elif session.consentWindow == ConsentWindow.Open %}
-    {{ patientSession.status.consent.description | nhsukMarkdown }}
-  {% endif %}
+  {% if not isVaccinated %}
+    {% if session.consentWindow == ConsentWindow.Opening %}
+      {{ session.formatted.consentWindow | nhsukMarkdown }}
+    {% elif session.consentWindow == ConsentWindow.Open %}
+      {{ patientSession.status.consent.description | nhsukMarkdown }}
+    {% endif %}
 
-  {% if patientSession.patient.lastReminderDate %}
-    {{ patientSession.patient.formatted.lastReminderDate | nhsukMarkdown }}
+    {% if patientSession.patient.lastReminderDate %}
+      {{ patientSession.patient.formatted.lastReminderDate | nhsukMarkdown }}
+    {% endif %}
   {% endif %}
 
   {# Actions #}
@@ -37,10 +41,10 @@
       text: __("reply.new.title"),
       href: patientSession.uri + "/replies/new?referrer=" + referrer
     } if options.canRespond]
-  }) }}
+  }) if not isVaccinated }}
 
   {# Gillick #}
-  {% if options.canGillick %}
+  {% if options.canGillick and not isVaccinated %}
     {{ heading({
       classes: "nhsuk-u-margin-bottom-3",
       level: 4,

@@ -1,3 +1,5 @@
+{% set isVaccinated = patientSession.report == PatientOutcome.Vaccinated %}
+
 {{ heading({
   level: 3,
   size: "m",
@@ -6,7 +8,9 @@
 
 {% set cardDescriptionHtml %}
   {# Description #}
-  {{ patientSession.status.screen.description | nhsukMarkdown }}
+  {% if not isVaccinated %}
+    {{ patientSession.status.screen.description | nhsukMarkdown }}
+  {% endif %}
 
   {# Actions #}
   {{ buttonGroup({
@@ -15,7 +19,7 @@
       text: __("triage.edit.title"),
       href: patientSession.uri + "/edit/triage?referrer=" + referrer
     }]
-  }) if options.hasTriage }}
+  }) if options.hasTriage and not isVaccinated }}
 
   {# Decision table #}
   {% set triageNoteRows = [] %}
