@@ -87,6 +87,7 @@ export const VaccinationProtocol = {
  * @property {Date} [createdAt] - Created date
  * @property {object} [createdAt_] - Created date (from `dateInput`)
  * @property {string} [createdBy_uid] - User who performed vaccination
+ * @property {string} [suppliedBy_uid] - Who supplied the vaccine
  * @property {Date} [updatedAt] - Updated date
  * @property {string} [location] - Location
  * @property {boolean} [selfId] - Child confirmed their identity?
@@ -114,6 +115,7 @@ export class Vaccination {
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdAt_ = options?.createdAt_
     this.createdBy_uid = options?.createdBy_uid
+    this.suppliedBy_uid = options?.suppliedBy_uid || this.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.location = options?.location || 'Unknown location'
     this.selfId = options?.selfId && stringToBoolean(options.selfId)
@@ -266,6 +268,21 @@ export class Vaccination {
   }
 
   /**
+   * Get user who supplied the vaccine
+   *
+   * @returns {User} - User
+   */
+  get suppliedBy() {
+    try {
+      if (this.suppliedBy_uid) {
+        return User.read(this.suppliedBy_uid, this.context)
+      }
+    } catch (error) {
+      console.error('Vaccination.suppliedBy', error.message)
+    }
+  }
+
+  /**
    * Get programme
    *
    * @returns {Programme} - Programme
@@ -354,6 +371,7 @@ export class Vaccination {
         dateStyle: 'long'
       }),
       createdBy: this.createdBy?.fullName || '',
+      suppliedBy: this.suppliedBy?.fullName || '',
       updatedAt: formatDate(this.updatedAt, {
         day: 'numeric',
         month: 'long',

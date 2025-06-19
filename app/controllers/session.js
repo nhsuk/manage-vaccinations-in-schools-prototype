@@ -93,6 +93,7 @@ export const sessionController = {
   },
 
   readPatientSessions(request, response, next) {
+    const { permissions } = request.app.locals
     const { view } = request.params
     const {
       consent,
@@ -182,12 +183,13 @@ export const sessionController = {
     // Remove patient sessions where outcome returns false
     results = results.filter((patientSession) => patientSession[view] !== false)
 
-    // Only show patients ready to vaccinate
+    // Only show patients ready to vaccinate, and that a user can vaccinate
     if (view === 'record') {
       results = results.filter(
-        ({ nextActivity, register }) =>
+        ({ nextActivity, register, vaccineMethod }) =>
           nextActivity === Activity.Record &&
-          register !== RegistrationOutcome.Pending
+          register !== RegistrationOutcome.Pending &&
+          permissions?.vaccineMethods.includes(vaccineMethod)
       )
     }
 

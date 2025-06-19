@@ -4,6 +4,7 @@ import { healthQuestions } from './datasets/health-questions.js'
 import { ScreenOutcome } from './models/patient-session.js'
 import { ProgrammeType } from './models/programme.js'
 import { School } from './models/school.js'
+import { User } from './models/user.js'
 import {
   formatHealthAnswer,
   formatLink,
@@ -53,7 +54,7 @@ export default () => {
     return [
       {
         value: '',
-        text: 'Select an option',
+        text: 'Select a school',
         disabled: true,
         ...(!value && { selected: true })
       },
@@ -67,6 +68,37 @@ export default () => {
           ...(school.address && {
             attributes: {
               'data-hint': school.address.formatted.singleline
+            }
+          })
+        }))
+    ]
+  }
+
+  /**
+   * Get user form field items
+   *
+   * @param {object} users - Users data
+   * @param {string} value - Current value
+   * @returns {object} Form field items
+   */
+  globals.userItems = function (users, value) {
+    return [
+      {
+        value: '',
+        text: 'Select a user',
+        disabled: true,
+        ...(!value && { selected: true })
+      },
+      ...Object.values(users)
+        .map((user) => new User(user))
+        .sort((a, b) => a.fullName.localeCompare(b.fullName))
+        .map((user) => ({
+          text: user.fullName,
+          value: user.uid,
+          ...(value && { selected: value === user.uid }),
+          ...(user.email && {
+            attributes: {
+              'data-hint': user.email
             }
           })
         }))

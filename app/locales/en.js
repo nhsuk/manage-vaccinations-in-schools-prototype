@@ -1185,6 +1185,11 @@ export const en = {
           hint: 'For example, parent, teacher or teaching assistant'
         }
       },
+      suppliedBy: {
+        label: 'Supplier',
+        title:
+          'Which nurse identified and pre-screened the child and supplied the vaccine?'
+      },
       check: {
         error:
           'Select if the child has confirmed all pre-screening statements are true',
@@ -2215,6 +2220,11 @@ export const en = {
     createdBy: {
       label: 'Vaccinator',
       title: 'Who was the vaccinator?'
+    },
+    suppliedBy: {
+      label: 'Supplier',
+      title:
+        'Which nurse identified and pre-screened the child and supplied vaccine?'
     },
     updatedAt: {
       label: 'Record updated'

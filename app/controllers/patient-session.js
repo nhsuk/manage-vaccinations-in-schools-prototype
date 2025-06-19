@@ -9,6 +9,7 @@ import {
 } from '../models/patient-session.js'
 import { Programme, ProgrammeType } from '../models/programme.js'
 import { ConsentWindow, RegistrationOutcome } from '../models/session.js'
+import { UserRole } from '../models/user.js'
 import {
   Vaccination,
   VaccinationOutcome,
@@ -19,8 +20,10 @@ import { today } from '../utils/date.js'
 
 export const patientSessionController = {
   read(request, response, next, nhsn) {
+    const { permissions } = request.app.locals
     const { programme_id } = request.params
     const { activity } = request.query
+    const { data } = request.session
     const { __ } = response.locals
 
     const patientSession = PatientSession.readAll(request.session.data)
@@ -72,7 +75,9 @@ export const patientSessionController = {
       canTriage: triage !== TriageOutcome.NotNeeded,
       // Patient already triaged
       hasTriage: triageNotes.length > 0,
+      hasSupplier: data?.token?.role === UserRole.HCA,
       canRecord:
+        permissions?.vaccineMethods.includes(patientSession.vaccineMethod) &&
         register === RegistrationOutcome.Present &&
         nextActivity === Activity.Record,
       canReport:

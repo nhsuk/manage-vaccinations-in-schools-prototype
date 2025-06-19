@@ -66,6 +66,12 @@
     decorate: "patientSession.preScreen.note"
   }) }}
 
+  {{ autocomplete({
+    label: { text: __("patientSession.preScreen.suppliedBy.title") },
+    items: userItems(data.users, patientSession.preScreen.suppliedBy),
+    decorate: "patientSession.preScreen.suppliedBy_uid"
+  }) if options.hasSupplier and patientSession.vaccineMethod == VaccineMethod.Nasal }}
+
   <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
 
   {{ radios({
