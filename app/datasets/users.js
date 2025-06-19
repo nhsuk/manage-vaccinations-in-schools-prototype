@@ -6,6 +6,6 @@ export default [
     firstName: 'Jane',
     lastName: 'Joy',
     email: 'nurse.joy@example.com',
-    role: UserRole.ClinicalAdmin
+    role: UserRole.Nurse
   }
 ]

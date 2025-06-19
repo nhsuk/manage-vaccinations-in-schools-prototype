@@ -15,7 +15,7 @@ export const homeController = {
   dashboard(request, response) {
     const { data } = request.session
 
-    if (data.token?.role === UserRole.ClinicalAdmin) {
+    if (data.token?.role === UserRole.Nurse) {
       response.locals.notices = Notice.readAll(data)
     }
 

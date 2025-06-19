@@ -28,7 +28,7 @@
       text: (__("upload.notices.label") + " " + count(notices.length)) | safe,
       href: "/uploads/notices",
       current: params.view == "notices"
-    } if data.token.role == UserRole.ClinicalAdmin]
+    } if data.token.role == UserRole.Nurse]
   }) }}
 
   <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">

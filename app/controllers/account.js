@@ -12,7 +12,7 @@ export const accountController = {
 
     // CIS2
     const user = Object.values(data.users).at(-1)
-    user.role = UserRole.ClinicalAdmin
+    user.role = UserRole.Nurse
 
     request.session.data.token = user
 

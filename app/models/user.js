@@ -7,8 +7,8 @@ import { formatLink, formatMonospace } from '../utils/string.js'
  * @enum {string}
  */
 export const UserRole = {
-  ClinicalAdmin: 'Nurse',
-  DataAdmin: 'Data administrator',
+  Nurse: 'Nurse',
+  MedicalSecretary: 'Medical secretary',
   DataConsumer: 'Data consumer'
 }
 
