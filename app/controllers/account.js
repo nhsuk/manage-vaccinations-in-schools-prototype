@@ -4,7 +4,7 @@ export const accountController = {
   changeRole(request, response) {
     request.session.data.token.role = request.body.role
 
-    response.redirect('/home')
+    response.redirect(request.query.referrer || '/home')
   },
 
   login(request, response) {

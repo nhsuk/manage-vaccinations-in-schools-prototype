@@ -36,7 +36,7 @@ export const navigation = (request, response, next) => {
         items: [
           {
             label: { text: __('account.change-role.label') },
-            href: '/account/change-role'
+            href: `/account/change-role?referrer=${request.originalUrl}`
           },
           {
             label: { text: __('account.sign-out.title') },
