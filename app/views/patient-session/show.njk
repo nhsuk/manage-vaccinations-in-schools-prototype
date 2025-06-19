@@ -54,23 +54,7 @@
   }) }}
 
   <div class="nhsuk-grid-row">
-    <div class="nhsuk-grid-column-three-quarters">
-      {% include "patient-session/_consent.njk" %}
-
-      {% if options.canTriage %}
-        {% include "patient-session/_triage.njk" %}
-      {% endif %}
-
-      {% if options.canReport %}
-        {% include "patient-session/_report.njk" %}
-      {% endif %}
-
-      {% if options.canRecord %}
-        {% include "patient-session/_record.njk" %}
-      {% endif %}
-    </div>
-
-    <div class="nhsuk-grid-column-one-quarter app-grid-column--sticky-below-secondary-navigation">
+    <div class="app-grid-column-patient-record app-grid-column--sticky-below-secondary-navigation">
       {{ heading({
         classes: "nhsuk-u-margin-top-1",
         level: 3,
@@ -85,6 +69,22 @@
         })
       }) }}
       {{ link(patient.uri + "?referrer=" + referrer, "View full child record") | nhsukMarkdown }}
+    </div>
+
+    <div class="app-grid-column-patient-session">
+      {% include "patient-session/_consent.njk" %}
+
+      {% if options.canTriage %}
+        {% include "patient-session/_triage.njk" %}
+      {% endif %}
+
+      {% if options.canReport %}
+        {% include "patient-session/_report.njk" %}
+      {% endif %}
+
+      {% if options.canRecord %}
+        {% include "patient-session/_record.njk" %}
+      {% endif %}
     </div>
   </div>
 {% endblock %}
