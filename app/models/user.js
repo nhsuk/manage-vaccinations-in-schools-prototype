@@ -8,6 +8,7 @@ import { formatLink, formatMonospace } from '../utils/string.js'
  */
 export const UserRole = {
   Nurse: 'Nurse',
+  HCA: 'Healthcare assistant',
   MedicalSecretary: 'Medical secretary',
   DataConsumer: 'Data consumer'
 }
