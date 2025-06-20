@@ -65,8 +65,8 @@ export const en = {
         key: 'Security key',
         ipad: 'iPad app',
         authenticator: 'Authenticator app',
-        nhsMail: 'NHSmail',
-        passkey: 'Passkey (private beta)'
+        nhsMail: 'NHS.net Connect (formerly NHSmail)',
+        passkey: 'Passkey (including Windows Hello and Security key)'
       },
       terms: {
         heading: 'Agree to our terms of use',
