@@ -217,7 +217,7 @@ export default () => {
       return
     }
 
-    const rows = []
+    const summaryRows = []
     for (const [key, healthAnswer] of Object.entries(healthAnswers)) {
       let html = ''
 
@@ -235,7 +235,8 @@ export default () => {
         ? healthQuestions[key].label.replace('the child', 'your child')
         : healthQuestions[key].label
 
-      rows.push({
+      summaryRows.push({
+        classes: undefined,
         key: { text: keyText },
         value: { html },
         ...(edit && {
@@ -252,7 +253,9 @@ export default () => {
       })
     }
 
-    return rows
+    summaryRows.at(-1).classes = 'nhsuk-summary-list__row--no-border'
+
+    return summaryRows
   }
 
   globals.inspect = function (data, includeContext = false) {
@@ -361,6 +364,7 @@ export default () => {
           : 'Not provided'
 
         summaryRows.push({
+          classes: undefined,
           key: {
             text: label
           },
@@ -381,6 +385,9 @@ export default () => {
         })
       }
     }
+
+    // Remove border from final row
+    summaryRows.at(-1).classes = 'nhsuk-summary-list__row--no-border'
 
     return summaryRows
   }
