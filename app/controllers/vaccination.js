@@ -5,11 +5,12 @@ import _ from 'lodash'
 import { Batch } from '../models/batch.js'
 import { PatientSession } from '../models/patient-session.js'
 import { Programme } from '../models/programme.js'
-import { User } from '../models/user.js'
+import { User, UserRole } from '../models/user.js'
 import {
   Vaccination,
   VaccinationMethod,
   VaccinationOutcome,
+  VaccinationProtocol,
   VaccinationSite
 } from '../models/vaccination.js'
 import { Vaccine, VaccineMethod } from '../models/vaccine.js'
@@ -100,7 +101,23 @@ export const vaccinationController = {
 
     // Used logged in user as vaccinator, or default to example user
     const createdBy_uid = data.token?.uid || '000123456789'
+    const role = data.token?.role || UserRole.Nurse
     suppliedBy_uid = suppliedBy_uid || createdBy_uid
+
+    // Nurses always use PGD protocol
+    let protocol = VaccinationProtocol.PGD
+
+    // HCAs uses different protocol depending on vaccine and programme
+    if (role === UserRole.HCA) {
+      if (session.nationalProtocol && !isNasalSpray) {
+        protocol = VaccinationProtocol.National
+      }
+
+      // TODO: Only use PSD protocol if PSD enable and vaccine was prescribed
+      // if (session.psdProtocol && isNasalSpray) {
+      //   protocol = VaccinationProtocol.PSD
+      // }
+    }
 
     const vaccination = new Vaccination({
       selfId,
@@ -117,6 +134,7 @@ export const vaccinationController = {
         injectionMethod: VaccinationMethod.Intramuscular,
         injectionSite,
         suppliedBy_uid,
+        protocol,
         outcome: VaccinationOutcome.Vaccinated
       }),
       ...(isNasalSpray && {
@@ -124,6 +142,7 @@ export const vaccinationController = {
         injectionMethod: VaccinationMethod.Nasal,
         injectionSite: VaccinationSite.Nose,
         suppliedBy_uid,
+        protocol,
         outcome: VaccinationOutcome.Vaccinated
       }),
       ...(programme.sequence && {
@@ -136,8 +155,6 @@ export const vaccinationController = {
 
     vaccination.create(vaccination, data.wizard)
     patient.recordVaccination(vaccination)
-
-    // response.locals.vaccination = vaccination
 
     response.redirect(`${vaccination.uri}/new/${data.startPath}`)
   },
