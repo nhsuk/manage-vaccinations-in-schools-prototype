@@ -224,6 +224,20 @@ export class Session {
   }
 
   /**
+   * Get dates reminders to give consent are sent
+   *
+   * @returns {Array<Date>|undefined} - Reminder dates
+   */
+  get reminderDates() {
+    const reminderDates = []
+    for (const date of this.dates) {
+      reminderDates.push(removeDays(date, 7))
+    }
+
+    return reminderDates
+  }
+
+  /**
    * Get date next automated reminder will be sent
    *
    * @returns {Date|undefined} - Next reminder date
@@ -796,6 +810,13 @@ export class Session {
         ? this.dates.map((date) => formatDate(date, { dateStyle: 'full' }))
         : ''
 
+    const formattedReminderDates =
+      this.reminderDates.length > 0
+        ? this.reminderDates.map((date) =>
+            formatDate(date, { dateStyle: 'full' })
+          )
+        : []
+
     const formattedNextReminderDate = formatDate(this.nextReminderDate, {
       dateStyle: 'full'
     })
@@ -840,6 +861,11 @@ export class Session {
         day: 'numeric'
       }),
       openAt: formatDate(this.openAt, { dateStyle: 'full' }),
+      reminderDates: formatList(formattedReminderDates).replace(
+        'nhsuk-list--bullet',
+        'app-list--spaced'
+      ),
+      nextReminderDate: formattedNextReminderDate,
       reminderWeeks: formattedNextReminderDate
         ? formatWithSecondaryText(
             `Send ${reminderWeeks} before each session`,
