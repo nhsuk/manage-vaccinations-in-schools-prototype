@@ -1429,10 +1429,28 @@ export const en = {
           'Does the child agree to having the {{programme.vaccineName.sentenceCase}}?',
         Parent:
           'Do they agree to {{patient.firstName}} having the {{programme.vaccineName.sentenceCase}}?'
+      },
+      yes: {
+        label: 'Yes'
+      },
+      nasal: {
+        label: 'Yes, for the nasal spray'
+      },
+      injection: {
+        label: 'Yes, for the injected vaccine only'
+      },
+      no: {
+        label: 'No'
+      },
+      noResponse: {
+        label: 'No response'
       }
     },
     alternative: {
-      label: 'Consent given for injected vaccine'
+      label: 'Consent given for injected vaccine',
+      title:
+        'Do they also agree to the injected vaccine if the nasal spray is not suitable?',
+      hint: 'For example, if the child is heavily congested on the day of the vaccination'
     },
     invalid: {
       label: 'Invalid response'
