@@ -17,18 +17,39 @@
         })
       }
     },
-    items: [{
-      text: "Yes",
-      value: ReplyDecision.Given
-    }, {
-      text: "No",
-      value: ReplyDecision.Refused
-    }, {
-      divider: "or"
-    }, {
-      text: "No response",
-      value: ReplyDecision.NoResponse
-    }],
+    items: [
+      {
+        text: __('reply.decision.nasal.label') if programme.hasAlternativeVaccines else __('reply.decision.yes.label'),
+        value: ReplyDecision.Given,
+        conditional: {
+          html: radios({
+            fieldset: {
+              legend: {
+                text: __("reply.alternative.title")
+              }
+            },
+            hint: { text: __("reply.alternative.hint") },
+            items: booleanItems,
+            decorate: "reply.alternative"
+          })
+        } if programme.hasAlternativeVaccines
+      },
+      {
+        text: __('reply.decision.injection.label'),
+        value: ReplyDecision.OnlyFluInjection
+      } if programme.hasAlternativeVaccines,
+      {
+        text: __('reply.decision.no.label'),
+        value: ReplyDecision.Refused
+      },
+      {
+        divider: "or"
+      },
+      {
+        text: __('reply.decision.noResponse.label'),
+        value: ReplyDecision.NoResponse
+      }
+    ],
     decorate: "reply.decision"
   }) }}
 
