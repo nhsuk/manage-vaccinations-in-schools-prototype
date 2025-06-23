@@ -47,21 +47,38 @@
     }) }}
 
     {{ summaryList({
-      rows: summaryRows(session, {
-        patients: {
-          changeText: __("session.upload-class-list.title"),
-          href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn if session.type == SessionType.School
+      rows: [
+        {
+          key: {
+            text: __("session.patients.label")
+          },
+          value: {
+            text: session.formatted.patients
+          },
+          actions: {
+            items: [{
+              text: __("session.upload-class-list.title"),
+              href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn if session.type == SessionType.School
+            }]
+          }
         },
-        patientsRefused: {
-          changeText: __("actions.review"),
-          href: session.uri + "/consent?consent=" + ConsentOutcome.Refused
-        },
-        patientsAttending: {},
-        patientsVaccinated: {
-          changeText: __("actions.review"),
-          href: session.uri + "/outcome?outcome=" + VaccinationOutcome.Vaccinated
+        {
+          key: {
+            text: __("session.patientsRefused.label")
+          },
+          value: {
+            html: link(session.uri + "/consent?consent=" + ConsentOutcome.Refused, __n("session.patientsRefused.count", session.patientsRefused.length))
+          }
+        } if session.patientsRefused.length,
+        {
+          key: {
+            text: __("session.patientsVaccinated.label")
+          },
+          value: {
+            html: session.formatted.patientsVaccinated
+          }
         }
-      })
+      ]
     }) }}
 
     {% if not session.isUnplanned %}
@@ -73,36 +90,70 @@
       }) }}
 
       {{ summaryList({
-        rows: summaryRows(session, {
-          consents: {
-            changeText: __("actions.review"),
-            href: session.uri + "/consents"
-          },
-          patientsToGetConsent: {
-            changeText: __("actions.review"),
-            href: session.uri + "/consent?consent=" + ConsentOutcome.NoResponse
-          },
-          patientsToFollowUp: {
-            changeText: __("actions.review"),
-            href: session.uri + "/consent?consent=" + ConsentOutcome.Declined
-          },
-          patientsToResolveConsent: {
-            changeText: __("actions.review"),
-            href: session.uri + "/consent?consent=" + ConsentOutcome.Inconsistent
-          },
-          patientsToTriage: {
-            changeText: __("actions.review"),
-            href: session.uri + "/screen?screen=" + ScreenOutcome.NeedsTriage
-          },
-          patientsToRegister: {
-            changeText: __("actions.review"),
-            href: session.uri + "/register"
-          },
-          patientsToRecord: {
-            changeText: __("actions.review"),
-            href: session.uri + "/record"
+        rows: [
+          {
+            key: {
+              text: __("session.consents.label")
+            },
+            value: {
+              html: link(session.uri + "/consent?consent=" + ConsentOutcome.Given, __n("consent.count", session.consents.length))
+            }
+          } if session.consents.length,
+          {
+            key: {
+              text: __("session.patientsToGetConsent.label")
+            },
+            value: {
+              html: link(session.uri + "/consent?consent=" + ConsentOutcome.NoResponse, __n("session.patientsToGetConsent.count", session.patientsToGetConsent.length))
+            },
+            actions: {
+              items: [{
+                text: __("session.reminders.label"),
+                href: session.uri + "/reminders"
+              }]
+            }
+          } if session.patientsToGetConsent.length,
+          {
+            key: {
+              text: __("session.patientsToFollowUp.label")
+            },
+            value: {
+              html: link(session.uri + "/consent?consent=" + ConsentOutcome.Declined, __n("session.patientsToFollowUp.count", session.patientsToFollowUp.length))
+            }
+          } if session.patientsToFollowUp.length,
+          {
+            key: {
+              text: __("session.patientsToFollowUp.label")
+            },
+            value: {
+              html: link(session.uri + "/consent?consent=" + ConsentOutcome.Inconsistent, __n("session.patientsToResolveConsent.count", session.patientsToResolveConsent.length))
+            }
+          } if session.patientsToResolveConsent.length,
+          {
+            key: {
+              text: __("session.patientsToTriage.label")
+            },
+            value: {
+              html: link(session.uri + "/screen?screen=" + ScreenOutcome.NeedsTriage, __n("session.patientsToTriage.count", session.patientsToTriage.length))
+            }
+          } if session.patientsToTriage.length,
+          {
+            key: {
+              text: __("session.patientsToRegister.label")
+            },
+            value: {
+              html: link(session.uri + "/register", __n("session.patientsToRegister.count", session.patientsToRegister.length))
+            }
+          } if session.patientsToRegister.length,
+          {
+            key: {
+              text: __("session.patientsToRecord.label")
+            },
+            value: {
+              html: session.formatted.patientsToRecord
+            }
           }
-        })
+        ]
       }) }}
     {% endif %}
 

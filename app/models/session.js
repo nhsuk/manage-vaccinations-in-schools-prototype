@@ -828,8 +828,18 @@ export class Session {
       patientsToRecord = Object.entries(this.patientsToRecord).map(
         ([name, patientSessions]) =>
           this.programmes.length > 1
-            ? `${filters.plural(patientSessions.length, 'child')} for ${name}`
-            : `${filters.plural(patientSessions.length, 'child')}`
+            ? patientSessions.length > 0
+              ? formatLink(
+                  `${this.uri}/record`,
+                  `${filters.plural(patientSessions.length, 'child')} are ready for ${name}`
+                )
+              : 'No children'
+            : patientSessions.length > 0
+              ? formatLink(
+                  `${this.uri}/record`,
+                  `${filters.plural(patientSessions.length, 'child')} are ready`
+                )
+              : 'No children'
       )
     }
 
@@ -840,8 +850,18 @@ export class Session {
         Object.entries(this.patientsVaccinated).map(
           ([name, patientSessions]) =>
             this.programmes.length > 1
-              ? `${filters.plural(patientSessions.length, 'vaccination')} given for ${name}`
-              : `${filters.plural(patientSessions.length, 'vaccination')} given`
+              ? patientSessions.length > 0
+                ? formatLink(
+                    `${this.uri}/outcomes?outcome=${PatientOutcome.Vaccinated}`,
+                    `${filters.plural(patientSessions.length, 'vaccination')} given for ${name}`
+                  )
+                : `No vaccinations given for ${name}`
+              : patientSessions.length > 0
+                ? formatLink(
+                    `${this.uri}/outcomes?outcome=${PatientOutcome.Vaccinated}`,
+                    `${filters.plural(patientSessions.length, 'vaccination')} given`
+                  )
+                : 'No vaccinations given'
         )
     }
 
@@ -877,30 +897,6 @@ export class Session {
       consents:
         this.consents.length > 0
           ? filters.plural(this.consents.length, 'child')
-          : undefined,
-      patientsToGetConsent:
-        this.patientsToGetConsent?.length > 0
-          ? filters.plural(this.patientsToGetConsent.length, 'child')
-          : undefined,
-      patientsToFollowUp:
-        this.patientsToFollowUp?.length > 0
-          ? filters.plural(this.patientsToFollowUp.length, 'child')
-          : undefined,
-      patientsToResolveConsent:
-        this.patientsToResolveConsent?.length > 0
-          ? filters.plural(this.patientsToResolveConsent.length, 'child')
-          : undefined,
-      patientsRefused:
-        this.patientsRefused?.length > 0
-          ? filters.plural(this.patientsRefused.length, 'child')
-          : undefined,
-      patientsToTriage:
-        this.patientsToTriage?.length > 0
-          ? filters.plural(this.patientsToTriage.length, 'child')
-          : undefined,
-      patientsToRegister:
-        this.patientsToRegister?.length > 0
-          ? filters.plural(this.patientsToRegister.length, 'child')
           : undefined,
       patientsToRecord: patientsToRecord
         ? patientsToRecord.join('<br>')
