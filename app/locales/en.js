@@ -1676,30 +1676,64 @@ export const en = {
       }
     },
     patientsRefused: {
-      label: 'Consent refused'
+      label: 'Consent refused',
+      count: {
+        one: '%s child with consent refused',
+        other:
+          '[0] No children with consent refused|%s children with consent refused'
+      }
     },
     patientsVaccinated: {
-      label: 'Vaccinated'
+      label: 'Vaccinated',
+      count: {
+        one: '%s child vaccinated',
+        other: '[0] No children vaccinated|%s children vaccinated'
+      }
     },
     patientsToGetConsent: {
       label: 'No consent response',
+      count: {
+        one: '%s child with no response',
+        other: '[0] No children with no response|%s children with no response'
+      },
       reminders:
         '{{session.patientsToGetConsent.length}} parents out of {{session.patients.length}} have not responded yet'
     },
     patientsToFollowUp: {
-      label: 'Requested follow up'
+      label: 'Requested follow up',
+      count: {
+        one: '%s child to follow up',
+        other: '[0] No children to follow up|%s children to follow up'
+      }
     },
     patientsToResolveConsent: {
-      label: 'Conflicting consent'
+      label: 'Conflicting consent',
+      count: {
+        one: '%s child to review',
+        other: '[0] No children to review|%s children to review'
+      }
     },
     patientsToTriage: {
-      label: 'Triage needed'
+      label: 'Triage needed',
+      count: {
+        one: '%s child to triage',
+        other: '[0] No children to triage|%s children to triage'
+      }
     },
     patientsToRegister: {
-      label: 'Register attendance'
+      label: 'Register attendance',
+      count: {
+        one: '%s child to register',
+        other: '[0] No children to register|%s children to register'
+      }
     },
     patientsToRecord: {
-      label: 'Ready for vaccinator'
+      label: 'Ready for vaccinator',
+      count: {
+        one: '%s child ready for vaccinator',
+        other:
+          '[0] No children ready for vaccinator|%s children ready for vaccinator'
+      }
     },
     activities: {
       label: 'Action required'

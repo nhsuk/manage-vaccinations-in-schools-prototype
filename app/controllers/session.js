@@ -189,7 +189,7 @@ export const sessionController = {
         ({ nextActivity, register, vaccineMethod }) =>
           nextActivity === Activity.Record &&
           register !== RegistrationOutcome.Pending &&
-          permissions?.vaccineMethods.includes(vaccineMethod)
+          permissions?.vaccineMethods?.includes(vaccineMethod)
       )
     }
 
