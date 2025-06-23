@@ -1,6 +1,7 @@
 import { isAfter, isBefore } from 'date-fns'
 
-import { ProgrammeType, programmeTypes } from '../models/programme.js'
+// eslint-disable-next-line no-unused-vars
+import { ProgrammeType } from '../models/programme.js'
 import { ConsentWindow, SessionStatus, SessionType } from '../models/session.js'
 import { today } from '../utils/date.js'
 
@@ -28,14 +29,27 @@ export const getConsentWindow = (session) => {
   }
 }
 
-export const getProgrammeSession = (sessions, type, isSchool = true) => {
-  type = type || ProgrammeType.Flu
-  const { id } = programmeTypes[type]
+/**
+ * Get consent URL
+ *
+ * @param {import('../models/session.js').Session[]} sessions - Sessions
+ * @param {string} [programmePreset] - Programme preset name
+ * @param {boolean} [isSchool] - Get school session
+ * @returns {object} Consent window key and value
+ */
+export const getSessionConsentUrl = (
+  sessions,
+  programmePreset = 'SeasonalFlu',
+  isSchool = true
+) => {
   const sessionType = isSchool ? SessionType.School : SessionType.Clinic
 
-  return Object.values(sessions)
-    .filter((session) => session?.primaryProgramme_ids.includes(id))
+  const session = Object.values(sessions)
+    .filter((session) => session?.programmePreset === programmePreset)
     .filter((session) => session.type === sessionType)
-    .filter((session) => session.status !== SessionStatus.Unplanned)
-    .at(-1)
+    .find((session) => session.status !== SessionStatus.Unplanned)
+
+  if (session) {
+    return session.consentUrl
+  }
 }
