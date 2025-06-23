@@ -19,7 +19,7 @@ export const getHealthQuestionPaths = (pathPrefix, consent) => {
   }
 
   const paths = {}
-  const healthQuestions = [...consent.healthQuestionsForDecision.entries()]
+  const healthQuestions = Object.entries(consent.healthQuestionsForDecision)
 
   healthQuestions.forEach(([key, question], index) => {
     const questionPath = getHealthQuestionPath(key, pathPrefix)

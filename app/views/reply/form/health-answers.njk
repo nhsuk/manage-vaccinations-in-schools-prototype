@@ -16,8 +16,8 @@
               label: { text: __("reply.healthAnswers.details") },
               decorate: ["reply", "healthAnswers", key, "details"]
             })
-          } if not patientSession.vaccine.healthQuestions[key].conditional else {
-            html: questions(patientSession.vaccine.healthQuestions[key].conditional)
+          } if not value.conditional else {
+            html: questions(value.conditional)
           }
         },
         {
@@ -35,5 +35,5 @@
     title: title
   }) }}
 
-  {{ questions(patientSession.vaccine.healthQuestions) }}
+  {{ questions(reply.healthQuestionsForDecision) }}
 {% endblock %}

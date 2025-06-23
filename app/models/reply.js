@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import _ from 'lodash'
 
+import vaccines from '../datasets/vaccines.js'
 import { formatDate, today } from '../utils/date.js'
 import {
   formatLinkWithSecondaryText,
@@ -214,6 +215,71 @@ export class Reply {
    */
   get hasConsentForInjection() {
     return this.decision === ReplyDecision.OnlyFluInjection || this.alternative
+  }
+
+  /**
+   * Get health questions to show based on programme and decision given
+   *
+   * @returns {Array} - Health questions
+   */
+  get healthQuestionsForDecision() {
+    const { Flu, HPV, MenACWY, TdIPV } = ProgrammeType
+    const { Injection, Nasal } = VaccineMethod
+    const programme = this.session.primaryProgrammes[0]
+
+    const healthQuestionsForDecision = new Map()
+    let consentedMethod
+    let consentedVaccine
+
+    // Consent given for flu programme with method of vaccination
+    if (programme.type === Flu) {
+      consentedMethod =
+        this.decision === ReplyDecision.OnlyFluInjection ? Injection : Nasal
+      consentedVaccine = Object.values(vaccines).find(
+        (programme) =>
+          programme.type === Flu && programme.method === consentedMethod
+      )
+    }
+
+    // Consent given for HPV programme
+    if (programme.type === HPV) {
+      consentedVaccine = Object.values(vaccines).find(
+        (programme) => programme.type === HPV
+      )
+    }
+
+    // Consent given for MenACWY programme only
+    if (this.decision === ReplyDecision.OnlyMenACWY) {
+      consentedVaccine = Object.values(vaccines).find(
+        (programme) => programme.type === MenACWY
+      )
+    }
+
+    // Consent given for Td/IPV programme only
+    if (this.decision === ReplyDecision.OnlyTdIPV) {
+      consentedVaccine = Object.values(vaccines).find(
+        (programme) => programme.type === TdIPV
+      )
+    }
+
+    // Consent given for all programmes
+    if (ReplyDecision.Given && !consentedVaccine) {
+      consentedVaccine = this.session.vaccines
+    }
+
+    const consentedVaccines = Array.isArray(consentedVaccine)
+      ? consentedVaccine
+      : [consentedVaccine]
+    for (const vaccine of consentedVaccines) {
+      for (const [key, value] of Object.entries(vaccine.healthQuestions)) {
+        healthQuestionsForDecision.set(key, value)
+      }
+    }
+
+    // Always ask support question last
+    healthQuestionsForDecision.set('support', {})
+
+    return Object.fromEntries(healthQuestionsForDecision)
   }
 
   /**

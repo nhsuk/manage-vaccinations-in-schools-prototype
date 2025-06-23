@@ -267,10 +267,7 @@ export const parentController = {
     view = view.startsWith('health-question-') ? 'health-question' : view
 
     // Only ask for details if question does not have sub-questions
-    const healthQuestions = Object.fromEntries(
-      consent.healthQuestionsForDecision
-    )
-    const hasSubQuestions = healthQuestions[key]?.conditional
+    const hasSubQuestions = consent.healthQuestionsForDecision[key]?.conditional
 
     response.render(`parent/form/${view}`, { key, hasSubQuestions })
   },
