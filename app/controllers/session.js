@@ -111,6 +111,11 @@ export const sessionController = {
 
     let results = session.patientSessions
 
+    // Upgrade permissions according to session delegation settings
+    if (session.nationalProtocol) {
+      permissions.vaccineMethods.push(VaccineMethod.Injection)
+    }
+
     // Convert year groups query into an array of numbers
     let yearGroups
     if (yearGroup) {

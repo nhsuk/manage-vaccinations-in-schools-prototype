@@ -131,7 +131,9 @@ export class Vaccination {
     this.injectionSite = options?.injectionSite
     this.dose = this.given ? options?.dose || '' : undefined
     this.sequence = options?.sequence
-    this.protocol = this.given ? VaccinationProtocol.PGD : undefined
+    this.protocol = this.given
+      ? options?.protocol || VaccinationProtocol.PGD
+      : undefined
     this.note = options?.note || ''
     this.school_urn = options?.school_urn
     this.session_id = options?.session_id

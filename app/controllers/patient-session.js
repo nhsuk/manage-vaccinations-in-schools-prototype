@@ -40,7 +40,8 @@ export const patientSessionController = {
       session,
       triage,
       triageNotes,
-      vaccine
+      vaccine,
+      vaccineMethod
     } = patientSession
 
     const outcomed = patientSession.siblingPatientSessions.filter(
@@ -50,6 +51,15 @@ export const patientSessionController = {
     const notOutcomed = patientSession.siblingPatientSessions.filter(
       ({ outcome }) => outcome === PatientOutcome.NoOutcomeYet
     )
+
+    // Upgrade permissions according to session delegation settings
+    if (session.nationalProtocol) {
+      permissions.vaccineMethods.push(VaccineMethod.Injection)
+    }
+
+    const userIsHCA = data?.token?.role === UserRole.HCA
+    const userHasSupplier =
+      vaccineMethod === VaccineMethod.Nasal || session.nationalProtocol
 
     response.locals.options = {
       // Show outstanding vaccinations
@@ -75,7 +85,7 @@ export const patientSessionController = {
       canTriage: triage !== TriageOutcome.NotNeeded,
       // Patient already triaged
       hasTriage: triageNotes.length > 0,
-      hasSupplier: data?.token?.role === UserRole.HCA,
+      hasSupplier: userIsHCA && userHasSupplier,
       canRecord:
         permissions?.vaccineMethods?.includes(patientSession.vaccineMethod) &&
         register === RegistrationOutcome.Present &&
