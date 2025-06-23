@@ -29,6 +29,7 @@ router.post('/:session_id/edit/:view', session.updateForm)
 router.post('/:session_id/close', session.close)
 router.post('/:session_id/default-batch', session.updateDefaultBatch)
 router.post('/:session_id/offline', session.downloadFile)
+router.post('/:session_id/reminders', session.sendReminders)
 
 router.all('/:session_id/:view', session.readPatientSessions)
 router.post('/:session_id/:view', session.filterPatientSessions)

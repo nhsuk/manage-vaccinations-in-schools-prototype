@@ -1645,6 +1645,16 @@ export const en = {
       label: 'Unmatched responses',
       warning: 'You need to review unmatched consent responses for this session'
     },
+    reminders: {
+      label: 'Send reminders',
+      title: 'Manage consent reminders',
+      description:
+        'Mavis automatically sends email and text reminders to parents who have not responded to the initial consent request.\n\nAutomatic reminders are sent 14, 7 and 3 days before a session.\n\nYou can also send reminders manually. Mavis will then skip the next automatic reminder if it’s due to be sent within 3 days.',
+      preConfirm:
+        'Mavis will skip the next automatic reminder if it’s scheduled to be sent within 3 days.',
+      confirm: 'Send manual consent reminders',
+      success: 'Manual consent reminders sent'
+    },
     address: {
       label: 'Address'
     },
@@ -1672,7 +1682,9 @@ export const en = {
       label: 'Vaccinated'
     },
     patientsToGetConsent: {
-      label: 'No consent response'
+      label: 'No consent response',
+      reminders:
+        '{{session.patientsToGetConsent.length}} parents out of {{session.patients.length}} have not responded yet'
     },
     patientsToFollowUp: {
       label: 'Requested follow up'
@@ -1743,6 +1755,14 @@ export const en = {
       title: 'When should parents get a request to give consent?',
       label: 'Consent requests',
       hint: 'For example, 27 3 2025'
+    },
+    reminderDates: {
+      label: 'Automatic consent reminder schedule',
+      description: 'Reminders will be sent automatically on these dates:'
+    },
+    nextReminderDate: {
+      label: 'Next reminder',
+      text: 'The next automatic consent reminder will be sent on %s'
     },
     reminderWeeks: {
       title: 'When should parents get a reminder to give consent?',

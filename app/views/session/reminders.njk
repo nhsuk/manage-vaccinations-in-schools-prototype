@@ -1,0 +1,73 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("session.reminders.title") %}
+{% set confirmButtonText = __("session.reminders.confirm") %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("session.list.title"),
+      href: "/sessions"
+    }, {
+      text: session.location.name,
+      href: "/sessions/" + session.id
+    }]
+  }) }}
+{% endblock %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ __("session.reminders.description") | nhsukMarkdown }}
+
+  {{ heading({
+    classes: "nhsuk-u-margin-bottom-2",
+    level: 2,
+    size: "m",
+    title: __("session.dates.label")
+  }) }}
+
+  {{ session.formatted.dates | safe }}
+
+  {% set detailsHtml %}
+    {{ __("session.reminderDates.description") | nhsukMarkdown }}
+
+    {{ session.formatted.reminderDates | safe }}
+  {% endset %}
+
+  {{ details({
+    text: __("session.reminderDates.label"),
+    html: detailsHtml
+  }) }}
+
+  {% set insetTextHtml %}
+    {{ heading({
+      classes: "nhsuk-u-margin-bottom-2",
+      level: 3,
+      size: "s",
+      title: __("session.patientsToGetConsent.reminders", {
+        session: session
+      })
+    }) }}
+
+    {{ __("session.nextReminderDate.text", session.formatted.nextReminderDate) | nhsukMarkdown }}
+  {% endset %}
+
+  {{ insetText({
+    html: insetTextHtml
+  }) }}
+
+  {{ heading({
+    classes: "nhsuk-u-margin-bottom-2",
+    level: 2,
+    size: "m",
+    title: "Send parents a manual consent reminder"
+  }) }}
+
+  {{ __("session.reminders.preConfirm") | nhsukMarkdown }}
+{% endblock %}

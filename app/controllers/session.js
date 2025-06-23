@@ -472,6 +472,14 @@ export const sessionController = {
     response.end(buffer)
   },
 
+  sendReminders(request, response) {
+    const { __, session } = response.locals
+
+    request.flash('success', __(`session.reminders.success`, { session }))
+
+    response.redirect(session.uri)
+  },
+
   close(request, response) {
     const { data } = request.session
     const { __, session } = response.locals
