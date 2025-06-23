@@ -1358,7 +1358,7 @@ export const en = {
       title: 'Consent response from %s'
     },
     new: {
-      title: 'Get verbal consent',
+      title: 'Record a new consent response',
       'check-answers': {
         title: 'Check and confirm'
       },
