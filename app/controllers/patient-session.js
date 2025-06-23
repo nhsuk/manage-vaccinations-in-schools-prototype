@@ -77,7 +77,7 @@ export const patientSessionController = {
       hasTriage: triageNotes.length > 0,
       hasSupplier: data?.token?.role === UserRole.HCA,
       canRecord:
-        permissions?.vaccineMethods.includes(patientSession.vaccineMethod) &&
+        permissions?.vaccineMethods?.includes(patientSession.vaccineMethod) &&
         register === RegistrationOutcome.Present &&
         nextActivity === Activity.Record,
       canReport:
