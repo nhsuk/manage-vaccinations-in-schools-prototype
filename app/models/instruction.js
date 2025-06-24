@@ -18,8 +18,8 @@ import { VaccinationMethod, VaccinationSite } from './vaccination.js'
  * @enum {string}
  */
 export const InstructionOutcome = {
-  Given: 'Given',
-  Needed: 'Needed'
+  Given: 'PSD added',
+  Needed: 'PSD not added'
 }
 
 /**

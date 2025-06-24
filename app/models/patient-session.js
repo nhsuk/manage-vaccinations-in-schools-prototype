@@ -3,6 +3,8 @@ import filters from '@x-govuk/govuk-prototype-filters'
 
 import { getDateValueDifference, today } from '../utils/date.js'
 import {
+  getInstructionOutcome,
+  getInstructionStatus,
   getNextActivity,
   getRegistrationOutcome,
   getReportOutcome,
@@ -493,6 +495,15 @@ export class PatientSession {
   }
 
   /**
+   * Get instruction outcome
+   *
+   * @returns {import('./instruction.js').InstructionOutcome} - Instruction outcome
+   */
+  get instruct() {
+    return getInstructionOutcome(this)
+  }
+
+  /**
    * Get registration outcome
    *
    * @returns {import('./session.js').RegistrationOutcome} - Registration outcome
@@ -551,6 +562,7 @@ export class PatientSession {
       consent: getConsentStatus(this),
       triage: getTriageStatus(this),
       screen: getScreenStatus(this),
+      instruct: getInstructionStatus(this),
       register: getRegistrationStatus(this),
       outcome: getOutcomeStatus(this),
       report: getReportStatus(this)
@@ -620,6 +632,7 @@ export class PatientSession {
             this.status.screen,
             this.reason.screen
           ),
+        instruct: formatTag(this.status.instruct),
         register: formatTag(this.status.register),
         outcome: formatProgrammeStatus(this.programme, this.status.outcome),
         report: formatProgrammeStatus(this.programme, this.status.report)

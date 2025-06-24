@@ -1104,6 +1104,9 @@ export const en = {
     screen: {
       label: 'Triage status'
     },
+    instruct: {
+      label: 'PSD status'
+    },
     register: {
       label: 'Registration status'
     },
@@ -1575,6 +1578,10 @@ export const en = {
     screen: {
       label: 'Triage',
       title: 'Review triage statuses'
+    },
+    instruct: {
+      label: 'PSDs',
+      title: 'Review PSDs'
     },
     register: {
       label: 'Register',

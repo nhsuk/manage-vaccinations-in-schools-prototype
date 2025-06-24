@@ -3,6 +3,7 @@ import _ from 'lodash'
 
 import { Batch } from '../models/batch.js'
 import { Clinic } from '../models/clinic.js'
+import { InstructionOutcome } from '../models/instruction.js'
 import { Organisation } from '../models/organisation.js'
 import {
   Activity,
@@ -39,7 +40,16 @@ export const sessionController = {
   show(request, response) {
     let { view } = request.params
 
-    if (['consent', 'screen', 'register', 'record', 'outcome'].includes(view)) {
+    if (
+      [
+        'consent',
+        'screen',
+        'instruct',
+        'register',
+        'record',
+        'outcome'
+      ].includes(view)
+    ) {
       view = 'activity'
     } else if (!view) {
       view = 'show'
@@ -151,14 +161,15 @@ export const sessionController = {
       )
     }
 
-    // Filter by screen/register/outcome status
+    // Filter by screen/instruct/register/outcome status
     const filters = {
       screen: request.query.screen || 'none',
+      instruct: request.query.instruct || 'none',
       register: request.query.register || 'none',
       outcome: request.query.outcome || 'none'
     }
 
-    for (const activity of ['screen', 'register', 'outcome']) {
+    for (const activity of ['screen', 'instruct', 'register', 'outcome']) {
       if (activity === view && filters[view] !== 'none') {
         results = results.filter(
           (patientSession) => patientSession[view] === filters[view]
@@ -257,7 +268,7 @@ export const sessionController = {
     }
 
     // Screen/register/outcome status filter options (select one)
-    for (const activity of ['screen', 'register', 'outcome']) {
+    for (const activity of ['screen', 'instruct', 'register', 'outcome']) {
       const screenOutcomes = session.programmes.find(
         (programme) => programme.hasAlternativeVaccines
       )
@@ -268,6 +279,7 @@ export const sessionController = {
 
       const statusItems = {
         screen: screenOutcomes,
+        instruct: InstructionOutcome,
         register: RegistrationOutcome,
         outcome: VaccinationOutcome
       }
@@ -305,6 +317,7 @@ export const sessionController = {
     delete data.q
     delete data.consent
     delete data.screen
+    delete data.instruct
     delete data.register
     delete data.report
 
@@ -321,6 +334,7 @@ export const sessionController = {
       'q',
       'triage',
       'screen',
+      'instruct',
       'register',
       'outcome',
       'vaccineMethod'

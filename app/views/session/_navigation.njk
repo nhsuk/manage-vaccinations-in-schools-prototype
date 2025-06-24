@@ -26,6 +26,11 @@
         current: params.view == "screen"
       },
       {
+        text: __("session.instruct.label"),
+        href: params.session.uri + "/instruct",
+        current: params.view == "instruct"
+      } if session.psdProtocol,
+      {
         text: __("session.register.label"),
         href: params.session.uri + "/register",
         current: params.view == "register"
