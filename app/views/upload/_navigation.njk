@@ -21,11 +21,11 @@
       href: "/uploads",
       current: params.view == "list"
     }, {
-      text: (__("upload.reviews.label") + " " + count(reviews.length)) | safe,
+      text: (__("upload.reviews.label") + count(reviews.length)) | safe,
       href: "/uploads/reviews",
       current: params.view == "reviews"
     }, {
-      text: (__("upload.notices.label") + " " + count(notices.length)) | safe,
+      text: (__("upload.notices.label") + count(notices.length)) | safe,
       href: "/uploads/notices",
       current: params.view == "notices"
     } if data.token.role == UserRole.Nurse]
