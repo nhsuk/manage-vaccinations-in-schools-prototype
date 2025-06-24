@@ -1092,6 +1092,7 @@ export const en = {
       new: {
         title: 'Add a note',
         label: 'Note',
+        hint: 'Notes are visible to all users, and cannot be edited or deleted',
         confirm: 'Save note',
         success: 'Note added'
       }
