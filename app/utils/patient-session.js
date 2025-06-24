@@ -1,5 +1,6 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
+import { InstructionOutcome } from '../models/instruction.js'
 import {
   Activity,
   ConsentOutcome,
@@ -184,6 +185,28 @@ export const getScreenStatus = (patientSession) => {
 }
 
 /**
+ * Get instruction status properties
+ *
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @returns {object} - Instruction status properties
+ */
+export const getInstructionStatus = (patientSession) => {
+  let colour
+  switch (patientSession.instruct) {
+    case InstructionOutcome.Given:
+      colour = 'blue'
+      break
+    default:
+      colour = 'grey'
+  }
+
+  return {
+    colour,
+    text: patientSession.instruct
+  }
+}
+
+/**
  * Get registration status properties
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
@@ -276,6 +299,18 @@ export const getReportStatus = (patientSession) => {
     colour,
     text: report
   }
+}
+
+/**
+ * Get instruction outcome
+ *
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @returns {InstructionOutcome} - Instruction outcome
+ */
+export const getInstructionOutcome = (patientSession) => {
+  return patientSession.instruction
+    ? InstructionOutcome.Given
+    : InstructionOutcome.Needed
 }
 
 /**

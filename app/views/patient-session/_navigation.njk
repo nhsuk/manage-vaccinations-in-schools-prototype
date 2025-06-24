@@ -10,6 +10,8 @@
 
   {{ actionList({
     items: [{
+      tag: statusTag(params.patientSession.status.instruct)
+    } if session.psdProtocol, {
       tag: statusTag(params.patientSession.status.register)
     }, {
       text: __("patientSession.registration.title"),
