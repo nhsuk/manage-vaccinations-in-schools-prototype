@@ -31,6 +31,15 @@ export class User {
   }
 
   /**
+   * Get user name and role
+   *
+   * @returns {string} - Full name
+   */
+  get nameAndRole() {
+    return `${this.fullName} (${this.role})`
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values

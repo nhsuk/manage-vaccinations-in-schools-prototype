@@ -2,10 +2,10 @@
 
 {% set assetsName = "public" %}
 {% set title = serviceName + " (Mavis)" %}
-{% set transactional = true %}
-{% set transactionalService = {
-  name: serviceName,
-  href: "/"
+{% set headerOptions = {
+  service: {
+    text: serviceName
+  }
 } %}
 
 {% block content %}

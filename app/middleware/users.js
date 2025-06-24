@@ -9,5 +9,7 @@ export const users = (request, response, next) => {
 
   request.app.locals.users = _.keyBy(users, 'uid')
 
+  request.app.locals.user = new User(data.token)
+
   next()
 }

@@ -13,7 +13,6 @@
 {% from "_macros/count.njk" import count %}
 {% from "_macros/environment.njk" import appEnvironment %}
 {% from "_macros/event.njk" import event %}
-{% from "_macros/header.njk" import appHeader %}
 {% from "_macros/heading.njk" import heading %}
 {% from "_macros/icon.njk" import icon %}
 {% from "_macros/search-input.njk" import searchInput with context %}
@@ -36,15 +35,79 @@
 
 {% block header %}
   {{ appEnvironment(environment) if environment }}
-  {{ appHeader({
+  {{ header(headerOptions if headerOptions else {
     service: {
-      name: serviceName
-    } if not transactionalService,
-    homeHref: "/" if transactionalService else "/home",
-    transactional: true if transactionalService,
-    transactionalService: transactionalService,
-    primaryLinks: navigation.primaryLinks if not transactionalService,
-    account: navigation.account if not transactionalService
+      text: serviceName,
+      href: "/home"
+    },
+    navigation: {
+      items: [
+        {
+          href: "/programmes",
+          text: __("programme.list.label"),
+          active: navigation.activeSection == "programmes"
+        },
+        {
+          href: "/sessions",
+          text: __("session.list.label"),
+          active: navigation.activeSection == "sessions"
+        },
+        {
+          href: "/patients",
+          text: __("patient.list.label"),
+          active: navigation.activeSection == "patients"
+        },
+        {
+          classes: "app-header__navigation-item--with-count",
+          href: "/consents",
+          html: __("consent.list.label") + count(counts.consents),
+          active: navigation.activeSection == "consents"
+        },
+        {
+          classes: "app-header__navigation-item--with-count",
+          href: "/moves",
+          html: __("move.list.label") + count(counts.moves),
+          active: navigation.activeSection == "moves"
+        },
+        {
+          href: "/vaccines",
+          text: __("vaccine.list.label"),
+          active: navigation.activeSection == "vaccines"
+        },
+        {
+          classes: 'app-header__navigation-item--with-count',
+          href: "/uploads",
+          html: __("upload.list.label") + count(counts.uploads),
+          active: navigation.activeSection == "uploads"
+        },
+        {
+          href: organisation.uri,
+          text: __("organisation.show.label"),
+          active: navigation.activeSection == "organisations"
+        }
+      ]
+    },
+    account: {
+      items: [
+        {
+          text: user.nameAndRole,
+          icon: true
+        },
+        {
+          href: "/account/change-role?referrer=" + navigation.referrer,
+          text: __("account.change-role.label")
+        },
+        {
+          href: "/account/sign-out",
+          text: __("account.sign-out.title")
+        }
+      ] if data.token else [
+        {
+          text: __("account.sign-in.title"),
+          href: "/"
+        }
+      ]
+    }
   }) }}
 {% endblock %}
 
