@@ -32,7 +32,7 @@
     "json-as-xlsx": "^2.5.6",
     "lodash": "^4.17.21",
     "nhsuk-frontend": "github:nhsuk/nhsuk-frontend#e13c33e37",
-    "nhsuk-prototype-rig": "^0.6.1"
+    "nhsuk-prototype-rig": "github:x-govuk/nhsuk-prototype-rig"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.10",
