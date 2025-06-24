@@ -2,10 +2,12 @@
 
 {% set assetsName = "public" %}
 {% set hideConfirmButton = true %}
-{% set transactionalService = {
-  name: "CIS2 Authentication"
-} %}
 {% set title = __("account.cis2.method.label") %}
+{% set headerOptions = {
+  service: {
+    text: "CIS2 Authentication"
+  }
+} %}
 
 {% block form %}
   {{ radios({

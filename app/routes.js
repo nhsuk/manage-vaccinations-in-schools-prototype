@@ -6,6 +6,7 @@ import { environment } from './middleware/environment.js'
 import { internationalisation } from './middleware/internationalisation.js'
 import { navigation } from './middleware/navigation.js'
 import { notification } from './middleware/notification.js'
+import { organisation } from './middleware/organisation.js'
 import { performance } from './middleware/performance.js'
 import { permission } from './middleware/permission.js'
 import { referrer } from './middleware/referrer.js'
@@ -39,7 +40,15 @@ router.use(performance)
 router.use(enumeration)
 router.use(environment)
 router.use(internationalisation)
-router.use(flash(), navigation, notification, rollover, users, permission)
+router.use(
+  flash(),
+  navigation,
+  notification,
+  rollover,
+  users,
+  organisation,
+  permission
+)
 router.use(referrer)
 
 router.use('/', homeRoutes)

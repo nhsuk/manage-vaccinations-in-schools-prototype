@@ -18,11 +18,14 @@ import { formatList, kebabToCamelCase } from '../utils/string.js'
 export const parentController = {
   read(request, response, next, session_id) {
     const session = Session.read(session_id, request.session.data)
+    const serviceName = 'Give or refuse consent for vaccinations'
 
     response.locals.assetsName = 'public'
-    response.locals.transactionalService = {
-      name: 'Give or refuse consent for vaccinations',
-      href: session.consentUrl
+    response.locals.serviceName = serviceName
+    response.locals.headerOptions = {
+      service: {
+        text: serviceName
+      }
     }
     response.locals.session = session
 

@@ -2,15 +2,11 @@
 
 {% set hideConfirmButton = true %}
 {% set title = __("account.change-role.title") %}
-
-{% block header %}
-  {{ appEnvironment(environment) if environment }}
-  {{ header({
-    service: {
-      name: serviceName
-    }
-  }) }}
-{% endblock %}
+{% set headerOptions = {
+  service: {
+    text: serviceName
+  }
+} %}
 
 {% block form %}
   {{ heading({
