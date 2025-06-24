@@ -1,11 +1,13 @@
 import { PasswordInput, createAll } from 'govuk-frontend'
-import initButton from 'nhsuk-frontend/packages/components/button/button.js'
-import initCheckboxes from 'nhsuk-frontend/packages/components/checkboxes/checkboxes.js'
-import initDetails from 'nhsuk-frontend/packages/components/details/details.js'
-import initErrorSummary from 'nhsuk-frontend/packages/components/error-summary/error-summary.js'
-import initHeader from 'nhsuk-frontend/packages/components/header/header.js'
-import initRadios from 'nhsuk-frontend/packages/components/radios/radios.js'
-import initSkipLink from 'nhsuk-frontend/packages/components/skip-link/skip-link.js'
+import {
+  initButtons,
+  initCheckboxes,
+  initDetails,
+  initErrorSummary,
+  initHeader,
+  initRadios,
+  initSkipLinks
+} from 'nhsuk-frontend'
 
 import { AddAnotherComponent } from './custom-elements/add-another.js'
 import { AutoSubmitComponent } from './custom-elements/auto-submit.js'
@@ -23,11 +25,11 @@ customElements.define('is-sticky', IsStickyComponent)
 
 // Initiate scripts on page load
 document.addEventListener('DOMContentLoaded', () => {
-  initButton()
+  initButtons()
   initCheckboxes()
   initDetails()
   initErrorSummary()
   initHeader()
   initRadios()
-  initSkipLink()
+  initSkipLinks()
 })

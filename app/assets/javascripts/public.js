@@ -1,8 +1,10 @@
-import initButton from 'nhsuk-frontend/packages/components/button/button.js'
-import initCheckboxes from 'nhsuk-frontend/packages/components/checkboxes/checkboxes.js'
-import initErrorSummary from 'nhsuk-frontend/packages/components/error-summary/error-summary.js'
-import initRadios from 'nhsuk-frontend/packages/components/radios/radios.js'
-import initSkipLink from 'nhsuk-frontend/packages/components/skip-link/skip-link.js'
+import {
+  initButtons,
+  initCheckboxes,
+  initErrorSummary,
+  initRadios,
+  initSkipLinks
+} from 'nhsuk-frontend'
 
 import { AutocompleteComponent } from './custom-elements/autocomplete.js'
 
@@ -11,9 +13,9 @@ customElements.define('auto-complete', AutocompleteComponent)
 
 // Initialise components
 document.addEventListener('DOMContentLoaded', () => {
-  initButton()
+  initButtons()
   initCheckboxes()
   initErrorSummary()
   initRadios()
-  initSkipLink()
+  initSkipLinks()
 })
