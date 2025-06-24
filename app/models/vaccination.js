@@ -117,7 +117,7 @@ export class Vaccination {
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdAt_ = options?.createdAt_
     this.createdBy_uid = options?.createdBy_uid
-    this.suppliedBy_uid = options?.suppliedBy_uid || this.createdBy_uid
+    this.suppliedBy_uid = options?.suppliedBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.location = options?.location || 'Unknown location'
     this.selfId = options?.selfId && stringToBoolean(options.selfId)

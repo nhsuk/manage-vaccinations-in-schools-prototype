@@ -67,7 +67,7 @@ export const vaccinationController = {
       patientSession_uuid,
       data
     )
-    let { identifiedBy, injectionSite, ready, selfId, suppliedBy_uid } =
+    const { identifiedBy, injectionSite, ready, selfId, suppliedBy_uid } =
       data.patientSession.preScreen
 
     // Check for default batch
@@ -102,7 +102,6 @@ export const vaccinationController = {
     // Used logged in user as vaccinator, or default to example user
     const createdBy_uid = data.token?.uid || '000123456789'
     const role = data.token?.role || UserRole.Nurse
-    suppliedBy_uid = suppliedBy_uid || createdBy_uid
 
     // Nurses always use PGD protocol
     let protocol = VaccinationProtocol.PGD
