@@ -98,6 +98,7 @@ export function generateSession(programmePreset, user, options) {
     createdAt: removeDays(term.from, 60),
     createdBy_uid: user.uid,
     dates,
+    registration: true,
     programmePreset,
     ...(sessionHasCatchups && {
       catchupProgrammeTypes: preset.catchupProgrammeTypes

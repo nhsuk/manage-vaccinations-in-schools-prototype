@@ -128,8 +128,7 @@ export class Session {
     this.closed = options?.closed || false
     this.reminderWeeks =
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
-    this.registration =
-      (options?.registration && stringToBoolean(options.registration)) || true
+    this.registration = stringToBoolean(options?.registration)
     this.register = options?.register || {}
     this.programmePreset = options?.programmePreset
     this.catchupProgrammeTypes = stringToArray(options?.catchupProgrammeTypes)
