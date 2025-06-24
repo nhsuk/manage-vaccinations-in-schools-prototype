@@ -21,6 +21,7 @@ export const EventType = {
   Remind: 'Remind',
   Consent: 'Consent',
   Screen: 'Screen',
+  Instruct: 'Instruct',
   Register: 'Register',
   Record: 'Record',
   Notice: 'Notice',

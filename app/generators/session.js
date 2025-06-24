@@ -1,7 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { isAfter } from 'date-fns'
 
-import { ProgrammePreset } from '../models/programme.js'
+import { ProgrammePreset, ProgrammeType } from '../models/programme.js'
 import { schoolTerms } from '../models/school.js'
 import { Session, SessionStatus, SessionType } from '../models/session.js'
 import { addDays, removeDays, setMidday, today } from '../utils/date.js'
@@ -94,12 +94,17 @@ export function generateSession(programmePreset, user, options) {
 
   const sessionHasCatchups = faker.datatype.boolean(0.5)
 
+  const psdProtocol =
+    preset.primaryProgrammeTypes.includes(ProgrammeType.Flu) &&
+    faker.datatype.boolean(0.5)
+
   return new Session({
     createdAt: removeDays(term.from, 60),
     createdBy_uid: user.uid,
     dates,
     registration: true,
     programmePreset,
+    psdProtocol,
     ...(sessionHasCatchups && {
       catchupProgrammeTypes: preset.catchupProgrammeTypes
     }),

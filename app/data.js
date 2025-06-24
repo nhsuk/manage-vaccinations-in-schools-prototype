@@ -2,6 +2,7 @@ import vaccines from './datasets/vaccines.js'
 import batches from '../.data/batches.json' with { type: 'json' }
 import clinics from '../.data/clinics.json' with { type: 'json' }
 import cohorts from '../.data/cohorts.json' with { type: 'json' }
+import instructions from '../.data/instructions.json' with { type: 'json' }
 import moves from '../.data/moves.json' with { type: 'json' }
 import notices from '../.data/notices.json' with { type: 'json' }
 import organisations from '../.data/organisations.json' with { type: 'json' }
@@ -32,6 +33,7 @@ export default {
   clinics,
   cohorts,
   features: {},
+  instructions,
   moves,
   notices,
   organisation,

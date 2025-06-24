@@ -29,6 +29,7 @@ import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 
 import { EventType } from './audit-event.js'
 import { Gillick } from './gillick.js'
+import { Instruction } from './instruction.js'
 import { Patient } from './patient.js'
 import { Programme, ProgrammeType } from './programme.js'
 import { ReplyDecision } from './reply.js'
@@ -107,6 +108,7 @@ export const PatientOutcome = {
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {Array<AuditEvent>} [notes] - Session notes
  * @property {string} patient_uuid - Patient UUID
+ * @property {string} instruction_uuid - Instruction UUID
  * @property {string} programme_id - Programme ID
  * @property {string} session_id - Session ID
  */
@@ -120,6 +122,7 @@ export class PatientSession {
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.notes = options?.notes || []
     this.patient_uuid = options?.patient_uuid
+    this.instruction_uuid = options?.instruction_uuid
     this.programme_id = options?.programme_id
     this.session_id = options?.session_id
   }
@@ -137,6 +140,19 @@ export class PatientSession {
       }
     } catch (error) {
       console.error('PatientSession.patient', error.message)
+    }
+  }
+
+  /**
+   * Get instruction
+   *
+   * @returns {Instruction|undefined} - Instruction
+   */
+  get instruction() {
+    try {
+      return Instruction.read(this.instruction_uuid, this.context)
+    } catch (error) {
+      console.error('PatientSession.instruction', error.message)
     }
   }
 
@@ -750,6 +766,23 @@ export class PatientSession {
       outcome: event.outcome,
       createdAt: event.createdAt,
       createdBy_uid: event.createdBy_uid,
+      programme_ids: [this.programme_id]
+    })
+  }
+
+  /**
+   * Give PSD instruction
+   *
+   * @param {Instruction} instruction - Instruction
+   */
+  giveInstruction(instruction) {
+    this.instruction_uuid = instruction.uuid
+
+    this.patient.addEvent({
+      type: EventType.Instruct,
+      name: 'PSD instruction given',
+      createdAt: instruction.createdAt,
+      createdBy_uid: instruction.createdBy_uid,
       programme_ids: [this.programme_id]
     })
   }
