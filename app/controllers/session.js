@@ -15,6 +15,7 @@ import {
 } from '../enums.js'
 import { Batch } from '../models/batch.js'
 import { Clinic } from '../models/clinic.js'
+import { Instruction } from '../models/instruction.js'
 import { Organisation } from '../models/organisation.js'
 import { Patient } from '../models/patient.js'
 import { Session } from '../models/session.js'
@@ -495,6 +496,29 @@ export const sessionController = {
     response.header('Content-disposition', `attachment; filename=${fileName}`)
 
     response.end(buffer)
+  },
+
+  giveInstructions(request, response) {
+    const { __, session } = response.locals
+    const { data } = request.session
+
+    for (const patientSession of session.patientSessionsToInstruct) {
+      const instruction = new Instruction({
+        createdBy_uid: data.token?.uid,
+        programme_id: patientSession.programme.id,
+        patientSession_uuid: patientSession.uuid
+      })
+
+      instruction.create(instruction, data)
+
+      patientSession.giveInstruction(instruction)
+
+      patientSession.update(patientSession, data)
+    }
+
+    request.flash('success', __(`session.instructions.success`, { session }))
+
+    response.redirect(`${session.uri}/instruct`)
   },
 
   sendReminders(request, response) {

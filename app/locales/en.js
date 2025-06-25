@@ -1683,6 +1683,13 @@ export const en = {
       label: 'Unmatched responses',
       warning: 'You need to review unmatched consent responses for this session'
     },
+    instructions: {
+      label: 'Add new PSDs',
+      title: 'Add new PSDs',
+      description:
+        'There are %s children with consent for the nasal flu vaccine who do not require triage and do not yet have a PSD in place.\n\nYou can add a PSD instruction for these children now.',
+      success: '{{session.patientSessionsToInstruct.length}} PSDs added'
+    },
     reminders: {
       label: 'Send reminders',
       title: 'Manage consent reminders',

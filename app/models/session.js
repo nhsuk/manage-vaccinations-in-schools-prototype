@@ -443,6 +443,18 @@ export class Session {
   }
 
   /**
+   * Get patients to give instruction to
+   *
+   * @returns {Array<PatientSession>} - Patient sessions
+   */
+  get patientSessionsToInstruct() {
+    const patientSessions = this.patientSessions.filter(
+      ({ nextActivity }) => nextActivity === Activity.Record
+    )
+    return _.uniqBy(patientSessions, 'patient.nhsn')
+  }
+
+  /**
    * Get patients awaiting registration
    *
    * @returns {Array<PatientSession>} - Patient sessions
