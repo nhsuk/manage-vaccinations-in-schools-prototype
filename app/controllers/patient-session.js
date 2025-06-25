@@ -60,7 +60,10 @@ export const patientSessionController = {
 
     const userIsHCA = data?.token?.role === UserRole.HCA
     const userHasSupplier =
-      vaccineMethod === VaccineMethod.Nasal || session.nationalProtocol
+      // Injected vaccine using national protocol
+      (vaccineMethod === VaccineMethod.Injection && session.nationalProtocol) ||
+      // Nasal spray using PGD
+      (vaccineMethod === VaccineMethod.Nasal && !session.psdProtocol)
 
     response.locals.options = {
       // Show outstanding vaccinations
