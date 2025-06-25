@@ -123,7 +123,7 @@
           } if session.patientsToFollowUp.length,
           {
             key: {
-              text: __("session.patientsToFollowUp.label")
+              text: __("session.patientsToResolveConsent.label")
             },
             value: {
               html: link(session.uri + "/consent?consent=" + ConsentOutcome.Inconsistent, __n("session.patientsToResolveConsent.count", session.patientsToResolveConsent.length))
