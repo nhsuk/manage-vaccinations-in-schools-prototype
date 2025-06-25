@@ -9,6 +9,8 @@ export const permission = (request, response, next) => {
     permissions.vaccineMethods = [VaccineMethod.Injection, VaccineMethod.Nasal]
   } else if (data?.token?.role === UserRole.HCA) {
     permissions.vaccineMethods = [VaccineMethod.Nasal]
+  } else {
+    permissions.vaccineMethods = []
   }
 
   request.app.locals.permissions = permissions
