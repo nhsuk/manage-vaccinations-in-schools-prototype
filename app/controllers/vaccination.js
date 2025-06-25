@@ -65,10 +65,8 @@ export const vaccinationController = {
     const { patientSession_uuid } = request.query
     const { data } = request.session
 
-    const { patient, session, programme, vaccine } = PatientSession.read(
-      patientSession_uuid,
-      data
-    )
+    const { patient, session, programme, vaccine, instruction } =
+      PatientSession.read(patientSession_uuid, data)
     const { identifiedBy, injectionSite, ready, selfId, suppliedBy_uid } =
       data.patientSession.preScreen
 
@@ -114,10 +112,9 @@ export const vaccinationController = {
         protocol = VaccinationProtocol.National
       }
 
-      // TODO: Only use PSD protocol if PSD enable and vaccine was prescribed
-      // if (session.psdProtocol && isNasalSpray) {
-      //   protocol = VaccinationProtocol.PSD
-      // }
+      if (session.psdProtocol && instruction) {
+        protocol = VaccinationProtocol.PSD
+      }
     }
 
     const vaccination = new Vaccination({
