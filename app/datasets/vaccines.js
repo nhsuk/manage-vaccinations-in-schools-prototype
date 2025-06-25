@@ -1,9 +1,9 @@
-import { VaccinationProtocol } from '../models/vaccination.js'
 import {
   PreScreenQuestion,
   VaccineMethod,
+  VaccinationProtocol,
   VaccineSideEffect
-} from '../models/vaccine.js'
+} from '../enums.js'
 
 export default {
   // Flu vaccines

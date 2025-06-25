@@ -1,8 +1,8 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import vaccines from '../datasets/vaccines.js'
-import { ConsentOutcome, ScreenOutcome } from '../models/patient-session.js'
-import { Vaccination, VaccinationOutcome } from '../models/vaccination.js'
+import { ConsentOutcome, ScreenOutcome, VaccinationOutcome } from '../enums.js'
+import { Vaccination } from '../models/vaccination.js'
 
 /**
  * Generate fake vaccination

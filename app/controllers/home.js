@@ -1,5 +1,5 @@
+import { UserRole } from '../enums.js'
 import { Notice } from '../models/notice.js'
-import { UserRole } from '../models/user.js'
 
 export const homeController = {
   redirect(request, response, next) {

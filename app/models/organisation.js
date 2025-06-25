@@ -1,19 +1,10 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
+import { OrganisationDefaults } from '../enums.js'
 import { stringToBoolean } from '../utils/string.js'
 
 import { Clinic } from './clinic.js'
 import { School } from './school.js'
-
-/**
- * @readonly
- * @enum {boolean|number}
- */
-export const OrganisationDefaults = {
-  SessionOpenWeeks: 3,
-  SessionReminderWeeks: 1,
-  SessionRegistration: true
-}
 
 /**
  * @class Organisation

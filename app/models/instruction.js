@@ -1,5 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import { ProgrammeType, VaccinationMethod, VaccinationSite } from '../enums.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -9,18 +10,8 @@ import {
 import { formatLink, formatMillilitres } from '../utils/string.js'
 
 import { PatientSession } from './patient-session.js'
-import { Programme, ProgrammeType } from './programme.js'
+import { Programme } from './programme.js'
 import { User } from './user.js'
-import { VaccinationMethod, VaccinationSite } from './vaccination.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const InstructionOutcome = {
-  Given: 'PSD added',
-  Needed: 'PSD not added'
-}
 
 /**
  * @class Instruction
@@ -32,7 +23,7 @@ export const InstructionOutcome = {
  * @property {object} [createdAt_] - Created date (from `dateInput`)
  * @property {string} [createdBy_uid] - User who performed instruction
  * @property {Date} [updatedAt] - Updated date
- * @property {InstructionOutcome} [outcome] - Outcome
+ * @property {import('../enums.js').InstructionOutcome} [outcome] - Outcome
  * @property {string} [patientSession_uuid] - Patient session UUID
  * @property {string} [programme_id] - Programme ID
  */

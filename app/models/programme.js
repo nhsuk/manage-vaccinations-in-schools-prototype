@@ -1,6 +1,7 @@
 import { isAfter } from 'date-fns'
 
 import vaccines from '../datasets/vaccines.js'
+import { SchoolYear, ProgrammeStatus, ProgrammeType } from '../enums.js'
 import { isBetweenDates, today } from '../utils/date.js'
 import {
   formatLink,
@@ -10,56 +11,9 @@ import {
 
 import { Cohort } from './cohort.js'
 import { PatientSession } from './patient-session.js'
-import { SchoolTerm, SchoolYear } from './school.js'
 import { Session } from './session.js'
 import { Vaccination } from './vaccination.js'
 import { Vaccine } from './vaccine.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const ProgrammeStatus = {
-  Planned: 'Planned',
-  Current: 'Current',
-  Completed: 'Completed'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const ProgrammeType = {
-  Flu: 'Flu',
-  HPV: 'HPV',
-  TdIPV: 'TdIPV',
-  MenACWY: 'MenACWY'
-}
-
-/**
- * @readonly
- * @enum {object}
- */
-export const ProgrammePreset = {
-  SeasonalFlu: {
-    active: true,
-    primaryProgrammeTypes: [ProgrammeType.Flu],
-    term: SchoolTerm.Autumn
-  },
-  HPV: {
-    active: false,
-    adolescent: true,
-    primaryProgrammeTypes: [ProgrammeType.HPV],
-    term: SchoolTerm.Spring
-  },
-  Doubles: {
-    active: false,
-    adolescent: true,
-    primaryProgrammeTypes: [ProgrammeType.MenACWY, ProgrammeType.TdIPV],
-    catchupProgrammeTypes: [ProgrammeType.HPV],
-    term: SchoolTerm.Summer
-  }
-}
 
 export const programmeTypes = {
   [ProgrammeType.Flu]: {

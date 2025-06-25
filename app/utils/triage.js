@@ -1,8 +1,4 @@
-import {
-  ConsentOutcome,
-  ScreenOutcome,
-  TriageOutcome
-} from '../models/patient-session.js'
+import { ConsentOutcome, ScreenOutcome, TriageOutcome } from '../enums.js'
 
 import { getRepliesWithHealthAnswers } from './reply.js'
 

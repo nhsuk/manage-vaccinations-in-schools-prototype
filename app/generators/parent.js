@@ -1,11 +1,11 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import {
-  EmailStatus,
-  Parent,
+  NotifyEmailStatus,
   ParentalRelationship,
-  SmsStatus
-} from '../models/parent.js'
+  NotifySmsStatus
+} from '../enums.js'
+import { Parent } from '../models/parent.js'
 
 /**
  * Generate fake parent
@@ -49,18 +49,18 @@ export function generateParent(childLastName, isMum) {
 
   const sms = faker.datatype.boolean(0.5)
   const smsStatus = faker.helpers.weightedArrayElement([
-    { value: SmsStatus.Delivered, weight: 100 },
-    { value: SmsStatus.Permanent, weight: 10 },
-    { value: SmsStatus.Temporary, weight: 5 },
-    { value: SmsStatus.Technical, weight: 1 }
+    { value: NotifySmsStatus.Delivered, weight: 100 },
+    { value: NotifySmsStatus.Permanent, weight: 10 },
+    { value: NotifySmsStatus.Temporary, weight: 5 },
+    { value: NotifySmsStatus.Technical, weight: 1 }
   ])
 
   const email = faker.internet.email({ firstName, lastName }).toLowerCase()
   const emailStatus = faker.helpers.weightedArrayElement([
-    { value: EmailStatus.Delivered, weight: 100 },
-    { value: EmailStatus.Permanent, weight: 10 },
-    { value: EmailStatus.Temporary, weight: 5 },
-    { value: EmailStatus.Technical, weight: 1 }
+    { value: NotifyEmailStatus.Delivered, weight: 100 },
+    { value: NotifyEmailStatus.Permanent, weight: 10 },
+    { value: NotifyEmailStatus.Temporary, weight: 5 },
+    { value: NotifyEmailStatus.Technical, weight: 1 }
   ])
 
   const contactPreference = faker.datatype.boolean(0.2)

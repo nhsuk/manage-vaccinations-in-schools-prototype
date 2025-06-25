@@ -1,7 +1,8 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
+import { UploadType } from '../enums.js'
 import { Notice } from '../models/notice.js'
-import { Upload, UploadType } from '../models/upload.js'
+import { Upload } from '../models/upload.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { formatYearGroup } from '../utils/string.js'
 

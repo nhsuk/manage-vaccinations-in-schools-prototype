@@ -3,25 +3,12 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 /**
- * @readonly
- * @enum {string}
- */
-export const UserRole = {
-  Nurse: 'Nurse',
-  NursePrescriber: 'Prescribing nurse',
-  Pharmacist: 'Pharmacist',
-  HCA: 'Healthcare assistant',
-  MedicalSecretary: 'Medical secretary',
-  DataConsumer: 'Data consumer'
-}
-
-/**
  * @class User
  * @property {string} uid - User ID
  * @property {string} [firstName] - First/given name
  * @property {string} [lastName] - Last/family name
  * @property {string} [email] - Email address
- * @property {UserRole} [role] - User role
+ * @property {import('../enums.js').UserRole} [role] - User role
  * @property {object} [batch] - Default batches
  */
 export class User {

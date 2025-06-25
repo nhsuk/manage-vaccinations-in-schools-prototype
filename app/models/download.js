@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import xlsx from 'json-as-xlsx'
 
+import { DownloadFormat } from '../enums.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -12,16 +13,6 @@ import { formatList } from '../utils/string.js'
 import { Organisation } from './organisation.js'
 import { Programme } from './programme.js'
 import { Vaccination } from './vaccination.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const DownloadFormat = {
-  CSV: 'CSV',
-  CarePlus: 'XLSX for CarePlus (System C)',
-  SystmOne: 'XLSX for SystmOne (TPP)'
-}
 
 /**
  * @class Vaccination report download

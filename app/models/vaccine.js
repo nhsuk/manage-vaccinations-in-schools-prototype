@@ -11,51 +11,6 @@ import {
 import { Batch } from './batch.js'
 
 /**
- * @readonly
- * @enum {string}
- */
-export const VaccineSideEffect = {
-  AppetiteLoss: 'loss of appetite',
-  BlockedNose: 'a runny or blocked nose',
-  Bruising: 'bruising or itching at the site of the injection',
-  Dizzy: 'dizziness',
-  Drowsy: 'feeling drowsy',
-  Headache: 'a headache',
-  Irritable: 'feeling irritable',
-  PainArms: 'pain in the arms, hands, fingers',
-  PainSite: 'pain, swelling or itchiness where the injection was given',
-  Rash: 'a rash',
-  Sick: 'feeling or being sick',
-  SickFeeling: 'feeling sick (nausea)',
-  Tiredness: 'general tiredness',
-  Temperature: 'a high temperature',
-  TemperatureShiver: 'a high temperature, or feeling hot and shivery',
-  Unwell: 'generally feeling unwell'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const PreScreenQuestion = {
-  IsWell: 'are not acutely unwell',
-  IsPregnant: 'are not pregnant',
-  IsMedicated: 'are not taking any medication which prevents vaccination',
-  IsAllergic: 'have no allergies which would prevent vaccination',
-  IsVaccinated: 'have not already had this vaccination',
-  IsHappy: 'know what the vaccination is for, and are happy to have it'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const VaccineMethod = {
-  Nasal: 'Nasal spray',
-  Injection: 'Injection'
-}
-
-/**
  * @class Vaccine
  * @param {object} options - Options
  * @param {object} [context] - Context
@@ -66,11 +21,11 @@ export const VaccineMethod = {
  * @property {string} manufacturer - Manufacturer
  * @property {object} [leaflet] - Leaflet
  * @property {number} dose - Dosage
- * @property {VaccineMethod} method - Method
- * @property {VaccinationProtocol} delegationProtocol - Delegation protocol
+ * @property {import('../enums.js').VaccineMethod} method - Method
+ * @property {import('../enums.js').VaccinationProtocol} delegationProtocol - Delegation protocol
  * @property {Array<VaccineSideEffect>} sideEffects - Side effects
  * @property {object} healthQuestions - Health questions
- * @property {Array<PreScreenQuestion>} preScreenQuestions - Pre-screening questions
+ * @property {Array<import('../enums.js').PreScreenQuestion>} preScreenQuestions - Pre-screening questions
  */
 export class Vaccine {
   constructor(options, context) {

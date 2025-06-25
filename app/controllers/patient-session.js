@@ -1,21 +1,22 @@
-import { Gillick } from '../models/gillick.js'
 import {
   Activity,
   ConsentOutcome,
+  ConsentWindow,
   PatientOutcome,
-  PatientSession,
+  PreScreenQuestion,
+  ProgrammeType,
+  RegistrationOutcome,
   ScreenOutcome,
-  TriageOutcome
-} from '../models/patient-session.js'
-import { Programme, ProgrammeType } from '../models/programme.js'
-import { ConsentWindow, RegistrationOutcome } from '../models/session.js'
-import { UserRole } from '../models/user.js'
-import {
-  Vaccination,
+  TriageOutcome,
+  UserRole,
   VaccinationOutcome,
-  VaccinationSite
-} from '../models/vaccination.js'
-import { PreScreenQuestion, VaccineMethod } from '../models/vaccine.js'
+  VaccinationSite,
+  VaccineMethod
+} from '../enums.js'
+import { Gillick } from '../models/gillick.js'
+import { PatientSession } from '../models/patient-session.js'
+import { Programme } from '../models/programme.js'
+import { Vaccination } from '../models/vaccination.js'
 import { today } from '../utils/date.js'
 
 export const patientSessionController = {

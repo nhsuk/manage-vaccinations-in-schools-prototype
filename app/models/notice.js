@@ -5,24 +5,13 @@ import { formatDate, getDateValueDifference, today } from '../utils/date.js'
 import { Patient } from './patient.js'
 
 /**
- * @readonly
- * @enum {string}
- */
-export const NoticeType = {
-  Deceased: 'Deceased',
-  Hidden: 'Hidden',
-  Invalid: 'Invalid',
-  Sensitive: 'Sensitive'
-}
-
-/**
  * @class Notice
  * @param {object} options - Options
  * @param {object} [context] - Context
  * @property {object} [context] - Context
  * @property {string} uuid - UUID
  * @property {Date} [createdAt] - Created date
- * @property {NoticeType} type - Notice type
+ * @property {import('../enums.js').NoticeType} type - Notice type
  * @property {string} patient_uuid - Patient notice applies to
  */
 export class Notice {

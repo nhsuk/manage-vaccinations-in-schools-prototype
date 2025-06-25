@@ -1,41 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import { ParentalRelationship } from '../enums.js'
 import { formatOther, formatParent, stringToBoolean } from '../utils/string.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const ParentalRelationship = {
-  Mum: 'Mum',
-  Dad: 'Dad',
-  Guardian: 'Guardian',
-  Fosterer: 'Foster carer',
-  Other: 'Other',
-  Unknown: 'Unknown'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const EmailStatus = {
-  Delivered: 'Delivered',
-  Permanent: 'Email address does not exist',
-  Temporary: 'Inbox not accepting messages right now',
-  Technical: 'Technical failure'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const SmsStatus = {
-  Delivered: 'Delivered',
-  Permanent: 'Not delivered',
-  Temporary: 'Phone not accepting messages right now',
-  Technical: 'Technical failure'
-}
 
 /**
  * @class Parent
@@ -47,9 +13,9 @@ export const SmsStatus = {
  * @property {boolean} notify - Notify about consent and vaccination events
  * @property {string} tel - Phone number
  * @property {string} email - Email address
- * @property {EmailStatus} emailStatus - Email status
+ * @property {import('../enums.js').NotifyEmailStatus} emailStatus - Email status
  * @property {boolean} sms - Update via SMS
- * @property {SmsStatus} smsStatus - SMS status
+ * @property {import('../enums.js').NotifySmsStatus} smsStatus - SMS status
  * @property {boolean} [contactPreference] - Preferred contact method
  * @property {string} [contactPreferenceDetails] - Contact method details
  */

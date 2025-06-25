@@ -1,3 +1,4 @@
+import { AcademicYear } from '../enums.js'
 import { createMap } from '../utils/object.js'
 import {
   formatLink,
@@ -7,15 +8,6 @@ import {
 
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const AcademicYear = {
-  Y2024: '2024/25',
-  Y2025: '2025/26'
-}
 
 /**
  * @class Cohort

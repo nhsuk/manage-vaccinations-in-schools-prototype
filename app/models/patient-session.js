@@ -1,6 +1,17 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import filters from '@x-govuk/govuk-prototype-filters'
 
+import {
+  Activity,
+  ConsentOutcome,
+  EventType,
+  PatientOutcome,
+  ProgrammeType,
+  ReplyDecision,
+  ScreenOutcome,
+  TriageOutcome,
+  VaccineMethod
+} from '../enums.js'
 import { getDateValueDifference, today } from '../utils/date.js'
 import {
   getInstructionOutcome,
@@ -29,74 +40,11 @@ import {
 } from '../utils/string.js'
 import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
 
-import { EventType } from './audit-event.js'
 import { Gillick } from './gillick.js'
 import { Instruction } from './instruction.js'
 import { Patient } from './patient.js'
-import { Programme, ProgrammeType } from './programme.js'
-import { ReplyDecision } from './reply.js'
+import { Programme } from './programme.js'
 import { Session } from './session.js'
-import { VaccineMethod } from './vaccine.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const Activity = {
-  Consent: 'Get consent',
-  Triage: 'Triage health questions',
-  Register: 'Register attendance',
-  Record: 'Record vaccination',
-  DoNotRecord: 'Do not vaccinate',
-  Report: 'Report vaccination'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const ConsentOutcome = {
-  NoRequest: 'Request failed',
-  NoResponse: 'No response',
-  Inconsistent: 'Conflicting consent',
-  Given: 'Consent given',
-  Declined: 'Follow up requested',
-  Refused: 'Consent refused',
-  FinalRefusal: 'Refusal confirmed'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const TriageOutcome = {
-  Needed: 'Triage needed',
-  Completed: 'Triage completed',
-  NotNeeded: 'No triage needed'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const ScreenOutcome = {
-  Vaccinate: 'Safe to vaccinate',
-  VaccinateInjection: 'Safe to vaccinate with injected vaccine',
-  VaccinateNasal: 'Safe to vaccinate with nasal spray',
-  NeedsTriage: 'Needs triage',
-  DelayVaccination: 'Delay vaccination',
-  DoNotVaccinate: 'Do not vaccinate'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const PatientOutcome = {
-  Vaccinated: 'Vaccinated',
-  CouldNotVaccinate: 'Could not vaccinate',
-  NoOutcomeYet: 'No outcome yet'
-}
 
 /**
  * @class Patient Session
@@ -497,7 +445,7 @@ export class PatientSession {
   /**
    * Get instruction outcome
    *
-   * @returns {import('./instruction.js').InstructionOutcome} - Instruction outcome
+   * @returns {import('../enums.js').InstructionOutcome} - Instruction outcome
    */
   get instruct() {
     return getInstructionOutcome(this)
@@ -506,7 +454,7 @@ export class PatientSession {
   /**
    * Get registration outcome
    *
-   * @returns {import('./session.js').RegistrationOutcome} - Registration outcome
+   * @returns {import('../enums.js').RegistrationOutcome} - Registration outcome
    */
   get register() {
     return getRegistrationOutcome(this)
@@ -526,7 +474,7 @@ export class PatientSession {
   /**
    * Get vaccination (session) outcome
    *
-   * @returns {import('./vaccination.js').VaccinationOutcome|PatientOutcome} - Vaccination (session) outcome
+   * @returns {import('../enums.js').VaccinationOutcome|PatientOutcome} - Vaccination (session) outcome
    */
   get outcome() {
     return getSessionOutcome(this)
@@ -804,7 +752,7 @@ export class PatientSession {
    * Register attendance
    *
    * @param {import('./audit-event.js').AuditEvent} event - Event
-   * @param {import('./session.js').RegistrationOutcome} register - Registration
+   * @param {import('../enums.js').RegistrationOutcome} register - Registration
    */
   registerAttendance(event, register) {
     this.session.updateRegister(this.patient.uuid, register)

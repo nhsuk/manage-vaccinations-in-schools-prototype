@@ -1,9 +1,9 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
+import { UserRole } from '../enums.js'
 import { Download } from '../models/download.js'
 import { Organisation } from '../models/organisation.js'
 import { Programme } from '../models/programme.js'
-import { UserRole } from '../models/user.js'
 
 export const downloadController = {
   readForm(request, response, next, download_id) {

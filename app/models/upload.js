@@ -1,32 +1,13 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
+import { UploadStatus, UploadType } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
 import { formatWithSecondaryText, formatYearGroup } from '../utils/string.js'
 
 import { Record } from './record.js'
 import { School } from './school.js'
 import { User } from './user.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const UploadType = {
-  Cohort: 'Child records',
-  School: 'Class list records',
-  Report: 'Vaccination records'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const UploadStatus = {
-  Processing: 'Processing',
-  Complete: 'Completed',
-  Invalid: 'Invalid'
-}
 
 /**
  * @class Upload

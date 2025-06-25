@@ -1,4 +1,4 @@
-import { ReplyDecision } from '../models/reply.js'
+import { ReplyDecision } from '../enums.js'
 
 import { camelToKebabCase } from './string.js'
 

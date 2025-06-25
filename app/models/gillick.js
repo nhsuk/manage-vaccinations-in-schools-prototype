@@ -1,14 +1,6 @@
+import { GillickCompetent } from '../enums.js'
 import { today } from '../utils/date.js'
 import { stringToBoolean } from '../utils/string.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const GillickCompetent = {
-  True: 'Child assessed as Gillick competent',
-  False: 'Child assessed as not Gillick competent'
-}
 
 /**
  * @class Gillick assessment

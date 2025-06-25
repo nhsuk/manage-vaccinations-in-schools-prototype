@@ -3,8 +3,9 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import gpSurgeries from '../datasets/clinics.js'
 import firstNames from '../datasets/first-names.js'
 import schools from '../datasets/schools.js'
+import { Gender } from '../enums.js'
 import { generateAddress } from '../generators/address.js'
-import { Child, Gender } from '../models/child.js'
+import { Child } from '../models/child.js'
 import { getYearGroup } from '../utils/date.js'
 
 /**
