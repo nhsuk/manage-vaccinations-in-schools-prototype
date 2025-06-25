@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { Upload, UploadStatus } from '../models/upload.js'
+import { UploadStatus } from '../enums.js'
+import { Upload } from '../models/upload.js'
 import { today } from '../utils/date.js'
 
 /**
@@ -8,7 +9,7 @@ import { today } from '../utils/date.js'
  *
  * @param {Array<string>|boolean|undefined} record_nhsns - Records
  * @param {import('../models/user.js').User} user - User
- * @param {import('../models/upload.js').UploadType} [type] - Upload type
+ * @param {import('../enums.js').UploadType} [type] - Upload type
  * @param {import('../models/school.js').School} [school] - School
  * @returns {Upload} - Upload
  */

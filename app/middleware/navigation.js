@@ -1,11 +1,11 @@
+import { ProgrammeType, UserRole } from '../enums.js'
 import { Consent } from '../models/consent.js'
 import { Move } from '../models/move.js'
 import { Notice } from '../models/notice.js'
 import { Organisation } from '../models/organisation.js'
-import { ProgrammeType } from '../models/programme.js'
 import { Session } from '../models/session.js'
 import { Upload } from '../models/upload.js'
-import { User, UserRole } from '../models/user.js'
+import { User } from '../models/user.js'
 import { formatDate, today } from '../utils/date.js'
 import { getProgrammeSession } from '../utils/session.js'
 

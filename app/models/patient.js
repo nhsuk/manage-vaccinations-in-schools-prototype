@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import _ from 'lodash'
 
+import { EventType, NoticeType } from '../enums.js'
 import { getDateValueDifference, removeDays, today } from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
 import { getPreferredNames } from '../utils/reply.js'
@@ -11,22 +12,12 @@ import {
   sentenceCaseProgrammeName
 } from '../utils/string.js'
 
-import { AuditEvent, EventType } from './audit-event.js'
+import { AuditEvent } from './audit-event.js'
 import { Cohort } from './cohort.js'
-import { NoticeType } from './notice.js'
 import { Parent } from './parent.js'
 import { PatientSession } from './patient-session.js'
 import { Record } from './record.js'
 import { Reply } from './reply.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const PatientMovement = {
-  In: 'Moved in',
-  Out: 'Moved out'
-}
 
 /**
  * @class Patient in-session record

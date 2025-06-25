@@ -1,38 +1,11 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import { SchoolPhase, SchoolTerm } from '../enums.js'
 import { range } from '../utils/number.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Address } from './address.js'
 import { Record } from './record.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const SchoolPhase = {
-  Primary: 'Primary',
-  Secondary: 'Secondary'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const SchoolTerm = {
-  Autumn: 'Autumn',
-  Spring: 'Spring',
-  Summer: 'Summer'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const SchoolYear = {
-  Y2024: '2024 to 2025',
-  Y2023: '2023 to 2024'
-}
 
 export const schoolTerms = {
   [SchoolTerm.Spring]: { from: '2025-01-06', to: '2025-04-11' },

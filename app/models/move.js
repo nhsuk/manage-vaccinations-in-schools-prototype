@@ -5,17 +5,6 @@ import { Patient } from '../models/patient.js'
 import { formatDate, getDateValueDifference, today } from '../utils/date.js'
 
 /**
- * @readonly
- * @enum {string}
- */
-export const MoveSource = {
-  Cohort: 'Cohort record',
-  Consent: 'Consent response',
-  School: 'Class list',
-  External: 'Another SAIS team'
-}
-
-/**
  * @class Move
  * @param {object} options - Options
  * @param {object} [context] - Context
@@ -25,7 +14,7 @@ export const MoveSource = {
  * @property {Date} [updatedAt] - Updated date
  * @property {string} from - Current school URN (moving from)
  * @property {string} to - Proposed school URN (moving to)
- * @property {MoveSource} source - Reporting source
+ * @property {import('../enums.js').MoveSource} source - Reporting source
  * @property {boolean} ignored - Reported move is ignored
  * @property {string} patient_uuid - Patient UUID
  */

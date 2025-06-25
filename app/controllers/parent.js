@@ -1,12 +1,17 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
+import {
+  ConsentWindow,
+  ParentalRelationship,
+  ProgrammeType,
+  ReplyDecision,
+  ReplyRefusal,
+  SessionType
+} from '../enums.js'
 import { generateChild } from '../generators/child.js'
 import { generateParent } from '../generators/parent.js'
 import { Consent } from '../models/consent.js'
-import { ParentalRelationship } from '../models/parent.js'
-import { ProgrammeType } from '../models/programme.js'
-import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
-import { ConsentWindow, Session, SessionType } from '../models/session.js'
+import { Session } from '../models/session.js'
 import { getHealthQuestionPaths } from '../utils/consent.js'
 import { formatList, kebabToCamelCase } from '../utils/string.js'
 

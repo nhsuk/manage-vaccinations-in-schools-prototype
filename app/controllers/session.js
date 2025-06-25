@@ -1,25 +1,23 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 import _ from 'lodash'
 
-import { Batch } from '../models/batch.js'
-import { Clinic } from '../models/clinic.js'
-import { InstructionOutcome } from '../models/instruction.js'
-import { Organisation } from '../models/organisation.js'
 import {
   Activity,
   ConsentOutcome,
+  InstructionOutcome,
   PatientOutcome,
-  ScreenOutcome
-} from '../models/patient-session.js'
-import { Patient } from '../models/patient.js'
-import {
   RegistrationOutcome,
-  Session,
+  ScreenOutcome,
   SessionStatus,
-  SessionType
-} from '../models/session.js'
-import { VaccinationOutcome } from '../models/vaccination.js'
-import { VaccineMethod } from '../models/vaccine.js'
+  SessionType,
+  VaccinationOutcome,
+  VaccineMethod
+} from '../enums.js'
+import { Batch } from '../models/batch.js'
+import { Clinic } from '../models/clinic.js'
+import { Organisation } from '../models/organisation.js'
+import { Patient } from '../models/patient.js'
+import { Session } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'

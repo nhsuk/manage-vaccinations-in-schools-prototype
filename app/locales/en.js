@@ -3,12 +3,13 @@ import {
   Activity,
   ConsentOutcome,
   PatientOutcome,
+  ProgrammeType,
+  RegistrationOutcome,
+  ReplyDecision,
+  ReplyRefusal,
   ScreenOutcome,
   TriageOutcome
-} from '../models/patient-session.js'
-import { ProgrammeType } from '../models/programme.js'
-import { ReplyDecision, ReplyRefusal } from '../models/reply.js'
-import { RegistrationOutcome } from '../models/session.js'
+} from '../enums.js'
 
 /**
  * @returns {import("i18n").LocaleCatalog}

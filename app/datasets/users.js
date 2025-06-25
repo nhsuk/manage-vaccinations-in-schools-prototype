@@ -1,4 +1,4 @@
-import { UserRole } from '../models/user.js'
+import { UserRole } from '../enums.js'
 
 export default [
   {

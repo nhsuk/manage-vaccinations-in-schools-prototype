@@ -1,9 +1,14 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { isAfter } from 'date-fns'
 
-import { ProgrammePreset, ProgrammeType } from '../models/programme.js'
+import {
+  ProgrammePreset,
+  ProgrammeType,
+  SessionStatus,
+  SessionType
+} from '../enums.js'
 import { schoolTerms } from '../models/school.js'
-import { Session, SessionStatus, SessionType } from '../models/session.js'
+import { Session } from '../models/session.js'
 import { addDays, removeDays, setMidday, today } from '../utils/date.js'
 
 /**

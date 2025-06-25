@@ -11,17 +11,6 @@ import { formatYearGroup } from '../utils/string.js'
 import { Address } from './address.js'
 
 /**
- * @readonly
- * @enum {string}
- */
-export const Gender = {
-  Female: 'Female',
-  Male: 'Male',
-  NotKnown: 'Not known',
-  NotSpecified: 'Not specified'
-}
-
-/**
  * @class Child
  * @property {string} [firstName] - First name
  * @property {string} [lastName] - Last name
@@ -30,7 +19,7 @@ export const Gender = {
  * @property {Date} [dob] - Date of birth
  * @property {object} [dob_] - Date of birth (from `dateInput`)
  * @property {Date} [dod] - Date of death
- * @property {Gender} gender - Gender
+ * @property {import('../enums.js).Gender} gender - Gender
  * @property {import('./address.js').Address} [address] - Address
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} [registrationGroup] - Registration group

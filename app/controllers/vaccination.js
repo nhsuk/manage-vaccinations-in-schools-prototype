@@ -2,18 +2,20 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import wizard from '@x-govuk/govuk-prototype-wizard'
 import _ from 'lodash'
 
-import { Batch } from '../models/batch.js'
-import { PatientSession } from '../models/patient-session.js'
-import { Programme } from '../models/programme.js'
-import { User, UserRole } from '../models/user.js'
 import {
-  Vaccination,
   VaccinationMethod,
   VaccinationOutcome,
   VaccinationProtocol,
-  VaccinationSite
-} from '../models/vaccination.js'
-import { Vaccine, VaccineMethod } from '../models/vaccine.js'
+  VaccinationSite,
+  VaccineMethod,
+  UserRole
+} from '../enums.js'
+import { Batch } from '../models/batch.js'
+import { PatientSession } from '../models/patient-session.js'
+import { Programme } from '../models/programme.js'
+import { User } from '../models/user.js'
+import { Vaccination } from '../models/vaccination.js'
+import { Vaccine } from '../models/vaccine.js'
 
 export const vaccinationController = {
   read(request, response, next, vaccination_uuid) {

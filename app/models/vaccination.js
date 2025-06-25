@@ -5,6 +5,13 @@ import _ from 'lodash'
 import schools from '../datasets/schools.js'
 import vaccines from '../datasets/vaccines.js'
 import {
+  VaccinationMethod,
+  VaccinationOutcome,
+  VaccinationProtocol,
+  VaccinationSite,
+  VaccineMethod
+} from '../enums.js'
+import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
@@ -27,58 +34,7 @@ import { Programme } from './programme.js'
 import { School } from './school.js'
 import { Session } from './session.js'
 import { User } from './user.js'
-import { Vaccine, VaccineMethod } from './vaccine.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const VaccinationOutcome = {
-  Vaccinated: 'Vaccinated',
-  PartVaccinated: 'Partially vaccinated',
-  AlreadyVaccinated: 'Already had the vaccine',
-  Contraindications: 'Had contraindications',
-  Refused: 'Refused vaccine',
-  Absent: 'Absent from the session',
-  Unwell: 'Unwell',
-  NoConsent: 'Unable to contact parent',
-  LateConsent: 'Consent received too late'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const VaccinationMethod = {
-  Nasal: 'Nasal spray',
-  Intramuscular: 'Intramuscular (IM) injection',
-  Subcutaneous: 'Subcutaneous injection'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const VaccinationSite = {
-  Nose: 'Nose',
-  ArmLeftUpper: 'Left arm (upper position)',
-  ArmLeftLower: 'Left arm (lower position)',
-  ArmRightUpper: 'Right arm (upper position)',
-  ArmRightLower: 'Right arm (lower position)',
-  ThighLeft: 'Left thigh',
-  ThighRight: 'Right thigh',
-  Other: 'Other'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const VaccinationProtocol = {
-  PGD: 'Patient Group Direction (PGD)',
-  PSD: 'Patient Specific Direction (PSD)',
-  National: 'National protocol'
-}
+import { Vaccine } from './vaccine.js'
 
 /**
  * @class Vaccination

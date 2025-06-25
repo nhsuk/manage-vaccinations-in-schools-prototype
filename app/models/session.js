@@ -4,6 +4,18 @@ import { isAfter } from 'date-fns'
 import _ from 'lodash'
 
 import {
+  Activity,
+  ConsentOutcome,
+  ConsentWindow,
+  OrganisationDefaults,
+  PatientOutcome,
+  ProgrammePreset,
+  RegistrationOutcome,
+  SessionStatus,
+  SessionType,
+  TriageOutcome
+} from '../enums.js'
+import {
   removeDays,
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -28,59 +40,10 @@ import {
 import { Batch } from './batch.js'
 import { Clinic } from './clinic.js'
 import { Consent } from './consent.js'
-import { OrganisationDefaults } from './organisation.js'
-import {
-  Activity,
-  ConsentOutcome,
-  PatientOutcome,
-  PatientSession,
-  TriageOutcome
-} from './patient-session.js'
-import { Programme, ProgrammePreset, programmeTypes } from './programme.js'
+import { PatientSession } from './patient-session.js'
+import { Programme, programmeTypes } from './programme.js'
 import { School } from './school.js'
 import { Vaccine } from './vaccine.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const ConsentWindow = {
-  Opening: 'Opening',
-  Open: 'Open',
-  Closed: 'Closed',
-  None: 'Session not scheduled'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const SessionStatus = {
-  Unplanned: 'No sessions scheduled',
-  Planned: 'Sessions scheduled',
-  Completed: 'All session dates completed',
-  Closed: 'Closed'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const SessionType = {
-  School: 'School session',
-  Clinic: 'Community clinic'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const RegistrationOutcome = {
-  Pending: 'Not registered yet',
-  Present: 'Attending session',
-  Absent: 'Absent from session',
-  Complete: 'Completed session'
-}
 
 /**
  * @class Session

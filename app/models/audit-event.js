@@ -1,5 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import { EventType, ScreenOutcome } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
 import {
   formatTag,
@@ -7,26 +8,8 @@ import {
   formatWithSecondaryText
 } from '../utils/string.js'
 
-import { ScreenOutcome } from './patient-session.js'
 import { Programme } from './programme.js'
 import { User } from './user.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const EventType = {
-  Select: 'Select',
-  Invite: 'Invite',
-  Remind: 'Remind',
-  Consent: 'Consent',
-  Screen: 'Screen',
-  Instruct: 'Instruct',
-  Register: 'Register',
-  Record: 'Record',
-  Notice: 'Notice',
-  Unknown: 'Unknown'
-}
 
 /**
  * @class Audit event

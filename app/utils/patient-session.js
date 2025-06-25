@@ -1,15 +1,15 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
-import { InstructionOutcome } from '../models/instruction.js'
 import {
   Activity,
   ConsentOutcome,
+  InstructionOutcome,
   PatientOutcome,
+  RegistrationOutcome,
   ScreenOutcome,
-  TriageOutcome
-} from '../models/patient-session.js'
-import { RegistrationOutcome } from '../models/session.js'
-import { VaccinationOutcome } from '../models/vaccination.js'
+  TriageOutcome,
+  VaccinationOutcome
+} from '../enums.js'
 
 /**
  * Get next activity

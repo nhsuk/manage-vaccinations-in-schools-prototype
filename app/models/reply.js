@@ -2,6 +2,15 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import _ from 'lodash'
 
 import vaccines from '../datasets/vaccines.js'
+import {
+  NotifyEmailStatus,
+  NotifySmsStatus,
+  ProgrammeType,
+  ReplyDecision,
+  ReplyMethod,
+  ReplyRefusal,
+  VaccineMethod
+} from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
 import {
   formatLinkWithSecondaryText,
@@ -14,51 +23,11 @@ import {
 } from '../utils/string.js'
 
 import { Child } from './child.js'
-import { EmailStatus, Parent, SmsStatus } from './parent.js'
+import { Parent } from './parent.js'
 import { Patient } from './patient.js'
-import { Programme, ProgrammeType } from './programme.js'
+import { Programme } from './programme.js'
 import { Session } from './session.js'
 import { User } from './user.js'
-import { VaccineMethod } from './vaccine.js'
-
-/**
- * @readonly
- * @enum {string}
- */
-export const ReplyDecision = {
-  NoResponse: 'No response',
-  Given: 'Consent given',
-  OnlyFluInjection: 'Consent given for flu injection',
-  OnlyMenACWY: 'Consent given for MenACWY only',
-  OnlyTdIPV: 'Consent given for Td/IPV only',
-  Declined: 'Follow up requested',
-  Refused: 'Consent refused'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const ReplyMethod = {
-  Website: 'Online',
-  Phone: 'By phone',
-  Paper: 'Paper form',
-  InPerson: 'In person'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const ReplyRefusal = {
-  Gelatine: 'Vaccine contains gelatine',
-  AlreadyGiven: 'Vaccine already received',
-  GettingElsewhere: 'Vaccine will be given elsewhere',
-  Medical: 'Medical reasons',
-  OutsideSchool: 'Don’t want vaccination in school',
-  Personal: 'Personal choice',
-  Other: 'Other'
-}
 
 /**
  * @class Reply
@@ -172,10 +141,11 @@ export class Reply {
     }
 
     const hasEmailGotEmail =
-      this.parent?.email && this.parent?.emailStatus === EmailStatus.Delivered
+      this.parent?.email &&
+      this.parent?.emailStatus === NotifyEmailStatus.Delivered
     const wantsSmsGotSms =
       this.parent?.sms === true &&
-      this.parent?.smsStatus === SmsStatus.Delivered
+      this.parent?.smsStatus === NotifySmsStatus.Delivered
 
     return hasEmailGotEmail || wantsSmsGotSms
   }
