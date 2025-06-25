@@ -1,0 +1,26 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("session.instructions.title") %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("session.list.title"),
+      href: "/sessions"
+    }, {
+      text: session.location.name,
+      href: "/sessions/" + session.id
+    }]
+  }) }}
+{% endblock %}
+
+{% block form %}
+  {{ heading({
+    title: title
+  }) }}
+
+  {{ __("session.instructions.description", session.patientSessionsToInstruct.length) | nhsukMarkdown }}
+{% endblock %}

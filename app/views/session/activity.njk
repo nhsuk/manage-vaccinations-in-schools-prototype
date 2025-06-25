@@ -81,6 +81,12 @@
           }) | safe
         }) }}
 
+        {{ button({
+          classes: "nhsuk-button--secondary",
+          text: __("session.instructions.label"),
+          href: session.uri + "/instructions"
+        }) if view == "instruct" and (data.token.role == UserRole.NursePrescriber or data.token.role == UserRole.Pharmacist) }}
+
         {% for patientSession in results.page %}
           {% set statusHtml %}
             {% if view == "register" %}
