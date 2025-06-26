@@ -1969,7 +1969,9 @@ export const en = {
       label: 'Outcome',
       [ScreenOutcome.Vaccinate]: 'Yes, it’s safe to vaccinate',
       [ScreenOutcome.VaccinateInjection]:
-        'Yes, it’s safe to vaccinate (with injected vaccine only)',
+        'Yes, it’s safe to vaccinate with injected vaccine',
+      [ScreenOutcome.VaccinateNasal]:
+        'Yes, it’s safe to vaccinate with nasal spray',
       [ScreenOutcome.DoNotVaccinate]: 'No, do not vaccinate',
       [ScreenOutcome.DelayVaccination]:
         'No, delay vaccination (and invite to clinic)',

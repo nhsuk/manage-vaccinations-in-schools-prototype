@@ -78,7 +78,8 @@ export const TriageOutcome = {
  */
 export const ScreenOutcome = {
   Vaccinate: 'Safe to vaccinate',
-  VaccinateInjection: 'Safe to vaccinate (injection only)',
+  VaccinateInjection: 'Safe to vaccinate with injected vaccine',
+  VaccinateNasal: 'Safe to vaccinate with nasal spray',
   NeedsTriage: 'Needs triage',
   DelayVaccination: 'Delay vaccination',
   DoNotVaccinate: 'Do not vaccinate'
@@ -255,6 +256,25 @@ export class PatientSession {
     return this.responses.every(
       ({ decision }) => decision === ReplyDecision.OnlyFluInjection
     )
+  }
+
+  get triageOutcomesForConsentedMethod() {
+    return [
+      ...(!this.programme.hasAlternativeVaccines
+        ? [ScreenOutcome.Vaccinate]
+        : []),
+      ...(this.programme.hasAlternativeVaccines &&
+      !this.hasConsentForInjectionOnly
+        ? [ScreenOutcome.VaccinateNasal]
+        : []),
+      ...(this.programme.hasAlternativeVaccines && this.hasConsentForInjection
+        ? [ScreenOutcome.VaccinateInjection]
+        : []),
+      'or',
+      ScreenOutcome.NeedsTriage,
+      ScreenOutcome.DelayVaccination,
+      ScreenOutcome.DoNotVaccinate
+    ]
   }
 
   /**
@@ -533,9 +553,14 @@ export class PatientSession {
       consent = this.consentRefusalReasons.join('<br>')
     } else if (
       this.consent === ConsentOutcome.Given &&
-      this.programme.type === ProgrammeType.Flu
+      this.programme.hasAlternativeVaccines
     ) {
-      consent = this.vaccineMethod
+      if (this.hasConsentForInjectionOnly) {
+        consent = 'Injection'
+      } else {
+        consent = 'Nasal spray'
+        consent += this.hasConsentForInjection ? ' (or injection)' : ''
+      }
     }
 
     return {

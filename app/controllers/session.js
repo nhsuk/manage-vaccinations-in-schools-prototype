@@ -258,8 +258,16 @@ export const sessionController = {
 
     // Screen/register/outcome status filter options (select one)
     for (const activity of ['screen', 'register', 'outcome']) {
+      const screenOutcomes = session.programmes.find(
+        (programme) => programme.hasAlternativeVaccines
+      )
+        ? Object.values(ScreenOutcome).filter(
+            (outcome) => outcome !== ScreenOutcome.Vaccinate
+          )
+        : ScreenOutcome
+
       const statusItems = {
-        screen: ScreenOutcome,
+        screen: screenOutcomes,
         register: RegistrationOutcome,
         outcome: VaccinationOutcome
       }

@@ -56,7 +56,7 @@ export function generateConsent(
   // Has the parent given consent for alternative injected vaccine?
   const alternative =
     programme.type === ProgrammeType.Flu && decision === ReplyDecision.Given
-      ? faker.datatype.boolean(0.5)
+      ? faker.datatype.boolean(0.75)
       : false
 
   // Reply method
