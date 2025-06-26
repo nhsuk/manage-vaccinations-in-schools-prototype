@@ -238,10 +238,12 @@ export function formatList(array) {
   // Only use list if more than one item in array
   if (array.length === 1) {
     return formatMarkdown(array[0])
+  } else if (array.length > 1) {
+    const list = array.map((item) => `- ${item}`)
+    return formatMarkdown(list.join('\n'))
   }
 
-  const list = array.map((item) => `- ${item}`)
-  return formatMarkdown(list.join('\n'))
+  return ''
 }
 
 /**
