@@ -199,6 +199,7 @@ export const parentController = {
         },
         {
           text: __('consent.decision.one.label'),
+          value: '_one',
           conditional: { html: {} } // Added in template
         },
         {

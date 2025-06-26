@@ -22,7 +22,7 @@
         })
       }
     },
-    items: injectConditionalHtml(decisionItems, 1, programmeRadiosHtml) if programmeItems else decisionItems,
+    items: injectConditionalHtml(decisionItems, "_one", programmeRadiosHtml) if programmeItems else decisionItems,
     decorate: "consent.decision"
   }) }}
 {% endblock %}

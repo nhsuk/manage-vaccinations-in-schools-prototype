@@ -34,10 +34,10 @@
   }) %}
 
   {# Add conditional html for ‘Foster carer’ option #}
-  {% set items = injectConditionalHtml(parentalRelationshipItems, 3, fosterCarerHtml) %}
+  {% set items = injectConditionalHtml(parentalRelationshipItems, ParentalRelationship.Fosterer, fosterCarerHtml) %}
 
   {# Add conditional html for ‘Other’ option #}
-  {% set items = injectConditionalHtml(items, 4, otherHtml) %}
+  {% set items = injectConditionalHtml(items, ParentalRelationship.Other, otherHtml) %}
 
   {{ radios({
     fieldset: {
