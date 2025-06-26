@@ -1,0 +1,84 @@
+{%- from "x-nhsuk/decorated/button/macro.njk" import button with context %}
+{%- from "x-nhsuk/decorated/checkboxes/macro.njk" import checkboxes with context %}
+{%- from "x-nhsuk/decorated/date-input/macro.njk" import dateInput with context %}
+{%- from "x-nhsuk/decorated/radios/macro.njk" import radios with context %}
+{%- from "components/button/macro.njk" import button with context -%}
+{%- from "components/card/macro.njk" import card with context -%}
+{%- from "components/details/macro.njk" import details with context -%}
+{%- from "_macros/button-group.njk" import buttonGroup with context -%}
+{%- from "_macros/search-input.njk" import searchInput with context -%}
+
+{% macro sessionSearch(params) %}
+  {% set filterButtonGroup %}
+    {{ buttonGroup({
+      buttons: [{
+        classes: "nhsuk-button--secondary app-button--small",
+        text: __("search.confirm"),
+        attributes: {
+          formaction: params.formaction,
+          formmethod: "post",
+          role: "search"
+        }
+      }, {
+        classes: "nhsuk-button--secondary app-button--small",
+        text: __("search.clear"),
+        href: params.clear or "/sessions"
+      } if data.q or data.programme or data.status]
+    }) }}
+  {% endset %}
+
+  {% set searchCardHtml %}
+    {{ searchInput({
+      label: { text: __("search.label") },
+      attributes: {
+        formaction: params.formaction,
+        formmethod: "post"
+      },
+      decorate: "q"
+    }) }}
+
+    {{ checkboxes({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("programme.label")
+        }
+      },
+      id: "programme_ids",
+      name: "programme_ids",
+      items: programmeItems
+    }) if programmeItems }}
+
+    {{ radios({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("session.status.label")
+        }
+      },
+      items: statusItems,
+      decorate: "status"
+    }) if statusItems }}
+
+    {{ radios({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("session.type.label")
+        }
+      },
+      items: typeItems,
+      decorate: "type"
+    }) if typeItems }}
+
+    {{ filterButtonGroup | safe if programmeItems or statusItems or typeItems }}
+  {% endset %}
+
+  {{ card({
+    classes: "app-filters",
+    feature: true,
+    heading: __("session.search.label") ,
+    headingLevel: 3,
+    descriptionHtml: searchCardHtml
+  }) }}
+{% endmacro %}

@@ -25,6 +25,7 @@ import {
   setMidday,
   today
 } from '../utils/date.js'
+import { tokenize } from '../utils/object.js'
 import { getConsentWindow } from '../utils/session.js'
 import {
   formatLink,
@@ -770,6 +771,17 @@ export class Session {
       <p>${this.link.nameAndAddress}</p>
       <p>${this.dateSummary}</p>
     </div>`
+  }
+
+  /**
+   * Get tokenised values (to use in search queries)
+   *
+   * @returns {string} - Tokens
+   */
+  get tokenized() {
+    const tokens = tokenize(this, ['location.postalCode', 'location.name'])
+
+    return [tokens].join(' ')
   }
 
   /**
