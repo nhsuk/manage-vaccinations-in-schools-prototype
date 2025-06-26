@@ -5,6 +5,7 @@ import { sessionController as session } from '../controllers/session.js'
 const router = express.Router({ strict: true })
 
 router.get('/', session.readAll, session.list)
+router.post('/', session.filter)
 
 router.get('/new', session.new)
 

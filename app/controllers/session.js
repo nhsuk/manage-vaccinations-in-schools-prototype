@@ -17,6 +17,7 @@ import { Clinic } from '../models/clinic.js'
 import { Instruction } from '../models/instruction.js'
 import { Organisation } from '../models/organisation.js'
 import { Patient } from '../models/patient.js'
+import { programmeTypes } from '../models/programme.js'
 import { Session } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
@@ -74,13 +75,122 @@ export const sessionController = {
   },
 
   list(request, response) {
-    let { sessions } = response.locals
+    const { programme_ids, q, status, type } = request.query
+    const { data } = request.session
+    const { __, sessions } = response.locals
 
-    sessions = sessions.sort((a, b) =>
-      getDateValueDifference(a.firstDate, b.firstDate)
+    let results = sessions
+
+    // Query
+    if (q) {
+      results = results.filter((session) =>
+        session.tokenized.includes(String(q).toLowerCase())
+      )
+    }
+
+    // Filter by programme
+    if (programme_ids) {
+      results = results.filter(({ programme_ids }) =>
+        programme_ids.some((id) => programme_ids.includes(id))
+      )
+    }
+
+    // Filter by status
+    if (status && status !== 'none') {
+      results = results.filter((session) => session[status])
+    }
+
+    // Filter by type
+    if (type && type !== 'none') {
+      results = results.filter((session) => session.type === type)
+    }
+
+    // Sort
+    results = results.sort((a, b) =>
+      getDateValueDifference(b.firstDate, a.firstDate)
     )
 
+    // Results
+    response.locals.results = getResults(results, request.query, 40)
+    response.locals.pages = getPagination(results, request.query, 40)
+
+    // Programme filter options
+    response.locals.programmeItems = Object.values(programmeTypes).map(
+      (programme) => ({
+        text: programme.name,
+        value: programme.id,
+        checked: programme_ids?.includes(programme.id)
+      })
+    )
+
+    // Status filter options
+    response.locals.statusItems = [
+      {
+        text: 'Any',
+        value: 'none',
+        checked: !status || status === 'none'
+      },
+      ...Object.values([
+        'isActive',
+        'isUnplanned',
+        'isPlanned',
+        'isCompleted',
+        'isClosed'
+      ]).map((value) => ({
+        text: __(`session.${value}.label`),
+        value,
+        checked: status === value
+      }))
+    ]
+
+    // Type filter options
+    response.locals.typeItems = [
+      {
+        text: 'Any',
+        value: 'none',
+        checked: !type || type === 'none'
+      },
+      ...Object.values(SessionType).map((value) => ({
+        text: value,
+        value,
+        checked: type === value
+      }))
+    ]
+
+    // Clean up session data
+    delete data.q
+    delete data.programme_ids
+    delete data.status
+    delete data.type
+
     response.render('session/list', { sessions })
+  },
+
+  filter(request, response) {
+    const params = new URLSearchParams()
+
+    // Radios
+    for (const key of ['q', 'status', 'type']) {
+      const value = request.body[key]
+      if (value) {
+        params.append(key, String(value))
+      }
+    }
+
+    // Checkboxes
+    for (const key of ['programme_ids']) {
+      const value = request.body[key]
+      const values = Array.isArray(value) ? value : [value]
+      if (value) {
+        values
+          .filter((item) => item !== '_unchecked')
+          .forEach((value) => {
+            params.append(key, String(value))
+          })
+      }
+    }
+
+    response.redirect(`/sessions?${params}`)
   },
 
   readPatientSessions(request, response, next) {
