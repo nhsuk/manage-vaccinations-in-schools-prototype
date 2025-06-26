@@ -17,6 +17,7 @@ import { Clinic } from '../models/clinic.js'
 import { Instruction } from '../models/instruction.js'
 import { Organisation } from '../models/organisation.js'
 import { Patient } from '../models/patient.js'
+import { programmeTypes } from '../models/programme.js'
 import { Session } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
@@ -74,10 +75,41 @@ export const sessionController = {
   },
 
   list(request, response) {
-    let { sessions } = response.locals
+    const { programme_id, q } = request.query
+    const { sessions } = response.locals
 
-    sessions = sessions.sort((a, b) =>
-      getDateValueDifference(a.firstDate, b.firstDate)
+    let results = sessions
+
+    // Query
+    if (q) {
+      results = results.filter((session) =>
+        session.tokenized.includes(String(q).toLowerCase())
+      )
+    }
+
+    // Filter by programme
+    if (programme_id) {
+      results = results.filter(({ programme_ids }) =>
+        programme_ids.includes(programme_id)
+      )
+    }
+
+    // Sort
+    results = results.sort((a, b) =>
+      getDateValueDifference(b.firstDate, a.firstDate)
+    )
+
+    // Results
+    response.locals.results = getResults(results, request.query, 40)
+    response.locals.pages = getPagination(results, request.query, 40)
+
+    // Programme filter options
+    response.locals.programmeItems = Object.values(programmeTypes).map(
+      (programme) => ({
+        text: programme.name,
+        value: programme.id,
+        checked: programme_id?.includes(programme.id)
+      })
     )
 
     response.render('session/list', { sessions })

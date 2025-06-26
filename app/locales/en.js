@@ -1532,9 +1532,14 @@ export const en = {
   },
   session: {
     label: 'Sessions',
+    results:
+      '{count, plural, =0{No sessions matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> sessions}}',
     count: {
       one: '%s session',
       other: '[0] No sessions|%s sessions'
+    },
+    search: {
+      label: 'Find session'
     },
     show: {
       label: 'Overview',
