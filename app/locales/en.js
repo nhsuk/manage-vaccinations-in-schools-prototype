@@ -779,7 +779,7 @@ export const en = {
   },
   organisation: {
     show: {
-      label: 'Your organisation',
+      label: 'Organisation',
       title: 'Your organisation',
       description: 'Manage your organisation’s settings'
     },
@@ -1994,7 +1994,7 @@ export const en = {
       other: '[0] No imports|%s imports'
     },
     list: {
-      label: 'Import',
+      label: 'Imports',
       title: 'Import records',
       description:
         'Import child, cohort and vaccination records and see important notices'
