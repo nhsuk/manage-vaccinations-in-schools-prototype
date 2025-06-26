@@ -1643,44 +1643,9 @@ export const en = {
       title: 'Sessions',
       description:
         'Use this area to:\n- review consent responses\n- triage health records\n- record vaccinations\n- review session outcomes',
-      active: {
-        label: 'Today',
-        count: {
-          one: '%s session today',
-          other: '[0] No sessions today|%s sessions today'
-        }
-      },
-      completed: {
-        label: 'Completed',
-        count: {
-          one: '%s location with all session dates completed',
-          other:
-            '[0] No locations with all session dates completed|%s locations with all session dates completed'
-        }
-      },
-      planned: {
-        label: 'Scheduled',
-        count: {
-          one: '%s location with sessions scheduled',
-          other:
-            '[0] No locations with sessions scheduled|%s locations with sessions scheduled'
-        }
-      },
-      unplanned: {
-        label: 'Unscheduled',
-        count: {
-          one: '%s location with no sessions scheduled',
-          other:
-            '[0] No locations with no sessions scheduled|%s locations with no sessions scheduled'
-        }
-      },
-      closed: {
-        label: 'Closed',
-        count: {
-          one: '%s location with closed sessions',
-          other:
-            '[0] No locations with closed sessions|%s locations with closed sessions'
-        }
+      count: {
+        one: '%s session',
+        other: '[0] No sessions|%s sessions'
       }
     },
     consents: {

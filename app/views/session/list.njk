@@ -1,16 +1,20 @@
-{% from "session/_list-navigation.njk" import sessionListNavigation with context %}
-
 {% extends "_layouts/default.njk" %}
 
-{% set title = __("session.list.title") + " – " + __("session.list." + view + ".label") %}
+{% set title = __("session.list.title") %}
 {% set showDates = view == "planned" or view == "completed" %}
 
 {% block content %}
   {{ super() }}
 
-  {{ sessionListNavigation({
-    session: session,
-    view: view
+  {{ heading({
+    size: "xl",
+    title: __("session.list.title")
+  }) }}
+
+  {{ button({
+    classes: "nhsuk-button--secondary",
+    text: __("session.new.label"),
+    href: "/sessions/new"
   }) }}
 
   {% if sessions.length %}
@@ -39,7 +43,7 @@
 
     {{ table({
       id: "sessions",
-      heading: __n("session.list." + view + ".count", sessions.length),
+      heading: __n("session.list.count", sessions.length),
       panel: true,
       responsive: true,
       head: [
