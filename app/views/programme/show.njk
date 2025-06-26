@@ -68,8 +68,37 @@
         description: programme.vaccinations.length or "0"
       }) }}
     </div>
+  </div>
+
+  {{ heading({
+    level: 2,
+    size: "m",
+    title: __("programme.show.cohorts")
+  }) }}
+
+  <ul class="nhsuk-grid-row nhsuk-card-group">
+  {% for cohort in programme.cohorts | sort(false, false, "yearGroup") %}
+    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+      {{ card({
+        clickable: true,
+        heading: cohort.formatted.yearGroup,
+        headingClasses: "nhsuk-heading-m",
+        headingLevel: 3,
+        href: programme.uri + "/patients?yearGroup=" + cohort.yearGroup,
+        descriptionHtml: __n("cohort.patients.count", cohort.patients.length)
+      }) }}
+    </li>
+  {% endfor %}
+  </ul>
 
 {% if programme.sessions.length %}
+  {{ heading({
+    level: 2,
+    size: "m",
+    title: __("programme.show.responses")
+  }) }}
+
+  <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         classes: "app-card--data",
@@ -139,7 +168,7 @@
   }) }}
 
   {% set questionRows = [] %}
-  {% for key, healthQuestion in patientSession.vaccine.flatHealthQuestions %}
+  {% for key, healthQuestion in programme.patientSessions[0].vaccine.flatHealthQuestions %}
     {% set questionRows = questionRows | push([
       {
         text: __("healthQuestions." + key + ".label")

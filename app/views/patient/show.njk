@@ -73,7 +73,7 @@
       {% for cohort in patient.cohorts | sort(false, false, "createdAt") %}
         {% set cohortRows = cohortRows | push([
           {
-            header: __("cohort.name.label"),
+            header: __("cohort.label"),
             html: cohort.link.name
           },
           {
@@ -97,7 +97,7 @@
         sort: "name",
         responsive: true,
         head: [
-          { text: __("cohort.name.label") },
+          { text: __("cohort.label") },
           { text: __("actions.label") }
         ],
         rows: cohortRows
