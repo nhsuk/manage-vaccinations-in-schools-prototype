@@ -38,7 +38,12 @@ import {
   formatProgrammeStatus,
   formatTag
 } from '../utils/string.js'
-import { getScreenOutcome, getTriageOutcome } from '../utils/triage.js'
+import {
+  getScreenOutcome,
+  getScreenOutcomesForConsentMethod,
+  getScreenVaccinationMethod,
+  getTriageOutcome
+} from '../utils/triage.js'
 
 import { Gillick } from './gillick.js'
 import { Instruction } from './instruction.js'
@@ -224,23 +229,22 @@ export class PatientSession {
     )
   }
 
-  get triageOutcomesForConsentedMethod() {
-    return [
-      ...(!this.programme.hasAlternativeVaccines
-        ? [ScreenOutcome.Vaccinate]
-        : []),
-      ...(this.programme.hasAlternativeVaccines &&
-      !this.hasConsentForInjectionOnly
-        ? [ScreenOutcome.VaccinateNasal]
-        : []),
-      ...(this.programme.hasAlternativeVaccines && this.hasConsentForInjection
-        ? [ScreenOutcome.VaccinateInjection]
-        : []),
-      'or',
-      ScreenOutcome.NeedsTriage,
-      ScreenOutcome.DelayVaccination,
-      ScreenOutcome.DoNotVaccinate
-    ]
+  /**
+   * Get screen outcomes for vaccination method(s) consented to
+   *
+   * @returns {Array<ScreenOutcome>} - Screen outcomes
+   */
+  get screenOutcomesForConsentMethod() {
+    return getScreenOutcomesForConsentMethod(this.programme, this.responses)
+  }
+
+  /**
+   * Get vaccination method(s) consented to use if safe to vaccinate
+   *
+   * @returns {import('../enums.js').ScreenVaccinationMethod|boolean} - Method
+   */
+  get screenVaccinationMethod() {
+    return getScreenVaccinationMethod(this.programme, this.responses)
   }
 
   /**

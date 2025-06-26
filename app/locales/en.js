@@ -1992,11 +1992,8 @@ export const en = {
         'No, delay vaccination (and invite to clinic)',
       [ScreenOutcome.NeedsTriage]: 'No, keep in triage'
     },
-    injection: {
-      consentGiven:
-        'The parent has consented to the injected vaccine being offered instead',
-      consentRefused:
-        'The parent has not given consent for the injected vaccine'
+    psd: {
+      label: 'Do you want to add a PSD?'
     },
     [TriageOutcome.Needed]: {
       label: 'Triage needed',

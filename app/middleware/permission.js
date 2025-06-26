@@ -11,6 +11,11 @@ export const permission = (request, response, next) => {
   } else {
     permissions.vaccineMethods = []
   }
+  if (
+    [UserRole.NursePrescriber, UserRole.Pharmacist].includes(data?.token?.role)
+  ) {
+    permissions.canPrescribe = true
+  }
 
   request.app.locals.permissions = permissions
 

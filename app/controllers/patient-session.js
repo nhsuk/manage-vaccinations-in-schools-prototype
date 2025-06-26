@@ -14,6 +14,7 @@ import {
   VaccineMethod
 } from '../enums.js'
 import { Gillick } from '../models/gillick.js'
+import { Instruction } from '../models/instruction.js'
 import { PatientSession } from '../models/patient-session.js'
 import { Programme } from '../models/programme.js'
 import { Vaccination } from '../models/vaccination.js'
@@ -335,6 +336,18 @@ export const patientSessionController = {
     const { data } = request.session
     const { __, back, patientSession } = response.locals
 
+    if (triage.psd) {
+      const instruction = new Instruction({
+        createdBy_uid: data.token?.uid,
+        programme_id: patientSession.programme.id,
+        patientSession_uuid: patientSession.uuid
+      })
+
+      instruction.create(instruction, data)
+
+      patientSession.giveInstruction(instruction)
+    }
+
     patientSession.recordTriage({
       outcome: triage.outcome,
       name:
@@ -344,6 +357,9 @@ export const patientSessionController = {
       note: triage.note,
       createdBy_uid: data.token?.uid || '000123456789'
     })
+
+    // Update patient session
+    patientSession.update(patientSession, data)
 
     // Clean up session data
     delete data.triage
