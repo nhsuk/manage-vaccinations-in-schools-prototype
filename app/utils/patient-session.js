@@ -168,6 +168,10 @@ export const getScreenStatus = (patientSession) => {
       colour = 'aqua-green'
       description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the injected vaccine only.`
       break
+    case ScreenOutcome.VaccinateNasal:
+      colour = 'aqua-green'
+      description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the nasal spray only.`
+      break
     default:
   }
 

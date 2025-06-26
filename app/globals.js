@@ -1,8 +1,6 @@
 import _ from 'lodash'
 
 import { healthQuestions } from './datasets/health-questions.js'
-import { ScreenOutcome } from './models/patient-session.js'
-import { ProgrammeType } from './models/programme.js'
 import { School } from './models/school.js'
 import { User } from './models/user.js'
 import {
@@ -114,39 +112,15 @@ export default () => {
   globals.triageOutcomeItems = function (patientSession) {
     const { __ } = this.ctx
 
-    let triageOutcomeItems = Object.entries(ScreenOutcome)
-      .filter(
-        ([, value]) => ![ScreenOutcome.VaccinateInjection].includes(value)
-      )
-      .map(([key, value]) => ({
-        text: __(`triage.outcome.${ScreenOutcome[key]}`),
-        value,
-        hint: {}
-      }))
-
-    // Add divider between yes and no outcomes
-    // @ts-ignore
-    triageOutcomeItems = triageOutcomeItems.toSpliced(1, 0, { divider: 'or' })
-
-    // Add ‘Safe to vaccinate (injected vaccine only)’ option
-    // ONLY if administering the flu programme
-    // AND all parents consent to injected vaccine (including as alternative)
-    // BUT not if all parents give consent only for the injected vaccine
-    if (
-      patientSession.programme.type === ProgrammeType.Flu &&
-      patientSession.hasConsentForInjection &&
-      !patientSession.hasConsentForInjectionOnly
-    ) {
-      triageOutcomeItems = triageOutcomeItems.toSpliced(1, 0, {
-        text: __(`triage.outcome.${ScreenOutcome.VaccinateInjection}`),
-        value: ScreenOutcome.VaccinateInjection,
-        hint: {
-          text: __(`triage.injection.consentGiven`)
-        }
-      })
-    }
-
-    return triageOutcomeItems
+    return Object.values(patientSession.triageOutcomesForConsentedMethod).map(
+      (value) =>
+        value === 'or'
+          ? { divider: 'or' }
+          : {
+              text: __(`triage.outcome.${value}`),
+              value
+            }
+    )
   }
 
   /**

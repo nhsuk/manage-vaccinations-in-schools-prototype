@@ -66,6 +66,8 @@
   {% else %}
     <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
 
+    {% set hintText = (__("triage.injection.consentGiven") if patientSession.hasConsentForInjection else __("triage.injection.consentRefused")) if not patientSession.hasConsentForInjectionOnly %}
+
     {{ radios({
       fieldset: {
         legend: {
@@ -74,8 +76,8 @@
         }
       },
       hint: {
-        text: __("triage.injection.consentRefused")
-      } if not patientSession.hasConsentForInjection,
+        text: hintText if patientSession.programme.hasAlternativeVaccines
+      },
       items: triageOutcomeItems(patientSession),
       decorate: "triage.outcome"
     }) }}

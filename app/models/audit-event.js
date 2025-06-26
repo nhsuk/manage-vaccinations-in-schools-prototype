@@ -4,8 +4,7 @@ import { formatDate, today } from '../utils/date.js'
 import {
   formatTag,
   formatMarkdown,
-  formatWithSecondaryText,
-  formatTagWithSecondaryText
+  formatWithSecondaryText
 } from '../utils/string.js'
 
 import { ScreenOutcome } from './patient-session.js'
@@ -93,7 +92,6 @@ export class AuditEvent {
   get status() {
     if (this.type === EventType.Screen) {
       let colour
-      let text = this.outcome
       switch (this.outcome) {
         case ScreenOutcome.NeedsTriage:
           colour = 'blue'
@@ -109,14 +107,16 @@ export class AuditEvent {
           break
         case ScreenOutcome.VaccinateInjection:
           colour = 'aqua-green'
-          text = ScreenOutcome.Vaccinate
+          break
+        case ScreenOutcome.VaccinateNasal:
+          colour = 'aqua-green'
           break
         default:
       }
 
       return {
         colour,
-        text
+        text: this.outcome
       }
     }
   }
@@ -158,11 +158,6 @@ export class AuditEvent {
       hour12: true
     })
 
-    let outcomeStatus = this.status && formatTag(this.status)
-    if (this.outcome === ScreenOutcome.VaccinateInjection) {
-      outcomeStatus = formatTagWithSecondaryText(this.status, 'Injection only')
-    }
-
     return {
       createdAt: formatDate(this.createdAt, { dateStyle: 'long' }),
       createdAtAndBy: this.createdBy
@@ -171,7 +166,7 @@ export class AuditEvent {
       datetime,
       note:
         this.note && `<blockquote>${formatMarkdown(this.note)}</blockquote>`,
-      outcomeStatus,
+      outcomeStatus: this.status && formatTag(this.status),
       programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' ')
     }
   }

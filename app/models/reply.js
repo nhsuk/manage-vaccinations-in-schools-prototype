@@ -381,10 +381,10 @@ export class Reply {
           VaccineMethod.Injection
         )
       } else if (this.decision === ReplyDecision.Given) {
-        decisionStatus = formatTagWithSecondaryText(
-          this.status,
-          VaccineMethod.Nasal
-        )
+        const description = this.alternative
+          ? `${VaccineMethod.Nasal} (or injection)`
+          : VaccineMethod.Nasal
+        decisionStatus = formatTagWithSecondaryText(this.status, description)
       }
     }
 
