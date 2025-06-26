@@ -1,6 +1,72 @@
-import { ConsentOutcome, ScreenOutcome, TriageOutcome } from '../enums.js'
+import {
+  ConsentOutcome,
+  ReplyDecision,
+  ScreenOutcome,
+  ScreenVaccinationMethod,
+  TriageOutcome
+} from '../enums.js'
 
 import { getRepliesWithHealthAnswers } from './reply.js'
+
+/**
+ * Get screen outcomes for vaccination method(s) consented to
+ *
+ * @param {import('../models/programme.js').Programme} programme - Programme
+ * @param {Array<import('../models/reply.js').Reply>} replies - Replies
+ * @returns {Array<ScreenOutcome>} - Screen outcomes
+ */
+export const getScreenOutcomesForConsentMethod = (programme, replies) => {
+  const hasConsentForInjection = replies?.every(
+    ({ hasConsentForInjection }) => hasConsentForInjection
+  )
+
+  const hasConsentForInjectionOnly = replies?.every(
+    ({ decision }) => decision === ReplyDecision.OnlyFluInjection
+  )
+
+  return [
+    ...(!programme?.hasAlternativeVaccines ? [ScreenOutcome.Vaccinate] : []),
+    ...(programme?.hasAlternativeVaccines && !hasConsentForInjectionOnly
+      ? [ScreenOutcome.VaccinateNasal]
+      : []),
+    ...(programme?.hasAlternativeVaccines && hasConsentForInjection
+      ? [ScreenOutcome.VaccinateInjection]
+      : []),
+    'or',
+    ScreenOutcome.NeedsTriage,
+    ScreenOutcome.DelayVaccination,
+    ScreenOutcome.DoNotVaccinate
+  ]
+}
+
+/**
+ * Get vaccination method(s) consented to use if safe to vaccinate
+ *
+ * @param {import('../models/programme.js').Programme} programme - Programme
+ * @param {Array<import('../models/reply.js').Reply>} replies - Replies
+ * @returns {import('../enums.js').ScreenVaccinationMethod|boolean} - Method
+ */
+export const getScreenVaccinationMethod = (programme, replies) => {
+  const hasConsentForInjection = replies?.every(
+    ({ hasConsentForInjection }) => hasConsentForInjection
+  )
+
+  const hasConsentForInjectionOnly = replies?.every(
+    ({ decision }) => decision === ReplyDecision.OnlyFluInjection
+  )
+
+  if (programme?.hasAlternativeVaccines) {
+    if (hasConsentForInjectionOnly) {
+      return ScreenVaccinationMethod.InjectionOnly
+    } else if (!hasConsentForInjection) {
+      return ScreenVaccinationMethod.NasalOnly
+    }
+
+    return ScreenVaccinationMethod.NasalOrInjection
+  }
+
+  return false
+}
 
 /**
  * Get screen outcome (what was the triage decision)

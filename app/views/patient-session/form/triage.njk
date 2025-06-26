@@ -8,11 +8,26 @@
     title: title
   }) }}
 
+  {% set psdRadiosHtml = radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: { legend: { text: __("triage.psd.label") } },
+    items: booleanItems,
+    decorate: "triage.psd"
+  }) if permissions.canPrescribe %}
+
+  {% set outcomeItems = injectConditionalHtml(triageOutcomeItems(patientSession.screenOutcomesForConsentMethod), ScreenOutcome.VaccinateNasal, psdRadiosHtml) if patientSession.programme.hasAlternativeVaccines else triageOutcomeItems(patientSession.screenOutcomesForConsentMethod) %}
+
   {{ radios({
     fieldset: {
-      legend: { text: __("triage.label", { patient: patient }) }
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("triage.label", { patient: patient })
+      }
     },
-    items: triageOutcomeItems(patientSession),
+    hint: {
+      text: patientSession.screenVaccinationMethod
+    } if patientSession.screenVaccinationMethod,
+    items: outcomeItems,
     decorate: "triage.outcome"
   }) }}
 

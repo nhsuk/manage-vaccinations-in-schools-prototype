@@ -15,6 +15,10 @@ import { Vaccination } from '../models/vaccination.js'
 import { today } from '../utils/date.js'
 import { hasAnswersNeedingTriage } from '../utils/reply.js'
 import { formatParent } from '../utils/string.js'
+import {
+  getScreenOutcomesForConsentMethod,
+  getScreenVaccinationMethod
+} from '../utils/triage.js'
 
 export const replyController = {
   read(request, response, next, reply_uuid) {
@@ -148,9 +152,10 @@ export const replyController = {
         patientSession.session.primaryProgrammes.length > 1
       response.locals.isMultiProgrammeSession = isMultiProgrammeSession
 
-      response.locals.programme = isMultiProgrammeSession
+      const programme = isMultiProgrammeSession
         ? reply.programme_id && Programme.read(reply.programme_id, data)
         : patientSession.session.primaryProgrammes[0]
+      response.locals.programme = programme
 
       response.locals.triage = {
         ...(type === 'edit' && triage), // Previous values
@@ -255,6 +260,14 @@ export const replyController = {
           })
         )
       }
+
+      response.locals.screenOutcomesForConsentMethod =
+        getScreenOutcomesForConsentMethod(programme, [reply])
+
+      response.locals.screenVaccinationMethod = getScreenVaccinationMethod(
+        programme,
+        [reply]
+      )
 
       next()
     }

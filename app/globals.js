@@ -1,6 +1,7 @@
 import _ from 'lodash'
 
 import { healthQuestions } from './datasets/health-questions.js'
+import { ScreenOutcome } from './enums.js'
 import { School } from './models/school.js'
 import { User } from './models/user.js'
 import {
@@ -106,20 +107,22 @@ export default () => {
   /**
    * Get triage outcome form field items
    *
-   * @param {import('./models/patient-session.js').PatientSession} patientSession - Patient session
+   * @param {Array} outcomes - Screen outcomes
    * @returns {object} Form field items
    */
-  globals.triageOutcomeItems = function (patientSession) {
+  globals.triageOutcomeItems = function (outcomes) {
     const { __ } = this.ctx
 
-    return Object.values(patientSession.triageOutcomesForConsentedMethod).map(
-      (value) =>
-        value === 'or'
-          ? { divider: 'or' }
-          : {
-              text: __(`triage.outcome.${value}`),
-              value
-            }
+    return Object.values(outcomes).map((value) =>
+      value === 'or'
+        ? { divider: 'or' }
+        : {
+            text: __(`triage.outcome.${value}`),
+            value,
+            ...(value === ScreenOutcome.VaccinateNasal && {
+              conditional: { html: {} }
+            }) // Added in template
+          }
     )
   }
 
