@@ -4,11 +4,7 @@ import { sessionController as session } from '../controllers/session.js'
 
 const router = express.Router({ strict: true })
 
-router.get('/', session.readAll, session.list('active'))
-router.get('/completed', session.readAll, session.list('completed'))
-router.get('/planned', session.readAll, session.list('planned'))
-router.get('/unplanned', session.readAll, session.list('unplanned'))
-router.get('/closed', session.readAll, session.list('closed'))
+router.get('/', session.readAll, session.list)
 
 router.get('/new', session.new)
 

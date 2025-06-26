@@ -8,7 +8,6 @@ import {
   PatientOutcome,
   RegistrationOutcome,
   ScreenOutcome,
-  SessionStatus,
   SessionType,
   VaccinationOutcome,
   VaccineMethod
@@ -74,31 +73,14 @@ export const sessionController = {
     response.redirect(`${session.uri}/new/type`)
   },
 
-  list(view) {
-    return (request, response) => {
-      let { sessions } = response.locals
+  list(request, response) {
+    let { sessions } = response.locals
 
-      const statuses = {
-        closed: SessionStatus.Closed,
-        completed: SessionStatus.Completed,
-        planned: SessionStatus.Planned,
-        unplanned: SessionStatus.Unplanned
-      }
+    sessions = sessions.sort((a, b) =>
+      getDateValueDifference(a.firstDate, b.firstDate)
+    )
 
-      if (view === 'active') {
-        sessions = sessions.filter((session) => session.isActive)
-      } else {
-        sessions = sessions.filter(
-          (session) => session.status === statuses[view]
-        )
-      }
-
-      sessions = sessions.sort((a, b) =>
-        getDateValueDifference(a.firstDate, b.firstDate)
-      )
-
-      response.render('session/list', { sessions, view })
-    }
+    response.render('session/list', { sessions })
   },
 
   readPatientSessions(request, response, next) {
