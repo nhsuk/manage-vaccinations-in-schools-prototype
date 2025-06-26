@@ -190,12 +190,6 @@ export const en = {
   },
   cohort: {
     label: 'Cohorts',
-    list: {
-      title: 'All cohorts'
-    },
-    upload: {
-      label: 'Import child records'
-    },
     unselect: {
       confirm: 'Remove from cohort',
       success:
@@ -206,16 +200,6 @@ export const en = {
         one: '%s child',
         other: '[0] No children|%s children'
       }
-    },
-    yearGroup: {
-      label: 'Year group'
-    },
-    count: {
-      one: '%s cohort',
-      other: '[0] No cohorts|%s cohorts'
-    },
-    name: {
-      label: 'Name'
     }
   },
   child: {
@@ -1257,11 +1241,9 @@ export const en = {
     },
     show: {
       label: 'Overview',
-      title: 'Overview'
-    },
-    cohorts: {
-      label: 'Cohorts',
-      title: 'Cohorts'
+      title: 'Overview',
+      cohorts: 'Cohorts',
+      responses: 'Consent responses'
     },
     consentPdf: {
       label: 'Paper consent form'
