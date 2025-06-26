@@ -13,10 +13,10 @@
       tag: statusTag(params.patientSession.status.instruct)
     } if session.psdProtocol, {
       tag: statusTag(params.patientSession.status.register)
-    }, {
+    } if session.registration, {
       text: __("patientSession.registration.title"),
       href: params.patientSession.uri + "/edit/registration?referrer=" + referrer
-    } if params.patientSession.register != RegistrationOutcome.Complete, {
+    } if session.registration and params.patientSession.register != RegistrationOutcome.Complete, {
       text: __("patientSession.record.title"),
       href: "#"
     } if not params.patientSession.session.isActive and params.patientSession.report != PatientOutcome.Vaccinated]
