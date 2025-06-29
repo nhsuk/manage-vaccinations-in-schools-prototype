@@ -115,12 +115,12 @@ export const parentController = {
     response.locals.consent = consent
 
     const programmes = consent.session ? consent.session.primaryProgrammes : []
-    const hasAlternativeVaccine = programmes[0]?.hasAlternativeVaccines
+    const { hasAlternativeVaccines } = consent?.session
 
     // If programme has alternative vaccine, and given consent has been given
     // for the default, ask for consent for the alternative as well
     const getConsentForAlternativeVaccine =
-      hasAlternativeVaccine && consent.decision === ReplyDecision.Given
+      hasAlternativeVaccines && consent.decision === ReplyDecision.Given
 
     const journey = {
       [`/${session_id}`]: {},
@@ -223,7 +223,7 @@ export const parentController = {
             ? ReplyDecision.OnlyTdIPV
             : ReplyDecision.OnlyMenACWY
       }))
-    } else if (hasAlternativeVaccine) {
+    } else if (hasAlternativeVaccines) {
       // Flu: Ask which vaccine the parent would prefer
       response.locals.decisionItems = [
         {
