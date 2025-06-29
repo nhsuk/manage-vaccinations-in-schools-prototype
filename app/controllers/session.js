@@ -248,12 +248,12 @@ export const sessionController = {
         {
           text: 'Any',
           value: 'none',
-          checked: filters[view] === 'none'
+          checked: !vaccineMethod || vaccineMethod === 'none'
         },
         ...Object.values(VaccineMethod).map((value) => ({
           text: value,
           value,
-          checked: value === request.query.vaccineMethod
+          checked: vaccineMethod === value
         }))
       ]
     }
@@ -264,7 +264,7 @@ export const sessionController = {
         (value) => ({
           text: value,
           value,
-          checked: value === request.query.consent
+          checked: request.query.consent === value
         })
       )
     }
@@ -294,7 +294,7 @@ export const sessionController = {
           ...Object.values(statusItems[view]).map((value) => ({
             text: value,
             value,
-            checked: value === filters[view]
+            checked: filters[view] === value
           }))
         ]
       }
