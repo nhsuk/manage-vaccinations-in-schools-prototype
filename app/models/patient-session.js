@@ -36,7 +36,8 @@ import {
   formatLink,
   formatList,
   formatProgrammeStatus,
-  formatTag
+  formatTag,
+  formatVaccineMethod
 } from '../utils/string.js'
 import {
   getScreenOutcome,
@@ -590,7 +591,8 @@ export class PatientSession {
         report: formatProgrammeStatus(this.programme, this.status.report)
       },
       nextActivityPerProgramme: formatList(nextActivityPerProgramme),
-      outstandingVaccinations: filters.formatList(outstandingVaccinations)
+      outstandingVaccinations: filters.formatList(outstandingVaccinations),
+      vaccineMethod: formatVaccineMethod(this.vaccineMethod)
     }
   }
 

@@ -114,7 +114,7 @@
                 } if (view == "register" and patientSession.register != RegistrationOutcome.Absent) or view == "record",
                 vaccineMethod: {
                   label: __("patientSession.vaccineMethod.label"),
-                  value: patientSession.vaccineMethod
+                  value: patientSession.formatted.vaccineMethod
                 } if patientSession.vaccineMethod and view != "consent" and view != "screen",
                 instruct: {
                   label: __("patientSession.instruct.label"),
