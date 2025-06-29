@@ -606,6 +606,18 @@ export class Session {
   }
 
   /**
+   * Check if session offers an alternative vaccine
+   * For example, the flu programme offer both nasal and injection vaccines
+   *
+   * @returns {boolean} Has alternative vaccines
+   */
+  get hasAlternativeVaccines() {
+    return this.programmes
+      .flatMap(({ hasAlternativeVaccines }) => hasAlternativeVaccines)
+      .find((value) => value)
+  }
+
+  /**
    * Get default batches
    *
    * @returns {Array<Batch>} - Default batches

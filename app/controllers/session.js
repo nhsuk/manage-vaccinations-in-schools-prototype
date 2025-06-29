@@ -239,8 +239,11 @@ export const sessionController = {
       }))
     }
 
-    // Vaccination method filter options
-    if (['register', 'record'].includes(view)) {
+    // Vaccination method filter options (if session administering alternative)
+    if (
+      session.hasAlternativeVaccines &&
+      !['consent', 'screen'].includes(view)
+    ) {
       response.locals.vaccineMethodItems = [
         {
           text: 'Any',
@@ -268,9 +271,7 @@ export const sessionController = {
 
     // Screen/register/outcome status filter options (select one)
     for (const activity of ['screen', 'instruct', 'register', 'outcome']) {
-      const screenOutcomes = session.programmes.find(
-        (programme) => programme.hasAlternativeVaccines
-      )
+      const screenOutcomes = session.hasAlternativeVaccines
         ? Object.values(ScreenOutcome).filter(
             (outcome) => outcome !== ScreenOutcome.Vaccinate
           )
