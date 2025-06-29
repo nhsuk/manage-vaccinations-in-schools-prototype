@@ -61,7 +61,7 @@
 
       {% for patientSession in results.page %}
         {{ card({
-          classes: "app-card--patient",
+          classes: "app-card--result",
           heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
           headingClasses: "nhsuk-heading-s",
           headingLevel: 4,

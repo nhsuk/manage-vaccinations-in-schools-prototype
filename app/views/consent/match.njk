@@ -62,7 +62,7 @@
 
       {% for patient in results.page %}
         {{ card({
-          classes: "app-card--patient",
+          classes: "app-card--result",
           heading: patient.fullName | highlightQuery(data.q),
           headingLevel: 4,
           clickable: true,
