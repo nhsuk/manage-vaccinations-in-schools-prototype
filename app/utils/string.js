@@ -390,6 +390,18 @@ export function formatOther(other, string) {
 }
 
 /**
+ * Format vaccine method
+ *
+ * @param {string} string - String
+ * @returns {string} Formatted HTML
+ */
+export function formatVaccineMethod(string) {
+  if (!string) return
+
+  return `<span class="app-vaccine-method" data-method="${string}">${string}</span>`
+}
+
+/**
  * Format year group
  *
  * @param {number} yearGroup - Year group
