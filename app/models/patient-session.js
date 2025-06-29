@@ -584,7 +584,7 @@ export class PatientSession {
             this.status.screen,
             this.reason.screen
           ),
-        instruct: formatTag(this.status.instruct),
+        instruct: this.session.psdProtocol && formatTag(this.status.instruct),
         register: formatTag(this.status.register),
         outcome: formatProgrammeStatus(this.programme, this.status.outcome),
         report: formatProgrammeStatus(this.programme, this.status.report)

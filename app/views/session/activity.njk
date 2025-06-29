@@ -116,6 +116,10 @@
                   label: __("patientSession.vaccineMethod.label"),
                   value: patientSession.vaccineMethod
                 } if patientSession.vaccineMethod and view == "record" or view == "register",
+                instruct: {
+                  label: __("patientSession.instruct.label"),
+                  value: patientSession.formatted.status.instruct
+                } if view == "register" or view == "record",
                 status: {
                   label: __("patientSession." + view + ".label"),
                   value: statusHtml,
