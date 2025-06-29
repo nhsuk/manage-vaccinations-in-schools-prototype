@@ -242,7 +242,7 @@ export const sessionController = {
     // Vaccination method filter options (if session administering alternative)
     if (
       session.hasAlternativeVaccines &&
-      !['consent', 'screen'].includes(view)
+      ['register', 'record', 'report'].includes(view)
     ) {
       response.locals.vaccineMethodItems = [
         {

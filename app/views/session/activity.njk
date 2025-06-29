@@ -115,11 +115,11 @@
                 vaccineMethod: {
                   label: __("patientSession.vaccineMethod.label"),
                   value: patientSession.formatted.vaccineMethod
-                } if patientSession.vaccineMethod and view != "consent" and view != "screen",
+                } if vaccineMethodItems,
                 instruct: {
                   label: __("patientSession.instruct.label"),
                   value: patientSession.formatted.status.instruct
-                } if view == "register" or view == "record",
+                } if patientSession.instruct and view != "instruct",
                 status: {
                   label: __("patientSession." + view + ".label"),
                   value: statusHtml,

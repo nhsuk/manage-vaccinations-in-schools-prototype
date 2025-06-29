@@ -13,7 +13,8 @@ import {
   RegistrationOutcome,
   SessionStatus,
   SessionType,
-  TriageOutcome
+  TriageOutcome,
+  VaccineMethod
 } from '../enums.js'
 import {
   removeDays,
@@ -448,9 +449,9 @@ export class Session {
    * @returns {Array<PatientSession>} - Patient sessions
    */
   get patientSessionsToInstruct() {
-    const patientSessions = this.patientSessions.filter(
-      ({ nextActivity }) => nextActivity === Activity.Record
-    )
+    const patientSessions = this.patientSessions
+      .filter(({ vaccineMethod }) => vaccineMethod === VaccineMethod.Nasal)
+      .filter(({ nextActivity }) => nextActivity === Activity.Record)
     return _.uniqBy(patientSessions, 'patient.nhsn')
   }
 

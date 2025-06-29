@@ -11,7 +11,7 @@
   {{ actionList({
     items: [{
       tag: statusTag(params.patientSession.status.instruct)
-    } if session.psdProtocol, {
+    } if session.psdProtocol and patientSession.instruct, {
       tag: statusTag(params.patientSession.status.register)
     } if session.registration, {
       text: __("patientSession.registration.title"),

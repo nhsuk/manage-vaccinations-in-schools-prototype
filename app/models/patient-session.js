@@ -450,7 +450,7 @@ export class PatientSession {
   /**
    * Get instruction outcome
    *
-   * @returns {import('../enums.js').InstructionOutcome} - Instruction outcome
+   * @returns {import('../enums.js').InstructionOutcome|boolean} - Instruction outcome
    */
   get instruct() {
     return getInstructionOutcome(this)
