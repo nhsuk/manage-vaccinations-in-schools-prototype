@@ -8,7 +8,8 @@ import {
   RegistrationOutcome,
   ScreenOutcome,
   TriageOutcome,
-  VaccinationOutcome
+  VaccinationOutcome,
+  VaccineMethod
 } from '../enums.js'
 
 /**
@@ -302,15 +303,19 @@ export const getReportStatus = (patientSession) => {
 }
 
 /**
- * Get instruction outcome
+ * Get instruction outcome for nasal spray
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {InstructionOutcome} - Instruction outcome
+ * @returns {InstructionOutcome|boolean} - Instruction outcome
  */
 export const getInstructionOutcome = (patientSession) => {
-  return patientSession.instruction
-    ? InstructionOutcome.Given
-    : InstructionOutcome.Needed
+  if (patientSession.vaccineMethod === VaccineMethod.Nasal) {
+    return patientSession.instruction
+      ? InstructionOutcome.Given
+      : InstructionOutcome.Needed
+  }
+
+  return false
 }
 
 /**
