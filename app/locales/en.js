@@ -190,6 +190,9 @@ export const en = {
   },
   cohort: {
     label: 'Cohorts',
+    upload: {
+      label: 'Import child records'
+    },
     unselect: {
       confirm: 'Remove from cohort',
       success:
