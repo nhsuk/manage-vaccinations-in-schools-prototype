@@ -2366,10 +2366,13 @@ export const en = {
         'How was the {{session.programmeNames.sentenceCase}} vaccination given?'
     },
     method: {
-      label: 'Method'
+      label: 'Method',
+      title:
+        'How was the {{session.programmeNames.sentenceCase}} vaccination given?'
     },
     site: {
-      label: 'Site'
+      label: 'Site',
+      title: 'Which injection site was used?'
     },
     programme: {
       label: 'Programme'
@@ -2411,7 +2414,7 @@ export const en = {
       }
     },
     vaccine_snomed: {
-      title: 'Vaccine',
+      title: 'What vaccine was given?',
       label: 'Vaccine'
     },
     review: {

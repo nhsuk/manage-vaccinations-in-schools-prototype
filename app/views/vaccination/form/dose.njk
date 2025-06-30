@@ -14,5 +14,23 @@
     },
     suffix: "ml",
     decorate: "vaccination.dose"
+  }) if vaccination.method == VaccinationMethod.Injection else radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: vaccination.patient.fullName,
+          title: __("vaccination.dosage.title")
+        })
+      }
+    },
+    items: [{
+      text: __("vaccination.dosage.full"),
+      value: "full"
+    }, {
+      text: __("vaccination.dosage.half"),
+      value: "half"
+    }],
+    decorate: "vaccination.dosage"
   }) }}
 {% endblock %}
