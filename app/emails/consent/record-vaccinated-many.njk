@@ -7,6 +7,9 @@ We suggest you record the following details {% if consent.child.school.phase == 
 {% for programme in session.primaryProgrammes %}
 > Vaccination: {{ programme.name }}<br>
 > Vaccine: {{ programme.vaccines[0].brand }}<br>
+{% if programme.hasAlternativeVaccines %}
+> Method: {{ programme.vaccines[0].method }}<br>
+{% endif %}
 > Date of vaccination: {{ session.formatted.firstDate }}<br>
 > Batch number: AB1234
 {% endfor %}
