@@ -54,7 +54,7 @@ export function generateConsent(
     { value: ReplyDecision.Declined, weight: 3 },
     { value: ReplyDecision.Refused, weight: 1 },
     ...(programme.type === ProgrammeType.Flu
-      ? [{ value: ReplyDecision.OnlyFluInjection, weight: 3 }]
+      ? [{ value: ReplyDecision.OnlyFluInjection, weight: 1 }]
       : [])
   ])
 
