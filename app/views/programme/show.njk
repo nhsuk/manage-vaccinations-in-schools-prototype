@@ -1,11 +1,8 @@
 {% from "programme/_navigation.njk" import programmeNavigation with context %}
-
 {% extends "_layouts/default.njk" %}
-
 {% set isDataConsumer = data.token.role == UserRole.DataConsumer %}
 {% set paths = { back: "/home" } if isDataConsumer %}
 {% set title = programme.name + " – " + __("programme.show.title") %}
-
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
@@ -16,22 +13,18 @@
     href: "/programmes"
   }) if data.token.role != UserRole.DataConsumer }}
 {% endblock %}
-
 {% block content %}
   {{ super() }}
-
   {{ programmeNavigation({
     isDataConsumer: isDataConsumer,
     programme: programme,
     view: "show"
   }) }}
-
   {{ button({
     classes: "nhsuk-button--secondary",
     text: __("download.new.label"),
     href: programme.uri + "/download/new"
   }) if programme.vaccinations.length }}
-
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
@@ -44,7 +37,6 @@
         description: programme.patientSessions.length or "0"
       }) }}
     </div>
-
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         classes: "app-card--data app-card--reversed",
@@ -56,7 +48,6 @@
         description: programme.sessions.length or "0"
       }) }}
     </div>
-
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         classes: "app-card--data app-card--reversed",
@@ -69,70 +60,63 @@
       }) }}
     </div>
   </div>
-
   {{ heading({
     level: 2,
     size: "m",
     title: __("programme.show.cohorts")
   }) }}
-
   <ul class="nhsuk-grid-row nhsuk-card-group">
-  {% for cohort in programme.cohorts | sort(false, false, "yearGroup") %}
-    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
-      {{ card({
-        clickable: true,
+    {% for cohort in programme.cohorts | sort(false, false, "yearGroup") %}
+      <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+        {{ card({
+        clickable: true if not isDataConsumer,
         heading: cohort.formatted.yearGroup,
         headingClasses: "nhsuk-heading-m",
         headingLevel: 3,
-        href: programme.uri + "/patients?yearGroup=" + cohort.yearGroup,
+        href: programme.uri + "/patients?yearGroup=" + cohort.yearGroup if not isDataConsumer,
         descriptionHtml: __n("cohort.patients.count", cohort.patients.length)
       }) }}
-    </li>
-  {% endfor %}
+      </li>
+    {% endfor %}
   </ul>
-
-{% if programme.sessions.length %}
-  {{ heading({
+  {% if programme.sessions.length %}
+    {{ heading({
     level: 2,
     size: "m",
     title: __("programme.show.responses")
   }) }}
-
-  <div class="nhsuk-grid-row nhsuk-card-group">
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
+    <div class="nhsuk-grid-row nhsuk-card-group">
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
         classes: "app-card--data",
         heading: "Consent requests and reminders sent",
         headingClasses: "nhsuk-heading-xs",
         headingLevel: 3,
         description: 1671
       }) }}
-    </div>
-
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
+      </div>
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
         classes: "app-card--data",
         heading: "Consent given (versus refused or no response)",
         headingClasses: "nhsuk-heading-xs",
         headingLevel: 3,
         description: "78%"
       }) }}
-    </div>
-
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
+      </div>
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ card({
         classes: "app-card--data",
         heading: "Responses received and triaged",
         headingClasses: "nhsuk-heading-xs",
         headingLevel: 3,
         description: "98%"
       }) }}
-    </div>
-{% endif %}
+      </div>
+    {% endif %}
   </div>
-
-{% if programme.sessions.length %}
-  {{ table({
+  {% if programme.sessions.length %}
+    {{ table({
     heading: "Reasons for refusal",
     panel: true,
     head: [
@@ -166,10 +150,9 @@
       ]
     ]
   }) }}
-
-  {% set questionRows = [] %}
-  {% for key, healthQuestion in programme.patientSessions[0].vaccine.flatHealthQuestions %}
-    {% set questionRows = questionRows | push([
+    {% set questionRows = [] %}
+    {% for key, healthQuestion in programme.patientSessions[0].vaccine.flatHealthQuestions %}
+      {% set questionRows = questionRows | push([
       {
         text: __("healthQuestions." + key + ".label")
       },
@@ -178,9 +161,8 @@
         format: "numeric"
       }
     ]) %}
-  {% endfor %}
-
-  {{ table({
+    {% endfor %}
+    {{ table({
     heading: "Consent journey",
     panel: true,
     head: [
@@ -189,5 +171,5 @@
     ],
     rows: questionRows
   }) }}
-{% endif %}
+  {% endif %}
 {% endblock %}
