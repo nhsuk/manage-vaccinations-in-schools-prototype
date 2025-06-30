@@ -263,6 +263,7 @@ export const vaccinationController = {
 
       response.locals.injectionSiteItems = Object.entries(VaccinationSite)
         .filter(([, value]) => value !== VaccinationSite.Nose)
+        .filter(([, value]) => value !== VaccinationSite.Other)
         .map(([key, value]) => ({
           text: VaccinationSite[key],
           value
