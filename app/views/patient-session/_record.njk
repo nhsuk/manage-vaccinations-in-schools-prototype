@@ -74,6 +74,23 @@
 
   <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
 
+  {% set vaccinationSiteHtml = radios({
+    fieldset: {
+      legend: { text: __("patientSession.preScreen.injectionSite.label") }
+    },
+    items: vaccinationSiteItems,
+    decorate: "patientSession.preScreen.injectionSite",
+    _validate: {
+      conditional: {
+        dependentOn: {
+          name: "[patientSession][preScreen][ready]",
+          value: true
+        },
+        message: __("patientSession.preScreen.injectionSite.error")
+      }
+    }
+  }) %}
+
   {{ radios({
     fieldset: {
       legend: {
@@ -93,28 +110,26 @@
           text: __("patientSession.preScreen.ready.hint")
         },
         conditional: {
-          html: radios({
-            fieldset: {
-              legend: { text: __("patientSession.preScreen.injectionSite.label") }
-            },
-            items: vaccinationSiteItems,
-            decorate: "patientSession.preScreen.injectionSite",
-            _validate: {
-              conditional: {
-                dependentOn: {
-                  name: "[patientSession][preScreen][ready]",
-                  value: true
-                },
-                message: __("patientSession.preScreen.injectionSite.error")
-              }
-            }
-          })
-        } if vaccinationSiteItems
+          html: vaccinationSiteHtml
+        } if patientSession.vaccine.method === VaccineMethod.Injection
       },
       {
         text: __("patientSession.preScreen.ready.no"),
         value: false
-      }
+      },
+      {
+        divider: "or"
+      } if canRecordAlternativeVaccine,
+      {
+        text: __("patientSession.preScreen.ready.alternative"),
+        value: "alternative",
+        hint: {
+          text: __("patientSession.preScreen.ready.hint")
+        },
+        conditional: {
+          html: vaccinationSiteHtml
+        }
+      } if canRecordAlternativeVaccine
     ],
     decorate: "patientSession.preScreen.ready",
     _validate: {

@@ -1192,7 +1192,8 @@ export const en = {
           'Is {{patient.firstName}} ready for their {{session.programmeNames.sentenceCase}} {{method}}?',
         hint: 'Pre-screening checks must be completed for vaccination to go ahead',
         yes: 'Yes',
-        no: 'No'
+        no: 'No',
+        alternative: 'No — but they can have the injected flu vaccine instead'
       },
       injectionSite: {
         error: 'Select an injection site',
