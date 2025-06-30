@@ -25,11 +25,11 @@ export const getScreenOutcomesForConsentMethod = (programme, replies) => {
   )
 
   return [
-    ...(!programme?.hasAlternativeVaccines ? [ScreenOutcome.Vaccinate] : []),
-    ...(programme?.hasAlternativeVaccines && !hasConsentForInjectionOnly
+    ...(!programme?.alternativeVaccine ? [ScreenOutcome.Vaccinate] : []),
+    ...(programme?.alternativeVaccine && !hasConsentForInjectionOnly
       ? [ScreenOutcome.VaccinateNasal]
       : []),
-    ...(programme?.hasAlternativeVaccines && hasConsentForInjection
+    ...(programme?.alternativeVaccine && hasConsentForInjection
       ? [ScreenOutcome.VaccinateInjection]
       : []),
     'or',
@@ -55,7 +55,7 @@ export const getScreenVaccinationMethod = (programme, replies) => {
     ({ decision }) => decision === ReplyDecision.OnlyFluInjection
   )
 
-  if (programme?.hasAlternativeVaccines) {
+  if (programme?.alternativeVaccine) {
     if (hasConsentForInjectionOnly) {
       return ScreenVaccinationMethod.InjectionOnly
     } else if (!hasConsentForInjection) {

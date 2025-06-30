@@ -1,7 +1,12 @@
 import { isAfter } from 'date-fns'
 
 import vaccines from '../datasets/vaccines.js'
-import { SchoolYear, ProgrammeStatus, ProgrammeType } from '../enums.js'
+import {
+  SchoolYear,
+  ProgrammeStatus,
+  ProgrammeType,
+  VaccineMethod
+} from '../enums.js'
 import { isBetweenDates, today } from '../utils/date.js'
 import {
   formatLink,
@@ -197,13 +202,17 @@ export class Programme {
   }
 
   /**
-   * Check if programme offers an alternative vaccine
-   * For example, the flu programme offer both nasal and injection vaccines
+   * Alternative vaccine for a programme
+   * For example, flu programme offers nasal spray with injection as alternative
    *
-   * @returns {boolean} Has alternative vaccines
+   * @returns {Vaccine|undefined} Alternative vaccine
    */
-  get hasAlternativeVaccines() {
-    return this.vaccine_smomeds.length > 1
+  get alternativeVaccine() {
+    if (this.vaccines.length > 1) {
+      return this.vaccines.find(
+        ({ method }) => method === VaccineMethod.Injection
+      )
+    }
   }
 
   /**

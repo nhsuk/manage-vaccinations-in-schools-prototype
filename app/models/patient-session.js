@@ -534,7 +534,7 @@ export class PatientSession {
       consent = this.consentRefusalReasons.join('<br>')
     } else if (
       this.consent === ConsentOutcome.Given &&
-      this.programme.hasAlternativeVaccines
+      this.programme.alternativeVaccine
     ) {
       if (this.hasConsentForInjectionOnly) {
         consent = 'Injection'

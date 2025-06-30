@@ -15,7 +15,7 @@
     decorate: "triage.psd"
   }) if permissions.canPrescribe %}
 
-  {% set outcomeItems = injectConditionalHtml(triageOutcomeItems(screenOutcomesForConsentMethod), ScreenOutcome.VaccinateNasal, psdRadiosHtml) if patientSession.programme.hasAlternativeVaccines and reply.decision != ReplyDecision.OnlyFluInjection and permissions.canPrescribe else triageOutcomeItems(screenOutcomesForConsentMethod) %}
+  {% set outcomeItems = injectConditionalHtml(triageOutcomeItems(screenOutcomesForConsentMethod), ScreenOutcome.VaccinateNasal, psdRadiosHtml) if patientSession.programme.alternativeVaccine and reply.decision != ReplyDecision.OnlyFluInjection and permissions.canPrescribe else triageOutcomeItems(screenOutcomesForConsentMethod) %}
 
   {{ radios({
     fieldset: {
