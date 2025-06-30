@@ -531,6 +531,9 @@ export const en = {
         label: 'No'
       }
     },
+    decisionStatus: {
+      label: 'Decision'
+    },
     alternative: {
       title:
         'If your child cannot have the nasal spray, do you agree to them having the injected vaccine instead?',
@@ -1433,6 +1436,9 @@ export const en = {
       noResponse: {
         label: 'No response'
       }
+    },
+    decisionStatus: {
+      label: 'Decision'
     },
     alternative: {
       label: 'Consent given for injected vaccine',
