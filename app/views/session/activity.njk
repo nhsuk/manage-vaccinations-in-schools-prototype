@@ -119,7 +119,7 @@
                 instruct: {
                   label: __("patientSession.instruct.label"),
                   value: patientSession.formatted.status.instruct
-                } if patientSession.instruct and view != "instruct",
+                } if patientSession.instruct and view != "instruct" and view != "consent",
                 status: {
                   label: __("patientSession." + view + ".label"),
                   value: statusHtml,
