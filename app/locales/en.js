@@ -1575,25 +1575,25 @@ export const en = {
       title: 'Delegation'
     },
     nationalProtocol: {
-      label: 'Use National protocol',
+      label: 'Use national protocol',
       title:
         'Can healthcare assistants administer the injected flu vaccine using the national protocol?',
       yes: {
         label: 'Yes',
-        hint: 'Healthcare assistants can administer an injected vaccine when supplied by a nurse'
+        hint: 'Healthcare assistants can administer an injected flu vaccine when supplied by a nurse'
       },
       no: {
         label: 'No',
-        hint: 'Only nurses can administer the injected vaccine'
+        hint: 'Only nurses can administer the injected flu vaccine'
       }
     },
     psdProtocol: {
-      label: 'Use Patient Specific Direction',
+      label: 'Use patient specific direction (PSD)',
       title:
-        'Can healthcare assistants administer the nasal spray using Patient Specific Direction (PSD)?',
+        'Can healthcare assistants administer the flu nasal spray vaccine using a patient specific direction (PSD)?',
       yes: {
         label: 'Yes',
-        hint: 'Healthcare assistants can supply and administer a nasal spray when instructed by a prescriber'
+        hint: 'Healthcare assistants can administer the nasal spray vaccine to children who are covered by a PSD'
       },
       no: {
         label: 'No',
