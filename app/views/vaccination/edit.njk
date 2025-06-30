@@ -21,13 +21,13 @@
           href: "edit/outcome"
         },
         vaccine_snomed: {
-          href: "edit/vaccine"
+          href: "edit/vaccine" if programme.hasAlternativeVaccines
         },
         method: {
-          href: "edit/injection" if vaccination.vaccine.method == VaccineMethod.Injection
+          href: "edit/method" if vaccination.method != VaccinationMethod.Nasal
         },
         site: {
-          href: "edit/injection" if vaccination.vaccine.method == VaccineMethod.Injection
+          href: "edit/site" if vaccination.method != VaccinationMethod.Nasal
         },
         dose: {
           href: "edit/dose"

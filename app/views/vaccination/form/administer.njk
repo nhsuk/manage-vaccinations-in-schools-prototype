@@ -6,29 +6,11 @@
   {{ heading({
     caption: vaccination.patient.fullName,
     title: title
-  }) if patientSession.vaccine.method == VaccineMethod.Injection }}
+  }) }}
 
   {{ input({
     type: "hidden",
     value: "full",
-    decorate: "vaccination.dosage"
-  }) if patientSession.vaccine.method == VaccineMethod.Injection else radios({
-    fieldset: {
-      legend: {
-        html: heading({
-          classes: "nhsuk-fieldset__legend--l",
-          caption: vaccination.patient.fullName,
-          title: __("vaccination.dosage.title")
-        })
-      }
-    },
-    items: [{
-      text: __("vaccination.dosage.full"),
-      value: "full"
-    }, {
-      text: __("vaccination.dosage.half"),
-      value: "half"
-    }],
     decorate: "vaccination.dosage"
   }) }}
 
@@ -41,7 +23,7 @@
     },
     items: injectionMethodItems,
     decorate: "vaccination.injectionMethod"
-  }) if patientSession.vaccine.method == VaccineMethod.Injection }}
+  }) }}
 
   {{ radios({
     fieldset: {
@@ -52,5 +34,5 @@
     },
     items: injectionSiteItems,
     decorate: "vaccination.injectionSite"
-  }) if patientSession.vaccine.method == VaccineMethod.Injection }}
+  }) }}
 {% endblock %}

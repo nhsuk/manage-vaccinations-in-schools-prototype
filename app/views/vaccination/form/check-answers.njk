@@ -15,15 +15,17 @@
     descriptionHtml: summaryList({
       rows: summaryRows(vaccination, {
         programme: {},
-        vaccine_snomed: {},
+        vaccine_snomed: {
+          href: vaccination.uri + "/new/vaccine" if programme.hasAlternativeVaccines
+        },
         method: {
-          href: vaccination.uri + "/new/administer" if vaccination.vaccine.method == VaccineMethod.Injection
+          href: vaccination.uri + "/new/method" if vaccination.method != VaccinationMethod.Nasal
         },
         site: {
-          href: vaccination.uri + "/new/administer" if vaccination.vaccine.method == VaccineMethod.Injection
+          href: vaccination.uri + "/new/site" if vaccination.method != VaccinationMethod.Nasal
         },
         dose: {
-          href: vaccination.uri + "/new/administer" if vaccination.vaccine.method == VaccineMethod.Nasal else vaccination.uri + "/new/dose"
+          href: vaccination.uri + "/new/dose"
         },
         sequence: {
           href: vaccination.uri + "/new/sequence"
