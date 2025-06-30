@@ -2,7 +2,7 @@
 
 {% macro buttonGroup(params) -%}
 {% if params.buttons | removeEmpty | length %}
-<div class="app-button-group">
+<div class="nhsuk-button-group">
 {% for item in params.buttons -%}
 {{- button(item) if item -}}
 {%- endfor -%}
