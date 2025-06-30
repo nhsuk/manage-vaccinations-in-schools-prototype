@@ -73,7 +73,7 @@ export const vaccinationController = {
     // Check for default batch
     const defaultBatchId = session.defaultBatch_ids?.[vaccine.snomed]
 
-    const readyToVaccine = ready === 'true'
+    const readyToVaccine = ['true', 'alternative'].includes(ready)
     const injectionSiteGiven = [
       VaccinationSite.ArmLeftUpper,
       VaccinationSite.ArmRightUpper

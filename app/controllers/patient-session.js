@@ -100,20 +100,27 @@ export const patientSessionController = {
         patientSession.lastRecordedVaccination
     }
 
-    if (vaccine?.method === VaccineMethod.Injection) {
-      response.locals.vaccinationSiteItems = Object.entries(VaccinationSite)
-        .filter(([, value]) =>
-          [
-            VaccinationSite.ArmLeftUpper,
-            VaccinationSite.ArmRightUpper,
-            VaccinationSite.Other
-          ].includes(value)
-        )
-        .map(([key, value]) => ({
-          text: VaccinationSite[key],
-          value
-        }))
-    }
+    response.locals.vaccinationSiteItems = Object.entries(VaccinationSite)
+      .filter(([, value]) =>
+        [
+          VaccinationSite.ArmLeftUpper,
+          VaccinationSite.ArmRightUpper,
+          VaccinationSite.Other
+        ].includes(value)
+      )
+      .map(([key, value]) => ({
+        text: VaccinationSite[key],
+        value
+      }))
+
+    response.locals.canRecordAlternativeVaccine =
+      // Vaccinator has permission to record using the alternative vaccine
+      permissions?.vaccineMethods?.includes(
+        programme.alternativeVaccine.method
+      ) &&
+      // Patient has consent to vaccinate using the alternative vaccine
+      patientSession.hasConsentForInjection &&
+      !patientSession.hasConsentForInjectionOnly
 
     const view = request.path.split('/').at(-1)
     response.locals.navigationItems = [
@@ -273,6 +280,12 @@ export const patientSessionController = {
       note: preScreen.note,
       ...(data.token && { createdBy_uid: data.token?.uid })
     })
+
+    // Pre-screening outcome is to vaccinate with the alternative vaccine
+    patientSession.alternative = preScreen.ready === 'alternative'
+
+    // Update patient session
+    patientSession.update(patientSession, data)
 
     response.redirect(
       `${programme.uri}/vaccinations/new?patientSession_uuid=${patientSession.uuid}&referrer=${back}`

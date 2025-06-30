@@ -63,6 +63,7 @@ import { Session } from './session.js'
  * @property {Date} [updatedAt] - Updated date
  * @property {Gillick} [gillick] - Gillick assessment
  * @property {Array<AuditEvent>} [notes] - Session notes
+ * @property {boolean} alternative - Administer alternative vaccine
  * @property {string} patient_uuid - Patient UUID
  * @property {string} instruction_uuid - Instruction UUID
  * @property {string} programme_id - Programme ID
@@ -77,6 +78,7 @@ export class PatientSession {
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.gillick = options?.gillick && new Gillick(options.gillick)
     this.notes = options?.notes || []
+    this.alternative = options?.alternative || false
     this.patient_uuid = options?.patient_uuid
     this.instruction_uuid = options?.instruction_uuid
     this.programme_id = options?.programme_id
@@ -259,6 +261,11 @@ export class PatientSession {
   get vaccineMethod() {
     if (this.programme.type !== ProgrammeType.Flu) {
       return VaccineMethod.Injection
+    }
+
+    // Administered vaccine was the alternative
+    if (this.alternative) {
+      return this.programme.alternativeVaccine.method
     }
 
     const hasScreenedForInjection =
@@ -471,7 +478,7 @@ export class PatientSession {
    * @returns {import('./vaccination.js').Vaccination} - Vaccination
    */
   get lastRecordedVaccination() {
-    if (this.vaccinations.length > 0) {
+    if (this.vaccinations?.length > 0) {
       return this.vaccinations.at(-1)
     }
   }
