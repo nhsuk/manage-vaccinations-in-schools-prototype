@@ -241,7 +241,7 @@ export const sessionController = {
 
     // Vaccination method filter options (if session administering alternative)
     if (
-      session.hasAlternativeVaccines &&
+      session.offersAlternativeVaccine &&
       ['register', 'record', 'report'].includes(view)
     ) {
       response.locals.vaccineMethodItems = [
@@ -271,7 +271,7 @@ export const sessionController = {
 
     // Screen/register/outcome status filter options (select one)
     for (const activity of ['screen', 'instruct', 'register', 'outcome']) {
-      const screenOutcomes = session.hasAlternativeVaccines
+      const screenOutcomes = session.offersAlternativeVaccine
         ? Object.values(ScreenOutcome).filter(
             (outcome) => outcome !== ScreenOutcome.Vaccinate
           )

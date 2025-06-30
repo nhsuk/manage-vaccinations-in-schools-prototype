@@ -612,10 +612,12 @@ export class Session {
    *
    * @returns {boolean} Has alternative vaccines
    */
-  get hasAlternativeVaccines() {
-    return this.programmes
-      .flatMap(({ hasAlternativeVaccines }) => hasAlternativeVaccines)
-      .find((value) => value)
+  get offersAlternativeVaccine() {
+    const programmesWithAlternativeVaccine = this.programmes.filter(
+      ({ alternativeVaccine }) => alternativeVaccine
+    )
+
+    return programmesWithAlternativeVaccine.length > 0
   }
 
   /**
