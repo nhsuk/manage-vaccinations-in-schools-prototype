@@ -19,7 +19,7 @@
     },
     items: [
       {
-        text: __('reply.decision.nasal.label') if programme.hasAlternativeVaccines else __('reply.decision.yes.label'),
+        text: __('reply.decision.nasal.label') if programme.alternativeVaccine else __('reply.decision.yes.label'),
         value: ReplyDecision.Given,
         conditional: {
           html: radios({
@@ -32,12 +32,12 @@
             items: booleanItems,
             decorate: "reply.alternative"
           })
-        } if programme.hasAlternativeVaccines
+        } if programme.alternativeVaccine
       },
       {
         text: __('reply.decision.injection.label'),
         value: ReplyDecision.OnlyFluInjection
-      } if programme.hasAlternativeVaccines,
+      } if programme.alternativeVaccine,
       {
         text: __('reply.decision.no.label'),
         value: ReplyDecision.Refused

@@ -21,7 +21,7 @@
           href: "edit/outcome"
         },
         vaccine_snomed: {
-          href: "edit/vaccine" if programme.hasAlternativeVaccines
+          href: "edit/vaccine" if programme.alternativeVaccine
         },
         method: {
           href: "edit/method" if vaccination.method != VaccinationMethod.Nasal
