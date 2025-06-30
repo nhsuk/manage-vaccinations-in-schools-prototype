@@ -264,7 +264,7 @@ export class PatientSession {
     const hasScreenedForInjection =
       this.screen === ScreenOutcome.VaccinateInjection
 
-    return this.hasConsentForInjection || hasScreenedForInjection
+    return this.hasConsentForInjectionOnly || hasScreenedForInjection
       ? VaccineMethod.Injection
       : VaccineMethod.Nasal
   }
@@ -592,7 +592,8 @@ export class PatientSession {
       },
       nextActivityPerProgramme: formatList(nextActivityPerProgramme),
       outstandingVaccinations: filters.formatList(outstandingVaccinations),
-      vaccineMethod: formatVaccineMethod(this.vaccineMethod)
+      vaccineMethod:
+        this.vaccineMethod && formatVaccineMethod(this.vaccineMethod)
     }
   }
 
