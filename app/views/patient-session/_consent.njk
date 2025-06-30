@@ -62,41 +62,46 @@
     }) }}
   {% endif %}
 
-  {# Decision table #}
+  {# Decision cards #}
   {% if patientSession.responses | length %}
-    {% set consentRows = [] %}
+    {{ heading({
+      level: 4,
+      size: "s",
+      title: __("patientSession.responses.label")
+    }) }}
     {% for consent in patientSession.responses %}
-      {% set consentCellModifier = ("app-table__cell--muted" if consent.invalid else "app-table__cell--highlighted") if consent.declined else "" %}
-      {% set consentRows = consentRows | push([
-        {
-          classes: consentCellModifier,
-          header: __("parent.fullName.label"),
-          html: consent.link.fullNameAndRelationship
-        },
-        {
-          classes: consentCellModifier,
-          header: __("consent.createdAt.label"),
-          html: consent.formatted.createdAt or "Not provided"
-        },
-        {
-          classes: consentCellModifier,
-          header: __("consent.decision.label"),
-          html: consent.formatted.decisionStatus
-        }
-      ]) %}
+      {{ card({
+        classes: "app-card--compact app-card--offset",
+        heading: consent.formatted.fullNameAndRelationship,
+        headingLevel: 4,
+        href: consent.uri,
+        clickable: true,
+        descriptionHtml: summaryList({
+          rows: summaryRows(consent, {
+            tel: {},
+            email: {},
+            createdAt: {},
+            decisionStatus: {}
+          })
+        })
+      }) }}
     {% endfor %}
+  {% endif %}
 
-    {{ table({
-      id: "consents",
-      caption: __("patientSession.responses.label"),
-      sort: "createdAt",
-      responsive: true,
-      head: [
-        { text: __("parent.fullName.label") },
-        { text: __("consent.createdAt.label") },
-        { text: __("consent.decision.label") }
-      ],
-      rows: consentRows
+  {# Health answers #}
+  {% if patientSession.consentHealthAnswers %}
+    <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+
+    {{ heading({
+      classes: "nhsuk-u-margin-bottom-2",
+      level: 4,
+      size: "s",
+      title: __("healthAnswers.label")
+    }) }}
+
+    {{ summaryList({
+      classes: "app-summary-list--full-width",
+      rows: healthAnswerRows(patientSession.consentHealthAnswers)
     }) }}
   {% endif %}
 {% endset %}
@@ -108,12 +113,3 @@
   headingLevel: 4,
   descriptionHtml: cardDescriptionHtml
 }) }}
-
-{{ card({
-  heading: __("healthAnswers.label"),
-  headingLevel: 4,
-  descriptionHtml: summaryList({
-    classes: "app-summary-list--full-width",
-    rows: healthAnswerRows(patientSession.consentHealthAnswers)
-  })
-}) if patientSession.consentHealthAnswers }}

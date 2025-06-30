@@ -59,6 +59,10 @@
     }
   }
 
+  &--offset {
+    background-color: rgba($color_nhsuk-grey-5, 0.5);
+  }
+
   &--data {
     display: flex;
 

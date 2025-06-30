@@ -13,7 +13,6 @@ import {
 } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
 import {
-  formatLinkWithSecondaryText,
   formatMarkdown,
   formatOther,
   formatParent,
@@ -369,27 +368,15 @@ export class Reply {
       }),
       createdBy: this.createdBy?.fullName || '',
       decisionStatus,
+      fullNameAndRelationship: this.selfConsent
+        ? this.relationship
+        : formatParent(this.parent, false),
+      tel: this.parent.tel,
+      email: this.parent.email,
       programme: this.programme?.nameTag,
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
       refusalReasonDetails: formatMarkdown(this.refusalReasonDetails),
       note: formatMarkdown(this.note)
-    }
-  }
-
-  /**
-   * Get formatted links
-   *
-   * @returns {object} - Formatted links
-   */
-  get link() {
-    return {
-      fullNameAndRelationship: this.selfConsent
-        ? formatLinkWithSecondaryText(this.uri, this.relationship)
-        : formatLinkWithSecondaryText(
-            this.uri,
-            formatParent(this.parent, false),
-            this.parent?.tel
-          )
     }
   }
 

@@ -1437,6 +1437,12 @@ export const en = {
         label: 'No response'
       }
     },
+    email: {
+      label: 'Email address'
+    },
+    tel: {
+      label: 'Phone number'
+    },
     decisionStatus: {
       label: 'Decision'
     },
