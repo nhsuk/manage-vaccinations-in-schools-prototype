@@ -26,9 +26,7 @@
 {% block afterForm %}
   {{ buttonGroup({
     buttons: [{
-      text: __("upload.summary.confirm", {
-        type: upload.type | lower
-      })
+      text: __("upload.summary.confirm", { type: upload.type | lower })
     }],
     links: [{
       text: __("upload.summary.cancel"),
