@@ -46,7 +46,7 @@ export const healthQuestions = {
   eggAllergy: {
     label:
       'Has the child ever been admitted to intensive care due to a severe allergic reaction (anaphylaxis) to egg?',
-    hint: false,
+    hint: 'This does not include visits to A&E or stays in hospital wards outside the intensive care unit',
     detailsHint: false
   },
   immunosuppressant: {
@@ -57,7 +57,7 @@ export const healthQuestions = {
   immuneSystem: {
     label:
       'Does the child have a disease or treatment that severely affects their immune system?',
-    hint: false,
+    hint: 'The nasal spray flu vaccine is a live vaccine. It is not suitable for people who are severely immunocompromised.',
     detailsHint: false
   },
   immuneSystemCloseContact: {
