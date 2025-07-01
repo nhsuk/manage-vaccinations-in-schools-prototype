@@ -503,7 +503,7 @@ export const sessionController = {
     const { __, session } = response.locals
     const { data } = request.session
 
-    for (const patientSession of session.patientSessionsToInstruct) {
+    for (const patientSession of session.patientsToInstruct) {
       const instruction = new Instruction({
         createdBy_uid: data.token?.uid,
         programme_id: patientSession.programme.id,

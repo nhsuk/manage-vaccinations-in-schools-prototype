@@ -147,6 +147,20 @@
           } if session.patientsToRegister.length,
           {
             key: {
+              text: __("session.patientsToInstruct.label")
+            },
+            value: {
+              html: link(session.uri + "/instruct", __n("session.patientsToInstruct.count", session.patientsToInstruct.length))
+            },
+            actions: {
+              items: [{
+                text: __("session.instructions.label"),
+                href: session.uri + "/instructions"
+              }]
+            } if (data.token.role == UserRole.NursePrescriber or data.token.role == UserRole.Pharmacist)
+          } if session.patientsToInstruct.length and session.psdProtocol,
+          {
+            key: {
               text: __("session.patientsToRecord.label")
             },
             value: {

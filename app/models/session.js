@@ -448,7 +448,7 @@ export class Session {
    *
    * @returns {Array<PatientSession>} - Patient sessions
    */
-  get patientSessionsToInstruct() {
+  get patientsToInstruct() {
     const patientSessions = this.patientSessions
       .filter(({ vaccine }) => vaccine?.method === VaccineMethod.Nasal)
       .filter(({ nextActivity }) => nextActivity === Activity.Record)

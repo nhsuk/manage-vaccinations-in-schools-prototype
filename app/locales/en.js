@@ -1686,7 +1686,7 @@ export const en = {
       title: 'Add new PSDs',
       description:
         'There are %s children with consent for the nasal flu vaccine who do not require triage and do not yet have a PSD in place.\n\nYou can add a PSD instruction for these children now.',
-      success: '{{session.patientSessionsToInstruct.length}} PSDs added'
+      success: '{{session.patientsToInstruct.length}} PSDs added'
     },
     reminders: {
       label: 'Send reminders',
@@ -1761,6 +1761,13 @@ export const en = {
       count: {
         one: '%s child to triage',
         other: '[0] No children to triage|%s children to triage'
+      }
+    },
+    patientsToInstruct: {
+      label: 'PSDs',
+      count: {
+        one: '%s child to review',
+        other: '[0] No children to review|%s children to review'
       }
     },
     patientsToRegister: {
