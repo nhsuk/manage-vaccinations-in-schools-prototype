@@ -2345,6 +2345,9 @@ export const en = {
       label: 'Time',
       hint: 'For example, 13 15'
     },
+    nhseSyncedAt: {
+      label: 'Sync with NHSE'
+    },
     createdBy: {
       label: 'Vaccinator',
       title: 'Who was the vaccinator?'

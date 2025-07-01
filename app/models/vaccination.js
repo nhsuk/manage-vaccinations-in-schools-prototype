@@ -1,5 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
+import { isBefore } from 'date-fns'
 import _ from 'lodash'
 
 import schools from '../datasets/schools.js'
@@ -47,6 +48,7 @@ import { Vaccine } from './vaccine.js'
  * @property {string} [createdBy_uid] - User who performed vaccination
  * @property {string} [suppliedBy_uid] - Who supplied the vaccine
  * @property {Date} [updatedAt] - Updated date
+ * @property {Date} [nhseSyncedAt] - Date record was synced with NHS England API
  * @property {string} [location] - Location
  * @property {boolean} [selfId] - Child confirmed their identity?
  * @property {object} [identifiedBy] - Who identified child
@@ -72,6 +74,7 @@ export class Vaccination {
     this.uuid = options?.uuid || faker.string.uuid()
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdAt_ = options?.createdAt_
+    this.nhseSyncedAt = options?.nhseSyncedAt ? new Date(options.nhseSyncedAt) : undefined
     this.createdBy_uid = options?.createdBy_uid
     this.suppliedBy_uid = options?.suppliedBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
@@ -347,6 +350,7 @@ export class Vaccination {
       createdAt_date: formatDate(this.createdAt, {
         dateStyle: 'long'
       }),
+      nhseSyncedAt: this.nhseSyncSummary,
       createdBy: this.createdBy?.fullName || '',
       suppliedBy: this.suppliedBy?.fullName || '',
       updatedAt: formatDate(this.updatedAt, {
@@ -370,6 +374,61 @@ export class Vaccination {
         ? 'The child'
         : formatIdentifier(this.identifiedBy)
     }
+  }
+
+  /**
+   * Get HTML string summary of status of sync with NHS England API
+   *
+   * @returns {string} - HTML summary of NHS England API sync status
+   */
+  get nhseSyncSummary() {
+    let summary = ''
+    let failed = false
+
+    const updatedAt = this.updatedAt || this.createdAt
+
+    if (!this.given) {
+      return formatTag({
+        text: 'Not synced',
+        colour: 'grey'
+      })
+    }
+
+    if (this.nhseSyncedAt > updatedAt) {
+      summary = formatTag({
+        text: 'Synced',
+        colour: 'green'
+      })
+      // If the record was updated more than 1 minute ago and hasn't been synced
+      // then it's failed
+    } else if (isBefore(updatedAt, new Date((new Date()).getTime() - 1000 * 60))) {
+      failed = true
+      summary = formatTag({
+        text: 'Failed',
+        colour: 'red'
+      })
+    } else {
+      summary = formatTag({
+        text: 'Pending',
+        colour: 'blue'
+      })
+    }
+
+    const lastSyncedAt = formatDate(this.nhseSyncedAt, {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    })
+
+    return `
+      ${summary}<br>
+      <span class="nhsuk-u-secondary-text-color">
+        ${failed ? 'Contact Mavis support team <br>' : ''} Last synced: ${lastSyncedAt}
+      </span>
+    `
   }
 
   /**
@@ -456,6 +515,12 @@ export class Vaccination {
    */
   update(updates, context) {
     this.updatedAt = new Date()
+
+    // Make sure sync isn't always successful
+    const syncSuccess = Math.random() > 0.3
+    if (syncSuccess && this.given) {
+      this.nhseSyncedAt = today(Math.random() * 60 * 5)
+    }
 
     // Remove patient context
     delete this.context
