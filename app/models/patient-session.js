@@ -8,8 +8,7 @@ import {
   PatientOutcome,
   ReplyDecision,
   ScreenOutcome,
-  TriageOutcome,
-  VaccineMethod
+  TriageOutcome
 } from '../enums.js'
 import { getDateValueDifference, today } from '../utils/date.js'
 import {
@@ -250,38 +249,6 @@ export class PatientSession {
   }
 
   /**
-   * Get agreed upon vaccination method
-   *
-   * For all programmes besides flu, this will be an injection.
-   * For the flu programme, this depends on consent responses
-   *
-   * @returns {VaccineMethod|boolean} - Vaccine method
-   */
-  get vaccineMethod() {
-    if (!this.programme.alternativeVaccine) {
-      return false
-    }
-
-    // Need consent response(s) before we can determine the chosen method
-    // We only want to instruct on patients being vaccinated using nasal spray
-    if (this.consent !== ConsentOutcome.Given) {
-      return false
-    }
-
-    // Administered vaccine was the alternative
-    if (this.alternative) {
-      return this.programme.alternativeVaccine.method
-    }
-
-    const hasScreenedForInjection =
-      this.screen === ScreenOutcome.VaccinateInjection
-
-    return this.hasConsentForInjectionOnly || hasScreenedForInjection
-      ? VaccineMethod.Injection
-      : VaccineMethod.Nasal
-  }
-
-  /**
    * Get programme
    *
    * @returns {Programme|undefined} - Programme
@@ -324,17 +291,40 @@ export class PatientSession {
   }
 
   /**
-   * Get vaccine to administer in this patient session
-   * In most cases, this will return the single available injected vaccine
-   * but for the flu programme, this may return the nasal spray
+   * Get vaccine to administer (or was administered) in this patient session
    *
-   * @returns {import('./vaccine.js').Vaccine} - Vaccine
+   * For all programmes besides flu, this will be an injection.
+   * For the flu programme, this depends on consent responses
+   *
+   * @returns {import('./vaccine.js').Vaccine|undefined} - Vaccine method
    */
   get vaccine() {
-    return this.programme.vaccines.find(
-      (vaccine) =>
-        vaccine.method === this?.vaccineMethod || VaccineMethod.Injection
-    )
+    const standardVaccine = this.programme.vaccines.find((vaccine) => vaccine)
+    const alternativeVaccine = this.programme.alternativeVaccine
+
+    // Need consent response(s) before we can determine the chosen method
+    // We only want to instruct on patients being vaccinated using nasal spray
+    if (this.consent !== ConsentOutcome.Given) {
+      return
+    }
+
+    // If no alternative, can only have been the standard vaccine
+    if (!this.programme.alternativeVaccine) {
+      return standardVaccine
+    }
+
+    // Administered vaccine was the alternative
+    if (this.alternative) {
+      return alternativeVaccine
+    }
+
+    // Return vaccine based on consent (and triage) outcomes
+    const hasScreenedForInjection =
+      this.screen === ScreenOutcome.VaccinateInjection
+
+    return this.hasConsentForInjectionOnly || hasScreenedForInjection
+      ? alternativeVaccine // Injection
+      : standardVaccine // Nasal
   }
 
   /**
@@ -606,7 +596,7 @@ export class PatientSession {
       nextActivityPerProgramme: formatList(nextActivityPerProgramme),
       outstandingVaccinations: filters.formatList(outstandingVaccinations),
       vaccineMethod:
-        this.vaccineMethod && formatVaccineMethod(this.vaccineMethod)
+        this.vaccine?.method && formatVaccineMethod(this.vaccine.method)
     }
   }
 

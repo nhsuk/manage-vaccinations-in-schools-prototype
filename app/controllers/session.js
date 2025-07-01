@@ -149,7 +149,7 @@ export const sessionController = {
     // Filter by vaccine method
     if (vaccineMethod && vaccineMethod !== 'none') {
       results = results.filter(
-        (patientSession) => patientSession.vaccineMethod === vaccineMethod
+        (patientSession) => patientSession.vaccine?.method === vaccineMethod
       )
     }
 
@@ -201,10 +201,10 @@ export const sessionController = {
     // Only show patients ready to vaccinate, and that a user can vaccinate
     if (view === 'record') {
       results = results.filter(
-        ({ nextActivity, register, vaccineMethod }) =>
+        ({ nextActivity, register, vaccine }) =>
           nextActivity === Activity.Record &&
           register !== RegistrationOutcome.Pending &&
-          permissions?.vaccineMethods?.includes(vaccineMethod)
+          permissions?.vaccineMethods?.includes(vaccine?.method)
       )
     }
 

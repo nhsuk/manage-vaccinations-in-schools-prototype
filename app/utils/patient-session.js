@@ -309,7 +309,11 @@ export const getReportStatus = (patientSession) => {
  * @returns {InstructionOutcome|boolean} - Instruction outcome
  */
 export const getInstructionOutcome = (patientSession) => {
-  if (patientSession.vaccineMethod === VaccineMethod.Nasal) {
+  if (!patientSession.vaccine) {
+    return false
+  }
+
+  if (patientSession.vaccine.method === VaccineMethod.Nasal) {
     return patientSession.instruction
       ? InstructionOutcome.Given
       : InstructionOutcome.Needed

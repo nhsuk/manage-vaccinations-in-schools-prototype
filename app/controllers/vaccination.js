@@ -71,14 +71,14 @@ export const vaccinationController = {
       data.patientSession.preScreen
 
     // Check for default batch
-    const defaultBatchId = session.defaultBatch_ids?.[vaccine.snomed]
+    const defaultBatchId = session.defaultBatch_ids?.[vaccine?.snomed]
 
     const readyToVaccine = ['true', 'alternative'].includes(ready)
     const injectionSiteGiven = [
       VaccinationSite.ArmLeftUpper,
       VaccinationSite.ArmRightUpper
     ].includes(injectionSite)
-    const isNasalSpray = vaccine.method === VaccineMethod.Nasal
+    const isNasalSpray = vaccine?.method === VaccineMethod.Nasal
     const VaccinationSiteGiven = injectionSiteGiven || isNasalSpray
 
     switch (true) {

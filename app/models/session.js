@@ -450,7 +450,7 @@ export class Session {
    */
   get patientSessionsToInstruct() {
     const patientSessions = this.patientSessions
-      .filter(({ vaccineMethod }) => vaccineMethod === VaccineMethod.Nasal)
+      .filter(({ vaccine }) => vaccine?.method === VaccineMethod.Nasal)
       .filter(({ nextActivity }) => nextActivity === Activity.Record)
     return _.uniqBy(patientSessions, 'patient.nhsn')
   }

@@ -42,8 +42,7 @@ export const patientSessionController = {
       session,
       triage,
       triageNotes,
-      vaccine,
-      vaccineMethod
+      vaccine
     } = patientSession
 
     const outcomed = patientSession.siblingPatientSessions.filter(
@@ -62,9 +61,10 @@ export const patientSessionController = {
     const userIsHCA = data?.token?.role === UserRole.HCA
     const userHasSupplier =
       // Injected vaccine using national protocol
-      (vaccineMethod === VaccineMethod.Injection && session.nationalProtocol) ||
+      (vaccine?.method === VaccineMethod.Injection &&
+        session.nationalProtocol) ||
       // Nasal spray using PGD
-      (vaccineMethod === VaccineMethod.Nasal && !session.psdProtocol)
+      (vaccine?.method === VaccineMethod.Nasal && !session.psdProtocol)
 
     response.locals.options = {
       // Show outstanding vaccinations
@@ -92,7 +92,7 @@ export const patientSessionController = {
       hasTriage: triageNotes.length > 0,
       hasSupplier: userIsHCA && userHasSupplier,
       canRecord:
-        permissions?.vaccineMethods?.includes(patientSession.vaccineMethod) &&
+        permissions?.vaccineMethods?.includes(patientSession.vaccine?.method) &&
         register === RegistrationOutcome.Present &&
         nextActivity === Activity.Record,
       canReport:

@@ -233,6 +233,11 @@ export const getConsentRefusalReasons = (patientSession) => {
  * @returns {object} Health answers
  */
 export const getHealthAnswers = (vaccine, healthCondition) => {
+  // If no vaccine, we don’t have consent
+  if (!vaccine) {
+    return
+  }
+
   const answers = {}
 
   for (const key of Object.keys(vaccine.flatHealthQuestions)) {
