@@ -2,6 +2,7 @@ import {
   Activity,
   ConsentOutcome,
   ConsentWindow,
+  InstructionOutcome,
   PatientOutcome,
   PreScreenQuestion,
   ProgrammeType,
@@ -53,12 +54,26 @@ export const patientSessionController = {
       ({ outcome }) => outcome === PatientOutcome.NoOutcomeYet
     )
 
-    // Upgrade permissions according to session delegation settings
+    // National protocol
+    // Nurses can record all vaccines
+    // HCAs can record injected flu vaccine, with supplier
     if (session.nationalProtocol) {
+      // Upgrade permissions for HCAs
       permissions.vaccineMethods.push(VaccineMethod.Injection)
     }
 
+    // PSD protocol
+    // Nurses can record all vaccines
+    // HCAs can record nasal sprays for children with a PSD
     const userIsHCA = data?.token?.role === UserRole.HCA
+    const patientHasPsd = patientSession.instruct === InstructionOutcome.Given
+    if (session.psdProtocol && userIsHCA && patientHasPsd === false) {
+      // Downgrade permissions for HCAs as patient doesn’t have a PSD
+      permissions.vaccineMethods = permissions.vaccineMethods.filter(
+        (method) => method !== VaccineMethod.Nasal
+      )
+    }
+
     const userHasSupplier =
       // Injected vaccine using national protocol
       (vaccine?.method === VaccineMethod.Injection &&
