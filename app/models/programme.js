@@ -210,7 +210,7 @@ export class Programme {
   get alternativeVaccine() {
     if (this.vaccines.length > 1) {
       return this.vaccines.find(
-        ({ method }) => method === VaccineMethod.Injection
+        (vaccine) => vaccine && vaccine.method === VaccineMethod.Injection
       )
     }
   }

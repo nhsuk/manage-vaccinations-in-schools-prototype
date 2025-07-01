@@ -6,7 +6,6 @@ import {
   ConsentOutcome,
   EventType,
   PatientOutcome,
-  ProgrammeType,
   ReplyDecision,
   ScreenOutcome,
   TriageOutcome,
@@ -256,11 +255,17 @@ export class PatientSession {
    * For all programmes besides flu, this will be an injection.
    * For the flu programme, this depends on consent responses
    *
-   * @returns {VaccineMethod} - Vaccine method
+   * @returns {VaccineMethod|boolean} - Vaccine method
    */
   get vaccineMethod() {
-    if (this.programme.type !== ProgrammeType.Flu) {
-      return VaccineMethod.Injection
+    if (!this.programme.alternativeVaccine) {
+      return false
+    }
+
+    // Need consent response(s) before we can determine the chosen method
+    // We only want to instruct on patients being vaccinated using nasal spray
+    if (this.consent !== ConsentOutcome.Given) {
+      return false
     }
 
     // Administered vaccine was the alternative
@@ -327,7 +332,8 @@ export class PatientSession {
    */
   get vaccine() {
     return this.programme.vaccines.find(
-      (vaccine) => vaccine.method === this.vaccineMethod
+      (vaccine) =>
+        vaccine.method === this?.vaccineMethod || VaccineMethod.Injection
     )
   }
 

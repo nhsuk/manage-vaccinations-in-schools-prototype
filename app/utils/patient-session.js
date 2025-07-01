@@ -309,12 +309,6 @@ export const getReportStatus = (patientSession) => {
  * @returns {InstructionOutcome|boolean} - Instruction outcome
  */
 export const getInstructionOutcome = (patientSession) => {
-  // Need consent response(s) before we can determine the chosen method
-  // We only want to instruct on patients being vaccinated using nasal spray
-  if (patientSession.consent !== ConsentOutcome.Given) {
-    return false
-  }
-
   if (patientSession.vaccineMethod === VaccineMethod.Nasal) {
     return patientSession.instruction
       ? InstructionOutcome.Given
