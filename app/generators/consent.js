@@ -5,7 +5,8 @@ import {
   ProgrammeType,
   ReplyDecision,
   ReplyMethod,
-  ReplyRefusal
+  ReplyRefusal,
+  VaccineMethod
 } from '../enums.js'
 import { Consent } from '../models/consent.js'
 import {} from '../models/programme.js'
@@ -58,9 +59,11 @@ export function generateConsent(
       : [])
   ])
 
+  const isFluProgramme = programme.type === ProgrammeType.Flu
+
   // Has the parent given consent for alternative injected vaccine?
   const alternative =
-    programme.type === ProgrammeType.Flu && decision === ReplyDecision.Given
+    isFluProgramme && decision === ReplyDecision.Given
       ? faker.datatype.boolean(0.75)
       : false
 
@@ -71,11 +74,17 @@ export function generateConsent(
     { value: ReplyMethod.Paper, weight: 1 }
   ])
 
-  const healthCondition = faker.helpers.objectKey(healthConditions)
-  const healthAnswers = getHealthAnswers(
-    patientSession.vaccine,
-    healthCondition
+  let vaccineMethod = VaccineMethod.Injection
+  if (isFluProgramme && decision !== ReplyDecision.OnlyFluInjection) {
+    vaccineMethod = VaccineMethod.Nasal
+  }
+
+  const vaccine = programme.vaccines.find(
+    ({ method }) => method === vaccineMethod
   )
+
+  const healthCondition = faker.helpers.objectKey(healthConditions)
+  const healthAnswers = getHealthAnswers(vaccine, healthCondition)
   const triageNote = getTriageNote(healthAnswers, healthCondition)
   const refusalReason = getRefusalReason(programme.type, decision)
 
