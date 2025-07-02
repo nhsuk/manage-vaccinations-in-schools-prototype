@@ -172,18 +172,18 @@ export const patientSessionController = {
 
     // Use different values for pre-screening questions
     // `IsWell` and `IsPregnant` should persist per patient
-    response.locals.preScreenQuestionItems = Object.entries(
-      vaccine.preScreenQuestions
-    ).map(([key, text]) => {
-      let value = `${programme.id}-${key}`
-      if (text === PreScreenQuestion.IsWell) {
-        value = `${nhsn}-is-well`
-      } else if (text === PreScreenQuestion.IsPregnant) {
-        value = `${nhsn}-is-pregnant`
-      }
+    response.locals.preScreenQuestionItems =
+      vaccine &&
+      Object.entries(vaccine.preScreenQuestions).map(([key, text]) => {
+        let value = `${programme.id}-${key}`
+        if (text === PreScreenQuestion.IsWell) {
+          value = `${nhsn}-is-well`
+        } else if (text === PreScreenQuestion.IsPregnant) {
+          value = `${nhsn}-is-pregnant`
+        }
 
-      return { text, value }
-    })
+        return { text, value }
+      })
 
     next()
   },
