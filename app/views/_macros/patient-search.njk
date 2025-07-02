@@ -61,6 +61,18 @@
       items: vaccineMethodItems
     }) if vaccineMethodItems }}
 
+    {{ radios({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("patientSession.instruct.label")
+        }
+      },
+      id: "instruct",
+      name: "instruct",
+      items: instructItems
+    }) if instructItems }}
+
     {{ checkboxes({
       fieldset: {
         legend: {
