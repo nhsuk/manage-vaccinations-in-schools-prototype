@@ -111,6 +111,7 @@ export const sessionController = {
       programme_id,
       q,
       vaccineMethod,
+      instruct,
       yearGroup
     } = request.query
     const { data } = request.session
@@ -150,6 +151,13 @@ export const sessionController = {
     if (vaccineMethod && vaccineMethod !== 'none') {
       results = results.filter(
         (patientSession) => patientSession.vaccine?.method === vaccineMethod
+      )
+    }
+
+    // Filter by instruction outcome
+    if (instruct && instruct !== 'none') {
+      results = results.filter(
+        (patientSession) => patientSession.instruct === instruct
       )
     }
 
@@ -239,10 +247,11 @@ export const sessionController = {
       }))
     }
 
-    // Vaccination method filter options (if session administering alternative)
+    // Vaccination method and instruction outcome filter options
+    // (if session administering alternative)
     if (
       session.offersAlternativeVaccine &&
-      ['register', 'record', 'report'].includes(view)
+      ['register', 'record', 'outcome'].includes(view)
     ) {
       response.locals.vaccineMethodItems = [
         {
@@ -254,6 +263,19 @@ export const sessionController = {
           text: value,
           value,
           checked: vaccineMethod === value
+        }))
+      ]
+
+      response.locals.instructItems = [
+        {
+          text: 'Any',
+          value: 'none',
+          checked: !instruct || instruct === 'none'
+        },
+        ...Object.values(InstructionOutcome).map((value) => ({
+          text: value,
+          value,
+          checked: instruct === value
         }))
       ]
     }
