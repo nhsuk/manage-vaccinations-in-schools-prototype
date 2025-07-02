@@ -131,7 +131,7 @@ export const patientSessionController = {
     response.locals.canRecordAlternativeVaccine =
       // Vaccinator has permission to record using the alternative vaccine
       permissions?.vaccineMethods?.includes(
-        programme.alternativeVaccine.method
+        programme.alternativeVaccine?.method
       ) &&
       // Patient has consent to vaccinate using the alternative vaccine
       patientSession.hasConsentForInjection &&
