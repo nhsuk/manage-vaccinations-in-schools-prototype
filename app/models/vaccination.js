@@ -50,7 +50,7 @@ import { Vaccine } from './vaccine.js'
  * @property {string} [createdBy_uid] - User who performed vaccination
  * @property {string} [suppliedBy_uid] - Who supplied the vaccine
  * @property {Date} [updatedAt] - Updated date
- * @property {Date} [nhseSyncedAt] - Date record was synced with NHS England API
+ * @property {Date} [nhseSyncedAt] - Date synced with NHS England API
  * @property {string} [location] - Location
  * @property {boolean} [selfId] - Child confirmed their identity?
  * @property {object} [identifiedBy] - Who identified child
@@ -330,6 +330,67 @@ export class Vaccination {
   }
 
   /**
+   * Get status of sync with NHS England API
+   *
+   * @returns {VaccinationSyncStatus} - Status
+   */
+  get sync() {
+    const updatedAt = this.updatedAt || this.createdAt
+    const oneMinuteAgo = new Date(new Date().getTime() - 1000 * 60)
+
+    switch (true) {
+      case !this.given:
+        return VaccinationSyncStatus.NotSynced
+      case this.nhseSyncedAt > updatedAt:
+        return VaccinationSyncStatus.Synced
+      case isBefore(updatedAt, oneMinuteAgo):
+        return VaccinationSyncStatus.Failed
+      default:
+        return VaccinationSyncStatus.Pending
+    }
+  }
+
+  /**
+   * Get sync status properties
+   *
+   * @returns {object} - Sync status properties
+   */
+  get syncStatus() {
+    let colour
+    const nhseSyncedAt = formatDate(this.nhseSyncedAt, {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    })
+    let description = this.nhseSyncedAt ? `Last synced: ${nhseSyncedAt}` : ''
+
+    switch (this.sync) {
+      case VaccinationSyncStatus.NotSynced:
+        colour = 'grey'
+        break
+      case VaccinationSyncStatus.Synced:
+        colour = 'green'
+        break
+      case VaccinationSyncStatus.Failed:
+        colour = 'red'
+        description = `Contact Mavis support team<br>${description}`
+        break
+      default:
+        colour = 'blue'
+        break
+    }
+
+    return {
+      colour,
+      text: this.sync,
+      description
+    }
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} - Formatted values
@@ -354,14 +415,6 @@ export class Vaccination {
       createdAt_date: formatDate(this.createdAt, {
         dateStyle: 'long'
       }),
-      nhseSyncedAt: formatDate(this.nhseSyncedAt, {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      }),
       createdBy: this.createdBy?.fullName || '',
       suppliedBy: this.suppliedBy?.fullName || '',
       updatedAt: formatDate(this.updatedAt, {
@@ -372,6 +425,11 @@ export class Vaccination {
         minute: '2-digit',
         hour12: true
       }),
+      syncStatus: formatWithSecondaryText(
+        formatTag(this.syncStatus),
+        this.syncStatus.description,
+        true
+      ),
       batch: this.batch?.summary,
       batch_id: formatMonospace(this.batch_id),
       dose: formatMillilitres(this.dose),
@@ -385,49 +443,6 @@ export class Vaccination {
         ? 'The child'
         : formatIdentifier(this.identifiedBy)
     }
-  }
-
-  /**
-   * Get HTML string summary of status of sync with NHS England API
-   *
-   * @returns {string} - HTML summary of NHS England API sync status
-   */
-  get syncStatus() {
-    const updatedAt = this.updatedAt || this.createdAt
-    const oneMinuteAgo = new Date(new Date().getTime() - 1000 * 60)
-
-    let colour, text
-    let syncText = `Last synced: ${this.formatted.nhseSyncedAt}`
-
-    switch (true) {
-      case !this.given:
-        return formatTag({
-          text: VaccinationSyncStatus.NotSynced,
-          colour: 'grey'
-        })
-      case this.nhseSyncedAt > updatedAt:
-        text = VaccinationSyncStatus.Synced
-        colour = 'green'
-        break
-      case isBefore(updatedAt, oneMinuteAgo):
-        text = VaccinationSyncStatus.Failed
-        colour = 'red'
-        syncText = `Contact Mavis support team <br /> ${syncText}`
-        break
-      default:
-        text = VaccinationSyncStatus.Pending
-        colour = 'blue'
-        break
-    }
-
-    return formatWithSecondaryText(
-      formatTag({
-        text,
-        colour
-      }),
-      syncText,
-      true
-    )
   }
 
   /**
