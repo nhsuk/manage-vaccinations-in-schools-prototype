@@ -1,7 +1,20 @@
 {{ heading({
+  classes: "app-vaccine-method",
   level: 3,
   size: "m",
-  title: "Record vaccination"
+  title: __("patientSession.record.titleWithMethod", {
+    session: session,
+    method: patientSession.vaccine.method | lower
+  }),
+  attributes: {
+    "data-method": patientSession.vaccine.method
+  }
+} if patientSession.programme.alternativeVaccine else {
+  level: 3,
+  size: "m",
+  title: __("patientSession.record.title", {
+    session: session
+  })
 }) }}
 
 {% set preScreenDescriptionHtml %}

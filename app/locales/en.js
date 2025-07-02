@@ -1209,6 +1209,11 @@ export const en = {
         label: 'Pre-screening notes'
       }
     },
+    record: {
+      title: 'Record {{session.programmeNames.sentenceCase}} vaccination',
+      titleWithMethod:
+        'Record {{session.programmeNames.sentenceCase}} vaccination with {{method}}'
+    },
     vaccination: {
       title: 'Record as already vaccinated'
     },
