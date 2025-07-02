@@ -45,6 +45,7 @@ export default {
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsMedicated,
+      PreScreenQuestion.IsAsthmatic,
       PreScreenQuestion.IsAllergic,
       PreScreenQuestion.IsVaccinated,
       PreScreenQuestion.IsHappy
