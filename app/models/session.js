@@ -7,14 +7,14 @@ import {
   Activity,
   ConsentOutcome,
   ConsentWindow,
+  InstructionOutcome,
   OrganisationDefaults,
   PatientOutcome,
   ProgrammePreset,
   RegistrationOutcome,
   SessionStatus,
   SessionType,
-  TriageOutcome,
-  VaccineMethod
+  TriageOutcome
 } from '../enums.js'
 import {
   removeDays,
@@ -449,9 +449,9 @@ export class Session {
    * @returns {Array<PatientSession>} - Patient sessions
    */
   get patientsToInstruct() {
-    const patientSessions = this.patientSessions
-      .filter(({ vaccine }) => vaccine?.method === VaccineMethod.Nasal)
-      .filter(({ nextActivity }) => nextActivity === Activity.Record)
+    const patientSessions = this.patientSessions.filter(
+      ({ instruct }) => instruct === InstructionOutcome.Needed
+    )
     return _.uniqBy(patientSessions, 'patient.nhsn')
   }
 
