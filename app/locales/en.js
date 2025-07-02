@@ -1584,7 +1584,9 @@ export const en = {
     },
     instruct: {
       label: 'PSDs',
-      title: 'Review PSDs'
+      title: 'Review PSDs',
+      description:
+        'There are %s children with consent for the nasal flu vaccine who do not require triage and do not yet have a PSD in place.'
     },
     register: {
       label: 'Register',
@@ -1687,10 +1689,11 @@ export const en = {
     },
     instructions: {
       label: 'Add new PSDs',
-      title: 'Add new PSDs',
-      description:
-        'There are %s children with consent for the nasal flu vaccine who do not require triage and do not yet have a PSD in place.\n\nYou can add a PSD instruction for these children now.',
-      success: '{{session.patientsToInstruct.length}} PSDs added'
+      title: 'Are you sure you want to add %s new PSDs?',
+      description: 'This operation cannot be undone.',
+      confirm: 'Yes, add PSDs',
+      cancel: 'No, return to session',
+      success: 'PSDs added'
     },
     reminders: {
       label: 'Send reminders',

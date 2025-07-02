@@ -517,7 +517,7 @@ export const sessionController = {
       patientSession.update(patientSession, data)
     }
 
-    request.flash('success', __(`session.instructions.success`, { session }))
+    request.flash('success', __(`session.instructions.success`))
 
     response.redirect(`${session.uri}/instruct`)
   },
