@@ -183,12 +183,14 @@ export const PatientOutcome = {
  * @enum {string}
  */
 export const PreScreenQuestion = {
-  IsWell: 'are not acutely unwell',
-  IsPregnant: 'are not pregnant',
-  IsMedicated: 'are not taking any medication which prevents vaccination',
-  IsAllergic: 'have no allergies which would prevent vaccination',
-  IsVaccinated: 'have not already had this vaccination',
-  IsHappy: 'know what the vaccination is for, and are happy to have it'
+  IsWell: 'is not acutely unwell',
+  IsPregnant: 'is not pregnant',
+  IsMedicated: 'is not taking any medication which prevents vaccination',
+  IsAsthmatic:
+    'if they have asthma, has not had a flare-up of symptoms in the past 72 hours, including wheezing or needing to use a reliever inhaler more than usual',
+  IsAllergic: 'has no allergies which would prevent vaccination',
+  IsVaccinated: 'has not already had this vaccination',
+  IsHappy: 'knows what the vaccination is for, and is happy to have it'
 }
 
 /**

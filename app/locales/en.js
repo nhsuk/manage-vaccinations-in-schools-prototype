@@ -1162,7 +1162,7 @@ export const en = {
     },
     preScreen: {
       label: 'Pre-screening checks',
-      description: 'Has {{patient.firstName}} confirmed that they:',
+      description: 'Have you checked that {{patient.firstName}}:',
       selfId: {
         label: 'Has {{patient.firstName}} confirmed their identity?',
         true: 'Yes',
@@ -1188,8 +1188,7 @@ export const en = {
       check: {
         error:
           'Select if the child has confirmed all pre-screening statements are true',
-        label:
-          '{{patient.firstName}} has confirmed the above statements are true'
+        label: 'I have checked that the above statements are true'
       },
       ready: {
         error:
