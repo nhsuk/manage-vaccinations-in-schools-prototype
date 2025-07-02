@@ -52,17 +52,21 @@ export function generateVaccination(
 
   // Sync date is between 1 minute and 2 hours after the session first date
   const syncDateLowerBound = new Date(session.firstDate.getTime() + 1000 * 60)
-  const syncDateUpperBound = new Date(session.firstDate.getTime() + 1000 * 60 * 60 * 2)
+  const syncDateUpperBound = new Date(
+    session.firstDate.getTime() + 1000 * 60 * 60 * 2
+  )
 
   // Only populate sync date if the patient was vaccinated
-  const nhseSyncedAt = vaccinated ? faker.helpers.maybe(
-    () =>
-      faker.date.between({
-        from: syncDateLowerBound,
-        to: syncDateUpperBound,
-      }),
-    { probability: 0.9 }
-  ) : undefined
+  const nhseSyncedAt = vaccinated
+    ? faker.helpers.maybe(
+        () =>
+          faker.date.between({
+            from: syncDateLowerBound,
+            to: syncDateUpperBound
+          }),
+        { probability: 0.9 }
+      )
+    : undefined
 
   return new Vaccination({
     createdAt: session.firstDate,
