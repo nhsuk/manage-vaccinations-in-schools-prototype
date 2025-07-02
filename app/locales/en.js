@@ -2345,7 +2345,7 @@ export const en = {
       label: 'Time',
       hint: 'For example, 13 15'
     },
-    nhseSyncedAt: {
+    syncStatus: {
       label: 'Sync with NHSE'
     },
     createdBy: {

@@ -10,6 +10,7 @@ import {
   VaccinationOutcome,
   VaccinationProtocol,
   VaccinationSite,
+  VaccinationSyncStatus,
   VaccineMethod
 } from '../enums.js'
 import {
@@ -26,7 +27,8 @@ import {
   formatMarkdown,
   formatMonospace,
   formatTag,
-  stringToBoolean
+  stringToBoolean,
+  formatWithSecondaryText
 } from '../utils/string.js'
 
 import { Batch } from './batch.js'
@@ -74,7 +76,9 @@ export class Vaccination {
     this.uuid = options?.uuid || faker.string.uuid()
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdAt_ = options?.createdAt_
-    this.nhseSyncedAt = options?.nhseSyncedAt ? new Date(options.nhseSyncedAt) : undefined
+    this.nhseSyncedAt = options?.nhseSyncedAt
+      ? new Date(options.nhseSyncedAt)
+      : undefined
     this.createdBy_uid = options?.createdBy_uid
     this.suppliedBy_uid = options?.suppliedBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
@@ -350,7 +354,14 @@ export class Vaccination {
       createdAt_date: formatDate(this.createdAt, {
         dateStyle: 'long'
       }),
-      nhseSyncedAt: this.nhseSyncSummary,
+      nhseSyncedAt: formatDate(this.nhseSyncedAt, {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      }),
       createdBy: this.createdBy?.fullName || '',
       suppliedBy: this.suppliedBy?.fullName || '',
       updatedAt: formatDate(this.updatedAt, {
@@ -381,54 +392,42 @@ export class Vaccination {
    *
    * @returns {string} - HTML summary of NHS England API sync status
    */
-  get nhseSyncSummary() {
-    let summary = ''
-    let failed = false
-
+  get syncStatus() {
     const updatedAt = this.updatedAt || this.createdAt
+    const oneMinuteAgo = new Date(new Date().getTime() - 1000 * 60)
 
-    if (!this.given) {
-      return formatTag({
-        text: 'Not synced',
-        colour: 'grey'
-      })
+    let colour, text
+    let syncText = `Last synced: ${this.formatted.nhseSyncedAt}`
+
+    switch (true) {
+      case !this.given:
+        return formatTag({
+          text: VaccinationSyncStatus.NotSynced,
+          colour: 'grey'
+        })
+      case this.nhseSyncedAt > updatedAt:
+        text = VaccinationSyncStatus.Synced
+        colour = 'green'
+        break
+      case isBefore(updatedAt, oneMinuteAgo):
+        text = VaccinationSyncStatus.Failed
+        colour = 'red'
+        syncText = `Contact Mavis support team <br /> ${syncText}`
+        break
+      default:
+        text = VaccinationSyncStatus.Pending
+        colour = 'blue'
+        break
     }
 
-    if (this.nhseSyncedAt > updatedAt) {
-      summary = formatTag({
-        text: 'Synced',
-        colour: 'green'
-      })
-      // If the record was updated more than 1 minute ago and hasn't been synced
-      // then it's failed
-    } else if (isBefore(updatedAt, new Date((new Date()).getTime() - 1000 * 60))) {
-      failed = true
-      summary = formatTag({
-        text: 'Failed',
-        colour: 'red'
-      })
-    } else {
-      summary = formatTag({
-        text: 'Pending',
-        colour: 'blue'
-      })
-    }
-
-    const lastSyncedAt = formatDate(this.nhseSyncedAt, {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    })
-
-    return `
-      ${summary}<br>
-      <span class="nhsuk-u-secondary-text-color">
-        ${failed ? 'Contact Mavis support team <br>' : ''} Last synced: ${lastSyncedAt}
-      </span>
-    `
+    return formatWithSecondaryText(
+      formatTag({
+        text,
+        colour
+      }),
+      syncText,
+      true
+    )
   }
 
   /**
