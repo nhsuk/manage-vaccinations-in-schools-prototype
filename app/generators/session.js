@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { isAfter } from 'date-fns'
 
 import {
+  OrganisationDefaults,
   ProgrammePreset,
   ProgrammeType,
   SessionStatus,
@@ -46,6 +47,7 @@ export function generateSession(programmePreset, user, options) {
 
   const dates = []
   let firstSessionDate
+  let openAt
   const tomorrow = addDays(today(), 1)
   switch (status) {
     case SessionStatus.Planned:
@@ -95,6 +97,11 @@ export function generateSession(programmePreset, user, options) {
         dates.push(subsequentDate)
       }
     }
+
+    openAt = removeDays(
+      firstSessionDate,
+      OrganisationDefaults.SessionOpenWeeks * 7
+    )
   }
 
   const sessionHasCatchups = faker.datatype.boolean(0.5)
@@ -105,6 +112,7 @@ export function generateSession(programmePreset, user, options) {
     createdAt: removeDays(term.from, 60),
     createdBy_uid: user.uid,
     dates,
+    openAt,
     registration: true,
     programmePreset,
     psdProtocol,
