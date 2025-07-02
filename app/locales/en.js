@@ -103,7 +103,7 @@ export const en = {
     },
     action: {
       title: 'Are you sure you want to %s this batch?',
-      description: 'This operation cannot be undone.',
+      description: 'This cannot be undone.',
       cancel: 'No, return to vaccines',
       confirm: 'Yes, %s this batch'
     },
@@ -169,7 +169,7 @@ export const en = {
     },
     action: {
       title: 'Are you sure you want to %s this clinic?',
-      description: 'This operation cannot be undone.',
+      description: 'This cannot be undone.',
       confirm: 'Yes, %s this clinic',
       cancel: 'No, return to clinics'
     },
@@ -362,7 +362,7 @@ export const en = {
       caption: 'Consent response from {{consent.fullName}}',
       title: 'Archive response',
       description:
-        'The unmatched response will be hidden. This operation cannot be undone.',
+        'The unmatched response will be hidden. This cannot be undone.',
       confirm: 'Archive response',
       success: 'Consent response from {{consent.fullName}} archived'
     },
@@ -789,7 +789,7 @@ export const en = {
     },
     action: {
       title: 'Are you sure you want to %s the notice on this patient?',
-      description: 'This operation cannot be undone.',
+      description: 'This cannot be undone.',
       confirm: 'Yes, %s this notice',
       cancel: 'No, return to notices'
     }
@@ -1377,7 +1377,7 @@ export const en = {
       label: 'Mark as invalid',
       caption: 'Consent response from {{reply.fullName}}',
       title: 'Mark response as invalid',
-      description: 'This operation cannot be undone.',
+      description: 'This cannot be undone.',
       confirm: 'Mark response as invalid',
       success: 'Consent response from {{reply.fullName}} marked as invalid'
     },
@@ -1690,7 +1690,7 @@ export const en = {
     instructions: {
       label: 'Add new PSDs',
       title: 'Are you sure you want to add %s new PSDs?',
-      description: 'This operation cannot be undone.',
+      description: 'This cannot be undone.',
       confirm: 'Yes, add PSDs',
       cancel: 'No, return to session',
       success: 'PSDs added'
@@ -2045,7 +2045,7 @@ export const en = {
     },
     action: {
       title: 'Are you sure you want to %s?',
-      description: 'This operation cannot be undone.',
+      description: 'This cannot be undone.',
       cancel: 'No, return to import',
       confirm: 'Yes, %s'
     },
@@ -2488,7 +2488,7 @@ export const en = {
     },
     action: {
       title: 'Are you sure you want to %s this vaccine?',
-      description: 'This operation cannot be undone.',
+      description: 'This cannot be undone.',
       confirm: 'Yes, %s this vaccine',
       cancel: 'No, return to vaccine'
     },
