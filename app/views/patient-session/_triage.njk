@@ -13,12 +13,10 @@
   {% endif %}
 
   {# Actions #}
-  {{ buttonGroup({
-    buttons: [{
-      classes: "nhsuk-button--secondary",
-      text: __("triage.edit.title"),
-      href: patientSession.uri + "/edit/triage?referrer=" + referrer
-    }]
+  {{ button({
+    classes: "nhsuk-button--secondary",
+    text: __("triage.edit.title"),
+    href: patientSession.uri + "/edit/triage?referrer=" + referrer
   }) if options.hasTriage and not isVaccinated }}
 
   {# Decision table #}
