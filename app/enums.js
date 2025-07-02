@@ -459,6 +459,17 @@ export const VaccinationProtocol = {
  * @readonly
  * @enum {string}
  */
+export const VaccinationSyncStatus = {
+  NotSynced: 'Not synced',
+  Pending: 'Pending',
+  Synced: 'Synced',
+  Failed: 'Failed'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const VaccineMethod = {
   Nasal: 'Nasal spray',
   Injection: 'Injection'

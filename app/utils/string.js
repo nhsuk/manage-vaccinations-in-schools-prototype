@@ -141,12 +141,14 @@ export function formatLinkWithSecondaryText(href, text, secondary) {
  *
  * @param {string} text - Primary text
  * @param {string} [secondary] - Secondary text
+ * @param {boolean} [breakLine=false] - Whether to add a line break before secondary text
  * @returns {string} Formatted HTML
  */
-export function formatWithSecondaryText(text, secondary) {
+export function formatWithSecondaryText(text, secondary, breakLine = false) {
   let html = text
 
   if (secondary) {
+    html += breakLine ? '<br>' : ''
     html += `<span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">${secondary}</span>`
   }
 
