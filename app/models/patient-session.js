@@ -539,12 +539,7 @@ export class PatientSession {
       this.consent === ConsentOutcome.Given &&
       this.programme.alternativeVaccine
     ) {
-      if (this.hasConsentForInjectionOnly) {
-        consent = 'Injection'
-      } else {
-        consent = 'Nasal spray'
-        consent += this.hasConsentForInjection ? ' (or injection)' : ''
-      }
+      consent = this.vaccine?.method
     }
 
     return {

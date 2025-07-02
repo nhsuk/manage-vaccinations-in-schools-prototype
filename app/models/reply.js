@@ -343,18 +343,13 @@ export class Reply {
       decisionStatus = formatTagWithSecondaryText(this.status, 'Invalid')
     } else if (this.confirmed) {
       decisionStatus = formatTagWithSecondaryText(this.status, 'Confirmed')
-    } else if (this.programme?.type === ProgrammeType.Flu) {
-      if (this.decision === ReplyDecision.OnlyFluInjection) {
-        decisionStatus = formatTagWithSecondaryText(
-          this.status,
-          VaccineMethod.Injection
-        )
-      } else if (this.decision === ReplyDecision.Given) {
-        const description = this.alternative
-          ? `${VaccineMethod.Nasal} (or injection)`
+    } else if (this.programme.alternativeVaccine) {
+      const vaccineMethod =
+        this.decision === ReplyDecision.OnlyFluInjection
+          ? VaccineMethod.Injection
           : VaccineMethod.Nasal
-        decisionStatus = formatTagWithSecondaryText(this.status, description)
-      }
+
+      decisionStatus = formatTagWithSecondaryText(this.status, vaccineMethod)
     }
 
     return {
