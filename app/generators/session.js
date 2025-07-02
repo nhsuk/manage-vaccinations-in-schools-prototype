@@ -99,9 +99,7 @@ export function generateSession(programmePreset, user, options) {
 
   const sessionHasCatchups = faker.datatype.boolean(0.5)
 
-  const psdProtocol =
-    preset.primaryProgrammeTypes.includes(ProgrammeType.Flu) &&
-    faker.datatype.boolean(0.5)
+  const psdProtocol = preset.primaryProgrammeTypes.includes(ProgrammeType.Flu)
 
   return new Session({
     createdAt: removeDays(term.from, 60),
