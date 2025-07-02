@@ -1072,7 +1072,7 @@ export const en = {
       title: 'Child record'
     },
     events: {
-      title: 'Session activity and notes',
+      title: 'Notes and session activity',
       count: {
         one: '%s event',
         other: '[0] No events|%s events'
