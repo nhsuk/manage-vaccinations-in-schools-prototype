@@ -147,7 +147,7 @@ export function formatWithSecondaryText(text, secondary) {
   let html = text
 
   if (secondary) {
-    html += `<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">${secondary}</span>`
+    html += `<span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">${secondary}</span>`
   }
 
   return `<span>${html}</span>`
@@ -172,23 +172,6 @@ export function formatTag({ text, html, colour, classes }) {
   }
 
   return `<strong class="${classes}">${text}</strong>`
-}
-
-/**
- * Format tag with optional secondary text
- *
- * @param {object} tag - Tag
- * @param {string} [secondary] - Secondary text
- * @returns {string} Formatted HTML
- */
-export function formatTagWithSecondaryText(tag, secondary) {
-  let html = formatTag(tag)
-
-  if (secondary) {
-    html += `<span class="nhsuk-u-secondary-text-color">${secondary}</span>`
-  }
-
-  return `<span>${html}</span>`
 }
 
 export function formatProgrammeStatus(programme, status, note) {

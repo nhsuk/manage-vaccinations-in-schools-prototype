@@ -17,7 +17,7 @@ import {
   formatOther,
   formatParent,
   formatTag,
-  formatTagWithSecondaryText,
+  formatWithSecondaryText,
   stringToBoolean
 } from '../utils/string.js'
 
@@ -340,16 +340,25 @@ export class Reply {
   get formatted() {
     let decisionStatus = formatTag(this.status)
     if (this.invalid) {
-      decisionStatus = formatTagWithSecondaryText(this.status, 'Invalid')
+      decisionStatus = formatWithSecondaryText(
+        formatTag(this.status),
+        'Invalid'
+      )
     } else if (this.confirmed) {
-      decisionStatus = formatTagWithSecondaryText(this.status, 'Confirmed')
+      decisionStatus = formatWithSecondaryText(
+        formatTag(this.status),
+        'Confirmed'
+      )
     } else if (this.programme.alternativeVaccine) {
       const vaccineMethod =
         this.decision === ReplyDecision.OnlyFluInjection
           ? VaccineMethod.Injection
           : VaccineMethod.Nasal
 
-      decisionStatus = formatTagWithSecondaryText(this.status, vaccineMethod)
+      decisionStatus = formatWithSecondaryText(
+        formatTag(this.status),
+        vaccineMethod
+      )
     }
 
     return {
