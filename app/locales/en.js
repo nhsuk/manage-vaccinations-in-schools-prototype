@@ -1689,7 +1689,10 @@ export const en = {
     },
     instructions: {
       label: 'Add new PSDs',
-      title: 'Are you sure you want to add %s new PSDs?',
+      title: {
+        one: 'Are you sure you want to add a new PSD?',
+        other: 'Are you sure you want to add %s new PSDs?'
+      },
       description: 'This cannot be undone.',
       confirm: 'Yes, add PSDs',
       cancel: 'No, return to session',

@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("session.instructions.title", session.patientsToInstruct.length) %}
+{% set title = __n("session.instructions.title", session.patientsToInstruct.length) %}
 
 {% block beforeContent %}
   {{ breadcrumb({
