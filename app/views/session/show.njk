@@ -139,14 +139,6 @@
           } if session.patientsToTriage.length,
           {
             key: {
-              text: __("session.patientsToRegister.label")
-            },
-            value: {
-              html: link(session.uri + "/register", __n("session.patientsToRegister.count", session.patientsToRegister.length))
-            }
-          } if session.patientsToRegister.length,
-          {
-            key: {
               text: __("session.patientsToInstruct.label")
             },
             value: {
@@ -159,6 +151,14 @@
               }]
             } if (data.token.role == UserRole.NursePrescriber or data.token.role == UserRole.Pharmacist)
           } if session.patientsToInstruct.length and session.psdProtocol,
+          {
+            key: {
+              text: __("session.patientsToRegister.label")
+            },
+            value: {
+              html: link(session.uri + "/register", __n("session.patientsToRegister.count", session.patientsToRegister.length))
+            }
+          } if session.patientsToRegister.length,
           {
             key: {
               text: __("session.patientsToRecord.label")
