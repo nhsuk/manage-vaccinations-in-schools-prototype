@@ -18,7 +18,7 @@ export function generateInstruction(patientSession, programme, session, users) {
   return new Instruction({
     createdAt: removeDays(session.firstDate, 7),
     createdBy_uid: user.uid,
-    programme_id: programme.id,
+    programme_id: programme?.id,
     patientSession_uuid: patientSession.uuid
   })
 }
