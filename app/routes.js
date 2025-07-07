@@ -8,6 +8,7 @@ import { navigation } from './middleware/navigation.js'
 import { notification } from './middleware/notification.js'
 import { permission } from './middleware/permission.js'
 import { referrer } from './middleware/referrer.js'
+import { rollover } from './middleware/rollover.js'
 import { users } from './middleware/users.js'
 import { accountRoutes } from './routes/account.js'
 import { batchRoutes } from './routes/batch.js'
@@ -37,7 +38,7 @@ const router = express.Router({ strict: true })
 router.use(enumeration)
 router.use(environment)
 router.use(internationalisation)
-router.use(flash(), navigation, notification, users, permission)
+router.use(flash(), navigation, notification, rollover, users, permission)
 router.use(referrer)
 
 router.use('/', homeRoutes)
