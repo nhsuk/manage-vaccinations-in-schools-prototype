@@ -20,6 +20,7 @@ import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
+  getAcademicYear,
   includesDate,
   setMidday,
   today
@@ -30,6 +31,7 @@ import {
   formatLink,
   formatLinkWithSecondaryText,
   formatList,
+  formatProgrammeId,
   formatTag,
   formatWithSecondaryText,
   lowerCaseFirst,
@@ -42,7 +44,7 @@ import { Batch } from './batch.js'
 import { Clinic } from './clinic.js'
 import { Consent } from './consent.js'
 import { PatientSession } from './patient-session.js'
-import { Programme, programmeTypes } from './programme.js'
+import { Programme } from './programme.js'
 import { School } from './school.js'
 import { Vaccine } from './vaccine.js'
 
@@ -231,11 +233,7 @@ export class Session {
   get academicYear() {
     // For a scheduled session, infer the date from the first scheduled data
     if (this.firstDate) {
-      const year = this.firstDate.getFullYear()
-      const month = this.firstDate.getMonth() + 1
-      const startYear = month >= 9 ? year : year - 1
-
-      return AcademicYear[`Y${startYear}`]
+      return getAcademicYear(this.firstDate)
     }
 
     // Otherwise, return the latest academic year
@@ -450,7 +448,8 @@ export class Session {
     if (this.programmePreset) {
       const preset = ProgrammePreset[this.programmePreset]
       for (const programmeType of preset.primaryProgrammeTypes) {
-        programme_ids.add(programmeTypes[programmeType].id)
+        const id = formatProgrammeId(programmeType, this.academicYear)
+        programme_ids.add(id)
       }
     }
 
@@ -470,7 +469,8 @@ export class Session {
         (type) => type !== '_unchecked'
       )
       for (const programmeType of catchupProgrammeTypes) {
-        programme_ids.add(programmeTypes[programmeType].id)
+        const id = formatProgrammeId(programmeType, this.academicYear)
+        programme_ids.add(id)
       }
     }
 

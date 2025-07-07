@@ -2,6 +2,8 @@ import process from 'node:process'
 
 import { getDayOfYear, isAfter, isBefore, isEqual } from 'date-fns'
 
+import { AcademicYear } from '../enums.js'
+
 const ALLOWED_VALUES_FOR_MONTHS = [
   ['1', '01', 'jan', 'january'],
   ['2', '02', 'feb', 'february'],
@@ -167,6 +169,20 @@ export function getAge(date) {
  */
 export function getDateValueDifference(a, b) {
   return new Date(a).valueOf() - new Date(b).valueOf()
+}
+
+/**
+ * Get the academic year a date sits within
+ *
+ * @param {Date} date - Date
+ * @returns {AcademicYear} Academic year a date sits within
+ */
+export function getAcademicYear(date) {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const startYear = month >= 9 ? year : year - 1
+
+  return AcademicYear[`Y${startYear}`]
 }
 
 /**

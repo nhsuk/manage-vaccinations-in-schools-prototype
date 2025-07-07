@@ -1,4 +1,4 @@
-import { ProgrammeType, UserRole } from '../enums.js'
+import { UserRole } from '../enums.js'
 import { Consent } from '../models/consent.js'
 import { Move } from '../models/move.js'
 import { Notice } from '../models/notice.js'
@@ -108,9 +108,9 @@ export const navigation = (request, response, next) => {
         ]
       : []
 
-  const fluSession = getProgrammeSession(sessions, ProgrammeType.Flu)
-  const hpvSession = getProgrammeSession(sessions, ProgrammeType.HPV)
-  const tioSession = getProgrammeSession(sessions, ProgrammeType.TdIPV)
+  const fluSession = getProgrammeSession(sessions, 'flu-2025')
+  const hpvSession = getProgrammeSession(sessions, 'hpv-2024')
+  const tioSession = getProgrammeSession(sessions, 'td-ipv-2024')
 
   response.locals.navigation = {
     account,

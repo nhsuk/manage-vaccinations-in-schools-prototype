@@ -19,7 +19,6 @@ import { Clinic } from '../models/clinic.js'
 import { Instruction } from '../models/instruction.js'
 import { Organisation } from '../models/organisation.js'
 import { Patient } from '../models/patient.js'
-import { programmeTypes } from '../models/programme.js'
 import { Session } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
@@ -97,10 +96,14 @@ export const sessionController = {
   },
 
   list(request, response) {
-    const { academicYear, programme_ids, q, status, type } = request.query
+    const { programme_ids, q, status, type } = request.query
     const { data } = request.session
     const { __, sessions } = response.locals
-    const { isRollover } = response.app.locals
+    const { currentAcademicYear, isRollover } = response.app.locals
+
+    const academicYear = isRollover
+      ? request.query.academicYear
+      : currentAcademicYear
 
     let results = sessions
 
@@ -112,11 +115,7 @@ export const sessionController = {
     }
 
     // Filter by academic year
-    if (academicYear) {
-      results = results.filter(
-        (session) => session.academicYear === academicYear
-      )
-    }
+    results = results.filter((session) => session.academicYear === academicYear)
 
     // Filter by programme
     if (programme_ids) {
@@ -158,8 +157,16 @@ export const sessionController = {
       }))
     ]
 
+    const primaryProgrammesMap = new Map()
+    sessions
+      .filter((session) => session.academicYear === academicYear)
+      .flatMap((session) => session.primaryProgrammes || [])
+      .forEach((programme) => {
+        primaryProgrammesMap.set(programme.id, programme)
+      })
+
     // Programme filter options
-    response.locals.programmeItems = Object.values(programmeTypes).map(
+    response.locals.programmeItems = [...primaryProgrammesMap.values()].map(
       (programme) => ({
         text: programme.name,
         value: programme.id,
