@@ -10,7 +10,7 @@
     title: title
   }) }}
 
-  {% for year, programmes in programmes | groupby("year") %}
+  {% for year, programmes in programmes | reverse | groupby("year") %}
     {% set programmeRows = [] %}
     {% for programme in programmes | sort(false, false, "name") %}
       {% set programmeRows = programmeRows | push([

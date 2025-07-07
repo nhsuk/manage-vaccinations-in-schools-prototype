@@ -5,11 +5,9 @@ import _ from 'lodash'
 import {
   ConsentWindow,
   PatientOutcome,
-  ProgrammeType,
   SessionStatus,
   SessionType
 } from '../enums.js'
-import { programmeTypes } from '../models/programme.js'
 import { today } from '../utils/date.js'
 import { formatLink } from '../utils/string.js'
 
@@ -37,13 +35,11 @@ export const getConsentWindow = (session) => {
   }
 }
 
-export const getProgrammeSession = (sessions, type, isSchool = true) => {
-  type = type || ProgrammeType.Flu
-  const { id } = programmeTypes[type]
+export const getProgrammeSession = (sessions, id, isSchool = true) => {
   const sessionType = isSchool ? SessionType.School : SessionType.Clinic
 
   return Object.values(sessions)
-    .filter((session) => session?.primaryProgramme_ids.includes(id))
+    .filter((session) => session?.primaryProgramme_ids?.includes(id))
     .filter((session) => session.type === sessionType)
     .filter((session) => session.status !== SessionStatus.Unplanned)
     .at(-1)

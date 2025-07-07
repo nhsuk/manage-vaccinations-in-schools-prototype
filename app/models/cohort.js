@@ -1,4 +1,3 @@
-import { AcademicYear } from '../enums.js'
 import { createMap } from '../utils/object.js'
 import {
   formatLink,
@@ -26,10 +25,10 @@ import { Programme } from './programme.js'
  */
 export class Cohort {
   constructor(options, context) {
-    const year = options?.year || AcademicYear.Y2024
+    const year = options?.year
 
     this.context = context
-    this.createdAt = options?.createdAt || `${year.split('/')[0]}-07-01`
+    this.createdAt = options?.createdAt || `${year.split(' ')[0]}-07-01`
     this.createdBy_uid = options?.createdBy_uid
     this.year = year
     this.yearGroup = options?.yearGroup
