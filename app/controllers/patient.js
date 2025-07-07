@@ -23,7 +23,7 @@ export const patientController = {
   },
 
   readAll(request, response, next) {
-    const { q, hasMissingNhsNumber } = request.query
+    const { q, options } = request.query
     const { data } = request.session
 
     let patients = Patient.readAll(data)
@@ -38,13 +38,15 @@ export const patientController = {
       )
     }
 
-    // Filter by missing NHS number
-    if (hasMissingNhsNumber) {
-      patients = patients.filter((patient) => patient.hasMissingNhsNumber)
+    // Filter
+    for (const option of ['hasMissingNhsNumber', 'post16']) {
+      if (options?.includes(option)) {
+        patients = patients.filter((patient) => patient.post16)
+      }
     }
 
     // Clean up session data
-    delete data.hasMissingNhsNumber
+    delete data.options
     delete data.q
 
     response.locals.patients = patients
@@ -65,15 +67,27 @@ export const patientController = {
   },
 
   filterList(request, response) {
-    const { hasMissingNhsNumber, q } = request.body
     const params = new URLSearchParams()
 
-    if (q) {
-      params.append('q', String(q))
+    // Single value per filter
+    for (const key of ['q']) {
+      const value = request.body[key]
+      if (value) {
+        params.append(key, String(value))
+      }
     }
 
-    if (hasMissingNhsNumber?.includes('true')) {
-      params.append('hasMissingNhsNumber', 'true')
+    // Multiple values per filter
+    for (const key of ['options']) {
+      const value = request.body[key]
+      const values = Array.isArray(value) ? value : [value]
+      if (value) {
+        values
+          .filter((item) => item !== '_unchecked')
+          .forEach((value) => {
+            params.append(key, String(value))
+          })
+      }
     }
 
     response.redirect(`/patients?${params}`)
