@@ -2,6 +2,7 @@ import wizard from '@x-govuk/govuk-prototype-wizard'
 import _ from 'lodash'
 
 import {
+  AcademicYear,
   Activity,
   ConsentOutcome,
   InstructionOutcome,
@@ -75,9 +76,10 @@ export const sessionController = {
   },
 
   list(request, response) {
-    const { programme_ids, q, status, type } = request.query
+    const { academicYear, programme_ids, q, status, type } = request.query
     const { data } = request.session
     const { __, sessions } = response.locals
+    const { isRollover } = response.app.locals
 
     let results = sessions
 
@@ -85,6 +87,13 @@ export const sessionController = {
     if (q) {
       results = results.filter((session) =>
         session.tokenized.includes(String(q).toLowerCase())
+      )
+    }
+
+    // Filter by academic year
+    if (academicYear) {
+      results = results.filter(
+        (session) => session.academicYear === academicYear
       )
     }
 
@@ -113,6 +122,20 @@ export const sessionController = {
     // Results
     response.locals.results = getResults(results, request.query, 40)
     response.locals.pages = getPagination(results, request.query, 40)
+
+    // Academic year options
+    response.locals.academicYearItems = isRollover && [
+      {
+        text: 'Any',
+        value: 'none',
+        checked: !academicYear || academicYear === 'none'
+      },
+      ...Object.values(AcademicYear).map((value) => ({
+        text: value,
+        value,
+        checked: academicYear === value
+      }))
+    ]
 
     // Programme filter options
     response.locals.programmeItems = Object.values(programmeTypes).map(
@@ -159,6 +182,7 @@ export const sessionController = {
 
     // Clean up session data
     delete data.q
+    delete data.academicYear
     delete data.programme_ids
     delete data.status
     delete data.type
@@ -170,7 +194,7 @@ export const sessionController = {
     const params = new URLSearchParams()
 
     // Radios
-    for (const key of ['q', 'status', 'type']) {
+    for (const key of ['academicYear', 'q', 'status', 'type']) {
       const value = request.body[key]
       if (value) {
         params.append(key, String(value))
