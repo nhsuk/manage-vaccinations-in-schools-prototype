@@ -2,7 +2,7 @@
 
 {% extends "_layouts/default.njk" %}
 
-{% set title = session.location.name %}
+{% set title = session.location.name + " (" + session.academicYear + ")" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
