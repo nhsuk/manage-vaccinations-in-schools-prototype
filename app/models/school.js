@@ -9,8 +9,8 @@ import { Record } from './record.js'
 
 export const schoolTerms = {
   [SchoolTerm.Spring]: { from: '2025-01-06', to: '2025-04-11' },
-  [SchoolTerm.Summer]: { from: '2025-04-28', to: '2025-07-21' },
-  [SchoolTerm.Autumn]: { from: '2025-09-03', to: '2025-12-13' }
+  [SchoolTerm.Summer]: { from: '2025-04-28', to: '2025-07-20' },
+  [SchoolTerm.Autumn]: { from: '2025-09-01', to: '2025-12-19' }
 }
 
 /**
