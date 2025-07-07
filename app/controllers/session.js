@@ -90,8 +90,8 @@ export const sessionController = {
 
     // Filter by programme
     if (programme_ids) {
-      results = results.filter(({ programme_ids }) =>
-        programme_ids.some((id) => programme_ids.includes(id))
+      results = results.filter((session) =>
+        session.programme_ids.some((id) => programme_ids.includes(id))
       )
     }
 
