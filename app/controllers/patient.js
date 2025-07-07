@@ -8,6 +8,7 @@ import { getResults, getPagination } from '../utils/pagination.js'
 export const patientController = {
   read(request, response, next, nhsn) {
     const { data } = request.session
+    const { __ } = response.locals
 
     let patient = Patient.read(nhsn, data)
 
@@ -18,6 +19,10 @@ export const patientController = {
     }
 
     response.locals.patient = patient
+
+    response.locals.recordTitle = patient.post16
+      ? __('patient.label').replace('Child', 'Patient')
+      : __('patient.label')
 
     response.locals.archiveRecordReasonItems = Object.values(
       ArchiveRecordReason
@@ -52,8 +57,13 @@ export const patientController = {
       patients = patients.filter(({ archived }) => !archived)
     }
 
+    // Filter out post-16 records by default
+    if (!options?.includes('post16')) {
+      patients = patients.filter(({ post16 }) => !post16)
+    }
+
     // Filter
-    for (const option of ['archived', 'hasMissingNhsNumber']) {
+    for (const option of ['archived', 'hasMissingNhsNumber', 'post16']) {
       if (options?.includes(option)) {
         patients = patients.filter((patient) => patient[option])
       }
