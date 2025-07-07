@@ -146,6 +146,10 @@
           {
             value: "hasMissingNhsNumber",
             text: __("patient.search.hasMissingNhsNumber")
+          },
+          {
+            value: "post16",
+            text: __("patient.search.post16")
           }
         ],
         decorate: "options"
@@ -156,7 +160,7 @@
 
     {{ details({
       text: __("search.advanced"),
-      open: true if data.hasMissingNhsNumber,
+      open: true if data.options,
       html: searchDetailsHtml
     }) }}
 

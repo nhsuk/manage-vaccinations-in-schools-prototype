@@ -33,6 +33,12 @@
       colour: "blue"
     }) if patient.notice }}
 
+    {{ status({
+      text: __("patient.post16.status", { patient: patient }),
+      icon: "warning",
+      colour: "blue"
+    }) if patient.post16 }}
+
     {{ summaryList({
       rows: summaryRows(patient, {
         nhsn: {
@@ -69,7 +75,7 @@
   {% endset %}
 
   {{ card({
-    heading: __("patient.label"),
+    heading: recordTitle,
     headingLevel: 3,
     descriptionHtml: recordDescriptionHtml
   }) }}

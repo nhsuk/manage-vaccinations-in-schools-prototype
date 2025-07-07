@@ -970,7 +970,8 @@ export const en = {
       label: 'Find children',
       dob: 'Child’s date of birth',
       archived: 'Archived',
-      hasMissingNhsNumber: 'Missing NHS number'
+      hasMissingNhsNumber: 'Missing NHS number',
+      post16: 'Over 16 years old'
     },
     archiveReason: {
       label: 'Reason for archival'
@@ -992,6 +993,11 @@ export const en = {
         other:
           '[0] No records without an NHS number|%s records without an NHS number'
       }
+    },
+    post16: {
+      label: 'Over 16 years old?',
+      status:
+        '{{patient.fullName}} is no longer eligible for school age immunisations'
     },
     fullNameAndNhsn: {
       label: 'Name and NHS number'
