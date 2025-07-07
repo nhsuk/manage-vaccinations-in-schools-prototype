@@ -4,6 +4,7 @@ import { isAfter } from 'date-fns'
 import _ from 'lodash'
 
 import {
+  AcademicYear,
   Activity,
   ConsentOutcome,
   ConsentWindow,
@@ -222,6 +223,27 @@ export class Session {
     if (this.lastDate) {
       return removeDays(this.lastDate, 1)
     }
+  }
+
+  /**
+   * Get academic year
+   *
+   * @returns {AcademicYear} - Academic year
+   */
+  get academicYear() {
+    // For a scheduled session, infer the date from the first scheduled data
+    if (this.firstDate) {
+      const year = this.firstDate.getFullYear()
+      const month = this.firstDate.getMonth() + 1
+      const startYear = month >= 9 ? year : year - 1
+
+      return AcademicYear[`Y${startYear}`]
+    }
+
+    // Otherwise, return the latest academic year
+    const academicYears = Object.values(AcademicYear)
+
+    return academicYears.at(-1)
   }
 
   /**

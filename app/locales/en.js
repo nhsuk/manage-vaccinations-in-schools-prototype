@@ -1594,6 +1594,9 @@ export const en = {
     isClosed: {
       label: 'Closed'
     },
+    academicYear: {
+      label: 'Academic year'
+    },
     consent: {
       label: 'Consent',
       title: 'Review consent responses'
