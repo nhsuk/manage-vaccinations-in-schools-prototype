@@ -8,14 +8,12 @@ import {
   Activity,
   ConsentOutcome,
   ConsentWindow,
-  InstructionOutcome,
   OrganisationDefaults,
   PatientOutcome,
   ProgrammePreset,
   RegistrationOutcome,
   SessionStatus,
-  SessionType,
-  TriageOutcome
+  SessionType
 } from '../enums.js'
 import {
   removeDays,
@@ -407,96 +405,11 @@ export class Session {
   }
 
   /**
-   * Get patients with no consent response
-   *
-   * @returns {Array<PatientSession>} - Patient sessions
-   */
-  get patientsToGetConsent() {
-    const patientSessions = this.patientSessions.filter(
-      ({ consent }) => consent === ConsentOutcome.NoResponse
-    )
-    return _.uniqBy(patientSessions, 'patient.nhsn')
-  }
-
-  /**
-   * Get patients who requested a follow up
-   *
-   * @returns {Array<PatientSession>} - Patient sessions
-   */
-  get patientsToFollowUp() {
-    const patientSessions = this.patientSessions.filter(
-      ({ consent }) => consent === ConsentOutcome.Declined
-    )
-    return _.uniqBy(patientSessions, 'patient.nhsn')
-  }
-
-  /**
-   * Get patients with no consent response
-   *
-   * @returns {Array<PatientSession>} - Patient sessions
-   */
-  get patientsRefused() {
-    const patientSessions = this.patientSessions.filter(
-      ({ consent }) => consent === ConsentOutcome.Refused
-    )
-    return _.uniqBy(patientSessions, 'patient.nhsn')
-  }
-
-  /**
-   * Get patients with conflicting consent response
-   *
-   * @returns {Array<PatientSession>} - Patient sessions
-   */
-  get patientsToResolveConsent() {
-    const patientSessions = this.patientSessions.filter(
-      ({ consent }) => consent === ConsentOutcome.Inconsistent
-    )
-    return _.uniqBy(patientSessions, 'patient.nhsn')
-  }
-
-  /**
-   * Get patients needing triage
-   *
-   * @returns {Array<PatientSession>} - Patient sessions
-   */
-  get patientsToTriage() {
-    const patientSessions = this.patientSessions.filter(
-      ({ triage }) => triage === TriageOutcome.Needed
-    )
-    return _.uniqBy(patientSessions, 'patient.nhsn')
-  }
-
-  /**
-   * Get patients to give instruction to
-   *
-   * @returns {Array<PatientSession>} - Patient sessions
-   */
-  get patientsToInstruct() {
-    const patientSessions = this.patientSessions.filter(
-      ({ instruct }) => instruct === InstructionOutcome.Needed
-    )
-    return _.uniqBy(patientSessions, 'patient.nhsn')
-  }
-
-  /**
-   * Get patients awaiting registration
-   *
-   * @returns {Array<PatientSession>} - Patient sessions
-   */
-  get patientsToRegister() {
-    if (this.isActive) {
-      return this.patients.filter(
-        ({ register }) => register === RegistrationOutcome.Pending
-      )
-    }
-  }
-
-  /**
    * Get patients awaiting vaccination, per programme
    *
    * @returns {object} - Patient sessions per programme
    */
-  get patientsToRecord() {
+  get patientsToRecordPerProgramme() {
     const programmes = {}
     for (const programme of this.programmes) {
       programmes[programme.name] = this.patientSessions
@@ -513,7 +426,7 @@ export class Session {
    *
    * @returns {object} - Patient sessions per programme
    */
-  get patientsVaccinated() {
+  get patientsVaccinatedPerProgramme() {
     const programmes = {}
     if (!this.isUnplanned) {
       for (const programme of this.programmes) {
@@ -846,48 +759,6 @@ export class Session {
 
     const reminderWeeks = filters.plural(this.reminderWeeks, 'week')
 
-    let patientsToRecord
-    if (this.patientsToRecord) {
-      patientsToRecord = Object.entries(this.patientsToRecord).map(
-        ([name, patientSessions]) =>
-          this.programmes.length > 1
-            ? patientSessions.length > 0
-              ? formatLink(
-                  `${this.uri}/record`,
-                  `${filters.plural(patientSessions.length, 'child')} are ready for ${name}`
-                )
-              : 'No children'
-            : patientSessions.length > 0
-              ? formatLink(
-                  `${this.uri}/record`,
-                  `${filters.plural(patientSessions.length, 'child')} are ready`
-                )
-              : 'No children'
-      )
-    }
-
-    let patientsVaccinated
-    if (this.patientsVaccinated) {
-      patientsVaccinated =
-        this.patientsVaccinated &&
-        Object.entries(this.patientsVaccinated).map(
-          ([name, patientSessions]) =>
-            this.programmes.length > 1
-              ? patientSessions.length > 0
-                ? formatLink(
-                    `${this.uri}/outcomes?outcome=${PatientOutcome.Vaccinated}`,
-                    `${filters.plural(patientSessions.length, 'vaccination')} given for ${name}`
-                  )
-                : `No vaccinations given for ${name}`
-              : patientSessions.length > 0
-                ? formatLink(
-                    `${this.uri}/outcomes?outcome=${PatientOutcome.Vaccinated}`,
-                    `${filters.plural(patientSessions.length, 'vaccination')} given`
-                  )
-                : 'No vaccinations given'
-        )
-    }
-
     const programmePresetHasCatchups =
       ProgrammePreset[this.programmePreset]?.catchupProgrammeTypes
 
@@ -921,12 +792,6 @@ export class Session {
         this.consents.length > 0
           ? filters.plural(this.consents.length, 'child')
           : undefined,
-      patientsToRecord: patientsToRecord
-        ? patientsToRecord.join('<br>')
-        : undefined,
-      patientsVaccinated: patientsVaccinated
-        ? patientsVaccinated.join('<br>')
-        : undefined,
       primaryProgrammes: this.primaryProgrammes
         .flatMap(({ nameTag }) => nameTag)
         .join(' '),

@@ -1691,6 +1691,8 @@ export const en = {
       title: 'Manage consent reminders',
       description:
         'Mavis automatically sends email and text reminders to parents who have not responded to the initial consent request.\n\nAutomatic reminders are sent 14, 7 and 3 days before a session.\n\nYou can also send reminders manually. Mavis will then skip the next automatic reminder if it’s due to be sent within 3 days.',
+      activity:
+        '{{activities.patientsToGetConsent}} parents out of {{session.patients.length}} have not responded yet',
       preConfirm:
         'Mavis will skip the next automatic reminder if it’s scheduled to be sent within 3 days.',
       confirm: 'Send manual consent reminders',
@@ -1716,75 +1718,73 @@ export const en = {
         other: '[0] No children in session cohort|%s children in session cohort'
       }
     },
-    patientsRefused: {
-      label: 'Consent refused',
-      count: {
-        one: '%s child with consent refused',
-        other:
-          '[0] No children with consent refused|%s children with consent refused'
-      }
-    },
-    patientsVaccinated: {
-      label: 'Vaccinated',
-      count: {
-        one: '%s child vaccinated',
-        other: '[0] No children vaccinated|%s children vaccinated'
-      }
-    },
-    patientsToGetConsent: {
-      label: 'No consent response',
-      count: {
-        one: '%s child with no response',
-        other: '[0] No children with no response|%s children with no response'
+    activity: {
+      label: 'Action required',
+      getConsent: {
+        label: 'No consent response',
+        count: {
+          one: '%s child with no response',
+          other: '[0] No children with no response|%s children with no response'
+        }
       },
-      reminders:
-        '{{session.patientsToGetConsent.length}} parents out of {{session.patients.length}} have not responded yet'
-    },
-    patientsToFollowUp: {
-      label: 'Requested follow up',
-      count: {
-        one: '%s child to follow up',
-        other: '[0] No children to follow up|%s children to follow up'
+      checkRefusal: {
+        label: 'Consent refused',
+        count: {
+          one: '%s child with consent refused',
+          other:
+            '[0] No children with consent refused|%s children with consent refused'
+        }
+      },
+      followUp: {
+        label: 'Requested follow up',
+        count: {
+          one: '%s child to follow up',
+          other: '[0] No children to follow up|%s children to follow up'
+        }
+      },
+      resolveConsent: {
+        label: 'Conflicting consent',
+        count: {
+          one: '%s child to review',
+          other: '[0] No children to review|%s children to review'
+        }
+      },
+      triage: {
+        label: 'Triage needed',
+        count: {
+          one: '%s child to triage',
+          other: '[0] No children to triage|%s children to triage'
+        }
+      },
+      instruct: {
+        label: 'PSDs',
+        count: {
+          one: '%s child to review',
+          other: '[0] No children to review|%s children to review'
+        }
+      },
+      register: {
+        label: 'Register attendance',
+        count: {
+          one: '%s child to register',
+          other: '[0] No children to register|%s children to register'
+        }
+      },
+      record: {
+        label: 'Ready for vaccinator',
+        count: {
+          one: '%s child ready for vaccinator',
+          other:
+            '[0] No children ready for vaccinator|%s children ready for vaccinator'
+        }
+      },
+      report: {
+        label: 'Vaccinated',
+        count: {
+          one: '%s child vaccinated',
+          other: '[0] No children vaccinated|%s children vaccinated'
+        }
       }
-    },
-    patientsToResolveConsent: {
-      label: 'Conflicting consent',
-      count: {
-        one: '%s child to review',
-        other: '[0] No children to review|%s children to review'
-      }
-    },
-    patientsToTriage: {
-      label: 'Triage needed',
-      count: {
-        one: '%s child to triage',
-        other: '[0] No children to triage|%s children to triage'
-      }
-    },
-    patientsToInstruct: {
-      label: 'PSDs',
-      count: {
-        one: '%s child to review',
-        other: '[0] No children to review|%s children to review'
-      }
-    },
-    patientsToRegister: {
-      label: 'Register attendance',
-      count: {
-        one: '%s child to register',
-        other: '[0] No children to register|%s children to register'
-      }
-    },
-    patientsToRecord: {
-      label: 'Ready for vaccinator',
-      count: {
-        one: '%s child ready for vaccinator',
-        other:
-          '[0] No children ready for vaccinator|%s children ready for vaccinator'
-      }
-    },
-    activities: {
-      label: 'Action required'
     },
     date: {
       label: 'Session date',

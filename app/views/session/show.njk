@@ -64,18 +64,18 @@
         },
         {
           key: {
-            text: __("session.patientsRefused.label")
+            text: __("session.activity.checkRefusal.label")
           },
           value: {
-            html: link(session.uri + "/consent?consent=" + ConsentOutcome.Refused, __n("session.patientsRefused.count", session.patientsRefused.length))
+            html: link(session.uri + "/consent?consent=" + ConsentOutcome.Refused, __n("session.activity.checkRefusal.count", activity.checkRefusal))
           }
-        } if session.patientsRefused.length,
+        } if activity.checkRefusal,
         {
           key: {
-            text: __("session.patientsVaccinated.label")
+            text: __("session.activity.report.label")
           },
           value: {
-            html: session.formatted.patientsVaccinated
+            html: activity.report
           }
         }
       ]
@@ -86,7 +86,7 @@
         classes: "nhsuk-u-margin-bottom-2",
         level: 4,
         size: "s",
-        title: __("session.activities.label")
+        title: __("session.activity.label")
       }) }}
 
       {{ summaryList({
@@ -101,10 +101,10 @@
           } if session.consents.length,
           {
             key: {
-              text: __("session.patientsToGetConsent.label")
+              text: __("session.activity.getConsent.label")
             },
             value: {
-              html: link(session.uri + "/consent?consent=" + ConsentOutcome.NoResponse, __n("session.patientsToGetConsent.count", session.patientsToGetConsent.length))
+              html: link(session.uri + "/consent?consent=" + ConsentOutcome.NoResponse, __n("session.activity.getConsent.count", activity.getConsent))
             },
             actions: {
               items: [{
@@ -112,59 +112,59 @@
                 href: session.uri + "/reminders"
               }]
             }
-          } if session.patientsToGetConsent.length,
+          } if activity.getConsent,
           {
             key: {
-              text: __("session.patientsToFollowUp.label")
+              text: __("session.activity.followUp.label")
             },
             value: {
-              html: link(session.uri + "/consent?consent=" + ConsentOutcome.Declined, __n("session.patientsToFollowUp.count", session.patientsToFollowUp.length))
+              html: link(session.uri + "/consent?consent=" + ConsentOutcome.Declined, __n("session.activity.followUp.count", activity.followUp))
             }
-          } if session.patientsToFollowUp.length,
+          } if activity.followUp,
           {
             key: {
-              text: __("session.patientsToResolveConsent.label")
+              text: __("session.activity.resolveConsent.label")
             },
             value: {
-              html: link(session.uri + "/consent?consent=" + ConsentOutcome.Inconsistent, __n("session.patientsToResolveConsent.count", session.patientsToResolveConsent.length))
+              html: link(session.uri + "/consent?consent=" + ConsentOutcome.Inconsistent, __n("session.activity.resolveConsent.count", activity.resolveConsent))
             }
-          } if session.patientsToResolveConsent.length,
+          } if activity.resolveConsent,
           {
             key: {
-              text: __("session.patientsToTriage.label")
+              text: __("session.activity.triage.label")
             },
             value: {
-              html: link(session.uri + "/screen?screen=" + ScreenOutcome.NeedsTriage, __n("session.patientsToTriage.count", session.patientsToTriage.length))
+              html: link(session.uri + "/screen?screen=" + ScreenOutcome.triage, __n("session.activity.triage.count", activity.triage))
             }
-          } if session.patientsToTriage.length,
+          } if activity.triage,
           {
             key: {
-              text: __("session.patientsToInstruct.label")
+              text: __("session.activity.instruct.label")
             },
             value: {
-              html: link(session.uri + "/instruct", __n("session.patientsToInstruct.count", session.patientsToInstruct.length))
+              html: link(session.uri + "/instruct", __n("session.activity.instruct.count", activity.instruct))
             },
             actions: {
               items: [{
-                text: __("session.instructions.label"),
+                text: __("session.activity.instruct.label"),
                 href: session.uri + "/instructions"
               }]
             } if (data.token.role == UserRole.NursePrescriber or data.token.role == UserRole.Pharmacist)
-          } if session.patientsToInstruct.length and session.psdProtocol,
+          } if activity.instruct and session.psdProtocol,
           {
             key: {
-              text: __("session.patientsToRegister.label")
+              text: __("session.activity.register.label")
             },
             value: {
-              html: link(session.uri + "/register", __n("session.patientsToRegister.count", session.patientsToRegister.length))
+              html: link(session.uri + "/register", __n("session.activity.register.count", activity.register))
             }
-          } if session.patientsToRegister.length,
+          } if activity.register,
           {
             key: {
-              text: __("session.patientsToRecord.label")
+              text: __("session.activity.record.label")
             },
             value: {
-              html: session.formatted.patientsToRecord
+              html: activity.record
             }
           }
         ]
