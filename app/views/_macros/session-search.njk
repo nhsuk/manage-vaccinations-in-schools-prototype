@@ -37,6 +37,18 @@
       decorate: "q"
     }) }}
 
+    {{ radios({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("session.academicYear.label")
+        }
+      },
+      id: "academicYear",
+      name: "academicYear",
+      items: academicYearItems
+    }) if academicYearItems }}
+
     {{ checkboxes({
       fieldset: {
         legend: {
