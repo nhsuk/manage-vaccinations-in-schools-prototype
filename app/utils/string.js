@@ -141,10 +141,10 @@ export function formatLinkWithSecondaryText(href, text, secondary) {
  *
  * @param {string} text - Primary text
  * @param {string} [secondary] - Secondary text
- * @param {boolean} [breakLine=false] - Whether to add a line break before secondary text
+ * @param {boolean} [breakLine=true] - Whether to add a line break before secondary text
  * @returns {string} Formatted HTML
  */
-export function formatWithSecondaryText(text, secondary, breakLine = false) {
+export function formatWithSecondaryText(text, secondary, breakLine = true) {
   let html = text
 
   if (secondary) {
