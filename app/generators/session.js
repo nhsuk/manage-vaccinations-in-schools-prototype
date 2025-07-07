@@ -1,16 +1,14 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import { isAfter } from 'date-fns'
 
 import {
   OrganisationDefaults,
   ProgrammePreset,
   ProgrammeType,
-  SessionStatus,
   SessionType
 } from '../enums.js'
 import { schoolTerms } from '../models/school.js'
 import { Session } from '../models/session.js'
-import { addDays, removeDays, setMidday, today } from '../utils/date.js'
+import { addDays, removeDays, setMidday } from '../utils/date.js'
 
 /**
  * Generate fake session
@@ -33,44 +31,17 @@ export function generateSession(programmePreset, user, options) {
 
   const { clinic_id, school_urn } = options
   const term = schoolTerms[preset.term]
-
-  let status
-  if (isAfter(today(), term.to)) {
-    status = SessionStatus.Completed
-  } else {
-    status = faker.helpers.arrayElement([
-      SessionStatus.Completed,
-      SessionStatus.Planned,
-      SessionStatus.Unplanned
-    ])
-  }
-
   const dates = []
-  let firstSessionDate
-  let openAt
-  const tomorrow = addDays(today(), 1)
-  switch (status) {
-    case SessionStatus.Planned:
-      // Earliest date is tomorrow
-      // Latest date is the last day of term
-      firstSessionDate = faker.date.between({
-        from: tomorrow,
-        to: term.to
-      })
-      break
-    case SessionStatus.Completed:
-      // Earliest date is first day of term
-      // Latest date is the last day of term
-      firstSessionDate = faker.date.between({
-        from: term.from,
-        to: term.to
-      })
-      break
-    case SessionStatus.Unplanned:
-    default:
-      firstSessionDate = undefined
-  }
+  const hasDatesScheduled = faker.datatype.boolean(0.5)
 
+  let firstSessionDate =
+    hasDatesScheduled &&
+    faker.date.between({
+      from: term.from,
+      to: term.to
+    })
+
+  let openAt
   if (firstSessionDate) {
     // Clinic sessions happen after the school term has finished
     if (clinic_id) {
