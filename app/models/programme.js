@@ -2,7 +2,7 @@ import { isAfter } from 'date-fns'
 
 import vaccines from '../datasets/vaccines.js'
 import {
-  SchoolYear,
+  AcademicYear,
   ProgrammeStatus,
   ProgrammeType,
   VaccineMethod
@@ -114,6 +114,7 @@ export const programmeTypes = {
  * @property {object} guidance - GOV.UK guidance
  * @property {ProgrammeStatus} status - Status
  * @property {ProgrammeType} type - Programme type
+ * @property {AcademicYear} type - Academic year
  * @property {Array<string>} sequence - Vaccine dose sequence
  * @property {string} sequenceDefault - Default vaccine dose sequence
  * @property {Array<number>} yearGroups - Year groups available to
@@ -131,7 +132,7 @@ export class Programme {
     this.information =
       options?.type && programmeTypes[options.type]?.information
     this.guidance = options?.type && programmeTypes[options.type]?.guidance
-    this.year = options?.year || SchoolYear.Y2024
+    this.year = options?.year || AcademicYear.Y2024
     this.type = options?.type
     this.sequence = options?.type && programmeTypes[options.type]?.sequence
     this.sequenceDefault =
