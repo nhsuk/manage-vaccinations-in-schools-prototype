@@ -222,7 +222,7 @@ export const ProgrammeStatus = {
 export const ProgrammeType = {
   Flu: 'Flu',
   HPV: 'HPV',
-  TdIPV: 'TdIPV',
+  TdIPV: 'Td/IPV',
   MenACWY: 'MenACWY'
 }
 

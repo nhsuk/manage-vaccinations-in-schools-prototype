@@ -19,7 +19,6 @@ import { Clinic } from '../models/clinic.js'
 import { Instruction } from '../models/instruction.js'
 import { Organisation } from '../models/organisation.js'
 import { Patient } from '../models/patient.js'
-import { programmeTypes } from '../models/programme.js'
 import { Session } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
@@ -97,10 +96,10 @@ export const sessionController = {
   },
 
   list(request, response) {
-    const { academicYear, programme_ids, q, status, type } = request.query
+    const { programme_ids, q } = request.query
     const { data } = request.session
     const { __, sessions } = response.locals
-    const { isRollover } = response.app.locals
+    const { currentAcademicYear, isRollover } = response.app.locals
 
     let results = sessions
 
@@ -111,12 +110,17 @@ export const sessionController = {
       )
     }
 
-    // Filter by academic year
-    if (academicYear) {
-      results = results.filter(
-        (session) => session.academicYear === academicYear
-      )
+    // Filter defaults
+    const filters = {
+      academicYear: request.query?.academicYear || currentAcademicYear,
+      status: request.query?.status || 'none',
+      type: request.query?.type || 'none'
     }
+
+    // Filter by academic year
+    results = results.filter(
+      ({ academicYear }) => academicYear === filters.academicYear
+    )
 
     // Filter by programme
     if (programme_ids) {
@@ -126,13 +130,13 @@ export const sessionController = {
     }
 
     // Filter by status
-    if (status && status !== 'none') {
-      results = results.filter((session) => session[status])
+    if (filters.status !== 'none') {
+      results = results.filter((session) => session[filters.status])
     }
 
     // Filter by type
-    if (type && type !== 'none') {
-      results = results.filter((session) => session.type === type)
+    if (filters.type !== 'none') {
+      results = results.filter(({ type }) => type === filters.type)
     }
 
     // Sort
@@ -145,34 +149,41 @@ export const sessionController = {
     response.locals.pages = getPagination(results, request.query, 40)
 
     // Academic year options
-    response.locals.academicYearItems = isRollover && [
-      {
-        text: 'Any',
-        value: 'none',
-        checked: !academicYear || academicYear === 'none'
-      },
-      ...Object.values(AcademicYear).map((value) => ({
+    response.locals.academicYearItems =
+      isRollover &&
+      Object.values(AcademicYear).map((value) => ({
         text: value,
         value,
-        checked: academicYear === value
+        checked: filters.academicYear === value
       }))
-    ]
+
+    const primaryProgrammesMap = new Map()
+    sessions
+      .filter((session) => session.academicYear === filters.academicYear)
+      .flatMap((session) => session.primaryProgrammes || [])
+      .forEach((programme) => {
+        primaryProgrammesMap.set(programme.id, programme)
+      })
+
+    const primaryProgrammes = [...primaryProgrammesMap.values()]
 
     // Programme filter options
-    response.locals.programmeItems = Object.values(programmeTypes).map(
-      (programme) => ({
-        text: programme.name,
-        value: programme.id,
-        checked: programme_ids?.includes(programme.id)
-      })
-    )
+    if (primaryProgrammes.length > 1) {
+      response.locals.programmeItems = primaryProgrammes
+        .map((programme) => ({
+          text: programme.name,
+          value: programme.id,
+          checked: programme_ids?.includes(programme.id)
+        }))
+        .sort((a, b) => a.text.localeCompare(b.text))
+    }
 
     // Status filter options
     response.locals.statusItems = [
       {
         text: 'Any',
         value: 'none',
-        checked: !status || status === 'none'
+        checked: !filters.status || filters.status === 'none'
       },
       ...Object.values([
         'isActive',
@@ -183,7 +194,7 @@ export const sessionController = {
       ]).map((value) => ({
         text: __(`session.${value}.label`),
         value,
-        checked: status === value
+        checked: filters.status === value
       }))
     ]
 
@@ -192,12 +203,12 @@ export const sessionController = {
       {
         text: 'Any',
         value: 'none',
-        checked: !type || type === 'none'
+        checked: filters.type === 'none'
       },
       ...Object.values(SessionType).map((value) => ({
         text: value,
         value,
-        checked: type === value
+        checked: filters.type === value
       }))
     ]
 
