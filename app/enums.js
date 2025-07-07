@@ -312,15 +312,6 @@ export const SchoolPhase = {
  * @readonly
  * @enum {string}
  */
-export const SchoolYear = {
-  Y2024: '2024 to 2025',
-  Y2023: '2023 to 2024'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
 export const ScreenVaccinationMethod = {
   NasalOnly: 'The parent has consented to the nasal spray only',
   InjectionOnly: 'The parent has consented to the injected vaccine only',
