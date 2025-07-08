@@ -1,3 +1,4 @@
+import { getCohortEligibility } from '../utils/cohort.js'
 import { createMap } from '../utils/object.js'
 import {
   formatLink,
@@ -158,7 +159,8 @@ export class Cohort {
     const nhsns = new Set()
     const records = createMap(context.records)
     records.forEach((record) => {
-      if (record.yearGroup === this.yearGroup) {
+      const eligibleForCohort = getCohortEligibility(this, record)
+      if (eligibleForCohort) {
         nhsns.add(record.nhsn)
       }
     })
