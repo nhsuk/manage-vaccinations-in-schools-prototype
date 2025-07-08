@@ -12,7 +12,7 @@
 
   {% for year, programmes in programmes | reverse | groupby("year") %}
     {% set programmeRows = [] %}
-    {% for programme in programmes | sort(false, false, "name") %}
+    {% for programme in programmes | reverse | sort(false, false, "name") %}
       {% set programmeRows = programmeRows | push([
         {
           header: __("programme.name.label"),
