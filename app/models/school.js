@@ -1,17 +1,11 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { SchoolPhase, SchoolTerm } from '../enums.js'
+import { SchoolPhase } from '../enums.js'
 import { range } from '../utils/number.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Address } from './address.js'
 import { Record } from './record.js'
-
-export const schoolTerms = {
-  [SchoolTerm.Spring]: { from: '2025-01-06', to: '2025-04-11' },
-  [SchoolTerm.Summer]: { from: '2025-04-28', to: '2025-07-20' },
-  [SchoolTerm.Autumn]: { from: '2025-09-01', to: '2025-12-19' }
-}
 
 /**
  * @class School
@@ -22,7 +16,6 @@ export const schoolTerms = {
  * @property {string} name - Name
  * @property {SchoolPhase} [phase] - Phase
  * @property {Address} [address] - Address
- * @property {object} terms - Term dates
  */
 export class School {
   constructor(options, context) {
@@ -31,7 +24,6 @@ export class School {
     this.name = options?.name
     this.phase = options?.phase
     this.address = options?.address && new Address(options.address)
-    this.terms = options?.terms || schoolTerms
   }
 
   /**
