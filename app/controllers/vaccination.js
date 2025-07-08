@@ -65,8 +65,8 @@ export const vaccinationController = {
     const { patientSession_uuid } = request.query
     const { data } = request.session
 
-    const { patient, session, programme, vaccine, instruction } =
-      PatientSession.read(patientSession_uuid, data)
+    const patientSession = PatientSession.read(patientSession_uuid, data)
+    const { patient, session, programme, vaccine, instruction } = patientSession
     const { identifiedBy, injectionSite, ready, selfId, suppliedBy_uid } =
       data.patientSession.preScreen
 
@@ -121,10 +121,9 @@ export const vaccinationController = {
       selfId,
       identifiedBy,
       location: session.formatted.location,
-      patient_uuid: patient.uuid,
       programme_id: programme.id,
       school_urn: session.school_urn,
-      session_id: session.id,
+      patientSession_uuid: patientSession.uuid,
       vaccine_snomed: vaccine.snomed,
       createdBy_uid,
       ...(injectionSite && {
