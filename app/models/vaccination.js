@@ -32,10 +32,9 @@ import {
 } from '../utils/string.js'
 
 import { Batch } from './batch.js'
-import { Patient } from './patient.js'
+import { PatientSession } from './patient-session.js'
 import { Programme } from './programme.js'
 import { School } from './school.js'
-import { Session } from './session.js'
 import { User } from './user.js'
 import { Vaccine } from './vaccine.js'
 
@@ -64,8 +63,7 @@ import { Vaccine } from './vaccine.js'
  * @property {string} [protocol] - Protocol
  * @property {string} [note] - Note
  * @property {string} [school_urn] - School URN
- * @property {string} [session_id] - Session ID
- * @property {string} [patient_uuid] - Patient UUID
+ * @property {string} [patientSession_uuid] - Patient session UUID
  * @property {string} [programme_id] - Programme ID
  * @property {string} [batch_id] - Batch ID
  * @property {string} [vaccine_snomed] - Vaccine SNOMED code
@@ -99,8 +97,7 @@ export class Vaccination {
       : undefined
     this.note = options?.note || ''
     this.school_urn = options?.school_urn
-    this.session_id = options?.session_id
-    this.patient_uuid = options?.patient_uuid
+    this.patientSession_uuid = options?.patientSession_uuid
     this.programme_id = options?.programme_id
     this.batch_id = this.given ? options?.batch_id || '' : undefined
     this.vaccine_snomed = options?.vaccine_snomed
@@ -221,19 +218,35 @@ export class Vaccination {
   }
 
   /**
+   * Get patient session
+   *
+   * @returns {PatientSession} - Patient session
+   */
+  get patientSession() {
+    try {
+      console.log('this.patientSession_uuid', this.patientSession_uuid)
+      return PatientSession.read(this.patientSession_uuid, this.context)
+    } catch (error) {
+      console.error('Instruction.patientSession', error.message)
+    }
+  }
+
+  /**
    * Get patient
    *
-   * @returns {Patient} - Patient
+   * @returns {import('../models/patient.js').Patient} - Patient
    */
   get patient() {
-    try {
-      const patient = this.context?.patients[this.patient_uuid]
-      if (patient) {
-        return new Patient(patient, this.context)
-      }
-    } catch (error) {
-      console.error('Vaccination.patient', error)
-    }
+    return this.patientSession.patient
+  }
+
+  /**
+   * Get session
+   *
+   * @returns {import('../models/session.js').Session} - Session
+   */
+  get session() {
+    return this.patientSession.session
   }
 
   /**
@@ -287,22 +300,6 @@ export class Vaccination {
   get school() {
     if (this.school_urn) {
       return new School(schools[this.school_urn])
-    }
-  }
-
-  /**
-   * Get session
-   *
-   * @returns {Session} - Session
-   */
-  get session() {
-    try {
-      const session = this.context?.sessions[this.session_id]
-      if (session) {
-        return new Session(session)
-      }
-    } catch (error) {
-      console.error('Vaccination.session', error.message)
     }
   }
 

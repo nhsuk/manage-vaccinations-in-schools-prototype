@@ -9,18 +9,11 @@ import { Vaccination } from '../models/vaccination.js'
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @param {import('../models/programme.js').Programme} programme - Programme
- * @param {import('../models/session.js').Session} session - Session
  * @param {import('../models/batch.js').Batch} batch - Batch
  * @param {Array<import('../models/user.js').User>} users - Users
  * @returns {Vaccination} - Vaccination
  */
-export function generateVaccination(
-  patientSession,
-  programme,
-  session,
-  batch,
-  users
-) {
+export function generateVaccination(patientSession, programme, batch, users) {
   const user = faker.helpers.arrayElement(users)
 
   let injectionMethod
@@ -51,9 +44,11 @@ export function generateVaccination(
     outcome === VaccinationOutcome.PartVaccinated
 
   // Sync date is between 1 minute and 2 hours after the session first date
-  const syncDateLowerBound = new Date(session.firstDate.getTime() + 1000 * 60)
+  const syncDateLowerBound = new Date(
+    patientSession.session.firstDate.getTime() + 1000 * 60
+  )
   const syncDateUpperBound = new Date(
-    session.firstDate.getTime() + 1000 * 60 * 60 * 2
+    patientSession.session.firstDate.getTime() + 1000 * 60 * 60 * 2
   )
 
   // Only populate sync date if the patient was vaccinated
@@ -69,15 +64,14 @@ export function generateVaccination(
     : undefined
 
   return new Vaccination({
-    createdAt: session.firstDate,
+    createdAt: patientSession.session.firstDate,
     createdBy_uid: user.uid,
     nhseSyncedAt,
     outcome,
-    location: session.location.name,
+    location: patientSession.session.location.name,
     selfId: true,
     programme_id: programme.id,
-    session_id: session.id,
-    patient_uuid: patientSession.patient.uuid,
+    patientSession_uuid: patientSession.uuid,
     vaccine_snomed: batch.vaccine_snomed,
     ...(vaccinated && {
       batch_id: batch.id,
