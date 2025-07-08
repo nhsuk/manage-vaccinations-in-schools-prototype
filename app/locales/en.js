@@ -2313,7 +2313,15 @@ export const en = {
       'check-answers': {
         title: 'Check and confirm',
         summary: 'Vaccination details',
-        callout: 'Vaccination was not given'
+        notGiven: 'Vaccination was not given'
+      },
+      mismatchedMethods: {
+        title: 'Incorrect vaccine given',
+        description:
+          'The vaccine selected does not match the consent or triage outcome.'
+      },
+      notGiven: {
+        title: 'Vaccination was not given'
       },
       success:
         'Vaccination outcome recorded for {{session.programmeNames.sentenceCase}}'
@@ -2438,7 +2446,7 @@ export const en = {
       }
     },
     vaccine_snomed: {
-      title: 'What vaccine was given?',
+      title: 'Which vaccine was given?',
       label: 'Vaccine'
     },
     review: {

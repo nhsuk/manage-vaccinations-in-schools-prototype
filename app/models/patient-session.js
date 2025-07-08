@@ -328,6 +328,21 @@ export class PatientSession {
   }
 
   /**
+   * Can either vaccine be administered
+   *
+   * @returns {boolean} - Either vaccine be administered
+   */
+  get canRecordAlternativeVaccine() {
+    const hasScreenedForNasal = this.screen === ScreenOutcome.VaccinateNasal
+
+    return (
+      this.hasConsentForInjection &&
+      !this.hasConsentForInjectionOnly &&
+      !hasScreenedForNasal
+    )
+  }
+
+  /**
    * Get vaccinations for patient session
    *
    * @returns {Array<import('./vaccination.js').Vaccination>|undefined} - Vaccinations
