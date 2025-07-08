@@ -1,5 +1,3 @@
-import { fakerEN_GB as faker } from '@faker-js/faker'
-
 import { EventType, ScreenOutcome } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
 import {
@@ -16,7 +14,6 @@ import { User } from './user.js'
  * @param {object} options - Options
  * @param {object} [context] - Global context
  * @property {object} [context] - Global context
- * @property {string} uuid - UUID
  * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created event
  * @property {EventType} type - Activity type
@@ -28,7 +25,6 @@ import { User } from './user.js'
 export class AuditEvent {
   constructor(options, context) {
     this.context = context
-    this.uuid = options.uuid || faker.string.uuid()
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
     this.type = options.type
