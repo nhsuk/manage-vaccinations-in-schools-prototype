@@ -3,6 +3,9 @@
  * @enum {string}
  */
 export const AcademicYear = {
+  Y2021: '2021 to 2022',
+  Y2022: '2022 to 2023',
+  Y2023: '2023 to 2024',
   Y2024: '2024 to 2025',
   Y2025: '2025 to 2026'
 }
@@ -253,7 +256,7 @@ export const ProgrammePreset = {
     term: SchoolTerm.Spring
   },
   Doubles: {
-    active: false,
+    active: true,
     adolescent: true,
     primaryProgrammeTypes: [ProgrammeType.MenACWY, ProgrammeType.TdIPV],
     catchupProgrammeTypes: [ProgrammeType.HPV],
