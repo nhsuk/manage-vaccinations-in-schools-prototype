@@ -2,6 +2,8 @@
 
 {% set confirmButtonText = __("form.confirm") %}
 {% set title = __("vaccination.new.check-answers.title") %}
+{% set mismatchedMethods = vaccination.vaccine.method != vaccination.patientSession.vaccine.method and not patientSession.canRecordAlternativeVaccine %}
+{% set given = vaccination.outcome == "Vaccinated" or vaccination.outcome == "Partially vaccinated" %}
 
 {% block form %}
   {{ heading({
@@ -9,66 +11,82 @@
     title: title
   }) }}
 
-  {{ card({
-    heading: __("vaccination.new.check-answers.summary"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(vaccination, {
-        programme: {},
-        vaccine_snomed: {
-          href: vaccination.uri + "/new/vaccine" if programme.alternativeVaccine
-        },
-        method: {
-          href: vaccination.uri + "/new/method" if vaccination.method != VaccinationMethod.Nasal
-        },
-        site: {
-          href: vaccination.uri + "/new/site" if vaccination.method != VaccinationMethod.Nasal
-        },
-        dose: {
-          href: vaccination.uri + "/new/dose"
-        },
-        sequence: {
-          href: vaccination.uri + "/new/sequence"
-        },
-        batch_id: {
-          href: vaccination.uri + "/new/batch-id"
-        },
-        identifiedBy: {
-          href: vaccination.uri + "/new/identified-by"
-        },
-        suppliedBy: {
-          href: vaccination.uri + "/new/supplied-by"
-        },
-        createdBy: {
-          href: vaccination.uri + "/new/created-by"
-        },
-        createdAt: {
-          href: vaccination.uri + "/new/created-at"
-        },
-        location: {
-          href: vaccination.uri + "/new/location"
-        },
-        protocol: {}
-      })
+  {% set vaccinationSummaryListHtml = summaryList({
+    rows: summaryRows(vaccination, {
+      programme: {},
+      vaccine_snomed: {
+        href: vaccination.uri + "/new/vaccine" if programme.alternativeVaccine
+      },
+      method: {
+        href: vaccination.uri + "/new/method" if vaccination.method != VaccinationMethod.Nasal
+      },
+      site: {
+        href: vaccination.uri + "/new/site" if vaccination.method != VaccinationMethod.Nasal
+      },
+      dose: {
+        href: vaccination.uri + "/new/dose"
+      },
+      sequence: {
+        href: vaccination.uri + "/new/sequence"
+      },
+      batch_id: {
+        href: vaccination.uri + "/new/batch-id"
+      },
+      identifiedBy: {
+        href: vaccination.uri + "/new/identified-by"
+      },
+      suppliedBy: {
+        href: vaccination.uri + "/new/supplied-by"
+      },
+      createdBy: {
+        href: vaccination.uri + "/new/created-by"
+      },
+      createdAt: {
+        href: vaccination.uri + "/new/created-at"
+      },
+      location: {
+        href: vaccination.uri + "/new/location"
+      },
+      protocol: {}
     })
-  }) if vaccination.outcome == "Vaccinated" or vaccination.outcome == "Partially vaccinated" else warningCallout({
-    heading: __("vaccination.new.check-answers.callout"),
-    html: summaryList({
-      rows: summaryRows(vaccination, {
-        programme: {},
-        outcome: {
-          href: vaccination.uri + "/new/decline"
-        },
-        identifiedBy: {
-          href: vaccination.uri + "/new/identified-by"
-        },
-        createdAt: {
-          href: vaccination.uri + "/new/created-at"
-        },
-        location: {}
+  }) %}
+
+  {% if mismatchedMethods %}
+    {% call warningCallout({
+      heading: __("vaccination.new.mismatchedMethods.title")
+    }) %}
+      {{ __("vaccination.new.mismatchedMethods.description") | nhsukMarkdown }}
+
+      {{ vaccinationSummaryListHtml }}
+    {% endcall %}
+
+  {% elif not given %}
+    {{ warningCallout({
+      heading: __("vaccination.new.notGiven.title"),
+      html: summaryList({
+        rows: summaryRows(vaccination, {
+          programme: {},
+          outcome: {
+            href: vaccination.uri + "/new/decline"
+          },
+          identifiedBy: {
+            href: vaccination.uri + "/new/identified-by"
+          },
+          createdAt: {
+            href: vaccination.uri + "/new/created-at"
+          },
+          location: {}
+        })
       })
-    })
-  }) }}
+    }) }}
+
+  {% else %}
+    {{ card({
+      heading: __("vaccination.new.check-answers.summary"),
+      headingClasses: "nhsuk-heading-m",
+      descriptionHtml: vaccinationSummaryListHtml
+    }) }}
+  {% endif %}
 
   {{ card({
     headingHtml: " ",

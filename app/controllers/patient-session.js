@@ -128,14 +128,12 @@ export const patientSessionController = {
         value
       }))
 
+    // Vaccinator has permission to record using the alternative vaccine
+    // and patient has consent to vaccinate using the alternative vaccine
     response.locals.canRecordAlternativeVaccine =
-      // Vaccinator has permission to record using the alternative vaccine
       permissions?.vaccineMethods?.includes(
         programme.alternativeVaccine?.method
-      ) &&
-      // Patient has consent to vaccinate using the alternative vaccine
-      patientSession.hasConsentForInjection &&
-      !patientSession.hasConsentForInjectionOnly
+      ) && patientSession.canRecordAlternativeVaccine
 
     const view = request.path.split('/').at(-1)
     response.locals.navigationItems = [

@@ -224,7 +224,6 @@ export class Vaccination {
    */
   get patientSession() {
     try {
-      console.log('this.patientSession_uuid', this.patientSession_uuid)
       return PatientSession.read(this.patientSession_uuid, this.context)
     } catch (error) {
       console.error('Instruction.patientSession', error.message)
