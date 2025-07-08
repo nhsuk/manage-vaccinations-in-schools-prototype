@@ -349,7 +349,7 @@ export class Reply {
         formatTag(this.status),
         'Confirmed'
       )
-    } else if (this.programme.alternativeVaccine) {
+    } else if (this.programme?.alternativeVaccine) {
       const vaccineMethod =
         this.decision === ReplyDecision.OnlyFluInjection
           ? VaccineMethod.Injection
