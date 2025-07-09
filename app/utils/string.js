@@ -267,12 +267,19 @@ export function formatMillilitres(string) {
  * Format monospaced
  *
  * @param {string|number} string - String
+ * @param {boolean} [noWrap=false] - Prevent wrapping
  * @returns {string|undefined} Formatted HTML
  */
-export function formatMonospace(string) {
+export function formatMonospace(string, noWrap = false) {
   if (!string) return
 
-  return `<span class="app-u-monospace">${string}</span>`
+  const classes = ['app-u-monospace']
+
+  if (noWrap) {
+    classes.push('nhsuk-u-nowrap')
+  }
+
+  return `<span class="${classes.join(' ')}">${string}</span>`
 }
 
 /**
@@ -291,15 +298,13 @@ export function formatNhsNumber(string, invalid) {
   const isNhsNumber = string.match(/^\d{10}$/)
 
   if (isNhsNumber) {
-    string = string
-      .toString()
-      .replaceAll(/(\d{3})(\d{3})(\d{4})/g, '$1&nbsp;&zwj;$2&nbsp;&zwj;$3')
+    string = string.toString().replaceAll(/(\d{3})(\d{3})(\d{4})/g, '$1 $2 $3')
 
     if (invalid) {
       string = `<s>${string}</s>`
     }
 
-    return formatMonospace(string)
+    return formatMonospace(string, true)
   }
 
   return null
