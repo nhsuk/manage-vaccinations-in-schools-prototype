@@ -86,8 +86,8 @@ export class Cohort {
    */
   get name() {
     return {
-      sentenceCase: `${sentenceCaseProgrammeName(this.programme.name)} ${this.formatted.yearGroup} (${this.year})`,
-      titleCase: `${this.programme.name} ${this.formatted.yearGroup} (${this.year})`
+      sentenceCase: `${this.formatted.yearGroup} (${this.year}) ${sentenceCaseProgrammeName(this.programme.name)} cohort`,
+      titleCase: `${this.formatted.yearGroup} (${this.year}) ${this.programme.name} cohort`
     }
   }
 
