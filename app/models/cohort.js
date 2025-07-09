@@ -85,10 +85,7 @@ export class Cohort {
    * @returns {object} - Name
    */
   get name() {
-    return {
-      sentenceCase: `${sentenceCaseProgrammeName(this.programme.name)} ${this.formatted.yearGroup} (${this.year})`,
-      titleCase: `${this.programme.name} ${this.formatted.yearGroup} (${this.year})`
-    }
+    return `${this.formatted.yearGroup} (${this.year}) ${sentenceCaseProgrammeName(this.programme.name)} cohort`
   }
 
   /**
@@ -109,7 +106,7 @@ export class Cohort {
    */
   get link() {
     return {
-      name: formatLink(this.uri, this.name.titleCase)
+      name: formatLink(this.uri, this.name)
     }
   }
 
