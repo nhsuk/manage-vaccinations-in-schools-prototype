@@ -13,6 +13,9 @@
   )
 );
 
+// Import NHS App Frontend components
+@forward "vendor/nhsapp-frontend";
+
 // Import GOV.UK Frontend components
 @forward "vendor/govuk-frontend";
 
