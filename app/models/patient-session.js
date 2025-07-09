@@ -708,7 +708,7 @@ export class PatientSession {
       this.patient.patientSession_uuids.filter((uuid) => uuid !== this.uuid)
     this.patient.addEvent({
       type: EventType.Select,
-      name: `Removed from the ${this.session.name}`,
+      name: `Removed from the ${this.session.name.replace('Flu', 'flu')}`,
       createdBy_uid: event.createdBy_uid,
       programme_ids: this.session.programme_ids
     })
