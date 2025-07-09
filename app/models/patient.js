@@ -352,7 +352,7 @@ export class Patient extends Record {
     this.cohort_uids.push(cohort.uid)
     this.addEvent({
       type: EventType.Select,
-      name: `Selected for the ${cohort.name.sentenceCase} cohort`,
+      name: `Selected for the ${cohort.name}`,
       createdAt: cohort.createdAt,
       createdBy_uid: cohort.createdBy_uid,
       programme_ids: [cohort.programme_id]
@@ -371,7 +371,7 @@ export class Patient extends Record {
 
     this.addEvent({
       type: EventType.Select,
-      name: `Removed from the ${cohort.name.sentenceCase} cohort`,
+      name: `Removed from the ${cohort.name}`,
       createdBy_uid: cohort.createdBy_uid,
       programme_ids: [cohort.programme_id]
     })

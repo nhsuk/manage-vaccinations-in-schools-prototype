@@ -195,8 +195,7 @@ export const en = {
     },
     unselect: {
       confirm: 'Remove from cohort',
-      success:
-        '{{patient.fullName}} removed from {{cohort.name.sentenceCase}} cohort'
+      success: '{{patient.fullName}} removed from {{cohort.name}}'
     },
     patients: {
       count: {
