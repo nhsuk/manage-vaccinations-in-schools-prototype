@@ -33,14 +33,11 @@ export function generateSession(programmePreset, academicYear, user, options) {
   const { clinic_id, school_urn } = options
   const term = schoolTerms[academicYear][preset.term]
   const dates = []
-  const hasDatesScheduled = faker.datatype.boolean(0.5)
 
-  let firstSessionDate =
-    hasDatesScheduled &&
-    faker.date.between({
-      from: term.from,
-      to: term.to
-    })
+  let firstSessionDate = faker.date.between({
+    from: term.from,
+    to: term.to
+  })
 
   let openAt
   if (firstSessionDate) {
@@ -76,8 +73,6 @@ export function generateSession(programmePreset, academicYear, user, options) {
     )
   }
 
-  const sessionHasCatchups = faker.datatype.boolean(0.5)
-
   const psdProtocol = preset.primaryProgrammeTypes.includes(ProgrammeType.Flu)
 
   return new Session({
@@ -88,9 +83,6 @@ export function generateSession(programmePreset, academicYear, user, options) {
     registration: true,
     programmePreset,
     psdProtocol,
-    ...(sessionHasCatchups && {
-      catchupProgrammeTypes: preset.catchupProgrammeTypes
-    }),
     ...(clinic_id && { type: SessionType.Clinic, clinic_id }),
     ...(school_urn && { type: SessionType.School, school_urn })
   })
