@@ -197,7 +197,7 @@ export const en = {
       confirm: 'Remove from cohort',
       success: '{{patient.fullName}} removed from {{cohort.name}}'
     },
-    patients: {
+    patientSessions: {
       count: {
         one: '%s child',
         other: '[0] No children|%s children'
