@@ -1,7 +1,10 @@
 import _ from 'lodash'
 
-import { ArchiveRecordReason } from '../enums.js'
+import programmes from '../datasets/programmes.js'
+import { ArchiveRecordReason, ProgrammePreset } from '../enums.js'
 import { Patient } from '../models/patient.js'
+import { Programme } from '../models/programme.js'
+import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const patientController = {
@@ -13,9 +16,35 @@ export const patientController = {
 
     response.locals.patient = patient
 
-    response.locals.recordTitle = patient.post16
+    const recordTitle = patient.post16
       ? __('patient.label').replace('Child', 'Patient')
       : __('patient.label')
+
+    const activeProgrammes = Object.values(ProgrammePreset)
+      .filter((preset) => preset.active)
+      .flatMap((preset) => preset.primaryProgrammeTypes)
+      .map((programmeType) => new Programme(programmes[programmeType]))
+
+    response.locals.activeProgrammes = activeProgrammes
+
+    response.locals.recordTitle = recordTitle
+
+    response.locals.secondaryNavigationItems = [
+      {
+        text: recordTitle,
+        href: patient.uri,
+        current: request.originalUrl === patient.uri
+      },
+      ...Object.values(activeProgrammes).map((programme) => {
+        const href = `${patient.uri}/programmes/${programme.slug}`
+
+        return {
+          text: programme.name,
+          href,
+          current: request.originalUrl === href
+        }
+      })
+    ]
 
     response.locals.archiveRecordReasonItems = Object.values(
       ArchiveRecordReason
@@ -176,6 +205,45 @@ export const patientController = {
     patient.update(request.body.patient, data.wizard)
 
     response.redirect(paths.next)
+  },
+
+  readProgramme(request, response, next) {
+    const { programme_slug } = request.params
+    const { data } = request.session
+    const { patient } = response.locals
+
+    if (!programme_slug) {
+      return response.redirect(patient.uri)
+    }
+
+    response.locals.programme = Object.values(programmes)
+      .map((programme) => new Programme(programme))
+      .find(({ slug }) => slug === programme_slug)
+
+    response.locals.programmeAuditEvents = patient.auditEvents
+      .filter(({ programme_ids }) =>
+        programme_ids?.some((programme_id) =>
+          programme_id.startsWith(programme_slug)
+        )
+      )
+      .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
+      .reverse()
+
+    response.locals.programmePatientSessions = patient.patientSessions
+      .filter(({ programme_id }) => programme_id?.startsWith(programme_slug))
+      .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
+
+    const { vaccinations } = Patient.read(patient.nhsn, data)
+
+    response.locals.vaccination = vaccinations
+      .filter(({ programme_id }) => programme_id?.startsWith(programme_slug))
+      .find(({ given }) => given)
+
+    next()
+  },
+
+  showProgramme(request, response) {
+    response.render(`patient/programme`)
   },
 
   archive(request, response) {
