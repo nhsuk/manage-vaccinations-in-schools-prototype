@@ -20,7 +20,6 @@ import { Programme } from './programme.js'
  * @property {string} [createdBy_uid] - User who created cohort
  * @property {AcademicYear} year - Academic year
  * @property {number} yearGroup - Year group
- * @property {Array<string>} record_nhsns - CHIS record NHS numbers
  * @property {string} [programme_id] - Programme ID
  * @function ns - Namespace
  * @function uri - URL
@@ -34,7 +33,6 @@ export class Cohort {
     this.createdBy_uid = options?.createdBy_uid
     this.year = year
     this.yearGroup = options?.yearGroup
-    this.record_nhsns = options?.record_nhsns || []
     this.programme_id = options?.programme_id
   }
 
@@ -158,20 +156,17 @@ export class Cohort {
    * @param {object} context - Context
    */
   select(context) {
-    const selectedRecords = new Set()
+    const nhsns = new Set()
     const records = createMap(context.records)
     records.forEach((record) => {
       if (record.yearGroup === this.yearGroup) {
-        selectedRecords.add(record.nhsn)
+        nhsns.add(record.nhsn)
       }
     })
 
-    // Add selected records to cohort
-    this.record_nhsns = [...selectedRecords]
-
     // Create or update patient record
     const patients = createMap(context.patients)
-    for (const nhsn of this.record_nhsns) {
+    for (const nhsn of [...nhsns]) {
       let patient = [...patients.values()].find(
         (patient) => patient.nhsn === nhsn
       )
