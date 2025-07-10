@@ -181,6 +181,21 @@ export default () => {
     return errorsList
   }
 
+  globals.timelineItems = function (auditEvents) {
+    const { filters } = this.ctx.settings.nunjucksEnv
+    const timelineItems = []
+
+    for (const auditEvent of Object.values(auditEvents)) {
+      timelineItems.push({
+        headingText: auditEvent.name,
+        isPastItem: auditEvent.isPastEvent,
+        text: filters.safe(auditEvent.formatted.createdAtAndBy)
+      })
+    }
+
+    return timelineItems
+  }
+
   /**
    * Get health answers for summary list rows
    *
