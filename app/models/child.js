@@ -100,9 +100,18 @@ export class Child {
   }
 
   /**
+   * Is the child over the age of 16?
+   *
+   * @returns {boolean} - Child is over the age of 16
+   */
+  get post16() {
+    return this.age >= 17
+  }
+
+  /**
    * Get year group
    *
-   * @returns {number} - Year group, for example 8
+   * @returns {number|undefined} - Year group, for example 8
    */
   get yearGroup() {
     return getYearGroup(this.dob)
@@ -188,12 +197,15 @@ export class Child {
     return {
       dob: formatDate(this.dob, { dateStyle: 'long' }),
       dod: formatDate(this.dod, { dateStyle: 'long' }),
-      yearGroup: formatYearGroup(this.yearGroup),
-      yearGroupWithRegistration: this.registrationGroup
-        ? `${yearGroup} (${this.registrationGroup})`
-        : yearGroup,
       address: this?.address && new Address(this.address).formatted.multiline,
-      school: this?.school && this.school.name
+      ...(!this.post16 && {
+        yearGroup,
+        yearGroupWithRegistration:
+          this.registrationGroup && yearGroup
+            ? `${yearGroup} (${this.registrationGroup})`
+            : yearGroup,
+        school: this?.school && this.school.name
+      })
     }
   }
 

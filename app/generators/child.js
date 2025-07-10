@@ -68,6 +68,12 @@ export function generateChild() {
     school_urn = faker.helpers.arrayElement(['888888', '999999'])
   }
 
+  // Add examples of children who have aged out (over 16)
+  if (faker.datatype.boolean(0.05)) {
+    dob = faker.date.birthdate({ min: 17, max: 18, mode: 'age' })
+    school_urn = ''
+  }
+
   // GP surgery
   let gpSurgery
   if (faker.datatype.boolean(0.8)) {

@@ -1,13 +1,17 @@
 import _ from 'lodash'
 
+import { ProgrammeType } from '../enums.js'
 import { Cohort } from '../models/cohort.js'
 import { Patient } from '../models/patient.js'
 import { Record } from '../models/record.js'
+import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
+import { camelToKebabCase } from '../utils/string.js'
 
 export const patientController = {
   read(request, response, next, nhsn) {
     const { data } = request.session
+    const { __ } = response.locals
 
     let patient = Patient.read(nhsn, data)
 
@@ -19,11 +23,35 @@ export const patientController = {
 
     response.locals.patient = patient
 
+    const recordTitle = patient.post16
+      ? __('patient.label').replace('Child', 'Patient')
+      : __('patient.label')
+
+    response.locals.recordTitle = recordTitle
+
+    response.locals.secondaryNavigationItems = [
+      {
+        text: recordTitle,
+        href: patient.uri,
+        current: request.originalUrl === patient.uri
+      },
+      ...Object.values(ProgrammeType).map((value) => {
+        const slug = camelToKebabCase(value).replace('/', '-')
+        const href = `${patient.uri}/programmes/${slug}`
+
+        return {
+          text: value,
+          href,
+          current: request.originalUrl === href
+        }
+      })
+    ]
+
     next()
   },
 
   readAll(request, response, next) {
-    const { q, hasMissingNhsNumber } = request.query
+    const { q, options } = request.query
     const { data } = request.session
 
     let patients = Patient.readAll(data)
@@ -38,13 +66,15 @@ export const patientController = {
       )
     }
 
-    // Filter by missing NHS number
-    if (hasMissingNhsNumber) {
-      patients = patients.filter((patient) => patient.hasMissingNhsNumber)
+    // Filter
+    for (const option of ['hasMissingNhsNumber', 'post16']) {
+      if (options?.includes(option)) {
+        patients = patients.filter((patient) => patient.post16)
+      }
     }
 
     // Clean up session data
-    delete data.hasMissingNhsNumber
+    delete data.options
     delete data.q
 
     response.locals.patients = patients
@@ -65,15 +95,27 @@ export const patientController = {
   },
 
   filterList(request, response) {
-    const { hasMissingNhsNumber, q } = request.body
     const params = new URLSearchParams()
 
-    if (q) {
-      params.append('q', String(q))
+    // Single value per filter
+    for (const key of ['q']) {
+      const value = request.body[key]
+      if (value) {
+        params.append(key, String(value))
+      }
     }
 
-    if (hasMissingNhsNumber?.includes('true')) {
-      params.append('hasMissingNhsNumber', 'true')
+    // Multiple values per filter
+    for (const key of ['options']) {
+      const value = request.body[key]
+      const values = Array.isArray(value) ? value : [value]
+      if (value) {
+        values
+          .filter((item) => item !== '_unchecked')
+          .forEach((value) => {
+            params.append(key, String(value))
+          })
+      }
     }
 
     response.redirect(`/patients?${params}`)
@@ -149,6 +191,32 @@ export const patientController = {
     patient.update(request.body.patient, data.wizard)
 
     response.redirect(paths.next)
+  },
+
+  readProgramme(request, response, next) {
+    const { slug } = request.params
+    const { patient } = response.locals
+
+    if (!slug) {
+      return response.redirect(patient.uri)
+    }
+
+    response.locals.programmeAuditEvents = patient.auditEvents
+      .filter(({ programme_ids }) =>
+        programme_ids?.some((programme_id) => programme_id.startsWith(slug))
+      )
+      .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
+      .reverse()
+
+    response.locals.programmePatientSessions = patient.patientSessions
+      .filter(({ programme_id }) => programme_id?.startsWith(slug))
+      .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
+
+    next()
+  },
+
+  showProgramme(request, response) {
+    response.render(`patient/programme`)
   },
 
   unselect(request, response) {

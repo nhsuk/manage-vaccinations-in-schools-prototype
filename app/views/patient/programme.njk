@@ -40,6 +40,10 @@
             {
               header: "Status",
               html: patientSession.formatted.status.report
+            },
+            {
+              header: "ID",
+              html: patientSession.session.id
             }
           ]) %}
         {% endfor %}
@@ -51,7 +55,8 @@
           head: [
             { text: __("session.location.label") },
             { text: __("session.dates.label") },
-            { text: "Status" }
+            { text: "Status" },
+            { text: "ID" }
           ],
           rows: patientSessionRows
         }) }}

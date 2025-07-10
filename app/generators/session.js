@@ -1,12 +1,12 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import schoolTerms from '../datasets/school-terms.js'
 import {
   OrganisationDefaults,
   ProgrammePreset,
   ProgrammeType,
   SessionType
 } from '../enums.js'
-import { schoolTerms } from '../models/school.js'
 import { Session } from '../models/session.js'
 import { addDays, removeDays, setMidday } from '../utils/date.js'
 
@@ -15,12 +15,13 @@ import { addDays, removeDays, setMidday } from '../utils/date.js'
  *
  * @param {string} programmePreset - Programme preset
  * @param {import('../models/user.js').User} user - User
+ * @param {import('../enums.js').AcademicYear} academicYear - Academic year
  * @param {object} options - Options
  * @param {string} [options.clinic_id] - Clinic ID
  * @param {string} [options.school_urn] - School URN
  * @returns {Session} - Session
  */
-export function generateSession(programmePreset, user, options) {
+export function generateSession(programmePreset, academicYear, user, options) {
   // Get programme preset
   const preset = ProgrammePreset[programmePreset]
 
@@ -30,16 +31,13 @@ export function generateSession(programmePreset, user, options) {
   }
 
   const { clinic_id, school_urn } = options
-  const term = schoolTerms[preset.term]
+  const term = schoolTerms[academicYear][preset.term]
   const dates = []
-  const hasDatesScheduled = faker.datatype.boolean(0.5)
 
-  let firstSessionDate =
-    hasDatesScheduled &&
-    faker.date.between({
-      from: term.from,
-      to: term.to
-    })
+  let firstSessionDate = faker.date.between({
+    from: term.from,
+    to: term.to
+  })
 
   let openAt
   if (firstSessionDate) {
@@ -75,8 +73,6 @@ export function generateSession(programmePreset, user, options) {
     )
   }
 
-  const sessionHasCatchups = faker.datatype.boolean(0.5)
-
   const psdProtocol = preset.primaryProgrammeTypes.includes(ProgrammeType.Flu)
 
   return new Session({
@@ -87,9 +83,6 @@ export function generateSession(programmePreset, user, options) {
     registration: true,
     programmePreset,
     psdProtocol,
-    ...(sessionHasCatchups && {
-      catchupProgrammeTypes: preset.catchupProgrammeTypes
-    }),
     ...(clinic_id && { type: SessionType.Clinic, clinic_id }),
     ...(school_urn && { type: SessionType.School, school_urn })
   })

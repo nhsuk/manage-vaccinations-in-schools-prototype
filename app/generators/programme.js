@@ -1,11 +1,20 @@
+import programmesData from '../datasets/programmes.js'
 import { Programme } from '../models/programme.js'
+import { formatProgrammeId } from '../utils/string.js'
 
 /**
  * Generate fake programme
  *
- * @param {string} type - Type
+ * @param {string} type - Programme type
+ * @param {import('../enums.js').AcademicYear} year - Academic year
  * @returns {Programme} - Programme
  */
-export function generateProgramme(type) {
-  return new Programme({ type })
+export function generateProgramme(type, year) {
+  const programme = {
+    ...programmesData[type],
+    id: formatProgrammeId(type, year),
+    year
+  }
+
+  return new Programme(programme)
 }

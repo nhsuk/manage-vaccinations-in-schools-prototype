@@ -140,11 +140,15 @@
         },
         items: [
           {
-            value: "true",
+            value: "hasMissingNhsNumber",
             text: __("patient.search.hasMissingNhsNumber")
+          },
+          {
+            value: "post16",
+            text: __("patient.search.post16")
           }
         ],
-        decorate: "hasMissingNhsNumber"
+        decorate: "options"
       }) }}
 
       {{ filterButtonGroup | safe if not (programmeItems or statusItems) }}
@@ -152,7 +156,7 @@
 
     {{ details({
       text: __("search.advanced"),
-      open: true if data.hasMissingNhsNumber,
+      open: true if data.options,
       html: searchDetailsHtml
     }) }}
 

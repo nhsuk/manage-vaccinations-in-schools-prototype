@@ -1,0 +1,4 @@
+@use "../../nhsuk-frontend" as *;
+
+// Use @import as NHS App Frontend is not compatible with Sass modules
+@import "nhsapp-frontend/dist/nhsapp/components/timeline/timeline";

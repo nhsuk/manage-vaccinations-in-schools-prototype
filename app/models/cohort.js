@@ -1,4 +1,4 @@
-import { AcademicYear } from '../enums.js'
+import { getCohortEligibility } from '../utils/cohort.js'
 import { createMap } from '../utils/object.js'
 import {
   formatLink,
@@ -26,10 +26,10 @@ import { Programme } from './programme.js'
  */
 export class Cohort {
   constructor(options, context) {
-    const year = options?.year || AcademicYear.Y2024
+    const year = options?.year
 
     this.context = context
-    this.createdAt = options?.createdAt || `${year.split('/')[0]}-07-01`
+    this.createdAt = options?.createdAt || `${year.split(' ')[0]}-07-01`
     this.createdBy_uid = options?.createdBy_uid
     this.year = year
     this.yearGroup = options?.yearGroup
@@ -159,7 +159,8 @@ export class Cohort {
     const nhsns = new Set()
     const records = createMap(context.records)
     records.forEach((record) => {
-      if (record.yearGroup === this.yearGroup) {
+      const eligibleForCohort = getCohortEligibility(this, record)
+      if (eligibleForCohort) {
         nhsns.add(record.nhsn)
       }
     })

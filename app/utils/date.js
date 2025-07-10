@@ -2,6 +2,8 @@ import process from 'node:process'
 
 import { getDayOfYear, isAfter, isBefore, isEqual } from 'date-fns'
 
+import { AcademicYear } from '../enums.js'
+
 const ALLOWED_VALUES_FOR_MONTHS = [
   ['1', '01', 'jan', 'january'],
   ['2', '02', 'feb', 'february'],
@@ -170,6 +172,20 @@ export function getDateValueDifference(a, b) {
 }
 
 /**
+ * Get the academic year a date sits within
+ *
+ * @param {Date} date - Date
+ * @returns {AcademicYear} Academic year a date sits within
+ */
+export function getAcademicYear(date) {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const startYear = month >= 9 ? year : year - 1
+
+  return AcademicYear[`Y${startYear}`]
+}
+
+/**
  * Set time to midday
  *
  * @param {Date} date - Date
@@ -223,19 +239,36 @@ export function today(secondsToAdd) {
  * Get school year group
  *
  * @param {Date} date - Date
+ * @param {AcademicYear} [academicYear] - AcademicYear
  * @returns {number} School year group
  */
-export function getYearGroup(date) {
+export function getYearGroup(date, academicYear) {
   if (!date || isNaN(date.valueOf())) return 0
 
-  const currentYear = today().getFullYear()
+  // Determine which academic year to use
+  let targetYear
+  if (academicYear !== undefined) {
+    targetYear = Number(academicYear.split(' ')[0])
+  } else {
+    // Use current academic year
+    const currentDate = today()
+    const currentYear = currentDate.getFullYear()
+    const currentMonth = currentDate.getMonth()
+
+    // If we're before September 1, we're still in the previous academic year
+    if (currentMonth < 8) {
+      targetYear = currentYear - 1
+    } else {
+      targetYear = currentYear
+    }
+  }
 
   const birthYear = date.getFullYear()
   const birthMonth = date.getMonth()
   const birthDay = date.getDate()
 
   // Calculate the age of the child on September 1 of the current year
-  let ageOnStartOfYear = currentYear - birthYear
+  let ageOnStartOfYear = targetYear - birthYear
 
   if (birthMonth > 8 || (birthMonth === 8 && birthDay > 1)) {
     // If the birthday is after September 1, subtract 1 from the age

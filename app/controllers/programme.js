@@ -62,8 +62,8 @@ export const programmeController = {
 
     // Filter by year group
     if (yearGroup) {
-      patientSessions = patientSessions.filter(({ patient }) =>
-        yearGroups.includes(patient.yearGroup)
+      patientSessions = patientSessions.filter((patientSession) =>
+        yearGroups.includes(patientSession.yearGroup)
       )
     }
 

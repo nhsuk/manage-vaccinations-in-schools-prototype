@@ -1,5 +1,8 @@
 {% extends "rig/default.njk" %}
 
+{#- NHS App Frontend components -#}
+{% from "nhsapp/components/timeline/macro.njk" import nhsappTimeline %}
+
 {#- GOV.UK Frontend components -#}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
