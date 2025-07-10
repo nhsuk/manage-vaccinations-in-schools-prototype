@@ -239,19 +239,36 @@ export function today(secondsToAdd) {
  * Get school year group
  *
  * @param {Date} date - Date
+ * @param {AcademicYear} [academicYear] - AcademicYear
  * @returns {number} School year group
  */
-export function getYearGroup(date) {
+export function getYearGroup(date, academicYear) {
   if (!date || isNaN(date.valueOf())) return 0
 
-  const currentYear = today().getFullYear()
+  // Determine which academic year to use
+  let targetYear
+  if (academicYear !== undefined) {
+    targetYear = Number(academicYear.split(' ')[0])
+  } else {
+    // Use current academic year
+    const currentDate = today()
+    const currentYear = currentDate.getFullYear()
+    const currentMonth = currentDate.getMonth()
+
+    // If we're before September 1, we're still in the previous academic year
+    if (currentMonth < 8) {
+      targetYear = currentYear - 1
+    } else {
+      targetYear = currentYear
+    }
+  }
 
   const birthYear = date.getFullYear()
   const birthMonth = date.getMonth()
   const birthDay = date.getDate()
 
   // Calculate the age of the child on September 1 of the current year
-  let ageOnStartOfYear = currentYear - birthYear
+  let ageOnStartOfYear = targetYear - birthYear
 
   if (birthMonth > 8 || (birthMonth === 8 && birthDay > 1)) {
     // If the birthday is after September 1, subtract 1 from the age

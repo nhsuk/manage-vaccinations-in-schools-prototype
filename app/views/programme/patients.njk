@@ -61,23 +61,18 @@
 
       {% for patientSession in results.page %}
         {{ card({
-          classes: "app-card--compact",
+          classes: "app-card--compact" + (" app-card--offset" if patientSession.session.isPastSession),
           heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
           headingClasses: "nhsuk-heading-s",
           headingLevel: 4,
           href: patientSession.uri,
+          clickable: true,
           descriptionHtml: summaryList({
-            rows: summaryRows(patientSession.patient, {
+            rows: summaryRows(patientSession, {
               dob: {},
               yearGroup: {},
-              consent: {
-                label: __("patientSession.consent.label"),
-                value: patientSession.formatted.status.consent
-              },
-              screen: {
-                label: __("patientSession.screen.label"),
-                value: patientSession.formatted.status.screen
-              },
+              consent: {},
+              screen: {},
               status: {
                 label: __("patientSession.report.label"),
                 value: patientSession.formatted.status.report

@@ -331,6 +331,18 @@ export class Session {
   }
 
   /**
+   * Does session occur in the current academic year?
+   *
+   * @returns {boolean} - Session occurs in current academic year
+   */
+  get isPastSession() {
+    const academicYear = Number(this.academicYear.split(' ')[0])
+    const currentYear = Number(getAcademicYear(today()).split(' ')[0])
+
+    return academicYear < currentYear
+  }
+
+  /**
    * Get status
    *
    * @returns {string} - Status
