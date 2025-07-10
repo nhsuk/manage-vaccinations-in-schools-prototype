@@ -1,10 +1,17 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import _ from 'lodash'
 
+import programmes from '../datasets/programmes.js'
 import schools from '../datasets/schools.js'
-import { AuditEventType, NoticeType } from '../enums.js'
-import { getDateValueDifference, removeDays, today } from '../utils/date.js'
+import { AcademicYear, AuditEventType, NoticeType } from '../enums.js'
+import {
+  formatDate,
+  getDateValueDifference,
+  removeDays,
+  today
+} from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
+import { getProgrammeEligibilityDate } from '../utils/patient.js'
 import { getPreferredNames } from '../utils/reply.js'
 import {
   formatLink,
@@ -263,6 +270,51 @@ export class Patient extends Child {
     }
 
     return []
+  }
+
+  /**
+   * Get programme eligibility
+   *
+   * @returns {object} Eligibility per programme
+   */
+  get programmeEligibility() {
+    const academicYears = Object.values(AcademicYear)
+    const currentAcademicYear = academicYears.at(-1)
+    const eligibility = {}
+
+    for (const programmeType of Object.keys(programmes)) {
+      const eligibilityDate = getProgrammeEligibilityDate(
+        this.yearGroup,
+        programmes[programmeType].yearGroups[0],
+        currentAcademicYear
+      )
+
+      eligibility[programmeType] = formatDate(eligibilityDate, {
+        dateStyle: 'long'
+      })
+    }
+
+    return eligibility
+  }
+
+  /**
+   * Get programme outcomes
+   *
+   * @returns {object} Outcome per programme
+   */
+  get programmeOutcomes() {
+    const outcomes = {}
+
+    for (const programmeType of Object.keys(programmes)) {
+      const vaccination = this.vaccinations.find(
+        ({ programme }) => programme.type === programmeType
+      )
+
+      outcomes[programmeType] =
+        vaccination || this.programmeEligibility[programmeType]
+    }
+
+    return outcomes
   }
 
   /**
