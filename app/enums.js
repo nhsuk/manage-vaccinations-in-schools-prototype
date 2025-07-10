@@ -248,7 +248,7 @@ export const ProgrammePreset = {
     term: SchoolTerm.Autumn
   },
   HPV: {
-    active: false,
+    active: true,
     adolescent: true,
     primaryProgrammeTypes: [ProgrammeType.HPV],
     term: SchoolTerm.Spring

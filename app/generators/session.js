@@ -33,14 +33,11 @@ export function generateSession(programmePreset, academicYear, user, options) {
   const { clinic_id, school_urn } = options
   const term = schoolTerms[academicYear][preset.term]
   const dates = []
-  const hasDatesScheduled = faker.datatype.boolean(0.5)
 
-  let firstSessionDate =
-    hasDatesScheduled &&
-    faker.date.between({
-      from: term.from,
-      to: term.to
-    })
+  let firstSessionDate = faker.date.between({
+    from: term.from,
+    to: term.to
+  })
 
   let openAt
   if (firstSessionDate) {

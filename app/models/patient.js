@@ -229,6 +229,17 @@ export class Patient extends Child {
   }
 
   /**
+   * Get programme IDs
+   *
+   * @returns {Array<string>} - Programme IDs
+   */
+  get programme_ids() {
+    if (this.cohorts) {
+      return this.cohorts.flatMap(({ programme_id }) => programme_id)
+    }
+  }
+
+  /**
    * Get replies
    *
    * @returns {Array<Reply>} - Replies
