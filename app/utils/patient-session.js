@@ -195,7 +195,7 @@ export const getInstructionStatus = (patientSession) => {
   let colour
   switch (patientSession.instruct) {
     case InstructionOutcome.Given:
-      colour = 'blue'
+      colour = 'aqua-green'
       break
     default:
       colour = 'grey'
@@ -218,7 +218,7 @@ export const getRegistrationStatus = (patientSession) => {
   let description
   switch (patientSession.register) {
     case RegistrationOutcome.Present:
-      colour = 'blue'
+      colour = 'aqua-green'
       description = `Registered as attending today’s session at ${patientSession.session.location.name}`
       break
     case RegistrationOutcome.Absent:
