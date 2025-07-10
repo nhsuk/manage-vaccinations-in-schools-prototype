@@ -342,12 +342,14 @@ export class Reply {
     if (this.invalid) {
       decisionStatus = formatWithSecondaryText(
         formatTag(this.status),
-        'Invalid'
+        'Invalid',
+        false
       )
     } else if (this.confirmed) {
       decisionStatus = formatWithSecondaryText(
         formatTag(this.status),
-        'Confirmed'
+        'Confirmed',
+        false
       )
     } else if (this.programme?.alternativeVaccine) {
       const vaccineMethod =
@@ -357,7 +359,8 @@ export class Reply {
 
       decisionStatus = formatWithSecondaryText(
         formatTag(this.status),
-        vaccineMethod
+        vaccineMethod,
+        false
       )
     }
 
