@@ -6,6 +6,7 @@ import {
   sentenceCaseProgrammeName
 } from '../utils/string.js'
 
+import { PatientSession } from './patient-session.js'
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
 
@@ -65,18 +66,14 @@ export class Cohort {
   }
 
   /**
-   * Get patients from cohort records
+   * Get patient sessions
    *
-   * @returns {Array<Patient>} - Records
+   * @returns {Array<PatientSession>} - Patient sessions
    */
-  get patients() {
-    if (this.context?.records && this.record_nhsns) {
-      return this.record_nhsns
-        .map((nhsn) => new Patient(this.context?.records[nhsn]))
-        .sort((a, b) => a.lastName.localeCompare(b.lastName))
-    }
-
-    return []
+  get patientSessions() {
+    return PatientSession.readAll(this.context).filter(
+      ({ patient }) => patient.yearGroup === this.yearGroup
+    )
   }
 
   /**
