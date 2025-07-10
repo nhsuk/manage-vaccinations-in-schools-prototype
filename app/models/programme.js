@@ -300,7 +300,7 @@ export class Programme {
         this.consentPdf &&
         formatLink(
           this.consentPdf,
-          `Download the ${this.name} consent form (PDF, 26KB)`,
+          `Download the ${this.name} consent form (PDF)`,
           {
             download: 'true'
           }
