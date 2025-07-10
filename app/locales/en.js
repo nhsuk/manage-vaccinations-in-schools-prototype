@@ -1118,6 +1118,9 @@ export const en = {
     nextActivityPerProgramme: {
       label: 'Action required'
     },
+    yearGroup: {
+      label: 'Year group'
+    },
     vaccineMethod: {
       label: 'Vaccination method'
     },

@@ -10,7 +10,7 @@ import {
   ScreenOutcome,
   TriageOutcome
 } from '../enums.js'
-import { getDateValueDifference, today } from '../utils/date.js'
+import { getDateValueDifference, getYearGroup, today } from '../utils/date.js'
 import {
   getInstructionOutcome,
   getInstructionStatus,
@@ -35,7 +35,8 @@ import {
   formatList,
   formatProgrammeStatus,
   formatTag,
-  formatVaccineMethod
+  formatVaccineMethod,
+  formatYearGroup
 } from '../utils/string.js'
 import {
   getScreenOutcome,
@@ -97,6 +98,15 @@ export class PatientSession {
     } catch (error) {
       console.error('PatientSession.patient', error.message)
     }
+  }
+
+  /**
+   * Get year group, within context of patient session’s academic year
+   *
+   * @returns {number} - Year group in patient session’s academic year
+   */
+  get yearGroup() {
+    return getYearGroup(this.patient.dob, this.session.academicYear)
   }
 
   /**
@@ -606,7 +616,8 @@ export class PatientSession {
       nextActivityPerProgramme: formatList(nextActivityPerProgramme),
       outstandingVaccinations: filters.formatList(outstandingVaccinations),
       vaccineMethod:
-        this.vaccine?.method && formatVaccineMethod(this.vaccine.method)
+        this.vaccine?.method && formatVaccineMethod(this.vaccine.method),
+      yearGroup: `${formatYearGroup(this.yearGroup)} (in the ${this.session.academicYear} academic year)`
     }
   }
 

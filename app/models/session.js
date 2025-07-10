@@ -243,6 +243,16 @@ export class Session {
   }
 
   /**
+   * Does session occur in the current academic year?
+   *
+   * @returns {boolean} - Session occurs in current academic year
+   */
+  get isPastSession() {
+    const currentAcademicYear = getAcademicYear(today())
+    return this.academicYear !== currentAcademicYear
+  }
+
+  /**
    * Get consents (unmatched consent responses)
    *
    * @returns {Array<import('./consent.js').Consent>} - Consent
