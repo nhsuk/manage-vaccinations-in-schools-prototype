@@ -1,7 +1,7 @@
 {%- from "components/tag/macro.njk" import tag -%}
-{%- macro env(params) -%}
+{%- macro appEnvironment(params) -%}
 {%- set colour = params.colour or "blue" -%}
-<div class="app-env nhsuk-tag--{{ colour }}">
+<div class="app-environment nhsuk-tag--{{ colour }}">
   <div class="nhsuk-width-container">
     {{ tag({
       classes: "nhsuk-tag--" + colour,

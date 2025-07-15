@@ -11,7 +11,7 @@
 {% from "_macros/autocomplete.njk" import autocomplete with context %}
 {% from "_macros/button-group.njk" import buttonGroup with context %}
 {% from "_macros/count.njk" import count %}
-{% from "_macros/env.njk" import env %}
+{% from "_macros/environment.njk" import appEnvironment %}
 {% from "_macros/event.njk" import event %}
 {% from "_macros/header.njk" import appHeader %}
 {% from "_macros/heading.njk" import heading %}
@@ -35,7 +35,7 @@
 {% endblock %}
 
 {% block header %}
-  {{ env(environment) if environment }}
+  {{ appEnvironment(environment) if environment }}
   {{ appHeader({
     service: {
       name: serviceName

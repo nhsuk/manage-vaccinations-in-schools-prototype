@@ -4,7 +4,7 @@
 {% set title = __("account.change-role.title") %}
 
 {% block header %}
-  {{ env(environment) if environment }}
+  {{ appEnvironment(environment) if environment }}
   {{ header({
     service: {
       name: serviceName
