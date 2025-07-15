@@ -3,6 +3,7 @@
 .app-secondary-navigation {
   margin-left: #{$nhsuk-gutter-half * -1};
   margin-right: #{$nhsuk-gutter-half * -1};
+
   @include nhsuk-font(19);
   @include nhsuk-responsive-margin(5, "bottom");
 

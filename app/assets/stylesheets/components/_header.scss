@@ -46,6 +46,7 @@
     padding-bottom: 3px;
     padding-top: 5px;
     text-decoration: none;
+
     @include nhsuk-font(14, $line-height: 1);
   }
 }

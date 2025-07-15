@@ -74,6 +74,7 @@
   margin: 0;
   padding: nhsuk-spacing(1);
   position: relative;
+
   @include nhsuk-font(19);
 
   .app-autocomplete__option-hint {
