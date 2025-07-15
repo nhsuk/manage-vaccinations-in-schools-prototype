@@ -11,11 +11,15 @@
       text: __("programme.list.title"),
       href: "/programmes"
     }, {
-      text: data.programmes[vaccination.programme_id].type,
-      href: "/programmes/" + vaccination.programme_id
-    }],
-    text: __("programme.vaccinations.title"),
-    href: "/programmes/" + vaccination.programme_id + "/vaccinations"
+      text: vaccination.patientSession.programme.name,
+      href: "/programmes/" + vaccination.patientSession.programme_id
+    }, {
+      text: __("programme.patientSessions.title"),
+      href: "/programmes/" + vaccination.patientSession.programme_id + "/patients"
+    }, {
+      text: vaccination.patientSession.patient.fullName,
+      href: vaccination.patientSession.uri
+    }]
   }) }}
 {% endblock %}
 

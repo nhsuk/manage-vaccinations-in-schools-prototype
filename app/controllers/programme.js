@@ -124,16 +124,5 @@ export const programmeController = {
     }
 
     response.redirect(`/programmes/${programme_id}/patients?${params}`)
-  },
-
-  readVaccinations(request, response, next) {
-    const { programme } = response.locals
-    const vaccinations = programme.vaccinations
-
-    // Results
-    response.locals.results = getResults(vaccinations, request.query)
-    response.locals.pages = getPagination(vaccinations, request.query)
-
-    next()
   }
 }
