@@ -151,10 +151,10 @@ export const parentController = {
         }
       },
       [`/${session_id}/${consent_uuid}/new/address`]: {},
-      ...getHealthQuestionPaths(`/${session_id}/${consent_uuid}/new/`, consent),
       ...(getConsentForAlternativeVaccine && {
         [`/${session_id}/${consent_uuid}/new/alternative`]: {}
       }),
+      ...getHealthQuestionPaths(`/${session_id}/${consent_uuid}/new/`, consent),
       [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
       [`/${session_id}/${consent_uuid}/new/confirmation`]: {},
       [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
