@@ -35,7 +35,6 @@ export default {
       },
       'immuneSystem': {},
       'immuneSystemCloseContact': {},
-      'bleeding': {},
       'eggAllergy': {},
       'anaphylaxisNasalFlu': {},
       'medicalConditions': {},

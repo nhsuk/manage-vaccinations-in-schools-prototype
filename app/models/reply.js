@@ -202,12 +202,18 @@ export class Reply {
 
     // Consent given for flu programme with method of vaccination
     if (programme.type === Flu) {
-      consentedMethod =
-        this.decision === ReplyDecision.OnlyFluInjection ? Injection : Nasal
-      consentedVaccine = Object.values(vaccines).find(
-        (programme) =>
-          programme.type === Flu && programme.method === consentedMethod
+      consentedVaccine = Object.values(vaccines).filter(
+        (programme) => programme.type === Flu
       )
+
+      // If no consent for alternative injection or only consent for injection
+      if (!this.alternative) {
+        consentedMethod =
+          this.decision === ReplyDecision.OnlyFluInjection ? Injection : Nasal
+        consentedVaccine = Object.values(vaccines).find(
+          (programme) => programme.method === consentedMethod
+        )
+      }
     }
 
     // Consent given for HPV programme
