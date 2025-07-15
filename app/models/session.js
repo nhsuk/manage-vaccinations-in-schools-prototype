@@ -272,7 +272,7 @@ export class Session {
         forms = [...forms, programme.formatted.consentPdf]
       }
 
-      return formatList(forms).replace('nhsuk-list--bullet', 'app-list--spaced')
+      return formatList(forms).replace(' nhsuk-list--bullet', '')
     }
 
     return []
@@ -764,10 +764,7 @@ export class Session {
 
     return {
       address: this.address?.formatted.multiline,
-      dates: formatList(formattedDates).replace(
-        'nhsuk-list--bullet',
-        'app-list--spaced'
-      ),
+      dates: formatList(formattedDates).replace(' nhsuk-list--bullet', ''),
       firstDate: formatDate(this.firstDate, { dateStyle: 'full' }),
       nextDate: formatDate(this.nextDate, {
         weekday: 'long',
@@ -776,8 +773,8 @@ export class Session {
       }),
       openAt: formatDate(this.openAt, { dateStyle: 'full' }),
       reminderDates: formatList(formattedReminderDates).replace(
-        'nhsuk-list--bullet',
-        'app-list--spaced'
+        ' nhsuk-list--bullet',
+        ''
       ),
       nextReminderDate: formattedNextReminderDate,
       reminderWeeks: formattedNextReminderDate

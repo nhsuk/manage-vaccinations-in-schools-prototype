@@ -1,9 +1,0 @@
-@use "../../vendor/nhsuk-frontend" as *;
-
-.app-list--spaced > li {
-  margin-bottom: nhsuk-spacing(1);
-
-  @include nhsuk-media-query($from: tablet) {
-    margin-bottom: nhsuk-spacing(2);
-  }
-}
