@@ -58,11 +58,9 @@
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         classes: "app-card--data app-card--reversed",
-        clickable: true if not isDataConsumer,
         heading: __("programme.vaccinations.label"),
         headingClasses: "nhsuk-heading-xs",
         headingLevel: 3,
-        href: programme.uri + "/vaccinations" if not isDataConsumer,
         description: programme.vaccinations.length or "0"
       }) }}
     </div>
