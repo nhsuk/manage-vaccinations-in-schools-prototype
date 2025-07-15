@@ -360,20 +360,19 @@ export class Patient extends Record {
   }
 
   /**
-   * Unselect patient from cohort
+   * Archive record
    *
-   * @param {import('./cohort.js').Cohort} cohort - Cohort
+   * @param {object} archive - Archive details
    * @param {object} context - Context
    */
-  unselectFromCohort(cohort, context) {
-    this.cohort_uids = this.cohort_uids.filter((uid) => uid !== cohort.uid)
-    this.update({}, context)
+  archive(archive, context) {
+    this.update(archive, context)
 
     this.addEvent({
       type: EventType.Select,
-      name: `Removed from the ${cohort.name}`,
-      createdBy_uid: cohort.createdBy_uid,
-      programme_ids: [cohort.programme_id]
+      name: `Record archived: ${archive.archiveReason}`,
+      note: archive.archiveReasonOther,
+      createdBy_uid: archive.createdBy_uid
     })
   }
 

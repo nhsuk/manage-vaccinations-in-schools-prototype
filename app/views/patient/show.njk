@@ -39,6 +39,9 @@
           changeLabel: "the child’s NHS number",
           href: patient.uri + "/edit/nhsn" if patient.hasMissingNhsNumber
         },
+        archiveReason: {
+          other: archiveReasonOther
+        },
         fullName: {},
         preferredNames: {},
         dob: { value: patient.dobWithAge },
@@ -52,65 +55,23 @@
       })
     }) }}
 
-    <p class="nhsuk-body">
-      {{ button({
-        classes: "nhsuk-button--secondary nhsuk-u-margin-0",
-        text: __("patient.edit.title"),
+    {{ buttonGroup({
+      buttons: [{
+        classes: "nhsuk-button--secondary",
+        text: __("patient.edit.label"),
         href: patient.uri + "/edit"
-      }) }}
-    </p>
+      }, {
+        classes: "app-button--secondary-warning",
+        text: __("patient.archive.label"),
+        href: patient.uri + "/archive"
+      }]
+    }) if not patient.archived }}
   {% endset %}
 
   {{ card({
     heading: __("patient.label"),
     headingLevel: 3,
     descriptionHtml: recordDescriptionHtml
-  }) }}
-
-  {% set cohortsDescriptionHtml %}
-    {% if patient.cohorts.length %}
-      {% set cohortRows = [] %}
-      {% for cohort in patient.cohorts | sort(false, false, "createdAt") %}
-        {% set cohortRows = cohortRows | push([
-          {
-            header: __("cohort.label"),
-            html: cohort.link.name
-          },
-          {
-            header: __("actions.label"),
-            html: button({
-              classes: "app-button--secondary-warning app-button--small",
-              text: __("cohort.unselect.confirm"),
-              decorate: "uid",
-              value: cohort.uid,
-              attributes: {
-                formaction: patient.uri + "/unselect",
-                formmethod: "post"
-              }
-            })
-          }
-        ]) %}
-      {% endfor %}
-
-      {{ table({
-        id: "cohorts",
-        sort: "name",
-        responsive: true,
-        head: [
-          { text: __("cohort.label") },
-          { text: __("actions.label") }
-        ],
-        rows: cohortRows
-      }) }}
-    {% else %}
-      {{ __n("cohort.count", 0) | nhsukMarkdown }}
-    {% endif %}
-  {% endset %}
-
-  {{ card({
-    heading: __("cohort.label"),
-    headingLevel: 3,
-    descriptionHtml: cohortsDescriptionHtml
   }) }}
 
   {% set sessionsDescriptionHtml %}

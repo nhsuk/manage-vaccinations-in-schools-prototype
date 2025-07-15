@@ -1,3 +1,4 @@
+{% from "_macros/action-list.njk" import actionList %}
 {% from "_macros/heading.njk" import heading %}
 {% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
 
@@ -5,6 +6,15 @@
   {{ heading({
     title: params.patient.fullName
   }) }}
+
+  {{ actionList({
+    items: [{
+      tag: {
+        text: __("patient.archived.label"),
+        classes: "nhsuk-tag--grey"
+      }
+    }]
+  }) if patient.archived }}
 
   {{ secondaryNavigation({
     items: [{

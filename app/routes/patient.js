@@ -16,7 +16,7 @@ router.all('/:nhsn/edit/:view', patient.readForm)
 router.get('/:nhsn/edit/:view', patient.showForm)
 router.post('/:nhsn/edit/:view', patient.updateForm)
 
-router.post('/:nhsn/unselect', patient.unselect)
+router.post('/:nhsn/archive', patient.archive)
 
 router.get('/:nhsn{/:view}', patient.show)
 

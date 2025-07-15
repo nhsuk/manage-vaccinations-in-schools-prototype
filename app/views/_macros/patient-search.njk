@@ -140,11 +140,15 @@
         },
         items: [
           {
-            value: "true",
+            value: "archived",
+            text: __("patient.search.archived")
+          },
+          {
+            value: "hasMissingNhsNumber",
             text: __("patient.search.hasMissingNhsNumber")
           }
         ],
-        decorate: "hasMissingNhsNumber"
+        decorate: "options"
       }) }}
 
       {{ filterButtonGroup | safe if not (programmeItems or statusItems) }}

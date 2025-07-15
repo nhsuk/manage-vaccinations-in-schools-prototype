@@ -24,6 +24,18 @@ export const Activity = {
  * @readonly
  * @enum {string}
  */
+export const ArchiveRecordReason = {
+  Deceased: 'The child was reported as deceased',
+  Duplicate: 'It’s a duplicate',
+  Error: 'It was imported in error',
+  Moved: 'The child has moved out of the area',
+  Other: 'Other'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const ConsentOutcome = {
   NoRequest: 'Request failed',
   NoResponse: 'No response',
