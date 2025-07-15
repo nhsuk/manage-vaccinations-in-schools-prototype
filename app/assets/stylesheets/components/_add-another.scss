@@ -37,8 +37,4 @@ h1:has(+ .app-add-another):focus {
     position: absolute;
     width: $_counter-size;
   }
-
-  .app-button--small.nhsuk-button--secondary-warning:active {
-    margin-bottom: nhsuk-spacing(6) - 4px;
-  }
 }
