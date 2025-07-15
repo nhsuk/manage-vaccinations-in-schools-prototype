@@ -4,6 +4,7 @@ import schools from '../datasets/schools.js'
 import {
   formatList,
   formatNhsNumber,
+  formatOther,
   formatParent,
   formatWithSecondaryText,
   stringToBoolean
@@ -26,6 +27,8 @@ import { Vaccination } from './vaccination.js'
  * @property {Record} [pendingChanges] - Pending changes to record values
  * @property {boolean} invalid - Flagged as invalid
  * @property {boolean} sensitive - Flagged as sensitive
+ * @property {import('../enums.js').ArchiveRecordReason} [archiveReason] - Archival reason
+ * @property {string} [archiveReasonOther] - Other archival reason
  */
 export class Record extends Child {
   constructor(options, context) {
@@ -45,6 +48,17 @@ export class Record extends Child {
     this.pendingChanges = options?.pendingChanges || {}
     this.invalid = invalid
     this.sensitive = sensitive
+    this.archiveReason = options?.archiveReason
+    this.archiveReasonOther = options?.archiveReasonOther
+  }
+
+  /**
+   * Record is archived
+   *
+   * @returns {boolean} - Record is archived
+   */
+  get archived() {
+    return this.archiveReason !== undefined
   }
 
   /**
@@ -142,7 +156,8 @@ export class Record extends Child {
         schools[this.pendingChanges.school_urn].name,
       parent1: this.parent1 && formatParent(this.parent1),
       parent2: this.parent2 && formatParent(this.parent2),
-      parents: formatList(formattedParents)
+      parents: formatList(formattedParents),
+      archiveReason: formatOther(this.archiveReasonOther, this.archiveReason)
     }
   }
 

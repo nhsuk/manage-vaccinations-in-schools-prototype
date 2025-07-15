@@ -193,10 +193,6 @@ export const en = {
     upload: {
       label: 'Import child records'
     },
-    unselect: {
-      confirm: 'Remove from cohort',
-      success: '{{patient.fullName}} removed from {{cohort.name}}'
-    },
     patientSessions: {
       count: {
         one: '%s child',
@@ -942,9 +938,21 @@ export const en = {
       title: 'Child record'
     },
     edit: {
+      label: 'Edit record',
       title: 'Edit child record',
       summary: 'Child’s details',
       success: 'Child record updated'
+    },
+    archive: {
+      label: 'Archive record',
+      title: 'Why do you want to archive this record?',
+      cancel: 'Return to child record',
+      confirm: 'Archive record',
+      success: 'Child record archived',
+      duplicate: {
+        label: 'Enter the NHS number for the duplicate record',
+        hint: 'This will merge the duplicate records into a single record'
+      }
     },
     events: {
       title: 'Activity log'
@@ -961,7 +969,17 @@ export const en = {
     search: {
       label: 'Find children',
       dob: 'Child’s date of birth',
+      archived: 'Archived',
       hasMissingNhsNumber: 'Missing NHS number'
+    },
+    archiveReason: {
+      label: 'Reason for archival'
+    },
+    archiveReasonOther: {
+      label: 'Give details'
+    },
+    archived: {
+      label: 'Archived'
     },
     nhsn: {
       label: 'NHS number',

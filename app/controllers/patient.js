@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { Cohort } from '../models/cohort.js'
+import { ArchiveRecordReason } from '../enums.js'
 import { Patient } from '../models/patient.js'
 import { Record } from '../models/record.js'
 import { getResults, getPagination } from '../utils/pagination.js'
@@ -19,11 +19,20 @@ export const patientController = {
 
     response.locals.patient = patient
 
+    response.locals.archiveRecordReasonItems = Object.values(
+      ArchiveRecordReason
+    )
+      .filter((value) => value !== ArchiveRecordReason.Deceased)
+      .map((value) => ({
+        text: value,
+        value
+      }))
+
     next()
   },
 
   readAll(request, response, next) {
-    const { q, hasMissingNhsNumber } = request.query
+    const { options, q } = request.query
     const { data } = request.session
 
     let patients = Patient.readAll(data)
@@ -38,13 +47,20 @@ export const patientController = {
       )
     }
 
-    // Filter by missing NHS number
-    if (hasMissingNhsNumber) {
-      patients = patients.filter((patient) => patient.hasMissingNhsNumber)
+    // Filter out archived records by default
+    if (!options?.includes('archived')) {
+      patients = patients.filter(({ archived }) => !archived)
+    }
+
+    // Filter
+    for (const option of ['archived', 'hasMissingNhsNumber']) {
+      if (options?.includes(option)) {
+        patients = patients.filter((patient) => patient[option])
+      }
     }
 
     // Clean up session data
-    delete data.hasMissingNhsNumber
+    delete data.options
     delete data.q
 
     response.locals.patients = patients
@@ -65,15 +81,27 @@ export const patientController = {
   },
 
   filterList(request, response) {
-    const { hasMissingNhsNumber, q } = request.body
     const params = new URLSearchParams()
 
-    if (q) {
-      params.append('q', String(q))
+    // Single value per filter
+    for (const key of ['q']) {
+      const value = request.body[key]
+      if (value) {
+        params.append(key, String(value))
+      }
     }
 
-    if (hasMissingNhsNumber?.includes('true')) {
-      params.append('hasMissingNhsNumber', 'true')
+    // Multiple values per filter
+    for (const key of ['options']) {
+      const value = request.body[key]
+      const values = Array.isArray(value) ? value : [value]
+      if (value) {
+        values
+          .filter((item) => item !== '_unchecked')
+          .forEach((value) => {
+            params.append(key, String(value))
+          })
+      }
     }
 
     response.redirect(`/patients?${params}`)
@@ -151,16 +179,19 @@ export const patientController = {
     response.redirect(paths.next)
   },
 
-  unselect(request, response) {
+  archive(request, response) {
     const { data } = request.session
-    const { uid } = request.body
     const { __, patient } = response.locals
 
-    // Unselect patient from cohort
-    const cohort = Cohort.read(uid, data)
-    patient.unselectFromCohort(cohort, data)
+    patient.archive(
+      {
+        ...request.body.patient,
+        ...(data.token && { createdBy_uid: data.token?.uid })
+      },
+      data
+    )
 
-    request.flash('success', __(`cohort.unselect.success`, { cohort, patient }))
+    request.flash('success', __(`patient.archive.success`))
 
     response.redirect(patient.uri)
   }

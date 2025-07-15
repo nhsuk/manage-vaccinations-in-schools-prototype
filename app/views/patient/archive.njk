@@ -1,0 +1,47 @@
+{% extends "_layouts/form.njk" %}
+
+{% set paths = { back: patient.uri } %}
+{% set title = __("patient.archive.title") %}
+
+{% block form %}
+  {% set duplicateHtml = input({
+    classes: "nhsuk-input--width-10 app-u-monospace",
+    label: { text: __("patient.archive.duplicate.label") },
+    hint: { text: __("patient.archive.duplicate.hint") }
+  }) %}
+
+  {% set otherHtml = input({
+    label: { text: __("patient.archiveReasonOther.label") },
+    decorate: "patient.archiveReasonOther"
+  }) %}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: heading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: patient.fullName,
+          title: title
+        })
+      }
+    },
+    items: injectConditionalHtml(injectConditionalHtml(archiveRecordReasonItems, ArchiveRecordReason.Other, otherHtml), ArchiveRecordReason.Duplicate, duplicateHtml),
+    decorate: "patient.archiveReason"
+  }) }}
+{% endblock %}
+
+{% block afterForm %}
+  {{ buttonGroup({
+    buttons: [{
+      classes: "nhsuk-button--warning",
+      text: __("patient.archive.confirm"),
+      attributes: {
+        formAction: patient.uri + "/archive"
+      }
+    }],
+    links: [{
+      text: __("patient.archive.cancel"),
+      href: patient.uri
+    }]
+  }) }}
+{% endblock %}
