@@ -1,7 +1,6 @@
 import _ from 'lodash'
 
 import { healthQuestions } from './datasets/health-questions.js'
-import { ScreenOutcome } from './enums.js'
 import { School } from './models/school.js'
 import { User } from './models/user.js'
 import {
@@ -118,10 +117,7 @@ export default () => {
         ? { divider: 'or' }
         : {
             text: __(`triage.outcome.${value}`),
-            value,
-            ...(value === ScreenOutcome.VaccinateNasal && {
-              conditional: { html: {} }
-            }) // Added in template
+            value
           }
     )
   }
@@ -138,7 +134,7 @@ export default () => {
     const item = object.find((item) => item.value === value)
 
     if (item) {
-      item.conditional.html = html
+      item.conditional = { html }
     }
 
     return object

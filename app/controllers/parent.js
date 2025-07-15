@@ -188,11 +188,7 @@ export const parentController = {
       .filter((relationship) => relationship !== ParentalRelationship.Unknown)
       .map((relationship) => ({
         text: relationship,
-        value: relationship,
-        ...([
-          ParentalRelationship.Fosterer,
-          ParentalRelationship.Other
-        ].includes(relationship) && { conditional: { html: {} } }) // Added in template
+        value: relationship
       }))
 
     if (programmes.length > 1) {
@@ -204,8 +200,7 @@ export const parentController = {
         },
         {
           text: __('consent.decision.one.label'),
-          value: '_one',
-          conditional: { html: {} } // Added in template
+          value: '_one'
         },
         {
           divider: 'or'
