@@ -2,12 +2,12 @@
 
 $_counter-size: 2rem;
 
-add-another {
+.app-add-another {
   display: block;
 }
 
 // Show focus state when heading receives focus
-h1:has(+ add-another):focus {
+h1:has(+ .app-add-another):focus {
   display: inline-block;
   @include nhsuk-focused-text;
 }
