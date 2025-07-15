@@ -1258,13 +1258,9 @@ export const en = {
     consentPdf: {
       label: 'Paper consent form'
     },
-    patientSessions: {
+    patients: {
       label: 'Children',
-      title: 'Children',
-      count: {
-        one: '%s child',
-        other: '[0] No children|%s children'
-      }
+      title: 'Children'
     },
     sessions: {
       label: 'Sessions',
@@ -2291,8 +2287,6 @@ export const en = {
     show: {
       summary: 'Vaccination details'
     },
-    results:
-      '{count, plural, =0{No vaccinations matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> vaccination} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> vaccinations}}',
     count: {
       one: '%s vaccination record',
       other: '[0] No vaccination records|%s vaccination records'
@@ -2304,9 +2298,6 @@ export const en = {
     decline: {
       title:
         'Why was the {{session.programmeNames.sentenceCase}} vaccination not given?'
-    },
-    upload: {
-      label: 'Import vaccination records'
     },
     new: {
       'check-answers': {

@@ -26,45 +26,44 @@
     view: "show"
   }) }}
 
-  {{ button({
-    classes: "nhsuk-button--secondary",
-    text: __("download.new.label"),
-    href: programme.uri + "/download/new"
-  }) if programme.vaccinations.length }}
-
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
-        classes: "app-card--data app-card--reversed",
+        classes: "app-card--data app-card--reversed-green",
         clickable: true if not isDataConsumer,
-        heading: __("programme.patientSessions.label"),
+        heading: PatientOutcome.Vaccinated,
         headingClasses: "nhsuk-heading-xs",
         headingLevel: 3,
-        href: programme.uri + "/patients" if not isDataConsumer,
-        description: programme.patientSessions.length or "0"
+        href: programme.uri + "/patients?report=" + PatientOutcome.Vaccinated if not isDataConsumer,
+        description: programme.report(PatientOutcome.Vaccinated).length or "0"
       }) }}
     </div>
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
-        classes: "app-card--data app-card--reversed",
+        classes: "app-card--data app-card--reversed-red",
         clickable: true if not isDataConsumer,
-        heading: __("programme.sessions.label"),
+        heading: PatientOutcome.CouldNotVaccinate,
         headingClasses: "nhsuk-heading-xs",
         headingLevel: 3,
-        href: programme.uri + "/sessions" if not isDataConsumer,
-        description: programme.sessions.length or "0"
+        href: programme.uri + "/patients?report=" + PatientOutcome.CouldNotVaccinate if not isDataConsumer,
+        description: programme.report(PatientOutcome.CouldNotVaccinate).length or "0"
       }) }}
     </div>
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
-        classes: "app-card--data app-card--reversed",
-        heading: __("programme.vaccinations.label"),
+        classes: "app-card--data app-card--reversed-grey",
+        heading: PatientOutcome.NoOutcomeYet,
         headingClasses: "nhsuk-heading-xs",
         headingLevel: 3,
-        description: programme.vaccinations.length or "0"
+        description: programme.report(PatientOutcome.NoOutcomeYet).length or "0"
       }) }}
     </div>
   </div>
+
+  {{ actionLink({
+    text: __("download.new.label"),
+    href: programme.uri + "/download/new"
+  }) if programme.vaccinations.length }}
 
   {{ heading({
     level: 2,
@@ -86,99 +85,101 @@
       </li>
     {% endfor %}
   </ul>
-  {% if programme.sessions.length %}
-    {{ heading({
-      level: 2,
-      size: "m",
-      title: __("programme.show.responses")
-    }) }}
-    <div class="nhsuk-grid-row nhsuk-card-group">
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ card({
-          classes: "app-card--data",
-          heading: "Consent requests and reminders sent",
-          headingClasses: "nhsuk-heading-xs",
-          headingLevel: 3,
-          description: 1671
-        }) }}
-      </div>
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ card({
-          classes: "app-card--data",
-          heading: "Consent given (versus refused or no response)",
-          headingClasses: "nhsuk-heading-xs",
-          headingLevel: 3,
-          description: "78%"
-        }) }}
-      </div>
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ card({
-          classes: "app-card--data",
-          heading: "Responses received and triaged",
-          headingClasses: "nhsuk-heading-xs",
-          headingLevel: 3,
-          description: "98%"
-        }) }}
-      </div>
-    {% endif %}
+
+{% if programme.sessions.length %}
+  {{ heading({
+    level: 2,
+    size: "m",
+    title: __("programme.show.responses")
+  }) }}
+
+  <div class="nhsuk-grid-row nhsuk-card-group">
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data",
+        heading: "Consent requests and reminders sent",
+        headingClasses: "nhsuk-heading-xs",
+        headingLevel: 3,
+        description: 1671
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data",
+        heading: "Consent given (versus refused or no response)",
+        headingClasses: "nhsuk-heading-xs",
+        headingLevel: 3,
+        description: "78%"
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ card({
+        classes: "app-card--data",
+        heading: "Responses received and triaged",
+        headingClasses: "nhsuk-heading-xs",
+        headingLevel: 3,
+        description: "98%"
+      }) }}
+    </div>
   </div>
 
-  {% if programme.sessions.length %}
-    {{ table({
-      heading: "Reasons for refusal",
-      panel: true,
-      head: [
-        { text: __("reply.refusalReason.label") },
-        { text: "Frequency", format: "numeric" }
+  {{ table({
+    heading: "Reasons for refusal",
+    panel: true,
+    head: [
+      { text: __("reply.refusalReason.label") },
+      { text: "Frequency", format: "numeric" }
+    ],
+    rows: [
+      [
+        { text: ReplyRefusal.Gelatine },
+        { text: "11.1%", format: "numeric" }
+      ] if programme.type == ProgrammeType.Flu,
+      [
+        { text: ReplyRefusal.AlreadyGiven },
+        { text: "2.0%", format: "numeric" }
       ],
-      rows: [
-        [
-          { text: ReplyRefusal.Gelatine },
-          { text: "11.1%", format: "numeric" }
-        ] if programme.type == ProgrammeType.Flu,
-        [
-          { text: ReplyRefusal.AlreadyGiven },
-          { text: "2.0%", format: "numeric" }
-        ],
-        [
-          { text: ReplyRefusal.GettingElsewhere },
-          { text: "3.6%", format: "numeric" }
-        ],
-        [
-          { text: ReplyRefusal.Medical },
-          { text: "1.0%", format: "numeric" }
-        ],
-        [
-          { text: ReplyRefusal.Personal },
-          { text: "5.1%", format: "numeric" }
-        ],
-        [
-          { text: ReplyRefusal.Other },
-          { text: "1.1%", format: "numeric" }
-        ]
+      [
+        { text: ReplyRefusal.GettingElsewhere },
+        { text: "3.6%", format: "numeric" }
+      ],
+      [
+        { text: ReplyRefusal.Medical },
+        { text: "1.0%", format: "numeric" }
+      ],
+      [
+        { text: ReplyRefusal.Personal },
+        { text: "5.1%", format: "numeric" }
+      ],
+      [
+        { text: ReplyRefusal.Other },
+        { text: "1.1%", format: "numeric" }
       ]
-    }) }}
+    ]
+  }) }}
 
-    {% set questionRows = [] %}
-    {% for key, healthQuestion in programme.patientSessions[0].vaccine.flatHealthQuestions %}
-      {% set questionRows = questionRows | push([
-        {
-          text: __("healthQuestions." + key + ".label")
-        },
-        {
-          text: ["0.21","0.57","3.45","1.89"] | random + "%",
-          format: "numeric"
-        }
-      ]) %}
-    {% endfor %}
-    {{ table({
-      heading: "Consent journey",
-      panel: true,
-      head: [
-        { text: "Question" },
-        { html: "Dropout", format: "numeric" }
-      ],
-      rows: questionRows
-    }) }}
-  {% endif %}
+  {% set questionRows = [] %}
+  {% for key, healthQuestion in programme.vaccines[0].flatHealthQuestions %}
+    {% set questionRows = questionRows | push([
+      {
+        text: __("healthQuestions." + key + ".label")
+      },
+      {
+        text: ["0.21","0.57","3.45","1.89"] | random + "%",
+        format: "numeric"
+      }
+    ]) %}
+  {% endfor %}
+  {{ table({
+    heading: "Consent journey",
+    panel: true,
+    head: [
+      { text: "Question" },
+      { html: "Dropout", format: "numeric" }
+    ],
+    rows: questionRows
+  }) }}
+{% endif %}
 {% endblock %}
