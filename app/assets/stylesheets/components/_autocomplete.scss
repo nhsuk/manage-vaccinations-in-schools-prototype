@@ -6,20 +6,28 @@
 
 .app-autocomplete__input {
   position: relative;
-}
 
-.app-autocomplete__hint {
-  color: $nhsuk-secondary-text-color;
-  position: absolute;
+  .nhsuk-form-group--error & {
+    border: $nhsuk-border-width-form-element-error solid $nhsuk-error-color;
+  }
 }
 
 .app-autocomplete__input--focused {
   @include nhsuk-focused-input;
+
+  .nhsuk-form-group--error & {
+    border-color: $nhsuk-focus-text-color;
+  }
 }
 
 .app-autocomplete__input--show-all-values {
   cursor: pointer;
   padding: nhsuk-spacing(1) nhsuk-spacing(5) nhsuk-spacing(1) nhsuk-spacing(1);
+}
+
+.app-autocomplete__hint {
+  color: $nhsuk-secondary-text-color;
+  position: absolute;
 }
 
 .app-autocomplete__dropdown-arrow-down {
