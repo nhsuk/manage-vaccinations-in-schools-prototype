@@ -16,8 +16,10 @@ $_secondary-warning-button-hover-color: color.change($nhsuk-warning-button-color
     color: $nhsuk-warning-button-color;
   }
 
-  &:hover {
+  &:hover,
+  &:hover:visited {
     background-color: $_secondary-warning-button-hover-color;
+    color: $nhsuk-warning-button-color;
   }
 
   &:active {
