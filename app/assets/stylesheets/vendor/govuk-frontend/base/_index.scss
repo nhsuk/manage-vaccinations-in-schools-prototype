@@ -1,6 +1,6 @@
 @use "../../../vendor/nhsuk-frontend" as nhsuk;
 
-// Configure GOV.UK Frontend to use NHS.UK Frontend variables
+// Configure GOV.UK Frontend to use NHS.UK frontend variables
 @forward "govuk-frontend/dist/govuk/base" with (
   $govuk-text-colour: nhsuk.$nhsuk-text-color,
   $govuk-secondary-text-colour: nhsuk.$nhsuk-secondary-text-color,
@@ -19,7 +19,7 @@
     "yellow": nhsuk.$color_nhsuk-yellow,
     "green": nhsuk.$color_nhsuk-green,
     "blue": nhsuk.$color_nhsuk-blue,
-    "dark-blue": nhsuk.nhsuk-shade(nhsuk.$color_nhsuk-blue, 50%),
+    "dark-blue": #003087,
     "light-blue": #41b6e6,
     "purple": nhsuk.$color_nhsuk-purple,
     "black": nhsuk.$color_nhsuk-black,
