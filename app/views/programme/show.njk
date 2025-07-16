@@ -160,7 +160,7 @@
     }) }}
 
     {% set questionRows = [] %}
-    {% for key, healthQuestion in programme.patientSessions[0].vaccine.flatHealthQuestions %}
+    {% for key, healthQuestion in programme.vaccines[0].flatHealthQuestions %}
       {% set questionRows = questionRows | push([
         {
           text: __("healthQuestions." + key + ".label")
