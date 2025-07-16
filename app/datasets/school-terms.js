@@ -1,16 +1,6 @@
 import { AcademicYear, SchoolTerm } from '../enums.js'
 
 export default {
-  [AcademicYear.Y2021]: {
-    [SchoolTerm.Autumn]: { from: '2021-09-05', to: '2021-12-23' },
-    [SchoolTerm.Spring]: { from: '2022-01-09', to: '2022-04-14' },
-    [SchoolTerm.Summer]: { from: '2022-05-01', to: '2022-07-23' }
-  },
-  [AcademicYear.Y2022]: {
-    [SchoolTerm.Autumn]: { from: '2022-09-04', to: '2022-12-22' },
-    [SchoolTerm.Spring]: { from: '2023-01-08', to: '2023-04-13' },
-    [SchoolTerm.Summer]: { from: '2023-04-30', to: '2023-07-22' }
-  },
   [AcademicYear.Y2023]: {
     [SchoolTerm.Autumn]: { from: '2023-09-03', to: '2023-12-21' },
     [SchoolTerm.Spring]: { from: '2024-01-07', to: '2024-04-12' },
