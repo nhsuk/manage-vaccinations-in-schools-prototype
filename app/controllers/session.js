@@ -151,11 +151,13 @@ export const sessionController = {
     // Academic year options
     response.locals.academicYearItems =
       isRollover &&
-      Object.values(AcademicYear).map((value) => ({
-        text: value,
-        value,
-        checked: filters.academicYear === value
-      }))
+      Object.values(AcademicYear)
+        .slice(-2)
+        .map((value) => ({
+          text: value,
+          value,
+          checked: filters.academicYear === value
+        }))
 
     const primaryProgrammesMap = new Map()
     sessions
