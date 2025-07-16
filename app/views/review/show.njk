@@ -8,7 +8,7 @@
   {{ super() }}
 
   {{ heading({
-    caption: record.fullName,
+    caption: patient.fullName,
     title: title
   }) }}
 
@@ -22,11 +22,11 @@
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
       {% set descriptionHtml %}
         {{ summaryList({
-          rows: summaryRows(duplicateRecord, {
+          rows: summaryRows(duplicatePatient, {
             nhsn: {},
             fullName: {},
             dob: {
-              value: duplicateRecord.formatted.dob | highlightDifference(record.formatted.dob)
+              value: duplicatePatient.formatted.dob | highlightDifference(patient.formatted.dob)
             },
             gender: {},
             postalCode: {},
@@ -34,10 +34,10 @@
           })
         }) }}
 
-        {% if duplicateRecord.vaccinations[0] %}
+        {% if duplicatePatient.vaccinations[0] %}
           <h3 class="nhsuk-heading-s">{{ __("upload.review.duplicate.vaccination") }}</h3>
           {{ summaryList({
-            rows: summaryRows(duplicateRecord.vaccinations[0], {
+            rows: summaryRows(duplicatePatient.vaccinations[0], {
               outcome: {},
               vaccine_snomed: {},
               method: {},
@@ -77,10 +77,10 @@
           })
         }) }}
 
-        {% if record.vaccinations[0] %}
+        {% if patient.vaccinations[0] %}
           <h3 class="nhsuk-heading-s">{{ __("upload.review.original.vaccination") }}</h3>
           {{ summaryList({
-            rows: summaryRows(record.vaccinations[0], {
+            rows: summaryRows(patient.vaccinations[0], {
               outcome: {},
               vaccine_snomed: {},
               method: {},

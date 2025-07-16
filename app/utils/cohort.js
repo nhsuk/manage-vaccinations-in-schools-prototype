@@ -4,10 +4,10 @@ import { AcademicYear, ProgrammeType } from '../enums.js'
  * Determines if a patient should be added to a specific cohort
  *
  * @param {import('../models/cohort.js').Cohort} cohort - Cohort
- * @param {import('../models/record.js').Record} record - Record
+ * @param {import('../models/patient.js').Patient} patient - Patient record
  * @returns {boolean} - Patient eligible for cohort
  */
-export function getCohortEligibility(cohort, record) {
+export function getCohortEligibility(cohort, patient) {
   const academicYears = Object.keys(AcademicYear).map((key) =>
     parseInt(key.substring(1))
   )
@@ -16,7 +16,7 @@ export function getCohortEligibility(cohort, record) {
 
   // Calculate year group patient was in during the cohort’s academic year
   const yearDifference = currentAcademicYear - cohortAcademicYear
-  const patientYearGroupInCohortYear = record.yearGroup - yearDifference
+  const patientYearGroupInCohortYear = patient.yearGroup - yearDifference
 
   // Check if the patient was in the correct year group for this cohort
   if (patientYearGroupInCohortYear !== cohort.yearGroup) {

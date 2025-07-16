@@ -2,7 +2,6 @@ import _ from 'lodash'
 
 import { ArchiveRecordReason } from '../enums.js'
 import { Patient } from '../models/patient.js'
-import { Record } from '../models/record.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const patientController = {
@@ -10,13 +9,7 @@ export const patientController = {
     const { data } = request.session
     const { __ } = response.locals
 
-    let patient = Patient.read(nhsn, data)
-
-    // If no patient found, use CHIS record (patient not imported yet)
-    if (!patient) {
-      const record = Record.readAll(data).find((record) => record.nhsn === nhsn)
-      patient = new Patient(record, data)
-    }
+    const patient = Patient.read(nhsn, data)
 
     response.locals.patient = patient
 

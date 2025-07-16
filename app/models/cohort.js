@@ -1,5 +1,4 @@
 import { getCohortEligibility } from '../utils/cohort.js'
-import { createMap } from '../utils/object.js'
 import {
   formatLink,
   formatYearGroup,
@@ -7,7 +6,6 @@ import {
 } from '../utils/string.js'
 
 import { PatientSession } from './patient-session.js'
-import { Patient } from './patient.js'
 import { Programme } from './programme.js'
 
 /**
@@ -151,34 +149,16 @@ export class Cohort {
   }
 
   /**
-   * Select records for cohort
+   * Select patient records for cohort
    *
    * @param {object} context - Context
    */
   select(context) {
-    const nhsns = new Set()
-    const records = createMap(context.records)
-    records.forEach((record) => {
-      const eligibleForCohort = getCohortEligibility(this, record)
+    context.patients.forEach((patient) => {
+      const eligibleForCohort = getCohortEligibility(this, patient)
       if (eligibleForCohort) {
-        nhsns.add(record.nhsn)
+        patient.selectForCohort(this)
       }
     })
-
-    // Create or update patient record
-    const patients = createMap(context.patients)
-    for (const nhsn of [...nhsns]) {
-      let patient = [...patients.values()].find(
-        (patient) => patient.nhsn === nhsn
-      )
-
-      if (!patient) {
-        const record = records.get(nhsn)
-        patient = new Patient(structuredClone(record))
-        patients.set(patient.uuid, patient)
-      }
-
-      patient.selectForCohort(this)
-    }
   }
 }

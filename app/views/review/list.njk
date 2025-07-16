@@ -13,12 +13,12 @@
 
   {% if pendingReviews %}
     {% set reviewRows = [] %}
-    {% for id, pendingRecords in pendingReviews %}
-      {% for record in pendingRecords %}
+    {% for id, pendingPatients in pendingReviews %}
+      {% for patient in pendingPatients %}
         {% set reviewRows = reviewRows | push([
           {
-            header: __("record.fullName.label"),
-            html: record.fullName or "Not provided"
+            header: __("patient.fullName.label"),
+            html: patient.fullName or "Not provided"
           },
           {
             header: __("upload.issue.label"),
@@ -29,7 +29,7 @@
             html: actionList({
               items: [{
                 text: __("actions.review"),
-                href: "/uploads/reviews/" + id + "/" + record.nhsn + "?referrer=/uploads/reviews/"
+                href: "/uploads/reviews/" + id + "/" + patient.nhsn + "?referrer=/uploads/reviews/"
               }]
             })
           }
@@ -43,7 +43,7 @@
       panel: true,
       responsive: true,
       head: [
-        { text: __("record.label") },
+        { text: __("patient.label") },
         { text: __("upload.issue.label") },
         { text: __("actions.label") }
       ],

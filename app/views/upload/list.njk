@@ -28,8 +28,8 @@
           html: tag(statusTag(upload.uploadStatus)) + ("<br><span class=\"nhsuk-u-secondary-text-color nhsuk-u-font-size-16\">5 hours 13 minutes remaining</span>" if upload.status == UploadStatus.Processing)
         },
         {
-          header: __("upload.records.label"),
-          html: "…" if upload.status == UploadStatus.Processing else upload.records.length | string,
+          header: __("upload.patients.label"),
+          html: "…" if upload.status == UploadStatus.Processing else upload.patients.length | string,
           format: "numeric"
         }
       ]) %}
@@ -45,7 +45,7 @@
         { text: __("upload.type.label") },
         { text: __("upload.status.label") },
         {
-          text: __("upload.records.label"),
+          text: __("upload.patients.label"),
           format: "numeric"
         }
       ],

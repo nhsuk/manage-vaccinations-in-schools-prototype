@@ -1,17 +1,17 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import schools from '../datasets/schools.js'
-import { Record } from '../models/record.js'
+import { Patient } from '../models/patient.js'
 
 import { generateChild } from './child.js'
 import { generateParent } from './parent.js'
 
 /**
- * Generate fake record
+ * Generate fake patient record
  *
- * @returns {Record} - Record
+ * @returns {Patient} - Patient record
  */
-export function generateRecord() {
+export function generatePatient() {
   const child = generateChild()
 
   // Parents
@@ -51,7 +51,7 @@ export function generateRecord() {
     pendingChanges.school_urn = newUrn
   }
 
-  return new Record({
+  return new Patient({
     ...child,
     parent1,
     parent2,

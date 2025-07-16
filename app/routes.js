@@ -24,7 +24,6 @@ import { parentRoutes } from './routes/parent.js'
 import { patientSessionRoutes } from './routes/patient-session.js'
 import { patientRoutes } from './routes/patient.js'
 import { programmeRoutes } from './routes/programme.js'
-import { recordRoutes } from './routes/record.js'
 import { replyRoutes } from './routes/reply.js'
 import { reviewRoutes } from './routes/review.js'
 import { schoolRoutes } from './routes/school.js'
@@ -61,7 +60,6 @@ router.use(
   '/programmes/:programme_id/vaccinations/:vaccination_uuid/patients',
   patientRoutes
 )
-router.use('/records', recordRoutes)
 router.use('/schools', schoolRoutes)
 router.use('/sessions/:session_id/consents', consentRoutes)
 router.use('/sessions', sessionRoutes)

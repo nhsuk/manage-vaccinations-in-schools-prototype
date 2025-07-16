@@ -1,5 +1,5 @@
 import { Notice } from '../models/notice.js'
-import { Record } from '../models/record.js'
+import { Patient } from '../models/patient.js'
 import { Upload } from '../models/upload.js'
 
 export const reviewController = {
@@ -8,17 +8,17 @@ export const reviewController = {
     const { data, referrer } = request.session
 
     const upload = Upload.read(upload_id, request.session.data)
-    const record = upload.records.find((record) => record.nhsn === nhsn)
+    const patient = upload.patients.find((patient) => patient.nhsn === nhsn)
 
     // Show back link to referring page, else upload page
     response.locals.back = referrer || upload.uri
 
-    response.locals.record = new Record(record, data)
+    response.locals.patient = new Patient(patient, data)
 
-    response.locals.duplicateRecord = new Record(
+    response.locals.duplicatePatient = new Patient(
       {
-        ...record,
-        ...record?.pendingChanges
+        ...patient,
+        ...patient?.pendingChanges
       },
       data
     )

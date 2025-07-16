@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import _ from 'lodash'
 
+import schools from '../datasets/schools.js'
 import { EventType, NoticeType } from '../enums.js'
 import { getDateValueDifference, removeDays, today } from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
@@ -8,39 +9,106 @@ import { getPreferredNames } from '../utils/reply.js'
 import {
   formatLink,
   formatLinkWithSecondaryText,
+  formatList,
+  formatNhsNumber,
+  formatOther,
   formatParent,
-  sentenceCaseProgrammeName
+  formatWithSecondaryText,
+  sentenceCaseProgrammeName,
+  stringToBoolean
 } from '../utils/string.js'
 
 import { AuditEvent } from './audit-event.js'
+import { Child } from './child.js'
 import { Cohort } from './cohort.js'
 import { Parent } from './parent.js'
 import { PatientSession } from './patient-session.js'
-import { Record } from './record.js'
 import { Reply } from './reply.js'
+import { Vaccination } from './vaccination.js'
 
 /**
- * @class Patient in-session record
- * @augments Record
+ * @class Patient record
+ * @augments Child
  * @param {object} options - Options
  * @param {object} [context] - Global context
  * @property {string} uuid - UUID
+ * @property {string} nhsn - NHS number
+ * @property {boolean} invalid - Flagged as invalid
+ * @property {boolean} sensitive - Flagged as sensitive
  * @property {Date} [updatedAt] - Updated date
+ * @property {import('../enums.js').Address} [address] - Address
+ * @property {Parent} [parent1] - Parent 1
+ * @property {Parent} [parent2] - Parent 2
+ * @property {Patient} [pendingChanges] - Pending changes to record values
+ * @property {import('../enums.js').ArchiveRecordReason} [archiveReason] - Archival reason
+ * @property {string} [archiveReasonOther] - Other archival reason
  * @property {Array<import('./audit-event.js').AuditEvent>} events - Events
  * @property {Array<string>} [cohort_uids] - Cohort UIDs
  * @property {Array<string>} [reply_uuids] - Reply IDs
  * @property {Array<string>} [patientSession_uuids] - Patient session IDs
+ * @property {Array<string>} [vaccination_uuids] - Vaccination UUIDs
  */
-export class Patient extends Record {
+export class Patient extends Child {
   constructor(options, context) {
     super(options, context)
 
+    const invalid = stringToBoolean(options?.invalid)
+    const sensitive = stringToBoolean(options?.sensitive)
+
     this.uuid = options?.uuid || faker.string.uuid()
+    this.nhsn = options?.nhsn || this.nhsNumber
+    this.invalid = invalid
+    this.sensitive = sensitive
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
+    this.address = !sensitive && options?.address ? options.address : undefined
+    this.parent1 =
+      !sensitive && options?.parent1 ? new Parent(options.parent1) : undefined
+    this.parent2 =
+      !sensitive && options?.parent2 ? new Parent(options.parent2) : undefined
+    this.archiveReason = options?.archiveReason
+    this.archiveReasonOther = options?.archiveReasonOther
+    this.pendingChanges = options?.pendingChanges || {}
+
     this.events = options?.events || []
     this.cohort_uids = options?.cohort_uids || []
     this.reply_uuids = options?.reply_uuids || []
     this.patientSession_uuids = options?.patientSession_uuids || []
+    this.vaccination_uuids = options?.vaccination_uuids || []
+  }
+
+  /**
+   * Get NHS number
+   *
+   * @returns {string} - NHS Number
+   */
+  get nhsNumber() {
+    const nhsn = '999#######'.replace(/#+/g, (m) =>
+      faker.string.numeric(m.length)
+    )
+    const temporaryNhsn = faker.string.alpha(10)
+
+    // 5% of records don’t have an NHS number
+    const hasNhsNumber = faker.helpers.maybe(() => true, { probability: 0.95 })
+
+    return hasNhsNumber ? nhsn : temporaryNhsn
+  }
+
+  /**
+   * Has missing NHS number
+   *
+   * @returns {boolean} - Has missing NHS number
+   */
+  get hasMissingNhsNumber() {
+    return !this.nhsn.match(/^\d{10}$/)
+  }
+
+  /**
+   * Get full name, formatted as LASTNAME, Firstname
+   *
+   * @returns {string} - Full name
+   */
+  get fullName() {
+    return [this.lastName.toUpperCase(), this.firstName].join(', ')
   }
 
   /**
@@ -59,9 +127,14 @@ export class Patient extends Record {
    */
   get parents() {
     const parents = new Map()
-    super.parents.forEach((parent) =>
-      parents.set(parent.uuid, new Parent(parent))
-    )
+
+    if (this.parent1) {
+      parents.set(this.parent1.uuid, new Parent(this.parent1))
+    }
+
+    if (this.parent2) {
+      parents.set(this.parent2.uuid, new Parent(this.parent2))
+    }
 
     // Add any new parents found in consent replies
     Object.values(this.replies).forEach(({ parent }) => {
@@ -182,6 +255,40 @@ export class Patient extends Record {
   }
 
   /**
+   * Get vaccinations
+   *
+   * @returns {Array<Vaccination>} - Vaccinations
+   */
+  get vaccinations() {
+    if (this.context?.vaccinations && this.vaccination_uuids) {
+      return this.vaccination_uuids.map(
+        (uuid) =>
+          new Vaccination(this.context?.vaccinations[uuid], this.context)
+      )
+    }
+
+    return []
+  }
+
+  /**
+   * Record is archived
+   *
+   * @returns {boolean} - Record is archived
+   */
+  get archived() {
+    return this.archiveReason !== undefined
+  }
+
+  /**
+   * Has pending changes
+   *
+   * @returns {boolean} - Has pending changes
+   */
+  get hasPendingChanges() {
+    return Object.keys(this.pendingChanges).length > 0
+  }
+
+  /**
    * Get formatted links
    *
    * @returns {object} - Formatted links
@@ -238,8 +345,20 @@ export class Patient extends Record {
    * @returns {object} - Formatted values
    */
   get formatted() {
+    const formattedNhsn = formatNhsNumber(this.nhsn, this.invalid)
+    const formattedParents = this.parents.map((parent) => formatParent(parent))
+
     return {
       ...super.formatted,
+      fullNameAndNhsn: formatWithSecondaryText(this.fullName, formattedNhsn),
+      nhsn: formattedNhsn,
+      newUrn:
+        this.pendingChanges?.school_urn &&
+        schools[this.pendingChanges.school_urn].name,
+      parent1: this.parent1 && formatParent(this.parent1),
+      parent2: this.parent2 && formatParent(this.parent2),
+      parents: formatList(formattedParents),
+      archiveReason: formatOther(this.archiveReasonOther, this.archiveReason),
       lastReminderDate: this.lastReminderDate
         ? `Last reminder sent on ${this.lastReminderDate}`
         : 'No reminders sent'

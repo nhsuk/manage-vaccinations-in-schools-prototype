@@ -62,12 +62,12 @@
     descriptionHtml: cardDescriptionHtml
   }) }}
 
-  {% set duplicateRecordRows = [] %}
-  {% for record in upload.duplicates %}
-    {% set duplicateRecordRows = duplicateRecordRows | push([
+  {% set duplicatePatientRows = [] %}
+  {% for patient in upload.duplicates %}
+    {% set duplicatePatientRows = duplicatePatientRows | push([
       {
-        header: __("record.fullName.label"),
-        html: record.fullName
+        header: __("patient.fullName.label"),
+        html: patient.fullName
       },
       {
         header: __("upload.issue.label"),
@@ -78,7 +78,7 @@
         html: actionList({
           items: [{
             text: __("actions.review"),
-            href: "/uploads/reviews/" + upload.id + "/" + record.nhsn
+            href: "/uploads/reviews/" + upload.id + "/" + patient.nhsn
           }]
         })
       }
@@ -86,66 +86,66 @@
   {% endfor %}
 
   {{ table({
-    id: "duplicate-records",
+    id: "duplicate-patients",
     panel: true,
     heading: upload.formatted.duplicates,
     headingLevel: 2,
     responsive: true,
     head: [
-      { text: __("record.label") },
+      { text: __("patient.label") },
       { text: __("upload.issue.label") },
       { text: __("actions.label") }
     ],
-    rows: duplicateRecordRows
+    rows: duplicatePatientRows
   }) if upload.duplicates.length }}
 
-  {% set recordRows = [] %}
-  {% for record in upload.records %}
-    {% set recordRows = recordRows | push([
+  {% set patientRows = [] %}
+  {% for patient in upload.patients %}
+    {% set patientRows = patientRows | push([
       {
-        header: __("record.fullName.label"),
-        html: record.vaccination.link.fullNameAndNhsn if upload.type == UploadType.Report else record.formatted.fullNameAndNhsn
+        header: __("patient.fullName.label"),
+        html: patient.vaccination.link.fullNameAndNhsn if upload.type == UploadType.Report else patient.formatted.fullNameAndNhsn
       },
       {
-        header: __("record.dob.label"),
-        html: record.formatted.dob
+        header: __("patient.dob.label"),
+        html: patient.formatted.dob
       },
       {
-        header: __("record.postalCode.label"),
-        text: record.postalCode
+        header: __("patient.postalCode.label"),
+        text: patient.postalCode
       }, {
-        header: __("record.yearGroup.label"),
-        text: record.formatted.yearGroup
+        header: __("patient.yearGroup.label"),
+        text: patient.formatted.yearGroup
       } if upload.type == UploadType.School, {
         header: __("vaccination.createdAt.label"),
-        text: record.vaccination.formatted.createdAt_date
+        text: patient.vaccination.formatted.createdAt_date
       } if upload.type == UploadType.Report
     ]) %}
   {% endfor %}
 
   {{ table({
-    id: "records",
+    id: "patients",
     panel: true,
-    heading: __n("upload.records.count", upload.records.length),
+    heading: __n("upload.patients.count", upload.patients.length),
     headingLevel: 2,
     responsive: true,
     head: [
       { text: __("patient.fullNameAndNhsn.label") },
-      { text: __("record.dob.label") },
-      { text: __("record.postalCode.label") },
-      { text: __("record.yearGroup.label") } if upload.type == UploadType.School,
+      { text: __("patient.dob.label") },
+      { text: __("patient.postalCode.label") },
+      { text: __("patient.yearGroup.label") } if upload.type == UploadType.School,
       { text: __("vaccination.createdAt.label") } if upload.type == UploadType.Report
     ],
-    rows: recordRows
-  }) if upload.records.length }}
+    rows: patientRows
+  }) if upload.patients.length }}
 
   {{ card({
-    heading: __n("upload.records.count", upload.records.length),
+    heading: __n("upload.patients.count", upload.patients.length),
     headingClasses: "nhsuk-heading-m",
     headingLevel: 2,
     feature: true,
     description: __("upload.devoid.description")
-  }) if upload.records.length == 0 and upload.status == UploadStatus.Complete }}
+  }) if upload.patients.length == 0 and upload.status == UploadStatus.Complete }}
 
   {% if upload.validations | length %}
     {% set cardDescriptionHtml %}

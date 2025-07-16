@@ -5,7 +5,7 @@ import { range } from '../utils/number.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Address } from './address.js'
-import { Record } from './record.js'
+import { Patient } from './patient.js'
 
 /**
  * @class School
@@ -41,13 +41,13 @@ export class School {
   /**
    * Get school pupils
    *
-   * @returns {Array<Record>} - Records
+   * @returns {Array<Patient>} - Patient records
    */
-  get records() {
-    if (this.context?.records && this.urn) {
-      return Object.values(this.context?.records)
-        .filter((record) => record.school_urn === this.urn)
-        .map((record) => new Record(record))
+  get patients() {
+    if (this.context?.patients && this.urn) {
+      return Object.values(this.context?.patients)
+        .filter(({ school_urn }) => school_urn === this.urn)
+        .map((patient) => new Patient(patient))
     }
 
     return []
@@ -56,11 +56,11 @@ export class School {
   /**
    * Get school pupils
    *
-   * @returns {object} - Records by year group
+   * @returns {object} - Patients by year group
    */
-  get recordsByYearGroup() {
-    if (this.context?.records && this.records) {
-      return Object.groupBy(this.records, ({ yearGroup }) => yearGroup)
+  get patientsByYearGroup() {
+    if (this.context?.patients && this.patients) {
+      return Object.groupBy(this.patients, ({ yearGroup }) => yearGroup)
     }
 
     return []

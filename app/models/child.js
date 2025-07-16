@@ -12,6 +12,9 @@ import { Address } from './address.js'
 
 /**
  * @class Child
+ * @param {object} options - Options
+ * @param {object} [context] - Context
+ * @property {object} [context] - Context
  * @property {string} [firstName] - First name
  * @property {string} [lastName] - Last name
  * @property {string} [preferredFirstName] - Preferred first name
@@ -26,7 +29,8 @@ import { Address } from './address.js'
  * @property {string} [school_urn] - School
  */
 export class Child {
-  constructor(options) {
+  constructor(options, context) {
+    this.context = context
     this.firstName = options?.firstName || ''
     this.lastName = options?.lastName || ''
     this.preferredFirstName = options?.preferredFirstName

@@ -10,7 +10,6 @@ import patients from '../.data/patients.json' with { type: 'json' }
 import patientSessions from '../.data/patient-sessions.json' with { type: 'json' }
 import programmes from '../.data/programmes.json' with { type: 'json' }
 import replies from '../.data/replies.json' with { type: 'json' }
-import records from '../.data/records.json' with { type: 'json' }
 import schools from '../.data/schools.json' with { type: 'json' }
 import sessions from '../.data/sessions.json' with { type: 'json' }
 import uploads from '../.data/uploads.json' with { type: 'json' }
@@ -41,7 +40,6 @@ export default {
   patients,
   patientSessions,
   programmes,
-  records,
   replies,
   schools,
   sessions,

@@ -61,7 +61,7 @@
 
     {{ govukPagination(pages) }}
 
-    {{ __mf("record.results", {
+    {{ __mf("patient.results", {
       from: results.from,
       to: results.to,
       count: results.count
@@ -71,7 +71,7 @@
       heading: __n("patient.count", patients.length),
       headingClasses: "nhsuk-heading-s",
       feature: true,
-      description: __mf("record.results", {
+      description: __mf("patient.results", {
         from: results.from,
         to: results.to,
         count: results.count

@@ -5,7 +5,7 @@ import { UploadStatus, UploadType } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
 import { formatWithSecondaryText, formatYearGroup } from '../utils/string.js'
 
-import { Record } from './record.js'
+import { Patient } from './patient.js'
 import { School } from './school.js'
 import { User } from './user.js'
 
@@ -20,7 +20,7 @@ import { User } from './user.js'
  * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created upload
  * @property {Date} [updatedAt] - Updated date
- * @property {Array<string>} [record_nhsns] - Record NHS numbers
+ * @property {Array<string>} [patient_nhsns] - Patient record NHS numbers
  * @property {number} [devoid] - Exact duplicate records found
  */
 export class Upload {
@@ -33,7 +33,7 @@ export class Upload {
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.validations = options?.validations || []
-    this.record_nhsns = options?.record_nhsns || []
+    this.patient_nhsns = options?.patient_nhsns || []
 
     if (this.type === UploadType.School) {
       this.yearGroups = options?.yearGroups
@@ -61,45 +61,45 @@ export class Upload {
   }
 
   /**
-   * Get uploaded records
+   * Get uploaded patient records
    *
-   * @returns {Array<Record>} - Records
+   * @returns {Array<Patient>} - Records
    */
-  get records() {
-    if (this.context?.records && this.record_nhsns) {
-      let records = this.record_nhsns.map((nhsn) =>
-        Record.read(nhsn, this.context)
+  get patients() {
+    if (this.context?.patients && this.patient_nhsns) {
+      let patients = this.patient_nhsns.map((nhsn) =>
+        Patient.read(nhsn, this.context)
       )
 
       if (this.type === UploadType.Report) {
-        records = records
-          .filter((record) => record.vaccinations.length > 0)
-          .map((record) => {
-            record.vaccination = record.vaccinations[0]
-            return record
+        patients = patients
+          .filter((patient) => patient.vaccinations.length > 0)
+          .map((patient) => {
+            patient.vaccination = patient.vaccinations[0]
+            return patient
           })
       }
 
-      return records
+      return patients
     }
 
     return []
   }
 
   /**
-   * Get number of invalid records (no vaccination recorded)
+   * Get number of invalid patient records (no vaccination recorded)
    *
-   * @returns {Array<Record>} - Invalid records
+   * @returns {Array<Patient>} - Invalid patient records
    */
   get invalid() {
     if (
       this.status === UploadStatus.Complete &&
       this.type === UploadType.Report
     ) {
-      if (this.context?.records && this.record_nhsns) {
-        return this.record_nhsns
-          .map((nhsn) => Record.read(nhsn, this.context))
-          .filter((record) => record.vaccinations.length === 0)
+      if (this.context?.patients && this.patient_nhsns) {
+        return this.patient_nhsns
+          .map((nhsn) => Patient.read(nhsn, this.context))
+          .filter((patient) => patient.vaccinations.length === 0)
       }
 
       return []
@@ -107,15 +107,15 @@ export class Upload {
   }
 
   /**
-   * Get duplicate records in upload that need review
+   * Get duplicate patient records in upload that need review
    *
-   * @returns {Array<Record>|undefined} - Records with pending changes
+   * @returns {Array<Patient>|undefined} - Patient records with pending changes
    */
   get duplicates() {
     if (this.status === UploadStatus.Complete) {
-      if (this.records) {
-        return this.records
-          .filter((record) => record.hasPendingChanges)
+      if (this.patients) {
+        return this.patients
+          .filter((patient) => patient.hasPendingChanges)
           .sort((a, b) => a.firstName.localeCompare(b.firstName))
       }
 
@@ -124,17 +124,17 @@ export class Upload {
   }
 
   /**
-   * Get number of incomplete records
+   * Get number of incomplete patient records
    *
-   * @returns {Array<Record>|undefined} - Records missing an NHS number
+   * @returns {Array<Patient>|undefined} - Patient records missing an NHS number
    */
   get incomplete() {
     if (
       this.status === UploadStatus.Complete &&
       this.type === UploadType.Report
     ) {
-      if (this.records) {
-        return this.records.filter((record) => record.hasMissingNhsNumber)
+      if (this.patients) {
+        return this.patients.filter((patient) => patient.hasMissingNhsNumber)
       }
 
       return []

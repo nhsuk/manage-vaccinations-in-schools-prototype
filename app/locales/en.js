@@ -1316,58 +1316,6 @@ export const en = {
       label: 'Vaccines given'
     }
   },
-  record: {
-    label: 'Child record',
-    list: {
-      title: 'Records',
-      caption: 'Child Health Information Service'
-    },
-    show: {
-      summary: 'Details'
-    },
-    results:
-      '{count, plural, =0{No records matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> records}}',
-    count: {
-      one: '%s record',
-      other: '%s records'
-    },
-    nhsn: {
-      label: 'NHS number'
-    },
-    fullName: {
-      label: 'Full name'
-    },
-    dob: {
-      label: 'Date of birth'
-    },
-    dod: {
-      label: 'Date of death'
-    },
-    gender: {
-      label: 'Gender'
-    },
-    address: {
-      label: 'Address'
-    },
-    postalCode: {
-      label: 'Postcode'
-    },
-    gpSurgery: {
-      label: 'GP surgery'
-    },
-    school: {
-      label: 'School'
-    },
-    yearGroup: {
-      label: 'Year group'
-    },
-    parents: {
-      label: 'Parents or guardians'
-    },
-    vaccinations: {
-      label: 'Vaccinations'
-    }
-  },
   remind: {
     new: {
       title: 'Send reminder'
@@ -1557,7 +1505,7 @@ export const en = {
         other: '[0] No secondary schools|%s secondary schools'
       }
     },
-    records: {
+    patients: {
       label: 'Children',
       count: {
         one: '%s child',
@@ -2210,8 +2158,8 @@ export const en = {
     vaccinations: {
       label: 'Vaccination records'
     },
-    records: {
-      label: 'Records',
+    patients: {
+      label: 'Child records',
       count: {
         one: '%s record imported',
         other: '[0] No records imported|%s records imported'

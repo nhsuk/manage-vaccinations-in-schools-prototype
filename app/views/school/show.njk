@@ -23,45 +23,45 @@
     })
   }) }}
 
-  {% for yearGroup, records in school.recordsByYearGroup %}
-    {% set recordRows = [] %}
-    {% for record in records | sort(false, false, "firstName") %}
-      {% set recordRows = recordRows | push([
+  {% for yearGroup, patients in school.patientsByYearGroup %}
+    {% set patientRows = [] %}
+    {% for patient in patients | sort(false, false, "firstName") %}
+      {% set patientRows = patientRows | push([
         {
-          header: __("record.fullName.label"),
-          text: record.fullName,
+          header: __("patient.fullName.label"),
+          text: patient.fullName,
           attributes: {
             "data-col": "name"
           }
         },
         {
-          header: __("record.dob.label"),
-          text: record.formatted.dob
+          header: __("patient.dob.label"),
+          text: patient.formatted.dob
         },
         {
-          header: __("record.postalCode.label"),
-          text: record.postalCode
+          header: __("patient.postalCode.label"),
+          text: patient.postalCode
         }
       ]) %}
     {% endfor %}
 
     {{ details({
       classes: "nhsuk-expander",
-      text: yearGroup | yearGroup + " (" + __n("school.records.count", records.length) + ")",
+      text: yearGroup | yearGroup + " (" + __n("school.patients.count", patients.length) + ")",
       html: table({
         tableClasses: "nhsuk-u-margin-0",
-        id: "records",
+        id: "patients",
         head: [
           {
-            text: __("record.fullName.label"),
+            text: __("patient.fullName.label"),
             attributes: {
               style: "width: 50%"
             }
           },
-          { text: __("record.dob.label") },
-          { text: __("record.postalCode.label") }
+          { text: __("patient.dob.label") },
+          { text: __("patient.postalCode.label") }
         ],
-        rows: recordRows
+        rows: patientRows
       })
     }) }}
   {% endfor %}
