@@ -5,6 +5,8 @@ import {
   sentenceCaseProgrammeName
 } from '../utils/string.js'
 
+// eslint-disable-next-line no-unused-vars
+import { PatientSession } from './patient-session.js'
 import { Programme } from './programme.js'
 
 /**
