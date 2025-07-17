@@ -18,6 +18,9 @@ router.post('/:nhsn/edit/:view', patient.updateForm)
 
 router.post('/:nhsn/archive', patient.archive)
 
+router.all('/:nhsn/programmes{/:slug}', patient.readProgramme)
+router.get('/:nhsn/programmes{/:slug}', patient.showProgramme)
+
 router.get('/:nhsn{/:view}', patient.show)
 
 export const patientRoutes = router

@@ -1,5 +1,7 @@
+import { isBefore } from 'date-fns'
+
 import { EventType, ScreenOutcome } from '../enums.js'
-import { formatDate, today } from '../utils/date.js'
+import { formatDate, setMidday, today } from '../utils/date.js'
 import {
   formatTag,
   formatMarkdown,
@@ -47,6 +49,10 @@ export class AuditEvent {
     } catch (error) {
       console.error('Upload.createdBy', error.message)
     }
+  }
+
+  get isPastEvent() {
+    return isBefore(setMidday(this.createdAt), setMidday(today()))
   }
 
   /**
