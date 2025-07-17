@@ -67,6 +67,7 @@ import { Vaccine } from './vaccine.js'
  * @property {boolean} [registration] - Does session have registration?
  * @property {object} [register] - Patient register
  * @property {string} [programmePreset] - Programme preset name
+ * @property {AcademicYear} [academicYear] - Programme year
  * @property {Array<string>} [catchupProgrammeTypes] - Catchup programmes
  * @property {boolean} [nationalProtocol] - Enable national protocol
  * @property {boolean} [psdProtocol] - Enable PSD protocol
@@ -74,6 +75,8 @@ import { Vaccine } from './vaccine.js'
  */
 export class Session {
   constructor(options, context) {
+    const latestAcademicYear = Object.values(AcademicYear).at(-1)
+
     this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('###')
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
@@ -96,6 +99,7 @@ export class Session {
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
     this.registration = stringToBoolean(options?.registration)
     this.register = options?.register || {}
+    this.academicYear = options?.academicYear || latestAcademicYear
     this.programmePreset = options?.programmePreset
     this.catchupProgrammeTypes = stringToArray(options?.catchupProgrammeTypes)
     this.psdProtocol = stringToBoolean(options?.psdProtocol) || false
@@ -223,23 +227,6 @@ export class Session {
     if (this.lastDate) {
       return removeDays(this.lastDate, 1)
     }
-  }
-
-  /**
-   * Get academic year
-   *
-   * @returns {AcademicYear} - Academic year
-   */
-  get academicYear() {
-    // For a scheduled session, infer the date from the first scheduled data
-    if (this.firstDate) {
-      return getAcademicYear(this.firstDate)
-    }
-
-    // Otherwise, return the latest academic year
-    const academicYears = Object.values(AcademicYear)
-
-    return academicYears.at(-1)
   }
 
   /**

@@ -83,6 +83,7 @@ export function generateSession(programmePreset, academicYear, user, options) {
     dates,
     openAt,
     registration: true,
+    academicYear,
     programmePreset,
     psdProtocol,
     ...(sessionHasCatchups && {
