@@ -188,18 +188,6 @@ export const en = {
       other: '[0] No clinics|%s clinics'
     }
   },
-  cohort: {
-    label: 'Cohorts',
-    upload: {
-      label: 'Import child records'
-    },
-    patientSessions: {
-      count: {
-        one: '%s child',
-        other: '[0] No children|%s children'
-      }
-    }
-  },
   child: {
     label: 'Child',
     nhsn: {
@@ -1291,6 +1279,9 @@ export const en = {
       count: {
         one: '%s child',
         other: '[0] No children|%s children'
+      },
+      upload: {
+        label: 'Import child records'
       }
     },
     sessions: {

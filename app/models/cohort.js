@@ -5,7 +5,6 @@ import {
   sentenceCaseProgrammeName
 } from '../utils/string.js'
 
-import { PatientSession } from './patient-session.js'
 import { Programme } from './programme.js'
 
 /**
@@ -59,17 +58,6 @@ export class Cohort {
     } catch (error) {
       console.error('Cohort.programme', error.message)
     }
-  }
-
-  /**
-   * Get patient sessions
-   *
-   * @returns {Array<PatientSession>} - Patient sessions
-   */
-  get patientSessions() {
-    return PatientSession.readAll(this.context).filter(
-      ({ patient }) => patient.yearGroup === this.yearGroup
-    )
   }
 
   /**

@@ -73,15 +73,15 @@
   }) }}
 
   <ul class="nhsuk-grid-row nhsuk-card-group">
-    {% for cohort in programme.cohorts | sort(false, false, "yearGroup") %}
+    {% for yearGroup in programme.yearGroups %}
       <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
         {{ card({
           clickable: true if not isDataConsumer,
-          heading: cohort.formatted.yearGroup,
+          heading: yearGroup | yearGroup,
           headingClasses: "nhsuk-heading-m",
           headingLevel: 3,
-          href: programme.uri + "/patients?yearGroup=" + cohort.yearGroup if not isDataConsumer,
-          descriptionHtml: __n("cohort.patientSessions.count", cohort.patientSessions.length)
+          href: programme.uri + "/patients?yearGroup=" + yearGroup if not isDataConsumer,
+          descriptionHtml: __n("programme.patientSessions.count", programme.patientSessions | where("yearGroup", yearGroup) | length)
         }) }}
       </li>
     {% endfor %}

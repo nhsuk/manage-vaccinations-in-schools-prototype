@@ -164,8 +164,8 @@ export class Programme {
    * @returns {Array<PatientSession>} - Patient sessions
    */
   get patientSessions() {
-    return PatientSession.readAll(this.context).filter(({ session }) =>
-      session.programme_ids.includes(this.id)
+    return PatientSession.readAll(this.context).filter(
+      ({ programme_id }) => programme_id === this.id
     )
   }
 
