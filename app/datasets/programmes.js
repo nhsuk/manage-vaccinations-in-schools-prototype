@@ -38,7 +38,8 @@ export default {
     },
     sequence: ['1P', '2P', '3P'],
     sequenceDefault: '1P',
-    yearGroups: [8, 9, 10, 11],
+    yearGroups: [8],
+    catchupYearGroups: [9, 10, 11],
     vaccine_smomeds: ['33493111000001108']
   },
   [ProgrammeType.TdIPV]: {
@@ -59,7 +60,8 @@ export default {
     },
     sequence: ['1P', '2P', '3P', '1B', '2B'],
     sequenceDefault: '2B',
-    yearGroups: [9, 10, 11],
+    yearGroups: [9],
+    catchupYearGroups: [10, 11],
     vaccine_smomeds: ['7374311000001101']
   },
   [ProgrammeType.MenACWY]: {
@@ -78,7 +80,8 @@ export default {
       url: 'https://www.gov.uk/government/publications/menacwy-vaccine-information-for-young-people',
       hint: 'with links to information in other languages'
     },
-    yearGroups: [9, 10, 11],
+    yearGroups: [9],
+    catchupYearGroups: [10, 11],
     vaccine_smomeds: ['39779611000001104']
   }
 }
