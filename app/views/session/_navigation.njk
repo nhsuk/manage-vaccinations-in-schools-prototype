@@ -1,14 +1,14 @@
-{% from "_macros/action-list.njk" import actionList %}
-{% from "_macros/heading.njk" import heading %}
-{% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
+{% from "_macros/action-list.njk" import appActionList %}
+{% from "_macros/heading.njk" import appHeading %}
+{% from "_macros/secondary-navigation.njk" import appSecondaryNavigation %}
 
 {% macro sessionNavigation(params) %}
-  {{ heading({
+  {{ appHeading({
     title: params.session.location.name,
     summary: params.session.programmeNames.titleCase + " (" + session.academicYear + ")"
   }) }}
 
-  {{ secondaryNavigation({
+  {{ appSecondaryNavigation({
     items: [
       {
         text: __("session.show.label"),

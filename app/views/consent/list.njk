@@ -20,7 +20,7 @@
 {% block content %}
   {{ super() }}
 
-  {{ heading({
+  {{ appHeading({
     size: "l" if session else "xl",
     title: title
   }) }}
@@ -42,7 +42,7 @@
       },
       {
         header: __("actions.label"),
-        html: actionList({
+        html: appActionList({
           items: [{
             text: __("consent.match.label"),
             href: consentsPath + "/" + consent.uuid + "/match?referrer=" + consentsPath

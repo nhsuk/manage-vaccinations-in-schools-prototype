@@ -1,4 +1,4 @@
-{% from "_macros/patient-search.njk" import patientSearch with context %}
+{% from "_macros/patient-search.njk" import appPatientSearch with context %}
 
 {% extends "_layouts/form.njk" %}
 
@@ -9,12 +9,12 @@
 {% block form %}
   {{ super() }}
 
-  {{ heading({
+  {{ appHeading({
     size: "xl",
     title: title
   }) }}
 
-  {{ patientSearch() }}
+  {{ appPatientSearch() }}
 
   {% set patientRows = [] %}
   {% for patient in results.page %}

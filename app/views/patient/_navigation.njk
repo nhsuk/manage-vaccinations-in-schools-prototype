@@ -1,13 +1,13 @@
-{% from "_macros/action-list.njk" import actionList %}
-{% from "_macros/heading.njk" import heading %}
-{% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
+{% from "_macros/action-list.njk" import appActionList %}
+{% from "_macros/heading.njk" import appHeading %}
+{% from "_macros/secondary-navigation.njk" import appSecondaryNavigation %}
 
 {% macro patientNavigation(params) %}
-  {{ heading({
+  {{ appHeading({
     title: params.patient.fullName
   }) }}
 
-  {{ actionList({
+  {{ appActionList({
     items: [{
       tag: {
         text: __("patient.archived.label"),
@@ -16,7 +16,7 @@
     }]
   }) if patient.archived }}
 
-  {{ secondaryNavigation({
+  {{ appSecondaryNavigation({
     items: [{
       text: recordTitle,
       href: params.patient.uri,

@@ -1,15 +1,15 @@
 {% from "nhsuk/components/button/macro.njk" import button %}
-{% from "_macros/heading.njk" import heading %}
-{% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
+{% from "_macros/heading.njk" import appHeading %}
+{% from "_macros/secondary-navigation.njk" import appSecondaryNavigation %}
 
 {% macro programmeNavigation(params) %}
-  {{ heading({
+  {{ appHeading({
     summary: params.programme.year,
     title: params.programme.name
   }) }}
 
   {% if not params.isDataConsumer %}
-    {{ secondaryNavigation({
+    {{ appSecondaryNavigation({
       items: [{
         text: __("programme.show.label"),
         href: params.programme.uri,

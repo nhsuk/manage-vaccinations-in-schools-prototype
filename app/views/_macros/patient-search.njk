@@ -5,12 +5,12 @@
 {%- from "nhsuk/components/button/macro.njk" import button with context -%}
 {%- from "nhsuk/components/card/macro.njk" import card with context -%}
 {%- from "nhsuk/components/details/macro.njk" import details with context -%}
-{%- from "_macros/button-group.njk" import buttonGroup with context -%}
-{%- from "_macros/search-input.njk" import searchInput with context -%}
+{%- from "_macros/button-group.njk" import appButtonGroup with context -%}
+{%- from "_macros/search-input.njk" import appSearchInput with context -%}
 
-{% macro patientSearch(params) %}
+{% macro appPatientSearch(params) %}
   {% set filterButtonGroup %}
-    {{ buttonGroup({
+    {{ appButtonGroup({
       buttons: [{
         classes: "nhsuk-button--secondary app-button--small",
         text: __("search.confirm"),
@@ -28,7 +28,7 @@
   {% endset %}
 
   {% set searchCardHtml %}
-    {{ searchInput({
+    {{ appSearchInput({
       label: { text: __("search.label") },
       attributes: {
         formaction: params.formaction,

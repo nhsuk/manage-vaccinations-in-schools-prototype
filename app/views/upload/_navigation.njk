@@ -1,10 +1,10 @@
 {% from "nhsuk/components/button/macro.njk" import button %}
-{% from "_macros/count.njk" import count %}
-{% from "_macros/heading.njk" import heading %}
-{% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
+{% from "_macros/count.njk" import appCount %}
+{% from "_macros/heading.njk" import appHeading %}
+{% from "_macros/secondary-navigation.njk" import appSecondaryNavigation %}
 
 {% macro uploadNavigation(params) %}
-  {{ heading({
+  {{ appHeading({
     size: "xl",
     title: __("upload.list.title")
   }) }}
@@ -15,17 +15,17 @@
     href: "/uploads/new"
   }) }}
 
-  {{ secondaryNavigation({
+  {{ appSecondaryNavigation({
     items: [{
       text: __("upload.recent.label"),
       href: "/uploads",
       current: params.view == "list"
     }, {
-      text: (__("upload.reviews.label") + count(reviews.length)) | safe,
+      text: (__("upload.reviews.label") + appCount(reviews.length)) | safe,
       href: "/uploads/reviews",
       current: params.view == "reviews"
     }, {
-      text: (__("upload.notices.label") + count(notices.length)) | safe,
+      text: (__("upload.notices.label") + appCount(notices.length)) | safe,
       href: "/uploads/notices",
       current: params.view == "notices"
     } if data.token.role == UserRole.Nurse]

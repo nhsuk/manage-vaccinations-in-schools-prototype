@@ -1,4 +1,4 @@
-{{ heading({
+{{ appHeading({
   classes: "app-vaccine-method",
   level: 3,
   size: "m",
@@ -79,7 +79,7 @@
     decorate: "patientSession.preScreen.note"
   }) }}
 
-  {{ autocomplete({
+  {{ appAutocomplete({
     label: { text: __("patientSession.preScreen.suppliedBy.title") },
     items: userItems(data.users, patientSession.preScreen.suppliedBy),
     decorate: "patientSession.preScreen.suppliedBy_uid"

@@ -5,7 +5,7 @@
 {% block content %}
   {{ super() }}
 
-  {{ heading({
+  {{ appHeading({
     size: "xl",
     title: title
   }) }}
@@ -42,7 +42,7 @@
           },
           {
             header: __("actions.label"),
-            html: actionList({
+            html: appActionList({
               items: [{
                 text: __("actions.change"),
                 href: batch.uri + "/edit"

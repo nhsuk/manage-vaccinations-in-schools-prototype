@@ -6,7 +6,7 @@
   {{ input({
     classes: "nhsuk-input--width-5",
     label: {
-      html: heading({
+      html: appHeading({
         classes: "nhsuk-label--l",
         caption: vaccination.patient.fullName,
         title: title
@@ -17,7 +17,7 @@
   }) if vaccination.method == VaccinationMethod.Injection else radios({
     fieldset: {
       legend: {
-        html: heading({
+        html: appHeading({
           classes: "nhsuk-fieldset__legend--l",
           caption: vaccination.patient.fullName,
           title: __("vaccination.dosage.title")

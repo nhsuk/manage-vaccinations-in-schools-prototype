@@ -19,13 +19,13 @@
 {% endblock %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     title: title
   }) }}
 
   {{ __("session.reminders.description") | nhsukMarkdown }}
 
-  {{ heading({
+  {{ appHeading({
     classes: "nhsuk-u-margin-bottom-2",
     level: 2,
     size: "m",
@@ -46,7 +46,7 @@
   }) }}
 
   {% set insetTextHtml %}
-    {{ heading({
+    {{ appHeading({
       classes: "nhsuk-u-margin-bottom-2",
       level: 3,
       size: "s",
@@ -63,7 +63,7 @@
     html: insetTextHtml
   }) }}
 
-  {{ heading({
+  {{ appHeading({
     classes: "nhsuk-u-margin-bottom-2",
     level: 2,
     size: "m",

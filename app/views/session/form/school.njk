@@ -3,11 +3,11 @@
 {% set title = __("session.school.title") %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     title: title
   }) }}
 
-  {{ autocomplete({
+  {{ appAutocomplete({
     label: { text: __("session.school_urn.title") },
     items: schoolItems(data.schools, session.school_urn),
     decorate: "session.school_urn"

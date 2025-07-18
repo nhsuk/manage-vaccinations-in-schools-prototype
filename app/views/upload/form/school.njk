@@ -3,9 +3,9 @@
 {% set title = __("upload.school.title") %}
 
 {% block form %}
-  {{ autocomplete({
+  {{ appAutocomplete({
     label: {
-      html: heading({
+      html: appHeading({
         title: title
       })
     },

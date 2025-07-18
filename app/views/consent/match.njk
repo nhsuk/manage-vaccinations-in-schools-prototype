@@ -1,4 +1,4 @@
-{% from "_macros/patient-search.njk" import patientSearch with context %}
+{% from "_macros/patient-search.njk" import appPatientSearch with context %}
 
 {% extends "_layouts/form.njk" %}
 
@@ -10,7 +10,7 @@
 {% block form %}
   {{ super() }}
 
-  {{ heading({
+  {{ appHeading({
     caption: __("consent.match.caption", { parent: consent.parent } ),
     title: title
   }) }}
@@ -45,11 +45,11 @@
       }) }}
     </div>
     <div class="nhsuk-grid-column-two-thirds">
-      {{ patientSearch({
+      {{ appPatientSearch({
         clear: "/consents/" + consent.uuid + "/match"
       }) }}
 
-      {{ heading({
+      {{ appHeading({
         level: 3,
         size: "m",
         title: __("search.results"),

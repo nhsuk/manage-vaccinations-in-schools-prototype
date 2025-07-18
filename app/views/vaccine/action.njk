@@ -3,7 +3,7 @@
 {% set paths = { back: vaccine.uri } %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     caption: vaccine.brand,
     title: __("vaccine.action.title", type)
   }) }}
@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block afterForm %}
-  {{ buttonGroup({
+  {{ appButtonGroup({
     buttons: [{
       classes: "nhsuk-button--warning",
       text: __("vaccine.action.confirm", type),

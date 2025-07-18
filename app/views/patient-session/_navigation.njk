@@ -1,14 +1,14 @@
-{% from "_macros/action-list.njk" import actionList %}
-{% from "_macros/heading.njk" import heading %}
-{% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
+{% from "_macros/action-list.njk" import appActionList %}
+{% from "_macros/heading.njk" import appHeading %}
+{% from "_macros/secondary-navigation.njk" import appSecondaryNavigation %}
 
 {% macro patientSessionNavigation(params) %}
-  {{ heading({
+  {{ appHeading({
     title: params.patientSession.patient.fullName,
     summary: params.patientSession.patient.formatted.yearGroupWithRegistration
   }) }}
 
-  {{ actionList({
+  {{ appActionList({
     items: [{
       tag: statusTag(params.patientSession.status.instruct)
     } if session.psdProtocol and patientSession.instruct, {
@@ -22,7 +22,7 @@
     } if not params.patientSession.session.isActive and params.patientSession.report != PatientOutcome.Vaccinated]
   }) if params.patientSession.session.isActive }}
 
-  {{ actionList({
+  {{ appActionList({
     items: [{
       text: __("patientSession.vaccination.title"),
       href: params.patientSession.uri + "/new/vaccination"
@@ -31,7 +31,7 @@
 
   <is-sticky class="app-patient-banner">
     <div class="nhsuk-width-container">
-      {{ secondaryNavigation({
+      {{ appSecondaryNavigation({
         items: navigationItems
       }) if navigationItems }}
     </div>

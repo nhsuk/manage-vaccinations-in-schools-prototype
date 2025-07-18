@@ -27,13 +27,13 @@
   }) }}
 
   {% set recordDescriptionHtml %}
-    {{ status({
+    {{ appStatus({
       text: patient.notice.name,
       icon: "warning",
       colour: "blue"
     }) if patient.notice }}
 
-    {{ status({
+    {{ appStatus({
       text: __("patient.post16.status", { patient: patient }),
       icon: "warning",
       colour: "blue"
@@ -61,7 +61,7 @@
       })
     }) }}
 
-    {{ buttonGroup({
+    {{ appButtonGroup({
       buttons: [{
         classes: "nhsuk-button--secondary",
         text: __("patient.edit.label"),

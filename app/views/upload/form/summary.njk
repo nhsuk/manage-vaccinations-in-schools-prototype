@@ -5,7 +5,7 @@
 }) %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     title: title
   }) }}
 
@@ -24,7 +24,7 @@
 {% endblock %}
 
 {% block afterForm %}
-  {{ buttonGroup({
+  {{ appButtonGroup({
     buttons: [{
       text: __("upload.summary.confirm", { type: upload.type | lower })
     }],

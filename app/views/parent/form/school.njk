@@ -3,7 +3,7 @@
 {% set title = __("consent.child.school.title") %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     title: title
   }) }}
 
@@ -11,7 +11,7 @@
     organisation: data.organisation
   }) | nhsukMarkdown }}
 
-  {{ autocomplete({
+  {{ appAutocomplete({
     label: { text: __("consent.child.school.label") },
     items: schoolItems(data.schools, consent.child.school_urn),
     decorate: "consent.child.school_urn"

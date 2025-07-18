@@ -6,7 +6,7 @@
 {% set given = vaccination.outcome == "Vaccinated" or vaccination.outcome == "Partially vaccinated" %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     caption: vaccination.patient.fullName,
     title: title
   }) }}

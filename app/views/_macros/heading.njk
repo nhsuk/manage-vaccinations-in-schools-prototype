@@ -1,5 +1,5 @@
 {%- from "nhsuk/macros/attributes.njk" import nhsukAttributes -%}
-{% macro heading(params) -%}
+{% macro appHeading(params) -%}
 {%- set level = params.level or 1 -%}
 {%- set size = params.size or "l" -%}
 <h{{level}} class="nhsuk-heading-{{ size }}{%- if params.classes %} {{ params.classes }}{% endif %}{%- if params.summary %} nhsuk-u-margin-bottom-2{% endif %}" {{- nhsukAttributes(params.attributes) }}>
