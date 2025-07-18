@@ -35,14 +35,14 @@
 {% endset %}
 
 {% block content %}
-  {{ heading({
+  {{ appHeading({
     caption: caption,
     title: title
   }) }}
 
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-one-quarter">
-      {{ subNavigation({
+      {{ appSubNavigation({
         items: navigationItems
       }) }}
     </div>

@@ -5,7 +5,7 @@
 {% set refusalReasonHasDetails = reply.refusalReason != RefusalReason.PersonalChoice or reply.refusalReason != RefusalReason.Other %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     caption: patient.fullName,
     title: title
   }) }}

@@ -1,4 +1,4 @@
-{% from "_macros/session-search.njk" import sessionSearch with context %}
+{% from "_macros/session-search.njk" import appSessionSearch with context %}
 
 {% extends "_layouts/form.njk" %}
 
@@ -10,20 +10,20 @@
 {% block form %}
   {{ super() }}
 
-  {{ heading({
+  {{ appHeading({
     size: "xl",
     title: __("session.list.title")
   }) }}
 
   <div class="nhsuk-grid-row">
     <auto-submit class="app-grid-column-filters">
-      {{ sessionSearch({
+      {{ appSessionSearch({
         clear: "/sessions"
       }) }}
     </auto-submit>
 
     <div class="app-grid-column-results">
-      {{ heading({
+      {{ appHeading({
         level: 3,
         size: "m",
         title: title | replace(",", " or "),

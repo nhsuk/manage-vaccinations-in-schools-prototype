@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     title: title
   }) }}
 
@@ -27,7 +27,7 @@
 
   {% call fieldset({
     legend: {
-      html: heading({
+      html: appHeading({
         classes: "nhsuk-fieldset__legend--m",
         title: __("session.offline.vaccinator.label")
       })

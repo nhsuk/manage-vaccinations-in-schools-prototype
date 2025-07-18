@@ -4,7 +4,7 @@
 {% set paths = { back: upload.uri } %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     caption: __("upload.show.title", { upload: upload }),
     title: title
   }) }}
@@ -22,7 +22,7 @@
 {% endblock %}
 
 {% block afterForm %}
-  {{ buttonGroup({
+  {{ appButtonGroup({
     buttons: [{
       text: __("upload.removeRelationships.confirm"),
       href: upload.uri + "/remove-relationships"

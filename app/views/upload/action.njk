@@ -3,7 +3,7 @@
 {% set title = __("upload.action.title", type) %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     caption: __("upload.show.title", { upload: upload }),
     title: title
   }) }}
@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block afterForm %}
-  {{ buttonGroup({
+  {{ appButtonGroup({
     buttons: [{
       classes: "nhsuk-button--warning",
       text: __("upload.action.confirm", type)

@@ -1,4 +1,4 @@
-{% macro event(params) -%}
+{% macro appEvent(params) -%}
   {% if params.truncate %}
     {% set truncatedNote = params.auditEvent.note | truncate(params.truncate) %}
     <blockquote>

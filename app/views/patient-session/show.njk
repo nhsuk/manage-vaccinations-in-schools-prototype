@@ -1,5 +1,5 @@
-{% from "../_macros/parent-email.njk" import parentEmail %}
-{% from "../_macros/parent-sms.njk" import parentSms %}
+{% from "../_macros/parent-email.njk" import appParentEmail %}
+{% from "../_macros/parent-sms.njk" import appParentSms %}
 {% from "patient-session/_navigation.njk" import patientSessionNavigation with context %}
 
 {% extends "_layouts/form.njk" %}
@@ -55,7 +55,7 @@
 
   <div class="nhsuk-grid-row">
     <div class="app-grid-column-patient-record app-grid-column--sticky-below-secondary-navigation">
-      {{ heading({
+      {{ appHeading({
         classes: "nhsuk-u-margin-top-1",
         level: 3,
         size: "s",

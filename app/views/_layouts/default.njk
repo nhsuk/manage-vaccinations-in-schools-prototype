@@ -6,19 +6,19 @@
 {% from "govuk/components/password-input/macro.njk" import govukPasswordInput %}
 
 {#- App macros -#}
-{% from "_macros/action-list.njk" import actionList %}
-{% from "_macros/add-another.njk" import addAnother %}
-{% from "_macros/autocomplete.njk" import autocomplete with context %}
-{% from "_macros/button-group.njk" import buttonGroup with context %}
-{% from "_macros/count.njk" import count %}
+{% from "_macros/action-list.njk" import appActionList %}
+{% from "_macros/add-another.njk" import appAddAnother %}
+{% from "_macros/autocomplete.njk" import appAutocomplete with context %}
+{% from "_macros/button-group.njk" import appButtonGroup with context %}
+{% from "_macros/count.njk" import appCount %}
 {% from "_macros/environment.njk" import appEnvironment %}
-{% from "_macros/event.njk" import event %}
-{% from "_macros/heading.njk" import heading %}
-{% from "_macros/icon.njk" import icon %}
-{% from "_macros/search-input.njk" import searchInput with context %}
-{% from "_macros/secondary-navigation.njk" import secondaryNavigation %}
-{% from "_macros/status.njk" import status %}
-{% from "_macros/sub-navigation.njk" import subNavigation %}
+{% from "_macros/event.njk" import appEvent %}
+{% from "_macros/heading.njk" import appHeading %}
+{% from "_macros/icon.njk" import appIcon %}
+{% from "_macros/search-input.njk" import appSearchInput with context %}
+{% from "_macros/secondary-navigation.njk" import appSecondaryNavigation %}
+{% from "_macros/status.njk" import appStatus %}
+{% from "_macros/sub-navigation.njk" import appSubNavigation %}
 
 {% block head %}
   {# Prevent NHS numbers from being treated as phone numbers #}
@@ -60,13 +60,13 @@
         {
           classes: "app-header__navigation-item--with-count",
           href: "/consents",
-          html: __("consent.list.label") + count(data.counts.consents),
+          html: __("consent.list.label") + appCount(data.counts.consents),
           active: navigation.activeSection == "consents"
         },
         {
           classes: "app-header__navigation-item--with-count",
           href: "/moves",
-          html: __("move.list.label") + count(data.counts.moves),
+          html: __("move.list.label") + appCount(data.counts.moves),
           active: navigation.activeSection == "moves"
         },
         {
@@ -77,7 +77,7 @@
         {
           classes: 'app-header__navigation-item--with-count',
           href: "/uploads",
-          html: __("upload.list.label") + count(data.counts.uploads),
+          html: __("upload.list.label") + appCount(data.counts.uploads),
           active: navigation.activeSection == "uploads"
         },
         {

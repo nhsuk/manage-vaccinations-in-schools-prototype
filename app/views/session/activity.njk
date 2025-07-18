@@ -1,4 +1,4 @@
-{% from "_macros/patient-search.njk" import patientSearch with context %}
+{% from "_macros/patient-search.njk" import appPatientSearch with context %}
 {% from "session/_navigation.njk" import sessionNavigation with context %}
 
 {% extends "_layouts/form.njk" %}
@@ -40,7 +40,7 @@
   }) if view == "record" and session.defaultBatch.length }}
 
   {% if (view == "register" or view == "record") and not session.isActive %}
-    {{ heading({
+    {{ appHeading({
       level: 2,
       size: "m",
       title: __("session." + view + ".title"),
@@ -49,7 +49,7 @@
   {% else %}
     <div class="nhsuk-grid-row">
       <auto-submit class="app-grid-column-filters">
-        {{ patientSearch({
+        {{ appPatientSearch({
           clear: session.uri + "/" + view,
           status: view if view != "record" and view != "consent",
           statuses: view if view == "consent"
@@ -70,7 +70,7 @@
           {% set title = __("session." + view + ".title") %}
         {% endif %}
 
-        {{ heading({
+        {{ appHeading({
           level: 3,
           size: "m",
           title: title | replace(",", " or "),
@@ -134,7 +134,7 @@
                 } if view != "record",
                 notes: {
                   label: __("patientSession.notes.label"),
-                  value: event({
+                  value: appEvent({
                     auditEvent: patientSession.latestNote,
                     showProgrammes: false,
                     truncate: 300,
@@ -144,7 +144,7 @@
               })
             }) }}
 
-            {{ buttonGroup({
+            {{ appButtonGroup({
               buttons: [{
                 classes: "nhsuk-button--secondary app-button--small",
                 text: __("patientSession.registration.actions.present.label"),

@@ -1,7 +1,7 @@
 {% extends "_layouts/form.njk" %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     caption: clinic.name,
     title: __("clinic.action.title", type)
   }) }}
@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block afterForm %}
-  {{ buttonGroup({
+  {{ appButtonGroup({
     buttons: [{
       classes: "nhsuk-button--warning",
       text: __("clinic.action.confirm", type),

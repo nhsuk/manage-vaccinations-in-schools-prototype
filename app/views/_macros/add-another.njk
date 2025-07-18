@@ -1,6 +1,6 @@
 {%- from "nhsuk/components/button/macro.njk" import button -%}
 {%- from "nhsuk/components/fieldset/macro.njk" import fieldset -%}
-{% macro addAnother(params) -%}
+{% macro appAddAnother(params) -%}
 {%- set id = params.id or params.name -%}
 {#- `fieldset` is false by default -#}
 {%- set hasFieldset = true if params.fieldset else false %}

@@ -4,7 +4,7 @@
 {% set hasNasalVaccine = session.delegationNasalProtocols.length > 0 %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     caption: session.location.name,
     title: title
   }) }}

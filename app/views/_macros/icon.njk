@@ -1,4 +1,4 @@
-{% macro icon(params) -%}
+{% macro appIcon(params) -%}
 <svg class="nhsuk-icon nhsuk-icon__{{ params.icon }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" focusable="false"{% if not params.title %} aria-hidden="true"{% endif %} role="{{ "img" if params.title else "presentation" }}">
 {% if params.title -%}
   <title>{{ params.title }}</title>

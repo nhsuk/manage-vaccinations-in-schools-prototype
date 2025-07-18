@@ -27,7 +27,7 @@
 {% block content %}
   {{ super() }}
 
-  {{ heading({
+  {{ appHeading({
     title: title
   }) }}
 
@@ -75,7 +75,7 @@
       },
       {
         header: __("actions.label"),
-        html: actionList({
+        html: appActionList({
           items: [{
             text: __("actions.review"),
             href: "/uploads/reviews/" + upload.id + "/" + patient.nhsn

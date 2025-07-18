@@ -1,7 +1,7 @@
-{%- from "_macros/status.njk" import status -%}
-{% macro parentSms(parent, showStatus) -%}
+{%- from "_macros/status.njk" import appStatus -%}
+{% macro appParentSms(parent, showStatus) -%}
   <p class="nhsuk-body nhsuk-u-margin-0">{{ parent.tel }}</p>
-  {{ status({
+  {{ appStatus({
     classes: "app-status--small nhsuk-u-margin-top-1",
     text: parent.smsStatus,
     colour: "red"

@@ -1,6 +1,6 @@
 {% set isVaccinated = patientSession.report == PatientOutcome.Vaccinated %}
 
-{{ heading({
+{{ appHeading({
   level: 3,
   size: "m",
   title: __("session.consent.label")
@@ -21,7 +21,7 @@
   {% endif %}
 
   {# Actions #}
-  {{ buttonGroup({
+  {{ appButtonGroup({
     buttons: [{
       classes: "nhsuk-button--secondary",
       text: __("remind.new.title"),
@@ -45,14 +45,14 @@
 
   {# Gillick #}
   {% if options.canGillick and not isVaccinated %}
-    {{ heading({
+    {{ appHeading({
       classes: "nhsuk-u-margin-bottom-3",
       level: 4,
       size: "s",
       title: __("patientSession.gillick.label")
     }) }}
 
-    {{ status(patientSession.gillick.status) }}
+    {{ appStatus(patientSession.gillick.status) }}
 
     {% set type = "edit" if patientSession.gillick.competent else "new" %}
     {{ button({
@@ -64,7 +64,7 @@
 
   {# Decision cards #}
   {% if patientSession.responses | length %}
-    {{ heading({
+    {{ appHeading({
       level: 4,
       size: "s",
       title: __("patientSession.responses.label")
@@ -93,7 +93,7 @@
   {% if patientSession.consentHealthAnswers %}
     <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
 
-    {{ heading({
+    {{ appHeading({
       classes: "nhsuk-u-margin-bottom-2",
       level: 4,
       size: "s",

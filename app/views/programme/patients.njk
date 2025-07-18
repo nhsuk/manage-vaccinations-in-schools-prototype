@@ -1,4 +1,4 @@
-{% from "_macros/patient-search.njk" import patientSearch with context %}
+{% from "_macros/patient-search.njk" import appPatientSearch with context %}
 {% from "programme/_navigation.njk" import programmeNavigation with context %}
 
 {% extends "_layouts/form.njk" %}
@@ -37,7 +37,7 @@
 
   <div class="nhsuk-grid-row">
     <auto-submit class="app-grid-column-filters">
-      {{ patientSearch({
+      {{ appPatientSearch({
         clear: programme.uri + "/patients",
         outcomes: {
           consent: ConsentOutcome,
@@ -48,7 +48,7 @@
     </auto-submit>
 
     <div class="app-grid-column-results">
-      {{ heading({
+      {{ appHeading({
         level: 3,
         size: "m",
         title: __("search.results"),

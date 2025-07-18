@@ -18,12 +18,12 @@
 {% endmacro %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     caption: session.location.name,
     title: title
   }) }}
 
-  {% call addAnother({
+  {% call appAddAnother({
     id: "session-dates",
     name: "date",
     fieldset: { legend: "Things" }

@@ -10,7 +10,7 @@
 {%- endif -%}
 {%- endmacro -%}
 
-{%- macro actionList(params) -%}
+{%- macro appActionList(params) -%}
 {%- if params.items.length == 1 %}
   <p class="app-action-list{% if params.classes %} {{ params.classes }}{% endif %}">
     {{ _action(params.items[0]) }}

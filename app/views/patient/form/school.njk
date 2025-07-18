@@ -3,10 +3,10 @@
 {% set title = __("patient.school.title") %}
 
 {% block form %}
-  {{ autocomplete({
+  {{ appAutocomplete({
     label: {
       classes: "nhsuk-label--l",
-      html: heading({
+      html: appHeading({
         caption: patient.fullName,
         title: title
       })

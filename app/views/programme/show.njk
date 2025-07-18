@@ -66,7 +66,7 @@
     </div>
   </div>
 
-  {{ heading({
+  {{ appHeading({
     level: 2,
     size: "m",
     title: __("programme.show.cohorts")
@@ -87,7 +87,7 @@
     {% endfor %}
   </ul>
   {% if programme.sessions.length %}
-    {{ heading({
+    {{ appHeading({
       level: 2,
       size: "m",
       title: __("programme.show.responses")

@@ -3,7 +3,7 @@
 {% set title = __("batch.action.title", type) %}
 
 {% block form %}
-  {{ heading({
+  {{ appHeading({
     caption: batch.vaccine.brand + ", " + batch.id,
     title: title
   }) }}
@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block afterForm %}
-  {{ buttonGroup({
+  {{ appButtonGroup({
     buttons: [{
       classes: "nhsuk-button--warning",
       text: __("batch.action.confirm", type),
