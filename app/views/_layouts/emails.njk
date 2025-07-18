@@ -1,6 +1,6 @@
 {% extends "_layouts/meta.njk" %}
 
-{% from "_macros/logo.njk" import logo %}
+{% from "nhsuk/components/header/macro.njk" import header %}
 
 {% set template = data.template or defaultTemplate %}
 {% set title = title or "Email messages" %}
@@ -21,11 +21,13 @@
 
 {% set cardDescriptionHtml %}
   <article class="prototype-email">
-    <header class="prototype-email__header">
+    <footer class="prototype-email__header">
       From: <span class="nhsuk-u-secondary-text-color">{{ placeholders.from.name }} &lt;{{ placeholders.from.email }}&gt;</span><br>
       To: <span class="nhsuk-u-secondary-text-color">{{ placeholders.to.name }} &lt;{{ placeholders.to.email }}&gt;</span>
-    </header>
-    {{ logo(54) }}
+    </footer>
+    {{ header({
+      classes: "nhsuk-header--white"
+    }) }}
     {% filter nhsukMarkdown %}
       {%- include "emails/" + dir + "/" + template + ".njk" %}
     {% endfilter %}
