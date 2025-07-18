@@ -60,13 +60,13 @@
         {
           classes: "app-header__navigation-item--with-count",
           href: "/consents",
-          html: __("consent.list.label") + count(counts.consents),
+          html: __("consent.list.label") + count(data.counts.consents),
           active: navigation.activeSection == "consents"
         },
         {
           classes: "app-header__navigation-item--with-count",
           href: "/moves",
-          html: __("move.list.label") + count(counts.moves),
+          html: __("move.list.label") + count(data.counts.moves),
           active: navigation.activeSection == "moves"
         },
         {
@@ -77,7 +77,7 @@
         {
           classes: 'app-header__navigation-item--with-count',
           href: "/uploads",
-          html: __("upload.list.label") + count(counts.uploads),
+          html: __("upload.list.label") + count(data.counts.uploads),
           active: navigation.activeSection == "uploads"
         },
         {

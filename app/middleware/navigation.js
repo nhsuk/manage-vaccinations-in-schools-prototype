@@ -1,27 +1,9 @@
-import { Consent } from '../models/consent.js'
-import { Move } from '../models/move.js'
-import { Notice } from '../models/notice.js'
 import { Session } from '../models/session.js'
-import { Upload } from '../models/upload.js'
 import { formatDate, today } from '../utils/date.js'
 import { getProgrammeSession } from '../utils/session.js'
 
 export const navigation = (request, response, next) => {
   const { data } = request.session
-
-  // Get item counts (to show in navigation and elsewhere)
-  const notices = Notice.readAll(data)
-  const reviews = Upload.readAll(data).flatMap((upload) => upload.duplicates)
-  const sessions = Session.readAll(data)
-
-  response.locals.counts = {
-    consents: Consent.readAll(data).length,
-    moves: Move.readAll(data).length,
-    notices: notices.length,
-    sessions: sessions.length,
-    reviews: reviews.length,
-    uploads: notices.length + reviews.length
-  }
 
   // Get currently active section
   let activeSection = request.path.split('/')[1]
@@ -29,6 +11,8 @@ export const navigation = (request, response, next) => {
     activeSection = 'sessions'
   }
 
+  // Get programme sessions
+  const sessions = Session.readAll(data)
   const fluSession = getProgrammeSession(sessions, 'flu-2025')
   const hpvSession = getProgrammeSession(sessions, 'hpv-2024')
   const tioSession = getProgrammeSession(sessions, 'td-ipv-2024')

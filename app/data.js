@@ -16,6 +16,12 @@ import uploads from '../.data/uploads.json' with { type: 'json' }
 import users from '../.data/users.json' with { type: 'json' }
 import vaccinations from '../.data/vaccinations.json' with { type: 'json' }
 
+import { Consent } from './models/consent.js'
+import { Move } from './models/move.js'
+import { Notice } from './models/notice.js'
+import { Session } from './models/session.js'
+import { Upload } from './models/upload.js'
+
 // Use Coventry and Warwickshire as organisation
 const organisation = organisations.RYG
 
@@ -27,10 +33,11 @@ const organisation = organisations.RYG
  * useful for testing journeys where users are returning or logging in to an
  * existing application.
  */
-export default {
+const data = {
   batches,
   clinics,
   cohorts,
+  counts: {},
   features: {},
   instructions,
   moves,
@@ -49,3 +56,15 @@ export default {
   vaccines,
   wizard: {}
 }
+
+// Statistics
+data.counts.consents = Consent.readAll(data).length
+data.counts.moves = Move.readAll(data).length
+data.counts.notices = Notice.readAll(data).length
+data.counts.reviews = Upload.readAll(data).flatMap(
+  (upload) => upload.duplicates
+).length
+data.counts.sessions = Session.readAll(data).length
+data.counts.uploads = data.counts.notices + data.counts.reviews
+
+export default data
