@@ -31,7 +31,7 @@
     "i18n": "^0.15.1",
     "json-as-xlsx": "^2.5.6",
     "lodash": "^4.17.21",
-    "nhsuk-prototype-rig": "^0.6.1",
+    "nhsuk-prototype-rig": "^0.6.4",
     "response-time": "^2.3.3"
   },
   "devDependencies": {
@@ -48,7 +48,6 @@
   "private": true,
   "type": "module",
   "prototype": {
-    "defaultRigLayout": "_layouts/default.njk",
     "nunjucksPaths": [
       "./node_modules/govuk-frontend/dist",
       "./node_modules/@x-govuk/govuk-prototype-components/src"
