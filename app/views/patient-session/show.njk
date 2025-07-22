@@ -72,6 +72,16 @@
     </div>
 
     <div class="app-grid-column-patient-session">
+      {% for auditEvent in patientSession.pinnedNotes %}
+        {{ card({
+          classes: "nhsuk-u-margin-top-3 app-card--yellow",
+          heading: auditEvent.name,
+          headingLevel: 4,
+          feature: true,
+          descriptionHtml: appEvent({ auditEvent: auditEvent, showProgrammes: true })
+        }) }}
+      {% endfor %}
+
       {% include "patient-session/_consent.njk" %}
 
       {% if options.canTriage %}
