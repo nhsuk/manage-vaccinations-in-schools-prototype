@@ -72,6 +72,19 @@
     </div>
 
     <div class="app-grid-column-patient-session">
+      {% for auditEvent in patientSession.pinnedNotes %}
+        {% call warningCallout({
+          classes: "nhsuk-u-margin-top-3",
+          heading: __("patientSession.pinnedNote.label")
+        }) %}
+          {{ auditEvent.note | nhsukMarkdown }}
+
+          <p class="nhsuk-body-s nhsuk-u-margin-0 nhsuk-u-secondary-text-color">
+            {{- auditEvent.formatted.createdAtAndBy | safe -}}
+          </p>
+        {% endcall %}
+      {% endfor %}
+
       {% include "patient-session/_consent.njk" %}
 
       {% if options.canTriage %}
