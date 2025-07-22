@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../vendor/nhsuk-frontend" as *;
 @use "../core" as app;
 
@@ -42,9 +43,24 @@
     }
   }
 
+  &--yellow {
+    background-color: color.mix($color_nhsuk-white, $color_nhsuk-warm-yellow, 80%);
+    border-color: $color_nhsuk-warm-yellow;
+
+    .nhsuk-card__heading--feature {
+      background-color: $color_nhsuk-warm-yellow;
+      color: $nhsuk-text-color;
+    }
+
+    blockquote {
+      border-color: $color_nhsuk-warm-yellow;
+    }
+  }
+
   &--green,
   &--grey,
-  &--red {
+  &--red,
+  &--yellow {
     .nhsuk-card__link,
     .nhsuk-card__link:hover {
       color: inherit;

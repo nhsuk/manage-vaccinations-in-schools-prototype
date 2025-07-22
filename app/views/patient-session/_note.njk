@@ -1,13 +1,23 @@
 {% set cardDescriptionHtml %}
   {{ textarea({
     label: {
-      text: __("patientSession.notes.new.label")
+      text: __("event.note.label")
     },
     hint: {
-      text: __("patientSession.notes.new.hint")
+      text: __("event.note.hint")
     },
     rows: 5,
     decorate: "note"
+  }) }}
+
+  {{ radios({
+    classes: "nhsuk-radios--inline",
+    fieldset: {
+      legend: { text: __("event.pinned.title") }
+    },
+    hint: { text: __("event.pinned.hint") },
+    items: booleanItems,
+    decorate: "pinned"
   }) }}
 
   {{ button({

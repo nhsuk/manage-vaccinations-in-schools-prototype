@@ -766,7 +766,13 @@ export const en = {
       label: 'Date'
     },
     note: {
-      label: 'Note'
+      label: 'Note',
+      hint: 'Notes are visible to all users, and cannot be edited or deleted'
+    },
+    pinned: {
+      label: 'Pinned',
+      title: 'Do you want to pin this note?',
+      hint: 'Pinned notes show at the top of session pages and on search results within a session'
     },
     outcome: {
       label: 'Outcome'
@@ -1114,7 +1120,7 @@ export const en = {
       title: 'Child record'
     },
     events: {
-      title: 'Notes and session activity',
+      title: 'Session notes and activity',
       count: {
         one: '%s event',
         other: '[0] No events|%s events'
@@ -1123,12 +1129,16 @@ export const en = {
     notes: {
       label: 'Notes',
       new: {
-        title: 'Add a note',
-        label: 'Note',
-        hint: 'Notes are visible to all users, and cannot be edited or deleted',
-        confirm: 'Save note',
-        success: 'Note added'
+        title: 'Add a session note',
+        confirm: 'Save session note',
+        success: 'Session note added'
       }
+    },
+    pinnedNotes: {
+      label: 'Session notes'
+    },
+    pinnedNote: {
+      label: 'Session note'
     },
     consent: {
       title: 'Consent for %s',
