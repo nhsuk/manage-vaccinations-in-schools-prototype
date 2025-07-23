@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { UploadStatus, UploadType } from '../enums.js'
+import { UserPresenter } from '../presenters/user.js'
 import { formatDate, today } from '../utils/date.js'
 import {
   formatLink,
@@ -12,7 +13,6 @@ import {
 import { Move } from './move.js'
 import { Patient } from './patient.js'
 import { School } from './school.js'
-import { User } from './user.js'
 
 /**
  * @class Upload
@@ -54,12 +54,12 @@ export class Upload {
   /**
    * Get user who created upload
    *
-   * @returns {User} User
+   * @returns {import('../presenters/user.js').UserPresenter} User
    */
   get createdBy() {
     try {
       if (this.createdBy_uid) {
-        return User.findOne(this.createdBy_uid, this.context)
+        return UserPresenter.forOne(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Upload.createdBy', error.message)

@@ -14,9 +14,9 @@ import { Batch } from '../models/batch.js'
 import { DefaultBatch } from '../models/default-batch.js'
 import { PatientSession } from '../models/patient-session.js'
 import { Programme } from '../models/programme.js'
-import { User } from '../models/user.js'
 import { Vaccination } from '../models/vaccination.js'
 import { Vaccine } from '../models/vaccine.js'
+import { UserPresenter } from '../presenters/user.js'
 import { today } from '../utils/date.js'
 
 export const vaccinationController = {
@@ -320,7 +320,7 @@ export const vaccinationController = {
           }
         })
 
-      response.locals.userItems = User.findAll(data)
+      response.locals.userItems = UserPresenter.forAll(data)
         .map((user) => ({
           text: user.fullName,
           value: user.uid

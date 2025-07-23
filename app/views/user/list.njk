@@ -14,20 +14,13 @@
   {% for role, users in users | groupby("role") %}
     {% set userRows = [] %}
     {% for user in users | sort(false, false, "fullName") %}
-      {% set userRows = userRows | push([
-        {
-          header: __("user.fullName.label"),
-          html: user.link.fullName or "Not provided"
+      {% set userRows = userRows | push(user.getTableRow({
+        fullName: {
+          href: user.uri
         },
-        {
-          header: __("user.uid.label"),
-          html: user.formatted.uid or "Not provided"
-        },
-        {
-          header: __("user.email.label"),
-          html: user.email or "Not provided"
-        }
-      ]) %}
+        uid: {},
+        email: {}
+      })) %}
     {% endfor %}
 
     {{ table({

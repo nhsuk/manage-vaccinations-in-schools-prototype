@@ -1,5 +1,6 @@
 import { UserRole, VaccineMethod } from '../enums.js'
 import { User } from '../models/user.js'
+import { UserPresenter } from '../presenters/user.js'
 
 export const authentication = (request, response, next) => {
   const { data } = request.session
@@ -20,7 +21,7 @@ export const authentication = (request, response, next) => {
     user.canPrescribe = true
   }
 
-  request.app.locals.account = user
+  request.app.locals.account = new UserPresenter(user)
 
   next()
 }

@@ -13,6 +13,7 @@ import {
   VaccinationSyncStatus,
   VaccineMethod
 } from '../enums.js'
+import { UserPresenter } from '../presenters/user.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -35,7 +36,6 @@ import { Batch } from './batch.js'
 import { PatientSession } from './patient-session.js'
 import { Programme } from './programme.js'
 import { School } from './school.js'
-import { User } from './user.js'
 import { Vaccine } from './vaccine.js'
 
 /**
@@ -252,12 +252,12 @@ export class Vaccination {
   /**
    * Get user who performed vaccination
    *
-   * @returns {User} User
+   * @returns {import('../presenters/user.js').UserPresenter} User
    */
   get createdBy() {
     try {
       if (this.createdBy_uid) {
-        return User.findOne(this.createdBy_uid, this.context)
+        return UserPresenter.forOne(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Vaccination.createdBy', error.message)
@@ -267,12 +267,12 @@ export class Vaccination {
   /**
    * Get user who supplied the vaccine
    *
-   * @returns {User} User
+   * @returns {import('../presenters/user.js').UserPresenter} User
    */
   get suppliedBy() {
     try {
       if (this.suppliedBy_uid) {
-        return User.findOne(this.suppliedBy_uid, this.context)
+        return UserPresenter.forOne(this.suppliedBy_uid, this.context)
       }
     } catch (error) {
       console.error('Vaccination.suppliedBy', error.message)
