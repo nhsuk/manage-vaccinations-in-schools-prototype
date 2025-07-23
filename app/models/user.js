@@ -1,7 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { formatLink, formatMonospace } from '../utils/string.js'
-
 /**
  * @class User
  * @property {string} uid - User ID
@@ -23,56 +21,6 @@ export class User {
     this.canPrescribe = options?.canPrescribe || false
     this.vaccineMethods = options?.vaccineMethods || []
     this.vaccinations = options?.vaccinations || {}
-  }
-
-  /**
-   * Get full name, formatted as LASTNAME, Firstname
-   *
-   * @returns {string} Full name
-   */
-  get fullName() {
-    return [this.lastName.toUpperCase(), this.firstName].join(', ')
-  }
-
-  /**
-   * Get user name and role
-   *
-   * @returns {string} Full name
-   */
-  get nameAndRole() {
-    return `${this.fullName} (${this.role})`
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} Formatted values
-   */
-  get formatted() {
-    return {
-      uid: formatMonospace(this.uid)
-    }
-  }
-
-  /**
-   * Get formatted links
-   *
-   * @returns {object} Formatted links
-   */
-  get link() {
-    return {
-      email: formatLink(`mailto:${this.email}`, this.fullName),
-      fullName: formatLink(this.uri, this.fullName)
-    }
-  }
-
-  /**
-   * Get namespace
-   *
-   * @returns {string} Namespace
-   */
-  get ns() {
-    return 'user'
   }
 
   /**
