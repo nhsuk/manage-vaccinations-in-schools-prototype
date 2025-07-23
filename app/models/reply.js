@@ -11,6 +11,7 @@ import {
   ReplyRefusal,
   VaccineMethod
 } from '../enums.js'
+import { UserPresenter } from '../presenters/user.js'
 import { formatDate, today } from '../utils/date.js'
 import {
   formatMarkdown,
@@ -26,7 +27,6 @@ import { Parent } from './parent.js'
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
 import { Session } from './session.js'
-import { User } from './user.js'
 
 /**
  * @class Reply
@@ -165,12 +165,12 @@ export class Reply {
   /**
    * Get user who created reply
    *
-   * @returns {User} User
+   * @returns {import('../presenters/user.js').UserPresenter} User
    */
   get createdBy() {
     try {
       if (this.createdBy_uid) {
-        return User.findOne(this.createdBy_uid, this.context)
+        return UserPresenter.forOne(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Reply.createdBy', error.message)

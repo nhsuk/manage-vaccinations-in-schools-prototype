@@ -10,7 +10,7 @@ import {
   ScreenOutcome
 } from './enums.js'
 import { School } from './models/school.js'
-import { User } from './models/user.js'
+import { UserPresenter } from './presenters/user.js'
 import { getSessionActivityCount } from './utils/session.js'
 import {
   formatHealthAnswer,
@@ -112,8 +112,7 @@ export default () => {
         disabled: true,
         ...(!value && { selected: true })
       },
-      ...Object.values(users)
-        .map((user) => new User(user))
+      ...UserPresenter.forAll(this.ctx)
         .sort((a, b) => a.fullName.localeCompare(b.fullName))
         .map((user) => ({
           text: user.fullName,
