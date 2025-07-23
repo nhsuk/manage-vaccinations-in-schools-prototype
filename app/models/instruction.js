@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { ProgrammeType, VaccinationMethod, VaccinationSite } from '../enums.js'
+import { UserPresenter } from '../presenters/user.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -11,7 +12,6 @@ import { formatLink, formatMillilitres } from '../utils/string.js'
 
 import { PatientSession } from './patient-session.js'
 import { Programme } from './programme.js'
-import { User } from './user.js'
 
 /**
  * @class Instruction
@@ -117,12 +117,12 @@ export class Instruction {
   /**
    * Get user who performed instruction
    *
-   * @returns {User} User
+   * @returns {import('../presenters/user.js').UserPresenter} User
    */
   get createdBy() {
     try {
       if (this.createdBy_uid) {
-        return User.findOne(this.createdBy_uid, this.context)
+        return UserPresenter.forOne(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Instruction.createdBy', error.message)
