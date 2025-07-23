@@ -61,7 +61,7 @@ import { Session } from './session.js'
  * @property {string} [createdBy_uid] - User who created patient session
  * @property {Date} [updatedAt] - Updated date
  * @property {Gillick} [gillick] - Gillick assessment
- * @property {Array<AuditEvent>} [notes] - Session notes
+ * @property {Array<AuditEvent>} [notes] - Notes
  * @property {boolean} alternative - Administer alternative vaccine
  * @property {string} patient_uuid - Patient UUID
  * @property {string} instruction_uuid - Instruction UUID
@@ -160,15 +160,24 @@ export class PatientSession {
   }
 
   /**
-   * Get latest session note
+   * Get pinned session notes
    *
-   * @returns {import('./audit-event.js').AuditEvent} - Audit event
+   * @returns {Array<import('./audit-event.js').AuditEvent>} - Audit event
    */
-  get latestNote() {
+  get pinnedNotes() {
     return this.auditEvents
       .filter(({ programme_ids }) => programme_ids.includes(this.programme_id))
       .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
-      .find(({ type }) => type === EventType.Unknown)
+      .filter(({ type }) => type === EventType.Pinned)
+  }
+
+  /**
+   * Get most recent pinned session note
+   *
+   * @returns {import('./audit-event.js').AuditEvent} - Audit event
+   */
+  get pinnedNote() {
+    return this.pinnedNotes[0]
   }
 
   /**
@@ -813,15 +822,15 @@ export class PatientSession {
   }
 
   /**
-   * Save session note
+   * Save note
    *
    * @param {import('./audit-event.js').AuditEvent} event - Event
    */
   saveNote(event) {
     this.patient.addEvent({
-      type: EventType.Unknown,
-      name: 'Note',
+      name: event.name,
       note: event.note,
+      type: event.type,
       createdBy_uid: event.createdBy_uid,
       programme_ids: this.session.programme_ids
     })

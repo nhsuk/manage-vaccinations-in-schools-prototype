@@ -47,6 +47,22 @@
 
   {% include "patient-session/_note.njk" %}
 
+  {% if patientSession.pinnedNotes.length %}
+    <h3 class="nhsuk-heading-xs nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal">Pinned</h3>
+
+    {% for auditEvent in patientSession.pinnedNotes %}
+      {{ card({
+        classes: "app-card--warning",
+        heading: auditEvent.name,
+        headingLevel: 4,
+        descriptionHtml: appEvent({ auditEvent: auditEvent, showProgrammes: true }),
+        attributes: {
+          id: auditEvent.uuid
+        }
+      }) }}
+    {% endfor %}
+  {% endif %}
+
   {% for group, auditEvents in patientSession.auditEventLog %}
     <h3 class="nhsuk-heading-xs nhsuk-u-secondary-text-color nhsuk-u-font-weight-normal">{{ group }}</h3>
 
@@ -58,7 +74,7 @@
         attributes: {
           id: auditEvent.uuid
         }
-      }) }}
+      }) if auditEvent.type != EventType.Pinned }}
     {% endfor %}
   {% endfor %}
 {% endblock %}

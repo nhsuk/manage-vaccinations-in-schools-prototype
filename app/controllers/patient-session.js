@@ -2,6 +2,7 @@ import {
   Activity,
   ConsentOutcome,
   ConsentWindow,
+  EventType,
   InstructionOutcome,
   PatientOutcome,
   PreScreenQuestion,
@@ -20,6 +21,7 @@ import { PatientSession } from '../models/patient-session.js'
 import { Programme } from '../models/programme.js'
 import { Vaccination } from '../models/vaccination.js'
 import { today } from '../utils/date.js'
+import { stringToBoolean } from '../utils/string.js'
 
 export const patientSessionController = {
   read(request, response, next, nhsn) {
@@ -396,11 +398,15 @@ export const patientSessionController = {
   },
 
   note(request, response) {
-    const { note } = request.body
+    let { note, pinned } = request.body
     const { data } = request.session
     const { __, back, patientSession } = response.locals
 
+    pinned = stringToBoolean(pinned)
+
     patientSession.saveNote({
+      ...(pinned && { type: EventType.Pinned }),
+      name: 'Session note',
       note,
       createdBy_uid: data.token?.uid || '000123456789'
     })

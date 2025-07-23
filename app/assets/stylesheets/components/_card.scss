@@ -63,6 +63,15 @@
     background-color: rgba($color_nhsuk-grey-5, 0.5);
   }
 
+  &--warning {
+    background-color: $color_nhsuk-pale-yellow;
+    border-color: $color_nhsuk-yellow;
+
+    blockquote {
+      border-left-color: $color_nhsuk-warm-yellow;
+    }
+  }
+
   &--data {
     display: flex;
 

@@ -82,7 +82,7 @@ export const EventType = {
   Register: 'Register',
   Record: 'Record',
   Notice: 'Notice',
-  Unknown: 'Unknown'
+  Pinned: 'Pinned'
 }
 
 /**

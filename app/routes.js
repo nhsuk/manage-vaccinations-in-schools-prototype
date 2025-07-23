@@ -36,6 +36,8 @@ import { vaccineRoutes } from './routes/vaccine.js'
 
 const router = express.Router({ strict: true })
 
+console.log('1')
+
 router.use(performance)
 router.use(enumeration)
 router.use(environment)
