@@ -3,8 +3,8 @@ import filters from '@x-govuk/govuk-prototype-filters'
 
 import {
   Activity,
+  AuditEventType,
   ConsentOutcome,
-  EventType,
   PatientOutcome,
   ReplyDecision,
   ScreenOutcome,
@@ -156,7 +156,7 @@ export class PatientSession {
   get triageNotes() {
     return this.auditEvents
       .filter(({ programme_ids }) => programme_ids.includes(this.programme_id))
-      .filter(({ type }) => type === EventType.Screen)
+      .filter(({ type }) => type === AuditEventType.Decision)
   }
 
   /**
@@ -168,7 +168,7 @@ export class PatientSession {
     return this.auditEvents
       .filter(({ programme_ids }) => programme_ids.includes(this.programme_id))
       .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
-      .find(({ type }) => type === EventType.Unknown)
+      .find(({ type }) => type === AuditEventType.Note)
   }
 
   /**
@@ -718,7 +718,6 @@ export class PatientSession {
     this.patient.patientSession_uuids =
       this.patient.patientSession_uuids.filter((uuid) => uuid !== this.uuid)
     this.patient.addEvent({
-      type: EventType.Select,
       name: `Removed from the ${this.session.name.replace('Flu', 'flu')}`,
       createdBy_uid: event.createdBy_uid,
       programme_ids: this.session.programme_ids
@@ -733,7 +732,6 @@ export class PatientSession {
    */
   assessGillick(event, gillick) {
     this.patient.addEvent({
-      type: EventType.Consent,
       name: event.name,
       note: gillick.note,
       createdAt: gillick.createdAt,
@@ -752,7 +750,6 @@ export class PatientSession {
    */
   recordTriage(event) {
     this.patient.addEvent({
-      type: EventType.Screen,
       name: event.name,
       note: event.note,
       outcome: event.outcome,
@@ -771,7 +768,6 @@ export class PatientSession {
     this.instruction_uuid = instruction.uuid
 
     this.patient.addEvent({
-      type: EventType.Instruct,
       name: 'PSD instruction given',
       createdAt: instruction.createdAt,
       createdBy_uid: instruction.createdBy_uid,
@@ -789,7 +785,6 @@ export class PatientSession {
     this.session.updateRegister(this.patient.uuid, register)
 
     this.patient.addEvent({
-      type: EventType.Register,
       name: this.status.register.description,
       createdAt: event.createdAt,
       createdBy_uid: event.createdBy_uid,
@@ -804,7 +799,6 @@ export class PatientSession {
    */
   preScreen(event) {
     this.patient.addEvent({
-      type: EventType.Record,
       name: 'Completed pre-screening checks',
       note: event.note,
       createdBy_uid: event.createdBy_uid,
@@ -819,7 +813,7 @@ export class PatientSession {
    */
   saveNote(event) {
     this.patient.addEvent({
-      type: EventType.Unknown,
+      type: AuditEventType.Note,
       name: 'Note',
       note: event.note,
       createdBy_uid: event.createdBy_uid,
@@ -835,7 +829,7 @@ export class PatientSession {
    */
   sendReminder(event, parent) {
     this.patient.addEvent({
-      type: EventType.Remind,
+      type: AuditEventType.Reminder,
       name: `Reminder to give consent sent to ${parent.fullName}`,
       createdBy_uid: event.createdBy_uid,
       programme_ids: this.session.programme_ids

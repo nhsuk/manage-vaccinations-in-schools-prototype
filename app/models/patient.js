@@ -2,7 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import _ from 'lodash'
 
 import schools from '../datasets/schools.js'
-import { EventType, NoticeType } from '../enums.js'
+import { AuditEventType, NoticeType } from '../enums.js'
 import { getDateValueDifference, removeDays, today } from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
 import { getPreferredNames } from '../utils/reply.js'
@@ -180,7 +180,7 @@ export class Patient extends Child {
   get reminders() {
     return this.events
       .map((event) => new AuditEvent(event))
-      .filter((event) => event.type === EventType.Remind)
+      .filter((event) => event.type === AuditEventType.Reminder)
   }
 
   /**
@@ -203,7 +203,7 @@ export class Patient extends Child {
   get notices() {
     return this.events
       .map((event) => new AuditEvent(event))
-      .filter((event) => event.type === EventType.Notice)
+      .filter((event) => event.type === AuditEventType.Notice)
   }
 
   /**
@@ -481,7 +481,6 @@ export class Patient extends Child {
   selectForCohort(cohort) {
     this.cohort_uids.push(cohort.uid)
     this.addEvent({
-      type: EventType.Select,
       name: `Selected for the ${cohort.name}`,
       createdAt: cohort.createdAt,
       createdBy_uid: cohort.createdBy_uid,
@@ -499,7 +498,6 @@ export class Patient extends Child {
     this.update(archive, context)
 
     this.addEvent({
-      type: EventType.Select,
       name: `Record archived: ${archive.archiveReason}`,
       note: archive.archiveReasonOther,
       createdBy_uid: archive.createdBy_uid
@@ -522,7 +520,6 @@ export class Patient extends Child {
    */
   inviteToSession(session) {
     this.addEvent({
-      type: EventType.Invite,
       name: `Added to the ${sentenceCaseProgrammeName(session.name)}`,
       createdAt: session.openAt,
       createdBy_uid: session.createdBy_uid,
@@ -556,7 +553,6 @@ export class Patient extends Child {
 
     this.reply_uuids.push(reply.uuid)
     this.addEvent({
-      type: EventType.Consent,
       name,
       createdAt: isNew ? reply.createdAt : today(),
       createdBy_uid: reply.createdBy_uid,
@@ -582,7 +578,6 @@ export class Patient extends Child {
     }
 
     this.addEvent({
-      type: EventType.Record,
       name,
       note: vaccination.note,
       createdAt: vaccination.updatedAt || vaccination.createdAt,
@@ -622,7 +617,7 @@ export class Patient extends Child {
     }
 
     this.addEvent({
-      type: EventType.Notice,
+      type: AuditEventType.Notice,
       name,
       createdAt: notice.createdAt
     })

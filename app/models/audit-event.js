@@ -1,4 +1,4 @@
-import { EventType, ScreenOutcome } from '../enums.js'
+import { AuditEventType, ScreenOutcome } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
 import {
   formatTag,
@@ -16,9 +16,9 @@ import { User } from './user.js'
  * @property {object} [context] - Global context
  * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created event
- * @property {EventType} type - Activity type
  * @property {string} name - Name
  * @property {string} [note] - Note
+ * @property {AuditEventType} [type] - Audit event type
  * @property {string} [outcome] - Outcome for activity type
  * @property {Array<string>} [programme_ids] - Programme IDs
  */
@@ -27,9 +27,9 @@ export class AuditEvent {
     this.context = context
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
-    this.type = options.type
     this.name = options.name
     this.note = options.note
+    this.type = options?.type
     this.outcome = options?.outcome
     this.programme_ids = options?.programme_ids
   }
@@ -70,7 +70,7 @@ export class AuditEvent {
    * @returns {object} - Status properties
    */
   get status() {
-    if (this.type === EventType.Screen) {
+    if (this.type === AuditEventType.Decision) {
       let colour
       switch (this.outcome) {
         case ScreenOutcome.NeedsTriage:

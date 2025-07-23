@@ -37,6 +37,17 @@ export const ArchiveRecordReason = {
  * @readonly
  * @enum {string}
  */
+export const AuditEventType = {
+  Decision: 'Decision',
+  Note: 'Session note',
+  Notice: 'Notice',
+  Reminder: 'Reminder'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const ConsentOutcome = {
   NoRequest: 'Request failed',
   NoResponse: 'No response',
@@ -66,23 +77,6 @@ export const DownloadFormat = {
   CSV: 'CSV',
   CarePlus: 'XLSX for CarePlus (System C)',
   SystmOne: 'XLSX for SystmOne (TPP)'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const EventType = {
-  Select: 'Select',
-  Invite: 'Invite',
-  Remind: 'Remind',
-  Consent: 'Consent',
-  Screen: 'Screen',
-  Instruct: 'Instruct',
-  Register: 'Register',
-  Record: 'Record',
-  Notice: 'Notice',
-  Unknown: 'Unknown'
 }
 
 /**
