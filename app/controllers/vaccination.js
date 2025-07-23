@@ -292,7 +292,7 @@ export const vaccinationController = {
           }
         })
 
-      response.locals.userItems = User.readAll(data)
+      response.locals.userItems = User.showAll(data)
         .map((user) => ({
           text: user.fullName,
           value: user.uid

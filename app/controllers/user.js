@@ -2,13 +2,13 @@ import { User } from '../models/user.js'
 
 export const userController = {
   read(request, response, next, user_uid) {
-    response.locals.user = User.read(user_uid, request.session.data)
+    response.locals.user = User.show(user_uid, request.session.data)
 
     next()
   },
 
   readAll(request, response, next) {
-    response.locals.users = User.readAll(request.session.data)
+    response.locals.users = User.showAll(request.session.data)
 
     next()
   },

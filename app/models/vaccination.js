@@ -252,12 +252,12 @@ export class Vaccination {
   /**
    * Get user who performed vaccination
    *
-   * @returns {User} User
+   * @returns {import('../presenters/user.js').UserPresenter} User
    */
   get createdBy() {
     try {
       if (this.createdBy_uid) {
-        return User.read(this.createdBy_uid, this.context)
+        return User.show(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Vaccination.createdBy', error.message)
@@ -267,12 +267,12 @@ export class Vaccination {
   /**
    * Get user who supplied the vaccine
    *
-   * @returns {User} User
+   * @returns {import('../presenters/user.js').UserPresenter} User
    */
   get suppliedBy() {
     try {
       if (this.suppliedBy_uid) {
-        return User.read(this.suppliedBy_uid, this.context)
+        return User.show(this.suppliedBy_uid, this.context)
       }
     } catch (error) {
       console.error('Vaccination.suppliedBy', error.message)

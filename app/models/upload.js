@@ -48,12 +48,12 @@ export class Upload {
   /**
    * Get user who created upload
    *
-   * @returns {User} User
+   * @returns {import('../presenters/user.js').UserPresenter} User
    */
   get createdBy() {
     try {
       if (this.createdBy_uid) {
-        return User.read(this.createdBy_uid, this.context)
+        return User.show(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Upload.createdBy', error.message)

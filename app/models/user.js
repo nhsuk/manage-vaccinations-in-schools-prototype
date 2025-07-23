@@ -1,7 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { ProgrammeType } from '../enums.js'
-import { formatLink, formatMonospace } from '../utils/string.js'
+import { UserPresenter } from '../presenters/user.js'
 
 /**
  * @class User
@@ -30,56 +30,6 @@ export class User {
         options?.vaccinations?.[ProgrammeType.MenACWY] || 0,
       [ProgrammeType.TdIPV]: options?.vaccinations?.[ProgrammeType.TdIPV] || 0
     }
-  }
-
-  /**
-   * Get full name, formatted as LASTNAME, Firstname
-   *
-   * @returns {string} Full name
-   */
-  get fullName() {
-    return [this.lastName.toUpperCase(), this.firstName].join(', ')
-  }
-
-  /**
-   * Get user name and role
-   *
-   * @returns {string} Full name
-   */
-  get nameAndRole() {
-    return `${this.fullName} (${this.role})`
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} Formatted values
-   */
-  get formatted() {
-    return {
-      uid: formatMonospace(this.uid)
-    }
-  }
-
-  /**
-   * Get formatted links
-   *
-   * @returns {object} Formatted links
-   */
-  get link() {
-    return {
-      email: formatLink(`mailto:${this.email}`, this.fullName),
-      fullName: formatLink(this.uri, this.fullName)
-    }
-  }
-
-  /**
-   * Get namespace
-   *
-   * @returns {string} Namespace
-   */
-  get ns() {
-    return 'user'
   }
 
   /**
@@ -114,5 +64,34 @@ export class User {
     if (context?.users?.[uid]) {
       return new User(context.users[uid])
     }
+  }
+
+  /**
+   * Show all
+   *
+   * @param {object} context - Context
+   * @returns {Array<UserPresenter>|undefined} User
+   * @static
+   */
+  static showAll(context) {
+    return Object.values(context.users).map((user) => {
+      user = new User(user)
+
+      return new UserPresenter(user)
+    })
+  }
+
+  /**
+   * Show
+   *
+   * @param {string} uid - User UID
+   * @param {object} context - Context
+   * @returns {UserPresenter|undefined} User
+   * @static
+   */
+  static show(uid, context) {
+    const user = User.read(uid, context)
+
+    return new UserPresenter(user)
   }
 }

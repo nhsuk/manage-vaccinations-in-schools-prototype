@@ -16,7 +16,7 @@
       heading: __("user.show.summary"),
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
-        rows: summaryRows(user, {
+        rows: user.getSummaryRows({
           uid: {},
           fullName: {},
           email: {},
