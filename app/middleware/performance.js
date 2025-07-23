@@ -28,5 +28,5 @@ export const performance = responseTime((request, response, time) => {
   const { statusCode } = response
   const timeMs = formatTime(time)
 
-  console.log(`${method} ${originalUrl} - ${statusCode} - ${timeMs}`)
+  console.info(`${method} ${originalUrl} - ${statusCode} - ${timeMs}`)
 })
