@@ -144,11 +144,11 @@ export class Cohort {
    * @param {object} context - Context
    */
   select(context) {
-    context.patients.forEach((patient) => {
+    for (const patient of Object.values(context.patients)) {
       const eligibleForCohort = getCohortEligibility(this, patient)
       if (eligibleForCohort) {
         patient.selectForCohort(this)
       }
-    })
+    }
   }
 }
