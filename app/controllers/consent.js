@@ -23,6 +23,9 @@ export const consentController = {
     response.locals.consentPath = session_id
       ? `/sessions/${consent.session_id}${consent.uri}`
       : consent.uri
+    response.locals.consentsPath = session_id
+      ? `/sessions/${session_id}/consents`
+      : '/consents'
 
     delete request.session.referrer
 
@@ -120,7 +123,11 @@ export const consentController = {
     const { __, consent, patient, consentsPath } = response.locals
 
     // Link consent with patient record
-    consent.linkToPatient(patient, data)
+    consent.linkToPatient(patient)
+
+    // Update session data
+    consent.update(consent, data)
+    patient.update(patient, data)
 
     request.flash('success', __(`consent.link.success`, { consent, patient }))
 
@@ -157,7 +164,11 @@ export const consentController = {
     patient.inviteToSession(patientSession.session)
 
     // Link consent with patient record
-    consent.linkToPatient(patient, data)
+    consent.linkToPatient(patient)
+
+    // Update session data
+    consent.update(consent, data)
+    patient.update(patient, data)
 
     request.flash('success', __(`consent.add.success`, { consent, patient }))
 
