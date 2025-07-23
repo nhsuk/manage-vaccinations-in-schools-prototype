@@ -518,15 +518,15 @@ export class Patient extends Child {
   /**
    * Invite parent to give consent
    *
-   * @param {import('./patient-session.js').PatientSession} patientSession - Patient session
+   * @param {import('./session.js').Session} session - Session
    */
-  inviteToSession(patientSession) {
+  inviteToSession(session) {
     this.addEvent({
       type: EventType.Invite,
-      name: `Added to the ${sentenceCaseProgrammeName(patientSession.session.name)}`,
-      createdAt: patientSession.session.openAt,
-      createdBy_uid: patientSession.createdBy_uid,
-      programme_ids: patientSession.session.programme_ids
+      name: `Added to the ${sentenceCaseProgrammeName(session.name)}`,
+      createdAt: session.openAt,
+      createdBy_uid: session.createdBy_uid,
+      programme_ids: session.programme_ids
     })
   }
 

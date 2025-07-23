@@ -331,7 +331,7 @@ export const patientSessionController = {
     const { __, back, patient, patientSession } = response.locals
 
     patient.inviteToSession({
-      patientSession,
+      session: patientSession.session,
       ...(data.token && { createdBy_uid: data.token?.uid })
     })
 

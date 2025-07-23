@@ -154,7 +154,7 @@ export const consentController = {
     patient.addToSession(patientSession)
 
     // Invite parent to give consent
-    patient.inviteToSession(patientSession)
+    patient.inviteToSession(patientSession.session)
 
     // Link consent with patient record
     consent.linkToPatient(patient, data)
