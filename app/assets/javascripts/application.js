@@ -2,7 +2,6 @@ import { PasswordInput, createAll } from 'govuk-frontend'
 import {
   initButtons,
   initCheckboxes,
-  initDetails,
   initErrorSummary,
   initHeader,
   initRadios,
@@ -27,7 +26,6 @@ customElements.define('is-sticky', IsStickyComponent)
 document.addEventListener('DOMContentLoaded', () => {
   initButtons()
   initCheckboxes()
-  initDetails()
   initErrorSummary()
   initHeader()
   initRadios()

@@ -20,62 +20,59 @@ export const navigation = (request, response, next) => {
   response.locals.navigation = {
     activeSection,
     referrer: request.originalUrl,
-    footerLinks: [
-      ...(fluSession
-        ? [
-            [
-              {
-                URL: `${fluSession.consentUrl}/start`,
-                label: 'Flu consent'
-              },
-              {
-                URL: `${fluSession.consentUrl}/emails`,
-                label: 'Flu consent emails'
-              },
-              {
-                URL: `${fluSession.consentUrl}/texts`,
-                label: 'Flu consent texts'
-              }
-            ]
-          ]
-        : []),
-      ...(hpvSession
-        ? [
-            [
-              {
-                URL: `${hpvSession.consentUrl}/start`,
-                label: 'HPV consent'
-              },
-              {
-                URL: `${hpvSession.consentUrl}/emails`,
-                label: 'HPV consent emails'
-              },
-              {
-                URL: `${hpvSession.consentUrl}/texts`,
-                label: 'HPV consent texts'
-              }
-            ]
-          ]
-        : []),
-      ...(tioSession
-        ? [
-            [
-              {
-                URL: `${tioSession.consentUrl}/start`,
-                label: 'MenACWY & Td/IPV consent'
-              },
-              {
-                URL: `${tioSession.consentUrl}/emails`,
-                label: 'MenACWY & Td/IPV consent emails'
-              },
-              {
-                URL: `${tioSession.consentUrl}/texts`,
-                label: 'MenACWY & Td/IPV consent texts'
-              }
-            ]
-          ]
-        : [])
-    ]
+    footer: {
+      ...(fluSession && {
+        title: 'Flu',
+        items: [
+          {
+            text: 'Flu consent',
+            href: `${fluSession.consentUrl}/start`
+          },
+          {
+            text: 'Flu consent emails',
+            href: `${fluSession.consentUrl}/emails`
+          },
+          {
+            text: 'Flu consent texts',
+            href: `${fluSession.consentUrl}/texts`
+          }
+        ]
+      }),
+      ...(hpvSession && {
+        title: 'HPV',
+        items: [
+          {
+            text: 'HPV consent',
+            href: `${hpvSession.consentUrl}/start`
+          },
+          {
+            text: 'HPV consent emails',
+            href: `${hpvSession.consentUrl}/emails`
+          },
+          {
+            text: 'HPV consent texts',
+            href: `${hpvSession.consentUrl}/texts`
+          }
+        ]
+      }),
+      ...(tioSession && {
+        title: 'MenACWY & Td/IPV',
+        items: [
+          {
+            text: 'MenACWY & Td/IPV consent',
+            href: `${tioSession.consentUrl}/start`
+          },
+          {
+            text: 'MenACWY & Td/IPV consent emails',
+            href: `${tioSession.consentUrl}/emails`
+          },
+          {
+            text: 'MenACWY & Td/IPV consent texts',
+            href: `${tioSession.consentUrl}/texts`
+          }
+        ]
+      })
+    }
   }
 
   // Show environment date in footer

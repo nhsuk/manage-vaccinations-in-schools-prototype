@@ -41,7 +41,7 @@
 {% block form %}
   {{ super() }}
 
-  {{ govukNotificationBanner({
+  {{ notificationBanner({
     text: __mf("patientSession.outstandingVaccinations.message", {
       count: patientSession.outstandingVaccinations.length,
       names: patientSession.formatted.outstandingVaccinations

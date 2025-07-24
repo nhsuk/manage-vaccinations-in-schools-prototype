@@ -1,7 +1,6 @@
 {% extends "rig/default.njk" %}
 
 {#- GOV.UK Frontend components -#}
-{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
 {% from "govuk/components/password-input/macro.njk" import govukPasswordInput %}
 
@@ -116,41 +115,31 @@
 {% endblock %}
 
 {% block content %}
-  {{ govukNotificationBanner(success) if success }}
-  {{ govukNotificationBanner(message) if message }}
+  {{ notificationBanner(success) if success }}
+  {{ notificationBanner(message) if message }}
 {% endblock %}
-
-{% set copyright %}
-  © NHS England
-  <span class="nhsuk-u-secondary-text-color nhsuk-u-margin-left-2">
-    Today is {{ today -}}
-  </span>
-{% endset %}
 
 {% block footer %}
   {{ footer({
-    copyright: copyright | safe,
-    links: [{
-      label: "Homepage",
-      URL: "/"
-    }, {
-      label: "Schools",
-      URL: "/schools"
-    }, {
-      label: "CIS2 users",
-      URL: "/users"
-    }, {
-      label: "Clear session data",
-      URL: "/clear-session-data"
-    } if useAutoStoreData, {
-      label: "Feature flags",
-      URL: "/feature-flags"
-    }, {
-      label: "Design history",
-      URL: "https://design-history.prevention-services.nhs.uk/manage-vaccinations-in-schools/"
-    }],
-    linksColumn2: navigation.footerLinks[0],
-    linksColumn3: navigation.footerLinks[1],
-    metaLinks: navigation.footerLinks[2]
+    navigation: navigation.footer,
+    meta: {
+      text: "Today is " + today,
+      items: [{
+        text: "Homepage",
+        href: "/"
+      }, {
+        text: "Schools",
+        href: "/schools"
+      }, {
+        text: "CIS2 users",
+        href: "/users"
+      }, {
+        text: "Clear session data",
+        href: "/clear-session-data"
+      } if useAutoStoreData, {
+        text: "Design history",
+        href: "https://design-history.prevention-services.nhs.uk/manage-vaccinations-in-schools/"
+      }]
+    }
   }) }}
 {% endblock %}
