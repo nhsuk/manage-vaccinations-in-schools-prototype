@@ -345,6 +345,25 @@ export const getRegistrationOutcome = (patientSession) => {
 }
 
 /**
+ * Get ready to record outcome
+ * Check if registration is needed prior to recording vaccination
+ *
+ * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @returns {RegistrationOutcome} - Ready to record outcome
+ */
+export const getRecordOutcome = (patientSession) => {
+  const { nextActivity, register, session } = patientSession
+
+  if (nextActivity === Activity.Record) {
+    if (session.registration && register === RegistrationOutcome.Pending) {
+      return Activity.Register
+    }
+
+    return Activity.Record
+  }
+}
+
+/**
  * Get vaccination (session) outcome
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session

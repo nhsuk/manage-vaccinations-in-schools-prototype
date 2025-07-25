@@ -19,6 +19,7 @@ import {
   getReportOutcome,
   getConsentStatus,
   getOutcomeStatus,
+  getRecordOutcome,
   getRegistrationStatus,
   getReportStatus,
   getSessionOutcome,
@@ -491,6 +492,15 @@ export class PatientSession {
    */
   get register() {
     return getRegistrationOutcome(this)
+  }
+
+  /**
+   * Get ready to record outcome
+   *
+   * @returns {import('../enums.js').Activity} - Ready to record outcome
+   */
+  get record() {
+    return getRecordOutcome(this)
   }
 
   /**

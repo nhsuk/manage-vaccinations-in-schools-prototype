@@ -62,22 +62,9 @@
             }]
           }
         },
-        {
-          key: {
-            text: __("session.activity.checkRefusal.label")
-          },
-          value: {
-            html: link(session.uri + "/consent?consent=" + ConsentOutcome.Refused, __n("session.activity.checkRefusal.count", activity.checkRefusal))
-          }
-        } if activity.checkRefusal,
-        {
-          key: {
-            text: __("session.activity.report.label")
-          },
-          value: {
-            html: activity.report
-          }
-        }
+        sessionActivityRow("checkRefusal"),
+        sessionActivityRow("checkGiven"),
+        sessionActivityRow("report")
       ]
     }) }}
 
@@ -96,77 +83,16 @@
               text: __("session.consents.label")
             },
             value: {
-              html: link(session.uri + "/consent?consent=" + ConsentOutcome.Given, __n("consent.count", session.consents.length))
+              html: link(session.uri + "/consents", __n("consent.count", session.consents.length))
             }
           } if session.consents.length,
-          {
-            key: {
-              text: __("session.activity.getConsent.label")
-            },
-            value: {
-              html: link(session.uri + "/consent?consent=" + ConsentOutcome.NoResponse, __n("session.activity.getConsent.count", activity.getConsent))
-            },
-            actions: {
-              items: [{
-                text: __("session.reminders.label"),
-                href: session.uri + "/reminders"
-              }]
-            }
-          } if activity.getConsent,
-          {
-            key: {
-              text: __("session.activity.followUp.label")
-            },
-            value: {
-              html: link(session.uri + "/consent?consent=" + ConsentOutcome.Declined, __n("session.activity.followUp.count", activity.followUp))
-            }
-          } if activity.followUp,
-          {
-            key: {
-              text: __("session.activity.resolveConsent.label")
-            },
-            value: {
-              html: link(session.uri + "/consent?consent=" + ConsentOutcome.Inconsistent, __n("session.activity.resolveConsent.count", activity.resolveConsent))
-            }
-          } if activity.resolveConsent,
-          {
-            key: {
-              text: __("session.activity.triage.label")
-            },
-            value: {
-              html: link(session.uri + "/screen?screen=" + ScreenOutcome.triage, __n("session.activity.triage.count", activity.triage))
-            }
-          } if activity.triage,
-          {
-            key: {
-              text: __("session.activity.instruct.label")
-            },
-            value: {
-              html: link(session.uri + "/instruct", __n("session.activity.instruct.count", activity.instruct))
-            },
-            actions: {
-              items: [{
-                text: __("session.activity.instruct.label"),
-                href: session.uri + "/instructions"
-              }]
-            } if (data.token.role == UserRole.NursePrescriber or data.token.role == UserRole.Pharmacist)
-          } if activity.instruct and session.psdProtocol,
-          {
-            key: {
-              text: __("session.activity.register.label")
-            },
-            value: {
-              html: link(session.uri + "/register", __n("session.activity.register.count", activity.register))
-            }
-          } if activity.register,
-          {
-            key: {
-              text: __("session.activity.record.label")
-            },
-            value: {
-              html: activity.record
-            }
-          }
+          sessionActivityRow("getConsent"),
+          sessionActivityRow("followUp"),
+          sessionActivityRow("resolveConsent"),
+          sessionActivityRow("triage"),
+          sessionActivityRow("instruct") if session.psdProtocol,
+          sessionActivityRow("register"),
+          sessionActivityRow("record")
         ]
       }) }}
     {% endif %}
