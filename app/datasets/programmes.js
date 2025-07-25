@@ -18,7 +18,8 @@ export default {
       hint: 'with information available in different languages and alternative formats, including BSL and Braille'
     },
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    vaccine_smomeds: ['43208811000001106', '40085011000001101']
+    vaccine_smomeds: ['43208811000001106', '40085011000001101'],
+    nhseSyncable: true
   },
   [ProgrammeType.HPV]: {
     type: ProgrammeType.HPV,
@@ -40,7 +41,8 @@ export default {
     sequenceDefault: '1P',
     yearGroups: [8],
     catchupYearGroups: [9, 10, 11],
-    vaccine_smomeds: ['33493111000001108']
+    vaccine_smomeds: ['33493111000001108'],
+    nhseSyncable: true
   },
   [ProgrammeType.TdIPV]: {
     type: ProgrammeType.TdIPV,
@@ -62,7 +64,8 @@ export default {
     sequenceDefault: '2B',
     yearGroups: [9],
     catchupYearGroups: [10, 11],
-    vaccine_smomeds: ['7374311000001101']
+    vaccine_smomeds: ['7374311000001101'],
+    nhseSyncable: false
   },
   [ProgrammeType.MenACWY]: {
     type: ProgrammeType.MenACWY,
@@ -82,6 +85,7 @@ export default {
     },
     yearGroups: [9],
     catchupYearGroups: [10, 11],
-    vaccine_smomeds: ['39779611000001104']
+    vaccine_smomeds: ['39779611000001104'],
+    nhseSyncable: false
   }
 }

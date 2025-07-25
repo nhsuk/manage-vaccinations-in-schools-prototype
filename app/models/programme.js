@@ -248,6 +248,16 @@ export class Programme {
   }
 
   /**
+   * Get whether vaccination records for this programme are syncable
+   * with the NHS England immunisation API
+   *
+   * @returns {boolean} - Whether vaccination records for programme are syncable
+   */
+  get nhseSyncable() {
+    return programmes[this.type].nhseSyncable
+  }
+
+  /**
    * Read all
    *
    * @param {object} context - Context

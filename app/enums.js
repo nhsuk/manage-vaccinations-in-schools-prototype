@@ -458,6 +458,7 @@ export const VaccinationProtocol = {
  * @enum {string}
  */
 export const VaccinationSyncStatus = {
+  CannotSync: 'Cannot sync',
   NotSynced: 'Not synced',
   Pending: 'Pending',
   Synced: 'Synced',

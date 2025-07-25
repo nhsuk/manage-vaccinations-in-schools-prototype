@@ -328,31 +328,12 @@ export class Vaccination {
   /**
    * Get status of sync with NHS England API
    *
-   * @returns {VaccinationSyncStatus} - Status
-   */
-  get sync() {
-    const updatedAt = this.updatedAt || this.createdAt
-    const oneMinuteAgo = new Date(new Date().getTime() - 1000 * 60)
-
-    switch (true) {
-      case !this.given:
-        return VaccinationSyncStatus.NotSynced
-      case this.nhseSyncedAt > updatedAt:
-        return VaccinationSyncStatus.Synced
-      case isBefore(updatedAt, oneMinuteAgo):
-        return VaccinationSyncStatus.Failed
-      default:
-        return VaccinationSyncStatus.Pending
-    }
-  }
-
-  /**
-   * Get sync status properties
-   *
    * @returns {object} - Sync status properties
    */
   get syncStatus() {
-    let colour
+    const updatedAt = this.updatedAt || this.createdAt
+    const oneMinuteAgo = new Date(new Date().getTime() - 1000 * 60)
+
     const nhseSyncedAt = formatDate(this.nhseSyncedAt, {
       day: 'numeric',
       month: 'long',
@@ -361,28 +342,46 @@ export class Vaccination {
       minute: '2-digit',
       hour12: true
     })
-    let description = this.nhseSyncedAt ? `Last synced: ${nhseSyncedAt}` : ''
 
-    switch (this.sync) {
-      case VaccinationSyncStatus.NotSynced:
-        colour = 'grey'
-        break
-      case VaccinationSyncStatus.Synced:
-        colour = 'green'
-        break
-      case VaccinationSyncStatus.Failed:
-        colour = 'red'
-        description = `Contact Mavis support team<br>${description}`
-        break
+    const lastSynced = this.nhseSyncedAt ? `Last synced: ${nhseSyncedAt}` : ''
+
+    switch (true) {
+      case !this.programme.nhseSyncable:
+        return {
+          colour: 'orange',
+          text: VaccinationSyncStatus.CannotSync,
+          description: `Records are currently not synced for this programme<br>${lastSynced}`
+        }
+      case !this.given:
+        return {
+          colour: 'grey',
+          text: VaccinationSyncStatus.NotSynced,
+          description: `Records are not synced if the vaccination was not given<br>${lastSynced}`
+        }
+      case this.patient.hasMissingNhsNumber:
+        return {
+          colour: 'orange',
+          text: VaccinationSyncStatus.CannotSync,
+          description: `You must add an NHS number to the child's record before this record will sync<br>${lastSynced}`
+        }
+      case this.nhseSyncedAt > updatedAt:
+        return {
+          colour: 'green',
+          text: VaccinationSyncStatus.Synced,
+          description: lastSynced
+        }
+      case isBefore(updatedAt, oneMinuteAgo):
+        return {
+          colour: 'red',
+          text: VaccinationSyncStatus.Failed,
+          description: `The Mavis team is aware of the issue and is working to resolve it<br>${lastSynced}`
+        }
       default:
-        colour = 'blue'
-        break
-    }
-
-    return {
-      colour,
-      text: this.sync,
-      description
+        return {
+          colour: 'blue',
+          text: VaccinationSyncStatus.Pending,
+          description: lastSynced
+        }
     }
   }
 
@@ -398,6 +397,8 @@ export class Vaccination {
       sequence = prototypeFilters.ordinal(Number(sequence) + 1)
       sequence = `${_.startCase(sequence)} dose`
     }
+
+    const syncStatus = this.syncStatus
 
     return {
       createdAt: formatDate(this.createdAt, {
@@ -422,8 +423,8 @@ export class Vaccination {
         hour12: true
       }),
       syncStatus: formatWithSecondaryText(
-        formatTag(this.syncStatus),
-        this.syncStatus.description,
+        formatTag(syncStatus),
+        syncStatus.description,
         true
       ),
       batch: this.batch?.summary,
