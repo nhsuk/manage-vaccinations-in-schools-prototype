@@ -63,6 +63,15 @@ export class Programme {
   }
 
   /**
+   * Get programme name for use within a sentence
+   *
+   * @returns {string} - Programme name
+   */
+  get nameSentenceCase() {
+    return sentenceCaseProgrammeName(this.type)
+  }
+
+  /**
    * Get programme name shown within tag component
    *
    * @returns {string} - Tag component HTML

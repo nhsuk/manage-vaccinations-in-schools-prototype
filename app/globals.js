@@ -1,8 +1,17 @@
 import _ from 'lodash'
 
 import { healthQuestions } from './datasets/health-questions.js'
+import {
+  Activity,
+  ConsentOutcome,
+  InstructionOutcome,
+  PatientOutcome,
+  RegistrationOutcome,
+  ScreenOutcome
+} from './enums.js'
 import { School } from './models/school.js'
 import { User } from './models/user.js'
+import { getSessionActivityCount } from './utils/session.js'
 import {
   formatHealthAnswer,
   formatLink,
@@ -265,6 +274,126 @@ export default () => {
    */
   globals.link = function (href, text, attributes) {
     return formatLink(href, text, attributes)
+  }
+
+  /**
+   * Get summaryList `row` parameter for session activity counts
+   *
+   * @param {string} activity - Data
+   * @returns {object} `row`
+   */
+  globals.sessionActivityRow = function (activity) {
+    const { __, __mf, permissions, session } = this.ctx
+
+    const activities = {
+      checkGiven: {
+        key: 'consent',
+        value: ConsentOutcome.Given
+      },
+      checkRefusal: {
+        key: 'consent',
+        value: ConsentOutcome.Refused
+      },
+      getConsent: {
+        key: 'consent',
+        value: ConsentOutcome.NoResponse,
+        action: 'reminders'
+      },
+      followUp: {
+        key: 'consent',
+        value: ConsentOutcome.Declined
+      },
+      resolveConsent: {
+        key: 'consent',
+        value: ConsentOutcome.Inconsistent
+      },
+      triage: {
+        key: 'screen',
+        value: ScreenOutcome.NeedsTriage
+      },
+      instruct: {
+        key: 'instruct',
+        value: InstructionOutcome.Needed,
+        ...(permissions.canPrescribe && { action: 'instructions' })
+      },
+      register: {
+        key: 'register',
+        value: RegistrationOutcome.Pending
+      },
+      record: {
+        key: 'record',
+        value: Activity.Record,
+        showProgrammes: true
+      },
+      report: {
+        key: 'outcome',
+        value: PatientOutcome.Vaccinated,
+        alwaysShow: true,
+        showProgrammes: true
+      }
+    }
+
+    const { alwaysShow, key, value, action, showProgrammes } =
+      activities[activity]
+
+    const links = []
+    if (showProgrammes) {
+      for (const { nameSentenceCase, id } of session.programmes) {
+        const filters = [{ [key]: value }]
+        filters.push({ 'programme_id': id })
+
+        const params = new URLSearchParams()
+        params.append(key, value)
+        params.append('programme_id', id)
+
+        const count = getSessionActivityCount(session, filters)
+        const label = __mf(`session.activity.${activity}.programmeCount`, {
+          count,
+          nameSentenceCase
+        })
+
+        if (alwaysShow && count === 0) {
+          links.push(label)
+        } else if (count > 0) {
+          links.push(formatLink(`${session.uri}/${key}?${params}`, label))
+        }
+      }
+    } else {
+      const filters = [{ [key]: value }]
+
+      const params = new URLSearchParams()
+      params.append(key, value)
+
+      const count = getSessionActivityCount(session, filters)
+      const label = __mf(`session.activity.${activity}.count`, { count })
+
+      if (alwaysShow && count === 0) {
+        links.push(label)
+      } else if (count > 0) {
+        links.push(formatLink(`${session.uri}/${key}?${params}`, label))
+      }
+    }
+
+    return (
+      links.length > 0 && {
+        key: {
+          text: __(`session.activity.${activity}.label`)
+        },
+        value: {
+          html: links.join('<br>')
+        },
+        ...(action && {
+          actions: {
+            items: [
+              {
+                text: __(`session.${action}.label`),
+                href: `${session.uri}/${action}`
+              }
+            ]
+          }
+        })
+      }
+    )
   }
 
   /**

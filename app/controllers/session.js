@@ -10,7 +10,6 @@ import {
   RegistrationOutcome,
   ScreenOutcome,
   SessionType,
-  TriageOutcome,
   VaccinationOutcome,
   VaccineMethod
 } from '../enums.js'
@@ -22,11 +21,6 @@ import { Patient } from '../models/patient.js'
 import { Session } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
-import {
-  getSessionActivityCount as getCount,
-  getPatientsToRecordCount,
-  getPatientsVaccinatedCount
-} from '../utils/session.js'
 import { formatYearGroup } from '../utils/string.js'
 
 export const sessionController = {
@@ -50,7 +44,6 @@ export const sessionController = {
 
   show(request, response) {
     let { view } = request.params
-    const { session } = response.locals
 
     if (
       [
@@ -67,21 +60,7 @@ export const sessionController = {
       view = 'show'
     }
 
-    const activity = {
-      checkRefusal: getCount(session, 'consent', ConsentOutcome.Refused),
-      getConsent: getCount(session, 'consent', ConsentOutcome.NoResponse),
-      followUp: getCount(session, 'consent', ConsentOutcome.Declined),
-      resolveConsent: getCount(session, 'consent', ConsentOutcome.Inconsistent),
-      triage: getCount(session, 'triage', TriageOutcome.Needed),
-      instruct: getCount(session, 'instruct', InstructionOutcome.Needed),
-      register: getCount(session, 'register', RegistrationOutcome.Pending),
-      record: getPatientsToRecordCount(session),
-      report: getPatientsVaccinatedCount(session)
-    }
-
-    response.render(`session/${view}`, {
-      activity
-    })
+    response.render(`session/${view}`)
   },
 
   new(request, response) {
@@ -328,6 +307,7 @@ export const sessionController = {
       screen: request.query.screen || 'none',
       instruct: request.query.instruct || 'none',
       register: request.query.register || 'none',
+      record: 'none',
       outcome: request.query.outcome || 'none'
     }
 

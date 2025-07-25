@@ -64,7 +64,7 @@
           }) | nhsukMarkdown
         }) if session.consents.length }}
 
-        {% if data[view] and data[view] != "none" %}
+        {% if data[view] and data[view] != "none" and data[view] != Activity.Record %}
           {% set title = __("patientSession." + view + ".label") + ": " + data[view] %}
         {% else %}
           {% set title = __("session." + view + ".title") %}

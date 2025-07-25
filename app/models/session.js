@@ -5,13 +5,11 @@ import _ from 'lodash'
 
 import {
   AcademicYear,
-  Activity,
   ConsentOutcome,
   ConsentWindow,
   OrganisationDefaults,
   PatientOutcome,
   ProgrammePreset,
-  RegistrationOutcome,
   SessionStatus,
   SessionType
 } from '../enums.js'
@@ -396,41 +394,6 @@ export class Session {
    */
   get patients() {
     return _.uniqBy(this.patientSessions, 'patient.nhsn')
-  }
-
-  /**
-   * Get patients awaiting vaccination, per programme
-   *
-   * @returns {object} - Patient sessions per programme
-   */
-  get patientsToRecordPerProgramme() {
-    const programmes = {}
-    for (const programme of this.programmes) {
-      programmes[programme.name] = this.patientSessions
-        .filter(({ programme_id }) => programme_id === programme.id)
-        .filter(({ register }) => register !== RegistrationOutcome.Pending)
-        .filter(({ nextActivity }) => nextActivity === Activity.Record)
-    }
-
-    return programmes
-  }
-
-  /**
-   * Get vaccinated patients, per programme
-   *
-   * @returns {object} - Patient sessions per programme
-   */
-  get patientsVaccinatedPerProgramme() {
-    const programmes = {}
-    if (!this.isUnplanned) {
-      for (const programme of this.programmes) {
-        programmes[programme.name] = this.patientSessions.filter(
-          ({ report }) => report === PatientOutcome.Vaccinated
-        )
-      }
-
-      return programmes
-    }
   }
 
   /**
@@ -997,7 +960,7 @@ export class Session {
    * Update register
    *
    * @param {string} patient_uuid
-   * @param {RegistrationOutcome} registration
+   * @param {import('../enums.js').RegistrationOutcome} registration
    */
   updateRegister(patient_uuid, registration) {
     const register = {

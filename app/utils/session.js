@@ -1,15 +1,8 @@
-import { default as filters } from '@x-govuk/govuk-prototype-filters'
 import { isAfter, isBefore } from 'date-fns'
 import _ from 'lodash'
 
-import {
-  ConsentWindow,
-  PatientOutcome,
-  SessionStatus,
-  SessionType
-} from '../enums.js'
+import { ConsentWindow, SessionStatus, SessionType } from '../enums.js'
 import { today } from '../utils/date.js'
-import { formatLink } from '../utils/string.js'
 
 /**
  * Get consent window (is it open, opening or closed)
@@ -64,14 +57,19 @@ export const getSessionConsentUrl = (
  * Filter array where key has a value
  *
  * @param {import('../models/session.js').Session} session - Session
- * @param {string} key - Key to check
- * @param {string} value - Value to check
+ * @param {Array} filters - Filters
  * @returns {number} Number
  */
-export const getSessionActivityCount = (session, key, value) => {
-  const patientSessions = session.patientSessions.filter(
-    (item) => _.get(item, key) === value
-  )
+export const getSessionActivityCount = (session, filters) => {
+  let patientSessions = session.patientSessions
+
+  for (const filter of filters) {
+    for (const [key, value] of Object.entries(filter)) {
+      patientSessions = patientSessions.filter(
+        (patientSession) => _.get(patientSession, key) === value
+      )
+    }
+  }
 
   if (patientSessions) {
     const uniquePatientSessions = _.uniqBy(patientSessions, 'patient.nhsn')
@@ -79,50 +77,4 @@ export const getSessionActivityCount = (session, key, value) => {
   }
 
   return 0
-}
-
-export const getPatientsToRecordCount = (session) => {
-  const patientsToRecord =
-    session.patientsToRecordPerProgramme &&
-    Object.entries(session.patientsToRecordPerProgramme).map(
-      ([name, patientSessions]) =>
-        session.programmes.length > 1
-          ? patientSessions.length > 0
-            ? formatLink(
-                `${session.uri}/record`,
-                `${filters.plural(patientSessions.length, 'child')} are ready for ${name}`
-              )
-            : 'No children'
-          : patientSessions.length > 0
-            ? formatLink(
-                `${session.uri}/record`,
-                `${filters.plural(patientSessions.length, 'child')} are ready`
-              )
-            : 'No children'
-    )
-
-  return patientsToRecord ? patientsToRecord?.join('<br>') : undefined
-}
-
-export const getPatientsVaccinatedCount = (session) => {
-  const patientsVaccinated =
-    session.patientsVaccinatedPerProgramme &&
-    Object.entries(session.patientsVaccinatedPerProgramme).map(
-      ([name, patientSessions]) =>
-        session.programmes.length > 1
-          ? patientSessions.length > 0
-            ? formatLink(
-                `${session.uri}/outcomes?outcome=${PatientOutcome.Vaccinated}`,
-                `${filters.plural(patientSessions.length, 'vaccination')} given for ${name}`
-              )
-            : `No vaccinations given for ${name}`
-          : patientSessions.length > 0
-            ? formatLink(
-                `${session.uri}/outcomes?outcome=${PatientOutcome.Vaccinated}`,
-                `${filters.plural(patientSessions.length, 'vaccination')} given`
-              )
-            : 'No vaccinations given'
-    )
-
-  return patientsVaccinated ? patientsVaccinated.join('<br>') : undefined
 }
