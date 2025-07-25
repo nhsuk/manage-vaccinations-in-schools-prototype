@@ -4,6 +4,7 @@ export const permission = (request, response, next) => {
   const { data } = request.session
   const permissions = {}
 
+  // Vaccine method(s)
   if ([UserRole.Nurse, UserRole.NursePrescriber].includes(data?.token?.role)) {
     permissions.vaccineMethods = [VaccineMethod.Injection, VaccineMethod.Nasal]
   } else if (data?.token?.role === UserRole.HCA) {
@@ -11,6 +12,8 @@ export const permission = (request, response, next) => {
   } else {
     permissions.vaccineMethods = []
   }
+
+  // Instructions
   if (
     [UserRole.NursePrescriber, UserRole.Pharmacist].includes(data?.token?.role)
   ) {
