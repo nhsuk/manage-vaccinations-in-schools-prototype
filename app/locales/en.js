@@ -1650,7 +1650,7 @@ export const en = {
       }
     },
     consents: {
-      label: 'Unmatched responses',
+      label: 'Match responses',
       warning: 'You need to review unmatched consent responses for this session'
     },
     instructions: {
@@ -1691,77 +1691,64 @@ export const en = {
     },
     patients: {
       label: 'Cohort',
-      count: {
-        one: '%s child in session cohort',
-        other: '[0] No children in session cohort|%s children in session cohort'
-      }
+      count:
+        '{count, plural, =0 {No children in session cohort} one {# child in session cohort} other {# children in session cohort}}'
     },
     activity: {
       label: 'Action required',
       getConsent: {
         label: 'No consent response',
-        count: {
-          one: '%s child with no response',
-          other: '[0] No children with no response|%s children with no response'
-        }
+        count:
+          '{count, plural, =0 {No children with no response} one {# child with no response} other {# children with no response}}'
+      },
+      checkGiven: {
+        label: 'Consent given',
+        count:
+          '{count, plural, =0 {No children with consent given} one {# child with consent given} other {# children with consent given}}'
       },
       checkRefusal: {
         label: 'Consent refused',
-        count: {
-          one: '%s child with consent refused',
-          other:
-            '[0] No children with consent refused|%s children with consent refused'
-        }
+        count:
+          '{count, plural, =0 {No children with consent refused} one {# child with consent refused} other {# children with consent refused}}'
       },
       followUp: {
         label: 'Requested follow up',
-        count: {
-          one: '%s child to follow up',
-          other: '[0] No children to follow up|%s children to follow up'
-        }
+        count:
+          '{count, plural, =0 {No children to follow up} one {# child to follow up} other {# children to follow up}}'
       },
       resolveConsent: {
         label: 'Conflicting consent',
-        count: {
-          one: '%s child to review',
-          other: '[0] No children to review|%s children to review'
-        }
+        count:
+          '{count, plural, =0 {No children to review} one {# child to review} other {# children to review}}'
       },
       triage: {
         label: 'Triage needed',
-        count: {
-          one: '%s child to triage',
-          other: '[0] No children to triage|%s children to triage'
-        }
+        count:
+          '{count, plural, =0 {No children to triage} one {# child to triage} other {# children to triage}}'
       },
       instruct: {
         label: 'PSDs',
-        count: {
-          one: '%s child to review',
-          other: '[0] No children to review|%s children to review'
-        }
+        count:
+          '{count, plural, =0 {No children to review} one {# child to review} other {# children to review}}'
       },
       register: {
         label: 'Register attendance',
-        count: {
-          one: '%s child to register',
-          other: '[0] No children to register|%s children to register'
-        }
+        count:
+          '{count, plural, =0 {No children to register} one {# child to register} other {# children to register}}'
       },
       record: {
         label: 'Ready for vaccinator',
-        count: {
-          one: '%s child ready for vaccinator',
-          other:
-            '[0] No children ready for vaccinator|%s children ready for vaccinator'
-        }
+        count:
+          '{count, plural, =0 {No children ready for vaccinator} one {# child ready for vaccinator} other {# children ready for vaccinator}}',
+        programmeCount:
+          '{count, plural, =0 {No children ready for {nameSentenceCase} vaccinator} one {# child ready for {nameSentenceCase} vaccinator} other {# children ready for {nameSentenceCase} vaccinator}}'
       },
       report: {
         label: 'Vaccinated',
-        count: {
-          one: '%s child vaccinated',
-          other: '[0] No children vaccinated|%s children vaccinated'
-        }
+        count:
+          '{count, plural, =0 {No vaccinations given} one {# vaccination given} other {# vaccinations given}}',
+        programmeCount:
+          '{count, plural, =0 {No vaccinations given for {nameSentenceCase}} one {# vaccination given for {nameSentenceCase}} other {# vaccinations given for {nameSentenceCase}}}'
       }
     },
     date: {

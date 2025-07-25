@@ -35,10 +35,9 @@ export const patientSessionController = {
 
     const {
       consent,
-      nextActivity,
       patient,
       programme,
-      register,
+      record,
       report,
       session,
       triage,
@@ -108,8 +107,7 @@ export const patientSessionController = {
       hasSupplier: userIsHCA && userHasSupplier,
       canRecord:
         permissions?.vaccineMethods?.includes(patientSession.vaccine?.method) &&
-        register === RegistrationOutcome.Present &&
-        nextActivity === Activity.Record,
+        record === Activity.Record,
       canReport:
         report !== PatientOutcome.NoOutcomeYet &&
         patientSession.lastRecordedVaccination
