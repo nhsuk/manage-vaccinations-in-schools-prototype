@@ -2316,7 +2316,7 @@ export const en = {
       hint: 'For example, 13 15'
     },
     syncStatus: {
-      label: 'Sync with NHS England'
+      label: 'Synced with NHS England?'
     },
     createdBy: {
       label: 'Vaccinator',
