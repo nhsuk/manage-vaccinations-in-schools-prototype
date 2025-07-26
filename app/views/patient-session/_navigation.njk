@@ -5,7 +5,7 @@
 {% macro patientSessionNavigation(params) %}
   {{ appHeading({
     title: params.patientSession.patient.fullName,
-    summary: params.patientSession.patient.formatted.yearGroupWithRegistration
+    summary: params.patientSession.formatted.yearGroup
   }) }}
 
   {{ appActionList({

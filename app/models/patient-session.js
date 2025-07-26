@@ -593,6 +593,12 @@ export class PatientSession {
       ({ programme }) => programme.name
     )
 
+    let formattedYearGroup = formatYearGroup(this.yearGroup)
+    formattedYearGroup += this.patient.registrationGroup
+      ? `, ${this.patient.registrationGroup}`
+      : ''
+    formattedYearGroup += ` (${this.session.academicYear} academic year)`
+
     return {
       programme: this.programme.nameTag,
       status: {
@@ -617,7 +623,7 @@ export class PatientSession {
       outstandingVaccinations: filters.formatList(outstandingVaccinations),
       vaccineMethod:
         this.vaccine?.method && formatVaccineMethod(this.vaccine.method),
-      yearGroup: `${formatYearGroup(this.yearGroup)} (in the ${this.session.academicYear} academic year)`
+      yearGroup: formattedYearGroup
     }
   }
 

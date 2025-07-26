@@ -114,7 +114,9 @@
             {{ summaryList({
               rows: summaryRows(patientSession.patient, {
                 dob: {},
-                yearGroupWithRegistration: {},
+                yearGroup: {
+                  value: patientSession.formatted.yearGroup
+                },
                 nextActivityPerProgramme: {
                   label: __("patientSession.nextActivityPerProgramme.label"),
                   value: patientSession.formatted.nextActivityPerProgramme
