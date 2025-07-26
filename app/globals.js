@@ -6,10 +6,8 @@ import {
   Activity,
   ConsentOutcome,
   InstructionOutcome,
-  PatientOutcome,
   RegistrationOutcome,
-  ScreenOutcome,
-  VaccineMethod
+  ScreenOutcome
 } from './enums.js'
 import { School } from './models/school.js'
 import { User } from './models/user.js'
@@ -288,25 +286,6 @@ export default () => {
     const { __, __mf, permissions, session } = this.ctx
 
     const activities = {
-      checkGiven: {
-        key: 'consent',
-        value: ConsentOutcome.Given,
-        alwaysShow: true
-      },
-      checkGivenForInjection: {
-        key: 'consent',
-        value: ConsentOutcome.GivenForInjection,
-        alwaysShow: true
-      },
-      checkGivenForNasalSpray: {
-        key: 'consent',
-        value: ConsentOutcome.GivenForNasalSpray,
-        alwaysShow: true
-      },
-      checkRefusal: {
-        key: 'consent',
-        value: ConsentOutcome.Refused
-      },
       getConsent: {
         key: 'consent',
         value: ConsentOutcome.NoResponse,
@@ -337,29 +316,10 @@ export default () => {
         key: 'record',
         value: Activity.Record,
         showProgrammes: true
-      },
-      report: {
-        key: 'outcome',
-        value: PatientOutcome.Vaccinated,
-        alwaysShow: true,
-        showProgrammes: true
-      },
-      reportInjections: {
-        key: 'outcome',
-        value: PatientOutcome.Vaccinated,
-        alwaysShow: true,
-        vaccineMethod: VaccineMethod.Injection
-      },
-      reportNasalSprays: {
-        key: 'outcome',
-        value: PatientOutcome.Vaccinated,
-        alwaysShow: true,
-        vaccineMethod: VaccineMethod.Nasal
       }
     }
 
-    const { alwaysShow, key, value, action, showProgrammes, vaccineMethod } =
-      activities[activity]
+    const { key, value, action, showProgrammes } = activities[activity]
 
     const links = []
     if (showProgrammes) {
@@ -377,7 +337,7 @@ export default () => {
           nameSentenceCase
         })
 
-        if (alwaysShow && count === 0) {
+        if (count === 0) {
           links.push(label)
         } else if (count > 0) {
           links.push(formatLink(`${session.uri}/${key}?${params}`, label))
@@ -389,15 +349,10 @@ export default () => {
       const params = new URLSearchParams()
       params.append(key, value)
 
-      if (vaccineMethod) {
-        filters.push({ vaccineMethod })
-        params.append('vaccineMethod', vaccineMethod)
-      }
-
       const count = getSessionActivityCount(session, filters)
       const label = __mf(`session.activity.${activity}.count`, { count })
 
-      if (alwaysShow && count === 0) {
+      if (count === 0) {
         links.push(label)
       } else if (count > 0) {
         links.push(formatLink(`${session.uri}/${key}?${params}`, label))

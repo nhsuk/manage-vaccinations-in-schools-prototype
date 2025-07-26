@@ -21,6 +21,7 @@ import { Patient } from '../models/patient.js'
 import { Session } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
+import { getSessionActivityCount } from '../utils/session.js'
 import { formatYearGroup } from '../utils/string.js'
 
 export const sessionController = {
@@ -44,6 +45,7 @@ export const sessionController = {
 
   show(request, response) {
     let { view } = request.params
+    const { session } = response.locals
 
     if (
       [
@@ -60,7 +62,32 @@ export const sessionController = {
       view = 'show'
     }
 
-    response.render(`session/${view}`)
+    const activity = {
+      checkGiven: getSessionActivityCount(session, [
+        {
+          consent: ConsentOutcome.Given
+        }
+      ]),
+      checkGivenForNasalSpray: getSessionActivityCount(session, [
+        {
+          consent: ConsentOutcome.GivenForNasalSpray
+        }
+      ]),
+      checkGivenForInjection: getSessionActivityCount(session, [
+        {
+          consent: ConsentOutcome.GivenForInjection
+        }
+      ]),
+      checkRefusal: getSessionActivityCount(session, [
+        {
+          consent: ConsentOutcome.Refused
+        }
+      ])
+    }
+
+    response.render(`session/${view}`, {
+      activity
+    })
   },
 
   new(request, response) {

@@ -4,6 +4,48 @@
 
 {% set title = session.location.name + " (" + session.academicYear + ")" %}
 
+{% set sessionActivityRows = [] %}
+{% if session.consents.length %}
+  {% set sessionActivityRows = sessionActivityRows | push({
+    key: {
+      text: __("session.consents.label")
+    },
+    value: {
+      html: link(session.uri + "/consents", __n("consent.count", session.consents.length))
+    }
+  }) %}
+{% endif %}
+
+{% if sessionActivityRow("getConsent") %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("getConsent")) %}
+{% endif %}
+
+{% if sessionActivityRow("followUp") %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("followUp")) %}
+{% endif %}
+
+{% if sessionActivityRow("resolveConsent") %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("resolveConsent")) %}
+{% endif %}
+
+{% if sessionActivityRow("triage") %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("triage")) %}
+{% endif %}
+
+{% if sessionActivityRow("instruct") and session.psdProtocol %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("instruct")) %}
+{% endif %}
+
+{% if sessionActivityRow("register") and session.isActive %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("register")) %}
+{% endif %}
+
+{% if sessionActivityRow("record") and session.isActive %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("record")) %}
+{% endif %}
+
+{% set cardColumnWidth = "one-third" if session.offersAlternativeVaccine or session.programmes.length != 1 else "one-half" %}
+
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
@@ -40,33 +82,104 @@
     {% endif %}
 
     {{ appHeading({
-      classes: "nhsuk-u-margin-bottom-2",
+      classes: "nhsuk-u-margin-bottom-3",
       level: 4,
       size: "s",
       title: __("session.show.summary")
     }) }}
 
-    {{ summaryList({
-      rows: [
-        {
-          key: {
-            text: __("session.patients.label")
-          },
-          value: {
-            text: session.formatted.patients
-          }
-        },
-        sessionActivityRow("checkRefusal"),
-        sessionActivityRow("checkGiven") if not session.offersAlternativeVaccine,
-        sessionActivityRow("checkGivenForNasalSpray") if session.offersAlternativeVaccine,
-        sessionActivityRow("checkGivenForInjection") if session.offersAlternativeVaccine,
-        sessionActivityRow("report") if not session.offersAlternativeVaccine,
-        sessionActivityRow("reportNasalSprays") if session.offersAlternativeVaccine,
-        sessionActivityRow("reportInjections") if session.offersAlternativeVaccine
-      ]
-    }) }}
+    <div class="nhsuk-grid-row nhsuk-card-group">
+      <div class="nhsuk-grid-column-{{ cardColumnWidth }} nhsuk-card-group__item">
+        {{ appDataCard({
+          heading: __("session.patients.label"),
+          compact: true,
+          data: session.patients.length
+        }) }}
+      </div>
+    {% if session.offersAlternativeVaccine %}
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ appDataCard({
+          heading: __("session.activity.vaccinatedWith", {
+            programme: session.primaryProgrammes[0],
+            vaccineMethod: VaccineMethod.Nasal | lower
+          }),
+          compact: true,
+          data: session.activity.reportNasalSprays
+        }) }}
+      </div>
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ appDataCard({
+          heading: __("session.activity.vaccinatedWith", {
+            programme: session.primaryProgrammes[0],
+            vaccineMethod: VaccineMethod.Injection | lower
+          }),
+          compact: true,
+          data: session.activity.reportInjections
+        }) }}
+      </div>
+    {% else %}
+      {% for programme in session.primaryProgrammes %}
+        <div class="nhsuk-grid-column-{{ cardColumnWidth }} nhsuk-card-group__item">
+          {{ appDataCard({
+            heading: __("session.activity.vaccinated", {
+              programme: programme
+            }),
+            compact: true,
+            data: session.activity.report
+          }) }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    {% if session.isPlanned %}
+      <div class="nhsuk-grid-column-{{ cardColumnWidth }} nhsuk-card-group__item">
+        {{ appDataCard({
+          heading: ConsentOutcome.Refused,
+          colour: "red",
+          compact: true,
+          data: activity.checkRefusal
+        }) }}
+      </div>
+    {% endif %}
+    {% if session.isPlanned and session.offersAlternativeVaccine %}
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ appDataCard({
+          heading: __("session.activity.consentedWith", {
+            programme: session.primaryProgrammes[0],
+            vaccineMethod: VaccineMethod.Nasal | lower
+          }),
+          colour: "aqua-green",
+          compact: true,
+          data: activity.checkGivenForNasalSpray
+        }) }}
+      </div>
+      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+        {{ appDataCard({
+          heading: __("session.activity.consentedWith", {
+            programme: session.primaryProgrammes[0],
+            vaccineMethod: VaccineMethod.Injection | lower
+          }),
+          colour: "aqua-green",
+          compact: true,
+          data: activity.checkGivenForInjection
+        }) }}
+      </div>
+    {% elif session.isPlanned %}
+      {% for programme in session.primaryProgrammes %}
+        <div class="nhsuk-grid-column-{{ cardColumnWidth }} nhsuk-card-group__item">
+          {{ appDataCard({
+            heading: __("session.activity.consented", {
+              programme: programme
+            }),
+            colour: "aqua-green",
+            compact: true,
+            data: activity.checkGiven
+          }) }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    </div>
 
-    {% if not session.isUnplanned %}
+    {% if session.isPlanned and sessionActivityRows.length %}
       {{ appHeading({
         classes: "nhsuk-u-margin-bottom-2",
         level: 4,
@@ -75,23 +188,7 @@
       }) }}
 
       {{ summaryList({
-        rows: [
-          {
-            key: {
-              text: __("session.consents.label")
-            },
-            value: {
-              html: link(session.uri + "/consents", __n("consent.count", session.consents.length))
-            }
-          } if session.consents.length,
-          sessionActivityRow("getConsent"),
-          sessionActivityRow("followUp"),
-          sessionActivityRow("resolveConsent"),
-          sessionActivityRow("triage"),
-          sessionActivityRow("instruct") if session.psdProtocol,
-          sessionActivityRow("register"),
-          sessionActivityRow("record")
-        ]
+        rows: sessionActivityRows
       }) }}
     {% endif %}
 
@@ -131,6 +228,7 @@
         size: "s",
         title: session.location.name
       }) }}
+
       {{ summaryList({
         classes: "nhsuk-summary-list--no-border app-summary-list--full-width",
         rows: summaryRows(session, {

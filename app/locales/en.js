@@ -1713,6 +1713,12 @@ export const en = {
     },
     activity: {
       label: 'Action required',
+      consented: 'Consent given for {{programme.nameSentenceCase}}',
+      consentedWith:
+        'Consent given for {{programme.nameSentenceCase}} ({{vaccineMethod}})',
+      vaccinated: 'Vaccinations given for {{programme.nameSentenceCase}}',
+      vaccinatedWith:
+        'Vaccinations given for {{programme.nameSentenceCase}} ({{vaccineMethod}})',
       getConsent: {
         label: 'No consent response',
         count:
