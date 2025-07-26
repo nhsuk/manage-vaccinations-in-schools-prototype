@@ -94,6 +94,12 @@
           html: instructionsHtml
         }) if view == "instruct" and (data.token.role == UserRole.NursePrescriber or data.token.role == UserRole.Pharmacist) and session.patientsToInstruct.length > 0 }}
 
+        {{ insetText({
+          html: __mf("session.record.count", {
+            count: data.token.vaccinations
+          }) | nhsukMarkdown
+        }) if view == "record" and data.token.vaccinations }}
+
         {% for patientSession in results.page %}
           {% set statusHtml %}
             {% if view == "register" %}

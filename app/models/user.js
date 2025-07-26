@@ -10,6 +10,7 @@ import { formatLink, formatMonospace } from '../utils/string.js'
  * @property {string} [email] - Email address
  * @property {import('../enums.js').UserRole} [role] - User role
  * @property {object} [batch] - Default batches
+ * @property {number} [vaccinations] - Vaccination count
  */
 export class User {
   constructor(options) {
@@ -19,6 +20,7 @@ export class User {
     this.email = options?.email
     this.role = options?.role
     this.batch = options?.batch || {}
+    this.vaccinations = options?.vaccinations || 0
   }
 
   /**

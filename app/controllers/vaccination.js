@@ -172,6 +172,9 @@ export const vaccinationController = {
         vaccination.note = request.body.vaccination.note
       }
 
+      // Update number of vaccinations given
+      data.token.vaccinations += 1
+
       request.flash('success', __(`vaccination.${type}.success`, { session }))
 
       // Clean up session data

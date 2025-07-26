@@ -1599,6 +1599,21 @@ export const en = {
       title: 'Register attendance',
       information: 'You can register attendance when a session is in progress.'
     },
+    record: {
+      label: 'Record vaccinations',
+      title: 'Record vaccinations',
+      information: 'You can record vaccinations when a session is in progress.',
+      count:
+        '{count, plural, =0 {You have vaccinated no children} one {You have vaccinated # child} other {You have vaccinated # children}} in today’s session so far'
+    },
+    outcome: {
+      label: 'Session outcomes',
+      title: 'Review session outcomes'
+    },
+    report: {
+      label: 'Programme outcome',
+      title: 'Programme outcome'
+    },
     delegation: {
       title: 'Delegation'
     },
@@ -1627,19 +1642,6 @@ export const en = {
         label: 'No',
         hint: 'Healthcare assistants can only administer a nasal spray when supplied by a nurse'
       }
-    },
-    record: {
-      label: 'Record vaccinations',
-      title: 'Record vaccinations',
-      information: 'You can record vaccinations when a session is in progress.'
-    },
-    outcome: {
-      label: 'Session outcomes',
-      title: 'Review session outcomes'
-    },
-    report: {
-      label: 'Programme outcome',
-      title: 'Programme outcome'
     },
     'upload-class-list': {
       title: 'Import class lists'
