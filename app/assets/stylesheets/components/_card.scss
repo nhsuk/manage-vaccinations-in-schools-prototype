@@ -2,12 +2,22 @@
 @use "../core" as app;
 
 .app-card {
+  &--aqua-green {
+    background-color: nhsuk-tint($color_nhsuk-aqua-green, 80%);
+    border-color: nhsuk-tint($color_nhsuk-aqua-green, 50%);
+    color: nhsuk-shade($color_nhsuk-aqua-green, 50%);
+
+    &.nhsuk-card__clickable:active {
+      border-color: nhsuk-shade($color_nhsuk-aqua-green, 50%);
+    }
+  }
+
   &--green {
     background-color: nhsuk-tint($color_nhsuk-green, 80%);
     border-color: nhsuk-tint($color_nhsuk-green, 40%);
     color: nhsuk-shade($color_nhsuk-green, 40%);
 
-    &:active {
+    &.nhsuk-card__clickable:active {
       border-color: nhsuk-shade($color_nhsuk-green, 40%);
     }
   }
@@ -17,7 +27,7 @@
     border-color: nhsuk-tint($color_nhsuk-grey-1, 30%);
     color: nhsuk-shade($color_nhsuk-grey-1, 30%);
 
-    &:active {
+    &.nhsuk-card__clickable:active {
       border-color: nhsuk-shade($color_nhsuk-grey-1, 30%);
     }
   }
@@ -27,7 +37,7 @@
     border-color: nhsuk-tint($color_nhsuk-red, 50%);
     color: nhsuk-shade($color_nhsuk-red, 50%);
 
-    &:active {
+    &.nhsuk-card__clickable:active {
       border-color: nhsuk-shade($color_nhsuk-red, 50%);
     }
   }
@@ -60,6 +70,22 @@
   .nhsuk-card__content {
     @include nhsuk-responsive-padding(4);
     @include nhsuk-responsive-padding(3, "bottom");
+  }
+}
+
+// Align counts across cards
+.nhsuk-card:has(> .nhsuk-card__content > .app-card__count) {
+  display: flex;
+
+  .nhsuk-card__heading {
+    line-height: 1.2;
+  }
+
+  .nhsuk-card__content {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    flex-direction: column;
   }
 }
 

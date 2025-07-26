@@ -9,9 +9,16 @@
     <p class="nhsuk-body-s">{{ params.meta }}</p>
   {% endif %}
 {% endset %}
+{% set classes = [] %}
+{% if params.colour %}
+  {% set classes = classes | push("app-card--" + params.colour) %}
+{% endif%}
+{% if params.compact %}
+  {% set classes = classes | push("app-card--compact") %}
+{% endif%}
 {{ card({
-  classes: "app-card--" + params.colour if params.colour,
-  clickable: true if params.href and params.data > 0,
+  classes: classes | join(" "),
+  clickable: true if params.href,
   href: params.href,
   heading: params.heading,
   headingClasses: "nhsuk-heading-xs",
