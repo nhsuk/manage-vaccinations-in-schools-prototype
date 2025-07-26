@@ -7,7 +7,8 @@ import {
   InstructionOutcome,
   PatientOutcome,
   RegistrationOutcome,
-  ScreenOutcome
+  ScreenOutcome,
+  VaccineMethod
 } from './enums.js'
 import { School } from './models/school.js'
 import { User } from './models/user.js'
@@ -341,10 +342,22 @@ export default () => {
         value: PatientOutcome.Vaccinated,
         alwaysShow: true,
         showProgrammes: true
+      },
+      reportInjections: {
+        key: 'outcome',
+        value: PatientOutcome.Vaccinated,
+        alwaysShow: true,
+        vaccineMethod: VaccineMethod.Injection
+      },
+      reportNasalSprays: {
+        key: 'outcome',
+        value: PatientOutcome.Vaccinated,
+        alwaysShow: true,
+        vaccineMethod: VaccineMethod.Nasal
       }
     }
 
-    const { alwaysShow, key, value, action, showProgrammes } =
+    const { alwaysShow, key, value, action, showProgrammes, vaccineMethod } =
       activities[activity]
 
     const links = []
@@ -374,6 +387,11 @@ export default () => {
 
       const params = new URLSearchParams()
       params.append(key, value)
+
+      if (vaccineMethod) {
+        filters.push({ vaccineMethod })
+        params.append('vaccineMethod', vaccineMethod)
+      }
 
       const count = getSessionActivityCount(session, filters)
       const label = __mf(`session.activity.${activity}.count`, { count })

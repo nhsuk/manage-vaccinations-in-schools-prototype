@@ -1777,6 +1777,16 @@ export const en = {
           '{count, plural, =0 {No vaccinations given} one {# vaccination given} other {# vaccinations given}}',
         programmeCount:
           '{count, plural, =0 {No vaccinations given for {nameSentenceCase}} one {# vaccination given for {nameSentenceCase}} other {# vaccinations given for {nameSentenceCase}}}'
+      },
+      reportInjections: {
+        label: 'Vaccinated with injected vaccine',
+        count:
+          '{count, plural, =0 {No vaccinations given with injected vaccine} one {# vaccination given with injected vaccine} other {# vaccinations given with injected vaccine}}'
+      },
+      reportNasalSprays: {
+        label: 'Vaccinated with nasal spray',
+        count:
+          '{count, plural, =0 {No vaccinations given with nasal spray} one {# vaccination with given nasal spray} other {# vaccinations given with nasal spray}}'
       }
     },
     date: {
