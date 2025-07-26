@@ -38,6 +38,7 @@ const data = {
   clinics,
   cohorts,
   counts: {},
+  defaultBatches: {},
   features: {},
   instructions,
   moves,

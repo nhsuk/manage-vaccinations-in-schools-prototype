@@ -14,8 +14,8 @@ import {
   VaccinationOutcome,
   VaccineMethod
 } from '../enums.js'
-import { Batch } from '../models/batch.js'
 import { Clinic } from '../models/clinic.js'
+import { DefaultBatch } from '../models/default-batch.js'
 import { Instruction } from '../models/instruction.js'
 import { Organisation } from '../models/organisation.js'
 import { Patient } from '../models/patient.js'
@@ -31,7 +31,13 @@ import { formatYearGroup } from '../utils/string.js'
 
 export const sessionController = {
   read(request, response, next, session_id) {
-    response.locals.session = Session.read(session_id, request.session.data)
+    const { data } = request.session
+
+    response.locals.session = Session.read(session_id, data)
+
+    response.locals.defaultBatches = DefaultBatch.readAll(data).filter(
+      (defaultBatch) => defaultBatch.session_id === session_id
+    )
 
     next()
   },
@@ -257,7 +263,6 @@ export const sessionController = {
     const {
       consent,
       hasMissingNhsNumber,
-      snomed,
       programme_id,
       q,
       vaccineMethod,
@@ -380,13 +385,6 @@ export const sessionController = {
     // Results
     response.locals.results = getResults(results, request.query)
     response.locals.pages = getPagination(results, request.query)
-
-    // Used when updating the default batch
-    if (snomed) {
-      response.locals.batchItems = Batch.readAll(data).filter(
-        (batch) => batch.vaccine.snomed === snomed
-      )
-    }
 
     // Programme filter options
     if (session.programmes.length > 1) {
@@ -734,20 +732,5 @@ export const sessionController = {
     }
 
     response.redirect(session.uri)
-  },
-
-  updateDefaultBatch(request, response) {
-    const { data } = request.session
-    const { __, session } = response.locals
-
-    // Update session data
-    session.update(request.body.session, data)
-
-    // Clean up session date
-    delete data.session
-
-    request.flash('success', __('session.defaultBatch.success'))
-
-    response.redirect(`${session.uri}/record`)
   }
 }

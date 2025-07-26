@@ -1,5 +1,5 @@
 import { Batch } from '../models/batch.js'
-import { Session } from '../models/session.js'
+import { DefaultBatch } from '../models/default-batch.js'
 
 export const batchController = {
   read(request, response, next, batch_id) {
@@ -66,18 +66,9 @@ export const batchController = {
 
     batch.archive(data)
 
-    // Find session with batch set as default
-    const sessionsWithDefaultBatch = Session.readAll(data).filter(
-      ({ defaultBatch_ids }) =>
-        Object.entries(defaultBatch_ids).map(
-          ([, batch_id]) => batch_id === batch.id
-        )
-    )
-
-    // Remove batch from session defaults
-    for (const session of sessionsWithDefaultBatch) {
-      delete session.defaultBatch_ids[batch.vaccine_snomed]
-    }
+    // Remove from default batches
+    const defaultBatch = DefaultBatch.read(batch.id, data)
+    defaultBatch.delete(data)
 
     response.redirect('/vaccines')
   }

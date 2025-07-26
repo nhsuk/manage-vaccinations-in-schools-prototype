@@ -11,6 +11,7 @@ import {
   UserRole
 } from '../enums.js'
 import { Batch } from '../models/batch.js'
+import { DefaultBatch } from '../models/default-batch.js'
 import { PatientSession } from '../models/patient-session.js'
 import { Programme } from '../models/programme.js'
 import { User } from '../models/user.js'
@@ -71,7 +72,9 @@ export const vaccinationController = {
       data.patientSession.preScreen
 
     // Check for default batch
-    const defaultBatchId = session.defaultBatch_ids?.[vaccine?.snomed]
+    const defaultBatch = DefaultBatch.readAll(data)
+      .filter((batch) => batch.vaccine_snomed === vaccine?.snomed)
+      .find((batch) => batch.session_id === session?.id)
 
     const readyToVaccine = ['true', 'alternative'].includes(ready)
     const injectionSiteGiven = [
@@ -82,7 +85,7 @@ export const vaccinationController = {
     const VaccinationSiteGiven = injectionSiteGiven || isNasalSpray
 
     switch (true) {
-      case readyToVaccine && VaccinationSiteGiven && defaultBatchId:
+      case defaultBatch && readyToVaccine && VaccinationSiteGiven:
         data.startPath = 'check-answers'
         break
       case readyToVaccine && VaccinationSiteGiven:
@@ -96,7 +99,9 @@ export const vaccinationController = {
     }
 
     // Temporarily store values to use during flow
-    data.defaultBatchId = defaultBatchId
+    if (defaultBatch) {
+      data.defaultBatchId = defaultBatch.id
+    }
     data.patientSession_uuid = patientSession_uuid
 
     // Used logged in user as vaccinator, or default to example user
@@ -145,8 +150,8 @@ export const vaccinationController = {
       ...(programme.sequence && {
         sequence: programme.sequenceDefault
       }),
-      ...(defaultBatchId && {
-        batch_id: defaultBatchId
+      ...(defaultBatch && {
+        batch_id: defaultBatch.id
       })
     })
 
@@ -176,7 +181,7 @@ export const vaccinationController = {
 
       // Clean up session data
       delete data.batch_id
-      delete data.defaultBatchId
+      delete data.defaultBatch
       delete data.patientSession_uuid
       delete data.startPath
       delete data.vaccination
@@ -339,15 +344,13 @@ export const vaccinationController = {
     }
 
     // Set default batch, if checked
-    let { batch_id } = request.body
-    if (batch_id) {
-      // Checkbox submits ['_unchecked', BATCH_ID]
-      batch_id = Array.isArray(batch_id) ? batch_id.at(-1) : batch_id
+    if (request.body?.defaultBatchId) {
+      let { defaultBatchId } = request.body
+      defaultBatchId = Array.isArray(defaultBatchId)
+        ? defaultBatchId.filter((item) => item !== '_unchecked')
+        : defaultBatchId
 
-      patientSession.session.update(
-        { defaultBatch_ids: { [vaccine.snomed]: batch_id } },
-        data
-      )
+      DefaultBatch.addToSession(defaultBatchId, patientSession.session.id, data)
     }
 
     vaccination.update(request.body.vaccination, data.wizard)

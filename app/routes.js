@@ -16,6 +16,7 @@ import { accountRoutes } from './routes/account.js'
 import { batchRoutes } from './routes/batch.js'
 import { clinicRoutes } from './routes/clinic.js'
 import { consentRoutes } from './routes/consent.js'
+import { defaultBatchRoutes } from './routes/default-batch.js'
 import { downloadRoutes } from './routes/download.js'
 import { homeRoutes } from './routes/home.js'
 import { moveRoutes } from './routes/move.js'
@@ -71,6 +72,7 @@ router.use(
 )
 router.use('/schools', schoolRoutes)
 router.use('/sessions/:session_id/consents', consentRoutes)
+router.use('/sessions/:session_id/default-batch', defaultBatchRoutes)
 router.use('/sessions', sessionRoutes)
 router.use('/uploads/notices', noticeRoutes)
 router.use('/uploads/reviews', reviewRoutes)

@@ -1,7 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("session.defaultBatch.title") %}
-{% set vaccine = batchItems[0].vaccine %}
+{% set title = __("defaultBatch.edit.title") %}
 
 {% block form %}
   {{ appHeading({
@@ -25,6 +24,6 @@
       }
     },
     items: batches,
-    decorate: "session.defaultBatch_ids[" + vaccine.snomed + "]"
+    decorate: "defaultBatch.id"
   }) }}
 {% endblock %}

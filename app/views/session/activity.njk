@@ -37,7 +37,7 @@
   {{ insetText({
     classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4",
     html: defaultBatchHtml
-  }) if view == "record" and session.defaultBatch.length }}
+  }) if view == "record" and defaultBatches.length }}
 
   {% if (view == "register" or view == "record") and not session.isActive %}
     {{ appHeading({

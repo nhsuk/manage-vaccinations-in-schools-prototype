@@ -40,7 +40,6 @@ import {
   stringToBoolean
 } from '../utils/string.js'
 
-import { Batch } from './batch.js'
 import { Clinic } from './clinic.js'
 import { Consent } from './consent.js'
 import { PatientSession } from './patient-session.js'
@@ -71,7 +70,6 @@ import { Vaccine } from './vaccine.js'
  * @property {Array<string>} [catchupProgrammeTypes] - Catchup programmes
  * @property {boolean} [nationalProtocol] - Enable national protocol
  * @property {boolean} [psdProtocol] - Enable PSD protocol
- * @property {object} [defaultBatch_ids] - Vaccine SNOMED code: Default batch ID
  */
 export class Session {
   constructor(options, context) {
@@ -103,7 +101,6 @@ export class Session {
     this.programmePreset = options?.programmePreset
     this.catchupProgrammeTypes = stringToArray(options?.catchupProgrammeTypes)
     this.psdProtocol = stringToBoolean(options?.psdProtocol) || false
-    this.defaultBatch_ids = options?.defaultBatch_ids || {}
 
     if (this.programmePreset === 'SeasonalFlu') {
       this.nationalProtocol =
@@ -553,17 +550,6 @@ export class Session {
     )
 
     return programmesWithAlternativeVaccine.length > 0
-  }
-
-  /**
-   * Get default batches
-   *
-   * @returns {Array<Batch>} - Default batches
-   */
-  get defaultBatch() {
-    return Object.entries(this.defaultBatch_ids).map(([, id]) =>
-      Batch.read(id, this.context)
-    )
   }
 
   /**

@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("vaccination.batch_id.title", { session: session }) if type == "new" else __("vaccination.batch_id.label") %}
+{% set title = __("vaccination.batch_id.title", { vaccination: vaccination }) if type == "new" else __("vaccination.batch_id.label") %}
 
 {% block form %}
   {% set batches = [] %}
@@ -14,12 +14,12 @@
       conditional: {
         html: checkboxes({
           items: [{
-            text: __("vaccination.batch_id.default"),
+            text: __("defaultBatch.id.title"),
             value: batch.id
           }],
-          decorate: "batch_id"
+          decorate: "defaultBatchId"
         })
-      } if form == "new"
+      } if type == "new"
     }) %}
   {% endfor %}
 

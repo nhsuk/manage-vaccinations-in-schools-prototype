@@ -1,22 +1,20 @@
-{%- macro defaultBatch(batch, session) %}
-{{ batch.vaccine.brandWithType }}: {{ batch.formatted.id | safe }}
-<a class="nhsuk-link nhsuk-u-margin-left-2" href="{{ session.uri }}/default-batch?snomed={{ batch.vaccine_snomed }}">
-  {{- __("session.defaultBatch.label", {
-    vaccine: batch.vaccine
-  }) | safe -}}
+{%- macro _defaultBatch(defaultBatch) %}
+{{ defaultBatch.vaccine.brandWithType }}: {{ defaultBatch.formatted.id | safe }}
+<a class="nhsuk-link nhsuk-u-margin-left-2" href="{{ defaultBatch.session.uri }}/default-batch/{{ defaultBatch.vaccine_snomed }}">
+  {{- __("defaultBatch.label", { vaccine: defaultBatch.vaccine }) | safe -}}
 </a>
 {%- endmacro %}
 <h3 class="nhsuk-heading-m nhsuk-u-margin-bottom-2">
-  {{ __n("session.defaultBatch.count", defaultBatch.length) }}
+  {{ __n("defaultBatch.count", defaultBatch.length) }}
 </h3>
-{% if session.defaultBatch.length == 1 %}
+{% if defaultBatches.length == 1 %}
   <p class="nhsuk-body">
-    {{ defaultBatch(session.defaultBatch[0], session) }}
+    {{ _defaultBatch(defaultBatches[0]) }}
   </p>
 {% else %}
   <ul class="nhsuk-list nhsuk-list--bullet">
-  {% for batch in session.defaultBatch %}
-    <li>{{ defaultBatch(batch, session) }}</li>
+  {% for defaultBatch in defaultBatches %}
+    <li>{{ _defaultBatch(defaultBatch) }}</li>
   {% endfor %}
   </ul>
 {% endif %}

@@ -24,7 +24,6 @@ router.get('/:session_id/edit/:view', session.showForm)
 router.post('/:session_id/edit/:view', session.updateForm)
 
 router.post('/:session_id/close', session.close)
-router.post('/:session_id/default-batch', session.updateDefaultBatch)
 router.post('/:session_id/instructions', session.giveInstructions)
 router.post('/:session_id/offline', session.downloadFile)
 router.post('/:session_id/reminders', session.sendReminders)

@@ -38,6 +38,22 @@ export const en = {
       label: 'Postcode'
     }
   },
+  defaultBatch: {
+    label:
+      'Change default batch<span class="nhsuk-u-visually-hidden"> for {{vaccine.brand}}</span> ',
+    count: {
+      one: 'Default batch',
+      other: 'Default batches'
+    },
+    edit: {
+      title: 'Select a default batch for this session',
+      success: 'Default batch updated'
+    },
+    id: {
+      label: 'Default batch ID',
+      title: 'Default to this batch for this session'
+    }
+  },
   form: {
     confirm: 'Save changes',
     continue: 'Continue'
@@ -1861,16 +1877,6 @@ export const en = {
             '[0] No children who could not be vaccinated|%s children who could not be vaccinated'
         }
       }
-    },
-    defaultBatch: {
-      label:
-        'Change default batch<span class="nhsuk-u-visually-hidden"> for {{vaccine.brand}}</span> ',
-      title: 'Select a default batch for this session',
-      success: 'Default batch updated',
-      count: {
-        one: 'Default batch',
-        other: 'Default batches'
-      }
     }
   },
   texts: {
@@ -2383,9 +2389,8 @@ export const en = {
     },
     batch_id: {
       title:
-        'Which batch did you use for the {{session.programmeNames.sentenceCase}} vaccination?',
-      label: 'Batch ID',
-      default: 'Default to this batch for this session'
+        'Which batch did you use for the {{vaccination.programme.name}} vaccination?',
+      label: 'Batch ID'
     },
     note: {
       label: 'Notes',
@@ -2395,7 +2400,7 @@ export const en = {
     dose: {
       label: 'Dose volume',
       title:
-        'What was the dose amount for the {{session.programmeNames.sentenceCase}} vaccination?'
+        'What was the dose amount for the {{vaccination.programme.name}} vaccination?'
     },
     dosage: {
       title: 'Did they get the full dose?',
