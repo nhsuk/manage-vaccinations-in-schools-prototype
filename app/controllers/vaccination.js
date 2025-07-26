@@ -177,6 +177,9 @@ export const vaccinationController = {
         vaccination.note = request.body.vaccination.note
       }
 
+      // Update number of vaccinations given
+      data.token.vaccinations[vaccination.programme.type] += 1
+
       request.flash('success', __(`vaccination.${type}.success`, { session }))
 
       // Clean up session data
@@ -350,7 +353,13 @@ export const vaccinationController = {
         ? defaultBatchId.filter((item) => item !== '_unchecked')
         : defaultBatchId
 
-      DefaultBatch.addToSession(defaultBatchId, patientSession.session.id, data)
+      if (defaultBatchId) {
+        DefaultBatch.addToSession(
+          defaultBatchId,
+          patientSession.session.id,
+          data
+        )
+      }
     }
 
     vaccination.update(request.body.vaccination, data.wizard)
