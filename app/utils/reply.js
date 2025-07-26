@@ -123,9 +123,10 @@ export function getConsentHealthAnswers(patientSession) {
  * Get consent outcome
  *
  * @param {import('../models/reply.js').Reply} reply - Reply
+ * @param {import('../models/session.js').Session} session - Session
  * @returns {ConsentOutcome} Consent outcome
  */
-export const getConfirmedConsentOutcome = (reply) => {
+export const getConfirmedConsentOutcome = (reply, session) => {
   if (reply.decision === ReplyDecision.NoResponse) {
     return ConsentOutcome.NoResponse
   }
@@ -135,6 +136,14 @@ export const getConfirmedConsentOutcome = (reply) => {
   }
 
   if (reply.given) {
+    if (session.offersAlternativeVaccine) {
+      if (reply.decision === ReplyDecision.OnlyFluInjection) {
+        return ConsentOutcome.GivenForInjection
+      }
+
+      return ConsentOutcome.GivenForNasalSpray
+    }
+
     return ConsentOutcome.Given
   }
 
@@ -163,7 +172,7 @@ export const getConsentOutcome = (patientSession) => {
     }
 
     // Reply decision value matches consent outcome key
-    return getConfirmedConsentOutcome(replies[0])
+    return getConfirmedConsentOutcome(replies[0], patientSession.session)
   } else if (replies.length > 1) {
     // Exclude undelivered replies so can return ConsentOutcome.NoRequest
     replies = replies.filter((reply) => reply.delivered)
@@ -180,7 +189,7 @@ export const getConsentOutcome = (patientSession) => {
         (reply) => !parentalRelationships.includes(reply.relationship)
       )
       if (childReply) {
-        return getConfirmedConsentOutcome(childReply)
+        return getConfirmedConsentOutcome(childReply, patientSession.session)
       }
 
       // If one of the replies has declined (requested follow up), show this
@@ -191,7 +200,7 @@ export const getConsentOutcome = (patientSession) => {
 
       return ConsentOutcome.Inconsistent
     }
-    return getConfirmedConsentOutcome(decisions[0])
+    return getConfirmedConsentOutcome(decisions[0], patientSession.session)
   }
 
   return ConsentOutcome.NoResponse

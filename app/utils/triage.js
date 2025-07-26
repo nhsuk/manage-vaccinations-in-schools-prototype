@@ -75,7 +75,7 @@ export const getScreenVaccinationMethod = (programme, replies) => {
  * @returns {ScreenOutcome|boolean} Screen outcome
  */
 export const getScreenOutcome = (patientSession) => {
-  if (patientSession.consent !== ConsentOutcome.Given) {
+  if (!patientSession.consentGiven) {
     return false
   }
 
