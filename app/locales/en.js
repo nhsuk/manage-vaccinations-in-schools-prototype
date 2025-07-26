@@ -299,6 +299,24 @@ export const en = {
           '[0] No children with consent given|%s children with consent given'
       }
     },
+    [ConsentOutcome.GivenForInjection]: {
+      label: 'Consent given for injected vaccine',
+      title: 'Ready for vaccinator',
+      count: {
+        one: '%s child with consent given for injected vaccine',
+        other:
+          '[0] No children with consent given for injected vaccine|%s children with consent given for injected vaccine'
+      }
+    },
+    [ConsentOutcome.GivenForNasalSpray]: {
+      label: 'Consent given for nasal spray',
+      title: 'Ready for vaccinator',
+      count: {
+        one: '%s child with consent given for nasal spray',
+        other:
+          '[0] No children with consent given for nasal spray|%s children with consent given for nasal spray'
+      }
+    },
     [ConsentOutcome.Declined]: {
       label: 'Follow up requested',
       title: 'Consent refused (follow up requested)',
@@ -1705,6 +1723,16 @@ export const en = {
         label: 'Consent given',
         count:
           '{count, plural, =0 {No children with consent given} one {# child with consent given} other {# children with consent given}}'
+      },
+      checkGivenForInjection: {
+        label: 'Consent given for injected vaccine',
+        count:
+          '{count, plural, =0 {No children with consent given for injected vaccine} one {# child with consent given for injected vaccine} other {# children with consent given for injected vaccine}}'
+      },
+      checkGivenForNasalSpray: {
+        label: 'Consent given for nasal spray',
+        count:
+          '{count, plural, =0 {No children with consent given for nasal spray} one {# child with consent given for nasal spray} other {# children with consent given for nasal spray}}'
       },
       checkRefusal: {
         label: 'Consent refused',

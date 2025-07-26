@@ -18,12 +18,18 @@ import {
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @returns {Activity} Activity
  */
-export const getNextActivity = ({ consent, triage, screen, report }) => {
+export const getNextActivity = ({
+  consent,
+  consentGiven,
+  triage,
+  screen,
+  report
+}) => {
   if ([ConsentOutcome.Refused, ConsentOutcome.FinalRefusal].includes(consent)) {
     return Activity.DoNotRecord
   }
 
-  if (consent !== ConsentOutcome.Given) {
+  if (!consentGiven) {
     return Activity.Consent
   }
 
@@ -72,6 +78,8 @@ export const getConsentStatus = (patientSession) => {
       icon = 'cross'
       break
     case ConsentOutcome.Given:
+    case ConsentOutcome.GivenForInjection:
+    case ConsentOutcome.GivenForNasalSpray:
       colour = 'aqua-green'
       description = `${patient.fullName} is ready for the vaccinator.`
       icon = 'tick'

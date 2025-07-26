@@ -315,7 +315,7 @@ export class PatientSession {
 
     // Need consent response(s) before we can determine the chosen method
     // We only want to instruct on patients being vaccinated using nasal spray
-    if (this.consent !== ConsentOutcome.Given) {
+    if (!this.consentGiven) {
       return
     }
 
@@ -429,6 +429,19 @@ export class PatientSession {
    */
   get consent() {
     return getConsentOutcome(this)
+  }
+
+  /**
+   * Consent has been given
+   *
+   * @returns {boolean} - Consent has been given
+   */
+  get consentGiven() {
+    return [
+      ConsentOutcome.Given,
+      ConsentOutcome.GivenForInjection,
+      ConsentOutcome.GivenForNasalSpray
+    ].includes(this.consent)
   }
 
   /**
@@ -570,11 +583,6 @@ export class PatientSession {
       )
     ) {
       consent = this.consentRefusalReasons.join('<br>')
-    } else if (
-      this.consent === ConsentOutcome.Given &&
-      this.programme.alternativeVaccine
-    ) {
-      consent = this.vaccine?.method
     }
 
     return {
