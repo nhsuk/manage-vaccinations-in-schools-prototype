@@ -54,12 +54,6 @@
           },
           value: {
             text: session.formatted.patients
-          },
-          actions: {
-            items: [{
-              text: __("session.upload-class-list.title"),
-              href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn if session.type == SessionType.School
-            }]
           }
         },
         sessionActivityRow("checkRefusal"),
@@ -112,6 +106,9 @@
         href: session.uri + "/close"
       } if session.isCompleted],
       links: [{
+        text: __("session.upload-class-list.title"),
+        href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn if session.type == SessionType.School
+      }, {
         text: __("session.offline.title"),
         href: session.uri + "/offline"
       } if not session.isUnplanned]
