@@ -63,7 +63,9 @@
           }
         },
         sessionActivityRow("checkRefusal"),
-        sessionActivityRow("checkGiven"),
+        sessionActivityRow("checkGiven") if not session.offersAlternativeVaccine,
+        sessionActivityRow("checkGivenForNasalSpray") if session.offersAlternativeVaccine,
+        sessionActivityRow("checkGivenForInjection") if session.offersAlternativeVaccine,
         sessionActivityRow("report")
       ]
     }) }}

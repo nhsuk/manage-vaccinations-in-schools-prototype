@@ -288,7 +288,18 @@ export default () => {
     const activities = {
       checkGiven: {
         key: 'consent',
-        value: ConsentOutcome.Given
+        value: ConsentOutcome.Given,
+        alwaysShow: true
+      },
+      checkGivenForInjection: {
+        key: 'consent',
+        value: ConsentOutcome.GivenForInjection,
+        alwaysShow: true
+      },
+      checkGivenForNasalSpray: {
+        key: 'consent',
+        value: ConsentOutcome.GivenForNasalSpray,
+        alwaysShow: true
       },
       checkRefusal: {
         key: 'consent',

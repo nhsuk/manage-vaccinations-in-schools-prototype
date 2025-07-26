@@ -35,6 +35,7 @@ export const patientSessionController = {
 
     const {
       consent,
+      consentGiven,
       patient,
       programme,
       record,
@@ -92,14 +93,12 @@ export const patientSessionController = {
         !session.isActive &&
         consent === ConsentOutcome.NoResponse,
       // Get verbal consent
-      canRespond:
-        session.consentWindow === ConsentWindow.Open &&
-        ![ConsentOutcome.Given].includes(consent),
+      canRespond: session.consentWindow === ConsentWindow.Open && !consentGiven,
       // Perform Gillick assessment
       canGillick:
         programme.type !== ProgrammeType.Flu &&
         session.isActive &&
-        consent !== ConsentOutcome.Given,
+        !consentGiven,
       // Patient requires triage
       canTriage: triage !== TriageOutcome.NotNeeded,
       // Patient already triaged

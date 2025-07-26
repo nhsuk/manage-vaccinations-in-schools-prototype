@@ -620,9 +620,8 @@ export class Session {
         ({ consent }) => consent === ConsentOutcome.NoResponse
       ),
       couldNotVaccinate: this.patients.filter(
-        ({ consent, report }) =>
-          consent === ConsentOutcome.Given &&
-          report !== PatientOutcome.Vaccinated
+        ({ consentGiven, report }) =>
+          consentGiven && report !== PatientOutcome.Vaccinated
       )
     }
   }

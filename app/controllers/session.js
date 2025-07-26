@@ -410,7 +410,13 @@ export const sessionController = {
 
     // Consent status filter options (select many)
     if (view === 'consent') {
-      response.locals.statusesItems = Object.values(ConsentOutcome).map(
+      const consentOutcomes = session.offersAlternativeVaccine
+        ? Object.values(ConsentOutcome).filter(
+            (outcome) => outcome !== ConsentOutcome.Given
+          )
+        : ConsentOutcome
+
+      response.locals.statusesItems = Object.values(consentOutcomes).map(
         (value) => ({
           text: value,
           value,
