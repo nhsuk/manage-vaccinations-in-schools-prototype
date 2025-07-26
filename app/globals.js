@@ -427,6 +427,38 @@ export default () => {
   }
 
   /**
+   * Get summaryList `rows` parameter for default batches
+   *
+   * @returns {Array} `rows`
+   */
+  globals.defaultBatchSummaryRows = function () {
+    const { __, defaultBatches } = this.ctx
+    const rows = []
+
+    for (const defaultBatch of Object.values(defaultBatches)) {
+      rows.push({
+        key: {
+          text: defaultBatch.vaccine.brand
+        },
+        value: {
+          html: defaultBatch.formatted.id
+        },
+        actions: {
+          items: [
+            {
+              text: __(`actions.change`),
+              visuallyHiddenText: defaultBatch.vaccine.brandWithType,
+              href: `${defaultBatch.session.uri}/default-batch/${defaultBatch.vaccine_snomed}`
+            }
+          ]
+        }
+      })
+    }
+
+    return rows
+  }
+
+  /**
    * Format parent
    *
    * @param {import('./models/parent.js').Parent} parent - Parent
