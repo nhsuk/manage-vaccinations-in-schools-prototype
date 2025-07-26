@@ -41,10 +41,7 @@ export const en = {
   defaultBatch: {
     label:
       'Change default batch<span class="nhsuk-u-visually-hidden"> for {{vaccine.brand}}</span> ',
-    count: {
-      one: 'Default batch',
-      other: 'Default batches'
-    },
+    title: '{count, plural, one{Default batch} other{Default batches}}',
     edit: {
       title: 'Select a default batch for this session',
       success: 'Default batch updated'

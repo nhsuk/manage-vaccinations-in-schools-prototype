@@ -30,15 +30,6 @@
     view: view
   }) }}
 
-  {% set defaultBatchHtml %}
-    {% include "session/_default-batch.njk" %}
-  {% endset %}
-
-  {{ insetText({
-    classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4",
-    html: defaultBatchHtml
-  }) if view == "record" and defaultBatches.length }}
-
   {% if (view == "register" or view == "record") and not session.isActive %}
     {{ appHeading({
       level: 2,
@@ -81,7 +72,7 @@
           }) | safe
         }) }}
 
-        {% set instructionsHtml %}
+        {% set instructHtml %}
           {{ __("session.instruct.description", session.patientsToInstruct.length) | nhsukMarkdown }}
 
           {{ actionLink({
@@ -91,12 +82,31 @@
         {% endset %}
 
         {{ insetText({
-          html: instructionsHtml
+          html: instructHtml
         }) if view == "instruct" and (data.token.role == UserRole.NursePrescriber or data.token.role == UserRole.Pharmacist) and session.patientsToInstruct.length > 0 }}
 
+        {% set recordHtml %}
+          {{ vaccinationCount(data.token.vaccinations) | nhsukMarkdown if vaccinationCount(data.token.vaccinations) }}
+
+          {% if defaultBatches.length %}
+            {{ appHeading({
+              classes: "nhsuk-u-margin-bottom-2",
+              level: 4,
+              size: "s",
+              title: __mf("defaultBatch.title", {
+                count: defaultBatches.length
+              })
+            }) }}
+
+            {{ summaryList({
+              rows: defaultBatchSummaryRows()
+            }) }}
+          {% endif %}
+        {% endset %}
+
         {{ insetText({
-          html: vaccinationCount(data.token.vaccinations) | nhsukMarkdown
-        }) if view == "record" and vaccinationCount(data.token.vaccinations) }}
+          html: recordHtml
+        }) if view == "record" and (defaultBatches.length or vaccinationCount(data.token.vaccinations)) }}
 
         {% for patientSession in results.page %}
           {% set statusHtml %}
