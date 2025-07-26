@@ -9,8 +9,7 @@ import {
   VaccineMethod
 } from '../enums.js'
 import { Consent } from '../models/consent.js'
-import {} from '../models/programme.js'
-import { removeDays, today } from '../utils/date.js'
+import { today } from '../utils/date.js'
 import {
   getHealthAnswers,
   getRefusalReason,
@@ -112,7 +111,7 @@ export function generateConsent(
       lastConsentCreatedAt ||
       faker.date.between({
         from: session.openAt,
-        to: sessionClosedBeforeToday ? removeDays(session.firstDate, 2) : nowAt
+        to: sessionClosedBeforeToday ? session.closeAt : nowAt
       }),
     child,
     parent,
