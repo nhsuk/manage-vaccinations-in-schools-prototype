@@ -235,6 +235,13 @@ export default () => {
     return summaryRows
   }
 
+  /**
+   * Inspect session data
+   *
+   * @param {object} data - Data to inspect
+   * @param {boolean} includeContext - Include context data
+   * @returns {string} Inspected data within a `<pre>` element
+   */
   globals.inspect = function (data, includeContext = false) {
     const { filters } = this.ctx.settings.nunjucksEnv
 
@@ -260,6 +267,12 @@ export default () => {
     return formatLink(href, text, attributes)
   }
 
+  /**
+   * Format parent
+   *
+   * @param {import('./models/parent.js').Parent} parent - Parent
+   * @returns {string} Formatted HTML
+   */
   globals.parent = function (parent) {
     return formatParent(parent)
   }
