@@ -346,7 +346,7 @@ export class Vaccination {
     const lastSynced = this.nhseSyncedAt ? `Last synced: ${nhseSyncedAt}` : ''
 
     switch (true) {
-      case !this.programme.nhseSyncable:
+      case !this.programme?.nhseSyncable:
         return {
           colour: 'orange',
           text: VaccinationSyncStatus.CannotSync,

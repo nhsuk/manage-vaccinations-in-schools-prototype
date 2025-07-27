@@ -32,6 +32,7 @@ import { Vaccine } from './vaccine.js'
  * @property {Array<string>} sequence - Vaccine dose sequence
  * @property {string} sequenceDefault - Default vaccine dose sequence
  * @property {Array<number>} yearGroups - Year groups available to
+ * @property {boolean} nhseSyncable- Vaccination records can be synced
  * @property {Array<string>} cohort_uids - Cohort UIDs
  * @property {Array<string>} vaccine_smomeds - Vaccines administered
  */
@@ -47,6 +48,7 @@ export class Programme {
     this.sequence = options?.sequence
     this.sequenceDefault = options?.sequenceDefault
     this.yearGroups = options?.yearGroups
+    this.nhseSyncable = options?.nhseSyncable
     this.cohort_uids = options?.cohort_uids || []
     this.vaccine_smomeds = options?.vaccine_smomeds
   }
@@ -245,16 +247,6 @@ export class Programme {
    */
   get uri() {
     return `/programmes/${this.id}`
-  }
-
-  /**
-   * Get whether vaccination records for this programme are syncable
-   * with the NHS England immunisation API
-   *
-   * @returns {boolean} - Whether vaccination records for programme are syncable
-   */
-  get nhseSyncable() {
-    return programmes[this.type].nhseSyncable
   }
 
   /**
