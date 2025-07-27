@@ -197,7 +197,7 @@ export class Programme {
   /**
    * Get patient (programme) outcomes
    *
-   * @param {import('./patient-session.js').PatientOutcome} patientOutcome - Patient outcome
+   * @param {import('../enums.js').PatientOutcome} patientOutcome - Patient outcome
    * @returns {Array<PatientSession>} - Patient sessions
    */
   report(patientOutcome) {
