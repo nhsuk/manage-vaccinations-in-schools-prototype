@@ -176,6 +176,7 @@
             heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
             headingClasses: "nhsuk-heading-s",
             headingLevel: 4,
+            clickable: true if view != "register",
             href: patientSession.uri + "?activity=" + view,
             descriptionHtml: cardDescriptionHtml
           }) }}
