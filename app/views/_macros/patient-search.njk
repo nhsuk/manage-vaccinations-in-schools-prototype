@@ -53,6 +53,18 @@
       fieldset: {
         legend: {
           classes: "nhsuk-fieldset__legend--s",
+          text: __("patientSession.nextActivity.label")
+        }
+      },
+      id: "nextActivity",
+      name: "nextActivity",
+      items: nextActivityItems
+    }) if nextActivityItems }}
+
+    {{ radios({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
           text: __("patientSession.vaccineMethod.label")
         }
       },

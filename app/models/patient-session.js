@@ -604,7 +604,8 @@ export class PatientSession {
     const nextActivityPerProgramme = this.siblingPatientSessions
       .filter(({ nextActivity }) => nextActivity !== Activity.Report)
       .map(
-        ({ nextActivity, programme }) => `${nextActivity} for ${programme.name}`
+        ({ nextActivity, programme }) =>
+          `${nextActivity} for ${programme.nameSentenceCase}`
       )
 
     const outstandingVaccinations = this.outstandingVaccinations.map(

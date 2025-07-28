@@ -267,13 +267,14 @@ export const sessionController = {
     const { permissions } = request.app.locals
     const { view } = request.params
     const {
-      consent,
-      hasMissingNhsNumber,
-      programme_id,
       q,
-      vaccineMethod,
+      consent,
       instruct,
-      yearGroup
+      programme_id,
+      nextActivity,
+      vaccineMethod,
+      yearGroup,
+      hasMissingNhsNumber
     } = request.query
     const { data } = request.session
     const { session } = response.locals
@@ -305,6 +306,13 @@ export const sessionController = {
     if (programme_id) {
       results = results.filter((patientSession) =>
         programme_id.includes(patientSession.programme_id)
+      )
+    }
+
+    // Filter by next activity
+    if (nextActivity && nextActivity !== 'none') {
+      results = results.filter(
+        (patientSession) => patientSession.nextActivity === nextActivity
       )
     }
 
@@ -456,7 +464,7 @@ export const sessionController = {
     for (const activity of ['screen', 'instruct', 'register', 'outcome']) {
       const screenOutcomes = session.offersAlternativeVaccine
         ? Object.values(ScreenOutcome).filter(
-            (outcome) => outcome !== ScreenOutcome.Vaccinate
+            (value) => value !== ScreenOutcome.Vaccinate
           )
         : ScreenOutcome
 
@@ -483,6 +491,29 @@ export const sessionController = {
       }
     }
 
+    // Next activity
+    if (view === 'register' || view === 'outcome') {
+      const nextActivityOutcomes = Object.values(Activity).filter(
+        (value) =>
+          ![Activity.Register, Activity.Report, Activity.DoNotRecord].includes(
+            value
+          )
+      )
+
+      response.locals.nextActivityItems = [
+        {
+          text: 'Any',
+          value: 'none',
+          checked: !nextActivity || nextActivity === 'none'
+        },
+        ...Object.values(nextActivityOutcomes).map((value) => ({
+          text: value,
+          value,
+          checked: nextActivity === value
+        }))
+      ]
+    }
+
     if (session.school) {
       response.locals.yearGroupItems = session.school.yearGroups.map(
         (yearGroup) => ({
@@ -503,6 +534,7 @@ export const sessionController = {
     delete data.instruct
     delete data.register
     delete data.report
+    delete data.nextActivity
 
     next()
   },
@@ -520,7 +552,8 @@ export const sessionController = {
       'instruct',
       'register',
       'outcome',
-      'vaccineMethod'
+      'vaccineMethod',
+      'nextActivity'
     ]) {
       const value = request.body[key]
       if (value) {
