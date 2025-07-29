@@ -1,6 +1,5 @@
 {% extends "_layouts/form.njk" %}
 
-{% set hideConfirmButton = true %}
 {% set title = __("account.change-role.title") %}
 {% set headerOptions = {
   service: {
@@ -9,21 +8,16 @@
 } %}
 
 {% block form %}
-  {{ appHeading({
-    title: title
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: appHeading({
+          caption: data.organisation.name,
+          title: title
+        })
+      }
+    },
+    items: enumItems(UserRole),
+    decorate: "role"
   }) }}
-
-  {% for role in enumItems(UserRole) %}
-    {{ card({
-      attributes: {
-        name: "role",
-        value: role.value
-      },
-      classes: "nhsuk-u-margin-bottom-3",
-      heading: (data.organisation.name + " (" + data.organisation.code + ")") | upper,
-      headingClasses: "nhsuk-heading-s nhsuk-u-margin-bottom-2",
-      clickable: true,
-      description: role.text
-    }) | buttonCard }}
-  {% endfor %}
 {% endblock %}
