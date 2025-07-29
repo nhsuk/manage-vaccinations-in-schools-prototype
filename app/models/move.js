@@ -36,7 +36,7 @@ export class Move {
   /**
    * Get patient
    *
-   * @returns {Patient|undefined} - Patient
+   * @returns {Patient|undefined} Patient
    */
   get patient() {
     try {
@@ -56,7 +56,7 @@ export class Move {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     return {
@@ -69,7 +69,7 @@ export class Move {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'move'
@@ -78,7 +78,7 @@ export class Move {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/moves/${this.uuid}`

@@ -39,7 +39,7 @@ export class Batch {
   /**
    * Get expiry date for `dateInput`
    *
-   * @returns {object|undefined} - `dateInput` object
+   * @returns {object|undefined} `dateInput` object
    */
   get expiry_() {
     return convertIsoDateToObject(this.expiry)
@@ -59,7 +59,7 @@ export class Batch {
   /**
    * Get name
    *
-   * @returns {string} - Name
+   * @returns {string} Name
    */
   get name() {
     return `${this.formatted.id} (${this.formatted.expiry})`
@@ -68,7 +68,7 @@ export class Batch {
   /**
    * Get summary (name and expiry)
    *
-   * @returns {string} - Name
+   * @returns {string} Name
    */
   get summary() {
     const prefix = isBefore(this.archivedAt, today()) ? 'Expired' : 'Expires'
@@ -79,7 +79,7 @@ export class Batch {
   /**
    * Get vaccine this batch belongs to
    *
-   * @returns {Vaccine} - Vaccine
+   * @returns {Vaccine} Vaccine
    */
   get vaccine() {
     try {
@@ -95,7 +95,7 @@ export class Batch {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     const createdAt = formatDate(this.createdAt, { dateStyle: 'long' })
@@ -109,7 +109,7 @@ export class Batch {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'batch'
@@ -118,7 +118,7 @@ export class Batch {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/vaccines/${this.vaccine_snomed}/batches/${this.id}`

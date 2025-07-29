@@ -106,7 +106,7 @@ export class Vaccination {
   /**
    * Get created date for `dateInput`
    *
-   * @returns {object|undefined} - `dateInput` object
+   * @returns {object|undefined} `dateInput` object
    */
   get createdAt_() {
     return convertIsoDateToObject(this.createdAt)
@@ -126,7 +126,7 @@ export class Vaccination {
   /**
    * Get batch
    *
-   * @returns {Batch} - Batch
+   * @returns {Batch} Batch
    */
   get batch() {
     try {
@@ -141,7 +141,7 @@ export class Vaccination {
   /**
    * Get batch expiry date for `dateInput`
    *
-   * @returns {object|undefined} - `dateInput` object
+   * @returns {object|undefined} `dateInput` object
    */
   get batch_expiry_() {
     return convertIsoDateToObject(this.batch.expiry)
@@ -162,7 +162,7 @@ export class Vaccination {
   /**
    * Get vaccine
    *
-   * @returns {object|undefined} - Vaccine
+   * @returns {object|undefined} Vaccine
    */
   get vaccine() {
     if (this.vaccine_snomed) {
@@ -173,7 +173,7 @@ export class Vaccination {
   /**
    * Get method
    *
-   * @returns {VaccinationMethod|undefined} - Method
+   * @returns {VaccinationMethod|undefined} Method
    */
   get method() {
     if (!this.vaccine || !this.given) return
@@ -196,7 +196,7 @@ export class Vaccination {
   /**
    * Get anatomical site
    *
-   * @returns {VaccinationSite|undefined} - Anatomical site
+   * @returns {VaccinationSite|undefined} Anatomical site
    */
   get site() {
     if (!this.vaccine || !this.given) return
@@ -220,7 +220,7 @@ export class Vaccination {
   /**
    * Get patient session
    *
-   * @returns {PatientSession} - Patient session
+   * @returns {PatientSession} Patient session
    */
   get patientSession() {
     try {
@@ -233,7 +233,7 @@ export class Vaccination {
   /**
    * Get patient
    *
-   * @returns {import('../models/patient.js').Patient} - Patient
+   * @returns {import('../models/patient.js').Patient} Patient
    */
   get patient() {
     return this.patientSession.patient
@@ -242,7 +242,7 @@ export class Vaccination {
   /**
    * Get session
    *
-   * @returns {import('../models/session.js').Session} - Session
+   * @returns {import('../models/session.js').Session} Session
    */
   get session() {
     return this.patientSession.session
@@ -251,7 +251,7 @@ export class Vaccination {
   /**
    * Get user who performed vaccination
    *
-   * @returns {User} - User
+   * @returns {User} User
    */
   get createdBy() {
     try {
@@ -266,7 +266,7 @@ export class Vaccination {
   /**
    * Get user who supplied the vaccine
    *
-   * @returns {User} - User
+   * @returns {User} User
    */
   get suppliedBy() {
     try {
@@ -281,7 +281,7 @@ export class Vaccination {
   /**
    * Get programme
    *
-   * @returns {Programme} - Programme
+   * @returns {Programme} Programme
    */
   get programme() {
     try {
@@ -294,7 +294,7 @@ export class Vaccination {
   /**
    * Get school
    *
-   * @returns {School|undefined} - School
+   * @returns {School|undefined} School
    */
   get school() {
     if (this.school_urn) {
@@ -305,7 +305,7 @@ export class Vaccination {
   /**
    * Get outcome status properties
    *
-   * @returns {object} - Status properties
+   * @returns {object} Status properties
    */
   get outcomeStatus() {
     let colour
@@ -328,7 +328,7 @@ export class Vaccination {
   /**
    * Get status of sync with NHS England API
    *
-   * @returns {object} - Sync status properties
+   * @returns {object} Sync status properties
    */
   get syncStatus() {
     const updatedAt = this.updatedAt || this.createdAt
@@ -388,7 +388,7 @@ export class Vaccination {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     let sequence
@@ -445,7 +445,7 @@ export class Vaccination {
   /**
    * Get formatted links
    *
-   * @returns {object} - Formatted links
+   * @returns {object} Formatted links
    */
   get link() {
     return {
@@ -464,7 +464,7 @@ export class Vaccination {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'vaccination'
@@ -473,7 +473,7 @@ export class Vaccination {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/programmes/${this.programme_id}/vaccinations/${this.uuid}`

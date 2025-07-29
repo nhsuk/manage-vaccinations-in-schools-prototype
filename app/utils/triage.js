@@ -12,7 +12,7 @@ import { getRepliesWithHealthAnswers } from './reply.js'
  *
  * @param {import('../models/programme.js').Programme} programme - Programme
  * @param {Array<import('../models/reply.js').Reply>} replies - Replies
- * @returns {Array<ScreenOutcome>} - Screen outcomes
+ * @returns {Array<ScreenOutcome>} Screen outcomes
  */
 export const getScreenOutcomesForConsentMethod = (programme, replies) => {
   const hasConsentForInjection = replies?.every(
@@ -43,7 +43,7 @@ export const getScreenOutcomesForConsentMethod = (programme, replies) => {
  *
  * @param {import('../models/programme.js').Programme} programme - Programme
  * @param {Array<import('../models/reply.js').Reply>} replies - Replies
- * @returns {import('../enums.js').ScreenVaccinationMethod|boolean} - Method
+ * @returns {import('../enums.js').ScreenVaccinationMethod|boolean} Method
  */
 export const getScreenVaccinationMethod = (programme, replies) => {
   const hasConsentForInjection = replies?.every(

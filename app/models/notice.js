@@ -26,7 +26,7 @@ export class Notice {
   /**
    * Get patient
    *
-   * @returns {Patient} - Patient
+   * @returns {Patient} Patient
    */
   get patient() {
     try {
@@ -42,7 +42,7 @@ export class Notice {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     return {
@@ -53,7 +53,7 @@ export class Notice {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'notice'
@@ -62,7 +62,7 @@ export class Notice {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/uploads/notices/${this.uuid}`

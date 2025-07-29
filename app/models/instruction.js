@@ -42,7 +42,7 @@ export class Instruction {
   /**
    * Get created date for `dateInput`
    *
-   * @returns {object|undefined} - `dateInput` object
+   * @returns {object|undefined} `dateInput` object
    */
   get createdAt_() {
     return convertIsoDateToObject(this.createdAt)
@@ -62,7 +62,7 @@ export class Instruction {
   /**
    * Get vaccine
    *
-   * @returns {import('./vaccine.js').Vaccine} - Vaccine
+   * @returns {import('./vaccine.js').Vaccine} Vaccine
    */
   get vaccine() {
     return this.programme.vaccines.find(
@@ -73,7 +73,7 @@ export class Instruction {
   /**
    * Get dosage (ml)
    *
-   * @returns {number} - Dosage
+   * @returns {number} Dosage
    */
   get dose() {
     return this.vaccine.dose
@@ -82,7 +82,7 @@ export class Instruction {
   /**
    * Get injection method
    *
-   * @returns {VaccinationMethod} - Injection method
+   * @returns {VaccinationMethod} Injection method
    */
   get injectionMethod() {
     return this.programme.type === ProgrammeType.Flu
@@ -93,7 +93,7 @@ export class Instruction {
   /**
    * Get anatomical site
    *
-   * @returns {VaccinationSite} - Anatomical site
+   * @returns {VaccinationSite} Anatomical site
    */
   get injectionSite() {
     return this.programme.type === ProgrammeType.Flu
@@ -104,7 +104,7 @@ export class Instruction {
   /**
    * Get patient session
    *
-   * @returns {PatientSession} - Patient session
+   * @returns {PatientSession} Patient session
    */
   get patientSession() {
     try {
@@ -117,7 +117,7 @@ export class Instruction {
   /**
    * Get user who performed instruction
    *
-   * @returns {User} - User
+   * @returns {User} User
    */
   get createdBy() {
     try {
@@ -132,7 +132,7 @@ export class Instruction {
   /**
    * Get programme
    *
-   * @returns {Programme} - Programme
+   * @returns {Programme} Programme
    */
   get programme() {
     try {
@@ -145,7 +145,7 @@ export class Instruction {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     return {
@@ -178,7 +178,7 @@ export class Instruction {
   /**
    * Get formatted links
    *
-   * @returns {object} - Formatted links
+   * @returns {object} Formatted links
    */
   get link() {
     return {
@@ -189,7 +189,7 @@ export class Instruction {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'instruction'
@@ -198,7 +198,7 @@ export class Instruction {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/programmes/${this.programme_id}/instructions/${this.uuid}`

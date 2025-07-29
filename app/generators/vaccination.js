@@ -11,7 +11,7 @@ import { Vaccination } from '../models/vaccination.js'
  * @param {import('../models/programme.js').Programme} programme - Programme
  * @param {import('../models/batch.js').Batch} batch - Batch
  * @param {Array<import('../models/user.js').User>} users - Users
- * @returns {Vaccination} - Vaccination
+ * @returns {Vaccination} Vaccination
  */
 export function generateVaccination(patientSession, programme, batch, users) {
   const user = faker.helpers.arrayElement(users)

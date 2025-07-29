@@ -6,7 +6,7 @@ import { User } from '../models/user.js'
 /**
  * Generate fake user
  *
- * @returns {User} - User
+ * @returns {User} User
  */
 export function generateUser() {
   const firstName = faker.person.firstName()

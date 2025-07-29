@@ -11,7 +11,7 @@ export class Consent extends Reply {
   /**
    * Answers in this consent response need triage
    *
-   * @returns {boolean} - Answers need triage
+   * @returns {boolean} Answers need triage
    */
   get hasAnswersNeedingTriage() {
     return hasAnswersNeedingTriage(this.healthAnswers)
@@ -20,7 +20,7 @@ export class Consent extends Reply {
   /**
    * Get formatted links
    *
-   * @returns {object} - Formatted links
+   * @returns {object} Formatted links
    */
   get link() {
     return {
@@ -35,7 +35,7 @@ export class Consent extends Reply {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'consent'
@@ -44,7 +44,7 @@ export class Consent extends Reply {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/consents/${this.uuid}`
@@ -53,7 +53,7 @@ export class Consent extends Reply {
   /**
    * Get parent form URI
    *
-   * @returns {string} - Parent form URI
+   * @returns {string} Parent form URI
    */
   get parentUri() {
     return `${this.session.consentUrl}/${this.uuid}`

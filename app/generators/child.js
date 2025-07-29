@@ -11,7 +11,7 @@ import { getYearGroup } from '../utils/date.js'
 /**
  * Generate fake child
  *
- * @returns {Child} - Child
+ * @returns {Child} Child
  */
 export function generateChild() {
   // Gender

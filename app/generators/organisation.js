@@ -5,7 +5,7 @@ import { Organisation } from '../models/organisation.js'
 /**
  * Generate fake organisation
  *
- * @returns {Organisation} - Organisation
+ * @returns {Organisation} Organisation
  */
 export function generateOrganisation() {
   const code = faker.helpers.replaceSymbols('???')

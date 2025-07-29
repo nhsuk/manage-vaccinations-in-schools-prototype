@@ -56,7 +56,7 @@ export class Programme {
   /**
    * Get programme name
    *
-   * @returns {string} - Programme name
+   * @returns {string} Programme name
    */
   get name() {
     return this.type
@@ -65,7 +65,7 @@ export class Programme {
   /**
    * Get programme name for use within a sentence
    *
-   * @returns {string} - Programme name
+   * @returns {string} Programme name
    */
   get nameSentenceCase() {
     return sentenceCaseProgrammeName(this.type)
@@ -74,7 +74,7 @@ export class Programme {
   /**
    * Get programme name shown within tag component
    *
-   * @returns {string} - Tag component HTML
+   * @returns {string} Tag component HTML
    */
   get nameTag() {
     return formatTag({
@@ -86,7 +86,7 @@ export class Programme {
   /**
    * Get status
    *
-   * @returns {string} - Status
+   * @returns {string} Status
    */
   get status() {
     const { from, to } = programmes[this.type].schedule
@@ -102,7 +102,7 @@ export class Programme {
   /**
    * Get start date
    *
-   * @returns {string} - Start date
+   * @returns {string} Start date
    */
   get start() {
     const thisYear = new Date().getFullYear()
@@ -138,7 +138,7 @@ export class Programme {
   /**
    * Get vaccine name
    *
-   * @returns {object} - Vaccine name
+   * @returns {object} Vaccine name
    * @example Children’s flu vaccine
    * @example Td/IPV vaccine (3-in-1 teenage booster)
    */
@@ -154,7 +154,7 @@ export class Programme {
   /**
    * Get cohorts
    *
-   * @returns {Array<Cohort>} - Cohorts
+   * @returns {Array<Cohort>} Cohorts
    */
   get cohorts() {
     return this.cohort_uids.map((uid) => Cohort.read(uid, this.context))
@@ -163,7 +163,7 @@ export class Programme {
   /**
    * Get consent form PDF
    *
-   * @returns {string} - Consent form PDF
+   * @returns {string} Consent form PDF
    */
   get consentPdf() {
     return `/public/downloads/${this.id}-consent-form.pdf`
@@ -172,7 +172,7 @@ export class Programme {
   /**
    * Get patient sessions
    *
-   * @returns {Array<PatientSession>} - Patient sessions
+   * @returns {Array<PatientSession>} Patient sessions
    */
   get patientSessions() {
     return PatientSession.readAll(this.context).filter(
@@ -183,7 +183,7 @@ export class Programme {
   /**
    * Get sessions
    *
-   * @returns {Array<Session>} - Sessions
+   * @returns {Array<Session>} Sessions
    */
   get sessions() {
     return Session.readAll(this.context)
@@ -195,7 +195,7 @@ export class Programme {
   /**
    * Get vaccinations
    *
-   * @returns {Array<Vaccination>} - Vaccinations
+   * @returns {Array<Vaccination>} Vaccinations
    */
   get vaccinations() {
     return Vaccination.readAll(this.context)
@@ -207,7 +207,7 @@ export class Programme {
    * Get patient (programme) outcomes
    *
    * @param {import('../enums.js').PatientOutcome} patientOutcome - Patient outcome
-   * @returns {Array<PatientSession>} - Patient sessions
+   * @returns {Array<PatientSession>} Patient sessions
    */
   report(patientOutcome) {
     return this.patientSessions.filter(
@@ -218,7 +218,7 @@ export class Programme {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     const vaccineList = Array.isArray(this.vaccine_smomeds)
@@ -244,7 +244,7 @@ export class Programme {
   /**
    * Get formatted links
    *
-   * @returns {object} - Formatted links
+   * @returns {object} Formatted links
    */
   get link() {
     return {
@@ -255,7 +255,7 @@ export class Programme {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'programme'
@@ -264,7 +264,7 @@ export class Programme {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/programmes/${this.id}`

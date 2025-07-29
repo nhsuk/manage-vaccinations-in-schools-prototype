@@ -30,7 +30,7 @@ export class Gillick {
   /**
    * Get Gillick competency outcome
    *
-   * @returns {object|undefined} - Gillick competency outcome
+   * @returns {object|undefined} Gillick competency outcome
    */
   get competent() {
     const questions = [this.q1, this.q2, this.q3, this.q4, this.q5]
@@ -44,7 +44,7 @@ export class Gillick {
   /**
    * Get status properties
    *
-   * @returns {object} - Status properties
+   * @returns {object} Status properties
    */
   get status() {
     return {
@@ -58,7 +58,7 @@ export class Gillick {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'gillick'

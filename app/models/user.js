@@ -32,7 +32,7 @@ export class User {
   /**
    * Get full name, formatted as LASTNAME, Firstname
    *
-   * @returns {string} - Full name
+   * @returns {string} Full name
    */
   get fullName() {
     return [this.lastName.toUpperCase(), this.firstName].join(', ')
@@ -41,7 +41,7 @@ export class User {
   /**
    * Get user name and role
    *
-   * @returns {string} - Full name
+   * @returns {string} Full name
    */
   get nameAndRole() {
     return `${this.fullName} (${this.role})`
@@ -50,7 +50,7 @@ export class User {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     return {
@@ -61,7 +61,7 @@ export class User {
   /**
    * Get formatted links
    *
-   * @returns {object} - Formatted links
+   * @returns {object} Formatted links
    */
   get link() {
     return {
@@ -73,7 +73,7 @@ export class User {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'user'
@@ -82,7 +82,7 @@ export class User {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/users/${this.uid}`

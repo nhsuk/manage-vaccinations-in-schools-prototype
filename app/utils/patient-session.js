@@ -52,7 +52,7 @@ export const getNextActivity = ({
  * Get consent status properties
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} - Consent status properties
+ * @returns {object} Consent status properties
  */
 export const getConsentStatus = (patientSession) => {
   const { consent, patient, parentalRelationships, parentsRequestingFollowUp } =
@@ -115,7 +115,7 @@ export const getConsentStatus = (patientSession) => {
  * Get triage status properties
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} - Triage status properties
+ * @returns {object} Triage status properties
  */
 export const getTriageStatus = (patientSession) => {
   const { triage } = patientSession
@@ -144,7 +144,7 @@ export const getTriageStatus = (patientSession) => {
  * Get screen status properties
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} - Screen status properties
+ * @returns {object} Screen status properties
  */
 export const getScreenStatus = (patientSession) => {
   const { patient, screen, triageNotes } = patientSession
@@ -197,7 +197,7 @@ export const getScreenStatus = (patientSession) => {
  * Get instruction status properties
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} - Instruction status properties
+ * @returns {object} Instruction status properties
  */
 export const getInstructionStatus = (patientSession) => {
   let colour
@@ -219,7 +219,7 @@ export const getInstructionStatus = (patientSession) => {
  * Get registration status properties
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} - Registration status properties
+ * @returns {object} Registration status properties
  */
 export const getRegistrationStatus = (patientSession) => {
   let colour
@@ -251,7 +251,7 @@ export const getRegistrationStatus = (patientSession) => {
  * Get vaccination (session) outcome status properties
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} - Vaccination (session) outcome status properties
+ * @returns {object} Vaccination (session) outcome status properties
  */
 export const getOutcomeStatus = (patientSession) => {
   const { outcome } = patientSession
@@ -285,7 +285,7 @@ export const getOutcomeStatus = (patientSession) => {
  * Get patient (programme) outcome status properties
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} - Patient (programme) outcome status properties
+ * @returns {object} Patient (programme) outcome status properties
  */
 export const getReportStatus = (patientSession) => {
   const { report } = patientSession
@@ -314,7 +314,7 @@ export const getReportStatus = (patientSession) => {
  * Get instruction outcome for nasal spray
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {InstructionOutcome|boolean} - Instruction outcome
+ * @returns {InstructionOutcome|boolean} Instruction outcome
  */
 export const getInstructionOutcome = (patientSession) => {
   if (!patientSession.vaccine) {
@@ -334,7 +334,7 @@ export const getInstructionOutcome = (patientSession) => {
  * Get registration outcome
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {RegistrationOutcome} - Registration outcome
+ * @returns {RegistrationOutcome} Registration outcome
  */
 export const getRegistrationOutcome = (patientSession) => {
   const { patient, session, report } = patientSession
@@ -357,7 +357,7 @@ export const getRegistrationOutcome = (patientSession) => {
  * Check if registration is needed prior to recording vaccination
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {RegistrationOutcome} - Ready to record outcome
+ * @returns {RegistrationOutcome} Ready to record outcome
  */
 export const getRecordOutcome = (patientSession) => {
   const { nextActivity, register, session } = patientSession
@@ -375,7 +375,7 @@ export const getRecordOutcome = (patientSession) => {
  * Get vaccination (session) outcome
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {VaccinationOutcome|PatientOutcome} - Vaccination (session) outcome
+ * @returns {VaccinationOutcome|PatientOutcome} Vaccination (session) outcome
  */
 export const getSessionOutcome = (patientSession) => {
   if (patientSession.lastRecordedVaccination) {
@@ -397,7 +397,7 @@ export const getSessionOutcome = (patientSession) => {
  * Get patient (programme) outcome
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {PatientOutcome} - Overall patient (programme) outcome
+ * @returns {PatientOutcome} Overall patient (programme) outcome
  */
 export const getReportOutcome = (patientSession) => {
   if (patientSession.vaccinations?.length > 0) {

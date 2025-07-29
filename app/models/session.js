@@ -109,7 +109,7 @@ export class Session {
   /**
    * Get session dates for `dateInput`s
    *
-   * @returns {Array<object|undefined>} - `dateInput` objects
+   * @returns {Array<object|undefined>} `dateInput` objects
    */
   get dates_() {
     return this.dates.map((date) => convertIsoDateToObject(date))
@@ -131,7 +131,7 @@ export class Session {
   /**
    * Get date consent window opens for `dateInput`
    *
-   * @returns {object|undefined} - `dateInput` object
+   * @returns {object|undefined} `dateInput` object
    */
   get openAt_() {
     return convertIsoDateToObject(this.openAt)
@@ -151,7 +151,7 @@ export class Session {
   /**
    * Get first session date
    *
-   * @returns {Date} - First session date
+   * @returns {Date} First session date
    */
   get firstDate() {
     return this.dates[0]
@@ -160,7 +160,7 @@ export class Session {
   /**
    * Get last session date
    *
-   * @returns {Date} - Last session date
+   * @returns {Date} Last session date
    */
   get lastDate() {
     return this.dates.at(-1)
@@ -169,7 +169,7 @@ export class Session {
   /**
    * Get remaining session dates
    *
-   * @returns {Array<Date>} - Remaining session dates
+   * @returns {Array<Date>} Remaining session dates
    */
   get remainingDates() {
     const remainingDates = [...this.dates]
@@ -181,7 +181,7 @@ export class Session {
   /**
    * Get next session date
    *
-   * @returns {Date} - Next session dates
+   * @returns {Date} Next session dates
    */
   get nextDate() {
     return this.remainingDates[0]
@@ -190,7 +190,7 @@ export class Session {
   /**
    * Get dates reminders to give consent are sent
    *
-   * @returns {Array<Date>|undefined} - Reminder dates
+   * @returns {Array<Date>|undefined} Reminder dates
    */
   get reminderDates() {
     const reminderDates = []
@@ -204,7 +204,7 @@ export class Session {
   /**
    * Get date next automated reminder will be sent
    *
-   * @returns {Date|undefined} - Next reminder date
+   * @returns {Date|undefined} Next reminder date
    */
   get nextReminderDate() {
     if (this.dates.length > 0) {
@@ -215,7 +215,7 @@ export class Session {
   /**
    * Get consent close date
    *
-   * @returns {Date|undefined} - Consent close date
+   * @returns {Date|undefined} Consent close date
    */
   get closeAt() {
     // Always close consent for school sessions one day before final session
@@ -227,7 +227,7 @@ export class Session {
   /**
    * Get consents (unmatched consent responses)
    *
-   * @returns {Array<import('./consent.js').Consent>} - Consent
+   * @returns {Array<import('./consent.js').Consent>} Consent
    */
   get consents() {
     return Consent.readAll(this.context).filter(
@@ -238,7 +238,7 @@ export class Session {
   /**
    * Get consent form URL
    *
-   * @returns {string} - Consent form URL
+   * @returns {string} Consent form URL
    */
   get consentUrl() {
     return `/give-or-refuse-consent/${this.id}`
@@ -261,7 +261,7 @@ export class Session {
   /**
    * Get consent window
    *
-   * @returns {object} - Consent window
+   * @returns {object} Consent window
    */
   get consentWindow() {
     return getConsentWindow(this)
@@ -270,7 +270,7 @@ export class Session {
   /**
    * Is unplanned session
    *
-   * @returns {boolean} - Is unplanned session
+   * @returns {boolean} Is unplanned session
    */
   get isUnplanned() {
     return this.status === SessionStatus.Unplanned
@@ -279,7 +279,7 @@ export class Session {
   /**
    * Is planned session
    *
-   * @returns {boolean} - Is planned session
+   * @returns {boolean} Is planned session
    */
   get isPlanned() {
     return this.status === SessionStatus.Planned
@@ -288,7 +288,7 @@ export class Session {
   /**
    * Is active session
    *
-   * @returns {boolean} - Is active session
+   * @returns {boolean} Is active session
    */
   get isActive() {
     return includesDate(this.dates, setMidday(today()))
@@ -297,7 +297,7 @@ export class Session {
   /**
    * Is completed session
    *
-   * @returns {boolean} - Is completed session
+   * @returns {boolean} Is completed session
    */
   get isCompleted() {
     return this.status === SessionStatus.Completed
@@ -306,7 +306,7 @@ export class Session {
   /**
    * Is closed session
    *
-   * @returns {boolean} - Is closed session
+   * @returns {boolean} Is closed session
    */
   get isClosed() {
     return this.status === SessionStatus.Closed
@@ -315,7 +315,7 @@ export class Session {
   /**
    * Does session occur in the current academic year?
    *
-   * @returns {boolean} - Session occurs in current academic year
+   * @returns {boolean} Session occurs in current academic year
    */
   get isPastSession() {
     const academicYear = Number(this.academicYear.split(' ')[0])
@@ -327,7 +327,7 @@ export class Session {
   /**
    * Get status
    *
-   * @returns {string} - Status
+   * @returns {string} Status
    */
   get status() {
     switch (true) {
@@ -345,7 +345,7 @@ export class Session {
   /**
    * Get clinic
    *
-   * @returns {Clinic|undefined}} - Clinic
+   * @returns {Clinic|undefined}} Clinic
    */
   get clinic() {
     if (this.clinic_id) {
@@ -360,7 +360,7 @@ export class Session {
   /**
    * Get school
    *
-   * @returns {School|undefined} - School
+   * @returns {School|undefined} School
    */
   get school() {
     if (this.school_urn) {
@@ -375,7 +375,7 @@ export class Session {
   /**
    * Get patient sessions
    *
-   * @returns {Array<PatientSession>} - Patient sessions
+   * @returns {Array<PatientSession>} Patient sessions
    */
   get patientSessions() {
     if (this.context?.patients && this.id) {
@@ -390,7 +390,7 @@ export class Session {
   /**
    * Get patients
    *
-   * @returns {Array<PatientSession>} - Patient sessions
+   * @returns {Array<PatientSession>} Patient sessions
    */
   get patients() {
     return _.uniqBy(this.patientSessions, 'patient.nhsn')
@@ -399,7 +399,7 @@ export class Session {
   /**
    * Get primary programme ids
    *
-   * @returns {Array<string>} - Programme IDs
+   * @returns {Array<string>} Programme IDs
    */
   get primaryProgramme_ids() {
     const programme_ids = new Set()
@@ -418,7 +418,7 @@ export class Session {
   /**
    * Get catch-up programme ids
    *
-   * @returns {Array<string>} - Programme IDs
+   * @returns {Array<string>} Programme IDs
    */
   get catchupProgramme_ids() {
     const programme_ids = new Set()
@@ -439,7 +439,7 @@ export class Session {
   /**
    * Get programme ids
    *
-   * @returns {Array<string>} - Programme IDs
+   * @returns {Array<string>} Programme IDs
    */
   get programme_ids() {
     return [...this.primaryProgramme_ids, ...this.catchupProgramme_ids]
@@ -448,7 +448,7 @@ export class Session {
   /**
    * Get primary programmes
    *
-   * @returns {Array<Programme>} - Programmes
+   * @returns {Array<Programme>} Programmes
    */
   get primaryProgrammes() {
     return this.primaryProgramme_ids
@@ -459,7 +459,7 @@ export class Session {
   /**
    * Get catch-up programmes
    *
-   * @returns {Array<Programme>} - Programmes
+   * @returns {Array<Programme>} Programmes
    */
   get catchupProgrammes() {
     return this.catchupProgramme_ids
@@ -470,7 +470,7 @@ export class Session {
   /**
    * Get session programmes
    *
-   * @returns {Array<Programme>} - Programmes
+   * @returns {Array<Programme>} Programmes
    */
   get programmes() {
     return this.programme_ids
@@ -481,7 +481,7 @@ export class Session {
   /**
    * Get session vaccines
    *
-   * @returns {Array<Vaccine>} - Vaccines
+   * @returns {Array<Vaccine>} Vaccines
    */
   get vaccines() {
     if (this.context?.vaccines && this.programmes) {
@@ -518,7 +518,7 @@ export class Session {
   /**
    * Get programme name(s)
    *
-   * @returns {object} - Programme name(s)
+   * @returns {object} Programme name(s)
    * @example Flu
    * @example Td/IPV and MenACWY
    */
@@ -534,7 +534,7 @@ export class Session {
   /**
    * Get primary vaccination name(s)
    *
-   * @returns {object} - Vaccination name(s)
+   * @returns {object} Vaccination name(s)
    * @example Flu vaccination
    * @example Td/IPV and MenACWY vaccinations
    */
@@ -556,7 +556,7 @@ export class Session {
   /**
    * Get location
    *
-   * @returns {object} - Location
+   * @returns {object} Location
    */
   get location() {
     const type = this.type === SessionType.School ? 'school' : 'clinic'
@@ -580,7 +580,7 @@ export class Session {
   /**
    * Get name
    *
-   * @returns {string|undefined} - Name
+   * @returns {string|undefined} Name
    */
   get name() {
     if (this.location) {
@@ -609,7 +609,7 @@ export class Session {
   /**
    * Get closing summary
    *
-   * @returns {object} - Closing summary
+   * @returns {object} Closing summary
    */
   get closingSummary() {
     return {
@@ -629,7 +629,7 @@ export class Session {
   /**
    * Get patient sessions that can be moved to a clinic session
    *
-   * @returns {Array<PatientSession>} - Patient sessions
+   * @returns {Array<PatientSession>} Patient sessions
    */
   get patientSessionsForClinic() {
     return this.patients
@@ -658,7 +658,7 @@ export class Session {
   /**
    * Get tokenised values (to use in search queries)
    *
-   * @returns {string} - Tokens
+   * @returns {string} Tokens
    */
   get tokenized() {
     const tokens = tokenize(this, ['location.postalCode', 'location.name'])
@@ -669,7 +669,7 @@ export class Session {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     let consentWindow
@@ -767,7 +767,7 @@ export class Session {
   /**
    * Get formatted links
    *
-   * @returns {object} - Formatted links
+   * @returns {object} Formatted links
    */
   get link() {
     return {
@@ -782,7 +782,7 @@ export class Session {
   /**
    * Get formatted summary
    *
-   * @returns {object} - Formatted summaries
+   * @returns {object} Formatted summaries
    */
   get summary() {
     const dates =
@@ -825,7 +825,7 @@ export class Session {
   /**
    * Get status properties
    *
-   * @returns {object} - Status properties
+   * @returns {object} Status properties
    */
   get sessionStatus() {
     let colour
@@ -852,7 +852,7 @@ export class Session {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'session'
@@ -861,7 +861,7 @@ export class Session {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/sessions/${this.id}`
@@ -912,7 +912,7 @@ export class Session {
    * Create file
    *
    * @param {object} context - Context
-   * @returns {object} - File buffer, name and mime type
+   * @returns {object} File buffer, name and mime type
    * @todo Create download using Mavis offline XLSX schema
    */
   createFile(context) {

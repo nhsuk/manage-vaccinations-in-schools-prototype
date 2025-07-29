@@ -15,7 +15,7 @@ export class DefaultBatch extends Batch {
   /**
    * Get session
    *
-   * @returns {Session|undefined} - Session
+   * @returns {Session|undefined} Session
    */
   get session() {
     try {
@@ -28,7 +28,7 @@ export class DefaultBatch extends Batch {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'defaultBatch'

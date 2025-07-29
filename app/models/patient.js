@@ -79,7 +79,7 @@ export class Patient extends Child {
   /**
    * Get NHS number
    *
-   * @returns {string} - NHS Number
+   * @returns {string} NHS Number
    */
   get nhsNumber() {
     const nhsn = '999#######'.replace(/#+/g, (m) =>
@@ -96,7 +96,7 @@ export class Patient extends Child {
   /**
    * Has missing NHS number
    *
-   * @returns {boolean} - Has missing NHS number
+   * @returns {boolean} Has missing NHS number
    */
   get hasMissingNhsNumber() {
     return !this.nhsn.match(/^\d{10}$/)
@@ -105,7 +105,7 @@ export class Patient extends Child {
   /**
    * Get full name, formatted as LASTNAME, Firstname
    *
-   * @returns {string} - Full name
+   * @returns {string} Full name
    */
   get fullName() {
     return [this.lastName.toUpperCase(), this.firstName].join(', ')
@@ -114,7 +114,7 @@ export class Patient extends Child {
   /**
    * Get preferred names (from replies)
    *
-   * @returns {string|boolean} - Full name
+   * @returns {string|boolean} Full name
    */
   get preferredNames() {
     return getPreferredNames(this.replies)
@@ -123,7 +123,7 @@ export class Patient extends Child {
   /**
    * Get parents (from record and replies)
    *
-   * @returns {Array<Parent>} - Parents
+   * @returns {Array<Parent>} Parents
    */
   get parents() {
     const parents = new Map()
@@ -149,7 +149,7 @@ export class Patient extends Child {
   /**
    * Get audit events
    *
-   * @returns {Array<AuditEvent>} - Audit events
+   * @returns {Array<AuditEvent>} Audit events
    */
   get auditEvents() {
     return this.events.map(
@@ -160,7 +160,7 @@ export class Patient extends Child {
   /**
    * Get audit events grouped by date
    *
-   * @returns {object} - Audit events grouped by date
+   * @returns {object} Audit events grouped by date
    */
   get auditEventLog() {
     const auditEvents = this.auditEvents.sort((a, b) =>
@@ -175,7 +175,7 @@ export class Patient extends Child {
   /**
    * Get reminders sent
    *
-   * @returns {Array} - Reminders sent
+   * @returns {Array} Reminders sent
    */
   get reminders() {
     return this.events
@@ -186,7 +186,7 @@ export class Patient extends Child {
   /**
    * Get date last reminders sent
    *
-   * @returns {string|undefined} - Date last reminders sent
+   * @returns {string|undefined} Date last reminders sent
    */
   get lastReminderDate() {
     const lastReminder = this.reminders.at(-1)
@@ -198,7 +198,7 @@ export class Patient extends Child {
   /**
    * Get all notices
    *
-   * @returns {Array<AuditEvent>} - Notice events
+   * @returns {Array<AuditEvent>} Notice events
    */
   get notices() {
     return this.events
@@ -209,7 +209,7 @@ export class Patient extends Child {
   /**
    * Get most recent notice
    *
-   * @returns {AuditEvent} - Notice event
+   * @returns {AuditEvent} Notice event
    */
   get notice() {
     return this.notices && this.notices[0]
@@ -218,7 +218,7 @@ export class Patient extends Child {
   /**
    * Get cohorts
    *
-   * @returns {Array<Cohort>} - Cohorts
+   * @returns {Array<Cohort>} Cohorts
    */
   get cohorts() {
     if (this.context?.cohorts && this.cohort_uids) {
@@ -231,7 +231,7 @@ export class Patient extends Child {
   /**
    * Get programme IDs
    *
-   * @returns {Array<string>} - Programme IDs
+   * @returns {Array<string>} Programme IDs
    */
   get programme_ids() {
     if (this.cohorts) {
@@ -242,7 +242,7 @@ export class Patient extends Child {
   /**
    * Get replies
    *
-   * @returns {Array<Reply>} - Replies
+   * @returns {Array<Reply>} Replies
    */
   get replies() {
     return this.reply_uuids
@@ -253,7 +253,7 @@ export class Patient extends Child {
   /**
    * Get patient sessions
    *
-   * @returns {Array<PatientSession>} - Patient sessions
+   * @returns {Array<PatientSession>} Patient sessions
    */
   get patientSessions() {
     if (this.context?.patientSessions && this.patientSession_uuids) {
@@ -268,7 +268,7 @@ export class Patient extends Child {
   /**
    * Get vaccinations
    *
-   * @returns {Array<Vaccination>} - Vaccinations
+   * @returns {Array<Vaccination>} Vaccinations
    */
   get vaccinations() {
     if (this.context?.vaccinations && this.vaccination_uuids) {
@@ -284,7 +284,7 @@ export class Patient extends Child {
   /**
    * Record is archived
    *
-   * @returns {boolean} - Record is archived
+   * @returns {boolean} Record is archived
    */
   get archived() {
     return this.archiveReason !== undefined
@@ -293,7 +293,7 @@ export class Patient extends Child {
   /**
    * Has pending changes
    *
-   * @returns {boolean} - Has pending changes
+   * @returns {boolean} Has pending changes
    */
   get hasPendingChanges() {
     return Object.keys(this.pendingChanges).length > 0
@@ -302,7 +302,7 @@ export class Patient extends Child {
   /**
    * Get formatted links
    *
-   * @returns {object} - Formatted links
+   * @returns {object} Formatted links
    */
   get link() {
     return {
@@ -318,7 +318,7 @@ export class Patient extends Child {
   /**
    * Get formatted summary
    *
-   * @returns {object} - Formatted summaries
+   * @returns {object} Formatted summaries
    */
   get summary() {
     return {
@@ -332,7 +332,7 @@ export class Patient extends Child {
   /**
    * Get tokenised values (to use in search queries)
    *
-   * @returns {string} - Tokens
+   * @returns {string} Tokens
    */
   get tokenized() {
     const parentTokens = []
@@ -353,7 +353,7 @@ export class Patient extends Child {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     const formattedNhsn = formatNhsNumber(this.nhsn, this.invalid)
@@ -379,7 +379,7 @@ export class Patient extends Child {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'patient'
@@ -388,7 +388,7 @@ export class Patient extends Child {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/patients/${this.nhsn}`

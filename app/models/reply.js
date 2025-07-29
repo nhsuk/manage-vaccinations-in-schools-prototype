@@ -118,7 +118,7 @@ export class Reply {
   /**
    * Get respondent’s full name
    *
-   * @returns {string|undefined} - Full name
+   * @returns {string|undefined} Full name
    */
   get fullName() {
     if (this.parent) {
@@ -131,7 +131,7 @@ export class Reply {
   /**
    * Was the consent response delivered?
    *
-   * @returns {boolean} - Response was delivered
+   * @returns {boolean} Response was delivered
    */
   get delivered() {
     // Only invites to give consent online can have delivery failures
@@ -152,7 +152,7 @@ export class Reply {
   /**
    * Get respondent’s relationship to child
    *
-   * @returns {string|undefined} - Relationship to child
+   * @returns {string|undefined} Relationship to child
    */
   get relationship() {
     if (this.parent) {
@@ -165,7 +165,7 @@ export class Reply {
   /**
    * Get user who created reply
    *
-   * @returns {User} - User
+   * @returns {User} User
    */
   get createdBy() {
     try {
@@ -189,7 +189,7 @@ export class Reply {
   /**
    * Get health questions to show based on programme and decision given
    *
-   * @returns {Array} - Health questions
+   * @returns {Array} Health questions
    */
   get healthQuestionsForDecision() {
     const { Flu, HPV, MenACWY, TdIPV } = ProgrammeType
@@ -260,7 +260,7 @@ export class Reply {
   /**
    * Get patient
    *
-   * @returns {Patient} - Patient
+   * @returns {Patient} Patient
    */
   get patient() {
     try {
@@ -276,7 +276,7 @@ export class Reply {
   /**
    * Get programme
    *
-   * @returns {Programme} - User
+   * @returns {Programme} User
    */
   get programme() {
     try {
@@ -291,7 +291,7 @@ export class Reply {
   /**
    * Get session
    *
-   * @returns {Session} - Session
+   * @returns {Session} Session
    */
   get session() {
     try {
@@ -306,7 +306,7 @@ export class Reply {
   /**
    * Get status properties
    *
-   * @returns {object} - Status properties
+   * @returns {object} Status properties
    */
   get status() {
     let colour
@@ -341,7 +341,7 @@ export class Reply {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     let decisionStatus = formatTag(this.status)
@@ -396,7 +396,7 @@ export class Reply {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'reply'
@@ -405,7 +405,7 @@ export class Reply {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/programmes/${this.programme_id}/patients/${this.patient.nhsn}/replies/${this.uuid}`

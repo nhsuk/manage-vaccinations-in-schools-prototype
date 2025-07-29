@@ -7,7 +7,7 @@ import { formatProgrammeId } from '../utils/string.js'
  *
  * @param {string} type - Programme type
  * @param {import('../enums.js').AcademicYear} year - Academic year
- * @returns {Programme} - Programme
+ * @returns {Programme} Programme
  */
 export function generateProgramme(type, year) {
   const programme = {

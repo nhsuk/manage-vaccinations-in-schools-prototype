@@ -52,7 +52,7 @@ export class Download {
   /**
    * Get start date for `dateInput`
    *
-   * @returns {object|undefined} - `dateInput` object
+   * @returns {object|undefined} `dateInput` object
    */
   get startAt_() {
     return convertIsoDateToObject(this.startAt)
@@ -72,7 +72,7 @@ export class Download {
   /**
    * Get end date for `dateInput`
    *
-   * @returns {object|undefined} - `dateInput` object
+   * @returns {object|undefined} `dateInput` object
    */
   get endAt_() {
     return convertIsoDateToObject(this.endAt)
@@ -92,7 +92,7 @@ export class Download {
   /**
    * Get name
    *
-   * @returns {string} - Name
+   * @returns {string} Name
    */
   get name() {
     if (this.programme) {
@@ -105,7 +105,7 @@ export class Download {
   /**
    * Get programme
    *
-   * @returns {Programme} - Programme
+   * @returns {Programme} Programme
    */
   get programme() {
     try {
@@ -121,7 +121,7 @@ export class Download {
   /**
    * Get organisations
    *
-   * @returns {Array<Organisation>} - Organisations
+   * @returns {Array<Organisation>} Organisations
    */
   get organisations() {
     if (this.context?.organisations && this.organisation_codes) {
@@ -139,7 +139,7 @@ export class Download {
   /**
    * Get vaccinations
    *
-   * @returns {Array<Vaccination>} - Vaccinations
+   * @returns {Array<Vaccination>} Vaccinations
    */
   get vaccinations() {
     return this.vaccination_uuids.map((uuid) =>
@@ -150,7 +150,7 @@ export class Download {
   /**
    * Get CarePlus XLSX data
    *
-   * @returns {Array} - XLSX data
+   * @returns {Array} XLSX data
    */
   get carePlus() {
     return [
@@ -236,7 +236,7 @@ export class Download {
   /**
    * Get CSV definition
    *
-   * @returns {string} - CSV data
+   * @returns {string} CSV data
    * @todo Use Mavis CSV export headers
    */
   get csv() {
@@ -293,7 +293,7 @@ export class Download {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     return {
@@ -314,7 +314,7 @@ export class Download {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'download'
@@ -323,7 +323,7 @@ export class Download {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/programmes/${this.programme_id}/download/${this.id}`
@@ -381,7 +381,7 @@ export class Download {
    * Create file
    *
    * @param {object} context - Context
-   * @returns {object} - File buffer, name and mime type
+   * @returns {object} File buffer, name and mime type
    */
   createFile(context) {
     const { name } = new Download(this, context)

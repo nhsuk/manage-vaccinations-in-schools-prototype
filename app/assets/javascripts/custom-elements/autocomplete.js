@@ -36,7 +36,7 @@ export const AutocompleteComponent = class extends HTMLElement {
   /**
    * Get enhanced information about each option
    *
-   * @returns {object} - Enhanced options
+   * @returns {object} Enhanced options
    */
   get enhancedOptions() {
     return this.options.map((option) => ({

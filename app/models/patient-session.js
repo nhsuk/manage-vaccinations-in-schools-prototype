@@ -88,7 +88,7 @@ export class PatientSession {
   /**
    * Get patient
    *
-   * @returns {Patient|undefined} - Patient
+   * @returns {Patient|undefined} Patient
    */
   get patient() {
     try {
@@ -104,7 +104,7 @@ export class PatientSession {
   /**
    * Get year group, within context of patient session’s academic year
    *
-   * @returns {number} - Year group in patient session’s academic year
+   * @returns {number} Year group in patient session’s academic year
    */
   get yearGroup() {
     return getYearGroup(this.patient.dob, this.session.academicYear)
@@ -113,7 +113,7 @@ export class PatientSession {
   /**
    * Get instruction
    *
-   * @returns {Instruction|undefined} - Instruction
+   * @returns {Instruction|undefined} Instruction
    */
   get instruction() {
     try {
@@ -126,7 +126,7 @@ export class PatientSession {
   /**
    * Get audit events for patient session
    *
-   * @returns {Array<import('./audit-event.js').AuditEvent>} - Audit events
+   * @returns {Array<import('./audit-event.js').AuditEvent>} Audit events
    */
   get auditEvents() {
     return this.patient.auditEvents.filter(({ programme_ids }) =>
@@ -137,7 +137,7 @@ export class PatientSession {
   /**
    * Get audit events grouped by date
    *
-   * @returns {object} - Events grouped by date
+   * @returns {object} Events grouped by date
    */
   get auditEventLog() {
     const auditEvents = this.auditEvents.sort((a, b) =>
@@ -152,7 +152,7 @@ export class PatientSession {
   /**
    * Get triage notes
    *
-   * @returns {Array<import('./audit-event.js').AuditEvent>} - Audit events
+   * @returns {Array<import('./audit-event.js').AuditEvent>} Audit events
    */
   get triageNotes() {
     return this.auditEvents
@@ -163,7 +163,7 @@ export class PatientSession {
   /**
    * Get pinned session notes
    *
-   * @returns {Array<import('./audit-event.js').AuditEvent>} - Audit event
+   * @returns {Array<import('./audit-event.js').AuditEvent>} Audit event
    */
   get pinnedNotes() {
     return this.auditEvents
@@ -175,7 +175,7 @@ export class PatientSession {
   /**
    * Get replies for patient session
    *
-   * @returns {Array<import('./reply.js').Reply>} - Replies
+   * @returns {Array<import('./reply.js').Reply>} Replies
    */
   get replies() {
     return this.patient.replies
@@ -185,7 +185,7 @@ export class PatientSession {
 
   /** Get parental relationships from valid replies
    *
-   * @returns {Array<string>} - Parental relationships
+   * @returns {Array<string>} Parental relationships
    */
   get parentalRelationships() {
     return this.responses
@@ -195,7 +195,7 @@ export class PatientSession {
 
   /** Get names of parents who have requested a follow up
    *
-   * @returns {Array<string>} - Parent names and relationships
+   * @returns {Array<string>} Parent names and relationships
    */
   get parentsRequestingFollowUp() {
     return this.responses
@@ -207,7 +207,7 @@ export class PatientSession {
   /**
    * Get responses (consent requests that were delivered)
    *
-   * @returns {Array<import('./reply.js').Reply>} - Responses
+   * @returns {Array<import('./reply.js').Reply>} Responses
    */
   get responses() {
     return this.replies.filter((reply) => reply.delivered)
@@ -244,7 +244,7 @@ export class PatientSession {
   /**
    * Get screen outcomes for vaccination method(s) consented to
    *
-   * @returns {Array<ScreenOutcome>} - Screen outcomes
+   * @returns {Array<ScreenOutcome>} Screen outcomes
    */
   get screenOutcomesForConsentMethod() {
     return getScreenOutcomesForConsentMethod(this.programme, this.responses)
@@ -253,7 +253,7 @@ export class PatientSession {
   /**
    * Get vaccination method(s) consented to use if safe to vaccinate
    *
-   * @returns {import('../enums.js').ScreenVaccinationMethod|boolean} - Method
+   * @returns {import('../enums.js').ScreenVaccinationMethod|boolean} Method
    */
   get screenVaccinationMethod() {
     return getScreenVaccinationMethod(this.programme, this.responses)
@@ -262,7 +262,7 @@ export class PatientSession {
   /**
    * Get programme
    *
-   * @returns {Programme|undefined} - Programme
+   * @returns {Programme|undefined} Programme
    */
   get programme() {
     try {
@@ -275,7 +275,7 @@ export class PatientSession {
   /**
    * Get session
    *
-   * @returns {Session|undefined} - Session
+   * @returns {Session|undefined} Session
    */
   get session() {
     try {
@@ -288,7 +288,7 @@ export class PatientSession {
   /**
    * Get related patient sessions
    *
-   * @returns {Array<PatientSession>} - Patient sessions
+   * @returns {Array<PatientSession>} Patient sessions
    */
   get siblingPatientSessions() {
     try {
@@ -307,7 +307,7 @@ export class PatientSession {
    * For all programmes besides flu, this will be an injection.
    * For the flu programme, this depends on consent responses
    *
-   * @returns {import('./vaccine.js').Vaccine|undefined} - Vaccine method
+   * @returns {import('./vaccine.js').Vaccine|undefined} Vaccine method
    */
   get vaccine() {
     const standardVaccine = this.programme.vaccines.find((vaccine) => vaccine)
@@ -341,7 +341,7 @@ export class PatientSession {
   /**
    * Can either vaccine be administered
    *
-   * @returns {boolean} - Either vaccine be administered
+   * @returns {boolean} Either vaccine be administered
    */
   get canRecordAlternativeVaccine() {
     const hasScreenedForNasal = this.screen === ScreenOutcome.VaccinateNasal
@@ -356,7 +356,7 @@ export class PatientSession {
   /**
    * Get vaccinations for patient session
    *
-   * @returns {Array<import('./vaccination.js').Vaccination>|undefined} - Vaccinations
+   * @returns {Array<import('./vaccination.js').Vaccination>|undefined} Vaccinations
    */
   get vaccinations() {
     try {
@@ -382,7 +382,7 @@ export class PatientSession {
   /**
    * Get next activity, per programme
    *
-   * @returns {object} - Patient sessions per programme
+   * @returns {object} Patient sessions per programme
    */
   get nextActivityPerProgramme() {
     const programmes = {}
@@ -397,7 +397,7 @@ export class PatientSession {
   /**
    * Get next activity, per programme
    *
-   * @returns {Array<PatientSession>} - Patient sessions per programme
+   * @returns {Array<PatientSession>} Patient sessions per programme
    */
   get outstandingVaccinations() {
     return this.siblingPatientSessions.filter(
@@ -425,7 +425,7 @@ export class PatientSession {
   /**
    * Get consent outcome
    *
-   * @returns {ConsentOutcome} - Consent outcome
+   * @returns {ConsentOutcome} Consent outcome
    */
   get consent() {
     return getConsentOutcome(this)
@@ -434,7 +434,7 @@ export class PatientSession {
   /**
    * Consent has been given
    *
-   * @returns {boolean} - Consent has been given
+   * @returns {boolean} Consent has been given
    */
   get consentGiven() {
     return [
@@ -447,7 +447,7 @@ export class PatientSession {
   /**
    * Get consent health answers
    *
-   * @returns {object|boolean} - Consent health answers
+   * @returns {object|boolean} Consent health answers
    */
   get consentHealthAnswers() {
     return getConsentHealthAnswers(this)
@@ -456,7 +456,7 @@ export class PatientSession {
   /**
    * Get responses with triage notes for consent health answers
    *
-   * @returns {Array} - Triage notes
+   * @returns {Array} Triage notes
    */
   get responsesWithTriageNotes() {
     return this.responses.filter((response) => response.triageNote)
@@ -465,7 +465,7 @@ export class PatientSession {
   /**
    * Get consent refusal reasons (from replies)
    *
-   * @returns {object|boolean} - Consent refusal reasons
+   * @returns {object|boolean} Consent refusal reasons
    */
   get consentRefusalReasons() {
     return getConsentRefusalReasons(this)
@@ -474,7 +474,7 @@ export class PatientSession {
   /**
    * Get screening outcome
    *
-   * @returns {ScreenOutcome|boolean} - Screening outcome
+   * @returns {ScreenOutcome|boolean} Screening outcome
    */
   get screen() {
     return getScreenOutcome(this)
@@ -483,7 +483,7 @@ export class PatientSession {
   /**
    * Get triage outcome
    *
-   * @returns {TriageOutcome} - Triage outcome
+   * @returns {TriageOutcome} Triage outcome
    */
   get triage() {
     return getTriageOutcome(this)
@@ -492,7 +492,7 @@ export class PatientSession {
   /**
    * Get instruction outcome
    *
-   * @returns {import('../enums.js').InstructionOutcome|boolean} - Instruction outcome
+   * @returns {import('../enums.js').InstructionOutcome|boolean} Instruction outcome
    */
   get instruct() {
     return getInstructionOutcome(this)
@@ -501,7 +501,7 @@ export class PatientSession {
   /**
    * Get registration outcome
    *
-   * @returns {import('../enums.js').RegistrationOutcome} - Registration outcome
+   * @returns {import('../enums.js').RegistrationOutcome} Registration outcome
    */
   get register() {
     return getRegistrationOutcome(this)
@@ -510,7 +510,7 @@ export class PatientSession {
   /**
    * Get ready to record outcome
    *
-   * @returns {import('../enums.js').Activity} - Ready to record outcome
+   * @returns {import('../enums.js').Activity} Ready to record outcome
    */
   get record() {
     return getRecordOutcome(this)
@@ -519,7 +519,7 @@ export class PatientSession {
   /**
    * Get last recorded vaccination
    *
-   * @returns {import('./vaccination.js').Vaccination} - Vaccination
+   * @returns {import('./vaccination.js').Vaccination} Vaccination
    */
   get lastRecordedVaccination() {
     if (this.vaccinations?.length > 0) {
@@ -530,7 +530,7 @@ export class PatientSession {
   /**
    * Get vaccination (session) outcome
    *
-   * @returns {import('../enums.js').VaccinationOutcome|PatientOutcome} - Vaccination (session) outcome
+   * @returns {import('../enums.js').VaccinationOutcome|PatientOutcome} Vaccination (session) outcome
    */
   get outcome() {
     return getSessionOutcome(this)
@@ -539,7 +539,7 @@ export class PatientSession {
   /**
    * Get patient (programme) outcome
    *
-   * @returns {PatientOutcome} - Overall patient (programme) outcome
+   * @returns {PatientOutcome} Overall patient (programme) outcome
    */
   get report() {
     return getReportOutcome(this)
@@ -548,7 +548,7 @@ export class PatientSession {
   /**
    * Get formatted links
    *
-   * @returns {object} - Formatted links
+   * @returns {object} Formatted links
    */
   get link() {
     return {
@@ -559,7 +559,7 @@ export class PatientSession {
   /**
    * Get status properties per activity
    *
-   * @returns {object} - Status properties
+   * @returns {object} Status properties
    */
   get status() {
     return {
@@ -598,7 +598,7 @@ export class PatientSession {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     const nextActivityPerProgramme = this.siblingPatientSessions
@@ -649,7 +649,7 @@ export class PatientSession {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'patientSession'
@@ -658,7 +658,7 @@ export class PatientSession {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/programmes/${this.programme_id}/patients/${this.patient.nhsn}`

@@ -38,7 +38,7 @@ export class Cohort {
   /**
    * Get UID
    *
-   * @returns {string} - UID
+   * @returns {string} UID
    */
   get uid() {
     const yearGroup = String(this.yearGroup).padStart(2, '0')
@@ -49,7 +49,7 @@ export class Cohort {
   /**
    * Get programme
    *
-   * @returns {Programme} - Programme
+   * @returns {Programme} Programme
    */
   get programme() {
     try {
@@ -65,7 +65,7 @@ export class Cohort {
   /**
    * Get name
    *
-   * @returns {object} - Name
+   * @returns {object} Name
    */
   get name() {
     return `${this.formatted.yearGroup} (${this.year}) ${sentenceCaseProgrammeName(this.programme.name)} cohort`
@@ -74,7 +74,7 @@ export class Cohort {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     return {
@@ -85,7 +85,7 @@ export class Cohort {
   /**
    * Get formatted links
    *
-   * @returns {object} - Formatted links
+   * @returns {object} Formatted links
    */
   get link() {
     return {
@@ -96,7 +96,7 @@ export class Cohort {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'cohort'
@@ -105,7 +105,7 @@ export class Cohort {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/programmes/${this.programme_id}/patients?yearGroup=${this.yearGroup}`

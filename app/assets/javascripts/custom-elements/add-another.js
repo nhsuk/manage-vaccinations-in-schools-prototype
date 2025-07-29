@@ -39,7 +39,7 @@ export const AddAnotherComponent = class extends HTMLElement {
   /**
    * Get heading
    *
-   * @returns {HTMLLegendElement} - Get page heading
+   * @returns {HTMLLegendElement} Get page heading
    */
   getHeading() {
     return document.querySelector('h1')
@@ -71,7 +71,7 @@ export const AddAnotherComponent = class extends HTMLElement {
    * Get delete button
    *
    * @param {HTMLElement} element - Containing element
-   * @returns {HTMLButtonElement} - Delete button
+   * @returns {HTMLButtonElement} Delete button
    */
   getDeleteButton(element) {
     return element.querySelector('.app-add-another__delete')
@@ -102,7 +102,7 @@ export const AddAnotherComponent = class extends HTMLElement {
   /**
    * Create new item by cloning first item in list and updating its attributes
    *
-   * @returns {HTMLLIElement} - List item containing form field(s)
+   * @returns {HTMLLIElement} List item containing form field(s)
    */
   createItem() {
     const $$items = this.querySelectorAll('.app-add-another__list-item')

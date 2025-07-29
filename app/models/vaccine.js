@@ -46,7 +46,7 @@ export class Vaccine {
   /**
    * Get brand with vaccine type
    *
-   * @returns {string} - Brand with vaccine type
+   * @returns {string} Brand with vaccine type
    */
   get brandWithType() {
     return `${this.brand} (${this.type})`
@@ -55,7 +55,7 @@ export class Vaccine {
   /**
    * Get vaccine batches
    *
-   * @returns {Array<Batch>} - Batches
+   * @returns {Array<Batch>} Batches
    */
   get batches() {
     try {
@@ -71,7 +71,7 @@ export class Vaccine {
   /**
    * Get flattened health questions (moves sub-questions to top-level)
    *
-   * @returns {object} - Health questions
+   * @returns {object} Health questions
    */
   get flatHealthQuestions() {
     return Object.fromEntries(
@@ -88,7 +88,7 @@ export class Vaccine {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     return {
@@ -103,7 +103,7 @@ export class Vaccine {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'vaccine'
@@ -112,7 +112,7 @@ export class Vaccine {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/vaccines/${this.snomed}`

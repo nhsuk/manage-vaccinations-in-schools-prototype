@@ -340,7 +340,7 @@ export function formatParent(parent, includeTelephone = true) {
  *
  * @param {string} type - Programme type
  * @param {import('../enums.js').AcademicYear} year - Academic year
- * @returns {string} - Programme ID
+ * @returns {string} Programme ID
  */
 export function formatProgrammeId(type, year) {
   type = camelToKebabCase(type).replace('/', '-')

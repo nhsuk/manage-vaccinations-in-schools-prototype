@@ -11,7 +11,7 @@ import { today } from '../utils/date.js'
  * @param {import('../models/user.js').User} user - User
  * @param {import('../enums.js').UploadType} [type] - Upload type
  * @param {import('../models/school.js').School} [school] - School
- * @returns {Upload} - Upload
+ * @returns {Upload} Upload
  */
 export function generateUpload(patient_nhsns, user, type, school) {
   const createdAt = faker.date.recent({ days: 14, refDate: today() })

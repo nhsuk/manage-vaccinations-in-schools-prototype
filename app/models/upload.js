@@ -48,7 +48,7 @@ export class Upload {
   /**
    * Get user who created upload
    *
-   * @returns {User} - User
+   * @returns {User} User
    */
   get createdBy() {
     try {
@@ -63,7 +63,7 @@ export class Upload {
   /**
    * Get uploaded patient records
    *
-   * @returns {Array<Patient>} - Records
+   * @returns {Array<Patient>} Records
    */
   get patients() {
     if (this.context?.patients && this.patient_nhsns) {
@@ -89,7 +89,7 @@ export class Upload {
   /**
    * Get number of invalid patient records (no vaccination recorded)
    *
-   * @returns {Array<Patient>} - Invalid patient records
+   * @returns {Array<Patient>} Invalid patient records
    */
   get invalid() {
     if (
@@ -109,7 +109,7 @@ export class Upload {
   /**
    * Get duplicate patient records in upload that need review
    *
-   * @returns {Array<Patient>|undefined} - Patient records with pending changes
+   * @returns {Array<Patient>|undefined} Patient records with pending changes
    */
   get duplicates() {
     if (this.status === UploadStatus.Complete) {
@@ -126,7 +126,7 @@ export class Upload {
   /**
    * Get number of incomplete patient records
    *
-   * @returns {Array<Patient>|undefined} - Patient records missing an NHS number
+   * @returns {Array<Patient>|undefined} Patient records missing an NHS number
    */
   get incomplete() {
     if (
@@ -144,7 +144,7 @@ export class Upload {
   /**
    * Get school
    *
-   * @returns {object|undefined} - School
+   * @returns {object|undefined} School
    */
   get school() {
     if (this.type === UploadType.School && this.school_urn) {
@@ -155,7 +155,7 @@ export class Upload {
   /**
    * Get school name
    *
-   * @returns {string|undefined} - School name
+   * @returns {string|undefined} School name
    */
   get schoolName() {
     if (this.school) {
@@ -166,7 +166,7 @@ export class Upload {
   /**
    * Get formatted summary
    *
-   * @returns {object} - Formatted summaries
+   * @returns {object} Formatted summaries
    */
   get summary() {
     return {
@@ -180,7 +180,7 @@ export class Upload {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     const yearGroups =
@@ -217,7 +217,7 @@ export class Upload {
   /**
    * Get status properties
    *
-   * @returns {object} - Status properties
+   * @returns {object} Status properties
    */
   get uploadStatus() {
     let colour
@@ -241,7 +241,7 @@ export class Upload {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'upload'
@@ -250,7 +250,7 @@ export class Upload {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/uploads/${this.id}`

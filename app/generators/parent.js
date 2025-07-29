@@ -12,7 +12,7 @@ import { Parent } from '../models/parent.js'
  *
  * @param {string} childLastName - Child’s last name
  * @param {boolean} [isMum] - Parent is child’s mother
- * @returns {Parent} - Parent
+ * @returns {Parent} Parent
  */
 export function generateParent(childLastName, isMum) {
   // Relationship

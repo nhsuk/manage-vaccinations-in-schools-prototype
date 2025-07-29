@@ -9,7 +9,7 @@ import { generateParent } from './parent.js'
 /**
  * Generate fake patient record
  *
- * @returns {Patient} - Patient record
+ * @returns {Patient} Patient record
  */
 export function generatePatient() {
   const child = generateChild()

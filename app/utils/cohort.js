@@ -5,7 +5,7 @@ import { AcademicYear, ProgrammeType } from '../enums.js'
  *
  * @param {import('../models/cohort.js').Cohort} cohort - Cohort
  * @param {import('../models/patient.js').Patient} patient - Patient record
- * @returns {boolean} - Patient eligible for cohort
+ * @returns {boolean} Patient eligible for cohort
  */
 export function getCohortEligibility(cohort, patient) {
   const academicYears = Object.keys(AcademicYear).map((key) =>

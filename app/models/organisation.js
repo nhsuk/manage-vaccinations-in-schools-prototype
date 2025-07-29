@@ -49,7 +49,7 @@ export class Organisation {
   /**
    * Get clinics
    *
-   * @returns {Array<Clinic>} - Clinics
+   * @returns {Array<Clinic>} Clinics
    */
   get clinics() {
     try {
@@ -64,7 +64,7 @@ export class Organisation {
   /**
    * Get schools
    *
-   * @returns {Array<School>} - Schools
+   * @returns {Array<School>} Schools
    */
   get schools() {
     try {
@@ -79,7 +79,7 @@ export class Organisation {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     const sessionOpenWeeks = prototypeFilters.plural(
@@ -100,7 +100,7 @@ export class Organisation {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'organisation'
@@ -109,7 +109,7 @@ export class Organisation {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/organisations/${this.code}`

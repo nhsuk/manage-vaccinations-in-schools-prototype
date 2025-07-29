@@ -6,7 +6,7 @@ import { Cohort } from '../models/cohort.js'
  * @param {import('../models/programme.js').Programme} programme - Programme
  * @param {number} yearGroup - Year group
  * @param {import('../models/user.js').User} user - User
- * @returns {Cohort} - Cohort
+ * @returns {Cohort} Cohort
  */
 export function generateCohort(programme, yearGroup, user) {
   return new Cohort({

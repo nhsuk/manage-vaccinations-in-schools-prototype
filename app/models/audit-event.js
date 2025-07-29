@@ -37,7 +37,7 @@ export class AuditEvent {
   /**
    * Get user who created event
    *
-   * @returns {User} - User
+   * @returns {User} User
    */
   get createdBy() {
     try {
@@ -52,7 +52,7 @@ export class AuditEvent {
   /**
    * Get programmes event relates to
    *
-   * @returns {Array<Programme>} - Programmes
+   * @returns {Array<Programme>} Programmes
    */
   get programmes() {
     if (this.context?.programmes && this.programme_ids) {
@@ -67,7 +67,7 @@ export class AuditEvent {
   /**
    * Get status properties for outcome
    *
-   * @returns {object} - Status properties
+   * @returns {object} Status properties
    */
   get status() {
     if (this.type === AuditEventType.Decision) {
@@ -126,7 +126,7 @@ export class AuditEvent {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     const datetime = formatDate(this.createdAt, {
@@ -154,7 +154,7 @@ export class AuditEvent {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'event'

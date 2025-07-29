@@ -5,7 +5,7 @@ import { Address } from '../models/address.js'
 /**
  * Generate fake address
  *
- * @returns {Address} - Address
+ * @returns {Address} Address
  */
 export function generateAddress() {
   return new Address({

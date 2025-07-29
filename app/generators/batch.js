@@ -7,7 +7,7 @@ import { addDays } from '../utils/date.js'
 /**
  * Generate fake batch
  *
- * @returns {Batch} - Batch
+ * @returns {Batch} Batch
  */
 export function generateBatch() {
   const createdAt = faker.date.recent({ days: 30 })

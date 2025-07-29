@@ -10,7 +10,7 @@ import { removeDays } from '../utils/date.js'
  * @param {import('../models/programme.js').Programme} programme - Programme
  * @param {import('../models/session.js').Session} session - Session
  * @param {Array<import('../models/user.js').User>} users - Users
- * @returns {Instruction} - Instruction
+ * @returns {Instruction} Instruction
  */
 export function generateInstruction(patientSession, programme, session, users) {
   const user = faker.helpers.arrayElement(users)

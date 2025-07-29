@@ -19,7 +19,7 @@ import { addDays, removeDays, setMidday } from '../utils/date.js'
  * @param {object} options - Options
  * @param {string} [options.clinic_id] - Clinic ID
  * @param {string} [options.school_urn] - School URN
- * @returns {Session} - Session
+ * @returns {Session} Session
  */
 export function generateSession(programmePreset, academicYear, user, options) {
   // Get programme preset

@@ -48,7 +48,7 @@ export class Child {
   /**
    * Get full name
    *
-   * @returns {string} - Full name
+   * @returns {string} Full name
    */
   get fullName() {
     if (!this.firstName || !this.lastName) return ''
@@ -59,7 +59,7 @@ export class Child {
   /**
    * Get obscured name (to use in page titles)
    *
-   * @returns {string} - Full name
+   * @returns {string} Full name
    */
   get initials() {
     return [this.firstName[0], this.lastName[0]].join('')
@@ -68,7 +68,7 @@ export class Child {
   /**
    * Get date of birth for `dateInput`
    *
-   * @returns {object|undefined} - `dateInput` object
+   * @returns {object|undefined} `dateInput` object
    */
   get dob_() {
     return convertIsoDateToObject(this.dob)
@@ -88,7 +88,7 @@ export class Child {
   /**
    * Get age
    *
-   * @returns {number} - Age in years
+   * @returns {number} Age in years
    */
   get age() {
     return getAge(this.dob)
@@ -97,7 +97,7 @@ export class Child {
   /**
    * Get formatted date of birth and age
    *
-   * @returns {string} - Date of birth and age in years
+   * @returns {string} Date of birth and age in years
    */
   get dobWithAge() {
     return `${this.formatted.dob} (aged ${this.age})`
@@ -106,7 +106,7 @@ export class Child {
   /**
    * Is the child over the age of 16?
    *
-   * @returns {boolean} - Child is over the age of 16
+   * @returns {boolean} Child is over the age of 16
    */
   get post16() {
     return this.age >= 17
@@ -115,7 +115,7 @@ export class Child {
   /**
    * Get year group
    *
-   * @returns {number|undefined} - Year group, for example 8
+   * @returns {number|undefined} Year group, for example 8
    */
   get yearGroup() {
     return getYearGroup(this.dob)
@@ -124,7 +124,7 @@ export class Child {
   /**
    * Get date of birth with year group
    *
-   * @returns {string} - Date of birth with year group
+   * @returns {string} Date of birth with year group
    */
   get dobWithYearGroup() {
     return `${this.formatted.dob} (${this.formatted.yearGroup})`
@@ -133,7 +133,7 @@ export class Child {
   /**
    * Get preferred name
    *
-   * @returns {string|undefined} - Preferred name
+   * @returns {string|undefined} Preferred name
    */
   get preferredName() {
     const firstName = this.preferredFirstName || this.firstName
@@ -149,7 +149,7 @@ export class Child {
   /**
    * Get full and preferred names
    *
-   * @returns {string} - Full and preferred names
+   * @returns {string} Full and preferred names
    */
   get fullAndPreferredNames() {
     return this.preferredName
@@ -160,7 +160,7 @@ export class Child {
   /**
    * Get post code
    *
-   * @returns {string|undefined} - Post code
+   * @returns {string|undefined} Post code
    */
   get postalCode() {
     if (this.address?.postalCode) {
@@ -171,7 +171,7 @@ export class Child {
   /**
    * Get school
    *
-   * @returns {object|undefined} - School
+   * @returns {object|undefined} School
    */
   get school() {
     if (this.school_urn) {
@@ -182,7 +182,7 @@ export class Child {
   /**
    * Get school name
    *
-   * @returns {string|undefined} - School name
+   * @returns {string|undefined} School name
    */
   get schoolName() {
     if (this.school) {
@@ -193,7 +193,7 @@ export class Child {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     const yearGroup = formatYearGroup(this.yearGroup)
@@ -216,7 +216,7 @@ export class Child {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'child'

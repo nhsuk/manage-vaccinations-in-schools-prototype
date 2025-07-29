@@ -31,7 +31,7 @@ export class Clinic {
   /**
    * Get location
    *
-   * @returns {object} - Location
+   * @returns {object} Location
    */
   get location() {
     return {
@@ -43,7 +43,7 @@ export class Clinic {
   /**
    * Get organisation
    *
-   * @returns {Organisation} - Organisation
+   * @returns {Organisation} Organisation
    */
   get organisation() {
     try {
@@ -59,7 +59,7 @@ export class Clinic {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     return {
@@ -78,7 +78,7 @@ export class Clinic {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'clinic'
@@ -87,7 +87,7 @@ export class Clinic {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/organisations/${this.organisation_code}/clinics/${this.id}`

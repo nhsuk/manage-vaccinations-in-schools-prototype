@@ -29,7 +29,7 @@ export class School {
   /**
    * Get location
    *
-   * @returns {object} - Location
+   * @returns {object} Location
    */
   get location() {
     return {
@@ -41,7 +41,7 @@ export class School {
   /**
    * Get school pupils
    *
-   * @returns {Array<Patient>} - Patient records
+   * @returns {Array<Patient>} Patient records
    */
   get patients() {
     if (this.context?.patients && this.urn) {
@@ -56,7 +56,7 @@ export class School {
   /**
    * Get school pupils
    *
-   * @returns {object} - Patients by year group
+   * @returns {object} Patients by year group
    */
   get patientsByYearGroup() {
     if (this.context?.patients && this.patients) {
@@ -68,7 +68,7 @@ export class School {
 
   /** Get year groups
    *
-   * @returns {Array} - Year groups
+   * @returns {Array} Year groups
    */
   get yearGroups() {
     if (this.phase === SchoolPhase.Primary) {
@@ -81,7 +81,7 @@ export class School {
   /**
    * Get formatted values
    *
-   * @returns {object} - Formatted values
+   * @returns {object} Formatted values
    */
   get formatted() {
     return {
@@ -101,7 +101,7 @@ export class School {
   /**
    * Get formatted links
    *
-   * @returns {object} - Formatted links
+   * @returns {object} Formatted links
    */
   get link() {
     return {
@@ -112,7 +112,7 @@ export class School {
   /**
    * Get namespace
    *
-   * @returns {string} - Namespace
+   * @returns {string} Namespace
    */
   get ns() {
     return 'school'
@@ -121,7 +121,7 @@ export class School {
   /**
    * Get URI
    *
-   * @returns {string} - URI
+   * @returns {string} URI
    */
   get uri() {
     return `/schools/${this.urn}`
