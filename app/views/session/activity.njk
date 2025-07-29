@@ -48,11 +48,22 @@
       </auto-submit>
 
       <div class="app-grid-column-results">
+        {% set notices = [] %}
+        {% if activity.addNhsNumber %}
+          {% set notices = notices | push(link(session.uri + "/consent?options=hasMissingNhsNumber", __mf("session.activity.addNhsNumber.count", {
+            count: activity.addNhsNumber
+          }))) %}
+        {% endif %}
+
+        {% if session.consents.length %}
+          {% set notices = notices | push(link(session.uri + "/consents", __mf("session.activity.matchResponses.count", {
+            count: session.consents.length
+          }))) %}
+        {% endif %}
+
         {{ warningCallout({
-          heading: __("consent.list.title"),
-          html: link(session.uri + "/consents", __n("consent.warning.text", session.consents.length), {
-            classes: "nhsuk-link--no-visited-state"
-          }) | nhsukMarkdown
+          heading: __("session.notices.label"),
+          html: notices | nhsukList
         }) if session.consents.length }}
 
         {% if data[view] and data[view] != "none" and data[view] != Activity.Record %}
