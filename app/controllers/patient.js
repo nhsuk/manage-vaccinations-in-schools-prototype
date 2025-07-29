@@ -139,8 +139,14 @@ export const patientController = {
   readForm(request, response, next) {
     const { nhsn } = request.params
     const { data } = request.session
+    let { patient } = response.locals
 
-    const patient = Patient.read(nhsn, data.wizard)
+    // Setup wizard if not already setup
+    if (!Patient.read(nhsn, data.wizard)) {
+      patient.create(patient, data.wizard)
+    }
+
+    patient = new Patient(Patient.read(nhsn, data.wizard), data)
     response.locals.patient = patient
 
     response.locals.paths = {
