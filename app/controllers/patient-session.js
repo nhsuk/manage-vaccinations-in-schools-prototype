@@ -95,7 +95,7 @@ export const patientSessionController = {
         !session.isActive &&
         consent === ConsentOutcome.NoResponse,
       // Get verbal consent
-      canRespond: session.consentWindow === ConsentWindow.Open && !consentGiven,
+      canRespond: !consentGiven,
       // Perform Gillick assessment
       canGillick:
         programme.type !== ProgrammeType.Flu &&
