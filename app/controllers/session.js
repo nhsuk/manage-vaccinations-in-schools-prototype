@@ -272,14 +272,14 @@ export const sessionController = {
     const { permissions } = request.app.locals
     const { view } = request.params
     const {
+      options,
       q,
       consent,
       instruct,
       programme_id,
       nextActivity,
       vaccineMethod,
-      yearGroup,
-      hasMissingNhsNumber
+      yearGroup
     } = request.query
     const { data } = request.session
     const { session } = response.locals
@@ -373,9 +373,11 @@ export const sessionController = {
       )
     }
 
-    // Filter by missing NHS number
-    if (hasMissingNhsNumber) {
-      results = results.filter(({ patient }) => patient.hasMissingNhsNumber)
+    // Filter by display option
+    for (const option of ['archived', 'hasMissingNhsNumber', 'post16']) {
+      if (options?.includes(option)) {
+        results = results.filter(({ patient }) => patient[option])
+      }
     }
 
     // Remove patient sessions where outcome returns false
@@ -530,10 +532,10 @@ export const sessionController = {
     }
 
     // Clean up session data
-    delete data.hasMissingNhsNumber
+    delete data.options
+    delete data.q
     delete data.programme_id
     delete data.vaccineMethod
-    delete data.q
     delete data.consent
     delete data.screen
     delete data.instruct
@@ -546,7 +548,6 @@ export const sessionController = {
 
   filterPatientSessions(request, response) {
     const { session_id, view } = request.params
-    const { hasMissingNhsNumber } = request.body
     const params = new URLSearchParams()
 
     // Radios
@@ -567,7 +568,7 @@ export const sessionController = {
     }
 
     // Checkboxes
-    for (const key of ['consent', 'programme_id', 'yearGroup']) {
+    for (const key of ['options', 'consent', 'programme_id', 'yearGroup']) {
       const value = request.body[key]
       const values = Array.isArray(value) ? value : [value]
       if (value) {
@@ -577,10 +578,6 @@ export const sessionController = {
             params.append(key, String(value))
           })
       }
-    }
-
-    if (hasMissingNhsNumber?.includes('true')) {
-      params.append('hasMissingNhsNumber', 'true')
     }
 
     response.redirect(`/sessions/${session_id}/${view}?${params}`)

@@ -45,17 +45,7 @@ export const patientController = {
       )
     }
 
-    // Filter out archived records by default
-    if (!options?.includes('archived')) {
-      patients = patients.filter(({ archived }) => !archived)
-    }
-
-    // Filter out post-16 records by default
-    if (!options?.includes('post16')) {
-      patients = patients.filter(({ post16 }) => !post16)
-    }
-
-    // Filter
+    // Filter by display option
     for (const option of ['archived', 'hasMissingNhsNumber', 'post16']) {
       if (options?.includes(option)) {
         patients = patients.filter((patient) => patient[option])

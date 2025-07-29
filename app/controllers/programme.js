@@ -31,7 +31,7 @@ export const programmeController = {
   },
 
   readPatients(request, response, next) {
-    const { hasMissingNhsNumber, q, yearGroup } = request.query
+    const { options, q, yearGroup } = request.query
     const { data } = request.session
     const { programme } = response.locals
     let patientSessions = programme.patientSessions
@@ -67,11 +67,13 @@ export const programmeController = {
       )
     }
 
-    // Filter by missing NHS number
-    if (hasMissingNhsNumber) {
-      patientSessions = patientSessions.filter(
-        ({ patient }) => patient.hasMissingNhsNumber
-      )
+    // Filter by display option
+    for (const option of ['archived', 'hasMissingNhsNumber', 'post16']) {
+      if (options?.includes(option)) {
+        patientSessions = patientSessions.filter(
+          ({ patient }) => patient[option]
+        )
+      }
     }
 
     // Sort
@@ -89,7 +91,7 @@ export const programmeController = {
     }))
 
     // Clean up session data
-    delete data.hasMissingNhsNumber
+    delete data.options
     delete data.q
     delete data.consent
     delete data.screen
@@ -100,27 +102,27 @@ export const programmeController = {
 
   filterPatients(request, response) {
     const { programme_id } = request.params
-    const { hasMissingNhsNumber, yearGroup } = request.body
     const params = new URLSearchParams()
 
+    // Radios
     for (const key of ['q', 'consent', 'screen', 'report']) {
-      const param = request.body[key]
-      if (param) {
-        params.append(key, String(param))
+      const value = request.body[key]
+      if (value) {
+        params.append(key, String(value))
       }
     }
 
-    if (yearGroup) {
-      const yearGroups = Array.isArray(yearGroup) ? yearGroup : [yearGroup]
-      yearGroups
-        .filter((item) => item !== '_unchecked')
-        .forEach((year) => {
-          params.append('yearGroup', String(year))
-        })
-    }
-
-    if (hasMissingNhsNumber?.includes('true')) {
-      params.append('hasMissingNhsNumber', 'true')
+    // Checkboxes
+    for (const key of ['options', 'yearGroup']) {
+      const value = request.body[key]
+      const values = Array.isArray(value) ? value : [value]
+      if (value) {
+        values
+          .filter((item) => item !== '_unchecked')
+          .forEach((value) => {
+            params.append(key, String(value))
+          })
+      }
     }
 
     response.redirect(`/programmes/${programme_id}/patients?${params}`)
