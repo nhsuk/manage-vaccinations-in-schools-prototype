@@ -1,5 +1,4 @@
 import {
-  ConsentOutcome,
   ReplyDecision,
   ScreenOutcome,
   ScreenVaccinationMethod,
