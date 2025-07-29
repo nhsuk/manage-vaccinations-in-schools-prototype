@@ -5,10 +5,21 @@
 {% set title = session.location.name + " (" + session.academicYear + ")" %}
 
 {% set sessionActivityRows = [] %}
+{% if activity.addNhsNumber %}
+  {% set sessionActivityRows = sessionActivityRows | push({
+    key: {
+      text: __("session.activity.addNhsNumber.label")
+    },
+    value: {
+      html: link(session.uri + "/consent?options=hasMissingNhsNumber", __mf("session.activity.addNhsNumber.count", { count: activity.addNhsNumber }))
+    }
+  }) %}
+{% endif %}
+
 {% if session.consents.length %}
   {% set sessionActivityRows = sessionActivityRows | push({
     key: {
-      text: __("session.consents.label")
+      text: __("session.activity.matchResponses.label")
     },
     value: {
       html: link(session.uri + "/consents", __n("consent.count", session.consents.length))

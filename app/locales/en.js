@@ -252,12 +252,6 @@ export const en = {
       one: '%s unmatched consent response',
       other: '[0] No unmatched consent responses|%s unmatched consent responses'
     },
-    warning: {
-      text: {
-        one: '%s unmatched consent response for this session needs review',
-        other: '%s unmatched consent responses for this session need review'
-      }
-    },
     results:
       '{count, plural, =0{No responses matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> response} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> responses}}',
     [ConsentOutcome.NoResponse]: {
@@ -1684,9 +1678,8 @@ export const en = {
         other: '[0] No sessions|%s sessions'
       }
     },
-    consents: {
-      label: 'Match responses',
-      warning: 'You need to review unmatched consent responses for this session'
+    notices: {
+      label: 'Needs review'
     },
     instructions: {
       label: 'Add new PSDs',
@@ -1737,6 +1730,16 @@ export const en = {
       vaccinated: 'Vaccinations given for {{programme.nameSentenceCase}}',
       vaccinatedWith:
         'Vaccinations given for {{programme.nameSentenceCase}} ({{vaccineMethod}})',
+      addNhsNumber: {
+        label: 'Add NHS number',
+        count:
+          '{count, plural, =0 {No children} one {# child} other {# children}} without an NHS number'
+      },
+      matchResponses: {
+        label: 'Match responses',
+        count:
+          '{count, plural, =0 {no unmatched consent responses} one {# unmatched consent response} other {# unmatched consent responses}}'
+      },
       getConsent: {
         label: 'No consent response',
         count:

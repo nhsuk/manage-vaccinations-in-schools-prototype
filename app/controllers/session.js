@@ -63,6 +63,11 @@ export const sessionController = {
     }
 
     const activity = {
+      addNhsNumber: getSessionActivityCount(session, [
+        {
+          'patient.hasMissingNhsNumber': true
+        }
+      ]),
       checkGiven: getSessionActivityCount(session, [
         {
           consent: ConsentOutcome.Given

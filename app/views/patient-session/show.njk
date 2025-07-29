@@ -64,6 +64,10 @@
       {{ summaryList({
         classes: "nhsuk-u-margin-bottom-2 nhsuk-summary-list--no-border app-summary-list--full-width",
         rows: summaryRows(patient, {
+          nhsn: {
+            changeLabel: "the child’s NHS number",
+            href: patient.uri + "/edit/nhsn" if patient.hasMissingNhsNumber
+          },
           dob: {},
           address: {}
         })
