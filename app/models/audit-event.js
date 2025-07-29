@@ -1,4 +1,4 @@
-import { AuditEventType, ScreenOutcome } from '../enums.js'
+import { ScreenOutcome } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
 import {
   formatTag,
@@ -70,7 +70,7 @@ export class AuditEvent {
    * @returns {object} Status properties
    */
   get status() {
-    if (this.type === AuditEventType.Decision) {
+    if (this.outcome) {
       let colour
       switch (this.outcome) {
         case ScreenOutcome.NeedsTriage:

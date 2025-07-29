@@ -157,7 +157,7 @@ export class PatientSession {
   get triageNotes() {
     return this.auditEvents
       .filter(({ programme_ids }) => programme_ids.includes(this.programme_id))
-      .filter(({ type }) => type === AuditEventType.Decision)
+      .filter(({ outcome }) => outcome)
   }
 
   /**
