@@ -1409,11 +1409,16 @@ export const en = {
       label: 'Child'
     },
     parent: {
+      label: 'Parent',
       title: {
         new: 'Details for parent or guardian',
         edit: 'Details for {{parent.formatted.fullNameAndRelationship}}'
       },
-      label: 'Parent'
+      notify: {
+        title:
+          'Do you want to send {{parent.formatted.fullName}} an email and text message confirming their decision?',
+        label: 'Notify parent'
+      }
     },
     programme: {
       label: 'Programme',

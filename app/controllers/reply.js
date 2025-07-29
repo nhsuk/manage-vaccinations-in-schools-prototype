@@ -200,6 +200,10 @@ export const replyController = {
               ReplyRefusal.Medical
             ]
           },
+          [`/${reply_uuid}/${type}/refusal-notification`]: {
+            data: 'reply.refusalReason',
+            value: ReplyRefusal.Personal
+          },
           [`/${reply_uuid}/${type}/check-answers`]: true
         },
         [`/${reply_uuid}/${type}/refusal-reason-details`]: {
