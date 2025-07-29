@@ -1772,12 +1772,18 @@ export const en = {
         count:
           '{count, plural, =0 {No children to register} one {# child to register} other {# children to register}}'
       },
+      // Registered and ready for vaccinator
       record: {
         label: 'Ready for vaccinator',
         count:
           '{count, plural, =0 {No children ready for vaccinator} one {# child ready for vaccinator} other {# children ready for vaccinator}}',
         programmeCount:
           '{count, plural, =0 {No children ready for {nameSentenceCase} vaccinator} one {# child ready for {nameSentenceCase} vaccinator} other {# children ready for {nameSentenceCase} vaccinator}}'
+      },
+      // Ready for vaccinator, regardless of session/registration status
+      recordVaccination: {
+        count:
+          '{count, plural, =0 {There are no children} one {There is # child} other {There are # children}} with consent who still need to be vaccinated'
       },
       report: {
         label: 'Vaccinated',
