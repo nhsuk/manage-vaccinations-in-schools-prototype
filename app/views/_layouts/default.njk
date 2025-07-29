@@ -86,7 +86,7 @@
           active: navigation.activeSection == "organisations"
         }
       ]
-    },
+    } if data.token.role != UserRole.DataConsumer,
     account: {
       items: [
         {
