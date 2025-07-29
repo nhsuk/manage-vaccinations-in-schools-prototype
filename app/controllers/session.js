@@ -82,6 +82,11 @@ export const sessionController = {
         {
           consent: ConsentOutcome.Refused
         }
+      ]),
+      recordVaccination: getSessionActivityCount(session, [
+        {
+          nextActivity: Activity.Record
+        }
       ])
     }
 

@@ -179,6 +179,10 @@
     {% endif %}
     </div>
 
+    {{ __mf("session.activity.recordVaccination.count", {
+      count: activity.recordVaccination
+    }) | nhsukMarkdown }}
+
     {% if session.isPlanned and sessionActivityRows.length %}
       {{ appHeading({
         classes: "nhsuk-u-margin-bottom-2",
