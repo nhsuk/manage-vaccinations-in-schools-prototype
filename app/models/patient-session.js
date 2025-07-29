@@ -140,13 +140,9 @@ export class PatientSession {
    * @returns {object} Events grouped by date
    */
   get auditEventLog() {
-    const auditEvents = this.auditEvents.sort((a, b) =>
-      getDateValueDifference(b.createdAt, a.createdAt)
-    )
-
-    return Object.groupBy(auditEvents, (auditEvent) => {
-      return auditEvent.formatted.createdAt
-    })
+    return this.auditEvents
+      .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
+      .reverse()
   }
 
   /**
