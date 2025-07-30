@@ -67,7 +67,7 @@ export const vaccinationController = {
     const { data } = request.session
 
     const patientSession = PatientSession.read(patientSession_uuid, data)
-    const { patient, session, programme, vaccine, instruction } = patientSession
+    const { session, programme, vaccine, instruction } = patientSession
     const { identifiedBy, injectionSite, ready, selfId, suppliedBy_uid } =
       data.patientSession.preScreen
 
@@ -156,7 +156,6 @@ export const vaccinationController = {
     })
 
     vaccination.create(vaccination, data.wizard)
-    patient.recordVaccination(vaccination)
 
     response.redirect(`${vaccination.uri}/new/${data.startPath}`)
   },
@@ -169,6 +168,11 @@ export const vaccinationController = {
 
       const vaccination = new Vaccination(
         Vaccination.read(vaccination_uuid, data.wizard),
+        data
+      )
+
+      const { patient } = PatientSession.read(
+        vaccination.patientSession_uuid,
         data
       )
 
@@ -192,6 +196,7 @@ export const vaccinationController = {
 
       // Update session data
       vaccination.update(vaccination, data)
+      patient.recordVaccination(vaccination)
 
       response.redirect(referrer || vaccination.uri)
     }
