@@ -84,7 +84,7 @@
         }) }}
 
         {% set instructHtml %}
-          {{ __("session.instruct.description", session.patientsToInstruct.length) | nhsukMarkdown }}
+          {{ __("session.instruct.description", activity.instruct) | nhsukMarkdown }}
 
           {{ actionLink({
             text: __("session.instructions.label"),
@@ -94,7 +94,7 @@
 
         {{ insetText({
           html: instructHtml
-        }) if view == "instruct" and (data.token.role == UserRole.NursePrescriber or data.token.role == UserRole.Pharmacist) and session.patientsToInstruct.length > 0 }}
+        }) if view == "instruct" and activity.instruct }}
 
         {% set recordHtml %}
           {{ vaccinationCount(data.token.vaccinations) | nhsukMarkdown if vaccinationCount(data.token.vaccinations) }}

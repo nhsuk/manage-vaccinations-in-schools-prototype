@@ -27,42 +27,16 @@ import { formatYearGroup } from '../utils/string.js'
 export const sessionController = {
   read(request, response, next, session_id) {
     const { data } = request.session
+    const { permissions } = request.app.locals
 
-    response.locals.session = Session.read(session_id, data)
+    const session = Session.read(session_id, data)
+    response.locals.session = session
 
     response.locals.defaultBatches = DefaultBatch.readAll(data).filter(
       (defaultBatch) => defaultBatch.session_id === session_id
     )
 
-    next()
-  },
-
-  readAll(request, response, next) {
-    response.locals.sessions = Session.readAll(request.session.data)
-
-    next()
-  },
-
-  show(request, response) {
-    let { view } = request.params
-    const { session } = response.locals
-
-    if (
-      [
-        'consent',
-        'screen',
-        'instruct',
-        'register',
-        'record',
-        'outcome'
-      ].includes(view)
-    ) {
-      view = 'activity'
-    } else if (!view) {
-      view = 'show'
-    }
-
-    const activity = {
+    response.locals.activity = {
       addNhsNumber: getSessionActivityCount(session, [
         {
           'patient.hasMissingNhsNumber': true
@@ -88,6 +62,15 @@ export const sessionController = {
           consent: ConsentOutcome.Refused
         }
       ]),
+      ...(permissions.canPrescribe
+        ? {
+            instruct: getSessionActivityCount(session, [
+              {
+                instruct: InstructionOutcome.Needed
+              }
+            ])
+          }
+        : []),
       recordVaccination: getSessionActivityCount(session, [
         {
           nextActivity: Activity.Record
@@ -95,9 +78,34 @@ export const sessionController = {
       ])
     }
 
-    response.render(`session/${view}`, {
-      activity
-    })
+    next()
+  },
+
+  readAll(request, response, next) {
+    response.locals.sessions = Session.readAll(request.session.data)
+
+    next()
+  },
+
+  show(request, response) {
+    let { view } = request.params
+
+    if (
+      [
+        'consent',
+        'screen',
+        'instruct',
+        'register',
+        'record',
+        'outcome'
+      ].includes(view)
+    ) {
+      view = 'activity'
+    } else if (!view) {
+      view = 'show'
+    }
+
+    response.render(`session/${view}`)
   },
 
   new(request, response) {
@@ -726,7 +734,11 @@ export const sessionController = {
     const { __, session } = response.locals
     const { data } = request.session
 
-    for (const patientSession of session.patientsToInstruct) {
+    const patientsToInstruct = session.patientSessions.filter(
+      ({ instruct }) => instruct === InstructionOutcome.Needed
+    )
+
+    for (const patientSession of patientsToInstruct) {
       const instruction = new Instruction({
         createdBy_uid: data.token?.uid,
         programme_id: patientSession.programme.id,

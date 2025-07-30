@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __n("session.instructions.title", session.patientsToInstruct.length) %}
+{% set title = __n("session.instructions.title", activity.instruct) %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -22,7 +22,7 @@
     title: title
   }) }}
 
-  {{ __("session.instructions.description", session.patientsToInstruct.length) | nhsukMarkdown }}
+  {{ __("session.instructions.description", activity.instruct) | nhsukMarkdown }}
 {% endblock %}
 
 {% block afterForm %}
