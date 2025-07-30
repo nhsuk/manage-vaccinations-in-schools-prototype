@@ -1,0 +1,61 @@
+{% set overviewHtml %}
+  {% if not session.isUnplanned %}
+    <div class="nhsuk-grid-row app-grid-row--dense nhsuk-card-group">
+      <div class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+        {{ appDataCard({
+          heading: __("session.patients.label"),
+          headingClasses: "app-card__heading--xxs",
+          classes: "app-card--dense",
+          data: session.patients.length
+        }) }}
+      </div>
+      <div class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+        {{ appDataCard({
+          heading: ConsentOutcome.Given,
+          headingClasses: "app-card__heading--xxs",
+          colour: "aqua-green",
+          classes: "app-card--dense",
+          data: session.activity.checkGiven
+        }) }}
+      </div>
+      <div class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+        {{ appDataCard({
+          heading: ScreenOutcome.NeedsTriage,
+          headingClasses: "app-card__heading--xxs",
+          colour: "blue",
+          classes: "app-card--dense",
+          data: session.activity.triage
+        }) }}
+      </div>
+      <div class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+        {{ appDataCard({
+          heading: PatientOutcome.Vaccinated,
+          headingClasses: "app-card__heading--xxs",
+          colour: "green",
+          classes: "app-card--dense",
+          data: session.activity.report
+        }) }}
+      </div>
+    </div>
+  {% endif %}
+{% endset %}
+
+{{ card({
+  classes: "app-card--compact",
+  heading: session.location.name | highlightQuery(data.q),
+  headingClasses: "nhsuk-heading-s",
+  headingLevel: 4,
+  href: session.uri,
+  clickable: true,
+  descriptionHtml: summaryList({
+    classes: "nhsuk-u-margin-bottom-4",
+    rows: summaryRows(session, {
+      programmes: {},
+      status: {
+        value: session.status
+      },
+      dateSummary: {},
+      consentWindow: {}
+    })
+  }) + overviewHtml
+}) }}
