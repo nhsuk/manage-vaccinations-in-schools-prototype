@@ -16,12 +16,15 @@
 {% if params.compact %}
   {% set classes = classes | push("app-card--compact") %}
 {% endif%}
+{% if params.classes %}
+  {% set classes = classes | push(params.classes) %}
+{% endif %}
 {{ card({
   classes: classes | join(" "),
   clickable: true if params.href,
   href: params.href,
   heading: params.heading,
-  headingClasses: "nhsuk-heading-xs",
+  headingClasses: params.headingClasses | default("nhsuk-heading-xs"),
   headingLevel: params.headingLevel | default(5),
   descriptionHtml: descriptionHtml
 }) }}
