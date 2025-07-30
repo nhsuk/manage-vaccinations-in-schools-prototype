@@ -5,13 +5,16 @@ import _ from 'lodash'
 
 import {
   AcademicYear,
+  Activity,
   ConsentOutcome,
   ConsentWindow,
+  InstructionOutcome,
   OrganisationDefaults,
   PatientOutcome,
   ProgrammePreset,
   SessionStatus,
-  SessionType
+  SessionType,
+  VaccineMethod
 } from '../enums.js'
 import {
   removeDays,
@@ -24,7 +27,7 @@ import {
   today
 } from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
-import { getConsentWindow } from '../utils/session.js'
+import { getConsentWindow, getSessionActivityCount } from '../utils/session.js'
 import {
   formatLink,
   formatLinkWithSecondaryText,
@@ -585,6 +588,68 @@ export class Session {
   get name() {
     if (this.location) {
       return `${this.programmeNames.titleCase} session at ${this.location.name}`
+    }
+  }
+
+  /**
+   * Get session activity counts
+   *
+   * @returns {object} Session activity counts
+   */
+  get activity() {
+    return {
+      addNhsNumber: getSessionActivityCount(this, [
+        {
+          'patient.hasMissingNhsNumber': true
+        }
+      ]),
+      checkGiven: getSessionActivityCount(this, [
+        {
+          consentGiven: true
+        }
+      ]),
+      checkGivenForNasalSpray: getSessionActivityCount(this, [
+        {
+          consent: ConsentOutcome.GivenForNasalSpray
+        }
+      ]),
+      checkGivenForInjection: getSessionActivityCount(this, [
+        {
+          consent: ConsentOutcome.GivenForInjection
+        }
+      ]),
+      checkRefusal: getSessionActivityCount(this, [
+        {
+          consent: ConsentOutcome.Refused
+        }
+      ]),
+      instruct: getSessionActivityCount(this, [
+        {
+          instruct: InstructionOutcome.Needed
+        }
+      ]),
+      recordVaccination: getSessionActivityCount(this, [
+        {
+          nextActivity: Activity.Record
+        }
+      ]),
+      report: getSessionActivityCount(this, [
+        {
+          outcome: PatientOutcome.Vaccinated
+        }
+      ]),
+      reportNasalSprays: getSessionActivityCount(this, [
+        {
+          outcome: PatientOutcome.Vaccinated,
+          'vaccine.method': VaccineMethod.Nasal
+        }
+      ]),
+      reportInjections: getSessionActivityCount(this, [
+        {
+          outcome: PatientOutcome.Vaccinated,
+          'vaccine.method': VaccineMethod.Injection
+        }
+      ])
     }
   }
 

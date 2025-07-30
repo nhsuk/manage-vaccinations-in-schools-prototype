@@ -21,13 +21,11 @@ import { Patient } from '../models/patient.js'
 import { Session } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
-import { getSessionActivityCount } from '../utils/session.js'
 import { formatYearGroup } from '../utils/string.js'
 
 export const sessionController = {
   read(request, response, next, session_id) {
     const { data } = request.session
-    const { permissions } = request.app.locals
 
     const session = Session.read(session_id, data)
     response.locals.session = session
@@ -35,65 +33,6 @@ export const sessionController = {
     response.locals.defaultBatches = DefaultBatch.readAll(data).filter(
       (defaultBatch) => defaultBatch.session_id === session_id
     )
-
-    response.locals.activity = {
-      addNhsNumber: getSessionActivityCount(session, [
-        {
-          'patient.hasMissingNhsNumber': true
-        }
-      ]),
-      checkGiven: getSessionActivityCount(session, [
-        {
-          consent: ConsentOutcome.Given
-        }
-      ]),
-      checkGivenForNasalSpray: getSessionActivityCount(session, [
-        {
-          consent: ConsentOutcome.GivenForNasalSpray
-        }
-      ]),
-      checkGivenForInjection: getSessionActivityCount(session, [
-        {
-          consent: ConsentOutcome.GivenForInjection
-        }
-      ]),
-      checkRefusal: getSessionActivityCount(session, [
-        {
-          consent: ConsentOutcome.Refused
-        }
-      ]),
-      ...(permissions.canPrescribe
-        ? {
-            instruct: getSessionActivityCount(session, [
-              {
-                instruct: InstructionOutcome.Needed
-              }
-            ])
-          }
-        : []),
-      recordVaccination: getSessionActivityCount(session, [
-        {
-          nextActivity: Activity.Record
-        }
-      ]),
-      report: getSessionActivityCount(session, [
-        {
-          outcome: PatientOutcome.Vaccinated
-        }
-      ]),
-      reportNasalSprays: getSessionActivityCount(session, [
-        {
-          outcome: PatientOutcome.Vaccinated,
-          'vaccine.method': VaccineMethod.Nasal
-        }
-      ]),
-      reportInjections: getSessionActivityCount(session, [
-        {
-          outcome: PatientOutcome.Vaccinated,
-          'vaccine.method': VaccineMethod.Injection
-        }
-      ])
-    }
 
     next()
   },
