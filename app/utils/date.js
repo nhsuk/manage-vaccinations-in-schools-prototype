@@ -149,6 +149,24 @@ export function formatDate(date, options) {
 }
 
 /**
+ * Format a data range
+ *
+ * @param {Date} firstDate - First date string
+ * @param {Date} lastDate - Last date string
+ * @param {object} [options] - DateTimeFormat options
+ * @returns {string|undefined} Formatted date range
+ */
+export function formatDateRange(firstDate, lastDate, options) {
+  if (!firstDate || isNaN(firstDate.valueOf())) return
+  if (!lastDate || isNaN(lastDate.valueOf())) return
+
+  return new Intl.DateTimeFormat('en-GB', options).formatRange(
+    firstDate,
+    lastDate
+  )
+}
+
+/**
  * Get age from date
  *
  * @param {Date} date - Date
