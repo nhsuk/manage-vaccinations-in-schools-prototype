@@ -127,6 +127,10 @@
   }
 }
 
+.app-card__heading--xxs {
+  @include nhsuk-font(16, $weight: bold);
+}
+
 .app-card__heading {
   &--aqua-green {
     background-color: $color_nhsuk-aqua-green;
