@@ -21,6 +21,7 @@ import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
+  formatDateRange,
   getAcademicYear,
   includesDate,
   setMidday,
@@ -35,7 +36,6 @@ import {
   formatProgrammeId,
   formatTag,
   formatWithSecondaryText,
-  lowerCaseFirst,
   sentenceCaseProgrammeName,
   stringToArray,
   stringToBoolean
@@ -654,20 +654,15 @@ export class Session {
   }
 
   get dateSummary() {
-    if (this.isPlanned) {
-      const firstDate = formatDate(this.firstDate, {
-        day: 'numeric',
-        month: 'long'
+    if (this.dates.length > 0) {
+      const range = formatDateRange(this.firstDate, this.lastDate, {
+        dateStyle: 'long'
       })
-      const consentWindow = lowerCaseFirst(this.formatted.consentWindow)
-      return `First session starts ${firstDate}<br>Consent period ${consentWindow}`
-    } else if (this.status === SessionStatus.Completed) {
-      const lastDate = formatDate(this.lastDate, {
-        day: 'numeric',
-        month: 'long'
-      })
-      return `Last session completed ${lastDate}`
+      return `${range} (${this.dates.length} sessions)`
+    } else if (this.dates.length === 1) {
+      return this.formatted.lastDate
     }
+
     return 'No sessions scheduled'
   }
 

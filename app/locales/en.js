@@ -1829,6 +1829,9 @@ export const en = {
       label: 'Session dates',
       title: 'When will sessions be held?'
     },
+    dateSummary: {
+      label: 'Session dates'
+    },
     school: {
       label: 'School',
       title: 'Where is this school session taking place?'
