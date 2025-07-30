@@ -988,9 +988,10 @@ export const en = {
     search: {
       label: 'Find children',
       dob: 'Child’s date of birth',
-      archived: 'Archived',
-      hasMissingNhsNumber: 'Missing NHS number',
-      post16: 'Over 16 years old'
+      showOnly: 'Show only',
+      archived: 'Archived records',
+      hasMissingNhsNumber: 'Children missing an NHS&nbsp;number',
+      post16: 'Children over 16 years old'
     },
     archiveReason: {
       label: 'Reason for archival'
@@ -1549,7 +1550,6 @@ export const en = {
   },
   search: {
     label: 'Search',
-    options: 'Options',
     advanced: 'Advanced filters',
     results: 'Search results',
     confirm: 'Update results',
