@@ -49,9 +49,9 @@
 
       <div class="app-grid-column-results">
         {% set notices = [] %}
-        {% if activity.addNhsNumber %}
+        {% if session.activity.addNhsNumber %}
           {% set notices = notices | push(link(session.uri + "/consent?options=hasMissingNhsNumber", __mf("session.activity.addNhsNumber.count", {
-            count: activity.addNhsNumber
+            count: session.activity.addNhsNumber
           }))) %}
         {% endif %}
 
@@ -84,7 +84,7 @@
         }) }}
 
         {% set instructHtml %}
-          {{ __("session.instruct.description", activity.instruct) | nhsukMarkdown }}
+          {{ __("session.instruct.description", session.activity.instruct) | nhsukMarkdown }}
 
           {{ actionLink({
             text: __("session.instructions.label"),
@@ -94,7 +94,7 @@
 
         {{ insetText({
           html: instructHtml
-        }) if view == "instruct" and activity.instruct }}
+        }) if view == "instruct" and session.activity.instruct and permissions.canPrescribe }}
 
         {% set recordHtml %}
           {{ vaccinationCount(data.token.vaccinations) | nhsukMarkdown if vaccinationCount(data.token.vaccinations) }}

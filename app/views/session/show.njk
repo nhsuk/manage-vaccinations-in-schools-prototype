@@ -5,13 +5,13 @@
 {% set title = session.location.name + " (" + session.academicYear + ")" %}
 
 {% set sessionActivityRows = [] %}
-{% if activity.addNhsNumber %}
+{% if session.activity.addNhsNumber %}
   {% set sessionActivityRows = sessionActivityRows | push({
     key: {
       text: __("session.activity.addNhsNumber.label")
     },
     value: {
-      html: link(session.uri + "/consent?options=hasMissingNhsNumber", __mf("session.activity.addNhsNumber.count", { count: activity.addNhsNumber }))
+      html: link(session.uri + "/consent?options=hasMissingNhsNumber", __mf("session.activity.addNhsNumber.count", { count: session.activity.addNhsNumber }))
     }
   }) %}
 {% endif %}
@@ -115,7 +115,7 @@
             vaccineMethod: VaccineMethod.Nasal | lower
           }),
           compact: true,
-          data: activity.reportNasalSprays
+          data: session.activity.reportNasalSprays
         }) }}
       </div>
       <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
@@ -125,7 +125,7 @@
             vaccineMethod: VaccineMethod.Injection | lower
           }),
           compact: true,
-          data: activity.reportInjections
+          data: session.activity.reportInjections
         }) }}
       </div>
     {% else %}
@@ -136,7 +136,7 @@
               programme: programme
             }),
             compact: true,
-            data: activity.report
+            data: session.activity.report
           }) }}
         </div>
       {% endfor %}
@@ -147,7 +147,7 @@
           heading: ConsentOutcome.Refused,
           colour: "red",
           compact: true,
-          data: activity.checkRefusal
+          data: session.activity.checkRefusal
         }) }}
       </div>
     {% endif %}
@@ -160,7 +160,7 @@
           }),
           colour: "aqua-green",
           compact: true,
-          data: activity.checkGivenForNasalSpray
+          data: session.activity.checkGivenForNasalSpray
         }) }}
       </div>
       <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
@@ -171,7 +171,7 @@
           }),
           colour: "aqua-green",
           compact: true,
-          data: activity.checkGivenForInjection
+          data: session.activity.checkGivenForInjection
         }) }}
       </div>
     {% elif session.isPlanned %}
@@ -183,7 +183,7 @@
             }),
             colour: "aqua-green",
             compact: true,
-            data: activity.checkGiven
+            data: session.activity.checkGiven
           }) }}
         </div>
       {% endfor %}
@@ -191,7 +191,7 @@
     </div>
 
     {{ __mf("session.activity.recordVaccination.count", {
-      count: activity.recordVaccination
+      count: session.activity.recordVaccination
     }) | nhsukMarkdown }}
 
     {% if session.isPlanned and sessionActivityRows.length %}
