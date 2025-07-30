@@ -13,6 +13,16 @@
     }
   }
 
+  &--blue {
+    background-color: nhsuk-tint($color_nhsuk-blue, 80%);
+    border-color: nhsuk-tint($color_nhsuk-blue, 30%);
+    color: nhsuk-shade($color_nhsuk-blue, 30%);
+
+    &.nhsuk-card__clickable:active {
+      border-color: nhsuk-shade($color_nhsuk-blue, 30%);
+    }
+  }
+
   &--green {
     background-color: nhsuk-tint($color_nhsuk-green, 80%);
     border-color: nhsuk-tint($color_nhsuk-green, 40%);
