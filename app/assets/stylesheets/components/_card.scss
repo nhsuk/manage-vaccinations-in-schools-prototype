@@ -89,6 +89,19 @@
   }
 }
 
+.app-card--dense {
+  @include nhsuk-responsive-margin(2, "bottom", $important: true);
+
+  .nhsuk-card__heading {
+    @include nhsuk-responsive-margin(1, "bottom");
+  }
+
+  .nhsuk-card__content {
+    @include nhsuk-responsive-padding(3);
+    @include nhsuk-responsive-padding(2, "bottom");
+  }
+}
+
 // Align counts across cards
 .nhsuk-card:has(> .nhsuk-card__content > .app-card__count) {
   display: flex;
@@ -108,6 +121,10 @@
 .app-card__count {
   @include nhsuk-font-size(48);
   @include nhsuk-typography-weight-bold;
+
+  .app-card--dense & {
+    @include nhsuk-font-size(26);
+  }
 }
 
 .app-card__heading {
