@@ -75,6 +75,23 @@ export const sessionController = {
         {
           nextActivity: Activity.Record
         }
+      ]),
+      report: getSessionActivityCount(session, [
+        {
+          outcome: PatientOutcome.Vaccinated
+        }
+      ]),
+      reportNasalSprays: getSessionActivityCount(session, [
+        {
+          outcome: PatientOutcome.Vaccinated,
+          'vaccine.method': VaccineMethod.Nasal
+        }
+      ]),
+      reportInjections: getSessionActivityCount(session, [
+        {
+          outcome: PatientOutcome.Vaccinated,
+          'vaccine.method': VaccineMethod.Injection
+        }
       ])
     }
 

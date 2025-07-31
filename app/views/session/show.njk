@@ -115,7 +115,7 @@
             vaccineMethod: VaccineMethod.Nasal | lower
           }),
           compact: true,
-          data: session.activity.reportNasalSprays
+          data: activity.reportNasalSprays
         }) }}
       </div>
       <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
@@ -125,7 +125,7 @@
             vaccineMethod: VaccineMethod.Injection | lower
           }),
           compact: true,
-          data: session.activity.reportInjections
+          data: activity.reportInjections
         }) }}
       </div>
     {% else %}
@@ -136,7 +136,7 @@
               programme: programme
             }),
             compact: true,
-            data: session.activity.report
+            data: activity.report
           }) }}
         </div>
       {% endfor %}

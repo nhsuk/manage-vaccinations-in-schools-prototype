@@ -361,7 +361,7 @@ export const vaccinationController = {
       if (defaultBatchId) {
         DefaultBatch.addToSession(
           defaultBatchId,
-          patientSession.session.id,
+          patientSession.session_id,
           data
         )
       }

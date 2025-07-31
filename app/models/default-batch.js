@@ -79,7 +79,7 @@ export class DefaultBatch extends Batch {
    */
   static addToSession(id, session_id, context) {
     const batch = Batch.read(id, context)
-    delete batch.context
+    delete batch?.context
 
     const defaultBatch = {
       ...batch,
