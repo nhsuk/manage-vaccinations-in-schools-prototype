@@ -129,7 +129,8 @@ export const NoticeType = {
   Deceased: 'Deceased',
   Hidden: 'Hidden',
   Invalid: 'Invalid',
-  Sensitive: 'Sensitive'
+  Sensitive: 'Sensitive',
+  GillickNoNotify: 'Gillick no notify'
 }
 
 /**
