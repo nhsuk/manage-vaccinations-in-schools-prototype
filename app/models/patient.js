@@ -613,6 +613,13 @@ export class Patient extends Child {
         this.sensitive = true
         name = `Record flagged as sensitive`
         break
+      case NoticeType.GillickNoNotify:
+        this.parent1.notify = false
+        name =
+          `Child gave consent for HPV and flu vaccinations under Gillick competence and does not want their parents to be notified. ` +
+          `These records are not automatically synced with GP records. ` +
+          `Your team must let the child’s GP know they were vaccinated.`
+        break
       default:
     }
 
