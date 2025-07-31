@@ -734,9 +734,9 @@ export const sessionController = {
     const { __, session } = response.locals
     const { data } = request.session
 
-    const patientsToInstruct = session.patientSessions.filter(
-      ({ instruct }) => instruct === InstructionOutcome.Needed
-    )
+    const patientsToInstruct = session.patientSessions
+      .filter(({ nextActivity }) => nextActivity === Activity.Record)
+      .filter(({ instruct }) => instruct === InstructionOutcome.Needed)
 
     for (const patientSession of patientsToInstruct) {
       const instruction = new Instruction({
