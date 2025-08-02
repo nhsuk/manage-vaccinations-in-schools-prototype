@@ -299,7 +299,7 @@ export const vaccinationController = {
         }))
         .sort((a, b) => a.text.localeCompare(b.text))
 
-      response.locals.vaccineItems = Vaccine.readAll(data)
+      response.locals.vaccineItems = Vaccine.showAll(data)
         .filter((vaccine) => programme.type.includes(vaccine.type))
         .map((vaccine) => ({
           text: vaccine.brandWithType,

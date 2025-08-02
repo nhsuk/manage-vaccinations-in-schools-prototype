@@ -2,13 +2,13 @@ import { Vaccine } from '../models/vaccine.js'
 
 export const vaccineController = {
   read(request, response, next, snomed) {
-    response.locals.vaccine = Vaccine.read(snomed, request.session.data)
+    response.locals.vaccine = Vaccine.show(snomed, request.session.data)
 
     next()
   },
 
   readAll(request, response, next) {
-    response.locals.vaccines = Vaccine.readAll(request.session.data)
+    response.locals.vaccines = Vaccine.showAll(request.session.data)
 
     next()
   },
