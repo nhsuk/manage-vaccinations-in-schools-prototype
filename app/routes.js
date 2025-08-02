@@ -62,7 +62,6 @@ router.use('/programmes', programmeRoutes)
 router.use('/programmes/:programme_id/download', downloadRoutes)
 router.use('/programmes/:programme_id/patients', patientSessionRoutes)
 router.use('/programmes/:programme_id/patients/:nhsn/replies', replyRoutes)
-router.use('/programmes/:programme_id/uploads', uploadRoutes)
 router.use('/programmes/:programme_id/vaccinations', vaccinationRoutes)
 router.use(
   '/programmes/:programme_id/vaccinations/:vaccination_uuid/patients',
