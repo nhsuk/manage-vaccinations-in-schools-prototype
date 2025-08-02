@@ -1,12 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { getDateValueDifference } from '../utils/date.js'
-import {
-  formatHealthQuestions,
-  formatList,
-  formatMillilitres,
-  formatMonospace
-} from '../utils/string.js'
 
 import { Batch } from './batch.js'
 
@@ -44,15 +38,6 @@ export class Vaccine {
   }
 
   /**
-   * Get brand with vaccine type
-   *
-   * @returns {string} Brand with vaccine type
-   */
-  get brandWithType() {
-    return `${this.brand} (${this.type})`
-  }
-
-  /**
    * Get vaccine batches
    *
    * @returns {Array<Batch>} Batches
@@ -83,30 +68,6 @@ export class Vaccine {
         return [[key, value]]
       })
     )
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} Formatted values
-   */
-  get formatted() {
-    return {
-      snomed: formatMonospace(this.snomed),
-      healthQuestions: formatHealthQuestions(this.healthQuestions),
-      preScreenQuestions: formatList(this.preScreenQuestions),
-      sideEffects: formatList(this.sideEffects),
-      dose: formatMillilitres(this.dose)
-    }
-  }
-
-  /**
-   * Get namespace
-   *
-   * @returns {string} Namespace
-   */
-  get ns() {
-    return 'vaccine'
   }
 
   /**

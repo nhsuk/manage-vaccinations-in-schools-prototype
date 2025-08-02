@@ -1,8 +1,9 @@
 import { Vaccine } from '../models/vaccine.js'
+import { VaccinePresenter } from '../presenters/vaccine.js'
 
 export const vaccineController = {
   read(request, response, next, vaccine_snomed) {
-    response.locals.vaccine = Vaccine.findOne(
+    response.locals.vaccine = VaccinePresenter.forOne(
       vaccine_snomed,
       request.session.data
     )
@@ -11,7 +12,7 @@ export const vaccineController = {
   },
 
   readAll(request, response, next) {
-    response.locals.vaccines = Vaccine.findAll(request.session.data)
+    response.locals.vaccines = VaccinePresenter.forAll(request.session.data)
 
     next()
   },

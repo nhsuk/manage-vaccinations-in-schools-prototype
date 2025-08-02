@@ -13,7 +13,7 @@
   {% for vaccine in vaccines %}
     {% set descriptionHtml %}
       {{ summaryList({
-        rows: summaryRows(vaccine, {
+        rows: vaccine.getSummaryRows({
           manufacturer: {},
           snomed: {}
         })

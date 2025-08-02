@@ -15,7 +15,7 @@
       heading: vaccine.brand,
       headingClasses: "nhsuk-heading-m",
       descriptionHtml: summaryList({
-        rows: summaryRows(vaccine, {
+        rows: vaccine.getSummaryRows({
           manufacturer: {},
           snomed: {},
           type: {},

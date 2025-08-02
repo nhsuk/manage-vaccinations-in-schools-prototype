@@ -15,8 +15,8 @@ import { DefaultBatch } from '../models/default-batch.js'
 import { PatientSession } from '../models/patient-session.js'
 import { Programme } from '../models/programme.js'
 import { Vaccination } from '../models/vaccination.js'
-import { Vaccine } from '../models/vaccine.js'
 import { UserPresenter } from '../presenters/user.js'
+import { VaccinePresenter } from '../presenters/vaccine.js'
 import { today } from '../utils/date.js'
 
 export const vaccinationController = {
@@ -327,7 +327,7 @@ export const vaccinationController = {
         }))
         .sort((a, b) => a.text.localeCompare(b.text))
 
-      response.locals.vaccineItems = Vaccine.findAll(data)
+      response.locals.vaccineItems = VaccinePresenter.forAll(data)
         .filter((vaccine) => programme.type.includes(vaccine.type))
         .map((vaccine) => ({
           text: vaccine.brandWithType,
