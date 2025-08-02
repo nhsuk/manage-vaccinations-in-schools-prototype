@@ -10,11 +10,11 @@ import {
   VaccineMethod,
   UserRole
 } from '../enums.js'
-import { Batch } from '../models/batch.js'
 import { DefaultBatch } from '../models/default-batch.js'
 import { PatientSession } from '../models/patient-session.js'
 import { Programme } from '../models/programme.js'
 import { Vaccination } from '../models/vaccination.js'
+import { BatchPresenter } from '../presenters/batch.js'
 import { UserPresenter } from '../presenters/user.js'
 import { VaccinePresenter } from '../presenters/vaccine.js'
 import { today } from '../utils/date.js'
@@ -289,9 +289,9 @@ export const vaccinationController = {
         response.locals.paths.back = referrer || vaccination.uri
       }
 
-      response.locals.batchItems = Batch.findAll(data)
+      response.locals.batchItems = BatchPresenter.forAll(data)
         .filter(
-          (batch) => batch.vaccine.snomed === patientSession?.vaccine.snomed
+          (batch) => batch.vaccine_snomed === patientSession?.vaccine.snomed
         )
         .filter((batch) => !batch.archivedAt)
 

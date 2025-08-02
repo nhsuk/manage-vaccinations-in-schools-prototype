@@ -1,6 +1,6 @@
-import { Batch } from '../models/batch.js'
 import { DefaultBatch } from '../models/default-batch.js'
 import { Session } from '../models/session.js'
+import { BatchPresenter } from '../presenters/batch.js'
 import { VaccinePresenter } from '../presenters/vaccine.js'
 
 export const defaultBatchController = {
@@ -8,7 +8,7 @@ export const defaultBatchController = {
     const { data } = request.session
     const { session_id, vaccine_snomed } = request.params
 
-    response.locals.batchItems = Batch.findAll(data)
+    response.locals.batchItems = BatchPresenter.forAll(data)
       .filter((batch) => batch.vaccine_snomed === vaccine_snomed)
       .filter((batch) => !batch.archivedAt)
 
