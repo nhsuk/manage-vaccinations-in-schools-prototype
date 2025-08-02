@@ -1,9 +1,10 @@
 import { Batch } from '../models/batch.js'
 import { DefaultBatch } from '../models/default-batch.js'
+import { BatchPresenter } from '../presenters/batch.js'
 
 export const batchController = {
   read(request, response, next, batch_id) {
-    const batch = Batch.findOne(batch_id, request.session.data)
+    const batch = BatchPresenter.forOne(batch_id, request.session.data)
 
     response.locals.batch = batch
     response.locals.paths = {

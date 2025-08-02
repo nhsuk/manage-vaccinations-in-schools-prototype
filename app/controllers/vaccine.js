@@ -1,4 +1,5 @@
 import { Vaccine } from '../models/vaccine.js'
+import { BatchPresenter } from '../presenters/batch.js'
 import { VaccinePresenter } from '../presenters/vaccine.js'
 
 export const vaccineController = {
@@ -12,7 +13,13 @@ export const vaccineController = {
   },
 
   readAll(request, response, next) {
-    response.locals.vaccines = VaccinePresenter.forAll(request.session.data)
+    response.locals.vaccines = VaccinePresenter.forAll(
+      request.session.data
+    ).map((vaccine) => {
+      vaccine.batches = BatchPresenter.forAll(vaccine)
+
+      return vaccine
+    })
 
     next()
   },
