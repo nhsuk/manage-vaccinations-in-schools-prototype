@@ -11,7 +11,6 @@ import { organisation } from './middleware/organisation.js'
 import { performance } from './middleware/performance.js'
 import { referrer } from './middleware/referrer.js'
 import { rollover } from './middleware/rollover.js'
-import { users } from './middleware/users.js'
 import { accountRoutes } from './routes/account.js'
 import { batchRoutes } from './routes/batch.js'
 import { clinicRoutes } from './routes/clinic.js'
@@ -47,7 +46,6 @@ router.use(
   navigation,
   notification,
   rollover,
-  users,
   organisation
 )
 router.use(referrer)
