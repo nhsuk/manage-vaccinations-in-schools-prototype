@@ -2548,6 +2548,9 @@ export const en = {
     },
     preScreenQuestions: {
       label: 'Pre-screening questions'
+    },
+    sideEffects: {
+      label: 'Side effects'
     }
   }
 }
