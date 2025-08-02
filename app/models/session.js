@@ -12,6 +12,7 @@ import {
   OrganisationDefaults,
   PatientOutcome,
   ProgrammePreset,
+  ScreenOutcome,
   SessionStatus,
   SessionType,
   VaccineMethod
@@ -621,6 +622,11 @@ export class Session {
       checkRefusal: getSessionActivityCount(this, [
         {
           consent: ConsentOutcome.Refused
+        }
+      ]),
+      triage: getSessionActivityCount(this, [
+        {
+          screen: ScreenOutcome.NeedsTriage
         }
       ]),
       instruct: getSessionActivityCount(this, [
