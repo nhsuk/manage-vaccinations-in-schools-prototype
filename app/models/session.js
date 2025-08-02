@@ -631,6 +631,7 @@ export class Session {
       ]),
       instruct: getSessionActivityCount(this, [
         {
+          nextActivity: Activity.Record,
           instruct: InstructionOutcome.Needed
         }
       ]),
