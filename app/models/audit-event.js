@@ -101,25 +101,14 @@ export class AuditEvent {
     }
   }
 
-  get link() {
+  get summary() {
     return {
       createdAtAndBy: this.createdBy
         ? formatWithSecondaryText(
             this.formatted.createdAt,
-            this.createdBy.link.email
+            this.createdBy.fullName
           )
         : this.formatted.createdAt
-    }
-  }
-
-  get summary() {
-    let createdAtAndBy = this.formatted.datetime
-    if (this.createdBy) {
-      createdAtAndBy += ` · ${this.createdBy.link.email}`
-    }
-
-    return {
-      createdAtAndBy
     }
   }
 
@@ -141,7 +130,7 @@ export class AuditEvent {
     return {
       createdAt: formatDate(this.createdAt, { dateStyle: 'long' }),
       createdAtAndBy: this.createdBy
-        ? [datetime, this.createdBy.link.fullName].join(` · `)
+        ? [datetime, this.createdBy.fullName].join(` · `)
         : datetime,
       datetime,
       note:

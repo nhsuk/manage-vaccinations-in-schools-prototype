@@ -25,7 +25,7 @@
     {% set triageNoteRows = triageNoteRows | push([
       {
         header: __("event.createdAt.label"),
-        html: triageNote.link.createdAtAndBy
+        html: triageNote.summary.createdAtAndBy
       },
       {
         header: __("event.note.label"),
