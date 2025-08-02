@@ -3,7 +3,7 @@ import { DefaultBatch } from '../models/default-batch.js'
 
 export const batchController = {
   read(request, response, next, batch_id) {
-    const batch = Batch.read(batch_id, request.session.data)
+    const batch = Batch.show(batch_id, request.session.data)
 
     response.locals.batch = batch
     response.locals.paths = {

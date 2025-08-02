@@ -1,13 +1,11 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import { isBefore } from 'date-fns'
 
+import { BatchPresenter } from '../presenters/batch.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
-  formatDate,
   today
 } from '../utils/date.js'
-import { formatMonospace } from '../utils/string.js'
 
 import { Vaccine } from './vaccine.js'
 
@@ -57,26 +55,6 @@ export class Batch {
   }
 
   /**
-   * Get name
-   *
-   * @returns {string} Name
-   */
-  get name() {
-    return `${this.formatted.id} (${this.formatted.expiry})`
-  }
-
-  /**
-   * Get summary (name and expiry)
-   *
-   * @returns {string} Name
-   */
-  get summary() {
-    const prefix = isBefore(this.archivedAt, today()) ? 'Expired' : 'Expires'
-
-    return `${this.formatted.id}<br>\n<span class="nhsuk-u-secondary-text-color">${prefix} ${this.formatted.expiry}</span>`
-  }
-
-  /**
    * Get vaccine this batch belongs to
    *
    * @returns {Vaccine} Vaccine
@@ -90,29 +68,6 @@ export class Batch {
     } catch (error) {
       console.error('Batch.vaccine', error.message)
     }
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} Formatted values
-   */
-  get formatted() {
-    const createdAt = formatDate(this.createdAt, { dateStyle: 'long' })
-    const updatedAt = formatDate(this.updatedAt, { dateStyle: 'long' })
-    const expiry = formatDate(this.expiry, { dateStyle: 'long' })
-    const id = formatMonospace(this.id)
-
-    return { createdAt, updatedAt, expiry, id }
-  }
-
-  /**
-   * Get namespace
-   *
-   * @returns {string} Namespace
-   */
-  get ns() {
-    return 'batch'
   }
 
   /**
@@ -149,6 +104,35 @@ export class Batch {
     if (context?.batches?.[id]) {
       return new Batch(context.batches[id], context)
     }
+  }
+
+  /**
+   * Show all
+   *
+   * @param {object} context - Context
+   * @returns {Array<BatchPresenter>|undefined} Batch
+   * @static
+   */
+  static showAll(context) {
+    return Object.values(context.batches).map((batch) => {
+      batch = new Batch(batch)
+
+      return new BatchPresenter(batch)
+    })
+  }
+
+  /**
+   * Show
+   *
+   * @param {string} id - Batch ID
+   * @param {object} context - Context
+   * @returns {BatchPresenter|undefined} Batch
+   * @static
+   */
+  static show(id, context) {
+    const batch = Batch.read(id, context)
+
+    return new BatchPresenter(batch)
   }
 
   /**

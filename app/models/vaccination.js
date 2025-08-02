@@ -25,7 +25,6 @@ import {
   formatLinkWithSecondaryText,
   formatMillilitres,
   formatMarkdown,
-  formatMonospace,
   formatTag,
   stringToBoolean,
   formatWithSecondaryText
@@ -428,8 +427,8 @@ export class Vaccination {
         syncStatus.description,
         true
       ),
-      batch: this.batch?.summary,
-      batch_id: formatMonospace(this.batch_id),
+      batch: Batch.show(this.batch_id, this.context).summaryRowHtml,
+      batch_id: Batch.show(this.batch_id, this.context).formattedId,
       dose: formatMillilitres(this.dose),
       sequence,
       vaccine_snomed: this.vaccine_snomed && this.vaccine?.brand,

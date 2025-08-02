@@ -261,7 +261,7 @@ export const vaccinationController = {
         response.locals.paths.back = referrer || vaccination.uri
       }
 
-      response.locals.batchItems = Batch.readAll(data)
+      response.locals.batchItems = Batch.showAll(data)
         .filter(
           (batch) => batch.vaccine.snomed === patientSession?.vaccine.snomed
         )
