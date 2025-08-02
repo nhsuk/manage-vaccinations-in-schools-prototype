@@ -37,14 +37,14 @@
       classes: "nhsuk-input--width-20",
       label: { text: __("session.offline.vaccinator.firstName") },
       decorate: "firstName",
-      value: data.token.firstName
+      value: account.firstName
     }) }}
 
     {{ input({
       classes: "nhsuk-input--width-20",
       label: { text: __("session.offline.vaccinator.lastName") },
       decorate: "lastName",
-      value: data.token.lastName
+      value: account.lastName
     }) }}
   {% endcall %}
 {% endblock %}

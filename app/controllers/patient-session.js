@@ -25,10 +25,9 @@ import { stringToBoolean } from '../utils/string.js'
 
 export const patientSessionController = {
   read(request, response, next, nhsn) {
-    const { permissions } = request.app.locals
+    const { account } = request.app.locals
     const { programme_id } = request.params
     const { activity } = request.query
-    const { data } = request.session
     const { __ } = response.locals
 
     const patientSession = PatientSession.readAll(request.session.data)
@@ -61,17 +60,17 @@ export const patientSessionController = {
     // HCAs can record injected flu vaccine, with supplier
     if (session.nationalProtocol) {
       // Upgrade permissions for HCAs
-      permissions.vaccineMethods.push(VaccineMethod.Injection)
+      account.vaccineMethods.push(VaccineMethod.Injection)
     }
 
     // PSD protocol
     // Nurses can record all vaccines
     // HCAs can record nasal sprays for children with a PSD
-    const userIsHCA = data?.token?.role === UserRole.HCA
+    const userIsHCA = account.role === UserRole.HCA
     const patientHasPsd = patientSession.instruct === InstructionOutcome.Given
     if (session.psdProtocol && userIsHCA && patientHasPsd === false) {
       // Downgrade permissions for HCAs as patient doesn’t have a PSD
-      permissions.vaccineMethods = permissions.vaccineMethods.filter(
+      account.vaccineMethods = account.vaccineMethods.filter(
         (method) => method !== VaccineMethod.Nasal
       )
     }
@@ -107,7 +106,7 @@ export const patientSessionController = {
       hasTriage: triageNotes.length > 0,
       hasSupplier: userIsHCA && userHasSupplier,
       canRecord:
-        permissions?.vaccineMethods?.includes(patientSession.vaccine?.method) &&
+        account.vaccineMethods?.includes(patientSession.vaccine?.method) &&
         record === Activity.Record,
       canReport:
         report !== PatientOutcome.NoOutcomeYet &&
@@ -130,9 +129,8 @@ export const patientSessionController = {
     // Vaccinator has permission to record using the alternative vaccine
     // and patient has consent to vaccinate using the alternative vaccine
     response.locals.canRecordAlternativeVaccine =
-      permissions?.vaccineMethods?.includes(
-        programme.alternativeVaccine?.method
-      ) && patientSession.canRecordAlternativeVaccine
+      account.vaccineMethods?.includes(programme.alternativeVaccine?.method) &&
+      patientSession.canRecordAlternativeVaccine
 
     const view = request.path.split('/').at(-1)
     response.locals.navigationItems = [
@@ -210,13 +208,14 @@ export const patientSessionController = {
   },
 
   register(request, response) {
+    const { account } = request.app.locals
     const { register } = request.body.patientSession
     const { data } = request.session
     const { __, patient, patientSession, session, back } = response.locals
 
     patientSession.registerAttendance(
       {
-        ...(data.token && { createdBy_uid: data.token?.uid })
+        createdBy_uid: account.uid
       },
       register
     )
@@ -235,7 +234,8 @@ export const patientSessionController = {
         programme_id: programme.id,
         session_id: session.id,
         vaccine_snomed: patientSession.vaccine.snomed,
-        ...(data.token && { createdBy_uid: data.token?.uid })
+        createdAt: today(),
+        createdBy_uid: account.uid
       })
       vaccination.update(vaccination, data)
       patient.recordVaccination(vaccination)
@@ -256,6 +256,7 @@ export const patientSessionController = {
 
   gillick(type) {
     return (request, response) => {
+      const { account } = request.app.locals
       const { gillick } = request.body.patientSession
       const { data } = request.session
       const { __, back, patientSession } = response.locals
@@ -270,7 +271,7 @@ export const patientSessionController = {
       patientSession.assessGillick(
         {
           name,
-          ...(data.token && { createdBy_uid: data.token?.uid })
+          createdBy_uid: account.uid
         },
         new Gillick(gillick)
       )
@@ -283,6 +284,7 @@ export const patientSessionController = {
   },
 
   preScreen(request, response) {
+    const { account } = request.app.locals
     const { preScreen } = request.body.patientSession
     const { data } = request.session
     const { back, patientSession, programme } = response.locals
@@ -290,7 +292,7 @@ export const patientSessionController = {
     // Pre-screen interview
     patientSession.preScreen({
       note: preScreen.note,
-      ...(data.token && { createdBy_uid: data.token?.uid })
+      createdBy_uid: account.uid
     })
 
     // Pre-screening outcome is to vaccinate with the alternative vaccine
@@ -305,6 +307,7 @@ export const patientSessionController = {
   },
 
   vaccination(request, response) {
+    const { account } = request.app.locals
     const { data } = request.session
     const { patient, patientSession, session, programme } = response.locals
 
@@ -314,7 +317,8 @@ export const patientSessionController = {
       patient_uuid: patient.uuid,
       programme_id: programme.id,
       session_id: session.id,
-      ...(data.token && { createdBy_uid: data.token?.uid })
+      createdAt: today(),
+      createdBy_uid: account.uid
     })
 
     vaccination.create(vaccination, data.wizard)
@@ -326,12 +330,12 @@ export const patientSessionController = {
   },
 
   invite(request, response) {
-    const { data } = request.session
+    const { account } = request.app.locals
     const { __, back, patient, patientSession } = response.locals
 
     patient.inviteToSession({
       session: patientSession.session,
-      ...(data.token && { createdBy_uid: data.token?.uid })
+      createdBy_uid: account.uid
     })
 
     request.flash(
@@ -343,12 +347,12 @@ export const patientSessionController = {
   },
 
   remind(request, response) {
-    const { data } = request.session
+    const { account } = request.app.locals
     const { back, patient, patientSession } = response.locals
 
     patientSession.sendReminder(
       {
-        ...(data.token && { createdBy_uid: data.token?.uid })
+        createdBy_uid: account.uid
       },
       patient.parent1
     )
@@ -357,13 +361,14 @@ export const patientSessionController = {
   },
 
   triage(request, response) {
+    const { account } = request.app.locals
     const { triage } = request.body
     const { data } = request.session
     const { __, back, patientSession } = response.locals
 
     if (triage.psd) {
       const instruction = new Instruction({
-        createdBy_uid: data.token?.uid,
+        createdBy_uid: account.uid,
         programme_id: patientSession.programme.id,
         patientSession_uuid: patientSession.uuid
       })
@@ -380,7 +385,7 @@ export const patientSessionController = {
           ? 'Triaged decision: Keep in triage'
           : `Triaged decision: ${triage.outcome}`,
       note: triage.note,
-      createdBy_uid: data.token?.uid || '000123456789'
+      createdBy_uid: account.uid
     })
 
     // Update patient session
@@ -395,6 +400,7 @@ export const patientSessionController = {
   },
 
   note(request, response) {
+    const { account } = request.app.locals
     let { note, pinned } = request.body
     const { data } = request.session
     const { __, back, patientSession } = response.locals
@@ -404,7 +410,7 @@ export const patientSessionController = {
     patientSession.saveNote({
       name: pinned ? AuditEventType.Pinned : AuditEventType.Note,
       note,
-      createdBy_uid: data.token?.uid || '000123456789'
+      createdBy_uid: account.uid
     })
 
     // Clean up session data

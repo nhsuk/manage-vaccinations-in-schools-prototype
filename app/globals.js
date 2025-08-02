@@ -283,7 +283,7 @@ export default () => {
    * @returns {object} `row`
    */
   globals.sessionActivityRow = function (activity) {
-    const { __, __mf, permissions, session } = this.ctx
+    const { __, __mf, account, session } = this.ctx
 
     const activities = {
       getConsent: {
@@ -306,7 +306,7 @@ export default () => {
       instruct: {
         key: 'instruct',
         value: InstructionOutcome.Needed,
-        ...(permissions.canPrescribe && { action: 'instructions' })
+        ...(account.canPrescribe && { action: 'instructions' })
       },
       register: {
         key: 'register',

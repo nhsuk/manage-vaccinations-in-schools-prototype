@@ -10,7 +10,8 @@ import { formatLink, formatMonospace } from '../utils/string.js'
  * @property {string} [lastName] - Last/family name
  * @property {string} [email] - Email address
  * @property {import('../enums.js').UserRole} [role] - User role
- * @property {object} [batch] - Default batches
+ * @property {boolean} [canPrescribe] - Can provide PSD instruction
+ * @property {Array<import('../enums.js').VaccineMethod>} - Vaccine methods
  * @property {object} [vaccinations] - Vaccination count
  */
 export class User {
@@ -20,12 +21,14 @@ export class User {
     this.lastName = options?.lastName
     this.email = options?.email
     this.role = options?.role
-    this.batch = options?.batch || {}
+    this.canPrescribe = options?.canPrescribe || false
+    this.vaccineMethods = options?.vaccineMethods || []
     this.vaccinations = {
-      [ProgrammeType.Flu]: 0,
-      [ProgrammeType.HPV]: 0,
-      [ProgrammeType.MenACWY]: 0,
-      [ProgrammeType.TdIPV]: 0
+      [ProgrammeType.Flu]: options?.vaccinations?.[ProgrammeType.Flu] || 0,
+      [ProgrammeType.HPV]: options?.vaccinations?.[ProgrammeType.HPV] || 0,
+      [ProgrammeType.MenACWY]:
+        options?.vaccinations?.[ProgrammeType.MenACWY] || 0,
+      [ProgrammeType.TdIPV]: options?.vaccinations?.[ProgrammeType.TdIPV] || 0
     }
   }
 

@@ -65,13 +65,14 @@ export const sessionController = {
   },
 
   new(request, response) {
+    const { account } = request.app.locals
     const { data } = request.session
 
     const session = new Session(
       {
         // TODO: This needs contextual organisation data to work
         registration: data.organisation.sessionRegistration,
-        ...(data.token && { createdBy_uid: data.token?.uid })
+        createdBy_uid: account.uid
       },
       data
     )
@@ -238,7 +239,7 @@ export const sessionController = {
   },
 
   readPatientSessions(request, response, next) {
-    const { permissions } = request.app.locals
+    const { account } = request.app.locals
     const { view } = request.params
     const {
       options,
@@ -259,7 +260,7 @@ export const sessionController = {
 
     // Upgrade permissions according to session delegation settings
     if (session.nationalProtocol) {
-      permissions.vaccineMethods.push(VaccineMethod.Injection)
+      account.vaccineMethods.push(VaccineMethod.Injection)
     }
 
     // Convert year groups query into an array of numbers
@@ -358,7 +359,7 @@ export const sessionController = {
         ({ nextActivity, register, vaccine }) =>
           nextActivity === Activity.Record &&
           register !== RegistrationOutcome.Pending &&
-          permissions?.vaccineMethods?.includes(vaccine?.method)
+          account.vaccineMethods?.includes(vaccine?.method)
       )
     }
 
@@ -687,6 +688,7 @@ export const sessionController = {
   },
 
   giveInstructions(request, response) {
+    const { account } = request.app.locals
     const { __, session } = response.locals
     const { data } = request.session
 
@@ -696,7 +698,7 @@ export const sessionController = {
 
     for (const patientSession of patientsToInstruct) {
       const instruction = new Instruction({
-        createdBy_uid: data.token?.uid,
+        createdBy_uid: account.uid,
         programme_id: patientSession.programme.id,
         patientSession_uuid: patientSession.uuid
       })
@@ -722,6 +724,7 @@ export const sessionController = {
   },
 
   close(request, response) {
+    const { account } = request.app.locals
     const { data } = request.session
     const { __, session } = response.locals
 
@@ -745,7 +748,7 @@ export const sessionController = {
       for (const patientSession of patientSessionsForClinic) {
         const patient = Patient.read(patientSession.patient.nhsn, data)
         patientSession.removeFromSession({
-          ...(data.token && { createdBy_uid: data.token?.uid })
+          createdBy_uid: account.uid
         })
         patient.addToSession(patientSession)
         patient.update({}, data)

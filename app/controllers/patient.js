@@ -179,13 +179,14 @@ export const patientController = {
   },
 
   archive(request, response) {
+    const { account } = request.app.locals
     const { data } = request.session
     const { __, patient } = response.locals
 
     patient.archive(
       {
-        ...request.body.patient,
-        ...(data.token && { createdBy_uid: data.token?.uid })
+        createdBy_uid: account.uid,
+        ...request.body.patient
       },
       data
     )

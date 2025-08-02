@@ -86,11 +86,11 @@
           active: navigation.activeSection == "organisations"
         }
       ]
-    } if data.token.role != UserRole.DataConsumer,
+    } if account.role != UserRole.DataConsumer,
     account: {
       items: [
         {
-          text: user.nameAndRole,
+          text: account.nameAndRole,
           icon: true
         },
         {
@@ -101,7 +101,7 @@
           href: "/account/sign-out",
           text: __("account.sign-out.title")
         }
-      ] if data.token else [
+      ] if account.role else [
         {
           text: __("account.sign-in.title"),
           href: "/"

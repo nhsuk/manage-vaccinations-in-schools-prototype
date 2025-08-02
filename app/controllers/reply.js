@@ -45,6 +45,7 @@ export const replyController = {
   },
 
   new(request, response) {
+    const { account } = request.app.locals
     const { programme_id, nhsn } = request.params
     const { data } = request.session
 
@@ -58,7 +59,7 @@ export const replyController = {
         patient_uuid: patientSession.patient.uuid,
         programme_id: patientSession.programme.id,
         session_id: patientSession.session.id,
-        ...(data.token && { createdBy_uid: data.token?.uid })
+        createdBy_uid: account.uid
       },
       data
     )
@@ -70,10 +71,10 @@ export const replyController = {
 
   update(type) {
     return (request, response) => {
+      const { account, invalidUuid } = request.app.locals
       const { reply_uuid } = request.params
       const { data } = request.session
       const { __, activity, patientSession, triage } = response.locals
-      const { invalidUuid } = request.app.locals
 
       let reply
       let next
@@ -95,7 +96,7 @@ export const replyController = {
           patientSession.recordTriage({
             ...triage,
             ...data?.wizard?.triage, // Wizard values
-            ...(data.token && { createdBy_uid: data.token?.uid }),
+            createdBy_uid: account.uid,
             createdAt: today()
           })
         }
@@ -284,6 +285,7 @@ export const replyController = {
   },
 
   updateForm(request, response) {
+    const { account } = request.app.locals
     const { respondent } = request.body
     const { reply_uuid } = request.params
     const { data } = request.session
@@ -331,8 +333,8 @@ export const replyController = {
         outcome: VaccinationOutcome.AlreadyVaccinated,
         patient_uuid: patientSession.patient.uuid,
         session_id: patientSession.session.id,
-        ...(data.reply?.note && { note: data.reply.note }),
-        ...(data.token && { createdBy_uid: data.token?.uid })
+        createdBy_uid: account.uid,
+        ...(data.reply?.note && { note: data.reply.note })
       }
     }
 
@@ -401,6 +403,7 @@ export const replyController = {
   },
 
   withdraw(request, response) {
+    const { account } = request.app.locals
     const { refusalReason, refusalReasonOther, note } = request.body.reply
     const { data } = request.session
     const { __, activity, patientSession, reply } = response.locals
@@ -410,11 +413,11 @@ export const replyController = {
       ...reply,
       uuid: false,
       createdAt: today(),
+      createdBy_uid: account.uid,
       decision: ReplyDecision.Refused,
       refusalReason,
       ...(refusalReason === ReplyRefusal.Other && { refusalReasonOther }),
-      ...(data.reply?.note && { note }),
-      ...(data.token && { createdBy_uid: data.token?.uid })
+      ...(data.reply?.note && { note })
     })
 
     patientSession.patient.addReply(newReply)
@@ -427,8 +430,8 @@ export const replyController = {
         patient_uuid: patientSession.patient.uuid,
         programme_id: patientSession.programme.id,
         session_id: patientSession.session.id,
-        ...(data.reply?.note && { note }),
-        ...(data.token && { createdBy_uid: data.token?.uid })
+        createdBy_uid: account.uid,
+        ...(data.reply?.note && { note })
       })
       patientSession.patient.recordVaccination(vaccination)
       vaccination.update(vaccination, data)

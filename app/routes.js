@@ -1,6 +1,7 @@
 import express from 'express'
 import flash from 'express-flash'
 
+import { authentication } from './middleware/authentication.js'
 import { enumeration } from './middleware/enumeration.js'
 import { environment } from './middleware/environment.js'
 import { internationalisation } from './middleware/internationalisation.js'
@@ -8,7 +9,6 @@ import { navigation } from './middleware/navigation.js'
 import { notification } from './middleware/notification.js'
 import { organisation } from './middleware/organisation.js'
 import { performance } from './middleware/performance.js'
-import { permission } from './middleware/permission.js'
 import { referrer } from './middleware/referrer.js'
 import { rollover } from './middleware/rollover.js'
 import { users } from './middleware/users.js'
@@ -43,12 +43,12 @@ router.use(environment)
 router.use(internationalisation)
 router.use(
   flash(),
+  authentication,
   navigation,
   notification,
   rollover,
   users,
-  organisation,
-  permission
+  organisation
 )
 router.use(referrer)
 

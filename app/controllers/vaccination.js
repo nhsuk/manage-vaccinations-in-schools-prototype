@@ -63,6 +63,7 @@ export const vaccinationController = {
   },
 
   new(request, response) {
+    const { account } = request.app.locals
     const { patientSession_uuid } = request.query
     const { data } = request.session
 
@@ -105,8 +106,8 @@ export const vaccinationController = {
     data.patientSession_uuid = patientSession_uuid
 
     // Used logged in user as vaccinator, or default to example user
-    const createdBy_uid = data.token?.uid || '000123456789'
-    const role = data.token?.role || UserRole.Nurse
+    const createdBy_uid = account.uid || '000123456789'
+    const role = account.role || UserRole.Nurse
 
     // Nurses always use PGD protocol
     let protocol = VaccinationProtocol.PGD

@@ -69,7 +69,7 @@
       fieldset: { legend: { text: __("triage.psd.label") } },
       items: booleanItems,
       decorate: "triage.psd"
-    }) if permissions.canPrescribe %}
+    }) if account.canPrescribe %}
 
     {% set outcomeItems = injectConditionalHtml(triageOutcomeItems(patientSession.screenOutcomesForConsentMethod), ScreenOutcome.VaccinateNasal, psdRadiosHtml) if patientSession.programme.alternativeVaccine else triageOutcomeItems(patientSession.screenOutcomesForConsentMethod) %}
 

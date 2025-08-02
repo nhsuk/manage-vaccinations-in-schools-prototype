@@ -2,7 +2,7 @@
 
 {% extends "_layouts/default.njk" %}
 
-{% set isDataConsumer = data.token.role == UserRole.DataConsumer %}
+{% set isDataConsumer = account.role == UserRole.DataConsumer %}
 {% set paths = { back: "/home" } if isDataConsumer %}
 {% set title = programme.name + " – " + __("programme.show.title") %}
 
@@ -14,7 +14,7 @@
     }],
     text: __("programme.list.title"),
     href: "/programmes"
-  }) if data.token.role != UserRole.DataConsumer }}
+  }) if account.role != UserRole.DataConsumer }}
 {% endblock %}
 
 {% block content %}

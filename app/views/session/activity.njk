@@ -94,7 +94,7 @@
 
         {{ insetText({
           html: instructHtml
-        }) if view == "instruct" and session.activity.instruct and permissions.canPrescribe }}
+        }) if view == "instruct" and session.activity.instruct and account.canPrescribe }}
 
         {% set recordHtml %}
           {{ vaccinationCount(data.token.vaccinations) | nhsukMarkdown if vaccinationCount(data.token.vaccinations) }}

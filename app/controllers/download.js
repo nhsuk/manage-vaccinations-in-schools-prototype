@@ -7,13 +7,14 @@ import { Programme } from '../models/programme.js'
 
 export const downloadController = {
   readForm(request, response, next, download_id) {
+    const { account } = request.app.locals
     const { data } = request.session
 
     const journey = {
       [`/`]: {},
       [`/${download_id}/new/dates`]: {
         [`/${download_id}/new/format`]: () =>
-          data.token?.role !== UserRole.DataConsumer
+          account.role !== UserRole.DataConsumer
       },
       [`/${download_id}/new/organisations`]: {},
       [`/${download_id}/new/format`]: {},
@@ -45,6 +46,7 @@ export const downloadController = {
   },
 
   new(request, response) {
+    const { account } = request.app.locals
     const { programme_id } = request.params
     const { data } = request.session
 
@@ -52,7 +54,7 @@ export const downloadController = {
     const download = new Download({
       programme_id,
       vaccination_uuids: programme.vaccinations.map(({ uuid }) => uuid),
-      ...(data.token && { createdBy_uid: data.token?.uid })
+      createdBy_uid: account.uid
     })
 
     download.create(download, data.wizard)

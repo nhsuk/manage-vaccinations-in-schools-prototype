@@ -56,6 +56,7 @@ export const uploadController = {
   },
 
   new(request, response) {
+    const { account } = request.app.locals
     const { programme_id } = request.params
     const { type, urn } = request.query
     const { data } = request.session
@@ -63,11 +64,11 @@ export const uploadController = {
     const upload = new Upload({
       programme_id,
       type,
+      createdBy_uid: account.uid,
       ...(type === UploadType.School &&
         urn && {
           school_urn: urn
-        }),
-      ...(data.token && { createdBy_uid: data.token?.uid })
+        })
     })
 
     upload.create(upload, data.wizard)
