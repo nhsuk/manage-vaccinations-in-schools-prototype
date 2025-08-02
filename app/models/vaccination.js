@@ -13,6 +13,7 @@ import {
   VaccinationSyncStatus,
   VaccineMethod
 } from '../enums.js'
+import { BatchPresenter } from '../presenters/batch.js'
 import { UserPresenter } from '../presenters/user.js'
 import {
   convertIsoDateToObject,
@@ -26,7 +27,6 @@ import {
   formatLinkWithSecondaryText,
   formatMillilitres,
   formatMarkdown,
-  formatMonospace,
   formatTag,
   stringToBoolean,
   formatWithSecondaryText
@@ -428,8 +428,8 @@ export class Vaccination {
         syncStatus.description,
         true
       ),
-      batch: this.batch?.summary,
-      batch_id: formatMonospace(this.batch_id),
+      batch: BatchPresenter.forOne(this.batch_id, this.context).summaryRowHtml,
+      batch_id: BatchPresenter.forOne(this.batch_id, this.context).formattedId,
       dose: formatMillilitres(this.dose),
       sequence,
       vaccine_snomed: this.vaccine_snomed && this.vaccine?.brand,

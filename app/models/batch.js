@@ -1,15 +1,10 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import { isBefore } from 'date-fns'
 
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
-  formatDate,
   today
 } from '../utils/date.js'
-import { formatMonospace } from '../utils/string.js'
-
-import { Vaccine } from './vaccine.js'
 
 /**
  * @class Batch
@@ -54,65 +49,6 @@ export class Batch {
     if (object) {
       this.expiry = convertObjectToIsoDate(object)
     }
-  }
-
-  /**
-   * Get name
-   *
-   * @returns {string} Name
-   */
-  get name() {
-    return `${this.formatted.id} (${this.formatted.expiry})`
-  }
-
-  /**
-   * Get summary (name and expiry)
-   *
-   * @returns {string} Name
-   */
-  get summary() {
-    const prefix = isBefore(this.archivedAt, today()) ? 'Expired' : 'Expires'
-
-    return `${this.formatted.id}<br>\n<span class="nhsuk-u-secondary-text-colour">${prefix} ${this.formatted.expiry}</span>`
-  }
-
-  /**
-   * Get vaccine this batch belongs to
-   *
-   * @returns {Vaccine} Vaccine
-   */
-  get vaccine() {
-    try {
-      const vaccine = this.context?.vaccines[this.vaccine_snomed]
-      if (vaccine) {
-        return new Vaccine(vaccine)
-      }
-    } catch (error) {
-      console.error('Batch.vaccine', error.message)
-    }
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} Formatted values
-   */
-  get formatted() {
-    const createdAt = formatDate(this.createdAt, { dateStyle: 'long' })
-    const updatedAt = formatDate(this.updatedAt, { dateStyle: 'long' })
-    const expiry = formatDate(this.expiry, { dateStyle: 'long' })
-    const id = formatMonospace(this.id)
-
-    return { createdAt, updatedAt, expiry, id }
-  }
-
-  /**
-   * Get namespace
-   *
-   * @returns {string} Namespace
-   */
-  get ns() {
-    return 'batch'
   }
 
   /**
