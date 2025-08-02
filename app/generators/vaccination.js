@@ -1,7 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import vaccines from '../datasets/vaccines.js'
-import { ConsentOutcome, ScreenOutcome, VaccinationOutcome } from '../enums.js'
+import { ScreenOutcome, VaccinationOutcome } from '../enums.js'
 import { Vaccination } from '../models/vaccination.js'
 
 /**
@@ -23,7 +23,7 @@ export function generateVaccination(patientSession, programme, batch, users) {
   let outcome
   if (patientSession.screen === ScreenOutcome.DoNotVaccinate) {
     outcome = VaccinationOutcome.Contraindications
-  } else if (patientSession.consent === ConsentOutcome.Given) {
+  } else if (patientSession.consentGiven) {
     outcome = faker.helpers.weightedArrayElement([
       { value: VaccinationOutcome.Vaccinated, weight: 7 },
       { value: VaccinationOutcome.PartVaccinated, weight: 1 },

@@ -84,10 +84,11 @@ export class Vaccination {
     this.selfId = options?.selfId && stringToBoolean(options.selfId)
     this.identifiedBy = this.selfId !== true && options?.identifiedBy
     this.outcome = options?.outcome
-    this.given =
-      this.outcome === VaccinationOutcome.Vaccinated ||
-      this.outcome === VaccinationOutcome.PartVaccinated ||
-      this.outcome === VaccinationOutcome.AlreadyVaccinated
+    this.given = [
+      VaccinationOutcome.Vaccinated,
+      VaccinationOutcome.PartVaccinated,
+      VaccinationOutcome.AlreadyVaccinated
+    ].includes(this.outcome)
     this.injectionMethod = options?.injectionMethod
     this.injectionSite = options?.injectionSite
     this.dose = this.given ? options?.dose || '' : undefined
