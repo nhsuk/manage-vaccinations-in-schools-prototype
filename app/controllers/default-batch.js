@@ -1,7 +1,7 @@
 import { Batch } from '../models/batch.js'
 import { DefaultBatch } from '../models/default-batch.js'
 import { Session } from '../models/session.js'
-import { Vaccine } from '../models/vaccine.js'
+import { VaccinePresenter } from '../presenters/vaccine.js'
 
 export const defaultBatchController = {
   read(request, response, next) {
@@ -18,7 +18,7 @@ export const defaultBatchController = {
 
     response.locals.session = Session.findOne(session_id, data)
 
-    response.locals.vaccine = Vaccine.findOne(vaccine_snomed, data)
+    response.locals.vaccine = VaccinePresenter.forOne(vaccine_snomed, data)
 
     response.locals.paths = {
       back: `/sessions/${session_id}/record`,
