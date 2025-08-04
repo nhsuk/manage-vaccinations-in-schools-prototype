@@ -40,9 +40,13 @@
 
   {% if patients.length %}
     {% if data.q %}
-      {% set heading = __n("patient.count", patients.length) + " matching ‘" + data.q + "’" %}
+      {% set heading = __mf("patient.count", {
+        count: patients.length
+      }) + " matching ‘" + data.q + "’" %}
     {% else %}
-      {% set heading = __n("patient.count", patients.length) %}
+      {% set heading = __mf("patient.count", {
+        count: patients.length
+      }) %}
     {% endif %}
 
     {{ table({
@@ -68,7 +72,7 @@
     }) | nhsukMarkdown }}
   {% else %}
     {{ card({
-      heading: __n("patient.count", patients.length),
+      heading: __mf("patient.count", { count: patients.length }),
       headingLevel: 3,
       feature: true,
       description: __mf("patient.results", {

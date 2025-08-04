@@ -76,7 +76,9 @@
           headingClasses: "nhsuk-heading-s",
           headingLevel: 4,
           href: programme.uri + "/patients?yearGroup=" + yearGroup if not isDataConsumer,
-          descriptionHtml: __n("programme.patients.count", programme.patientSessions | where("yearGroup", yearGroup) | length)
+          descriptionHtml: __mf("patient.count", {
+            count: programme.patientSessions | where("yearGroup", yearGroup) | length
+          })
         }) }}
       </li>
     {% endfor %}

@@ -58,7 +58,7 @@
   {% if consents.length %}
     {{ table({
       id: "consents",
-      heading: __n("consent.count", consents.length),
+      heading: __mf("consent.count", { count: consents.length }),
       headingLevel: 2,
       panel: true,
       responsive: true,
@@ -79,6 +79,6 @@
       count: results.count
     }) | nhsukMarkdown }}
   {% else %}
-    {{ __n("consent.count", 0) | nhsukMarkdown }}
+    {{ __mf("consent.count", { count: 0 }) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

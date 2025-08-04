@@ -41,7 +41,7 @@
 
     {{ table({
       id: "notices",
-      heading: __n("notice.count", notices.length),
+      heading: __mf("notice.count", { count: notices.length }),
       panel: true,
       responsive: true,
       head: [
@@ -53,6 +53,6 @@
       rows: noticeRows
     }) }}
   {% else %}
-    {{ __n("notice.count", 0) | nhsukMarkdown }}
+    {{ __mf("notice.count", { count: 0 }) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

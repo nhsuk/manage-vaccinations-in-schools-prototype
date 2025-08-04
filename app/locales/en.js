@@ -1,14 +1,10 @@
 import { healthQuestions } from '../datasets/health-questions.js'
 import {
-  Activity,
-  ConsentOutcome,
-  PatientOutcome,
   ProgrammeType,
   RegistrationOutcome,
   ReplyDecision,
   ReplyRefusal,
-  ScreenOutcome,
-  TriageOutcome
+  ScreenOutcome
 } from '../enums.js'
 
 /**
@@ -137,37 +133,6 @@ export const en = {
       label: 'Batch ID'
     }
   },
-  capture: {
-    [Activity.Register]: {
-      label: 'Register',
-      count: {
-        one: '%s child still to register',
-        other: '[0] No children still to register|%s children still to register'
-      }
-    },
-    [Activity.Consent]: {
-      label: 'Get consent',
-      count: {
-        one: '%s child need consent',
-        other: '[0] No children need consent|%s children need consent'
-      }
-    },
-    [Activity.Triage]: {
-      label: 'Triage',
-      count: {
-        one: '%s child needing triage',
-        other: '[0] No children needing triage|%s children needing triage'
-      }
-    },
-    [Activity.Record]: {
-      label: 'Vaccinate',
-      count: {
-        one: '%s child ready to vaccinate',
-        other:
-          '[0] No children ready to vaccinate|%s children ready to vaccinate'
-      }
-    }
-  },
   clinic: {
     new: {
       title: 'Add a new clinic',
@@ -196,10 +161,7 @@ export const en = {
     address: {
       label: 'Address'
     },
-    count: {
-      one: '%s clinic',
-      other: '[0] No clinics|%s clinics'
-    }
+    count: '{count, plural, =0 {No clinics} one {1 clinic} other {# clinics}}'
   },
   child: {
     label: 'Child',
@@ -248,93 +210,10 @@ export const en = {
   },
   consent: {
     label: 'Consent response',
-    count: {
-      one: '%s unmatched consent response',
-      other: '[0] No unmatched consent responses|%s unmatched consent responses'
-    },
+    count:
+      '{count, plural, =0 {No unmatched consent responses} one {1 unmatched consent response} other {# unmatched consent responses}}',
     results:
-      '{count, plural, =0{No responses matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> response} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> responses}}',
-    [ConsentOutcome.NoResponse]: {
-      label: 'No response',
-      title: 'No response',
-      count: {
-        one: '%s child without a response',
-        other:
-          '[0] No children without a response|%s children without a response'
-      }
-    },
-    [ConsentOutcome.NoRequest]: {
-      label: 'Request failed',
-      title: 'Request failed',
-      count: {
-        one: '%s child whose request failed',
-        other:
-          '[0] No children whose request failed|%s children whose request failed'
-      }
-    },
-    [ConsentOutcome.Inconsistent]: {
-      label: 'Conflicts',
-      title: 'Conflicting consent',
-      count: {
-        one: '%s child with conflicting consent',
-        other:
-          '[0] No children with conflicting consent|%s children with conflicting consent'
-      }
-    },
-    [ConsentOutcome.Given]: {
-      label: 'Consent given',
-      title: 'Ready for vaccinator',
-      count: {
-        one: '%s child with consent given',
-        other:
-          '[0] No children with consent given|%s children with consent given'
-      }
-    },
-    [ConsentOutcome.GivenForInjection]: {
-      label: 'Consent given for injected vaccine',
-      title: 'Ready for vaccinator',
-      count: {
-        one: '%s child with consent given for injected vaccine',
-        other:
-          '[0] No children with consent given for injected vaccine|%s children with consent given for injected vaccine'
-      }
-    },
-    [ConsentOutcome.GivenForNasalSpray]: {
-      label: 'Consent given for nasal spray',
-      title: 'Ready for vaccinator',
-      count: {
-        one: '%s child with consent given for nasal spray',
-        other:
-          '[0] No children with consent given for nasal spray|%s children with consent given for nasal spray'
-      }
-    },
-    [ConsentOutcome.Declined]: {
-      label: 'Follow up requested',
-      title: 'Consent refused (follow up requested)',
-      count: {
-        one: '%s child with a follow up requested',
-        other:
-          '[0] No children with a follow up requested|%s children with a follow up requested'
-      }
-    },
-    [ConsentOutcome.Refused]: {
-      label: 'Refused',
-      title: 'Consent refused',
-      count: {
-        one: '%s child with consent refused',
-        other:
-          '[0] No children with consent refused|%s children with consent refused'
-      }
-    },
-    [ConsentOutcome.FinalRefusal]: {
-      label: 'Refusal confirmed',
-      title: 'Refusal confirmed',
-      count: {
-        one: '%s child with no consent response',
-        other:
-          '[0] No children with no consent response|%s children with no consent response'
-      }
-    },
+      '{count, plural, =0 {No responses matching your search criteria were found} one {Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> response} other {Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> responses}}',
     list: {
       label: 'Unmatched responses',
       title: 'Unmatched consent responses',
@@ -790,14 +669,9 @@ export const en = {
     delete: {
       success: 'Notice archived'
     },
-    count: {
-      one: '%s notice',
-      other: '[0] No notices|%s notices'
-    },
-    warning: {
-      one: '%s important notice needs attention',
-      other: '%s important notices need attention'
-    },
+    count: '{count, plural, =0 {No notices} one {1 notice} other {# notices}}',
+    warning:
+      '{count, plural, =0 {No important notices need} one {1 important notice needs} other {# important notices need}} attention',
     createdAt: {
       label: 'Date'
     },
@@ -881,35 +755,6 @@ export const en = {
       hint: 'Use this password to unlock offline vaccination spreadsheets. Don’t share it with anyone outside your team.'
     }
   },
-  report: {
-    label: 'Programme outcome',
-    [PatientOutcome.NoOutcomeYet]: {
-      title: 'No programme outcome yet',
-      label: 'No programme yet',
-      count: {
-        one: '%s child without a programme outcome yet',
-        other:
-          '[0] No children without a programme outcome|%s children without a programme outcome yet'
-      }
-    },
-    [PatientOutcome.Vaccinated]: {
-      label: 'Vaccinated',
-      title: 'Vaccinated',
-      count: {
-        one: '%s child vaccinated',
-        other: '[0] No children vaccinated|%s children vaccinated'
-      }
-    },
-    [PatientOutcome.CouldNotVaccinate]: {
-      label: 'Not vaccinated',
-      title: 'Do not vaccinate',
-      count: {
-        one: '%s child could not be vaccinated',
-        other:
-          '[0] No children could not be vaccinated|%s children could not be vaccinated'
-      }
-    }
-  },
   parent: {
     label: 'Parent or guardian',
     fullName: {
@@ -979,12 +824,9 @@ export const en = {
     lastReminderDate: {
       label: 'Last reminder sent'
     },
+    count: '{count, plural, =0 {No children} one {1 child} other {# children}}',
     results:
-      '{count, plural, =0{No children matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> children}}',
-    count: {
-      one: '%s child',
-      other: '[0] No children|%s children'
-    },
+      '{count, plural, =0 {No children matching your search criteria were found} one {Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other {Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> children}}',
     search: {
       label: 'Find children',
       dob: 'Child’s date of birth',
@@ -1007,12 +849,7 @@ export const en = {
       title: 'What is the child’s NHS number?'
     },
     hasMissingNhsNumber: {
-      label: 'Missing NHS number',
-      count: {
-        one: '%s record is without an NHS number',
-        other:
-          '[0] No records without an NHS number|%s records without an NHS number'
-      }
+      label: 'Missing NHS number'
     },
     post16: {
       label: 'Over 16 years old?',
@@ -1115,11 +952,7 @@ export const en = {
       title: 'Child record'
     },
     events: {
-      title: 'Session notes and activity',
-      count: {
-        one: '%s event',
-        other: '[0] No events|%s events'
-      }
+      title: 'Session notes and activity'
     },
     notes: {
       label: 'Notes',
@@ -1309,32 +1142,13 @@ export const en = {
       cohorts: 'Cohorts',
       responses: 'Consent responses'
     },
-    consentPdf: {
-      label: 'Paper consent form'
-    },
     patients: {
       label: 'Children',
-      title: 'Children',
-      count: {
-        one: '%s child',
-        other: '[0] No children|%s children'
-      }
+      title: 'Children'
     },
     sessions: {
       label: 'Sessions',
-      title: 'Sessions',
-      count: {
-        one: '%s session organised',
-        other: '[0] No sessions organised|%s sessions organised'
-      }
-    },
-    vaccinations: {
-      label: 'Vaccinations',
-      title: 'Vaccinations',
-      count: {
-        one: '%s vaccination record',
-        other: '[0] No vaccination records|%s vaccination records'
-      }
+      title: 'Sessions'
     },
     name: {
       label: 'Programme'
@@ -1506,6 +1320,8 @@ export const en = {
   },
   review: {
     label: 'Issue to review',
+    count:
+      '{count, plural, =0 {No imported records need} one {1 imported record needs} other {# imported records need}} review',
     archived: {
       label: 'Archived record',
       title: 'Do you want to restore this previously archived record?',
@@ -1555,6 +1371,8 @@ export const en = {
     show: {
       summary: 'School details'
     },
+    count:
+      '{count, plural, =0 {no {phase} school} one {# no {phase} schools} other{# {phase} schools}}',
     name: {
       label: 'Name'
     },
@@ -1567,28 +1385,8 @@ export const en = {
     address: {
       label: 'Address'
     },
-    count: {
-      one: '%s school',
-      other: '[0] No schools|%s schools'
-    },
-    primary: {
-      count: {
-        one: '%s primary school',
-        other: '[0] No primary schools|%s primary schools'
-      }
-    },
-    secondary: {
-      count: {
-        one: '%s secondary school',
-        other: '[0] No secondary schools|%s secondary schools'
-      }
-    },
     patients: {
-      label: 'Children',
-      count: {
-        one: '%s child',
-        other: '[0] No children|%s children'
-      }
+      label: 'Children'
     }
   },
   search: {
@@ -1601,11 +1399,9 @@ export const en = {
   session: {
     label: 'Sessions',
     results:
-      '{count, plural, =0{No sessions matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> sessions}}',
-    count: {
-      one: '%s session',
-      other: '[0] No sessions|%s sessions'
-    },
+      '{count, plural, =0 {No sessions matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> sessions}}',
+    count:
+      '{count, plural, =0 {No sessions} one {1 session} other {# sessions}}',
     search: {
       label: 'Find session'
     },
@@ -1715,21 +1511,15 @@ export const en = {
       label: 'Sessions',
       title: 'Sessions',
       description:
-        'Use this area to:\n- review consent responses\n- triage health records\n- record vaccinations\n- review session outcomes',
-      count: {
-        one: '%s session',
-        other: '[0] No sessions|%s sessions'
-      }
+        'Use this area to:\n- review consent responses\n- triage health records\n- record vaccinations\n- review session outcomes'
     },
     notices: {
       label: 'Needs review'
     },
     instructions: {
       label: 'Add new PSDs',
-      title: {
-        one: 'Are you sure you want to add a new PSD?',
-        other: 'Are you sure you want to add %s new PSDs?'
-      },
+      title:
+        'Are you sure you want to add {count, plural, =0 {no new PSDs} one {a new PSD} other {# new PSDs}}?',
       description: 'This cannot be undone.',
       confirm: 'Yes, add PSDs',
       cancel: 'No, return to session',
@@ -1957,25 +1747,16 @@ export const en = {
     },
     closingSummary: {
       noConsentRequest: {
-        count: {
-          one: '%s child whose parents did not receive a consent request',
-          other:
-            '[0] No children whose parents did not receive a consent request|%s children whose parents did not receive a consent request'
-        }
+        count:
+          '{count, plural, =0 {No children} one {1 child} other {# children}} whose parents did not receive a consent request'
       },
       noConsentResponse: {
-        count: {
-          one: '%s child whose parents did not give a consent response',
-          other:
-            '[0] No children whose parents did not give a consent response|%s children whose parents did not give a consent response'
-        }
+        count:
+          '{count, plural, =0 {No children} one {1 child} other {# children}} whose parents did not give a consent response'
       },
       couldNotVaccinate: {
-        count: {
-          one: '%s child who could not be vaccinated',
-          other:
-            '[0] No children who could not be vaccinated|%s children who could not be vaccinated'
-        }
+        count:
+          '{count, plural, =0 {No children} one {1 child} other {# children}} who could not be vaccinated'
       }
     }
   },
@@ -2068,37 +1849,11 @@ export const en = {
     },
     psd: {
       label: 'Do you want to add a PSD?'
-    },
-    [TriageOutcome.Needed]: {
-      label: 'Triage needed',
-      count: {
-        one: '%s child needing triage',
-        other: '[0] No children needing triage|%s children needing triage'
-      }
-    },
-    [TriageOutcome.Completed]: {
-      label: 'Triage completed',
-      count: {
-        one: '%s child with triage completed',
-        other:
-          '[0] No children with triage completed|%s children with triage completed'
-      }
-    },
-    [TriageOutcome.NotNeeded]: {
-      label: 'No triage needed',
-      count: {
-        one: '%s child with no triage needed',
-        other:
-          '[0] No children with no triage needed|%s children with no triage needed'
-      }
     }
   },
   upload: {
     label: 'Record import',
-    count: {
-      one: '%s import',
-      other: '[0] No imports|%s imports'
-    },
+    count: '{count, plural, =0 {No imports} one {1 import} other {# imports}}',
     list: {
       label: 'Imports',
       title: 'Import records',
@@ -2117,12 +1872,7 @@ export const en = {
     },
     reviews: {
       label: 'Import issues',
-      title: 'Import issues',
-      count: {
-        one: '%s imported record needs review',
-        other:
-          '[0] No imported records need review|%s imported records need review'
-      }
+      title: 'Import issues'
     },
     notices: {
       label: 'Important notices'
@@ -2190,14 +1940,6 @@ export const en = {
     invalid: {
       label: 'Missing vaccination'
     },
-    incomplete: {
-      label: 'Incomplete',
-      count: {
-        one: '%s record without an NHS number will use information from the Personal Demographics Service (PDS)',
-        other:
-          '[0] No records without NHS numbers will use information from the Personal Demographics Service (PDS)|%s records without NHS numbers will use information from the Personal Demographics Service (PDS)'
-      }
-    },
     id: {
       label: 'ID'
     },
@@ -2228,11 +1970,7 @@ export const en = {
       label: 'Vaccination records'
     },
     patients: {
-      label: 'Child records',
-      count: {
-        one: '%s record imported',
-        other: '[0] No records imported|%s records imported'
-      }
+      label: 'Child records'
     }
   },
   manual: {
@@ -2273,12 +2011,10 @@ export const en = {
     switch: {
       success: '{{move.patient.fullName}}’s record updated with new school'
     },
-    count: {
-      one: '%s school move',
-      other: '[0] No school moves|%s school moves'
-    },
+    count:
+      '{count, plural, =0 {No school moves} one {1 school move} other {# school moves}}',
     results:
-      '{count, plural, =0{No school moves matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> school move} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> school moves}}',
+      '{count, plural, =0 {No school moves matching your search criteria were found} one {Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> school move} other {Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> school moves}}',
     createdAt: {
       label: 'Updated'
     },
@@ -2327,10 +2063,8 @@ export const en = {
     show: {
       summary: 'Vaccination details'
     },
-    count: {
-      one: '%s vaccination record',
-      other: '[0] No vaccination records|%s vaccination records'
-    },
+    count:
+      '{count, plural, =0 {No vaccination records} one {1 vaccination record} other {# vaccination records}}',
     administer: {
       title:
         'How was the {{session.programmeNames.sentenceCase}} vaccination given?'

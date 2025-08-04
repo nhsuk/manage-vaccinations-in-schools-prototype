@@ -50,7 +50,7 @@
   {% if moves.length %}
     {{ table({
       id: "moves",
-      heading: __n("move.count", moves.length),
+      heading: __mf("move.count", { count: moves.length }),
       headingLevel: 2,
       panel: true,
       responsive: true,
@@ -71,6 +71,6 @@
       count: results.count
     }) | nhsukMarkdown }}
   {% else %}
-    {{ __n("move.count", 0) | nhsukMarkdown }}
+    {{ __mf("move.count", { count: 0 }) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

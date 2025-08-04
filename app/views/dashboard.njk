@@ -12,7 +12,7 @@
 
   {{ warningCallout({
     heading: __("notice.list.title"),
-    html: link("/uploads/notices", __n("notice.warning", notices.length), {
+    html: link("/uploads/notices", __mf("notice.warning", { count: notices.length }), {
       classes: "nhsuk-link--no-visited-state"
     }) | nhsukMarkdown
   }) if notices.length }}

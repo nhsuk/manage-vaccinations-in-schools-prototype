@@ -39,7 +39,7 @@
 
     {{ table({
       id: "reviews",
-      heading: __n("upload.reviews.count", reviews.length),
+      heading: __mf("review.count", { count: reviews.length }),
       panel: true,
       responsive: true,
       head: [
@@ -50,6 +50,6 @@
       rows: reviewRows
     }) }}
   {% else %}
-    {{ __n("upload.reviews.count", 0) | nhsukMarkdown }}
+    {{ __mf("review.count", { count: 0 }) | nhsukMarkdown }}
   {% endif %}
 {% endblock %}

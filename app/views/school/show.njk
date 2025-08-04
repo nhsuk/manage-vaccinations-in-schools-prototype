@@ -45,7 +45,9 @@
 
     {{ details({
       classes: "nhsuk-expander",
-      summaryText: yearGroup | yearGroup + " (" + __n("school.patients.count", patients.length) + ")",
+      summaryText: yearGroup | yearGroup + " (" + __mf("patient.count", {
+        count: patients.length
+      }) + ")",
       html: table({
         tableClasses: "nhsuk-u-margin-0",
         id: "patients",

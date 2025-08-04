@@ -57,7 +57,7 @@
             rows: clinicRows
           }) }}
         {% else %}
-          {{ __n("clinic.count", 0) | nhsukMarkdown }}
+          {{ __mf("clinic.count", { count: 0 }) | nhsukMarkdown }}
         {% endif %}
       {% endset %}
 

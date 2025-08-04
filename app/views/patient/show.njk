@@ -112,7 +112,7 @@
         rows: patientSessionRows
       }) }}
     {% else %}
-      {{ __n("session.count", 0) | nhsukMarkdown }}
+      {{ __mf("session.count", { count: 0 }) | nhsukMarkdown }}
     {% endif %}
   {% endset %}
 
@@ -159,7 +159,7 @@
         rows: vaccinationRows
       }) }}
     {% else %}
-      {{ __n("vaccination.count", 0) | nhsukMarkdown }}
+      {{ __mf("vaccination.count", { count: 0 }) | nhsukMarkdown }}
     {% endif %}
   {% endset %}
 

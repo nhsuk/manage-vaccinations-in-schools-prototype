@@ -1,6 +1,8 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __n("session.instructions.title", session.activity.instruct) %}
+{% set title = __mf("session.instructions.title", {
+  count: session.activity.instruct
+}) %}
 
 {% block beforeContent %}
   {{ breadcrumb({

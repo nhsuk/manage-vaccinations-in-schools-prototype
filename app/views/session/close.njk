@@ -15,7 +15,9 @@
 {% for outcome, patients in session.closingSummary %}
   {% if patients.length > 0 %}
     <li>
-      {{ __n("session.closingSummary." + outcome + ".count", patients.length) }}
+      {{ __mf("session.closingSummary." + outcome + ".count", {
+        count: patients.length
+      }) }}
     </li>
   {% endif %}
 {% endfor %}

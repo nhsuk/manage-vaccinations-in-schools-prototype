@@ -33,7 +33,10 @@
     {{ table({
       classes: "nhsuk-u-margin-bottom-6",
       id: "schools",
-      caption: __n("school." + phase | lower + ".count", schools.length),
+      caption: __mf("school.count", {
+        count: schools.length,
+        phase: phase | lower
+      }),
       responsive: true,
       head: [
         {

@@ -37,7 +37,7 @@
 
     {{ table({
       id: "uploads",
-      heading: __n("upload.count", uploads.length) ,
+      heading: __mf("upload.count", { count: uploads.length }) ,
       panel: true,
       responsive: true,
       head: [

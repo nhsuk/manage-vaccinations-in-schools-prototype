@@ -109,7 +109,7 @@
   {{ table({
     id: "reviews",
     panel: true,
-    heading: __n("upload.reviews.count", reviewRows.length),
+    heading: __mf("review.count", { count: reviewRows.length }),
     headingLevel: 2,
     responsive: true,
     head: [
@@ -147,7 +147,7 @@
   {{ table({
     id: "patients",
     panel: true,
-    heading: __n("upload.patients.count", upload.patients.length),
+    heading: __mf("patient.count", { count: upload.patients.length }),
     headingLevel: 2,
     responsive: true,
     head: [
@@ -161,7 +161,7 @@
   }) if upload.patients.length }}
 
   {{ card({
-    heading: __n("upload.patients.count", upload.patients.length),
+    heading: __mf("patient.count", { count: upload.patients.length }),
     headingClasses: "nhsuk-heading-m",
     headingLevel: 2,
     feature: true,
