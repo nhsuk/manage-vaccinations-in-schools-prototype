@@ -46,7 +46,9 @@ export const reviewController = {
   },
 
   show(request, response) {
-    response.render('review/show')
+    const view = request.params.view || 'show'
+
+    response.render(`review/${view}`)
   },
 
   list(request, response) {
@@ -59,7 +61,12 @@ export const reviewController = {
 
     // Doesn’t change any values, but shows a confirmation message
     if (decision === 'duplicate') {
-      request.flash('success', __('upload.review.success'))
+      request.flash('success', __('review.duplicate.success'))
+    }
+
+    // Doesn’t change any values, but shows a confirmation message
+    if (decision === 'restore') {
+      request.flash('success', __('review.archived.success'))
     }
 
     response.redirect(back)

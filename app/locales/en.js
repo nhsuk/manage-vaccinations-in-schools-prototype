@@ -1504,6 +1504,50 @@ export const en = {
       label: 'Confirm consent refusal?'
     }
   },
+  review: {
+    label: 'Issue to review',
+    title: 'This record needs reviewing',
+    archived: {
+      label: 'Archived record',
+      title: 'Do you want to restore this previously archived record?',
+      hint: 'This record was previously archived. %s.',
+      description: 'Record was previously archived',
+      confirm: 'Resolve archived record',
+      success: 'Previously archived record restored'
+    },
+    duplicate: {
+      label: 'Duplicate record',
+      title: 'Review duplicate child record',
+      description:
+        'A field in a duplicate record does not match an existing child record',
+      record: 'Duplicate child record',
+      vaccination: 'Duplicate vaccination record',
+      confirm: 'Resolve duplicate record',
+      success: 'Record updated with values from duplicate record'
+    },
+    original: {
+      label: 'Existing record',
+      record: 'Existing child record',
+      vaccination: 'Existing vaccination record'
+    },
+    decision: {
+      label: 'Which record do you want to keep?',
+      duplicate: {
+        label: 'Use duplicate record',
+        hint: 'The duplicate record will replace the existing child record.'
+      },
+      original: {
+        label: 'Keep previously imported record',
+        hint: 'The existing record will be kept and the duplicate record will be discarded.'
+      },
+      restore: {
+        label: 'Yes, restore this record'
+      },
+      ignore: {
+        label: 'No, keep this record archived'
+      }
+    }
+  },
   school: {
     list: {
       title: 'Schools',
@@ -2092,37 +2136,6 @@ export const en = {
       label: 'Import records',
       success: 'Records imported for processing'
     },
-    review: {
-      title: 'Review duplicate child record',
-      duplicate: {
-        label: 'Duplicate record',
-        record: 'Duplicate child record',
-        vaccination: 'Duplicate vaccination record'
-      },
-      original: {
-        label: 'Existing record',
-        record: 'Existing child record',
-        vaccination: 'Existing vaccination record'
-      },
-      decision: {
-        label: 'Which record do you want to keep?',
-        duplicate: {
-          label: 'Use duplicate record',
-          hint: 'The duplicate record will replace the existing child record.'
-        },
-        original: {
-          label: 'Keep previously imported record',
-          hint: 'The existing record will be kept and the duplicate record will be discarded.'
-        }
-      },
-      confirm: 'Resolve duplicate',
-      success: 'Record updated with values from duplicate record',
-      issue: {
-        label: 'Issue to review',
-        title: 'This record needs reviewing',
-        text: 'A field in a duplicate record does not match an existing child record'
-      }
-    },
     file: {
       title: 'Import {{type}}',
       label: 'Upload file',
@@ -2221,11 +2234,6 @@ export const en = {
         one: '%s record imported',
         other: '[0] No records imported|%s records imported'
       }
-    },
-    issue: {
-      label: 'Issue to review',
-      title: 'This record needs reviewing',
-      text: 'A field in a duplicate record does not match that in a previously imported record'
     }
   },
   manual: {
