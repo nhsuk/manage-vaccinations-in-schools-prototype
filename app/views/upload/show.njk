@@ -62,16 +62,16 @@
     descriptionHtml: cardDescriptionHtml
   }) }}
 
-  {% set duplicatePatientRows = [] %}
+  {% set reviewRows = [] %}
   {% for patient in upload.duplicates %}
-    {% set duplicatePatientRows = duplicatePatientRows | push([
+    {% set reviewRows = reviewRows | push([
       {
         header: __("patient.fullName.label"),
         html: patient.fullName
       },
       {
-        header: __("upload.issue.label"),
-        html: __("upload.issue.text")
+        header: __("review.label"),
+        html: __("review.duplicate.description")
       },
       {
         header: __("actions.label"),
@@ -83,21 +83,42 @@
         })
       }
     ]) %}
+
+    {# Add an example of an archived record needing review #}
+    {% set reviewRows = reviewRows | push([
+      {
+        header: __("patient.label"),
+        html: "ABBOTT, Hector"
+      },
+      {
+        header: __("review.label"),
+        text: __("review.archived.description")
+      },
+      {
+        header: __("actions.label"),
+        html: appActionList({
+          items: [{
+            text: __("actions.review"),
+            href: "/uploads/reviews/" + upload.id + "/" + patient.nhsn + "/archived"
+          }]
+        })
+      }
+    ]) %}
   {% endfor %}
 
   {{ table({
-    id: "duplicate-patients",
+    id: "reviews",
     panel: true,
-    heading: upload.formatted.duplicates,
+    heading: __n("upload.reviews.count", reviewRows.length),
     headingLevel: 2,
     responsive: true,
     head: [
       { text: __("patient.label") },
-      { text: __("upload.issue.label") },
+      { text: __("review.label") },
       { text: __("actions.label") }
     ],
-    rows: duplicatePatientRows
-  }) if upload.duplicates.length }}
+    rows: reviewRows
+  }) if reviewRows.length }}
 
   {% set patientRows = [] %}
   {% for patient in upload.patients %}
