@@ -1506,7 +1506,6 @@ export const en = {
   },
   review: {
     label: 'Issue to review',
-    title: 'This record needs reviewing',
     archived: {
       label: 'Archived record',
       title: 'Do you want to restore this previously archived record?',
