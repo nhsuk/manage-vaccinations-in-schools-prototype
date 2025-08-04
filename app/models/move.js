@@ -61,8 +61,8 @@ export class Move {
   get formatted() {
     return {
       createdAt: formatDate(this.createdAt, { dateStyle: 'long' }),
-      from: schools[this.from].name,
-      to: schools[this.to].name
+      from: schools[this.from]?.name || 'Unknown school',
+      to: schools[this.to]?.name || 'Unknown school'
     }
   }
 
