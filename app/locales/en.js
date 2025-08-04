@@ -994,7 +994,7 @@ export const en = {
       post16: 'Children over 16 years old'
     },
     archiveReason: {
-      label: 'Reason for archival'
+      label: 'Reason archived'
     },
     archiveReasonOther: {
       label: 'Give details'
