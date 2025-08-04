@@ -967,7 +967,7 @@ export const en = {
       title: 'Why do you want to archive this record?',
       cancel: 'Return to child record',
       confirm: 'Archive record',
-      success: 'Child record archived',
+      success: 'This record has been archived',
       duplicate: {
         label: 'Enter the NHS number for the duplicate record',
         hint: 'This will merge the duplicate records into a single record'
@@ -994,7 +994,7 @@ export const en = {
       post16: 'Children over 16 years old'
     },
     archiveReason: {
-      label: 'Reason for archival'
+      label: 'Reason archived'
     },
     archiveReasonOther: {
       label: 'Give details'
