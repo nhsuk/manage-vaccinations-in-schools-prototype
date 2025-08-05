@@ -34,7 +34,7 @@
 
     {% set recordDescriptionHtml %}
       {{ summaryList({
-        rows: summaryRows(vaccination.patient, {
+        rows: summaryRows(vaccination.patientSession.patient, {
           nhsn: {
             changeLabel: "the child’s NHS number",
             href: vaccination.uri + "/patients/" + vaccination.patient.nhsn + "/edit/nhsn" if vaccination.patient.hasMissingNhsNumber

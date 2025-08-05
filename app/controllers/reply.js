@@ -427,14 +427,14 @@ export const replyController = {
     if (refusalReason === ReplyRefusal.AlreadyGiven) {
       const vaccination = new Vaccination({
         outcome: VaccinationOutcome.AlreadyVaccinated,
-        patient_uuid: patientSession.patient.uuid,
+        patientSession_uuid: patientSession.uuid,
         programme_id: patientSession.programme.id,
         session_id: patientSession.session.id,
         createdBy_uid: account.uid,
         ...(data.reply?.note && { note })
       })
+      vaccination.create(vaccination, data)
       patientSession.patient.recordVaccination(vaccination)
-      vaccination.update(vaccination, data)
     }
 
     // Invalidate existing reply

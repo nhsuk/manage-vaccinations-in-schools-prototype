@@ -211,7 +211,7 @@ export const patientSessionController = {
     const { account } = request.app.locals
     const { register } = request.body.patientSession
     const { data } = request.session
-    const { __, patient, patientSession, session, back } = response.locals
+    const { __, patientSession, session, back } = response.locals
 
     patientSession.registerAttendance(
       {
@@ -230,15 +230,15 @@ export const patientSessionController = {
         location: session.location.name,
         school_urn: session.school_urn,
         outcome: VaccinationOutcome.Absent,
-        patient_uuid: patient.uuid,
+        patientSession_uuid: patientSession.uuid,
         programme_id: programme.id,
         session_id: session.id,
         vaccine_snomed: patientSession.vaccine.snomed,
-        createdAt: today(),
+        createdAt: today(10),
         createdBy_uid: account.uid
       })
-      vaccination.update(vaccination, data)
-      patient.recordVaccination(vaccination)
+      vaccination.create(vaccination, data)
+      patientSession.patient.recordVaccination(vaccination)
     }
 
     // Clean up session data
@@ -309,12 +309,12 @@ export const patientSessionController = {
   vaccination(request, response) {
     const { account } = request.app.locals
     const { data } = request.session
-    const { patient, patientSession, session, programme } = response.locals
+    const { patientSession, session, programme } = response.locals
 
     // Vaccination
     const vaccination = new Vaccination({
       outcome: VaccinationOutcome.AlreadyVaccinated,
-      patient_uuid: patient.uuid,
+      patientSession_uuid: patientSession.uuid,
       programme_id: programme.id,
       session_id: session.id,
       createdAt: today(),
@@ -322,7 +322,7 @@ export const patientSessionController = {
     })
 
     vaccination.create(vaccination, data.wizard)
-    patient.recordVaccination(vaccination)
+    patientSession.patient.recordVaccination(vaccination)
 
     response.redirect(
       `${programme.uri}/vaccinations/${vaccination.uuid}/new/check-answers?referrer=${patientSession.uri}`

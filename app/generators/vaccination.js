@@ -70,8 +70,8 @@ export function generateVaccination(patientSession, programme, batch, users) {
     outcome,
     location: patientSession.session.location.name,
     selfId: true,
-    programme_id: programme.id,
     patientSession_uuid: patientSession.uuid,
+    programme_id: programme.id,
     vaccine_snomed: batch.vaccine_snomed,
     ...(vaccinated && {
       batch_id: batch.id,

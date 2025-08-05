@@ -17,6 +17,7 @@ import { Programme } from '../models/programme.js'
 import { User } from '../models/user.js'
 import { Vaccination } from '../models/vaccination.js'
 import { Vaccine } from '../models/vaccine.js'
+import { today } from '../utils/date.js'
 
 export const vaccinationController = {
   read(request, response, next, vaccination_uuid) {
@@ -131,6 +132,7 @@ export const vaccinationController = {
       school_urn: session.school_urn,
       patientSession_uuid: patientSession.uuid,
       vaccine_snomed: vaccine.snomed,
+      createdAt: today(),
       createdBy_uid,
       ...(injectionSite && {
         dose: vaccine.dose,
@@ -196,7 +198,7 @@ export const vaccinationController = {
       delete data.wizard
 
       // Update session data
-      vaccination.update(vaccination, data)
+      vaccination.create(vaccination, data)
       patient.recordVaccination(vaccination)
 
       response.redirect(referrer || vaccination.uri)
