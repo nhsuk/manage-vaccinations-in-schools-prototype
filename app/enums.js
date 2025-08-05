@@ -246,14 +246,14 @@ export const ProgrammePreset = {
   },
   HPV: {
     name: 'HPV',
-    active: false,
+    active: true,
     adolescent: true,
     primaryProgrammeTypes: [ProgrammeType.HPV],
     term: SchoolTerm.Spring
   },
   Doubles: {
     name: 'MenACWY & Td/IPV',
-    active: false,
+    active: true,
     adolescent: true,
     primaryProgrammeTypes: [ProgrammeType.MenACWY, ProgrammeType.TdIPV],
     catchupProgrammeTypes: [ProgrammeType.HPV],
