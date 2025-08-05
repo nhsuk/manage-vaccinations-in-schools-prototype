@@ -130,7 +130,7 @@ export class Clinic {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updatedAt = new Date()
+    this.updatedAt = today()
 
     // Remove clinic context
     delete this.context

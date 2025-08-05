@@ -999,7 +999,7 @@ export class Session {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updatedAt = new Date()
+    this.updatedAt = today()
 
     // Remove session context
     delete this.context

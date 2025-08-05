@@ -186,7 +186,7 @@ export class Batch {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updatedAt = new Date()
+    this.updatedAt = today()
 
     // Remove batch context
     delete this.context

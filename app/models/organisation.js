@@ -1,6 +1,7 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { OrganisationDefaults } from '../enums.js'
+import { today } from '../utils/date.js'
 import { stringToBoolean } from '../utils/string.js'
 
 import { Clinic } from './clinic.js'
@@ -149,7 +150,7 @@ export class Organisation {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updatedAt = new Date()
+    this.updatedAt = today()
 
     // Remove organisation context
     delete this.context

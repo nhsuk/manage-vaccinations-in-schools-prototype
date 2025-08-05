@@ -528,7 +528,7 @@ export class Vaccination {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updatedAt = new Date()
+    this.updatedAt = today()
 
     // Make sure sync isn't always successful
     const syncSuccess = Math.random() > 0.3

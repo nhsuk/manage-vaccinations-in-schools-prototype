@@ -252,7 +252,7 @@ export class Instruction {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updatedAt = new Date()
+    this.updatedAt = today()
 
     // Remove patient context
     delete this.context

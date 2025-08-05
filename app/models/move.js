@@ -119,7 +119,7 @@ export class Move {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updatedAt = new Date()
+    this.updatedAt = today()
 
     // Remove move context
     delete this.context

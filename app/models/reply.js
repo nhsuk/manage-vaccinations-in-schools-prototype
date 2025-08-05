@@ -459,7 +459,7 @@ export class Reply {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updatedAt = new Date()
+    this.updatedAt = today()
 
     // Remove reply context
     delete this.context

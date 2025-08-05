@@ -364,7 +364,7 @@ export class Download {
    * @param {object} context - Context
    */
   update(updates, context) {
-    this.updatedAt = new Date()
+    this.updatedAt = today()
 
     // Remove download context
     delete this.context
