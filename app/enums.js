@@ -253,7 +253,7 @@ export const ProgrammePreset = {
   },
   Doubles: {
     name: 'MenACWY & Td/IPV',
-    active: true,
+    active: false,
     adolescent: true,
     primaryProgrammeTypes: [ProgrammeType.MenACWY, ProgrammeType.TdIPV],
     catchupProgrammeTypes: [ProgrammeType.HPV],
