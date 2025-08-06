@@ -17,8 +17,5 @@
       "value": "true"
     }
   },
-  "scripts": {
-    "postdeploy": "psql $DATABASE_URL -f node_modules/connect-pg-simple/table.sql"
-  },
   "addons": ["heroku-postgresql:essential-0"]
 }
