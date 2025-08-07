@@ -44,15 +44,16 @@
   }) if not isVaccinated }}
 
   {# Gillick #}
-  {% if options.canGillick and not isVaccinated %}
+  {% if options.canGillick or patientSession.gillick %}
     {{ appHeading({
       level: 4,
       size: "s",
       title: __("patientSession.gillick.label")
     }) }}
-
     {{ appStatus(patientSession.gillick.status) }}
+  {% endif %}
 
+  {% if options.canGillick and not isVaccinated %}
     {% set type = "edit" if patientSession.gillick.competent else "new" %}
     {{ button({
       classes: "nhsuk-button--secondary",
