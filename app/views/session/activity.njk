@@ -30,42 +30,6 @@
     view: view
   }) }}
 
-  {% set instructHtml %}
-    {{ __("session.instruct.description", session.activity.instruct) | nhsukMarkdown }}
-
-    {{ actionLink({
-      text: __("session.instructions.label"),
-      href: session.uri + "/instructions"
-    }) }}
-  {% endset %}
-
-  {{ insetText({
-    html: instructHtml
-  }) if view == "instruct" and session.activity.instruct and account.canPrescribe }}
-
-  {% set recordHtml %}
-    {{ vaccinationCount(data.token.vaccinations) | nhsukMarkdown if vaccinationCount(data.token.vaccinations) }}
-
-    {% if defaultBatches.length %}
-      {{ appHeading({
-        classes: "nhsuk-u-margin-bottom-2",
-        level: 4,
-        size: "s",
-        title: __mf("defaultBatch.title", {
-          count: defaultBatches.length
-        })
-      }) }}
-
-      {{ summaryList({
-        rows: defaultBatchSummaryRows()
-      }) }}
-    {% endif %}
-  {% endset %}
-
-  {{ insetText({
-    html: recordHtml
-  }) if view == "record" and (defaultBatches.length or vaccinationCount(data.token.vaccinations)) }}
-
   {% if (view == "register" or view == "record") and not session.isActive %}
     {{ appHeading({
       level: 2,
@@ -118,6 +82,34 @@
             count: results.count
           }) | safe
         }) }}
+
+        {% set instructHtml %}
+          {{ __("session.instruct.description", session.activity.instruct) | nhsukMarkdown }}
+
+          {{ actionLink({
+            text: __("session.instructions.label"),
+            href: session.uri + "/instructions"
+          }) }}
+        {% endset %}
+
+        {{ insetText({
+          html: instructHtml
+        }) if view == "instruct" and session.activity.instruct and account.canPrescribe }}
+
+        {{ details({
+          classes: "nhsuk-expander app-expander--compact",
+          summaryText: "Your vaccinations today",
+          html: table({
+            responsive: true,
+            firstCellIsHeader: false,
+            head: [
+              { text: __("vaccine.label") },
+              { text: __("user.vaccinations.label") },
+              { text: __("defaultBatch.label") }
+            ],
+            rows: vaccinationTableRows(session)
+          }) if view == "record"
+        }) if view == "record" and session.isActive }}
 
         {% for patientSession in results.page %}
           {% set statusHtml %}
