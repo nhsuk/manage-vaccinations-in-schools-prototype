@@ -185,7 +185,13 @@ export const vaccinationController = {
       }
 
       // Update number of vaccinations given
-      data.token.vaccinations[vaccination.programme.type] += 1
+      if (data?.token?.vaccinations?.[vaccination.vaccine.snomed]) {
+        data.token.vaccinations[vaccination.vaccine.snomed] += 1
+      } else {
+        data.token.vaccinations = {
+          [vaccination.vaccine.snomed]: 1
+        }
+      }
 
       request.flash('success', __(`vaccination.${type}.success`, { session }))
 

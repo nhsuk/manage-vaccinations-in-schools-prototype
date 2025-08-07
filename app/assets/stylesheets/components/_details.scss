@@ -1,0 +1,14 @@
+@use "../vendor/nhsuk-frontend" as *;
+
+.app-expander--compact {
+  .nhsuk-details__summary {
+    @include nhsuk-responsive-padding(4);
+    @include nhsuk-responsive-padding(4, "bottom", $adjustment: $nhsuk-focus-width);
+  }
+
+  .nhsuk-details__text {
+    @include nhsuk-responsive-padding(4, "bottom");
+    @include nhsuk-responsive-padding(4, "left");
+    @include nhsuk-responsive-padding(4, "right");
+  }
+}

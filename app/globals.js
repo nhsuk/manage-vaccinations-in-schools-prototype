@@ -398,35 +398,45 @@ export default () => {
   }
 
   /**
-   * Get summaryList `rows` parameter for default batches
+   * Get vaccinator summary table row items
    *
-   * @returns {Array} `rows`
+   * @param {import('./models/session.js').Session} session - Session
+   * @returns {Array} Table row items
    */
-  globals.defaultBatchSummaryRows = function () {
-    const { __, defaultBatches } = this.ctx
-    const rows = []
+  globals.vaccinationTableRows = function (session) {
+    const { __, defaultBatches, data } = this.ctx
 
-    for (const defaultBatch of Object.values(defaultBatches)) {
-      rows.push({
-        key: {
-          text: defaultBatch.vaccine.brand
+    const tableRows = []
+    for (const vaccine of Object.values(session.vaccines)) {
+      const defaultBatch = defaultBatches.find(
+        ({ vaccine_snomed }) => vaccine_snomed === vaccine.snomed
+      )
+      const vaccinationCount = data?.token?.vaccinations?.[vaccine.snomed] || 0
+
+      const defaultBatchHtml = defaultBatch
+        ? `${defaultBatch.formatted.id} ${formatLink(
+            `${session.uri}/default-batch/${vaccine.snomed}`,
+            __('defaultBatch.visuallyHiddenText', vaccine.brand)
+          )}`
+        : 'Not set'
+
+      tableRows.push([
+        {
+          header: __('vaccine.label'),
+          text: vaccine.brand
         },
-        value: {
-          html: defaultBatch.formatted.id
+        {
+          header: __('user.vaccinations.label'),
+          text: vaccinationCount
         },
-        actions: {
-          items: [
-            {
-              text: __(`actions.change`),
-              visuallyHiddenText: defaultBatch.vaccine.brandWithType,
-              href: `${defaultBatch.session.uri}/default-batch/${defaultBatch.vaccine_snomed}`
-            }
-          ]
+        {
+          header: __('defaultBatch.label'),
+          html: defaultBatchHtml
         }
-      })
+      ])
     }
 
-    return rows
+    return tableRows
   }
 
   /**

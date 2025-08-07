@@ -35,8 +35,9 @@ export const en = {
     }
   },
   defaultBatch: {
-    label:
-      'Change default batch<span class="nhsuk-u-visually-hidden"> for {{vaccine.brand}}</span> ',
+    label: 'Default batch',
+    visuallyHiddenText:
+      'Change<span class="nhsuk-u-visually-hidden"> default batch for %s</span> ',
     title: '{count, plural, one{Default batch} other{Default batches}}',
     edit: {
       title: 'Select a default batch for this session',
@@ -2056,6 +2057,9 @@ export const en = {
     },
     role: {
       label: 'Role'
+    },
+    vaccinations: {
+      label: 'Administered'
     }
   },
   vaccination: {
@@ -2239,6 +2243,7 @@ export const en = {
     }
   },
   vaccine: {
+    label: 'Vaccine',
     list: {
       label: 'Vaccines',
       title: 'Vaccines',

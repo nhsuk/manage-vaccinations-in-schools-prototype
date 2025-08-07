@@ -1,6 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { ProgrammeType } from '../enums.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 /**
@@ -23,13 +22,7 @@ export class User {
     this.role = options?.role
     this.canPrescribe = options?.canPrescribe || false
     this.vaccineMethods = options?.vaccineMethods || []
-    this.vaccinations = {
-      [ProgrammeType.Flu]: options?.vaccinations?.[ProgrammeType.Flu] || 0,
-      [ProgrammeType.HPV]: options?.vaccinations?.[ProgrammeType.HPV] || 0,
-      [ProgrammeType.MenACWY]:
-        options?.vaccinations?.[ProgrammeType.MenACWY] || 0,
-      [ProgrammeType.TdIPV]: options?.vaccinations?.[ProgrammeType.TdIPV] || 0
-    }
+    this.vaccinations = options?.vaccinations || {}
   }
 
   /**
