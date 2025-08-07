@@ -127,10 +127,9 @@ export const MoveSource = {
  */
 export const NoticeType = {
   Deceased: 'Deceased',
-  Hidden: 'Hidden',
   Invalid: 'Invalid',
-  Sensitive: 'Sensitive',
-  GillickNoNotify: 'Gillick no notify'
+  NoNotify: 'Do not notify parents',
+  Sensitive: 'Sensitive'
 }
 
 /**

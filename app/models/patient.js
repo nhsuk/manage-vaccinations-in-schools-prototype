@@ -599,9 +599,10 @@ export class Patient extends Child {
         this.dod = removeDays(today(), 5)
         name = `Record updated with child’s date of death`
         break
-      case NoticeType.Hidden:
+      case NoticeType.NoNotify:
         // Notify request to not share vaccination with GP
-        name = `Request for vaccination not to be shared with GP`
+        this.parent1.notify = false
+        name = `Child gave consent for HPV and flu vaccinations under Gillick competence and does not want their parents to be notified.\n\nThese records are not automatically synced with GP records.\n\nYour team must let the child’s GP know they were vaccinated.`
         break
       case NoticeType.Invalid:
         // Flag record as invalid
@@ -612,13 +613,6 @@ export class Patient extends Child {
         // Flag record as sensitive
         this.sensitive = true
         name = `Record flagged as sensitive`
-        break
-      case NoticeType.GillickNoNotify:
-        this.parent1.notify = false
-        name =
-          `Child gave consent for HPV and flu vaccinations under Gillick competence and does not want their parents to be notified. ` +
-          `These records are not automatically synced with GP records. ` +
-          `Your team must let the child’s GP know they were vaccinated.`
         break
       default:
     }

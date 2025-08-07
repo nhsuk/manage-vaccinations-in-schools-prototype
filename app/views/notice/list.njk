@@ -34,7 +34,7 @@
               text: __("actions.archive"),
               href: notice.uri + "/archive"
             }]
-          }) if notice.type == NoticeType.Hidden else " "
+          }) if notice.type == NoticeType.NoNotify else " "
         }
       ]) %}
     {% endfor %}
