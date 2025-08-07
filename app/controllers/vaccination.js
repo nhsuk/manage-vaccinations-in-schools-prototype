@@ -174,7 +174,7 @@ export const vaccinationController = {
         data
       )
 
-      const { patient } = PatientSession.read(
+      const patientSession = PatientSession.read(
         vaccination.patientSession_uuid,
         data
       )
@@ -205,9 +205,17 @@ export const vaccinationController = {
 
       // Update session data
       vaccination.create(vaccination, data)
-      patient.recordVaccination(vaccination)
+      patientSession.patient.recordVaccination(vaccination)
 
-      response.redirect(referrer || vaccination.uri)
+      let next = referrer || vaccination.uri
+      if (type === 'new') {
+        next =
+          patientSession.outstandingVaccinations.length === 0
+            ? `${session.uri}/record`
+            : patientSession.uri
+      }
+
+      response.redirect(next)
     }
   },
 
