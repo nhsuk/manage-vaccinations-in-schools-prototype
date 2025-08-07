@@ -287,7 +287,7 @@ export const patientSessionController = {
     const { account } = request.app.locals
     const { preScreen } = request.body.patientSession
     const { data } = request.session
-    const { back, patientSession, programme } = response.locals
+    const { patientSession, programme } = response.locals
 
     // Pre-screen interview
     patientSession.preScreen({
@@ -302,7 +302,7 @@ export const patientSessionController = {
     patientSession.update(patientSession, data)
 
     response.redirect(
-      `${programme.uri}/vaccinations/new?patientSession_uuid=${patientSession.uuid}&referrer=${back}`
+      `${programme.uri}/vaccinations/new?patientSession_uuid=${patientSession.uuid}`
     )
   },
 
