@@ -8,6 +8,7 @@
   gap: nhsuk-spacing(1);
 
   .nhsuk-icon {
+    flex-shrink: 0;
     margin-left: nhsuk-spacing(-1);
     margin-top: nhsuk-spacing(-1);
   }
