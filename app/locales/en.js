@@ -2079,7 +2079,7 @@ export const en = {
     },
     new: {
       'check-answers': {
-        title: 'Check and confirm',
+        title: 'Check your answers before saving this vaccination outcome',
         summary: 'Vaccination details',
         notGiven: 'Vaccination was not given'
       },
@@ -2091,6 +2091,7 @@ export const en = {
       notGiven: {
         title: 'Vaccination was not given'
       },
+      confirm: 'Save',
       success:
         'Vaccination outcome recorded for {{session.programmeNames.sentenceCase}}'
     },
