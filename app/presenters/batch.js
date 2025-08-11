@@ -22,6 +22,8 @@ export class BatchPresenter {
     this.#context = context
 
     this.uri = batch.uri
+    // TODO: id used for formatting, but id value needed for BatchItems
+    this.batch_id = batch.id
     this.updatedAt = batch.updatedAt
     this.archivedAt = batch.archivedAt
     this.expiry_ = batch.expiry_
