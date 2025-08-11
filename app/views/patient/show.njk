@@ -3,7 +3,7 @@
 {% extends "_layouts/form.njk" %}
 
 {% set hideConfirmButton = true %}
-{% set gridColumns = "three-quarters" %}
+{% set gridColumns = "full" %}
 {% set title = patient.initials %}
 
 {% block beforeContent %}
@@ -80,87 +80,40 @@
     descriptionHtml: recordDescriptionHtml
   }) }}
 
-  {% set sessionsDescriptionHtml %}
-    {% if patient.patientSessions.length %}
-      {% set patientSessionRows = [] %}
-      {% for patientSession in patient.patientSessions %}
-        {% set patientSessionRows = patientSessionRows | push([
-          {
-            header: __("session.location.label"),
-            html: link(patientSession.session.uri, patientSession.session.location.name)
-          },
-          {
-            header: __("session.dates.label"),
-            html: patientSession.session.formatted.dates if patientSession.session.dates.length else patientSession.session.status
-          },
-          {
-            header: __("programme.label"),
-            html: patientSession.formatted.programme
-          }
-        ]) %}
-      {% endfor %}
-
-      {{ table({
-        id: "patient-sessions",
-        sort: "name",
-        responsive: true,
-        head: [
-          { text: __("session.location.label") },
-          { text: __("session.dates.label") },
-          { text: __("programme.label") }
-        ],
-        rows: patientSessionRows
-      }) }}
-    {% else %}
-      {{ __mf("session.count", { count: 0 }) | nhsukMarkdown }}
-    {% endif %}
-  {% endset %}
-
-  {{ card({
-    heading: __("session.label"),
-    headingLevel: 3,
-    descriptionHtml: sessionsDescriptionHtml
-  }) }}
-
   {% set vaccinationsDescriptionHtml %}
-    {% if patient.vaccinations.length %}
-      {% set vaccinationRows = [] %}
-      {% for vaccination in patient.vaccinations | sort(false, false, "createdAt") %}
-        {% set vaccinationRows = vaccinationRows | push([
-          {
-            header: __("vaccination.createdAt.label"),
-            html: vaccination.link.createdAt_date
-          },
-          {
-            header: __("vaccination.location.label"),
-            text: vaccination.location
-          },
-          {
-            header: __("vaccination.programme.label"),
-            html: vaccination.formatted.programme
-          },
-          {
-            header: __("vaccination.outcome.label"),
-            html: vaccination.formatted.outcomeStatus
-          }
-        ]) %}
-      {% endfor %}
+    {% set vaccinationRows = [] %}
+    {% for programme in activeProgrammes %}
+      {% set vaccination = patient.programmeOutcomes[programme.type] %}
+      {% set vaccinationRows = vaccinationRows | push([
+        {
+          header: __("vaccination.programme.label"),
+          html: link(patient.uri + "/programmes/" + programme.slug, programme.name)
+        },
+        {
+          header: __("vaccination.outcome.label"),
+          html: vaccination.formatted.outcomeStatus if vaccination.outcome else tag({
+            classes: "nhsuk-tag--white",
+            text: PatientOutcome.NoOutcomeYet
+          })
+        },
+        {
+          header: __("vaccination.note.label"),
+          html: vaccination.outcome + " on " + vaccination.formatted.createdAt if vaccination.createdAt else __("patient.programmeEligibility.text", patient.programmeEligibility[programme.type])
+        }
+      ]) %}
+    {% endfor %}
 
-      {{ table({
-        id: "vaccinations",
-        sort: "createdAt",
-        responsive: true,
-        head: [
-          { text: __("vaccination.createdAt.label") },
-          { text: __("vaccination.location.label") },
-          { text: __("vaccination.programme.label") },
-          { text: __("vaccination.outcome.label") }
-        ],
-        rows: vaccinationRows
-      }) }}
-    {% else %}
-      {{ __mf("vaccination.count", { count: 0 }) | nhsukMarkdown }}
-    {% endif %}
+    {{ table({
+      id: "vaccinations",
+      sort: "createdAt",
+      responsive: true,
+      head: [
+        { text: __("vaccination.programme.label") },
+        { text: __("vaccination.outcome.label") },
+        { text: __("vaccination.note.label") }
+      ],
+      rows: vaccinationRows
+    }) }}
   {% endset %}
 
   {{ card({

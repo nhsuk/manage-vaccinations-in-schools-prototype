@@ -857,6 +857,9 @@ export const en = {
       status:
         '{{patient.fullName}} is no longer eligible for school age immunisations'
     },
+    programmeEligibility: {
+      text: 'Eligible from %s'
+    },
     fullNameAndNhsn: {
       label: 'Name and NHS number'
     },

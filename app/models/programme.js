@@ -5,6 +5,7 @@ import vaccines from '../datasets/vaccines.js'
 import { ProgrammeStatus, VaccineMethod } from '../enums.js'
 import { isBetweenDates, today } from '../utils/date.js'
 import {
+  camelToKebabCase,
   formatLink,
   formatTag,
   sentenceCaseProgrammeName
@@ -69,6 +70,15 @@ export class Programme {
    */
   get nameSentenceCase() {
     return sentenceCaseProgrammeName(this.type)
+  }
+
+  /**
+   * Get programme name as a slug
+   *
+   * @returns {string} Programme name
+   */
+  get slug() {
+    return camelToKebabCase(this.type).replace('/', '-')
   }
 
   /**

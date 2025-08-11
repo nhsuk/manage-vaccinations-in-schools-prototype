@@ -1,0 +1,117 @@
+{% from "patient/_navigation.njk" import patientNavigation with context %}
+
+{% extends "_layouts/default.njk" %}
+
+{% set title = patient.fullName + " – " + __("patient.events.title") %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("patient.list.title"),
+      href: "/patients"
+    }]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="nhsuk-u-width-three-quarters">
+    {{ super() }}
+
+    {{ patientNavigation({
+      patient: patient
+    }) }}
+
+    {% if vaccination %}
+      {% set vaccinationDescriptionHtml %}
+        {{ summaryList({
+          rows: summaryRows(vaccination, {
+            programme: {},
+            outcome: {},
+            vaccine_snomed: {},
+            method: {},
+            site: {},
+            dose: {},
+            sequence: {},
+            batch: {},
+            identifiedBy: {},
+            suppliedBy: {},
+            createdBy: {},
+            createdAt: {},
+            updatedAt: {},
+            location: {},
+            protocol: {},
+            note: {},
+            syncStatus: {}
+          })
+        }) }}
+
+        {{ button({
+          classes: "nhsuk-button--secondary nhsuk-u-margin-0",
+          text: __("vaccination.edit.title"),
+          href: vaccination.uri + "/edit"
+        }) }}
+      {% endset %}
+
+      {{ card({
+        heading: __("vaccination.label"),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: vaccinationDescriptionHtml
+      }) }}
+    {% else %}
+      {{ __("patient.programmeEligibility.text", patient.programmeEligibility[programme.type]) | nhsukMarkdown }}
+    {% endif %}
+
+    {% set sessionsDescriptionHtml %}
+      {% if programmePatientSessions.length %}
+        {% set patientSessionRows = [] %}
+        {% for patientSession in programmePatientSessions %}
+          {% set patientSessionRows = patientSessionRows | push([
+            {
+              header: __("session.location.label"),
+              html: link(patientSession.uri, patientSession.session.location.name)
+            },
+            {
+              header: __("session.dates.label"),
+              html: patientSession.session.formatted.dates if patientSession.session.dates.length else patientSession.session.status
+            },
+            {
+              header: "Status",
+              html: patientSession.formatted.status.report
+            }
+          ]) %}
+        {% endfor %}
+
+        {{ table({
+          id: "patient-sessions",
+          sort: "name",
+          responsive: true,
+          head: [
+            { text: __("session.location.label") },
+            { text: __("session.dates.label") },
+            { text: "Status" }
+          ],
+          rows: patientSessionRows
+        }) }}
+      {% else %}
+        {{ __n("session.count", 0) | nhsukMarkdown }}
+      {% endif %}
+    {% endset %}
+
+    {{ card({
+      heading: __("session.label"),
+      headingLevel: 3,
+      descriptionHtml: sessionsDescriptionHtml
+    }) if programmePatientSessions.length }}
+
+    {{ card({
+      heading: "Activity",
+      headingLevel: 3,
+      descriptionHtml: appTimeline({
+        items: timelineItems(programmeAuditEvents)
+      })
+    }) if programmeAuditEvents.length }}
+  </div>
+{% endblock %}

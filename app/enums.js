@@ -240,13 +240,13 @@ export const SchoolTerm = {
 export const ProgrammePreset = {
   SeasonalFlu: {
     name: 'Flu',
-    active: true,
+    active: false,
     primaryProgrammeTypes: [ProgrammeType.Flu],
     term: SchoolTerm.Autumn
   },
   HPV: {
     name: 'HPV',
-    active: false,
+    active: true,
     adolescent: true,
     primaryProgrammeTypes: [ProgrammeType.HPV],
     term: SchoolTerm.Spring
