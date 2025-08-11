@@ -10,6 +10,7 @@ import {
   ScreenOutcome
 } from './enums.js'
 import { School } from './models/school.js'
+import { DefaultBatchPresenter } from './presenters/default-batch.js'
 import { UserPresenter } from './presenters/user.js'
 import { getSessionActivityCount } from './utils/session.js'
 import {
@@ -403,17 +404,17 @@ export default () => {
    * @returns {Array} Table row items
    */
   globals.vaccinationTableRows = function (session) {
-    const { __, defaultBatches, data } = this.ctx
+    const { __, data } = this.ctx
 
     const tableRows = []
     for (const vaccine of Object.values(session.vaccines)) {
-      const defaultBatch = defaultBatches.find(
+      const defaultBatch = DefaultBatchPresenter.forAll(data).find(
         ({ vaccine_snomed }) => vaccine_snomed === vaccine.snomed
       )
       const vaccinationCount = data?.token?.vaccinations?.[vaccine.snomed] || 0
 
       const defaultBatchHtml = defaultBatch
-        ? `${defaultBatch.formatted.id} ${formatLink(
+        ? `${defaultBatch.id} ${formatLink(
             `${session.uri}/default-batch/${vaccine.snomed}`,
             __('defaultBatch.visuallyHiddenText', vaccine.brand)
           )}`

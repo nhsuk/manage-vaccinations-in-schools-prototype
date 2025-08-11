@@ -1,37 +1,15 @@
 import { Batch } from './batch.js'
-import { Session } from './session.js'
-
 /**
  * @class Default Batch
  * @augments Batch
+ * @param {object} options - Options
+ * @param {object} [context] - Context
  */
 export class DefaultBatch extends Batch {
   constructor(options, context) {
     super(options, context)
 
     this.session_id = options?.session_id
-  }
-
-  /**
-   * Get session
-   *
-   * @returns {Session|undefined} Session
-   */
-  get session() {
-    try {
-      return Session.findOne(this.session_id, this.context)
-    } catch (error) {
-      console.error('DefaultBatch.session', error.message)
-    }
-  }
-
-  /**
-   * Get namespace
-   *
-   * @returns {string} Namespace
-   */
-  get ns() {
-    return 'defaultBatch'
   }
 
   /**
