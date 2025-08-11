@@ -6,10 +6,10 @@
   {% set batches = [] %}
   {% for batch in batchItems | sort(false, false, "id") %}
     {% set batches = batches | push({
-      html: batch.formattedId + " (" + batch.vaccine.brand + ")",
+      html: batch.id + " (" + batch.formatted.vaccine.brand + ")",
       value: batch.id,
       hint: {
-        text: "Expires " + batch.formattedExpiry
+        text: "Expires " + batch.formatted.expiry
       },
       conditional: {
         html: checkboxes({

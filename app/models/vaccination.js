@@ -429,7 +429,7 @@ export class Vaccination {
         true
       ),
       batch: BatchPresenter.forOne(this.batch_id, this.context).summaryRowHtml,
-      batch_id: BatchPresenter.forOne(this.batch_id, this.context).formattedId,
+      batch_id: BatchPresenter.forOne(this.batch_id, this.context).id,
       dose: formatMillilitres(this.dose),
       sequence,
       vaccine_snomed: this.vaccine_snomed && this.vaccine?.brand,

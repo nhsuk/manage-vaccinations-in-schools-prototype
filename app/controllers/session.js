@@ -14,12 +14,12 @@ import {
   VaccineMethod
 } from '../enums.js'
 import { Clinic } from '../models/clinic.js'
-import { DefaultBatch } from '../models/default-batch.js'
 import { Instruction } from '../models/instruction.js'
 import { Organisation } from '../models/organisation.js'
 import { PatientSession } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
 import { Session } from '../models/session.js'
+import { DefaultBatchPresenter } from '../presenters/default-batch.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
@@ -31,7 +31,7 @@ export const sessionController = {
     const session = Session.findOne(session_id, data)
     response.locals.session = session
 
-    response.locals.defaultBatches = DefaultBatch.findAll(data).filter(
+    response.locals.defaultBatches = DefaultBatchPresenter.forAll(data).filter(
       (defaultBatch) => defaultBatch.session_id === session_id
     )
 
