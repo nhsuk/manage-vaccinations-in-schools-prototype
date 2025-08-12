@@ -119,27 +119,27 @@ export class Vaccine {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Vaccine>|undefined} Vaccines
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.vaccines).map(
       (vaccine) => new Vaccine(vaccine, context)
     )
   }
 
   /**
-   * Read
+   * Find
    *
    * @param {string} snomed - SNOMED code
    * @param {object} context - Context
    * @returns {Vaccine|undefined} Vaccine
    * @static
    */
-  static read(snomed, context) {
+  static find(snomed, context) {
     if (context?.vaccines?.[snomed]) {
       return new Vaccine(context.vaccines[snomed], context)
     }
@@ -148,9 +148,10 @@ export class Vaccine {
   /**
    * Delete
    *
+   * @param {string} snomed - SNOMED code
    * @param {object} context - Context
    */
-  delete(context) {
-    delete context.vaccines[this.snomed]
+  static delete(snomed, context) {
+    delete context.vaccines[snomed]
   }
 }

@@ -117,7 +117,7 @@ export class Programme {
    */
   get vaccines() {
     return this.vaccine_smomeds.map((smomed) =>
-      Vaccine.read(smomed, this.context)
+      Vaccine.find(smomed, this.context)
     )
   }
 

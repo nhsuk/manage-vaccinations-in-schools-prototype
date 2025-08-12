@@ -18,7 +18,7 @@ export const defaultBatchController = {
 
     response.locals.session = Session.read(session_id, data)
 
-    response.locals.vaccine = Vaccine.read(vaccine_snomed, data)
+    response.locals.vaccine = Vaccine.find(vaccine_snomed, data)
 
     response.locals.paths = {
       back: `/sessions/${session_id}/record`,
