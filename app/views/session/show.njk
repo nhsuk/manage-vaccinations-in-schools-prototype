@@ -218,9 +218,6 @@
         href: session.uri + "/close"
       } if session.isCompleted],
       links: [{
-        text: __("session.upload-class-list.title"),
-        href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn if session.type == SessionType.School
-      }, {
         text: __("session.offline.title"),
         href: session.uri + "/offline"
       } if not session.isUnplanned]
@@ -243,6 +240,12 @@
         size: "s",
         title: session.location.name
       }) }}
+
+      {{ button({
+        classes: "nhsuk-button--secondary",
+        href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn,
+        text: __("session.upload-class-list.title")
+      }) if session.type == SessionType.School }}
 
       {{ summaryList({
         classes: "nhsuk-summary-list--no-border app-summary-list--full-width",
