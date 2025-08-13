@@ -156,32 +156,41 @@ export class Batch {
    *
    * @param {Batch} batch - Batch
    * @param {object} context - Context
+   * @returns {Batch} Created batch
+   * @static
    */
-  create(batch, context) {
-    batch = new Batch(batch)
+  static create(batch, context) {
+    const createdBatch = new Batch(batch)
 
     // Update context
     context.batches[batch.id] = batch
+
+    return createdBatch
   }
 
   /**
    * Update
    *
+   * @param {string} id - Batch ID
    * @param {object} updates - Updates
    * @param {object} context - Context
+   * @returns {Batch} Updated batch
+   * @static
    */
-  update(updates, context) {
-    this.updatedAt = today()
+  static update(id, updates, context) {
+    const updatedBatch = Object.assign(Batch.findOne(id, context), updates)
+    updatedBatch.updatedAt = today()
 
     // Remove batch context
-    delete this.context
+    delete updatedBatch.context
 
     // Delete original batch (with previous ID)
-    delete context.batches[this.id]
+    delete context.batches[id]
 
     // Update context
-    const updatedBatch = Object.assign(this, updates)
     context.batches[updatedBatch.id] = updatedBatch
+
+    return updatedBatch
   }
 
   /**
