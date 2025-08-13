@@ -391,14 +391,14 @@ export class Patient extends Child {
    * @returns {string} URI
    */
   get uri() {
-    return `/patients/${this.nhsn}`
+    return `/patients/${this.uuid}`
   }
 
   /**
    * Find all
    *
    * @param {object} context - Context
-   * @returns {Array<Patient>|undefined} Patients
+   * @returns {Array<Patient>|undefined} Patient records
    * @static
    */
   static findAll(context) {
@@ -410,49 +410,58 @@ export class Patient extends Child {
   /**
    * Find one
    *
-   * @param {string} nhsn - Patient NHS number
+   * @param {string} uuid - Patient UUID
    * @param {object} context - Context
-   * @returns {Patient|undefined} Patient
+   * @returns {Patient|undefined} Patient record
    * @static
    */
-  static findOne(nhsn, context) {
-    if (context?.patients) {
-      return this.findAll(context).find((patient) => patient.nhsn === nhsn)
+  static findOne(uuid, context) {
+    if (context?.patients?.[uuid]) {
+      return new Patient(context.patients[uuid], context)
     }
   }
 
   /**
    * Create
    *
-   * @param {Patient} patient - Patient
+   * @param {Patient} patient - Patient record
    * @param {object} context - Context
+   * @returns {Patient} Created patient record
+   * @static
    */
-  create(patient, context) {
-    patient = new Patient(patient)
+  static create(patient, context) {
+    const createdPatient = new Patient(patient)
 
     // Update context
     context.patients = context.patients || {}
-    context.patients[patient.uuid] = patient
+    context.patients[createdPatient.uuid] = createdPatient
+
+    return createdPatient
   }
 
   /**
    * Update
    *
+   * @param {string} uuid - Patient record UUID
    * @param {object} updates - Updates
    * @param {object} context - Context
+   * @returns {Patient} Updated patient record
+   * @static
    */
-  update(updates, context) {
-    this.updatedAt = today()
+  static update(uuid, updates, context) {
+    const updatedPatient = _.merge(Patient.findOne(uuid, context), updates)
+    updatedPatient.updatedAt = today()
 
     // Remove patient context
-    delete this.context
+    delete updatedPatient.context
 
     // Delete original patient (with previous UUID)
-    delete context.patients[this.uuid]
+    delete context.patients[uuid]
 
     // Update context
-    const updatedPatient = _.merge(this, updates)
     context.patients[updatedPatient.uuid] = updatedPatient
+
+    return updatedPatient
   }
 
   /**
@@ -480,19 +489,24 @@ export class Patient extends Child {
   }
 
   /**
-   * Archive record
+   * Archive
    *
+   * @param {string} uuid - Patient record UUID
    * @param {object} archive - Archive details
    * @param {object} context - Context
+   * @returns {Patient} Archived patient record
+   * @static
    */
-  archive(archive, context) {
-    this.update(archive, context)
+  static archive(uuid, archive, context) {
+    const archivedPatient = Patient.update(uuid, archive, context)
 
-    this.addEvent({
+    archivedPatient.addEvent({
       name: `Record archived: ${archive.archiveReason}`,
       note: archive.archiveReasonOther,
       createdBy_uid: archive.createdBy_uid
     })
+
+    return archivedPatient
   }
 
   /**

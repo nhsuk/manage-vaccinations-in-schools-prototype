@@ -7,19 +7,19 @@ import { today } from '../utils/date.js'
 /**
  * Generate fake upload
  *
- * @param {Array<string>|boolean|undefined} patient_nhsns - Patients
+ * @param {Array<string>|boolean|undefined} patient_uuids - Patients
  * @param {import('../models/user.js').User} user - User
  * @param {import('../enums.js').UploadType} [type] - Upload type
  * @param {import('../models/school.js').School} [school] - School
  * @returns {Upload} Upload
  */
-export function generateUpload(patient_nhsns, user, type, school) {
+export function generateUpload(patient_uuids, user, type, school) {
   const createdAt = faker.date.recent({ days: 14, refDate: today() })
 
   let validations
   let status = UploadStatus.Complete
 
-  if (patient_nhsns === false) {
+  if (patient_uuids === false) {
     // Simulate invalid file
     status = UploadStatus.Invalid
     validations = {
@@ -41,7 +41,7 @@ export function generateUpload(patient_nhsns, user, type, school) {
     status,
     type,
     validations,
-    patient_nhsns,
+    patient_uuids,
     ...(school && {
       yearGroups: school.yearGroups,
       school_urn: school.urn

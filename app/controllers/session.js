@@ -752,12 +752,12 @@ export const sessionController = {
         (patient) => patient.nhsn
       )
       for (const patientSession of patientSessionsForClinic) {
-        const patient = Patient.findOne(patientSession.patient.nhsn, data)
+        const patient = Patient.findOne(patientSession.patient_uuid, data)
         patientSession.removeFromSession({
           createdBy_uid: account.uid
         })
         patient.addToSession(patientSession)
-        patient.update({}, data)
+        Patient.update(patientSession.patient_uuid, {}, data)
       }
     }
 

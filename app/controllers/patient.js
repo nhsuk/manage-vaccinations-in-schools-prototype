@@ -5,11 +5,11 @@ import { Patient } from '../models/patient.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const patientController = {
-  read(request, response, next, nhsn) {
+  read(request, response, next, patient_uuid) {
     const { data } = request.session
     const { __ } = response.locals
 
-    const patient = Patient.findOne(nhsn, data)
+    const patient = Patient.findOne(patient_uuid, data)
 
     response.locals.patient = patient
 
@@ -101,56 +101,54 @@ export const patientController = {
   },
 
   edit(request, response) {
-    const { nhsn } = request.params
+    const { patient_uuid } = request.params
     const { data, referrer } = request.session
-    const { patient } = response.locals
 
     // Setup wizard if not already setup
-    if (!Patient.findOne(nhsn, data.wizard)) {
-      patient.create(patient, data.wizard)
+    let patient = Patient.findOne(patient_uuid, data.wizard)
+    if (!patient) {
+      patient = Patient.create(response.locals.patient, data.wizard)
     }
 
     // Show back link to referring page, else patient page
     response.locals.back = referrer || patient.uri
-    response.locals.patient = new Patient(
-      Patient.findOne(nhsn, data.wizard),
-      data
-    )
+    response.locals.patient = new Patient(patient, data)
 
     response.render('patient/edit')
   },
 
   update(request, response) {
-    const { nhsn } = request.params
+    const { patient_uuid } = request.params
     const { data, referrer } = request.session
     const { __ } = response.locals
 
-    const patient = new Patient(Patient.findOne(nhsn, data.wizard), data)
-
-    request.flash('success', __('patient.edit.success'))
+    // Update session data
+    const patient = Patient.update(
+      patient_uuid,
+      data.wizard.patients[patient_uuid],
+      data
+    )
 
     // Clean up session data
     delete data.patient
     delete data.wizard
 
-    // Update session data
-    patient.update(patient, data)
+    request.flash('success', __('patient.edit.success'))
 
     response.redirect(referrer || patient.uri)
   },
 
   readForm(request, response, next) {
-    const { nhsn } = request.params
+    const { patient_uuid } = request.params
     const { data } = request.session
     let { patient } = response.locals
 
     // Setup wizard if not already setup
-    if (!Patient.findOne(nhsn, data.wizard)) {
-      patient.create(patient, data.wizard)
+    if (!Patient.findOne(patient_uuid, data.wizard)) {
+      patient = Patient.create(patient, data.wizard)
     }
 
-    patient = new Patient(Patient.findOne(nhsn, data.wizard), data)
-    response.locals.patient = patient
+    response.locals.patient = new Patient(patient, data)
 
     response.locals.paths = {
       back: `${patient.uri}/edit`,
@@ -173,20 +171,23 @@ export const patientController = {
   },
 
   updateForm(request, response) {
+    const { patient_uuid } = request.params
     const { data } = request.session
-    const { paths, patient } = response.locals
+    const { paths } = response.locals
 
-    patient.update(request.body.patient, data.wizard)
+    Patient.update(patient_uuid, request.body.patient, data.wizard)
 
     response.redirect(paths.next)
   },
 
   archive(request, response) {
     const { account } = request.app.locals
+    const { patient_uuid } = request.params
     const { data } = request.session
-    const { __, patient } = response.locals
+    const { __ } = response.locals
 
-    patient.archive(
+    const patient = Patient.archive(
+      patient_uuid,
       {
         createdBy_uid: account.uid,
         ...request.body.patient

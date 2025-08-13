@@ -66,7 +66,7 @@
           heading: patient.fullName | highlightQuery(data.q),
           headingLevel: 4,
           clickable: true,
-          href: consentPath + "/link?nhsn=" + patient.nhsn,
+          href: consentPath + "/link?patient_uuid=" + patient.uuid,
           descriptionHtml: summaryList({
             rows: summaryRows(patient, {
               dob: {},
