@@ -148,9 +148,11 @@ export class Vaccine {
   /**
    * Delete
    *
+   * @param {string} snomed - SNOMED code
    * @param {object} context - Context
+   * @static
    */
-  delete(context) {
-    delete context.vaccines[this.snomed]
+  static delete(snomed, context) {
+    delete context.vaccines[snomed]
   }
 }

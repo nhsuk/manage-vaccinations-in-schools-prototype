@@ -28,12 +28,13 @@ export const vaccineController = {
   },
 
   delete(request, response) {
+    const { snomed } = request.params
     const { data } = request.session
-    const { __, vaccine } = response.locals
+    const { __ } = response.locals
+
+    Vaccine.delete(snomed, data)
 
     request.flash('success', __(`vaccine.delete.success`))
-
-    vaccine.delete(data)
 
     response.redirect('/vaccines')
   }

@@ -37,7 +37,7 @@ export const defaultBatchController = {
     const { __, defaultBatch, session, paths } = response.locals
 
     if (defaultBatch) {
-      defaultBatch.delete(data)
+      DefaultBatch.delete(defaultBatch.id, data)
     }
 
     // Add default batch to session

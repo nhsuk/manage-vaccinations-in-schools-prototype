@@ -1014,15 +1014,6 @@ export class Session {
   }
 
   /**
-   * Delete
-   *
-   * @param {object} context - Context
-   */
-  delete(context) {
-    delete context.sessions[this.id]
-  }
-
-  /**
    * Update register
    *
    * @param {string} patient_uuid

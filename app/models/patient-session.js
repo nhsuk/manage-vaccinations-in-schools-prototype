@@ -722,15 +722,6 @@ export class PatientSession {
   }
 
   /**
-   * Delete
-   *
-   * @param {object} context - Context
-   */
-  delete(context) {
-    delete context.patientSessions[this.uuid]
-  }
-
-  /**
    * Remove patient from session
    *
    * @param {import('./audit-event.js').AuditEvent} event - Event

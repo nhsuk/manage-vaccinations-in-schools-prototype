@@ -98,9 +98,11 @@ export class Notice {
   /**
    * Delete
    *
+   * @param {string} uuid - Notice UUID
    * @param {object} context - Context
+   * @static
    */
-  delete(context) {
-    delete context.notices[this.uuid]
+  static delete(uuid, context) {
+    delete context.notices[uuid]
   }
 }

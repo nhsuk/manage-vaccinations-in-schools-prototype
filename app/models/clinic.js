@@ -146,15 +146,19 @@ export class Clinic {
   /**
    * Delete
    *
+   * @param {string} id - Clinic ID
    * @param {object} context - Context
+   * @static
    */
-  delete(context) {
+  static delete(id, context) {
+    const clinic = Clinic.findOne(id, context)
+
     // Remove from organisation
-    context.organisations[this.organisation_code].clinic_ids =
-      context.organisations[this.organisation_code].clinic_ids.filter(
-        (item) => item !== this.id
+    context.organisations[clinic.organisation_code].clinic_ids =
+      context.organisations[clinic.organisation_code].clinic_ids.filter(
+        (item) => item !== id
       )
 
-    delete context.clinics[this.id]
+    delete context.clinics[id]
   }
 }

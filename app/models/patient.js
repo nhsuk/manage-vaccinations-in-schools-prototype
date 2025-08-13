@@ -456,15 +456,6 @@ export class Patient extends Child {
   }
 
   /**
-   * Delete
-   *
-   * @param {object} context - Context
-   */
-  delete(context) {
-    delete context.patients[this.uuid]
-  }
-
-  /**
    * Add event to activity log
    *
    * @param {object} event - Event

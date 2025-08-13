@@ -58,12 +58,13 @@ export const clinicController = {
   },
 
   delete(request, response) {
+    const { clinic_id } = request.params
     const { data } = request.session
-    const { __, clinic, paths } = response.locals
+    const { __, paths } = response.locals
+
+    Clinic.delete(clinic_id, data)
 
     request.flash('success', __(`clinic.delete.success`))
-
-    clinic.delete(data)
 
     response.redirect(paths.next)
   }

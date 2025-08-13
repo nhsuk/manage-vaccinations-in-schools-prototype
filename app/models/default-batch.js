@@ -64,10 +64,12 @@ export class DefaultBatch extends Batch {
   /**
    * Delete
    *
+   * @param {string} id - Default batch ID
    * @param {object} context - Context
+   * @static
    */
-  delete(context) {
-    delete context.defaultBatches[this.id]
+  static delete(id, context) {
+    delete context.defaultBatches[id]
   }
 
   /**

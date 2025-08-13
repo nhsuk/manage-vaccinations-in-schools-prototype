@@ -36,12 +36,13 @@ export const noticeController = {
   },
 
   delete(request, response) {
+    const { notice_uuid } = request.params
     const { data } = request.session
-    const { __, notice, paths } = response.locals
+    const { __, paths } = response.locals
+
+    Notice.delete(notice_uuid, data)
 
     request.flash('success', __(`notice.delete.success`))
-
-    notice.delete(data)
 
     response.redirect(paths.next)
   }

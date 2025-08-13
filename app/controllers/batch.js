@@ -62,13 +62,12 @@ export const batchController = {
     const { data } = request.session
     const { __, batch } = response.locals
 
-    request.flash('success', __(`batch.archive.success`, { batch }))
-
     batch.archive(data)
 
     // Remove from default batches
-    const defaultBatch = DefaultBatch.findOne(batch.id, data)
-    defaultBatch.delete(data)
+    DefaultBatch.delete(batch.id, data)
+
+    request.flash('success', __(`batch.archive.success`, { batch }))
 
     response.redirect('/vaccines')
   }

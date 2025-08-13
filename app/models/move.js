@@ -135,10 +135,12 @@ export class Move {
   /**
    * Delete
    *
+   * @param {string} uuid - Move UUID
    * @param {object} context - Context
+   * @static
    */
-  delete(context) {
-    delete context.moves[this.uuid]
+  static delete(uuid, context) {
+    delete context.moves[uuid]
   }
 
   /**
@@ -158,6 +160,6 @@ export class Move {
   switch(context) {
     context.patients[this.patient_uuid].school_urn = this.to
 
-    this.delete(context)
+    Move.delete(this.uuid, context)
   }
 }
