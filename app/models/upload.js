@@ -20,7 +20,7 @@ import { User } from './user.js'
  * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created upload
  * @property {Date} [updatedAt] - Updated date
- * @property {Array<string>} [patient_nhsns] - Patient record NHS numbers
+ * @property {Array<string>} [patient_uuids] - Patient record UUIDs
  * @property {number} [devoid] - Exact duplicate records found
  */
 export class Upload {
@@ -33,7 +33,7 @@ export class Upload {
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.validations = options?.validations || []
-    this.patient_nhsns = options?.patient_nhsns || []
+    this.patient_uuids = options?.patient_uuids || []
 
     if (this.type === UploadType.School) {
       this.yearGroups = options?.yearGroups
@@ -66,9 +66,9 @@ export class Upload {
    * @returns {Array<Patient>} Records
    */
   get patients() {
-    if (this.context?.patients && this.patient_nhsns) {
-      let patients = this.patient_nhsns.map((nhsn) =>
-        Patient.findOne(nhsn, this.context)
+    if (this.context?.patients && this.patient_uuids) {
+      let patients = this.patient_uuids.map((uuid) =>
+        Patient.findOne(uuid, this.context)
       )
 
       if (this.type === UploadType.Report) {
@@ -96,9 +96,9 @@ export class Upload {
       this.status === UploadStatus.Complete &&
       this.type === UploadType.Report
     ) {
-      if (this.context?.patients && this.patient_nhsns) {
-        return this.patient_nhsns
-          .map((nhsn) => Patient.findOne(nhsn, this.context))
+      if (this.context?.patients && this.patient_uuids) {
+        return this.patient_uuids
+          .map((uuid) => Patient.findOne(uuid, this.context))
           .filter((patient) => patient.vaccinations.length === 0)
       }
 

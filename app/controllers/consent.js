@@ -8,8 +8,8 @@ import { getResults, getPagination } from '../utils/pagination.js'
 
 export const consentController = {
   read(request, response, next, consent_uuid) {
+    const { patient_uuid } = request.query
     const { session_id } = request.params
-    const { nhsn } = request.query
     const { referrer } = request.session
 
     const consent = Consent.findOne(consent_uuid, request.session.data)
@@ -19,7 +19,10 @@ export const consentController = {
 
     response.locals.back = referrer || back
     response.locals.consent = consent
-    response.locals.patient = Patient.findOne(nhsn, request.session.data)
+    response.locals.patient = Patient.findOne(
+      patient_uuid,
+      request.session.data
+    )
     response.locals.consentPath = session_id
       ? `/sessions/${consent.session_id}${consent.uri}`
       : consent.uri
@@ -127,7 +130,7 @@ export const consentController = {
 
     // Update session data
     consent.update(consent, data)
-    patient.update(patient, data)
+    Patient.update(patient.uuid, patient, data)
 
     request.flash('success', __(`consent.link.success`, { consent, patient }))
 
@@ -138,9 +141,8 @@ export const consentController = {
     const { data } = request.session
     const { __, consent, consentsPath } = response.locals
 
-    // Create and add patient
-    const patient = new Patient(consent.child)
-    patient.create(patient, data)
+    // Create patient
+    const patient = Patient.create(consent.child, data)
 
     // TODO: Select for cohort
     // Get programmes from session
@@ -168,7 +170,7 @@ export const consentController = {
 
     // Update session data
     consent.update(consent, data)
-    patient.update(patient, data)
+    Patient.update(patient.uuid, patient, data)
 
     request.flash('success', __(`consent.add.success`, { consent, patient }))
 

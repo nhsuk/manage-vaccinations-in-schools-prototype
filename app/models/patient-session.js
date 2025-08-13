@@ -92,9 +92,8 @@ export class PatientSession {
    */
   get patient() {
     try {
-      const patient = this.context?.patients[this.patient_uuid]
-      if (patient) {
-        return new Patient(patient, this.context)
+      if (this.patient_uuid) {
+        return Patient.findOne(this.patient_uuid, this.context)
       }
     } catch (error) {
       console.error('PatientSession.patient', error.message)
