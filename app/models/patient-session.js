@@ -117,7 +117,7 @@ export class PatientSession {
    */
   get instruction() {
     try {
-      return Instruction.read(this.instruction_uuid, this.context)
+      return Instruction.findOne(this.instruction_uuid, this.context)
     } catch (error) {
       console.error('PatientSession.instruction', error.message)
     }
@@ -262,7 +262,7 @@ export class PatientSession {
    */
   get programme() {
     try {
-      return Programme.read(this.programme_id, this.context)
+      return Programme.findOne(this.programme_id, this.context)
     } catch (error) {
       console.error('PatientSession.programme', error.message)
     }
@@ -275,7 +275,7 @@ export class PatientSession {
    */
   get session() {
     try {
-      return Session.read(this.session_id, this.context)
+      return Session.findOne(this.session_id, this.context)
     } catch (error) {
       console.error('PatientSession.session', error.message)
     }
@@ -674,14 +674,14 @@ export class PatientSession {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} uuid - Patient UUID
    * @param {object} context - Context
    * @returns {PatientSession|undefined} Patient
    * @static
    */
-  static read(uuid, context) {
+  static findOne(uuid, context) {
     if (context?.patientSessions?.[uuid]) {
       return new PatientSession(context.patientSessions[uuid], context)
     }
@@ -760,7 +760,7 @@ export class PatientSession {
       programme_ids: this.session.programme_ids
     })
 
-    const patientSession = PatientSession.read(this.uuid, this.context)
+    const patientSession = PatientSession.findOne(this.uuid, this.context)
     patientSession.update({ gillick }, this.context)
   }
 

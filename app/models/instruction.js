@@ -108,7 +108,7 @@ export class Instruction {
    */
   get patientSession() {
     try {
-      return PatientSession.read(this.patientSession_uuid, this.context)
+      return PatientSession.findOne(this.patientSession_uuid, this.context)
     } catch (error) {
       console.error('Instruction.patientSession', error.message)
     }
@@ -122,7 +122,7 @@ export class Instruction {
   get createdBy() {
     try {
       if (this.createdBy_uid) {
-        return User.read(this.createdBy_uid, this.context)
+        return User.findOne(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Instruction.createdBy', error.message)
@@ -136,7 +136,7 @@ export class Instruction {
    */
   get programme() {
     try {
-      return Programme.read(this.programme_id, this.context)
+      return Programme.findOne(this.programme_id, this.context)
     } catch (error) {
       console.error('Instruction.programme', error.message)
     }
@@ -218,14 +218,14 @@ export class Instruction {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} uuid - Instruction UUID
    * @param {object} context - Context
    * @returns {Instruction|undefined} Instruction
    * @static
    */
-  static read(uuid, context) {
+  static findOne(uuid, context) {
     if (context?.instructions?.[uuid]) {
       return new Instruction(context.instructions[uuid], context)
     }

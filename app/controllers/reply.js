@@ -24,7 +24,7 @@ export const replyController = {
   read(request, response, next, reply_uuid) {
     const { nhsn, programme_id } = request.params
 
-    response.locals.reply = Reply.read(reply_uuid, request.session.data)
+    response.locals.reply = Reply.findOne(reply_uuid, request.session.data)
     response.locals.patientSession = PatientSession.findAll(
       request.session.data
     )
@@ -79,12 +79,12 @@ export const replyController = {
       let reply
       let next
       if (type === 'edit') {
-        reply = Reply.read(reply_uuid, data)
+        reply = Reply.findOne(reply_uuid, data)
         next = reply.uri
 
         reply.update(request.body.reply, data)
       } else {
-        reply = new Reply(Reply.read(reply_uuid, data.wizard), data)
+        reply = new Reply(Reply.findOne(reply_uuid, data.wizard), data)
         next = `${patientSession.uri}?activity=${activity || 'consent'}`
 
         // Remove any parent details in reply if self consent
@@ -103,7 +103,7 @@ export const replyController = {
 
         // Invalidate any replaced response
         if (invalidUuid) {
-          const invalidReply = Reply.read(invalidUuid, data)
+          const invalidReply = Reply.findOne(invalidUuid, data)
           invalidReply.update({ invalid: true }, data)
 
           delete request.app.locals.invalidUuid
@@ -136,9 +136,9 @@ export const replyController = {
 
       let reply
       if (type === 'edit') {
-        reply = Reply.read(reply_uuid, data)
+        reply = Reply.findOne(reply_uuid, data)
       } else {
-        reply = new Reply(Reply.read(reply_uuid, data.wizard), data)
+        reply = new Reply(Reply.findOne(reply_uuid, data.wizard), data)
       }
 
       response.locals.reply = reply
@@ -154,7 +154,7 @@ export const replyController = {
       response.locals.isMultiProgrammeSession = isMultiProgrammeSession
 
       const programme = isMultiProgrammeSession
-        ? reply.programme_id && Programme.read(reply.programme_id, data)
+        ? reply.programme_id && Programme.findOne(reply.programme_id, data)
         : patientSession.session.primaryProgrammes[0]
       response.locals.programme = programme
 
@@ -318,7 +318,7 @@ export const replyController = {
           break
         default: // Consent response is an existing respondent
           reply.method = ReplyMethod.Phone
-          reply.parent = Reply.read(respondent, data).parent
+          reply.parent = Reply.findOne(respondent, data).parent
           reply.selfConsent = false
 
           // Store reply that needs marked as invalid

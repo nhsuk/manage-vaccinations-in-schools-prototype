@@ -23,8 +23,11 @@ export const vaccinationController = {
   read(request, response, next, vaccination_uuid) {
     const { programme_id } = request.params
 
-    const programme = Programme.read(programme_id, request.session.data)
-    const vaccination = Vaccination.read(vaccination_uuid, request.session.data)
+    const programme = Programme.findOne(programme_id, request.session.data)
+    const vaccination = Vaccination.findOne(
+      vaccination_uuid,
+      request.session.data
+    )
 
     response.locals.vaccination = vaccination
     response.locals.programme = programme
@@ -49,14 +52,14 @@ export const vaccinationController = {
     const { vaccination } = response.locals
 
     // Setup wizard if not already setup
-    if (!Vaccination.read(vaccination_uuid, data.wizard)) {
+    if (!Vaccination.findOne(vaccination_uuid, data.wizard)) {
       vaccination.create(vaccination, data.wizard)
     }
 
     // Show back link to referring page, else vaccination page
     response.locals.back = referrer || vaccination.uri
     response.locals.vaccination = new Vaccination(
-      Vaccination.read(vaccination_uuid, data.wizard),
+      Vaccination.findOne(vaccination_uuid, data.wizard),
       data
     )
 
@@ -68,7 +71,7 @@ export const vaccinationController = {
     const { patientSession_uuid } = request.query
     const { data } = request.session
 
-    const patientSession = PatientSession.read(patientSession_uuid, data)
+    const patientSession = PatientSession.findOne(patientSession_uuid, data)
     const { session, programme, vaccine, instruction } = patientSession
     const { identifiedBy, injectionSite, ready, selfId, suppliedBy_uid } =
       data.patientSession.preScreen
@@ -170,11 +173,11 @@ export const vaccinationController = {
       const { __, session } = response.locals
 
       const vaccination = new Vaccination(
-        Vaccination.read(vaccination_uuid, data.wizard),
+        Vaccination.findOne(vaccination_uuid, data.wizard),
         data
       )
 
-      const patientSession = PatientSession.read(
+      const patientSession = PatientSession.findOne(
         vaccination.patientSession_uuid,
         data
       )
@@ -227,10 +230,10 @@ export const vaccinationController = {
 
       let vaccination
       if (type === 'edit') {
-        vaccination = Vaccination.read(vaccination_uuid, data)
+        vaccination = Vaccination.findOne(vaccination_uuid, data)
       } else {
         vaccination = new Vaccination(
-          Vaccination.read(vaccination_uuid, data.wizard),
+          Vaccination.findOne(vaccination_uuid, data.wizard),
           data
         )
       }
@@ -238,7 +241,10 @@ export const vaccinationController = {
       response.locals.vaccination = vaccination
 
       // Historical vaccinations may not return a patient session
-      const patientSession = PatientSession.read(data.patientSession_uuid, data)
+      const patientSession = PatientSession.findOne(
+        data.patientSession_uuid,
+        data
+      )
 
       response.locals.patientSession = patientSession
       response.locals.session = patientSession?.session

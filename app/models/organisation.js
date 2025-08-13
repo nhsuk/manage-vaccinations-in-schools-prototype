@@ -130,14 +130,14 @@ export class Organisation {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} code - ODS code
    * @param {object} context - Context
    * @returns {Organisation|undefined} Organisation
    * @static
    */
-  static read(code, context) {
+  static findOne(code, context) {
     if (context?.organisations?.[code]) {
       return new Organisation(context.organisations[code], context)
     }

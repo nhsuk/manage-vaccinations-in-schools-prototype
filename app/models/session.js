@@ -354,7 +354,7 @@ export class Session {
   get clinic() {
     if (this.clinic_id) {
       try {
-        return Clinic.read(this.clinic_id, this.context)
+        return Clinic.findOne(this.clinic_id, this.context)
       } catch (error) {
         console.error('Session.clinic', error.message)
       }
@@ -369,7 +369,7 @@ export class Session {
   get school() {
     if (this.school_urn) {
       try {
-        return School.read(this.school_urn, this.context)
+        return School.findOne(this.school_urn, this.context)
       } catch (error) {
         console.error('Session.school', error.message)
       }
@@ -456,7 +456,7 @@ export class Session {
    */
   get primaryProgrammes() {
     return this.primaryProgramme_ids
-      .map((id) => Programme.read(id, this.context))
+      .map((id) => Programme.findOne(id, this.context))
       .sort((a, b) => a.name.localeCompare(b.name))
   }
 
@@ -467,7 +467,7 @@ export class Session {
    */
   get catchupProgrammes() {
     return this.catchupProgramme_ids
-      .map((id) => Programme.read(id, this.context))
+      .map((id) => Programme.findOne(id, this.context))
       .sort((a, b) => a.name.localeCompare(b.name))
   }
 
@@ -478,7 +478,7 @@ export class Session {
    */
   get programmes() {
     return this.programme_ids
-      .map((id) => Programme.read(id, this.context))
+      .map((id) => Programme.findOne(id, this.context))
       .sort((a, b) => a.name.localeCompare(b.name))
   }
 
@@ -948,14 +948,14 @@ export class Session {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} id - Session ID
    * @param {object} context - Context
    * @returns {Session|undefined} Session
    * @static
    */
-  static read(id, context) {
+  static findOne(id, context) {
     if (context?.sessions?.[id]) {
       return new Session(context.sessions[id], context)
     }

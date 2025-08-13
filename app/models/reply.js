@@ -170,7 +170,7 @@ export class Reply {
   get createdBy() {
     try {
       if (this.createdBy_uid) {
-        return User.read(this.createdBy_uid, this.context)
+        return User.findOne(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Reply.createdBy', error.message)
@@ -281,7 +281,7 @@ export class Reply {
   get programme() {
     try {
       if (this.programme_id) {
-        return Programme.read(this.programme_id, this.context)
+        return Programme.findOne(this.programme_id, this.context)
       }
     } catch (error) {
       console.error('Upload.programme', error.message)
@@ -296,7 +296,7 @@ export class Reply {
   get session() {
     try {
       if (this.session_id) {
-        return Session.read(this.session_id, this.context)
+        return Session.findOne(this.session_id, this.context)
       }
     } catch (error) {
       console.error('Reply.session', error.message)
@@ -425,14 +425,14 @@ export class Reply {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} uuid - Reply UUID
    * @param {object} context - Context
    * @returns {Reply|undefined} Reply
    * @static
    */
-  static read(uuid, context) {
+  static findOne(uuid, context) {
     if (context?.replies?.[uuid]) {
       return new Reply(context.replies[uuid], context)
     }

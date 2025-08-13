@@ -222,7 +222,7 @@ export class Patient extends Child {
    */
   get cohorts() {
     if (this.context?.cohorts && this.cohort_uids) {
-      return this.cohort_uids.map((uid) => Cohort.read(uid, this.context))
+      return this.cohort_uids.map((uid) => Cohort.findOne(uid, this.context))
     }
 
     return []
@@ -246,7 +246,7 @@ export class Patient extends Child {
    */
   get replies() {
     return this.reply_uuids
-      .map((uuid) => Reply.read(uuid, this.context))
+      .map((uuid) => Reply.findOne(uuid, this.context))
       .filter((reply) => reply?.patient_uuid === this.uuid)
   }
 
@@ -258,7 +258,7 @@ export class Patient extends Child {
   get patientSessions() {
     if (this.context?.patientSessions && this.patientSession_uuids) {
       return this.patientSession_uuids
-        .map((uuid) => PatientSession.read(uuid, this.context))
+        .map((uuid) => PatientSession.findOne(uuid, this.context))
         .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
     }
 
@@ -408,14 +408,14 @@ export class Patient extends Child {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} nhsn - Patient NHS number
    * @param {object} context - Context
    * @returns {Patient|undefined} Patient
    * @static
    */
-  static read(nhsn, context) {
+  static findOne(nhsn, context) {
     if (context?.patients) {
       return this.findAll(context).find((patient) => patient.nhsn === nhsn)
     }

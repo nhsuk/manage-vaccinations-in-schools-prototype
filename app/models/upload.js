@@ -53,7 +53,7 @@ export class Upload {
   get createdBy() {
     try {
       if (this.createdBy_uid) {
-        return User.read(this.createdBy_uid, this.context)
+        return User.findOne(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Upload.createdBy', error.message)
@@ -68,7 +68,7 @@ export class Upload {
   get patients() {
     if (this.context?.patients && this.patient_nhsns) {
       let patients = this.patient_nhsns.map((nhsn) =>
-        Patient.read(nhsn, this.context)
+        Patient.findOne(nhsn, this.context)
       )
 
       if (this.type === UploadType.Report) {
@@ -98,7 +98,7 @@ export class Upload {
     ) {
       if (this.context?.patients && this.patient_nhsns) {
         return this.patient_nhsns
-          .map((nhsn) => Patient.read(nhsn, this.context))
+          .map((nhsn) => Patient.findOne(nhsn, this.context))
           .filter((patient) => patient.vaccinations.length === 0)
       }
 
@@ -148,7 +148,7 @@ export class Upload {
    */
   get school() {
     if (this.type === UploadType.School && this.school_urn) {
-      return School.read(this.school_urn, this.context)
+      return School.findOne(this.school_urn, this.context)
     }
   }
 
@@ -270,14 +270,14 @@ export class Upload {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} id - Upload ID
    * @param {object} context - Context
    * @returns {Upload|undefined} Upload
    * @static
    */
-  static read(id, context) {
+  static findOne(id, context) {
     if (context.uploads?.[id]) {
       return new Upload(context.uploads[id], context)
     }

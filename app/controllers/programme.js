@@ -8,7 +8,7 @@ import { formatYearGroup } from '../utils/string.js'
 
 export const programmeController = {
   read(request, response, next, programme_id) {
-    response.locals.programme = Programme.read(
+    response.locals.programme = Programme.findOne(
       programme_id,
       request.session.data
     )

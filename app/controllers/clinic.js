@@ -2,7 +2,7 @@ import { Clinic } from '../models/clinic.js'
 
 export const clinicController = {
   read(request, response, next, clinic_id) {
-    const clinic = Clinic.read(clinic_id, request.session.data)
+    const clinic = Clinic.findOne(clinic_id, request.session.data)
 
     response.locals.clinic = clinic
     response.locals.paths = {

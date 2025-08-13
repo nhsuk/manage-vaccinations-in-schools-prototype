@@ -9,7 +9,7 @@ export const patientController = {
     const { data } = request.session
     const { __ } = response.locals
 
-    const patient = Patient.read(nhsn, data)
+    const patient = Patient.findOne(nhsn, data)
 
     response.locals.patient = patient
 
@@ -106,13 +106,16 @@ export const patientController = {
     const { patient } = response.locals
 
     // Setup wizard if not already setup
-    if (!Patient.read(nhsn, data.wizard)) {
+    if (!Patient.findOne(nhsn, data.wizard)) {
       patient.create(patient, data.wizard)
     }
 
     // Show back link to referring page, else patient page
     response.locals.back = referrer || patient.uri
-    response.locals.patient = new Patient(Patient.read(nhsn, data.wizard), data)
+    response.locals.patient = new Patient(
+      Patient.findOne(nhsn, data.wizard),
+      data
+    )
 
     response.render('patient/edit')
   },
@@ -122,7 +125,7 @@ export const patientController = {
     const { data, referrer } = request.session
     const { __ } = response.locals
 
-    const patient = new Patient(Patient.read(nhsn, data.wizard), data)
+    const patient = new Patient(Patient.findOne(nhsn, data.wizard), data)
 
     request.flash('success', __('patient.edit.success'))
 
@@ -142,11 +145,11 @@ export const patientController = {
     let { patient } = response.locals
 
     // Setup wizard if not already setup
-    if (!Patient.read(nhsn, data.wizard)) {
+    if (!Patient.findOne(nhsn, data.wizard)) {
       patient.create(patient, data.wizard)
     }
 
-    patient = new Patient(Patient.read(nhsn, data.wizard), data)
+    patient = new Patient(Patient.findOne(nhsn, data.wizard), data)
     response.locals.patient = patient
 
     response.locals.paths = {

@@ -7,7 +7,7 @@ export const reviewController = {
     const { nhsn } = request.params
     const { data, referrer } = request.session
 
-    const upload = Upload.read(upload_id, request.session.data)
+    const upload = Upload.findOne(upload_id, request.session.data)
     const patient = upload.patients.find((patient) => patient.nhsn === nhsn)
 
     // Show back link to referring page, else upload page

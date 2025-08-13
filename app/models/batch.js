@@ -138,14 +138,14 @@ export class Batch {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} id - Batch ID
    * @param {object} context - Context
    * @returns {Batch|undefined} Batch
    * @static
    */
-  static read(id, context) {
+  static findOne(id, context) {
     if (context?.batches?.[id]) {
       return new Batch(context.batches[id], context)
     }

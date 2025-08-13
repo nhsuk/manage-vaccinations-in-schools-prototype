@@ -8,7 +8,7 @@ import { formatYearGroup } from '../utils/string.js'
 
 export const uploadController = {
   read(request, response, next, upload_id) {
-    response.locals.upload = Upload.read(upload_id, request.session.data)
+    response.locals.upload = Upload.findOne(upload_id, request.session.data)
 
     next()
   },
@@ -88,7 +88,7 @@ export const uploadController = {
     const { data, referrer } = request.session
     const { __ } = response.locals
 
-    const upload = new Upload(Upload.read(upload_id, data.wizard), data)
+    const upload = new Upload(Upload.findOne(upload_id, data.wizard), data)
 
     request.flash('success', __('upload.new.success'))
 
@@ -108,11 +108,11 @@ export const uploadController = {
     let { __, upload } = response.locals
 
     // Setup wizard if not already setup
-    if (!Upload.read(upload_id, data.wizard)) {
+    if (!Upload.findOne(upload_id, data.wizard)) {
       upload.create(upload, data.wizard)
     }
 
-    upload = new Upload(Upload.read(upload_id, data.wizard), data)
+    upload = new Upload(Upload.findOne(upload_id, data.wizard), data)
     response.locals.upload = upload
 
     const journey = {

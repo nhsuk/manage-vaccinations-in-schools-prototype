@@ -27,7 +27,7 @@ export const sessionController = {
   read(request, response, next, session_id) {
     const { data } = request.session
 
-    const session = Session.read(session_id, data)
+    const session = Session.findOne(session_id, data)
     response.locals.session = session
 
     response.locals.defaultBatches = DefaultBatch.findAll(data).filter(
@@ -559,14 +559,14 @@ export const sessionController = {
     const { session } = response.locals
 
     // Setup wizard if not already setup
-    if (!Session.read(session_id, data.wizard)) {
+    if (!Session.findOne(session_id, data.wizard)) {
       session.create(session, data.wizard)
     }
 
     // Show back link to session page
     response.locals.back = session.uri
     response.locals.session = new Session(
-      Session.read(session_id, data.wizard),
+      Session.findOne(session_id, data.wizard),
       data
     )
 
@@ -579,7 +579,10 @@ export const sessionController = {
       const { data } = request.session
       const { __ } = response.locals
 
-      const session = new Session(Session.read(session_id, data.wizard), data)
+      const session = new Session(
+        Session.findOne(session_id, data.wizard),
+        data
+      )
 
       request.flash('success', __(`session.${type}.success`, { session }))
 
@@ -600,9 +603,12 @@ export const sessionController = {
       const { data, referrer } = request.session
       let { organisation } = response.locals
 
-      organisation = Organisation.read(organisation?.code || 'RYG', data)
+      organisation = Organisation.findOne(organisation?.code || 'RYG', data)
 
-      const session = new Session(Session.read(session_id, data.wizard), data)
+      const session = new Session(
+        Session.findOne(session_id, data.wizard),
+        data
+      )
       response.locals.session = session
 
       const journey = {
@@ -746,7 +752,7 @@ export const sessionController = {
         (patient) => patient.nhsn
       )
       for (const patientSession of patientSessionsForClinic) {
-        const patient = Patient.read(patientSession.patient.nhsn, data)
+        const patient = Patient.findOne(patientSession.patient.nhsn, data)
         patientSession.removeFromSession({
           createdBy_uid: account.uid
         })

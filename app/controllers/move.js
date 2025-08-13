@@ -5,7 +5,7 @@ import { getResults, getPagination } from '../utils/pagination.js'
 
 export const moveController = {
   read(request, response, next, move_uuid) {
-    response.locals.move = Move.read(move_uuid, request.session.data)
+    response.locals.move = Move.findOne(move_uuid, request.session.data)
 
     next()
   },

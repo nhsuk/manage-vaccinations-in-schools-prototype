@@ -132,14 +132,14 @@ export class Vaccine {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} snomed - SNOMED code
    * @param {object} context - Context
    * @returns {Vaccine|undefined} Vaccine
    * @static
    */
-  static read(snomed, context) {
+  static findOne(snomed, context) {
     if (context?.vaccines?.[snomed]) {
       return new Vaccine(context.vaccines[snomed], context)
     }

@@ -96,14 +96,14 @@ export class User {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} uid - User UID
    * @param {object} context - Context
    * @returns {User|undefined} User
    * @static
    */
-  static read(uid, context) {
+  static findOne(uid, context) {
     if (context?.users?.[uid]) {
       return new User(context.users[uid])
     }

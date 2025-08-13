@@ -3,7 +3,7 @@ import { Upload } from '../models/upload.js'
 
 export const noticeController = {
   read(request, response, next, notice_uuid) {
-    const notice = Notice.read(notice_uuid, request.session.data)
+    const notice = Notice.findOne(notice_uuid, request.session.data)
 
     response.locals.notice = notice
     response.locals.paths = {

@@ -94,14 +94,14 @@ export class Clinic {
   }
 
   /**
-   * Read
+   * Find one
    *
-   * @param {string} id - Batch ID
+   * @param {string} id - Clinic ID
    * @param {object} context - Context
    * @returns {Clinic|undefined} Clinic
    * @static
    */
-  static read(id, context) {
+  static findOne(id, context) {
     if (context?.clinics?.[id]) {
       return new Clinic(context.clinics[id], context)
     }

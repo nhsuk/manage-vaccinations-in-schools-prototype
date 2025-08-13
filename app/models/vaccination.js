@@ -225,7 +225,7 @@ export class Vaccination {
    */
   get patientSession() {
     try {
-      return PatientSession.read(this.patientSession_uuid, this.context)
+      return PatientSession.findOne(this.patientSession_uuid, this.context)
     } catch (error) {
       console.error('Instruction.patientSession', error.message)
     }
@@ -257,7 +257,7 @@ export class Vaccination {
   get createdBy() {
     try {
       if (this.createdBy_uid) {
-        return User.read(this.createdBy_uid, this.context)
+        return User.findOne(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Vaccination.createdBy', error.message)
@@ -272,7 +272,7 @@ export class Vaccination {
   get suppliedBy() {
     try {
       if (this.suppliedBy_uid) {
-        return User.read(this.suppliedBy_uid, this.context)
+        return User.findOne(this.suppliedBy_uid, this.context)
       }
     } catch (error) {
       console.error('Vaccination.suppliedBy', error.message)
@@ -286,7 +286,7 @@ export class Vaccination {
    */
   get programme() {
     try {
-      return Programme.read(this.programme_id, this.context)
+      return Programme.findOne(this.programme_id, this.context)
     } catch (error) {
       console.error('Vaccination.programme', error.message)
     }
@@ -494,14 +494,14 @@ export class Vaccination {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} uuid - Vaccination UUID
    * @param {object} context - Context
    * @returns {Vaccination|undefined} Vaccination
    * @static
    */
-  static read(uuid, context) {
+  static findOne(uuid, context) {
     if (context?.vaccinations?.[uuid]) {
       return new Vaccination(context.vaccinations[uuid], context)
     }

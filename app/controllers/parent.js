@@ -16,7 +16,7 @@ import { formatList, kebabToCamelCase } from '../utils/string.js'
 
 export const parentController = {
   read(request, response, next, session_id) {
-    const session = Session.read(session_id, request.session.data)
+    const session = Session.findOne(session_id, request.session.data)
     const serviceName = 'Give or refuse consent for vaccinations'
 
     response.locals.assetsName = 'public'
@@ -109,7 +109,10 @@ export const parentController = {
     const { data, referrer } = request.session
     const { __ } = response.locals
 
-    const consent = new Consent(Consent.read(consent_uuid, data?.wizard), data)
+    const consent = new Consent(
+      Consent.findOne(consent_uuid, data?.wizard),
+      data
+    )
     response.locals.consent = consent
 
     const programmes = consent.session ? consent.session.primaryProgrammes : []

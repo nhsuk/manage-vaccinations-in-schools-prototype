@@ -99,14 +99,14 @@ export class Move {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} uuid - Move UUID
    * @param {object} context - Context
    * @returns {Move|undefined} Move
    * @static
    */
-  static read(uuid, context) {
+  static findOne(uuid, context) {
     if (context?.moves?.[uuid]) {
       return new Move(context.moves[uuid], context)
     }

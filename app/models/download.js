@@ -143,7 +143,7 @@ export class Download {
    */
   get vaccinations() {
     return this.vaccination_uuids.map((uuid) =>
-      Vaccination.read(uuid, this.context)
+      Vaccination.findOne(uuid, this.context)
     )
   }
 
@@ -330,14 +330,14 @@ export class Download {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} id - Download ID
    * @param {object} context - Context
    * @returns {Download|undefined} Download
    * @static
    */
-  static read(id, context) {
+  static findOne(id, context) {
     if (context?.downloads?.[id]) {
       return new Download(context.downloads[id], context)
     }

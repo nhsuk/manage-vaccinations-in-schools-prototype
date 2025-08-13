@@ -82,14 +82,14 @@ export class Notice {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} uuid - Notice UUID
    * @param {object} context - Context
    * @returns {Notice|undefined} Notice
    * @static
    */
-  static read(uuid, context) {
+  static findOne(uuid, context) {
     if (context?.notices?.[uuid]) {
       return new Notice(context.notices[uuid], context)
     }

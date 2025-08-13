@@ -23,7 +23,7 @@ export const downloadController = {
     }
 
     response.locals.download = new Download(
-      Download.read(download_id, data?.wizard),
+      Download.findOne(download_id, data?.wizard),
       data
     )
 
@@ -50,7 +50,7 @@ export const downloadController = {
     const { programme_id } = request.params
     const { data } = request.session
 
-    const programme = Programme.read(programme_id, data)
+    const programme = Programme.findOne(programme_id, data)
     const download = new Download({
       programme_id,
       vaccination_uuids: programme.vaccinations.map(({ uuid }) => uuid),

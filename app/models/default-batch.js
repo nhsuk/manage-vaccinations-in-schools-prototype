@@ -19,7 +19,7 @@ export class DefaultBatch extends Batch {
    */
   get session() {
     try {
-      return Session.read(this.session_id, this.context)
+      return Session.findOne(this.session_id, this.context)
     } catch (error) {
       console.error('DefaultBatch.session', error.message)
     }
@@ -48,14 +48,14 @@ export class DefaultBatch extends Batch {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} id - Default batch ID
    * @param {object} context - Context
    * @returns {DefaultBatch|undefined} Default batch
    * @static
    */
-  static read(id, context) {
+  static findOne(id, context) {
     if (context?.defaultBatches?.[id]) {
       return new DefaultBatch(context.defaultBatches[id], context)
     }
@@ -78,7 +78,7 @@ export class DefaultBatch extends Batch {
    * @param {object} context - Context
    */
   static addToSession(id, session_id, context) {
-    const batch = Batch.read(id, context)
+    const batch = Batch.findOne(id, context)
     delete batch?.context
 
     const defaultBatch = {

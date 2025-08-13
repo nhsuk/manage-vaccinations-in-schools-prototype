@@ -141,14 +141,14 @@ export class School {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} urn - URN
    * @param {object} context - Context
    * @returns {School|undefined} School
    * @static
    */
-  static read(urn, context) {
+  static findOne(urn, context) {
     if (context?.schools?.[urn]) {
       return new School(context.schools[urn], context)
     }

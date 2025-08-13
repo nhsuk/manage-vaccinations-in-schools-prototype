@@ -5,7 +5,7 @@ export const organisationController = {
     const { view } = request.params
     const { __ } = response.locals
 
-    const organisation = Organisation.read(
+    const organisation = Organisation.findOne(
       organisation_code,
       request.session.data
     )

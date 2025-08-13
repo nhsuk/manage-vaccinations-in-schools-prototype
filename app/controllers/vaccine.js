@@ -2,7 +2,7 @@ import { Vaccine } from '../models/vaccine.js'
 
 export const vaccineController = {
   read(request, response, next, snomed) {
-    response.locals.vaccine = Vaccine.read(snomed, request.session.data)
+    response.locals.vaccine = Vaccine.findOne(snomed, request.session.data)
 
     next()
   },

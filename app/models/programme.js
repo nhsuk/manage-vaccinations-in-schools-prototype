@@ -117,7 +117,7 @@ export class Programme {
    */
   get vaccines() {
     return this.vaccine_smomeds.map((smomed) =>
-      Vaccine.read(smomed, this.context)
+      Vaccine.findOne(smomed, this.context)
     )
   }
 
@@ -157,7 +157,7 @@ export class Programme {
    * @returns {Array<Cohort>} Cohorts
    */
   get cohorts() {
-    return this.cohort_uids.map((uid) => Cohort.read(uid, this.context))
+    return this.cohort_uids.map((uid) => Cohort.findOne(uid, this.context))
   }
 
   /**
@@ -284,14 +284,14 @@ export class Programme {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} id - Programme ID
    * @param {object} context - Context
    * @returns {Programme|undefined} Programme
    * @static
    */
-  static read(id, context) {
+  static findOne(id, context) {
     if (context?.programmes?.[id]) {
       return new Programme(context.programmes[id], context)
     }

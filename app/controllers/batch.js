@@ -3,7 +3,7 @@ import { DefaultBatch } from '../models/default-batch.js'
 
 export const batchController = {
   read(request, response, next, batch_id) {
-    const batch = Batch.read(batch_id, request.session.data)
+    const batch = Batch.findOne(batch_id, request.session.data)
 
     response.locals.batch = batch
     response.locals.paths = {
@@ -67,7 +67,7 @@ export const batchController = {
     batch.archive(data)
 
     // Remove from default batches
-    const defaultBatch = DefaultBatch.read(batch.id, data)
+    const defaultBatch = DefaultBatch.findOne(batch.id, data)
     defaultBatch.delete(data)
 
     response.redirect('/vaccines')

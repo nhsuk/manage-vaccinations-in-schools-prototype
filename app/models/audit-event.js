@@ -44,7 +44,7 @@ export class AuditEvent {
   get createdBy() {
     try {
       if (this.createdBy_uid) {
-        return User.read(this.createdBy_uid, this.context)
+        return User.findOne(this.createdBy_uid, this.context)
       }
     } catch (error) {
       console.error('Upload.createdBy', error.message)

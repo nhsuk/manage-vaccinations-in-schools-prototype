@@ -12,14 +12,14 @@ export const consentController = {
     const { nhsn } = request.query
     const { referrer } = request.session
 
-    const consent = Consent.read(consent_uuid, request.session.data)
+    const consent = Consent.findOne(consent_uuid, request.session.data)
     const back = session_id
       ? `/sessions/${consent.session_id}/consents`
       : '/consents'
 
     response.locals.back = referrer || back
     response.locals.consent = consent
-    response.locals.patient = Patient.read(nhsn, request.session.data)
+    response.locals.patient = Patient.findOne(nhsn, request.session.data)
     response.locals.consentPath = session_id
       ? `/sessions/${consent.session_id}${consent.uri}`
       : consent.uri
@@ -41,7 +41,7 @@ export const consentController = {
 
     // Session consents
     if (session_id) {
-      const session = Session.read(session_id, request.session.data)
+      const session = Session.findOne(session_id, request.session.data)
       consents = session.consents
       response.locals.session = session
     }

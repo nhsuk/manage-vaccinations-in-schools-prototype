@@ -125,14 +125,14 @@ export class Cohort {
   }
 
   /**
-   * Read
+   * Find one
    *
    * @param {string} uid - Cohort UID
    * @param {object} context - Context
    * @returns {Cohort|undefined} Cohort
    * @static
    */
-  static read(uid, context) {
+  static findOne(uid, context) {
     if (context?.cohorts?.[uid]) {
       return new Cohort(context.cohorts[uid], context)
     }

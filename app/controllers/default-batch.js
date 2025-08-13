@@ -16,9 +16,9 @@ export const defaultBatchController = {
       .filter((batch) => batch.vaccine_snomed === vaccine_snomed)
       .find((batch) => batch.session_id === session_id)
 
-    response.locals.session = Session.read(session_id, data)
+    response.locals.session = Session.findOne(session_id, data)
 
-    response.locals.vaccine = Vaccine.read(vaccine_snomed, data)
+    response.locals.vaccine = Vaccine.findOne(vaccine_snomed, data)
 
     response.locals.paths = {
       back: `/sessions/${session_id}/record`,
