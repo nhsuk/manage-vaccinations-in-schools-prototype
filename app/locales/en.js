@@ -667,7 +667,7 @@ export const en = {
       label: 'Notices',
       title: 'Important notices'
     },
-    delete: {
+    archive: {
       success: 'Notice archived'
     },
     count: '{count, plural, =0 {No notices} one {1 notice} other {# notices}}',

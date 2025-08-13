@@ -31,7 +31,9 @@ export const reviewController = {
     const uploads = Upload.findAll(data)
 
     // Required to show number of notices in upload section navigation
-    response.locals.notices = Notice.findAll(data)
+    response.locals.notices = Notice.findAll(data).filter(
+      ({ archivedAt }) => !archivedAt
+    )
 
     response.locals.reviews = uploads.flatMap((upload) => upload.duplicates)
 

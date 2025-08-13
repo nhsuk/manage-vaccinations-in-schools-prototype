@@ -15,7 +15,9 @@ export const noticeController = {
   },
 
   readAll(request, response, next) {
-    response.locals.notices = Notice.findAll(request.session.data)
+    response.locals.notices = Notice.findAll(request.session.data).filter(
+      ({ archivedAt }) => !archivedAt
+    )
 
     // Required to show number of reviews in upload section navigation
     response.locals.reviews = Upload.findAll(request.session.data).flatMap(
@@ -35,14 +37,14 @@ export const noticeController = {
     }
   },
 
-  delete(request, response) {
+  archive(request, response) {
     const { notice_uuid } = request.params
     const { data } = request.session
     const { __, paths } = response.locals
 
-    Notice.delete(notice_uuid, data)
+    Notice.archive(notice_uuid, data)
 
-    request.flash('success', __(`notice.delete.success`))
+    request.flash('success', __(`notice.archive.success`))
 
     response.redirect(paths.next)
   }

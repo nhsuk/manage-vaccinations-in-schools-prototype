@@ -8,7 +8,7 @@
 
   {{ insetText({
     html: "<p>Before archiving this notice, make sure you have asked the child’s GP and your CHIS team to hide the Gardasil 9 (HPV) vaccination from their parents.</p>"
-  }) }}
+  }) if notice.type == NoticeType.NoNotify }}
 
   {{ __("notice.action.description") | nhsukMarkdown }}
 {% endblock %}

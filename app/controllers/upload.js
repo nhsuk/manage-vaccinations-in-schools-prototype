@@ -24,7 +24,9 @@ export const uploadController = {
     response.locals.uploads = uploads
 
     // Required to show number of notices in upload section navigation
-    response.locals.notices = Notice.findAll(data)
+    response.locals.notices = Notice.findAll(data).filter(
+      ({ archivedAt }) => !archivedAt
+    )
 
     // Required to show number of reviews in upload section navigation
     response.locals.reviews = uploads.flatMap((upload) => upload.duplicates)

@@ -17,7 +17,9 @@ export const homeController = {
     const { data } = request.session
 
     if (account.role === UserRole.Nurse) {
-      response.locals.notices = Notice.findAll(data)
+      response.locals.notices = Notice.findAll(data).filter(
+        ({ archivedAt }) => !archivedAt
+      )
     }
 
     response.render('views/dashboard')
