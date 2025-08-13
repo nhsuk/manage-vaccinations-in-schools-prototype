@@ -31,7 +31,7 @@ export const vaccineController = {
     const { data } = request.session
     const { __, vaccine } = response.locals
 
-    request.flash('success', __(`vaccine.success.delete`))
+    request.flash('success', __(`vaccine.delete.success`))
 
     vaccine.delete(data)
 

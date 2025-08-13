@@ -2263,8 +2263,8 @@ export const en = {
       confirm: 'Yes, %s this vaccine',
       cancel: 'No, return to vaccine'
     },
-    success: {
-      delete: 'Vaccine deleted'
+    delete: {
+      success: 'Vaccine deleted'
     },
     id: {
       label: 'Batch'
