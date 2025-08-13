@@ -17,7 +17,7 @@ export const homeController = {
     const { data } = request.session
 
     if (account.role === UserRole.Nurse) {
-      response.locals.notices = Notice.readAll(data)
+      response.locals.notices = Notice.findAll(data)
     }
 
     response.render('views/dashboard')

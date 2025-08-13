@@ -85,13 +85,13 @@ export class Move {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Move>|undefined} Moves
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.moves)
       .map((move) => new Move(move, context))
       .filter((move) => !move.ignored)

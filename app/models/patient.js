@@ -395,13 +395,13 @@ export class Patient extends Child {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Patient>|undefined} Patients
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.patients).map(
       (patient) => new Patient(patient, context)
     )
@@ -417,7 +417,7 @@ export class Patient extends Child {
    */
   static read(nhsn, context) {
     if (context?.patients) {
-      return this.readAll(context).find((patient) => patient.nhsn === nhsn)
+      return this.findAll(context).find((patient) => patient.nhsn === nhsn)
     }
   }
 

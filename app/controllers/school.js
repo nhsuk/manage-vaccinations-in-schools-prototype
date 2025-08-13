@@ -8,7 +8,7 @@ export const schoolController = {
   },
 
   readAll(request, response, next) {
-    response.locals.schools = School.readAll(request.session.data)
+    response.locals.schools = School.findAll(request.session.data)
 
     next()
   },

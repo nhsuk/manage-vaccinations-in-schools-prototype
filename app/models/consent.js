@@ -60,13 +60,13 @@ export class Consent extends Reply {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Consent>|undefined} Consents
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.replies)
       .map((reply) => new Consent(reply, context))
       .filter((consent) => !consent.invalid)

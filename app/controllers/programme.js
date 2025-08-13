@@ -17,7 +17,7 @@ export const programmeController = {
   },
 
   readAll(request, response, next) {
-    response.locals.programmes = Programme.readAll(request.session.data)
+    response.locals.programmes = Programme.findAll(request.session.data)
 
     next()
   },

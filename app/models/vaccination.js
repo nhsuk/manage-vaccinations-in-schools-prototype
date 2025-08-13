@@ -481,13 +481,13 @@ export class Vaccination {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Vaccination>|undefined} Vaccinations
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.vaccinations).map(
       (vaccination) => new Vaccination(vaccination, context)
     )

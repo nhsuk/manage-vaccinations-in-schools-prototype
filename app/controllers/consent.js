@@ -34,7 +34,7 @@ export const consentController = {
 
   readAll(request, response, next) {
     const { session_id } = request.params
-    let consents = Consent.readAll(request.session.data)
+    let consents = Consent.findAll(request.session.data)
 
     // Sort
     consents = _.sortBy(consents, 'createdAt')
@@ -70,7 +70,7 @@ export const consentController = {
     let { hasMissingNhsNumber, page, limit, q } = request.query
     const { data } = request.session
 
-    let patients = Patient.readAll(data)
+    let patients = Patient.findAll(data)
 
     // Sort
     patients = _.sortBy(patients, 'lastName')

@@ -35,13 +35,13 @@ export class DefaultBatch extends Batch {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<DefaultBatch>|undefined} Default batches
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.defaultBatches).map(
       (batch) => new DefaultBatch(batch, context)
     )

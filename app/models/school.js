@@ -128,13 +128,13 @@ export class School {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<School>|undefined} Schools
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.schools).map(
       (school) => new School(school, context)
     )

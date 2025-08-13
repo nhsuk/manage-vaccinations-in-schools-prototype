@@ -205,13 +205,13 @@ export class Instruction {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Instruction>|undefined} Instructions
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.instructions).map(
       (instruction) => new Instruction(instruction, context)
     )

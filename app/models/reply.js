@@ -412,13 +412,13 @@ export class Reply {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Reply>|undefined} Replies
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.replies)
       .map((reply) => new Reply(reply, context))
       .filter((reply) => !reply.patient_uuid)

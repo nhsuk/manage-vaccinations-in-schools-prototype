@@ -69,13 +69,13 @@ export class Notice {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Notice>|undefined} Notices
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.notices)
       .map((notice) => new Notice(notice, context))
       .sort((a, b) => getDateValueDifference(a.createdAt, b.createdAt))

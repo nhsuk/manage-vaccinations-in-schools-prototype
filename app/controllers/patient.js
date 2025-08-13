@@ -33,7 +33,7 @@ export const patientController = {
     const { options, q } = request.query
     const { data } = request.session
 
-    let patients = Patient.readAll(data)
+    let patients = Patient.findAll(data)
 
     // Sort
     patients = _.sortBy(patients, 'lastName')

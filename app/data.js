@@ -59,13 +59,13 @@ const data = {
 }
 
 // Statistics
-data.counts.consents = Consent.readAll(data).length
-data.counts.moves = Move.readAll(data).length
-data.counts.notices = Notice.readAll(data).length
-data.counts.reviews = Upload.readAll(data).flatMap(
+data.counts.consents = Consent.findAll(data).length
+data.counts.moves = Move.findAll(data).length
+data.counts.notices = Notice.findAll(data).length
+data.counts.reviews = Upload.findAll(data).flatMap(
   (upload) => upload.duplicates
 ).length
-data.counts.sessions = Session.readAll(data).length
+data.counts.sessions = Session.findAll(data).length
 data.counts.uploads = data.counts.notices + data.counts.reviews
 
 export default data

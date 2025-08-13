@@ -288,7 +288,7 @@ export class PatientSession {
    */
   get siblingPatientSessions() {
     try {
-      return PatientSession.readAll(this.context)
+      return PatientSession.findAll(this.context)
         .filter(({ patient_uuid }) => patient_uuid === this.patient_uuid)
         .filter(({ session_id }) => session_id === this.session_id)
         .sort((a, b) => a.programme.name.localeCompare(b.programme.name))
@@ -661,13 +661,13 @@ export class PatientSession {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<PatientSession>|undefined} Patient sessions
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.patientSessions).map(
       (patientSession) => new PatientSession(patientSession, context)
     )

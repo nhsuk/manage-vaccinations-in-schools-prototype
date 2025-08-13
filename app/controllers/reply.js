@@ -25,7 +25,7 @@ export const replyController = {
     const { nhsn, programme_id } = request.params
 
     response.locals.reply = Reply.read(reply_uuid, request.session.data)
-    response.locals.patientSession = PatientSession.readAll(
+    response.locals.patientSession = PatientSession.findAll(
       request.session.data
     )
       .filter(({ programme }) => programme.id === programme_id)
@@ -49,7 +49,7 @@ export const replyController = {
     const { programme_id, nhsn } = request.params
     const { data } = request.session
 
-    const patientSession = PatientSession.readAll(request.session.data)
+    const patientSession = PatientSession.findAll(request.session.data)
       .filter(({ programme }) => programme.id === programme_id)
       .find(({ patient }) => patient.nhsn === nhsn)
 

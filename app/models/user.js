@@ -85,13 +85,13 @@ export class User {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<User>|undefined} Users
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.users).map((user) => new User(user))
   }
 

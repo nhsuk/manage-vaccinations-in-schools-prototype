@@ -27,7 +27,7 @@ export const downloadController = {
       data
     )
 
-    response.locals.organisationItems = Organisation.readAll(data).map(
+    response.locals.organisationItems = Organisation.findAll(data).map(
       (organisation) => ({
         text: organisation.name,
         value: organisation.code

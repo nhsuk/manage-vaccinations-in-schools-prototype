@@ -74,7 +74,7 @@ export const vaccinationController = {
       data.patientSession.preScreen
 
     // Check for default batch
-    const defaultBatch = DefaultBatch.readAll(data)
+    const defaultBatch = DefaultBatch.findAll(data)
       .filter((batch) => batch.vaccine_snomed === vaccine?.snomed)
       .find((batch) => batch.session_id === session?.id)
 
@@ -277,7 +277,7 @@ export const vaccinationController = {
         response.locals.paths.back = referrer || vaccination.uri
       }
 
-      response.locals.batchItems = Batch.readAll(data)
+      response.locals.batchItems = Batch.findAll(data)
         .filter(
           (batch) => batch.vaccine.snomed === patientSession?.vaccine.snomed
         )
@@ -308,14 +308,14 @@ export const vaccinationController = {
           }
         })
 
-      response.locals.userItems = User.readAll(data)
+      response.locals.userItems = User.findAll(data)
         .map((user) => ({
           text: user.fullName,
           value: user.uid
         }))
         .sort((a, b) => a.text.localeCompare(b.text))
 
-      response.locals.vaccineItems = Vaccine.readAll(data)
+      response.locals.vaccineItems = Vaccine.findAll(data)
         .filter((vaccine) => programme.type.includes(vaccine.type))
         .map((vaccine) => ({
           text: vaccine.brandWithType,

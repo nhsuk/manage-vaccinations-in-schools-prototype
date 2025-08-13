@@ -125,13 +125,13 @@ export class Batch {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Batch>|undefined} Batches
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.batches).map(
       (batch) => new Batch(batch, context)
     )

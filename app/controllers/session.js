@@ -30,7 +30,7 @@ export const sessionController = {
     const session = Session.read(session_id, data)
     response.locals.session = session
 
-    response.locals.defaultBatches = DefaultBatch.readAll(data).filter(
+    response.locals.defaultBatches = DefaultBatch.findAll(data).filter(
       (defaultBatch) => defaultBatch.session_id === session_id
     )
 
@@ -38,7 +38,7 @@ export const sessionController = {
   },
 
   readAll(request, response, next) {
-    response.locals.sessions = Session.readAll(request.session.data)
+    response.locals.sessions = Session.findAll(request.session.data)
 
     next()
   },
@@ -734,7 +734,7 @@ export const sessionController = {
     session.update({ closed: true }, data)
 
     // Find a clinic
-    const clinic = Session.readAll(data)
+    const clinic = Session.findAll(data)
       .filter(({ type }) => type === SessionType.Clinic)
       .find(({ programme_ids }) =>
         programme_ids.some((id) => session.programme_ids.includes(id))

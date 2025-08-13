@@ -12,7 +12,7 @@ export const navigation = (request, response, next) => {
   }
 
   // Get programme sessions
-  const sessions = Session.readAll(data)
+  const sessions = Session.findAll(data)
 
   response.locals.navigation = {
     activeSection,

@@ -234,7 +234,7 @@ export class Session {
    * @returns {Array<import('./consent.js').Consent>} Consent
    */
   get consents() {
-    return Consent.readAll(this.context).filter(
+    return Consent.findAll(this.context).filter(
       ({ session_id }) => session_id === this.id
     )
   }
@@ -383,7 +383,7 @@ export class Session {
    */
   get patientSessions() {
     if (this.context?.patients && this.id) {
-      return PatientSession.readAll(this.context)
+      return PatientSession.findAll(this.context)
         .filter(({ session }) => session.id === this.id)
         .filter(({ patient }) => !patient?.pendingChanges?.school_urn)
     }
@@ -935,13 +935,13 @@ export class Session {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Session>|undefined} Sessions
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.sessions).map(
       (session) => new Session(session, context)
     )

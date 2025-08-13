@@ -30,7 +30,7 @@ export const patientSessionController = {
     const { activity } = request.query
     const { __ } = response.locals
 
-    const patientSession = PatientSession.readAll(request.session.data)
+    const patientSession = PatientSession.findAll(request.session.data)
       .filter(({ programme }) => programme.id === programme_id)
       .find(({ patient }) => patient.nhsn === nhsn)
 

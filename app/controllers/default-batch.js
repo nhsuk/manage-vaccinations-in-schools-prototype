@@ -8,11 +8,11 @@ export const defaultBatchController = {
     const { data } = request.session
     const { session_id, vaccine_snomed } = request.params
 
-    response.locals.batchItems = Batch.readAll(data)
+    response.locals.batchItems = Batch.findAll(data)
       .filter((batch) => batch.vaccine_snomed === vaccine_snomed)
       .filter((batch) => !batch.archivedAt)
 
-    response.locals.defaultBatch = DefaultBatch.readAll(data)
+    response.locals.defaultBatch = DefaultBatch.findAll(data)
       .filter((batch) => batch.vaccine_snomed === vaccine_snomed)
       .find((batch) => batch.session_id === session_id)
 

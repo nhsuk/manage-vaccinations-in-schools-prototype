@@ -15,7 +15,7 @@ export const uploadController = {
 
   readAll(request, response, next) {
     const { data } = request.session
-    let uploads = Upload.readAll(data)
+    let uploads = Upload.findAll(data)
 
     uploads = uploads.sort((a, b) =>
       getDateValueDifference(b.createdAt, a.createdAt)
@@ -24,7 +24,7 @@ export const uploadController = {
     response.locals.uploads = uploads
 
     // Required to show number of notices in upload section navigation
-    response.locals.notices = Notice.readAll(data)
+    response.locals.notices = Notice.findAll(data)
 
     // Required to show number of reviews in upload section navigation
     response.locals.reviews = uploads.flatMap((upload) => upload.duplicates)

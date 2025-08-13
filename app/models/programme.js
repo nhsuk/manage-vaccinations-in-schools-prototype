@@ -175,7 +175,7 @@ export class Programme {
    * @returns {Array<PatientSession>} Patient sessions
    */
   get patientSessions() {
-    return PatientSession.readAll(this.context).filter(
+    return PatientSession.findAll(this.context).filter(
       ({ programme_id }) => programme_id === this.id
     )
   }
@@ -186,7 +186,7 @@ export class Programme {
    * @returns {Array<Session>} Sessions
    */
   get sessions() {
-    return Session.readAll(this.context)
+    return Session.findAll(this.context)
       .filter(({ programme_ids }) => programme_ids.includes(this.id))
       .filter(({ patients }) => patients.length > 0)
       .sort((a, b) => a.location?.name.localeCompare(b.location?.name))
@@ -198,7 +198,7 @@ export class Programme {
    * @returns {Array<Vaccination>} Vaccinations
    */
   get vaccinations() {
-    return Vaccination.readAll(this.context)
+    return Vaccination.findAll(this.context)
       .filter(({ programme_id }) => programme_id === this.id)
       .sort((a, b) => a.patient?.lastName.localeCompare(b.patient?.lastName))
   }
@@ -271,13 +271,13 @@ export class Programme {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Programme>|undefined} Programmes
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.programmes).map(
       (programme) => new Programme(programme, context)
     )

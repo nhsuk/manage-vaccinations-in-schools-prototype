@@ -112,13 +112,13 @@ export class Cohort {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Cohort>|undefined} Cohorts
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.cohorts).map(
       (cohort) => new Cohort(cohort, context)
     )

@@ -257,13 +257,13 @@ export class Upload {
   }
 
   /**
-   * Read all
+   * Find all
    *
    * @param {object} context - Context
    * @returns {Array<Upload>|undefined} Uploads
    * @static
    */
-  static readAll(context) {
+  static findAll(context) {
     return Object.values(context.uploads).map(
       (upload) => new Upload(upload, context)
     )

@@ -8,7 +8,7 @@ export const userController = {
   },
 
   readAll(request, response, next) {
-    response.locals.users = User.readAll(request.session.data)
+    response.locals.users = User.findAll(request.session.data)
 
     next()
   },

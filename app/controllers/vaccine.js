@@ -8,7 +8,7 @@ export const vaccineController = {
   },
 
   readAll(request, response, next) {
-    response.locals.vaccines = Vaccine.readAll(request.session.data)
+    response.locals.vaccines = Vaccine.findAll(request.session.data)
 
     next()
   },

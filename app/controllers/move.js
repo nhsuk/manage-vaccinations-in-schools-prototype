@@ -11,7 +11,7 @@ export const moveController = {
   },
 
   readAll(request, response, next) {
-    let moves = Move.readAll(request.session.data)
+    let moves = Move.findAll(request.session.data)
 
     // Sort
     moves = _.sortBy(moves, 'createdAt')

@@ -15,10 +15,10 @@ export const noticeController = {
   },
 
   readAll(request, response, next) {
-    response.locals.notices = Notice.readAll(request.session.data)
+    response.locals.notices = Notice.findAll(request.session.data)
 
     // Required to show number of reviews in upload section navigation
-    response.locals.reviews = Upload.readAll(request.session.data).flatMap(
+    response.locals.reviews = Upload.findAll(request.session.data).flatMap(
       (upload) => upload.duplicates
     )
 
