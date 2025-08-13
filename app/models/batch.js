@@ -165,21 +165,6 @@ export class Batch {
   }
 
   /**
-   * Archive
-   *
-   * @param {object} context - Context
-   */
-  archive(context) {
-    this.archivedAt = new Date()
-
-    // Remove batch context
-    delete this.context
-
-    // Update context
-    context.batches[this.id] = this
-  }
-
-  /**
    * Update
    *
    * @param {object} updates - Updates
@@ -197,5 +182,26 @@ export class Batch {
     // Update context
     const updatedBatch = Object.assign(this, updates)
     context.batches[updatedBatch.id] = updatedBatch
+  }
+
+  /**
+   * Archive
+   *
+   * @param {string} id - Batch ID
+   * @param {object} context - Context
+   * @returns {Batch} Batch
+   * @static
+   */
+  static archive(id, context) {
+    const archivedBatch = Batch.findOne(id, context)
+    archivedBatch.archivedAt = new Date()
+
+    // Remove batch context
+    delete archivedBatch.context
+
+    // Update context
+    context.batches[id] = archivedBatch
+
+    return archivedBatch
   }
 }

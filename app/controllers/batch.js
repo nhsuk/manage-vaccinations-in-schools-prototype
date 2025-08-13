@@ -59,13 +59,15 @@ export const batchController = {
   },
 
   archive(request, response) {
+    const { batch_id } = request.params
     const { data } = request.session
-    const { __, batch } = response.locals
-
-    batch.archive(data)
+    const { __ } = response.locals
 
     // Remove from default batches
-    DefaultBatch.delete(batch.id, data)
+    DefaultBatch.delete(batch_id, data)
+
+    // Archive batch
+    const batch = Batch.archive(batch_id, data)
 
     request.flash('success', __(`batch.archive.success`, { batch }))
 
