@@ -27,13 +27,13 @@ export const batchController = {
   },
 
   create(request, response) {
-    const { snomed } = request.params
+    const { vaccine_snomed } = request.params
     const { data } = request.session
     const { __ } = response.locals
 
     const batch = new Batch({
       ...request.body.batch,
-      vaccine_snomed: snomed
+      vaccine_snomed
     })
 
     request.flash('success', __(`batch.new.success`, { batch }))

@@ -1,8 +1,11 @@
 import { Vaccine } from '../models/vaccine.js'
 
 export const vaccineController = {
-  read(request, response, next, snomed) {
-    response.locals.vaccine = Vaccine.findOne(snomed, request.session.data)
+  read(request, response, next, vaccine_snomed) {
+    response.locals.vaccine = Vaccine.findOne(
+      vaccine_snomed,
+      request.session.data
+    )
 
     next()
   },
@@ -28,11 +31,11 @@ export const vaccineController = {
   },
 
   delete(request, response) {
-    const { snomed } = request.params
+    const { vaccine_snomed } = request.params
     const { data } = request.session
     const { __ } = response.locals
 
-    Vaccine.delete(snomed, data)
+    Vaccine.delete(vaccine_snomed, data)
 
     request.flash('success', __(`vaccine.delete.success`))
 
