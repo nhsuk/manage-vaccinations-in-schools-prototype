@@ -31,27 +31,29 @@ export const batchController = {
     const { data } = request.session
     const { __ } = response.locals
 
-    const batch = new Batch({
-      ...request.body.batch,
-      vaccine_snomed
-    })
+    const batch = Batch.create(
+      {
+        ...request.body.batch,
+        vaccine_snomed
+      },
+      data
+    )
 
     request.flash('success', __(`batch.new.success`, { batch }))
-
-    batch.create(batch, data)
 
     response.redirect('/vaccines')
   },
 
   update(request, response) {
+    const { batch_id } = request.params
     const { data } = request.session
-    const { __, batch, paths } = response.locals
+    const { __, paths } = response.locals
 
     // Clean up session data
     delete data.batch
 
     // Update session data
-    batch.update(request.body.batch, data)
+    const batch = Batch.update(batch_id, request.body.batch, data)
 
     request.flash('success', __(`batch.edit.success`, { batch }))
 
