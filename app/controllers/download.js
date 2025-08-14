@@ -22,10 +22,15 @@ export const downloadController = {
       [`/${download_id}`]: {}
     }
 
-    response.locals.download = new Download(
-      Download.findOne(download_id, data?.wizard),
-      data
-    )
+    // Setup wizard if not already setup
+    let download = Download.findOne(download_id, data.wizard)
+    if (!download) {
+      download = Download.create(response.locals.download, data.wizard)
+    }
+
+    response.locals.download = new Download(download, data)
+
+    response.locals.paths = wizard(journey, request)
 
     response.locals.organisationItems = Organisation.findAll(data).map(
       (organisation) => ({
@@ -33,8 +38,6 @@ export const downloadController = {
         value: organisation.code
       })
     )
-
-    response.locals.paths = wizard(journey, request)
 
     next()
   },
@@ -51,13 +54,14 @@ export const downloadController = {
     const { data } = request.session
 
     const programme = Programme.findOne(programme_id, data)
-    const download = new Download({
-      programme_id,
-      vaccination_uuids: programme.vaccinations.map(({ uuid }) => uuid),
-      createdBy_uid: account.uid
-    })
-
-    download.create(download, data.wizard)
+    const download = Download.create(
+      {
+        programme_id,
+        vaccination_uuids: programme.vaccinations.map(({ uuid }) => uuid),
+        createdBy_uid: account.uid
+      },
+      data.wizard
+    )
 
     response.redirect(`${download.uri}/new/dates`)
   },
@@ -69,10 +73,11 @@ export const downloadController = {
   },
 
   updateForm(request, response) {
+    const { download_id } = request.params
     const { data } = request.session
-    const { paths, download } = response.locals
+    const { paths } = response.locals
 
-    download.update(request.body.download, data.wizard)
+    Download.update(download_id, request.body.download, data.wizard)
 
     response.redirect(paths.next)
   },
