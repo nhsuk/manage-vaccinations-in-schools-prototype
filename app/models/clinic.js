@@ -112,35 +112,47 @@ export class Clinic {
    *
    * @param {Clinic} clinic - Clinic
    * @param {object} context - Context
+   * @returns {Clinic} Created clinic
+   * @static
    */
-  create(clinic, context) {
-    clinic = new Clinic(clinic)
+  static create(clinic, context) {
+    const createdClinic = new Clinic(clinic)
 
     // Add to organisation
-    context.organisations[clinic.organisation_code].clinic_ids.push(clinic.id)
+    context.organisations[createdClinic.organisation_code].clinic_ids.push(
+      createdClinic.id
+    )
 
     // Update context
-    context.clinics[clinic.id] = clinic
+    context.clinics = context.clinics || {}
+    context.clinics[createdClinic.id] = createdClinic
+
+    return createdClinic
   }
 
   /**
    * Update
    *
+   * @param {string} id - Clinic ID
    * @param {object} updates - Updates
    * @param {object} context - Context
+   * @returns {Clinic} Updated clinic
+   * @static
    */
-  update(updates, context) {
-    this.updatedAt = today()
+  static update(id, updates, context) {
+    const updatedClinic = Object.assign(Clinic.findOne(id, context), updates)
+    updatedClinic.updatedAt = today()
 
     // Remove clinic context
-    delete this.context
+    delete updatedClinic.context
 
     // Delete original clinic (with previous ID)
-    delete context.clinics[this.id]
+    delete context.clinics[id]
 
     // Update context
-    const updatedClinic = Object.assign(this, updates)
     context.clinics[updatedClinic.id] = updatedClinic
+
+    return updatedClinic
   }
 
   /**
