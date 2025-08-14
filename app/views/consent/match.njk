@@ -11,7 +11,6 @@
   {{ super() }}
 
   {{ appHeading({
-    caption: __("consent.match.caption", { parent: consent.parent } ),
     title: title
   }) }}
 
@@ -21,10 +20,16 @@
         {{ summaryList({
           classes: "nhsuk-u-margin-bottom-4 nhsuk-summary-list--no-border app-summary-list--full-width",
           rows: summaryRows(consent.child, {
-            fullName: {},
+            fullAndPreferredNames: {
+              label: __("consent.child.fullAndPreferredNames.label")
+            },
             dob: {},
             postalCode: {},
-            school: {}
+            school: {},
+            parent: {
+              label: __("consent.parent.label"),
+              value: consent.formatted.parent
+            }
           })
         }) }}
 
