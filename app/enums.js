@@ -415,12 +415,11 @@ export const VaccinationOutcome = {
   Vaccinated: 'Vaccinated',
   PartVaccinated: 'Partially vaccinated',
   AlreadyVaccinated: 'Already had the vaccine',
-  Contraindications: 'Had contraindications',
-  Refused: 'Refused vaccine',
-  Absent: 'Absent from the session',
-  Unwell: 'Unwell',
-  NoConsent: 'Unable to contact parent',
-  LateConsent: 'Consent received too late'
+  Contraindications: 'Child contraindicated',
+  Refused: 'Child refused',
+  Absent: 'Child absent',
+  Unwell: 'Child unwell',
+  NoConsent: 'Unable to contact parent'
 }
 
 /**
