@@ -30,27 +30,29 @@ export const clinicController = {
     const { data } = request.session
     const { __ } = response.locals
 
-    const clinic = new Clinic({
-      ...request.body.clinic,
-      organisation_code
-    })
+    const clinic = Clinic.create(
+      {
+        ...request.body.clinic,
+        organisation_code
+      },
+      data
+    )
 
     request.flash('success', __(`clinic.new.success`, { clinic }))
-
-    clinic.create(clinic, data)
 
     response.redirect(`/organisations/${clinic.organisation_code}/clinics`)
   },
 
   update(request, response) {
+    const { clinic_id } = request.params
     const { data } = request.session
-    const { __, clinic, paths } = response.locals
+    const { __, paths } = response.locals
 
     // Clean up session data
     delete data.clinic
 
-    // Update clinic
-    clinic.update(request.body.clinic, data)
+    // Update session data
+    const clinic = Clinic.update(clinic_id, request.body.clinic, data)
 
     request.flash('success', __(`clinic.edit.success`, { clinic }))
 
