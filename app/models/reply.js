@@ -382,6 +382,7 @@ export class Reply {
       fullNameAndRelationship: this.selfConsent
         ? this.relationship
         : formatParent(this.parent, false),
+      parent: formatParent(this.parent, true),
       tel: this.parent.tel,
       email: this.parent.email,
       programme: this.programme?.nameTag,
