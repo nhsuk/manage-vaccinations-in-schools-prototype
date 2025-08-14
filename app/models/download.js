@@ -346,35 +346,47 @@ export class Download {
   /**
    * Create
    *
-   * @param {Download} download - Download
+   * @param {object} download - Download
    * @param {object} context - Context
+   * @returns {Download} Created download
+   * @static
    */
-  create(download, context) {
-    download = new Download(download)
+  static create(download, context) {
+    const createdDownload = new Download(download)
 
     // Update context
     context.downloads = context.downloads || {}
-    context.downloads[download.id] = download
+    context.downloads[createdDownload.id] = createdDownload
+
+    return createdDownload
   }
 
   /**
    * Update
    *
+   * @param {string} id - Download ID
    * @param {object} updates - Updates
    * @param {object} context - Context
+   * @returns {Download} Updated download
+   * @static
    */
-  update(updates, context) {
-    this.updatedAt = today()
+  static update(id, updates, context) {
+    const updatedDownload = Object.assign(
+      Download.findOne(id, context),
+      updates
+    )
+    updatedDownload.updatedAt = today()
 
     // Remove download context
-    delete this.context
+    delete updatedDownload.context
 
     // Delete original download (with previous ID)
-    delete context.downloads[this.id]
+    delete context.downloads[id]
 
     // Update context
-    const updatedDownload = Object.assign(this, updates)
     context.downloads[updatedDownload.id] = updatedDownload
+
+    return updatedDownload
   }
 
   /**
@@ -391,6 +403,7 @@ export class Download {
     let mimetype
     switch (this.format) {
       case DownloadFormat.CarePlus:
+        // @ts-ignore
         buffer = xlsx(this.carePlus, { name, writeOptions: { type: 'buffer' } })
         extension = 'xlsx'
         mimetype = 'application/octet-stream'
