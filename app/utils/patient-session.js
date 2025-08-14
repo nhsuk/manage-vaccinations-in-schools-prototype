@@ -268,7 +268,6 @@ export const getOutcomeStatus = (patientSession) => {
     case VaccinationOutcome.Absent:
     case VaccinationOutcome.Unwell:
     case VaccinationOutcome.NoConsent:
-    case VaccinationOutcome.LateConsent:
       colour = 'dark-orange'
       break
     default:
