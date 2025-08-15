@@ -49,7 +49,7 @@ export class Move {
   }
 
   get movement() {
-    return `<span><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">${this.source} updated</span><br>${this.formatted.from}<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">to</span> ${this.formatted.to}</span>`
+    return `<span><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">${this.source} updated</span><br>${this.formatted.from}<br><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">to</span> ${this.formatted.to}</span>`
   }
 
   /**

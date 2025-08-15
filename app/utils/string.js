@@ -130,7 +130,7 @@ export function formatLinkWithSecondaryText(href, text, secondary) {
   }
 
   if (secondary) {
-    html += `<br><span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">${secondary}</span>`
+    html += `<br><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">${secondary}</span>`
   }
 
   return `<span>${html}</span>`
@@ -149,7 +149,7 @@ export function formatWithSecondaryText(text, secondary, breakLine = true) {
 
   if (secondary) {
     html += breakLine ? '<br>' : ''
-    html += `<span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">${secondary}</span>`
+    html += `<span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">${secondary}</span>`
   }
 
   return `<span>${html}</span>`
@@ -188,7 +188,7 @@ export function formatProgrammeStatus(programme, status, note) {
   }
 
   if (note) {
-    html += `<span class="nhsuk-u-secondary-text-color">${note}</span>`
+    html += `<span class="nhsuk-u-secondary-text-colour">${note}</span>`
   }
 
   return html
@@ -329,7 +329,7 @@ export function formatParent(parent, includeTelephone = true) {
 
   // Add telephone number, if provided
   if (includeTelephone && parent.tel) {
-    string += `<br><span class="nhsuk-u-secondary-text-color">${parent.tel}</span>`
+    string += `<br><span class="nhsuk-u-secondary-text-colour">${parent.tel}</span>`
   }
 
   return string

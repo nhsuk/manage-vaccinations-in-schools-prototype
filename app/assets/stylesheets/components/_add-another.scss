@@ -25,8 +25,8 @@ h1:has(+ .app-add-another):focus {
 
   &::before {
     align-items: center;
-    background-color: $color_nhsuk-blue;
-    color: $color_nhsuk-white;
+    background-color: nhsuk-colour("blue");
+    color: nhsuk-colour("white");
     content: counter(items);
     counter-increment: items;
     display: flex;

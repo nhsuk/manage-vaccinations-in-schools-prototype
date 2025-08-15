@@ -1,6 +1,6 @@
+{%- from "nhsuk/macros/icon.njk" import nhsukIcon -%}
 {%- from "x-nhsuk/decorated/button/macro.njk" import button with context %}
 {%- from "x-nhsuk/decorated/input/macro.njk" import input with context %}
-{%- from "_macros/icon.njk" import appIcon -%}
 
 {% macro appSearchInput(params) %}
 <div class="app-search-input{%- if params.classes %} {{ params.classes }}{% endif %}" role="search">
@@ -18,8 +18,7 @@
 
   {{ button({
     classes: "app-button--icon app-search-input__submit",
-    html: appIcon({
-      icon: "search",
+    html: nhsukIcon("search", {
       title: "Search"
     })
   }) }}

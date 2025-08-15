@@ -26,7 +26,7 @@ $_current-indicator-width: 4px;
   }
 
   &:not(:focus):hover {
-    color: $nhsuk-link-color;
+    color: $nhsuk-link-colour;
   }
 }
 
@@ -37,7 +37,7 @@ $_current-indicator-width: 4px;
 }
 
 .app-sub-navigation__section-item--current {
-  border-left: $_current-indicator-width solid $nhsuk-link-color;
+  border-left: $_current-indicator-width solid $nhsuk-link-colour;
   margin-left: -(nhsuk-spacing(2) + $_current-indicator-width);
   padding-left: nhsuk-spacing(2);
 }
@@ -53,13 +53,13 @@ $_current-indicator-width: 4px;
 }
 
 .app-sub-navigation__section--nested .app-sub-navigation__section-item::before {
-  color: $nhsuk-secondary-text-color;
+  color: $nhsuk-secondary-text-colour;
   content: "—";
   margin-left: nhsuk-spacing(-4);
 }
 
 .app-sub-navigation__theme {
-  color: $nhsuk-secondary-text-color;
+  color: $nhsuk-secondary-text-colour;
   margin: 0;
   padding: nhsuk-spacing(2) nhsuk-spacing(3) nhsuk-spacing(2) 0;
 

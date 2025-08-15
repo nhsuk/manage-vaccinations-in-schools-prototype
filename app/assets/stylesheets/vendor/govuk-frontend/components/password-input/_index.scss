@@ -37,26 +37,26 @@ $_button-shadow-size: $_button-border-radius;
   &:visited,
   &:active,
   &:hover {
-    color: nhsuk.$nhsuk-secondary-button-text-color;
+    color: nhsuk.$nhsuk-secondary-button-text-colour;
   }
 
   &:hover {
-    background-color: nhsuk.$nhsuk-secondary-button-hover-color;
+    background-color: nhsuk.$nhsuk-secondary-button-hover-colour;
   }
 
   &:active {
-    background-color: nhsuk.$nhsuk-secondary-button-active-color;
-    border-color: nhsuk.$nhsuk-secondary-button-border-color;
+    background-color: nhsuk.$nhsuk-secondary-button-active-colour;
+    border-color: nhsuk.$nhsuk-secondary-button-border-colour;
     box-shadow: none;
   }
 
   &:not(:focus):not(:active)::before {
-    border-color: nhsuk.$nhsuk-secondary-button-border-color;
+    border-color: nhsuk.$nhsuk-secondary-button-border-colour;
   }
 
   &:not(:focus):not(:active)::after {
     border-radius: math.div($_button-border-radius, 2);
-    box-shadow: 0 $_button-shadow-size 0 nhsuk.$nhsuk-secondary-button-shadow-color;
+    box-shadow: 0 $_button-shadow-size 0 nhsuk.$nhsuk-secondary-button-shadow-colour;
     left: 0;
     right: 0;
   }

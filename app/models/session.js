@@ -881,7 +881,7 @@ export class Session {
       firstDate,
       remainingDates: filters.formatList(remainingDates),
       location: `${this.location.name}</br>
-      <span class="nhsuk-u-secondary-text-color">
+      <span class="nhsuk-u-secondary-text-colour">
         ${this.location.addressLine1},
         ${this.location.addressLevel1},
         ${this.location.postalCode}

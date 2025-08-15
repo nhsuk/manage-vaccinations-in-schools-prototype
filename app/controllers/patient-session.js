@@ -136,7 +136,7 @@ export const patientSessionController = {
     response.locals.navigationItems = [
       ...patientSession.siblingPatientSessions.map((patientSession) => ({
         ...(patientSession.report === PatientOutcome.Vaccinated && {
-          icon: { icon: 'tick' }
+          icon: 'tick'
         }),
         text: patientSession.programme.name,
         href: activity

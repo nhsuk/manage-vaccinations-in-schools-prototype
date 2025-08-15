@@ -9,28 +9,28 @@
 
   .nhsuk-icon {
     flex-shrink: 0;
-    margin-left: nhsuk-spacing(-1);
-    margin-top: nhsuk-spacing(-1);
+    margin-left: nhsuk-px-to-rem(-4px);
+    margin-top: nhsuk-px-to-rem(-2px);
   }
 
   &--aqua-green {
-    color: $color_nhsuk-aqua-green;
+    color: nhsuk-colour("aqua-green");
   }
 
   &--blue {
-    color: $color_nhsuk-blue;
+    color: nhsuk-colour("blue");
   }
 
   &--dark-orange {
-    color: app.$color_dark-orange;
+    color: app.$dark-orange-colour;
   }
 
   &--green {
-    color: $color_nhsuk-green;
+    color: nhsuk-colour("green");
   }
 
   &--red {
-    color: $color_nhsuk-red;
+    color: nhsuk-colour("red");
   }
 }
 
