@@ -73,7 +73,7 @@ export class Batch {
   get summary() {
     const prefix = isBefore(this.archivedAt, today()) ? 'Expired' : 'Expires'
 
-    return `${this.formatted.id}<br>\n<span class="nhsuk-u-secondary-text-color">${prefix} ${this.formatted.expiry}</span>`
+    return `${this.formatted.id}<br>\n<span class="nhsuk-u-secondary-text-colour">${prefix} ${this.formatted.expiry}</span>`
   }
 
   /**

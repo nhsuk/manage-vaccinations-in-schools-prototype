@@ -4,7 +4,7 @@
   font-family: Helvetica, Arial, sans-serif;
 
   &__header {
-    border-bottom: 1px solid $nhsuk-border-color;
+    border-bottom: 1px solid $nhsuk-border-colour;
     margin-bottom: nhsuk-spacing(4);
     padding-bottom: nhsuk-spacing(3);
 
@@ -12,7 +12,7 @@
   }
 
   .nhsuk-logo {
-    color: $color_nhsuk-blue;
+    color: nhsuk-colour("blue");
     margin-bottom: nhsuk-spacing(4);
   }
 
@@ -21,7 +21,7 @@
   }
 
   .nhsuk-inset-text {
-    border-color: $nhsuk-border-color;
+    border-color: $nhsuk-border-colour;
     margin-top: 0;
 
     @include nhsuk-responsive-padding(2, bottom);

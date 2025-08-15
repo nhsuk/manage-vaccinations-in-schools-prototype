@@ -323,7 +323,7 @@ export class Patient extends Child {
   get summary() {
     return {
       dob: `${this.formatted.dob}</br>
-          <span class="nhsuk-u-secondary-text-color nhsuk-u-font-size-16">
+          <span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">
             ${this.formatted.yearGroup}
           </span>`
     }

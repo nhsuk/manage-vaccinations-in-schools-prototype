@@ -1,8 +1,10 @@
+{%- from "nhsuk/macros/icon.njk" import nhsukIcon -%}
 {%- from "_macros/icon.njk" import appIcon -%}
+
 {% macro appStatus(params) -%}
 {% if params %}
 <p class="app-status{{ " app-status--" + params.colour if params.colour }}{% if params.classes %} {{ params.classes }}{% endif %}">
-  {{- appIcon({ icon: params.icon }) if params.icon }}{{ params.text -}}
+  {{ appIcon("warning") if params.icon == "warning" else (nhsukIcon(params.icon) if params.icon) }}{{ params.text }}
 </p>
 {% endif %}
 {%- endmacro %}

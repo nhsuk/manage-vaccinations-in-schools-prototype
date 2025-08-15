@@ -68,7 +68,7 @@ export class Clinic {
         .filter((string) => string)
         .join(', '),
       nameAndAddress: this.address
-        ? `<span>${this.name}</br><span class="nhsuk-u-secondary-text-color">${
+        ? `<span>${this.name}</br><span class="nhsuk-u-secondary-text-colour">${
             this.address.formatted.singleline
           }</span></span>`
         : this.name
