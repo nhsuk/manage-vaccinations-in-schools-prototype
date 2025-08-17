@@ -114,21 +114,26 @@ export class Move {
   /**
    * Update
    *
+   * @param {string} uuid - Move UUID
    * @param {object} updates - Updates
    * @param {object} context - Context
+   * @returns {Move} Updated download
+   * @static
    */
-  update(updates, context) {
-    this.updatedAt = today()
+  static update(uuid, updates, context) {
+    const updatedMove = Object.assign(this, updates)
+    updatedMove.updatedAt = today()
 
     // Remove move context
-    delete this.context
+    delete updatedMove.context
 
     // Delete original move (with previous UUID)
-    delete context.moves[this.uuid]
+    delete context.moves[uuid]
 
     // Update context
-    const updatedMove = Object.assign(this, updates)
     context.moves[updatedMove.uuid] = updatedMove
+
+    return updatedMove
   }
 
   /**
@@ -145,20 +150,24 @@ export class Move {
   /**
    * Ignore move
    *
+   * @param {string} uuid - Move UUID
    * @param {object} context - Context
    */
-  ignore(context) {
-    this.update({ ignored: true }, context)
+  ignore(uuid, context) {
+    Move.update(uuid, { ignored: true }, context)
   }
 
   /**
    * Switch patient’s school
    *
+   * @param {string} uuid - Move UUID
    * @param {object} context - Context
    */
-  switch(context) {
-    context.patients[this.patient_uuid].school_urn = this.to
+  switch(uuid, context) {
+    const move = Move.findOne(uuid, context)
 
-    Move.delete(this.uuid, context)
+    context.patients[move.patient_uuid].school_urn = move.to
+
+    Move.delete(uuid, context)
   }
 }

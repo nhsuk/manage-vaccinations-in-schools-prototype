@@ -36,13 +36,15 @@ export const moveController = {
     const { data } = request.session
     const { __, move } = response.locals
 
-    request.flash('success', __(`move.${decision}.success`, { move }))
-
     // Clean up session data
     delete data.decision
 
     // Ignore or switch schools
-    decision === 'ignore' ? move.ignore(data) : move.switch(data)
+    decision === 'ignore'
+      ? move.ignore(move.uuid, data)
+      : move.switch(move.uuid, data)
+
+    request.flash('success', __(`move.${decision}.success`, { move }))
 
     response.redirect('/moves')
   }
