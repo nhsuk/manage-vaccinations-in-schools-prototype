@@ -77,29 +77,29 @@ export const parentController = {
     const { data } = request.session
     const { session } = response.locals
 
-    const consent = new Consent(
+    const consent = Consent.create(
       {
         session_id: session.id
       },
-      data
+      data.wizard
     )
-
-    consent.create(consent, data.wizard)
 
     response.redirect(`${consent.parentUri}/new/child`)
   },
 
   update(request, response) {
+    const { consent_uuid } = request.params
     const { data } = request.session
     const { consent, paths } = response.locals
 
-    if (consent.consultation) {
-      consent.decision = ReplyDecision.Declined
-      consent.update(consent, data.wizard)
-    }
-
     // Clean up session data
     delete data.consent
+
+    // Update session data
+    if (consent.consultation) {
+      consent.decision = ReplyDecision.Declined
+      Consent.update(consent_uuid, consent, data.wizard)
+    }
 
     response.redirect(paths.next)
   },
@@ -276,6 +276,7 @@ export const parentController = {
 
   updateForm(request, response) {
     const { decision } = request.body
+    const { consent_uuid } = request.params
     const { data } = request.session
     const { paths, consent } = response.locals
 
@@ -295,7 +296,7 @@ export const parentController = {
       request.body.consent.decision = decision
     }
 
-    consent.update(request.body.consent, data.wizard)
+    Consent.update(consent_uuid, request.body.consent, data.wizard)
 
     response.redirect(paths.next)
   }

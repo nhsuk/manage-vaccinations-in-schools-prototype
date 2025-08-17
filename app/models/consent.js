@@ -51,15 +51,6 @@ export class Consent extends Reply {
   }
 
   /**
-   * Get parent form URI
-   *
-   * @returns {string} Parent form URI
-   */
-  get parentUri() {
-    return `${this.session.consentUrl}/${this.uuid}`
-  }
-
-  /**
    * Find all
    *
    * @param {object} context - Context

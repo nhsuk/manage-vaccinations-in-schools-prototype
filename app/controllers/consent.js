@@ -122,6 +122,7 @@ export const consentController = {
   },
 
   link(request, response) {
+    const { consent_uuid } = request.params
     const { data } = request.session
     const { __, consent, patient, consentsPath } = response.locals
 
@@ -129,7 +130,7 @@ export const consentController = {
     consent.linkToPatient(patient)
 
     // Update session data
-    consent.update(consent, data)
+    Consent.update(consent_uuid, consent, data)
     Patient.update(patient.uuid, patient, data)
 
     request.flash('success', __(`consent.link.success`, { consent, patient }))
@@ -138,6 +139,7 @@ export const consentController = {
   },
 
   add(request, response) {
+    const { consent_uuid } = request.params
     const { data } = request.session
     const { __, consent, consentsPath } = response.locals
 
@@ -162,13 +164,14 @@ export const consentController = {
     patient.addToSession(patientSession)
 
     // Invite parent to give consent
-    patient.inviteToSession(patientSession.session)
+    const session = Session.findOne(patientSession.session_id, data)
+    patient.inviteToSession(session)
 
     // Link consent with patient record
     consent.linkToPatient(patient)
 
     // Update session data
-    consent.update(consent, data)
+    Consent.update(consent_uuid, consent, data)
     Patient.update(patient.uuid, patient, data)
 
     request.flash('success', __(`consent.add.success`, { consent, patient }))
@@ -178,13 +181,15 @@ export const consentController = {
 
   invalidate(request, response) {
     const { note } = request.body.consent
+    const { consent_uuid } = request.params
     const { data } = request.session
-    const { __, consent, consentsPath } = response.locals
-
-    consent.update({ invalid: true, note }, data)
+    const { __, consentsPath } = response.locals
 
     // Clean up session data
     delete data.consent
+
+    // Update session data
+    const consent = Consent.update(consent_uuid, { invalid: true, note }, data)
 
     request.flash('success', __(`consent.invalidate.success`, { consent }))
 

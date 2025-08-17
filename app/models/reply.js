@@ -411,6 +411,15 @@ export class Reply {
   }
 
   /**
+   * Get parent form URI
+   *
+   * @returns {string} Parent form URI
+   */
+  get parentUri() {
+    return `${this.session.consentUrl}/${this.uuid}`
+  }
+
+  /**
    * Find all
    *
    * @param {object} context - Context
@@ -440,34 +449,43 @@ export class Reply {
   /**
    * Create
    *
-   * @param {Reply} reply - Consent
+   * @param {object} reply - Consent
    * @param {object} context - Context
+   * @returns {Reply} Created reply
+   * @static
    */
-  create(reply, context) {
-    reply = new Reply(reply)
+  static create(reply, context) {
+    const createdReply = new Reply(reply)
 
     // Update context
     context.replies = context.replies || {}
-    context.replies[reply.uuid] = reply
+    context.replies[createdReply.uuid] = createdReply
+
+    return createdReply
   }
 
   /**
    * Update
    *
+   * @param {string} uuid - Reply UUID
    * @param {object} updates - Updates
    * @param {object} context - Context
+   * @returns {Reply} Updated reply
+   * @static
    */
-  update(updates, context) {
-    this.updatedAt = today()
+  static update(uuid, updates, context) {
+    const updatedReply = _.merge(Reply.findOne(uuid, context), updates)
+    updatedReply.updatedAt = today()
 
     // Remove reply context
-    delete this.context
+    delete updatedReply.context
 
     // Delete original reply (with previous UUID)
-    delete context.replies[this.uuid]
+    delete context.replies[uuid]
 
     // Update context
-    const updatedReply = _.merge(this, updates)
     context.replies[updatedReply.uuid] = updatedReply
+
+    return updatedReply
   }
 }

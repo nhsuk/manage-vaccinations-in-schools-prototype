@@ -53,7 +53,7 @@ export const replyController = {
       .filter(({ programme }) => programme.id === programme_id)
       .find(({ patient }) => patient.nhsn === nhsn)
 
-    const reply = new Reply(
+    const createdReply = Reply.create(
       {
         child: patientSession.patient,
         patient_uuid: patientSession.patient.uuid,
@@ -64,7 +64,8 @@ export const replyController = {
       data
     )
 
-    reply.create(reply, data.wizard)
+    // TODO: Use presenter
+    const reply = new Reply(createdReply, data)
 
     response.redirect(`${reply.uri}/new/respondent`)
   },
@@ -82,7 +83,7 @@ export const replyController = {
         reply = Reply.findOne(reply_uuid, data)
         next = reply.uri
 
-        reply.update(request.body.reply, data)
+        Reply.update(reply_uuid, request.body.reply, data)
       } else {
         reply = new Reply(Reply.findOne(reply_uuid, data.wizard), data)
         next = `${patientSession.uri}?activity=${activity || 'consent'}`
@@ -103,8 +104,7 @@ export const replyController = {
 
         // Invalidate any replaced response
         if (invalidUuid) {
-          const invalidReply = Reply.findOne(invalidUuid, data)
-          invalidReply.update({ invalid: true }, data)
+          Reply.update(invalidUuid, { invalid: true }, data)
 
           delete request.app.locals.invalidUuid
         }
@@ -112,7 +112,7 @@ export const replyController = {
         patientSession.patient.addReply(reply)
 
         // Update session data
-        reply.update(reply, data)
+        Reply.update(reply_uuid, reply, data)
       }
 
       // Clean up session data
@@ -138,10 +138,15 @@ export const replyController = {
       if (type === 'edit') {
         reply = Reply.findOne(reply_uuid, data)
       } else {
-        reply = new Reply(Reply.findOne(reply_uuid, data.wizard), data)
+        // Setup wizard if not already setup
+        reply = Reply.findOne(reply_uuid, data.wizard)
+        if (!reply) {
+          reply = Reply.create(response.locals.reply, data.wizard)
+        }
       }
 
-      response.locals.reply = reply
+      // TODO: Use presenter
+      response.locals.reply = new Reply(reply, data)
       response.locals.patient = patientSession.patient
 
       // Child can self consent if assessed as Gillick competent
@@ -291,7 +296,7 @@ export const replyController = {
     const { data } = request.session
     const { paths, patientSession, reply, triage } = response.locals
 
-    reply.update(request.body.reply, data.wizard)
+    Reply.update(reply_uuid, request.body.reply, data.wizard)
 
     // Create parent based on choice of respondent
     if (respondent) {
@@ -341,7 +346,7 @@ export const replyController = {
     delete data.healthAnswers
     delete data.respondent
 
-    reply.update(reply, data.wizard)
+    Reply.update(reply_uuid, reply, data.wizard)
 
     data.wizard.triage = {
       ...triage, // Previous values
@@ -366,7 +371,7 @@ export const replyController = {
       // We only want to do this when submitting replacement reply
       request.app.locals.invalidUuid = reply.uuid
 
-      const newReply = new Reply(
+      const newReply = Reply.create(
         {
           child: patientSession.patient,
           parent: reply.parent,
@@ -375,10 +380,8 @@ export const replyController = {
           programme_id: patientSession.programme.id,
           method: ReplyMethod.Phone
         },
-        data
+        data.wizard
       )
-
-      newReply.create(newReply, data.wizard)
 
       // Clean up session data
       delete data.decision
@@ -389,13 +392,15 @@ export const replyController = {
 
   invalidate(request, response) {
     const { note } = request.body.reply
+    const { reply_uuid } = request.params
     const { data } = request.session
-    const { __, activity, patientSession, reply } = response.locals
-
-    reply.update({ invalid: true, note }, data)
+    const { __, activity, patientSession } = response.locals
 
     // Clean up session data
     delete data.reply
+
+    // Update batch data
+    const reply = Reply.update(reply_uuid, { invalid: true, note }, data)
 
     request.flash('success', __(`reply.invalidate.success`, { reply }))
 
@@ -405,23 +410,26 @@ export const replyController = {
   withdraw(request, response) {
     const { account } = request.app.locals
     const { refusalReason, refusalReasonOther, note } = request.body.reply
+    const { reply_uuid } = request.params
     const { data } = request.session
     const { __, activity, patientSession, reply } = response.locals
 
     // Create a new reply
-    const newReply = new Reply({
-      ...reply,
-      uuid: false,
-      createdAt: today(),
-      createdBy_uid: account.uid,
-      decision: ReplyDecision.Refused,
-      refusalReason,
-      ...(refusalReason === ReplyRefusal.Other && { refusalReasonOther }),
-      ...(data.reply?.note && { note })
-    })
+    const newReply = Reply.create(
+      {
+        ...reply,
+        uuid: false,
+        createdAt: today(),
+        createdBy_uid: account.uid,
+        decision: ReplyDecision.Refused,
+        refusalReason,
+        ...(refusalReason === ReplyRefusal.Other && { refusalReasonOther }),
+        ...(data.reply?.note && { note })
+      },
+      data
+    )
 
     patientSession.patient.addReply(newReply)
-    newReply.create(newReply, data)
 
     // Add vaccination if refusal reason is already given
     if (refusalReason === ReplyRefusal.AlreadyGiven) {
@@ -438,7 +446,7 @@ export const replyController = {
     }
 
     // Invalidate existing reply
-    reply.update({ invalid: true }, data)
+    Reply.update(reply_uuid, { invalid: true }, data)
 
     // Clean up session data
     delete data.reply
