@@ -299,7 +299,7 @@ export const patientSessionController = {
     patientSession.alternative = preScreen.ready === 'alternative'
 
     // Update patient session
-    patientSession.update(patientSession, data)
+    PatientSession.update(patientSession.uuid, patientSession, data)
 
     response.redirect(
       `${programme.uri}/vaccinations/new?patientSession_uuid=${patientSession.uuid}`
@@ -390,7 +390,7 @@ export const patientSessionController = {
     })
 
     // Update patient session
-    patientSession.update(patientSession, data)
+    PatientSession.update(patientSession.uuid, patientSession, data)
 
     // Clean up session data
     delete data.triage

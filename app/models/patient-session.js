@@ -689,35 +689,47 @@ export class PatientSession {
   /**
    * Create
    *
-   * @param {PatientSession} patientSession - Patient session
+   * @param {object} patientSession - Patient session
    * @param {object} context - Context
+   * @returns {PatientSession} Created patient session
+   * @static
    */
-  create(patientSession, context) {
-    patientSession = new PatientSession(patientSession)
+  static create(patientSession, context) {
+    const createdPatientSession = new PatientSession(patientSession)
 
     // Update context
     context.patientSessions = context.patientSessions || {}
-    context.patientSessions[patientSession.uuid] = patientSession
+    context.patientSessions[createdPatientSession.uuid] = createdPatientSession
+
+    return createdPatientSession
   }
 
   /**
    * Update
    *
+   * @param {string} uuid - Patient UUID
    * @param {object} updates - Updates
    * @param {object} context - Context
+   * @returns {PatientSession} Updated patient session
+   * @static
    */
-  update(updates, context) {
-    this.updatedAt = today()
+  static update(uuid, updates, context) {
+    const updatedPatientSession = Object.assign(
+      PatientSession.findOne(uuid, context),
+      updates
+    )
+    updatedPatientSession.updatedAt = today()
 
     // Remove patient context
-    delete this.context
+    delete updatedPatientSession.context
 
     // Delete original patient session (with previous UUID)
-    delete context.patientSessions[this.uuid]
+    delete context.patientSessions[uuid]
 
     // Update context
-    const updatedPatientSession = Object.assign(this, updates)
     context.patientSessions[updatedPatientSession.uuid] = updatedPatientSession
+
+    return updatedPatientSession
   }
 
   /**
@@ -750,8 +762,7 @@ export class PatientSession {
       programme_ids: this.session.programme_ids
     })
 
-    const patientSession = PatientSession.findOne(this.uuid, this.context)
-    patientSession.update({ gillick }, this.context)
+    PatientSession.update(this.uuid, { gillick }, this.context)
   }
 
   /**

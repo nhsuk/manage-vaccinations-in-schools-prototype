@@ -150,14 +150,13 @@ export const consentController = {
     // Find cohort that matches child’s year group
 
     // Create and add patient session
-    const patientSession = new PatientSession(
+    const patientSession = PatientSession.create(
       {
         patient_uuid: patient.uuid,
         session_id: consent.session_id
       },
       data
     )
-    patientSession.create(patientSession, data)
 
     // Add to session
     patient.addToSession(patientSession)

@@ -17,6 +17,7 @@ import { Clinic } from '../models/clinic.js'
 import { DefaultBatch } from '../models/default-batch.js'
 import { Instruction } from '../models/instruction.js'
 import { Organisation } from '../models/organisation.js'
+import { PatientSession } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
 import { Session } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
@@ -714,7 +715,7 @@ export const sessionController = {
 
       patientSession.giveInstruction(instruction)
 
-      patientSession.update(patientSession, data)
+      PatientSession.update(patientSession.uuid, patientSession, data)
     }
 
     request.flash('success', __(`session.instructions.success`))
