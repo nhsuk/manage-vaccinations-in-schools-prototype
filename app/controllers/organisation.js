@@ -11,8 +11,12 @@ export const organisationController = {
     )
     response.locals.organisation = organisation
 
-    const sections = ['contact', 'clinics', 'schools', 'sessions']
-    response.locals.navigationItems = sections.map((item) => ({
+    response.locals.navigationItems = [
+      'contact',
+      'clinics',
+      'schools',
+      'sessions'
+    ].map((item) => ({
       text: __(`organisation.${item}.title`),
       href: `${organisation.uri}/${item}`,
       current: view?.includes(item)
@@ -58,16 +62,17 @@ export const organisationController = {
   },
 
   updateForm(request, response) {
+    const { organisation_code } = request.params
     const { data } = request.session
-    const { __, paths, organisation } = response.locals
-
-    request.flash('success', __(`organisation.edit.success`))
+    const { __, paths } = response.locals
 
     // Clean up session data
     delete data.organisation
 
     // Update session data
-    organisation.update(request.body.organisation, data)
+    Organisation.update(organisation_code, request.body.organisation, data)
+
+    request.flash('success', __(`organisation.edit.success`))
 
     response.redirect(paths.next)
   }

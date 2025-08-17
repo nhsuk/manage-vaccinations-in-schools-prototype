@@ -146,20 +146,28 @@ export class Organisation {
   /**
    * Update
    *
+   * @param {string} code - ODS code
    * @param {object} updates - Updates
    * @param {object} context - Context
+   * @returns {Organisation} Organisation
+   * @static
    */
-  update(updates, context) {
-    this.updatedAt = today()
+  static update(code, updates, context) {
+    const updatedOrganisation = Object.assign(
+      Organisation.findOne(code, context),
+      updates
+    )
+    updatedOrganisation.updatedAt = today()
 
     // Remove organisation context
-    delete this.context
+    delete updatedOrganisation.context
 
     // Delete original organisation (with previous code)
-    delete context.organisations[this.code]
+    delete context.organisations[code]
 
     // Update context
-    const updatedOrganisation = Object.assign(this, updates)
     context.organisations[updatedOrganisation.code] = updatedOrganisation
+
+    return updatedOrganisation
   }
 }
