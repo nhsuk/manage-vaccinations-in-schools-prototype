@@ -703,13 +703,14 @@ export const sessionController = {
       .filter(({ instruct }) => instruct === InstructionOutcome.Needed)
 
     for (const patientSession of patientsToInstruct) {
-      const instruction = new Instruction({
-        createdBy_uid: account.uid,
-        programme_id: patientSession.programme.id,
-        patientSession_uuid: patientSession.uuid
-      })
-
-      instruction.create(instruction, data)
+      const instruction = Instruction.create(
+        {
+          createdBy_uid: account.uid,
+          programme_id: patientSession.programme.id,
+          patientSession_uuid: patientSession.uuid
+        },
+        data
+      )
 
       patientSession.giveInstruction(instruction)
 

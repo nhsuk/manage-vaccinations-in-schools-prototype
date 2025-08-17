@@ -367,13 +367,14 @@ export const patientSessionController = {
     const { __, back, patientSession } = response.locals
 
     if (triage.psd) {
-      const instruction = new Instruction({
-        createdBy_uid: account.uid,
-        programme_id: patientSession.programme.id,
-        patientSession_uuid: patientSession.uuid
-      })
-
-      instruction.create(instruction, data)
+      const instruction = Instruction.create(
+        {
+          createdBy_uid: account.uid,
+          programme_id: patientSession.programme.id,
+          patientSession_uuid: patientSession.uuid
+        },
+        data
+      )
 
       patientSession.giveInstruction(instruction)
     }
