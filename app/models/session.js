@@ -825,6 +825,7 @@ export class Session {
       location: Object.values(this.location)
         .filter((string) => string)
         .join(', '),
+      clinic: this.clinic && this.clinic.name,
       school: this.school && this.school.name,
       school_urn: this.school && this.school.formatted.urn,
       status: formatTag(this.sessionStatus)
@@ -964,15 +965,19 @@ export class Session {
   /**
    * Create
    *
-   * @param {Session} session - Session
+   * @param {object} session - Session
    * @param {object} context - Context
+   * @returns {Session} Created session
+   * @static
    */
-  create(session, context) {
-    session = new Session(session)
+  static create(session, context) {
+    const createdSession = new Session(session)
 
     // Update context
     context.sessions = context.sessions || {}
-    context.sessions[session.id] = session
+    context.sessions[createdSession.id] = createdSession
+
+    return createdSession
   }
 
   /**
@@ -995,22 +1000,27 @@ export class Session {
   /**
    * Update
    *
+   * @param {string} id - Session ID
    * @param {object} updates - Updates
    * @param {object} context - Context
+   * @returns {Session} Updated session
+   * @static
    */
-  update(updates, context) {
-    this.updatedAt = today()
+  static update(id, updates, context) {
+    const updatedSession = _.merge(Session.findOne(id, context), updates)
+    updatedSession.updatedAt = today()
 
     // Remove session context
-    delete this.context
+    delete updatedSession.context
 
     // Delete original session (with previous ID)
-    delete context.sessions[this.id]
+    delete context.sessions[id]
 
     // Update context
-    const updatedSession = _.merge(this, updates)
-
     context.sessions[updatedSession.id] = updatedSession
+
+    // TODO: Use presenter?
+    return new Session(updatedSession, context)
   }
 
   /**
@@ -1020,11 +1030,6 @@ export class Session {
    * @param {import('../enums.js').RegistrationOutcome} registration
    */
   updateRegister(patient_uuid, registration) {
-    const register = {
-      ...this.register,
-      ...{ [patient_uuid]: registration }
-    }
-
-    this.update({ register }, this.context)
+    this.register[patient_uuid] = registration
   }
 }

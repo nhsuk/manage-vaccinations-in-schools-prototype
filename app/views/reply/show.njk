@@ -2,6 +2,27 @@
 
 {% set title = __("reply.show.title", reply.fullName) %}
 
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("session.list.title"),
+      href: "/sessions"
+    }, {
+      text: reply.session.location.name,
+      href: "/sessions/" + reply.session.id
+    }, {
+      text: __("session.consent.label"),
+      href: "/sessions/" + reply.session.id + "/consent"
+    }, {
+      text: reply.patient.fullName,
+      href: "/programmes/" + reply.programme.id + "/patients/" + reply.patient.nhsn + "?activity=consent"
+    }]
+  }) }}
+{% endblock %}
+
 {% block content %}
   <div class="nhsuk-u-width-three-quarters">
     {{ super() }}
