@@ -69,16 +69,14 @@ export const sessionController = {
     const { account } = request.app.locals
     const { data } = request.session
 
-    const session = new Session(
+    const session = Session.create(
       {
         // TODO: This needs contextual organisation data to work
         registration: data.organisation.sessionRegistration,
         createdBy_uid: account.uid
       },
-      data
+      data.wizard
     )
-
-    session.create(session, data.wizard)
 
     response.redirect(`${session.uri}/new/type`)
   },
@@ -557,19 +555,17 @@ export const sessionController = {
   edit(request, response) {
     const { session_id } = request.params
     const { data } = request.session
-    const { session } = response.locals
 
     // Setup wizard if not already setup
-    if (!Session.findOne(session_id, data.wizard)) {
-      session.create(session, data.wizard)
+    let session = Session.findOne(session_id, data.wizard)
+    if (!session) {
+      session = Session.create(response.locals.session, data.wizard)
     }
+
+    response.locals.session = new Session(session, data)
 
     // Show back link to session page
     response.locals.back = session.uri
-    response.locals.session = new Session(
-      Session.findOne(session_id, data.wizard),
-      data
-    )
 
     response.render('session/edit')
   },
@@ -580,19 +576,18 @@ export const sessionController = {
       const { data } = request.session
       const { __ } = response.locals
 
-      const session = new Session(
-        Session.findOne(session_id, data.wizard),
+      // Update session data
+      const session = Session.update(
+        session_id,
+        data.wizard.sessions[session_id],
         data
       )
-
-      request.flash('success', __(`session.${type}.success`, { session }))
 
       // Clean up session data
       delete data.session
       delete data.wizard
 
-      // Update session data
-      session.update(session, data)
+      request.flash('success', __(`session.${type}.success`, { session }))
 
       response.redirect(session.uri)
     }
@@ -606,11 +601,13 @@ export const sessionController = {
 
       organisation = Organisation.findOne(organisation?.code || 'RYG', data)
 
-      const session = new Session(
-        Session.findOne(session_id, data.wizard),
-        data
-      )
-      response.locals.session = session
+      // Setup wizard if not already setup
+      let session = Session.findOne(session_id, data.wizard)
+      if (!session) {
+        session = Session.create(response.locals.session, data.wizard)
+      }
+
+      response.locals.session = new Session(session, data)
 
       const journey = {
         [`/`]: {},
@@ -674,10 +671,11 @@ export const sessionController = {
   },
 
   updateForm(request, response) {
+    const { session_id } = request.params
     const { data } = request.session
-    const { paths, session } = response.locals
+    const { paths } = response.locals
 
-    session.update(request.body.session, data.wizard)
+    Session.update(session_id, request.body.session, data.wizard)
 
     response.redirect(paths.next)
   },
@@ -733,13 +731,12 @@ export const sessionController = {
 
   close(request, response) {
     const { account } = request.app.locals
+    const { session_id } = request.params
     const { data } = request.session
-    const { __, session } = response.locals
-
-    request.flash('success', __(`session.close.success`, { session }))
+    const { __ } = response.locals
 
     // Update session as closed
-    session.update({ closed: true }, data)
+    const session = Session.update(session_id, { closed: true }, data)
 
     // Find a clinic
     const clinic = Session.findAll(data)
@@ -751,7 +748,7 @@ export const sessionController = {
     // Move patients to clinic
     if (clinic) {
       const patientSessionsForClinic = session.patientSessionsForClinic.map(
-        (patient) => patient.nhsn
+        (patient) => patient.uuid
       )
       for (const patientSession of patientSessionsForClinic) {
         const patient = Patient.findOne(patientSession.patient_uuid, data)
@@ -762,6 +759,8 @@ export const sessionController = {
         Patient.update(patientSession.patient_uuid, {}, data)
       }
     }
+
+    request.flash('success', __(`session.close.success`, { session }))
 
     response.redirect(session.uri)
   }
