@@ -286,34 +286,43 @@ export class Upload {
   /**
    * Create
    *
-   * @param {Upload} upload - Upload
+   * @param {object} upload - Upload
    * @param {object} context - Context
+   * @returns {Upload} Created upload
+   * @static
    */
-  create(upload, context) {
-    upload = new Upload(upload)
+  static create(upload, context) {
+    const createdUpload = new Upload(upload)
 
     // Update context
     context.uploads = context.uploads || {}
-    context.uploads[upload.id] = upload
+    context.uploads[createdUpload.id] = createdUpload
+
+    return createdUpload
   }
 
   /**
    * Update
    *
+   * @param {string} id - Upload ID
    * @param {object} updates - Updates
    * @param {object} context - Context
+   * @returns {Upload} Updated upload
+   * @static
    */
-  update(updates, context) {
-    this.updatedAt = today()
+  static update(id, updates, context) {
+    const updatedUpload = Object.assign(Upload.findOne(id, context), updates)
+    updatedUpload.updatedAt = today()
 
     // Remove upload context
-    delete this.context
+    delete updatedUpload.context
 
     // Delete original upload (with previous ID)
-    delete context.uploads[this.id]
+    delete context.uploads[id]
 
     // Update context
-    const updatedUpload = Object.assign(this, updates)
     context.uploads[updatedUpload.id] = updatedUpload
+
+    return updatedUpload
   }
 }

@@ -63,17 +63,18 @@ export const uploadController = {
     const { type, urn } = request.query
     const { data } = request.session
 
-    const upload = new Upload({
-      programme_id,
-      type,
-      createdBy_uid: account.uid,
-      ...(type === UploadType.School &&
-        urn && {
-          school_urn: urn
-        })
-    })
-
-    upload.create(upload, data.wizard)
+    const upload = Upload.create(
+      {
+        programme_id,
+        type,
+        createdBy_uid: account.uid,
+        ...(type === UploadType.School &&
+          urn && {
+            school_urn: urn
+          })
+      },
+      data.wizard
+    )
 
     // If type provided in query string, start journey at upload question
     data.startPath = type
@@ -90,16 +91,20 @@ export const uploadController = {
     const { data, referrer } = request.session
     const { __ } = response.locals
 
-    const upload = new Upload(Upload.findOne(upload_id, data.wizard), data)
+    // Update session data
+    let upload = Upload.update(
+      upload_id,
+      data.wizard.uploads[upload_id],
+      data.wizard
+    )
 
-    request.flash('success', __('upload.new.success'))
+    upload = Upload.create(upload, data)
 
     // Clean up session data
     delete data.upload
     delete data.wizard
 
-    // Update session data
-    upload.update(upload, data)
+    request.flash('success', __('upload.new.success'))
 
     response.redirect(referrer || upload.uri)
   },
@@ -107,15 +112,13 @@ export const uploadController = {
   readForm(request, response, next) {
     const { upload_id } = request.params
     const { data } = request.session
-    let { __, upload } = response.locals
+    const { __ } = response.locals
 
     // Setup wizard if not already setup
-    if (!Upload.findOne(upload_id, data.wizard)) {
-      upload.create(upload, data.wizard)
+    let upload = Upload.findOne(upload_id, data.wizard)
+    if (!upload) {
+      upload = Upload.create(response.locals.upload, data.wizard)
     }
-
-    upload = new Upload(Upload.findOne(upload_id, data.wizard), data)
-    response.locals.upload = upload
 
     const journey = {
       [`/`]: {},
@@ -140,6 +143,10 @@ export const uploadController = {
           }),
       [`/${upload_id}`]: {}
     }
+
+    // TODO: Use presenter
+    upload = new Upload(upload, data)
+    response.locals.upload = upload
 
     response.locals.paths = wizard(journey, request)
 
@@ -170,10 +177,11 @@ export const uploadController = {
   },
 
   updateForm(request, response) {
+    const { upload_id } = request.params
     const { data } = request.session
-    const { paths, upload } = response.locals
+    const { paths } = response.locals
 
-    upload.update(request.body.upload, data.wizard)
+    Upload.update(upload_id, request.body.upload, data.wizard)
 
     response.redirect(paths.next)
   },
