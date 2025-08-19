@@ -38,12 +38,12 @@ export function generatePatient() {
     pendingChanges.dob = newDob
 
     // Move school
-    const primarySchools = Object.values(schools).filter(
-      (school) => school.phase === 'Primary'
-    )
-    const secondarySchools = Object.values(schools).filter(
-      (school) => school.phase === 'Secondary'
-    )
+    const primarySchools = Object.values(schools)
+      .filter((school) => school.phase === 'Primary')
+      .filter((school) => school.urn !== child.school_urn)
+    const secondarySchools = Object.values(schools)
+      .filter((school) => school.phase === 'Secondary')
+      .filter((school) => school.urn !== child.school_urn)
     const newUrn =
       schools[child.school_urn]?.phase === 'Primary'
         ? faker.helpers.arrayElement(primarySchools).urn
