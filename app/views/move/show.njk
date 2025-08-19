@@ -38,7 +38,7 @@
             gender: {},
             postalCode: {},
             school: {
-              value: move.formatted.to | highlightDifference(move.formatted.from_urn)
+              value: move.toSchoolName | highlightDifference(move.fromSchoolName)
             }
           })
         })
@@ -85,7 +85,7 @@
           },
           hint: {
             text: __("move.show.session.hint", {
-              school: move.formatted.to,
+              school: move.toSchoolName,
               dates: "Wednesday 6 March 2025 and Thursday 7 March 2025"
             })
           },
