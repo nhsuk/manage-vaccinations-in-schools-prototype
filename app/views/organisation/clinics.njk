@@ -21,23 +21,21 @@
       {% set cardDescriptionHtml %}
         {% set clinicRows = [] %}
         {% for clinic in organisation.clinics %}
-          {% set clinicRows = clinicRows | push([
-            {
-              header: __("clinic.name.label"),
-              html: clinic.formatted.nameAndAddress or "Not provided"
-            }, {
-              header: __("actions.label"),
-              html: appActionList({
-                items: [{
-                  text: __("clinic.edit.label"),
-                  href: organisation.uri + "/clinics/" + clinic.id + "/edit"
-                }, {
-                  text: __("clinic.delete.label"),
-                  href: organisation.uri + "/clinics/" + clinic.id + "/delete"
-                }]
-              })
-            }
-          ]) %}
+          {% set tableRow = clinic.getTableRow({
+            location: {}
+          }) | push({
+            header: __("actions.label"),
+            html: appActionList({
+              items: [{
+                text: __("clinic.edit.label"),
+                href: organisation.uri + "/clinics/" + clinic.id + "/edit"
+              }, {
+                text: __("clinic.delete.label"),
+                href: organisation.uri + "/clinics/" + clinic.id + "/delete"
+              }]
+            })
+          }) %}
+          {% set clinicRows = clinicRows | push(tableRow) %}
         {% endfor %}
 
         {{ button({
@@ -51,7 +49,7 @@
             id: "clinics",
             responsive: true,
             head: [
-              { text: __("clinic.name.label") },
+              { text: __("clinic.location.label") },
               { text: __("actions.label") }
             ],
             rows: clinicRows
