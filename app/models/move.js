@@ -1,8 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import schools from '../datasets/schools.js'
 import { Patient } from '../models/patient.js'
-import { formatDate, getDateValueDifference, today } from '../utils/date.js'
+import { getDateValueDifference, today } from '../utils/date.js'
 
 /**
  * @class Move
@@ -46,32 +45,6 @@ export class Move {
     } catch (error) {
       console.error('Move.patient', error.message)
     }
-  }
-
-  get movement() {
-    return `<span><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">${this.source} updated</span><br>${this.formatted.from_urn}<br><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">to</span> ${this.formatted.to_urn}</span>`
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} Formatted values
-   */
-  get formatted() {
-    return {
-      createdAt: formatDate(this.createdAt, { dateStyle: 'long' }),
-      from_urn: schools[this.from_urn]?.name || 'Unknown school',
-      to_urn: schools[this.to_urn]?.name || 'Unknown school'
-    }
-  }
-
-  /**
-   * Get namespace
-   *
-   * @returns {string} Namespace
-   */
-  get ns() {
-    return 'move'
   }
 
   /**
