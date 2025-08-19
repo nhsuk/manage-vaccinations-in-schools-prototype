@@ -14,20 +14,13 @@
   {% for phase, schools in schools | selectattr("phase") | groupby("phase") %}
     {% set schoolRows = [] %}
     {% for school in schools | sort(false, false, "name") %}
-      {% set schoolRows = schoolRows | push([
-        {
-          header: __("school.name.label"),
-          html: school.link.name or "Not provided"
+      {% set schoolRows = schoolRows | push(school.getTableRow({
+        name: {
+          href: school.uri
         },
-        {
-          header: __("school.urn.label"),
-          html: school.formatted.urn or "Not provided"
-        },
-        {
-          header: __("school.address.label"),
-          html: school.address.formatted.singleline or "Not provided"
-        }
-      ]) %}
+        urn: {},
+        address: {}
+      })) %}
     {% endfor %}
 
     {{ table({
