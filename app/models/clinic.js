@@ -1,8 +1,8 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import { AddressPresenter } from '../presenters/address.js'
 import { today } from '../utils/date.js'
 
-import { Address } from './address.js'
 import { Organisation } from './organisation.js'
 
 /**
@@ -14,7 +14,7 @@ import { Organisation } from './organisation.js'
  * @property {Date} [createdAt] - Created date
  * @property {Date} [updatedAt] - Updated date
  * @property {string} [name] - Name
- * @property {Address} [address] - Address
+ * @property {object} [address] - Address
  * @property {string} [organisation_code] - Organisation code
  */
 export class Clinic {
@@ -24,7 +24,7 @@ export class Clinic {
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.name = options?.name
-    this.address = options?.address && new Address(options.address)
+    this.address = options?.address
     this.organisation_code = options?.organisation_code
   }
 
@@ -63,13 +63,13 @@ export class Clinic {
    */
   get formatted() {
     return {
-      address: this.address?.formatted.multiline,
+      address: this.address && new AddressPresenter(this.address).multiline,
       location: Object.values(this.location)
         .filter((string) => string)
         .join(', '),
       nameAndAddress: this.address
         ? `<span>${this.name}</br><span class="nhsuk-u-secondary-text-colour">${
-            this.address.formatted.singleline
+            new AddressPresenter(this.address).singleline
           }</span></span>`
         : this.name
     }
