@@ -1,10 +1,10 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { SchoolPhase } from '../enums.js'
+import { AddressPresenter } from '../presenters/address.js'
 import { range } from '../utils/number.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
-import { Address } from './address.js'
 import { Patient } from './patient.js'
 
 /**
@@ -15,7 +15,7 @@ import { Patient } from './patient.js'
  * @property {string} urn - URN
  * @property {string} name - Name
  * @property {SchoolPhase} [phase] - Phase
- * @property {Address} [address] - Address
+ * @property {object} [address] - Address
  */
 export class School {
   constructor(options, context) {
@@ -23,7 +23,7 @@ export class School {
     this.urn = (options.urn && String(options.urn)) || faker.string.numeric(6)
     this.name = options?.name
     this.phase = options?.phase
-    this.address = options?.address && new Address(options.address)
+    this.address = options?.address
   }
 
   /**
@@ -91,7 +91,7 @@ export class School {
         .join(', '),
       nameAndAddress: this.address
         ? `<span>${this.name}</br><span class="nhsuk-u-secondary-text-colour">${
-            this.address.formatted.singleline
+            new AddressPresenter(this.address).singleline
           }</span></span>`
         : this.name,
       urn: formatMonospace(this.urn)

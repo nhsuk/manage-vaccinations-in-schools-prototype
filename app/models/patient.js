@@ -36,7 +36,7 @@ import { Vaccination } from './vaccination.js'
  * @property {boolean} invalid - Flagged as invalid
  * @property {boolean} sensitive - Flagged as sensitive
  * @property {Date} [updatedAt] - Updated date
- * @property {import('../enums.js').Address} [address] - Address
+ * @property {object} [address] - Address
  * @property {Parent} [parent1] - Parent 1
  * @property {Parent} [parent2] - Parent 2
  * @property {Patient} [pendingChanges] - Pending changes to record values

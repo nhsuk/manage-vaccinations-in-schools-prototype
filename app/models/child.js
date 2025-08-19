@@ -1,4 +1,5 @@
 import schools from '../datasets/schools.js'
+import { AddressPresenter } from '../presenters/address.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -7,8 +8,6 @@ import {
   getYearGroup
 } from '../utils/date.js'
 import { formatYearGroup } from '../utils/string.js'
-
-import { Address } from './address.js'
 
 /**
  * @class Child
@@ -23,7 +22,7 @@ import { Address } from './address.js'
  * @property {object} [dob_] - Date of birth (from `dateInput`)
  * @property {Date} [dod] - Date of death
  * @property {import('../enums.js).Gender} gender - Gender
- * @property {import('./address.js').Address} [address] - Address
+ * @property {object} [address] - Address
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} [registrationGroup] - Registration group
  * @property {string} [school_urn] - School
@@ -201,7 +200,7 @@ export class Child {
     return {
       dob: formatDate(this.dob, { dateStyle: 'long' }),
       dod: formatDate(this.dod, { dateStyle: 'long' }),
-      address: this?.address && new Address(this.address).formatted.multiline,
+      address: this?.address && new AddressPresenter(this.address).multiline,
       ...(!this.post16 && {
         yearGroup,
         yearGroupWithRegistration:

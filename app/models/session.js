@@ -17,6 +17,7 @@ import {
   SessionType,
   VaccineMethod
 } from '../enums.js'
+import { AddressPresenter } from '../presenters/address.js'
 import {
   removeDays,
   convertIsoDateToObject,
@@ -571,7 +572,7 @@ export class Session {
   /**
    * Get address
    *
-   * @returns {import('./address.js').Address} Address
+   * @returns {object} Address
    */
   get address() {
     const type = this.type === SessionType.School ? 'school' : 'clinic'
@@ -777,7 +778,7 @@ export class Session {
       ProgrammePreset[this.programmePreset]?.catchupProgrammeTypes
 
     return {
-      address: this.address?.formatted.multiline,
+      address: new AddressPresenter(this.address).multiline,
       dates: formatList(formattedDates).replace(' nhsuk-list--bullet', ''),
       firstDate: formatDate(this.firstDate, { dateStyle: 'full' }),
       nextDate: formatDate(this.nextDate, {

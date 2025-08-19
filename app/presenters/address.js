@@ -1,11 +1,11 @@
 /**
- * @class Address
+ * @class AddressPresenter
  * @property {string} [addressLine1] - Address line 1
  * @property {string} [addressLine2] - Address line 2
  * @property {string} [addressLevel1] - Address level 1
  * @property {string} [postalCode] - Postcode
  */
-export class Address {
+export class AddressPresenter {
   constructor(options) {
     this.addressLine1 = options?.addressLine1
     this.addressLine2 = options?.addressLine2
@@ -14,27 +14,24 @@ export class Address {
   }
 
   /**
-   * Get formatted values
+   * Break address parts using a line break
    *
-   * @returns {object} Formatted values
+   * @returns {string} Address split by line breaks
    */
-  get formatted() {
-    return {
-      multiline: Object.values(this)
-        .filter((string) => string)
-        .join('<br>'),
-      singleline: Object.values(this)
-        .filter((string) => string)
-        .join(', ')
-    }
+  get multiline() {
+    return Object.values(this)
+      .filter((string) => string)
+      .join('<br>')
   }
 
   /**
-   * Get namespace
+   * Break address parts using a comma
    *
-   * @returns {string} Namespace
+   * @returns {string} Address split by commas
    */
-  get ns() {
-    return 'address'
+  get singleline() {
+    return Object.values(this)
+      .filter((string) => string)
+      .join(', ')
   }
 }
