@@ -108,7 +108,7 @@ export class Notice {
     const archivedNotice = Notice.findOne(id, context)
     archivedNotice.archivedAt = new Date()
 
-    // Remove batch context
+    // Remove notice context
     delete archivedNotice.context
 
     // Update context
