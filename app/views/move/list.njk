@@ -22,29 +22,16 @@
 
   {% set resultRows = [] %}
   {% for move in results.page %}
-    {% set resultRows = resultRows | push([
-      {
-        header: __("move.createdAt.label"),
-        text: move.formatted.createdAt
-      },
-      {
-        header: __("child.label"),
-        html: move.patient.fullName
-      },
-      {
-        header: __("move.label"),
-        html: move.movement
-      },
-      {
-        header: __("actions.label"),
-        html: appActionList({
-          items: [{
-            text: __("actions.review"),
-            href: move.uri
-          }]
-        })
-      }
-    ]) %}
+    {% set tableRow = move.tableRow | push({
+      header: __("actions.label"),
+      html: appActionList({
+        items: [{
+          text: __("actions.review"),
+          href: move.uri
+        }]
+      })
+    }) %}
+    {% set resultRows = resultRows | push(tableRow) %}
   {% endfor %}
 
   {% if moves.length %}

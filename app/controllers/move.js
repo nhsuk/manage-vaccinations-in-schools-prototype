@@ -1,20 +1,15 @@
-import _ from 'lodash'
-
-import { Move } from '../models/move.js'
+import { MovePresenter } from '../presenters/move.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const moveController = {
   read(request, response, next, move_uuid) {
-    response.locals.move = Move.findOne(move_uuid, request.session.data)
+    response.locals.move = MovePresenter.forOne(move_uuid, request.session.data)
 
     next()
   },
 
   readAll(request, response, next) {
-    let moves = Move.findAll(request.session.data)
-
-    // Sort
-    moves = _.sortBy(moves, 'createdAt')
+    const moves = MovePresenter.forAll(request.session.data)
 
     response.locals.moves = moves
     response.locals.results = getResults(moves, request.query)
