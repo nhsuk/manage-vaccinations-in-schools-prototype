@@ -12,10 +12,10 @@ import { formatDate, getDateValueDifference, today } from '../utils/date.js'
  * @property {string} uuid - UUID
  * @property {Date} [createdAt] - Reported date
  * @property {Date} [updatedAt] - Updated date
- * @property {string} from - Current school URN (moving from)
- * @property {string} to - Proposed school URN (moving to)
- * @property {import('../enums.js').MoveSource} source - Reporting source
  * @property {boolean} ignored - Reported move is ignored
+ * @property {import('../enums.js').MoveSource} source - Reporting source
+ * @property {string} from_urn - Current school URN (moving from)
+ * @property {string} to_urn - Proposed school URN (moving to)
  * @property {string} patient_uuid - Patient UUID
  */
 export class Move {
@@ -26,10 +26,10 @@ export class Move {
     this.updatedAt = options?.updatedAt
       ? new Date(options.updatedAt)
       : undefined
-    this.from = options?.from
-    this.to = options?.to
-    this.source = options?.source
     this.ignored = options?.ignored || false
+    this.source = options?.source
+    this.from_urn = options?.from_urn
+    this.to_urn = options?.to_urn
     this.patient_uuid = options?.patient_uuid
   }
 
@@ -49,7 +49,7 @@ export class Move {
   }
 
   get movement() {
-    return `<span><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">${this.source} updated</span><br>${this.formatted.from}<br><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">to</span> ${this.formatted.to}</span>`
+    return `<span><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">${this.source} updated</span><br>${this.formatted.from_urn}<br><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">to</span> ${this.formatted.to_urn}</span>`
   }
 
   /**
@@ -60,8 +60,8 @@ export class Move {
   get formatted() {
     return {
       createdAt: formatDate(this.createdAt, { dateStyle: 'long' }),
-      from: schools[this.from]?.name || 'Unknown school',
-      to: schools[this.to]?.name || 'Unknown school'
+      from_urn: schools[this.from_urn]?.name || 'Unknown school',
+      to_urn: schools[this.to_urn]?.name || 'Unknown school'
     }
   }
 
@@ -166,7 +166,7 @@ export class Move {
   switch(uuid, context) {
     const move = Move.findOne(uuid, context)
 
-    context.patients[move.patient_uuid].school_urn = move.to
+    context.patients[move.patient_uuid].school_urn = move.to_urn
 
     Move.delete(uuid, context)
   }

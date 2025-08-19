@@ -1981,6 +1981,7 @@ export const en = {
     }
   },
   move: {
+    label: 'School move',
     list: {
       label: 'School moves',
       title: 'School moves',
@@ -2019,17 +2020,14 @@ export const en = {
     createdAt: {
       label: 'Updated'
     },
-    from: {
-      label: 'School joined from'
-    },
-    to: {
-      label: 'School moved to'
-    },
     source: {
       label: 'Updated in'
     },
-    movement: {
-      label: 'Move'
+    from_urn: {
+      label: 'School joined from'
+    },
+    to_urn: {
+      label: 'School moved to'
     }
   },
   user: {

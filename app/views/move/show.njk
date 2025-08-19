@@ -38,7 +38,7 @@
             gender: {},
             postalCode: {},
             school: {
-              value: move.formatted.to | highlightDifference(move.formatted.from)
+              value: move.formatted.to | highlightDifference(move.formatted.from_urn)
             }
           })
         })
@@ -99,7 +99,7 @@
           }],
           decorate: "session"
         })
-      } if move.from == "888888" or move.from == "999999"
+      } if move.from_urn == "888888" or move.from_urn == "999999"
     }, {
       text: __("move.show.decision.ignore"),
       value: "ignore"
