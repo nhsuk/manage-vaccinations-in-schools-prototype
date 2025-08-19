@@ -163,6 +163,9 @@ export const en = {
     address: {
       label: 'Address'
     },
+    location: {
+      label: 'Location'
+    },
     count: '{count, plural, =0 {No clinics} one {1 clinic} other {# clinics}}'
   },
   child: {

@@ -18,6 +18,7 @@ import {
   VaccineMethod
 } from '../enums.js'
 import { AddressPresenter } from '../presenters/address.js'
+import { ClinicPresenter } from '../presenters/clinic.js'
 import {
   removeDays,
   convertIsoDateToObject,
@@ -43,7 +44,6 @@ import {
   stringToBoolean
 } from '../utils/string.js'
 
-import { Clinic } from './clinic.js'
 import { Consent } from './consent.js'
 import { PatientSession } from './patient-session.js'
 import { Programme } from './programme.js'
@@ -350,12 +350,12 @@ export class Session {
   /**
    * Get clinic
    *
-   * @returns {Clinic|undefined}} Clinic
+   * @returns {ClinicPresenter|undefined}} Clinic
    */
   get clinic() {
     if (this.clinic_id) {
       try {
-        return Clinic.findOne(this.clinic_id, this.context)
+        return ClinicPresenter.forOne(this.clinic_id, this.context)
       } catch (error) {
         console.error('Session.clinic', error.message)
       }

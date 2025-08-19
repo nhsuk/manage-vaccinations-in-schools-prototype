@@ -1,10 +1,10 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { OrganisationDefaults } from '../enums.js'
+import { ClinicPresenter } from '../presenters/clinic.js'
 import { today } from '../utils/date.js'
 import { stringToBoolean } from '../utils/string.js'
 
-import { Clinic } from './clinic.js'
 import { School } from './school.js'
 
 /**
@@ -50,12 +50,12 @@ export class Organisation {
   /**
    * Get clinics
    *
-   * @returns {Array<Clinic>} Clinics
+   * @returns {Array<ClinicPresenter>} Clinics
    */
   get clinics() {
     try {
       return this?.clinic_ids
-        .map((id) => new Clinic(this.context?.clinics[id]))
+        .map((id) => ClinicPresenter.forOne(id, this.context))
         .sort((a, b) => a.name.localeCompare(b.name))
     } catch (error) {
       console.error('Organisation.clinics', error.message)

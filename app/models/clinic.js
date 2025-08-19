@@ -1,9 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { AddressPresenter } from '../presenters/address.js'
 import { today } from '../utils/date.js'
-
-import { Organisation } from './organisation.js'
 
 /**
  * @class Clinic
@@ -38,50 +35,6 @@ export class Clinic {
       name: this.name,
       ...this.address
     }
-  }
-
-  /**
-   * Get organisation
-   *
-   * @returns {Organisation} Organisation
-   */
-  get organisation() {
-    try {
-      const organisation = this.context?.organisations[this.organisation_code]
-      if (organisation) {
-        return new Organisation(organisation)
-      }
-    } catch (error) {
-      console.error('Clinic.organisation', error.message)
-    }
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} Formatted values
-   */
-  get formatted() {
-    return {
-      address: this.address && new AddressPresenter(this.address).multiline,
-      location: Object.values(this.location)
-        .filter((string) => string)
-        .join(', '),
-      nameAndAddress: this.address
-        ? `<span>${this.name}</br><span class="nhsuk-u-secondary-text-colour">${
-            new AddressPresenter(this.address).singleline
-          }</span></span>`
-        : this.name
-    }
-  }
-
-  /**
-   * Get namespace
-   *
-   * @returns {string} Namespace
-   */
-  get ns() {
-    return 'clinic'
   }
 
   /**
