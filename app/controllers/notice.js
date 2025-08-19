@@ -1,9 +1,10 @@
 import { Notice } from '../models/notice.js'
 import { Upload } from '../models/upload.js'
+import { NoticePresenter } from '../presenters/notice.js'
 
 export const noticeController = {
   read(request, response, next, notice_uuid) {
-    const notice = Notice.findOne(notice_uuid, request.session.data)
+    const notice = NoticePresenter.forOne(notice_uuid, request.session.data)
 
     response.locals.notice = notice
     response.locals.paths = {
@@ -15,9 +16,9 @@ export const noticeController = {
   },
 
   readAll(request, response, next) {
-    response.locals.notices = Notice.findAll(request.session.data).filter(
-      ({ archivedAt }) => !archivedAt
-    )
+    response.locals.notices = NoticePresenter.forAll(
+      request.session.data
+    ).filter(({ archivedAt }) => !archivedAt)
 
     // Required to show number of reviews in upload section navigation
     response.locals.reviews = Upload.findAll(request.session.data).flatMap(

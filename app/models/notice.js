@@ -1,6 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { formatDate, getDateValueDifference, today } from '../utils/date.js'
+import { getDateValueDifference, today } from '../utils/date.js'
 
 import { Patient } from './patient.js'
 
@@ -38,26 +38,6 @@ export class Notice {
     } catch (error) {
       console.error('Notice.patient', error.message)
     }
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} Formatted values
-   */
-  get formatted() {
-    return {
-      createdAt: formatDate(this.createdAt, { dateStyle: 'long' })
-    }
-  }
-
-  /**
-   * Get namespace
-   *
-   * @returns {string} Namespace
-   */
-  get ns() {
-    return 'notice'
   }
 
   /**
