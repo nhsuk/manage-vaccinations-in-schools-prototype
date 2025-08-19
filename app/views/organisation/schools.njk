@@ -21,20 +21,11 @@
       {% set cardDescriptionHtml %}
         {% set schoolRows = [] %}
         {% for school in organisation.schools %}
-          {% set schoolRows = schoolRows | push([
-            {
-              header: __("school.name.label"),
-              html: school.formatted.nameAndAddress or "Not provided"
-            },
-            {
-              header: __("school.urn.label"),
-              html: school.formatted.urn or "Not provided"
-            },
-            {
-              header: __("school.phase.label"),
-              html: school.phase or "Not provided"
-            }
-          ]) %}
+          {% set schoolRows = schoolRows | push(school.getTableRow({
+            location: {},
+            urn: {},
+            phase: {}
+          })) %}
         {% endfor %}
 
         {{ button({
@@ -47,7 +38,7 @@
           id: "schools",
           responsive: true,
           head: [
-            { text: __("school.name.label") },
+            { text: __("school.location.label") },
             { text: __("school.urn.label") },
             { text: __("school.phase.label") }
           ],

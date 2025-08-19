@@ -2,10 +2,9 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { OrganisationDefaults } from '../enums.js'
 import { ClinicPresenter } from '../presenters/clinic.js'
+import { SchoolPresenter } from '../presenters/school.js'
 import { today } from '../utils/date.js'
 import { stringToBoolean } from '../utils/string.js'
-
-import { School } from './school.js'
 
 /**
  * @class Organisation
@@ -65,12 +64,12 @@ export class Organisation {
   /**
    * Get schools
    *
-   * @returns {Array<School>} Schools
+   * @returns {Array<SchoolPresenter>} Schools
    */
   get schools() {
     try {
       return this?.school_urns
-        .map((urn) => new School(this.context?.schools[urn]))
+        .map((urn) => SchoolPresenter.forOne(urn, this.context))
         .sort((a, b) => a.name.localeCompare(b.name))
     } catch (error) {
       console.error('Organisation.schools', error.message)

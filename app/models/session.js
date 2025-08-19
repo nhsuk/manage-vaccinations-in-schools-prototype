@@ -19,6 +19,7 @@ import {
 } from '../enums.js'
 import { AddressPresenter } from '../presenters/address.js'
 import { ClinicPresenter } from '../presenters/clinic.js'
+import { SchoolPresenter } from '../presenters/school.js'
 import {
   removeDays,
   convertIsoDateToObject,
@@ -47,7 +48,6 @@ import {
 import { Consent } from './consent.js'
 import { PatientSession } from './patient-session.js'
 import { Programme } from './programme.js'
-import { School } from './school.js'
 import { Vaccine } from './vaccine.js'
 
 /**
@@ -365,12 +365,12 @@ export class Session {
   /**
    * Get school
    *
-   * @returns {School|undefined} School
+   * @returns {SchoolPresenter|undefined} School
    */
   get school() {
     if (this.school_urn) {
       try {
-        return School.findOne(this.school_urn, this.context)
+        return SchoolPresenter.forOne(this.school_urn, this.context)
       } catch (error) {
         console.error('Session.school', error.message)
       }
@@ -828,7 +828,7 @@ export class Session {
         .join(', '),
       clinic: this.clinic && this.clinic.name,
       school: this.school && this.school.name,
-      school_urn: this.school && this.school.formatted.urn,
+      school_urn: this.school && this.school.urn,
       status: formatTag(this.sessionStatus)
     }
   }

@@ -12,7 +12,7 @@
     heading: __("school.show.summary"),
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
-      rows: summaryRows(school, {
+      rows: school.getSummaryRows({
         urn: {},
         name: {},
         phase: {},
