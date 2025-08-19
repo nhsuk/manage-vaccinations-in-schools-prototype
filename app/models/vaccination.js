@@ -510,41 +510,52 @@ export class Vaccination {
   /**
    * Create
    *
-   * @param {Vaccination} vaccination - Vaccination
+   * @param {object} vaccination - Vaccination
    * @param {object} context - Context
+   * @returns {Vaccination} Created vaccination
+   * @static
    */
-  create(vaccination, context) {
-    vaccination = new Vaccination(vaccination)
+  static create(vaccination, context) {
+    const createdVaccination = new Vaccination(vaccination)
 
     // Update context
     context.vaccinations = context.vaccinations || {}
-    context.vaccinations[vaccination.uuid] = vaccination
+    context.vaccinations[createdVaccination.uuid] = createdVaccination
+
+    return createdVaccination
   }
 
   /**
    * Update
    *
+   * @param {string} uuid - Vaccination UUID
    * @param {object} updates - Updates
    * @param {object} context - Context
+   * @returns {Vaccination} Updated vaccination
+   * @static
    */
-  update(updates, context) {
-    this.updatedAt = today()
+  static update(uuid, updates, context) {
+    const updatedVaccination = Object.assign(
+      Vaccination.findOne(uuid, context),
+      updates
+    )
+    updatedVaccination.updatedAt = today()
 
-    // Make sure sync isn't always successful
+    // Make sure sync isn’t always successful
     const syncSuccess = Math.random() > 0.3
-    if (syncSuccess && this.given) {
-      this.nhseSyncedAt = today(Math.random() * 60 * 5)
+    if (syncSuccess && updatedVaccination.given) {
+      updatedVaccination.nhseSyncedAt = today(Math.random() * 60 * 5)
     }
 
     // Remove patient context
-    delete this.context
+    delete updatedVaccination.context
 
     // Delete original patient (with previous UUID)
-    delete context.vaccinations[this.uuid]
+    delete context.vaccinations[uuid]
 
     // Update context
-    const updatedVaccination = Object.assign(this, updates)
-
     context.vaccinations[updatedVaccination.uuid] = updatedVaccination
+
+    return updatedVaccination
   }
 }

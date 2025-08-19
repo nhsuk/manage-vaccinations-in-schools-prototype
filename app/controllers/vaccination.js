@@ -49,19 +49,18 @@ export const vaccinationController = {
   edit(request, response) {
     const { vaccination_uuid } = request.params
     const { data, referrer } = request.session
-    const { vaccination } = response.locals
 
     // Setup wizard if not already setup
-    if (!Vaccination.findOne(vaccination_uuid, data.wizard)) {
-      vaccination.create(vaccination, data.wizard)
+    let vaccination = Vaccination.findOne(vaccination_uuid, data.wizard)
+    if (!vaccination) {
+      vaccination = Vaccination.create(response.locals.vaccination, data.wizard)
     }
+
+    // TODO: Use presenter
+    response.locals.vaccination = new Vaccination(vaccination, data)
 
     // Show back link to referring page, else vaccination page
     response.locals.back = referrer || vaccination.uri
-    response.locals.vaccination = new Vaccination(
-      Vaccination.findOne(vaccination_uuid, data.wizard),
-      data
-    )
 
     response.render('vaccination/edit')
   },
@@ -127,41 +126,42 @@ export const vaccinationController = {
       }
     }
 
-    const vaccination = new Vaccination({
-      selfId,
-      identifiedBy,
-      location: session.formatted.location,
-      programme_id: programme.id,
-      school_urn: session.school_urn,
-      patientSession_uuid: patientSession.uuid,
-      vaccine_snomed: vaccine.snomed,
-      createdAt: today(),
-      createdBy_uid,
-      ...(injectionSite && {
-        dose: vaccine.dose,
-        injectionMethod: VaccinationMethod.Intramuscular,
-        injectionSite,
-        suppliedBy_uid,
-        protocol,
-        outcome: VaccinationOutcome.Vaccinated
-      }),
-      ...(isNasalSpray && {
-        dose: vaccine.dose,
-        injectionMethod: VaccinationMethod.Nasal,
-        injectionSite: VaccinationSite.Nose,
-        suppliedBy_uid,
-        protocol,
-        outcome: VaccinationOutcome.Vaccinated
-      }),
-      ...(programme.sequence && {
-        sequence: programme.sequenceDefault
-      }),
-      ...(defaultBatch && {
-        batch_id: defaultBatch.id
-      })
-    })
-
-    vaccination.create(vaccination, data.wizard)
+    const vaccination = Vaccination.create(
+      {
+        selfId,
+        identifiedBy,
+        location: session.formatted.location,
+        programme_id: programme.id,
+        school_urn: session.school_urn,
+        patientSession_uuid: patientSession.uuid,
+        vaccine_snomed: vaccine.snomed,
+        createdAt: today(),
+        createdBy_uid,
+        ...(injectionSite && {
+          dose: vaccine.dose,
+          injectionMethod: VaccinationMethod.Intramuscular,
+          injectionSite,
+          suppliedBy_uid,
+          protocol,
+          outcome: VaccinationOutcome.Vaccinated
+        }),
+        ...(isNasalSpray && {
+          dose: vaccine.dose,
+          injectionMethod: VaccinationMethod.Nasal,
+          injectionSite: VaccinationSite.Nose,
+          suppliedBy_uid,
+          protocol,
+          outcome: VaccinationOutcome.Vaccinated
+        }),
+        ...(programme.sequence && {
+          sequence: programme.sequenceDefault
+        }),
+        ...(defaultBatch && {
+          batch_id: defaultBatch.id
+        })
+      },
+      data.wizard
+    )
 
     response.redirect(`${vaccination.uri}/new/${data.startPath}`)
   },
@@ -172,27 +172,34 @@ export const vaccinationController = {
       const { data, referrer } = request.session
       const { __, session } = response.locals
 
-      const vaccination = new Vaccination(
-        Vaccination.findOne(vaccination_uuid, data.wizard),
-        data
-      )
+      // Update session data
+      const updates = {
+        ...data.wizard.vaccinations[vaccination_uuid],
+        ...request.body?.vaccination
+      }
+
+      if (type === 'new') {
+        Vaccination.create(updates, data)
+      } else {
+        Vaccination.update(vaccination_uuid, updates, data)
+      }
+
+      // TODO: Use presenter
+      const vaccination = Vaccination.findOne(vaccination_uuid, data)
 
       const patientSession = PatientSession.findOne(
         vaccination.patientSession_uuid,
         data
       )
 
-      // Add note on check answers page
-      if (request.body?.vaccination?.note) {
-        vaccination.note = request.body.vaccination.note
-      }
-
       // Update number of vaccinations given
-      if (data?.token?.vaccinations?.[vaccination.vaccine.snomed]) {
-        data.token.vaccinations[vaccination.vaccine.snomed] += 1
-      } else {
-        data.token.vaccinations = {
-          [vaccination.vaccine.snomed]: 1
+      if (type === 'new') {
+        if (data?.token?.vaccinations?.[vaccination.vaccine.snomed]) {
+          data.token.vaccinations[vaccination.vaccine.snomed] += 1
+        } else {
+          data.token.vaccinations = {
+            [vaccination.vaccine_snomed]: 1
+          }
         }
       }
 
@@ -207,7 +214,6 @@ export const vaccinationController = {
       delete data.wizard
 
       // Update session data
-      vaccination.create(vaccination, data)
       patientSession.patient.recordVaccination(vaccination)
 
       let next = referrer || vaccination.uri
@@ -355,19 +361,27 @@ export const vaccinationController = {
 
   updateForm(request, response) {
     const { data } = request.session
-    const { paths, patientSession, vaccination } = response.locals
-    const { vaccine } = vaccination
+    const { vaccination_uuid } = request.params
+    let { paths, patientSession, vaccination } = response.locals
 
     // Add dose amount and vaccination outcome based on dosage answer
     const { dosage } = request.body.vaccination
     if (dosage) {
       request.body.vaccination.dose =
-        dosage === 'half' ? vaccine.dose / 2 : vaccine.dose
+        dosage === 'half'
+          ? vaccination.vaccine.dose / 2
+          : vaccination.vaccine.dose
       request.body.vaccination.outcome =
         dosage === 'half'
           ? VaccinationOutcome.PartVaccinated
           : VaccinationOutcome.Vaccinated
     }
+
+    vaccination = Vaccination.update(
+      vaccination_uuid,
+      request.body.vaccination,
+      data.wizard
+    )
 
     // Get default batch, if saved
     if (data.defaultBatchId) {
@@ -389,8 +403,6 @@ export const vaccinationController = {
         )
       }
     }
-
-    vaccination.update(request.body.vaccination, data.wizard)
 
     const redirect = paths.next || `${vaccination.uri}/new/check-answers`
 

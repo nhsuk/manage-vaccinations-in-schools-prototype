@@ -226,18 +226,21 @@ export const patientSessionController = {
     ) {
       // Record vaccination outcome as absent if safe to vaccinate
       const programme = Programme.findOne(session.programme_ids[0], data)
-      const vaccination = new Vaccination({
-        location: session.location.name,
-        school_urn: session.school_urn,
-        outcome: VaccinationOutcome.Absent,
-        patientSession_uuid: patientSession.uuid,
-        programme_id: programme.id,
-        session_id: session.id,
-        vaccine_snomed: patientSession.vaccine.snomed,
-        createdAt: today(10),
-        createdBy_uid: account.uid
-      })
-      vaccination.create(vaccination, data)
+      const vaccination = Vaccination.create(
+        {
+          location: session.location.name,
+          school_urn: session.school_urn,
+          outcome: VaccinationOutcome.Absent,
+          patientSession_uuid: patientSession.uuid,
+          programme_id: programme.id,
+          session_id: session.id,
+          vaccine_snomed: patientSession.vaccine.snomed,
+          createdAt: today(10),
+          createdBy_uid: account.uid
+        },
+        data
+      )
+
       patientSession.patient.recordVaccination(vaccination)
     }
 
@@ -312,16 +315,18 @@ export const patientSessionController = {
     const { patientSession, session, programme } = response.locals
 
     // Vaccination
-    const vaccination = new Vaccination({
-      outcome: VaccinationOutcome.AlreadyVaccinated,
-      patientSession_uuid: patientSession.uuid,
-      programme_id: programme.id,
-      session_id: session.id,
-      createdAt: today(),
-      createdBy_uid: account.uid
-    })
+    const vaccination = Vaccination.create(
+      {
+        outcome: VaccinationOutcome.AlreadyVaccinated,
+        patientSession_uuid: patientSession.uuid,
+        programme_id: programme.id,
+        session_id: session.id,
+        createdAt: today(),
+        createdBy_uid: account.uid
+      },
+      data.wizard
+    )
 
-    vaccination.create(vaccination, data.wizard)
     patientSession.patient.recordVaccination(vaccination)
 
     response.redirect(

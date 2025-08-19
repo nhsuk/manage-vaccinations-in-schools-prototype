@@ -433,15 +433,18 @@ export const replyController = {
 
     // Add vaccination if refusal reason is already given
     if (refusalReason === ReplyRefusal.AlreadyGiven) {
-      const vaccination = new Vaccination({
-        outcome: VaccinationOutcome.AlreadyVaccinated,
-        patientSession_uuid: patientSession.uuid,
-        programme_id: patientSession.programme.id,
-        session_id: patientSession.session.id,
-        createdBy_uid: account.uid,
-        ...(data.reply?.note && { note })
-      })
-      vaccination.create(vaccination, data)
+      const vaccination = Vaccination.create(
+        {
+          outcome: VaccinationOutcome.AlreadyVaccinated,
+          patientSession_uuid: patientSession.uuid,
+          programme_id: patientSession.programme.id,
+          session_id: patientSession.session.id,
+          createdBy_uid: account.uid,
+          ...(data.reply?.note && { note })
+        },
+        data
+      )
+
       patientSession.patient.recordVaccination(vaccination)
     }
 
