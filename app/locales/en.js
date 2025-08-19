@@ -1389,6 +1389,9 @@ export const en = {
     address: {
       label: 'Address'
     },
+    location: {
+      label: 'Location'
+    },
     patients: {
       label: 'Children'
     }

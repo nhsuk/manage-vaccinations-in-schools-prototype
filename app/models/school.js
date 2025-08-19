@@ -1,9 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { SchoolPhase } from '../enums.js'
-import { AddressPresenter } from '../presenters/address.js'
 import { range } from '../utils/number.js'
-import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Patient } from './patient.js'
 
@@ -76,46 +74,6 @@ export class School {
     }
 
     return [...range(7, 11)]
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} Formatted values
-   */
-  get formatted() {
-    return {
-      address: this.address?.formatted.multiline,
-      location: Object.values(this.location)
-        .filter((string) => string)
-        .join(', '),
-      nameAndAddress: this.address
-        ? `<span>${this.name}</br><span class="nhsuk-u-secondary-text-colour">${
-            new AddressPresenter(this.address).singleline
-          }</span></span>`
-        : this.name,
-      urn: formatMonospace(this.urn)
-    }
-  }
-
-  /**
-   * Get formatted links
-   *
-   * @returns {object} Formatted links
-   */
-  get link() {
-    return {
-      name: formatLink(this.uri, this.name)
-    }
-  }
-
-  /**
-   * Get namespace
-   *
-   * @returns {string} Namespace
-   */
-  get ns() {
-    return 'school'
   }
 
   /**
