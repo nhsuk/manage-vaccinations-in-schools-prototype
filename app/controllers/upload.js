@@ -68,6 +68,7 @@ export const uploadController = {
         programme_id,
         type,
         createdBy_uid: account.uid,
+        fileName: 'example.csv',
         ...(type === UploadType.School &&
           urn && {
             school_urn: urn
