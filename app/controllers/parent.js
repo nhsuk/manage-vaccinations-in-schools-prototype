@@ -60,14 +60,14 @@ export const parentController = {
 
       response.locals.programme = session.primaryProgrammes[0]
 
-      const combinedSideEffects = new Set()
+      const sideEffects = new Set()
       for (const programme of session.primaryProgrammes) {
         for (const sideEffect of programme.vaccines[0].sideEffects) {
-          combinedSideEffects.add(sideEffect)
+          sideEffects.add(sideEffect)
         }
       }
 
-      response.locals.combinedSideEffects = formatList([...combinedSideEffects])
+      response.locals.sideEffects = formatList([...sideEffects])
     }
 
     response.render(`parent/${view}`)
