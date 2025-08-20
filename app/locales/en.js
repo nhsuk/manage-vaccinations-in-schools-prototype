@@ -823,6 +823,13 @@ export const en = {
     events: {
       title: 'Activity log'
     },
+    pds: {
+      title: 'NHS number lookup history',
+      description:
+        'The following timeline shows how this child’s NHS number was found by searching the NHS Patient Demographics Service (PDS)',
+      details:
+        'A fuzzy search finds text that matches a term closely as well as exactly. For example, a fuzzy search can identify Jon Smith even if the term entered was John Smith.\n\nA wildcard searches for unknown parts of text. For example, if you only have part of a postcode: CV1, you can use a wildcard to search all records with a postcode that includes CV1.\n\nHistory refers to the child’s history, for example if they have changed their name or address.'
+    },
     lastReminderDate: {
       label: 'Last reminder sent'
     },

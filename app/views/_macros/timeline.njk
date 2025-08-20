@@ -14,9 +14,9 @@
       </svg>
     {% endif %}
     <div class="app-timeline__content">
-      <h{{ headingLevel }} class="app-timeline__header {{ headingBold }}">{{ item.headingText }}</h{{ headingLevel }}>
+      <h{{ headingLevel }} class="app-timeline__header {{ headingBold }}">{{ item.headingText | safe }}</h{{ headingLevel }}>
       {% if item.description %}
-        <p class="app-timeline__description">{{ item.description }}</p>
+        <p class="app-timeline__description">{{ item.description | safe }}</p>
       {% endif %}
       {% if item.html %}
         {{ item.html | safe | trim }}

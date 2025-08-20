@@ -43,8 +43,12 @@
       rows: summaryRows(patient, {
         nhsn: {
           changeLabel: "the child’s NHS number",
-          href: patient.uri + "/edit/nhsn" if patient.hasMissingNhsNumber
-        },
+          href: patient.uri + "/edit/nhsn"
+        } if patient.hasMissingNhsNumber,
+        nhsn: {
+          changeText: "PDS history",
+          href: patient.uri + "/pds"
+        } if not patient.hasMissingNhsNumber,
         archiveReason: {
           other: archiveReasonOther
         },
