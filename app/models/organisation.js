@@ -1,8 +1,4 @@
-import prototypeFilters from '@x-govuk/govuk-prototype-filters'
-
 import { OrganisationDefaults } from '../enums.js'
-import { ClinicPresenter } from '../presenters/clinic.js'
-import { SchoolPresenter } from '../presenters/school.js'
 import { today } from '../utils/date.js'
 import { stringToBoolean } from '../utils/string.js'
 
@@ -44,66 +40,6 @@ export class Organisation {
     this.password = options?.password
     this.clinic_ids = options?.clinic_ids || []
     this.school_urns = options?.school_urns || []
-  }
-
-  /**
-   * Get clinics
-   *
-   * @returns {Array<ClinicPresenter>} Clinics
-   */
-  get clinics() {
-    try {
-      return this?.clinic_ids
-        .map((id) => ClinicPresenter.forOne(id, this.context))
-        .sort((a, b) => a.name.localeCompare(b.name))
-    } catch (error) {
-      console.error('Organisation.clinics', error.message)
-    }
-  }
-
-  /**
-   * Get schools
-   *
-   * @returns {Array<SchoolPresenter>} Schools
-   */
-  get schools() {
-    try {
-      return this?.school_urns
-        .map((urn) => SchoolPresenter.forOne(urn, this.context))
-        .sort((a, b) => a.name.localeCompare(b.name))
-    } catch (error) {
-      console.error('Organisation.schools', error.message)
-    }
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} Formatted values
-   */
-  get formatted() {
-    const sessionOpenWeeks = prototypeFilters.plural(
-      this.sessionOpenWeeks,
-      'week'
-    )
-    const sessionReminderWeeks = prototypeFilters.plural(
-      this.sessionReminderWeeks,
-      'week'
-    )
-
-    return {
-      sessionOpenWeeks: `Send ${sessionOpenWeeks} before first session`,
-      sessionReminderWeeks: `Send ${sessionReminderWeeks} before each session`
-    }
-  }
-
-  /**
-   * Get namespace
-   *
-   * @returns {string} Namespace
-   */
-  get ns() {
-    return 'organisation'
   }
 
   /**

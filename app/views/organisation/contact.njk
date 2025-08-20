@@ -22,7 +22,7 @@
         heading: __("organisation.contact.summary"),
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: summaryList({
-          rows: summaryRows(organisation, {
+          rows: organisation.getSummaryRows({
             email: {
               href: organisation.uri + "/edit/contact"
             },

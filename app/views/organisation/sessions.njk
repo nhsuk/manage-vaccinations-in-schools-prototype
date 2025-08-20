@@ -22,7 +22,7 @@
         heading: __("organisation.sessions.defaults"),
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: summaryList({
-          rows: summaryRows(organisation, {
+          rows: organisation.getSummaryRows({
             sessionOpenWeeks: {
               href: organisation.uri + "/edit/sessions"
             },
@@ -40,7 +40,7 @@
         heading: __("organisation.sessions.password"),
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: summaryList({
-          rows: summaryRows(organisation, {
+          rows: organisation.getSummaryRows({
             password: {
               href: organisation.uri + "/edit/password"
             }

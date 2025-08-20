@@ -1,10 +1,10 @@
 import { en } from '../locales/en.js'
 import { Clinic } from '../models/clinic.js'
-import { Organisation } from '../models/organisation.js'
 import { getTableCell } from '../utils/presenter.js'
 import { formatWithSecondaryText } from '../utils/string.js'
 
 import { AddressPresenter } from './address.js'
+import { OrganisationPresenter } from './organisation.js'
 
 /**
  * @class ClinicPresenter
@@ -64,11 +64,14 @@ export class ClinicPresenter {
   /**
    * Get organisation this clinic belongs to
    *
-   * @returns {Organisation} Organisation
+   * @returns {OrganisationPresenter} Organisation
    */
   get organisation() {
     return this.#clinic?.organisation_code
-      ? Organisation.findOne(this.#clinic.organisation_code, this.#context)
+      ? OrganisationPresenter.forOne(
+          this.#clinic.organisation_code,
+          this.#context
+        )
       : null
   }
 
