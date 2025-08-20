@@ -1,11 +1,12 @@
 import { Organisation } from '../models/organisation.js'
+import { OrganisationPresenter } from '../presenters/organisation.js'
 
 export const organisationController = {
   read(request, response, next, organisation_code) {
     const { view } = request.params
     const { __ } = response.locals
 
-    const organisation = Organisation.findOne(
+    const organisation = OrganisationPresenter.forOne(
       organisation_code,
       request.session.data
     )
