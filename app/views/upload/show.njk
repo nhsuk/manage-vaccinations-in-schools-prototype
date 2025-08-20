@@ -44,6 +44,7 @@
       rows: summaryRows(upload, {
         createdAt: {},
         createdBy: {},
+        fileName: {},
         type: {},
         school: {},
         yearGroups: {},
@@ -52,8 +53,7 @@
         duplicates: {}
       })
     }) }}
-
-    {{ link(upload.uri + "/bulk-remove-relationships", __("upload.removeRelationships.label")) | nhsukMarkdown }}
+    {{ link(upload.uri + "/bulk-remove-relationships", __("upload.removeRelationships.label")) | nhsukMarkdown if upload.status == UploadStatus.Complete }}
   {% endset %}
 
   {{ card({

@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
-import { UploadStatus } from '../enums.js'
+import { UploadStatus, UploadType } from '../enums.js'
 import { Upload } from '../models/upload.js'
 import { today } from '../utils/date.js'
 
@@ -13,8 +14,14 @@ import { today } from '../utils/date.js'
  * @param {import('../models/school.js').School} [school] - School
  * @returns {Upload} Upload
  */
-export function generateUpload(patient_uuids, user, type, school) {
+export function generateUpload(
+  patient_uuids,
+  user,
+  type = UploadType.Cohort,
+  school
+) {
   const createdAt = faker.date.recent({ days: 14, refDate: today() })
+  const fileName = `${prototypeFilters.slugify(type)}-${faker.number.int(5)}.csv`
 
   let validations
   let status = UploadStatus.Complete
@@ -38,6 +45,7 @@ export function generateUpload(patient_uuids, user, type, school) {
   return new Upload({
     createdAt,
     createdBy_uid: user.uid,
+    fileName,
     status,
     type,
     validations,

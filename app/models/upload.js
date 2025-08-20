@@ -3,7 +3,11 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { UploadStatus, UploadType } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
-import { formatWithSecondaryText, formatYearGroup } from '../utils/string.js'
+import {
+  formatLink,
+  formatWithSecondaryText,
+  formatYearGroup
+} from '../utils/string.js'
 
 import { Patient } from './patient.js'
 import { School } from './school.js'
@@ -20,6 +24,7 @@ import { User } from './user.js'
  * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created upload
  * @property {Date} [updatedAt] - Updated date
+ * @property {string} [fileName] - Original file name
  * @property {Array<string>} [patient_uuids] - Patient record UUIDs
  * @property {number} [devoid] - Exact duplicate records found
  */
@@ -32,6 +37,7 @@ export class Upload {
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
+    this.fileName = options?.fileName
     this.validations = options?.validations || []
     this.patient_uuids = options?.patient_uuids || []
 
@@ -174,6 +180,20 @@ export class Upload {
         this.type === UploadType.School
           ? formatWithSecondaryText(this.type, this.schoolName)
           : this.type
+    }
+  }
+
+  /**
+   * Get formatted links
+   *
+   * @returns {object} Formatted links
+   */
+  get link() {
+    return {
+      summary: formatWithSecondaryText(
+        formatLink(this.uri, this.formatted.createdAt),
+        this.fileName
+      )
     }
   }
 

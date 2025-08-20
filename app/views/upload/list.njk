@@ -17,7 +17,7 @@
       {% set uploadRows = uploadRows | push([
         {
           header: __("upload.createdAt.label"),
-          html: link(upload.uri, upload.formatted.createdAt)
+          html: upload.link.summary
         },
         {
           header: __("upload.type.label"),
