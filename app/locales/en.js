@@ -822,6 +822,11 @@ export const en = {
     events: {
       title: 'Activity log'
     },
+    pds: {
+      title: 'NHS number lookup history',
+      description:
+        'Use the following timeline to understand how this child’s NHS number was found.'
+    },
     lastReminderDate: {
       label: 'Last reminder sent'
     },
