@@ -1327,17 +1327,14 @@ export const en = {
       label: 'Archived record',
       title: 'Do you want to restore this previously archived record?',
       hint: 'This record was previously archived. %s.',
-      description: 'Record was previously archived',
+      description: 'Uploaded %s record was previously archived',
       confirm: 'Resolve archived record',
       success: 'Previously archived record restored'
     },
     duplicate: {
-      label: 'Duplicate record',
-      title: 'Review duplicate child record',
-      description:
-        'A field in a duplicate record does not match an existing child record',
-      record: 'Duplicate child record',
-      vaccination: 'Duplicate vaccination record',
+      label: 'Uploaded record',
+      title: 'Uploaded %s record duplicates an existing record',
+      description: 'Uploaded %s record duplicates an existing record',
       confirm: 'Resolve duplicate record',
       success: 'Record updated with values from duplicate record'
     },
@@ -1349,12 +1346,12 @@ export const en = {
     decision: {
       label: 'Which record do you want to keep?',
       duplicate: {
-        label: 'Use duplicate record',
-        hint: 'The duplicate record will replace the existing child record.'
+        label: 'Use uploaded %s record',
+        hint: 'The uploaded record will replace the existing record'
       },
       original: {
-        label: 'Keep previously imported record',
-        hint: 'The existing record will be kept and the duplicate record will be discarded.'
+        label: 'Keep existing %s record',
+        hint: 'The existing record will be kept and the uploaded record will be discarded'
       },
       restore: {
         label: 'Yes, restore this record'
