@@ -1,6 +1,7 @@
 import { Notice } from '../models/notice.js'
 import { Patient } from '../models/patient.js'
 import { Upload } from '../models/upload.js'
+import { getDateValueDifference } from '../utils/date.js'
 
 export const reviewController = {
   read(request, response, next, upload_id) {
@@ -14,6 +15,8 @@ export const reviewController = {
     response.locals.back = referrer || upload.uri
 
     response.locals.patient = new Patient(patient, data)
+
+    response.locals.upload = upload
 
     response.locals.duplicatePatient = new Patient(
       {
@@ -30,19 +33,14 @@ export const reviewController = {
     const { data } = request.session
     const uploads = Upload.findAll(data)
 
+    response.locals.reviews = uploads
+      .filter((upload) => upload.duplicates?.length > 0)
+      .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
+
     // Required to show number of notices in upload section navigation
     response.locals.notices = Notice.findAll(data).filter(
       ({ archivedAt }) => !archivedAt
     )
-
-    response.locals.reviews = uploads.flatMap((upload) => upload.duplicates)
-
-    response.locals.pendingReviews = {}
-    for (const upload of uploads) {
-      if (upload.duplicates?.length > 0) {
-        response.locals.pendingReviews[upload.id] = upload.duplicates
-      }
-    }
 
     next()
   },

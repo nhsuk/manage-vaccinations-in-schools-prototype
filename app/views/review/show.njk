@@ -1,7 +1,8 @@
 {% extends "_layouts/form.njk" %}
 
 {% set gridColumns = "full" %}
-{% set title = __("review.duplicate.title") %}
+{% set type = "vaccination" if upload.type == UploadType.Report else "child" %}
+{% set title = __("review.duplicate.title", type) %}
 {% set confirmButtonText = __("review.duplicate.confirm") %}
 
 {% block form %}
@@ -13,21 +14,7 @@
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
       {% set descriptionHtml %}
-        {{ summaryList({
-          rows: summaryRows(duplicatePatient, {
-            nhsn: {},
-            fullName: {},
-            dob: {
-              value: duplicatePatient.formatted.dob | highlightDifference(patient.formatted.dob)
-            },
-            gender: {},
-            postalCode: {},
-            school: {}
-          })
-        }) }}
-
-        {% if duplicatePatient.vaccinations[0] %}
-          <h3 class="nhsuk-heading-s">{{ __("review.duplicate.vaccination") }}</h3>
+        {% if upload.type == UploadType.Report %}
           {{ summaryList({
             rows: summaryRows(duplicatePatient.vaccinations[0], {
               outcome: {},
@@ -46,6 +33,19 @@
               protocol: {}
             })
           }) }}
+        {% else %}
+          {{ summaryList({
+            rows: summaryRows(duplicatePatient, {
+              nhsn: {},
+              fullName: {},
+              dob: {
+                value: duplicatePatient.formatted.dob | highlightDifference(patient.formatted.dob)
+              },
+              gender: {},
+              postalCode: {},
+              school: {}
+            })
+          }) }}
         {% endif %}
       {% endset %}
 
@@ -58,19 +58,7 @@
     </div>
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
       {% set descriptionHtml %}
-        {{ summaryList({
-          rows: summaryRows(patient, {
-            nhsn: {},
-            fullName: {},
-            dob: {},
-            gender: {},
-            postalCode: {},
-            school: {}
-          })
-        }) }}
-
-        {% if patient.vaccinations[0] %}
-          <h3 class="nhsuk-heading-s">{{ __("review.original.vaccination") }}</h3>
+        {% if upload.type == UploadType.Report %}
           {{ summaryList({
             rows: summaryRows(patient.vaccinations[0], {
               outcome: {},
@@ -85,6 +73,17 @@
               createdBy: {},
               updatedAt: {},
               protocol: {}
+            })
+          }) }}
+        {% else %}
+          {{ summaryList({
+            rows: summaryRows(patient, {
+              nhsn: {},
+              fullName: {},
+              dob: {},
+              gender: {},
+              postalCode: {},
+              school: {}
             })
           }) }}
         {% endif %}
@@ -110,11 +109,11 @@
       }
     },
     items: [{
-      text: __("review.decision.duplicate.label"),
+      text: __("review.decision.duplicate.label", type),
       hint: { text: __("review.decision.duplicate.hint") },
       value: "duplicate"
     }, {
-      text: __("review.decision.original.label"),
+      text: __("review.decision.original.label", type),
       hint: { text: __("review.decision.original.hint") },
       value: "original"
     }],

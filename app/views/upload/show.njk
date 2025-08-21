@@ -64,6 +64,7 @@
 
   {% set reviewRows = [] %}
   {% for patient in upload.duplicates %}
+    {% set type = "vaccination" if upload.type == UploadType.Report else "child" %}
     {% set reviewRows = reviewRows | push([
       {
         header: __("patient.fullName.label"),
@@ -71,7 +72,7 @@
       },
       {
         header: __("review.label"),
-        html: __("review.duplicate.description")
+        html: __("review.duplicate.description", type)
       },
       {
         header: __("actions.label"),
@@ -92,7 +93,7 @@
       },
       {
         header: __("review.label"),
-        text: __("review.archived.description")
+        text: __("review.archived.description", type)
       },
       {
         header: __("actions.label"),
@@ -113,9 +114,23 @@
     headingLevel: 2,
     responsive: true,
     head: [
-      { text: __("patient.label") },
-      { text: __("review.label") },
-      { text: __("actions.label") }
+      {
+        text: __("patient.label"),
+        attributes: {
+          width: "30%"
+        }
+      },
+      {
+        text: __("review.label"),
+        attributes: {
+          width: "60%"
+        } },
+      {
+        text: __("actions.label"),
+        attributes: {
+          width: "10%"
+        }
+      }
     ],
     rows: reviewRows
   }) if reviewRows.length }}
@@ -125,7 +140,10 @@
     {% set patientRows = patientRows | push([
       {
         header: __("patient.fullName.label"),
-        html: patient.vaccination.link.fullNameAndNhsn if upload.type == UploadType.Report else patient.formatted.fullNameAndNhsn
+        html: patient.vaccination.link.fullNameAndNhsn if upload.type == UploadType.Report else patient.formatted.fullNameAndNhsn,
+        attributes: {
+          width: "30%"
+        }
       },
       {
         header: __("patient.dob.label"),
