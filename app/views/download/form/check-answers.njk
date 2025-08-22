@@ -13,7 +13,7 @@
     heading: __("download.new.check-answers.summary"),
     headingClasses: "nhsuk-heading-m",
     descriptionHtml: summaryList({
-      rows: summaryRows(download, {
+      rows: download.getSummaryRows({
         startAt: {
           href: "dates"
         },
@@ -26,7 +26,7 @@
         format: {
           href: "format"
         },
-        vaccinations: {}
+        records: {}
       })
     })
   }) }}

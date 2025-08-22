@@ -4,6 +4,7 @@ import { UserRole } from '../enums.js'
 import { Download } from '../models/download.js'
 import { Organisation } from '../models/organisation.js'
 import { Programme } from '../models/programme.js'
+import { DownloadPresenter } from '../presenters/download.js'
 
 export const downloadController = {
   readForm(request, response, next, download_id) {
@@ -23,12 +24,12 @@ export const downloadController = {
     }
 
     // Setup wizard if not already setup
-    let download = Download.findOne(download_id, data.wizard)
+    let download = Download.findOne(download_id, data, data.wizard)
     if (!download) {
       download = Download.create(response.locals.download, data.wizard)
     }
 
-    response.locals.download = new Download(download, data)
+    response.locals.download = DownloadPresenter.forOne(download_id, data)
 
     response.locals.paths = wizard(journey, request)
 

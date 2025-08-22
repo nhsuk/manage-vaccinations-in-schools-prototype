@@ -551,7 +551,7 @@ export const en = {
       title: 'Select providers',
       label: 'Providers'
     },
-    vaccinations: {
+    records: {
       label: 'Records'
     }
   },
