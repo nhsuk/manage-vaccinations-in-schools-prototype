@@ -41,8 +41,8 @@
 }
 
 .app-autocomplete__menu {
-  background-color: $nhsuk-form-element-background-colour;
-  border: $nhsuk-border-width-form-element solid $nhsuk-form-border-colour;
+  background-color: $nhsuk-input-background-colour;
+  border: $nhsuk-border-width-form-element solid $nhsuk-input-border-colour;
   border-top: 0;
   color: $nhsuk-text-colour;
   margin: 0;
@@ -91,7 +91,7 @@
 }
 
 .app-autocomplete__option--no-results {
-  background-color: $nhsuk-form-element-background-colour;
+  background-color: $nhsuk-input-background-colour;
   color: $nhsuk-secondary-text-colour;
   cursor: not-allowed;
 }
