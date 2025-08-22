@@ -30,12 +30,10 @@
 
       {% for auditEvent in auditEvents %}
         {{ card({
+          id: auditEvent.uuid,
           heading: auditEvent.name,
           headingLevel: 4,
-          descriptionHtml: appEvent({ auditEvent: auditEvent }),
-          attributes: {
-            id: auditEvent.uuid
-          }
+          descriptionHtml: appEvent({ auditEvent: auditEvent })
         }) }}
       {% endfor %}
     {% endfor %}

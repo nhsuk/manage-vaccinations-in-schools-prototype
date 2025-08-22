@@ -27,10 +27,7 @@
       {% set patientRows = patientRows | push([
         {
           header: __("patient.fullName.label"),
-          text: patient.fullName,
-          attributes: {
-            "data-col": "name"
-          }
+          text: patient.fullName
         },
         {
           header: __("patient.dob.label"),

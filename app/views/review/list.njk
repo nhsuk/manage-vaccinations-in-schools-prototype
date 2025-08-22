@@ -75,12 +75,10 @@
       {% endset %}
 
       {{ card({
+        id: upload.id,
         heading: upload.formatted.createdAt,
         feature: true,
-        descriptionHtml: cardDescriptionHtml,
-        attributes: {
-          id: upload.id
-        }
+        descriptionHtml: cardDescriptionHtml
       }) }}
     {% endfor %}
   {% else %}
