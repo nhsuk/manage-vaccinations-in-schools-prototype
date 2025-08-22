@@ -4,6 +4,7 @@ import { UserRole } from '../enums.js'
 import { Download } from '../models/download.js'
 import { Organisation } from '../models/organisation.js'
 import { Programme } from '../models/programme.js'
+import { DownloadPresenter } from '../presenters/download.js'
 
 export const downloadController = {
   readForm(request, response, next, download_id) {
@@ -28,7 +29,7 @@ export const downloadController = {
       download = Download.create(response.locals.download, data.wizard)
     }
 
-    response.locals.download = new Download(download, data)
+    response.locals.download = new DownloadPresenter(download, data)
 
     response.locals.paths = wizard(journey, request)
 
