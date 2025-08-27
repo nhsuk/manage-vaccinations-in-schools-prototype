@@ -67,30 +67,34 @@ export class Reply {
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.child = options?.child && new Child(options.child)
     this.parent = options?.parent && new Parent(options.parent)
-    this.decision = options?.decision
-    this.alternative =
-      options?.alternative && stringToBoolean(options?.alternative)
-    this.confirmed = stringToBoolean(options?.confirmed)
-    this.consultation = stringToBoolean(options?.consultation)
-    this.declined = this.decision === ReplyDecision.Declined
-    this.given = [
-      ReplyDecision.Given,
-      ReplyDecision.OnlyFluInjection,
-      ReplyDecision.OnlyMenACWY,
-      ReplyDecision.OnlyTdIPV
-    ].includes(this.decision)
-    this.healthAnswers = this.given && options?.healthAnswers
-    this.triageNote = this.given && options?.triageNote
-    this.invalid =
-      this?.decision === ReplyDecision.NoResponse
-        ? false // Don’t show non response as invalid
-        : stringToBoolean(options?.invalid) || false
     this.method = options?.method
     this.selfConsent = options?.selfConsent
     this.note = options?.note || ''
     this.patient_uuid = options?.patient_uuid
     this.programme_id = options?.programme_id
     this.session_id = options?.session_id
+
+    // Some values only valid if the consent request was received
+    if (this.delivered) {
+      this.decision = options?.decision
+      this.alternative =
+        options?.alternative && stringToBoolean(options?.alternative)
+      this.confirmed = stringToBoolean(options?.confirmed)
+      this.consultation = stringToBoolean(options?.consultation)
+      this.declined = this.decision === ReplyDecision.Declined
+      this.given = [
+        ReplyDecision.Given,
+        ReplyDecision.OnlyFluInjection,
+        ReplyDecision.OnlyMenACWY,
+        ReplyDecision.OnlyTdIPV
+      ].includes(this.decision)
+      this.healthAnswers = this.given && options?.healthAnswers
+      this.triageNote = this.given && options?.triageNote
+      this.invalid =
+        this?.decision === ReplyDecision.NoResponse
+          ? false // Don’t show non response as invalid
+          : stringToBoolean(options?.invalid) || false
+    }
 
     if (
       [
@@ -343,7 +347,12 @@ export class Reply {
    */
   get formatted() {
     let decisionStatus = formatTag(this.status)
-    if (this.invalid) {
+    if (!this.delivered) {
+      decisionStatus = formatTag({
+        text: 'Request failed',
+        colour: 'dark-orange'
+      })
+    } else if (this.invalid) {
       decisionStatus = formatWithSecondaryText(
         formatTag(this.status),
         'Invalid',
