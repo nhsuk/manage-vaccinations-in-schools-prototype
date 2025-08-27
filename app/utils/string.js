@@ -311,13 +311,13 @@ export function formatNhsNumber(string, invalid) {
 }
 
 /**
- * Format parent with optional display of telephone number
+ * Format parent with optional display of contact details
  *
  * @param {import('../models/parent.js').Parent} parent - Parent
- * @param {boolean} [includeTelephone] - Include telephone number
+ * @param {boolean} [includeContactDetails] - Include contact details
  * @returns {string|undefined} Formatted parent HTML
  */
-export function formatParent(parent, includeTelephone = true) {
+export function formatParent(parent, includeContactDetails = true) {
   if (!parent) return
 
   let string = parent.fullName || 'Parent or guardian'
@@ -328,8 +328,13 @@ export function formatParent(parent, includeTelephone = true) {
   }
 
   // Add telephone number, if provided
-  if (includeTelephone && parent.tel) {
+  if (includeContactDetails && parent.tel) {
     string += `<br><span class="nhsuk-u-secondary-text-colour">${parent.tel}</span>`
+  }
+
+  // Add email address, if provided
+  if (includeContactDetails && parent.email) {
+    string += `<br>${parent.email}`
   }
 
   return string

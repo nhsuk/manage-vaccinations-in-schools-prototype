@@ -16,8 +16,6 @@ import {
   getTriageNote
 } from '../utils/reply.js'
 
-import { generateParent } from './parent.js'
-
 /**
  * Generate fake consent
  *
@@ -44,8 +42,16 @@ export function generateConsent(
     parent = patientSession.patient.parent1
   } else if (index === 1 && patientSession.patient?.parent2) {
     parent = patientSession.patient.parent2
-  } else {
-    parent = generateParent(patientSession.patient.lastName)
+  }
+
+  // Can’t create a consent response if no parent associated with child
+  if (!parent) {
+    return
+  }
+
+  // Can’t create a consent response if no contact details for parent
+  if (!parent.email && !parent.tel) {
+    return
   }
 
   // Decision

@@ -74,11 +74,14 @@ export function generateParent(childLastName, isMum) {
     ...(relationship === ParentalRelationship.Other && {
       relationshipOther: 'Foster parent'
     }),
-    ...(email && { email, emailStatus }),
+    ...(email && {
+      email,
+      ...(emailStatus && { emailStatus })
+    }),
     ...(tel && {
       tel,
       sms,
-      ...(sms && { smsStatus }),
+      ...(smsStatus && { smsStatus }),
       contactPreference,
       ...(contactPreference && {
         contactPreferenceDetails:

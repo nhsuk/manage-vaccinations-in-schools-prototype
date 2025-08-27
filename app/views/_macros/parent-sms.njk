@@ -1,9 +1,10 @@
 {%- from "_macros/status.njk" import appStatus -%}
-{% macro appParentSms(parent, showStatus) -%}
+{% macro appParentSms(parent, hideStatus) -%}
   <p class="nhsuk-body nhsuk-u-margin-0">{{ parent.tel }}</p>
   {{ appStatus({
     classes: "app-status--small nhsuk-u-margin-top-1",
     text: parent.smsStatus,
-    colour: "red"
-  }) if showStatus and parent.smsStatus and parent.smsStatus != "Delivered" }}
+    icon: "warning",
+    colour: "dark-orange"
+  }) if not hideStatus and parent.smsStatus != NotifySmsStatus.Delivered }}
 {% endmacro %}

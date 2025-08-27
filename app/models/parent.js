@@ -14,7 +14,7 @@ import { formatOther, formatParent, stringToBoolean } from '../utils/string.js'
  * @property {string} tel - Phone number
  * @property {string} email - Email address
  * @property {import('../enums.js').NotifyEmailStatus} emailStatus - Email status
- * @property {boolean} sms - Update via SMS
+ * @property {boolean} sms - Get updates via SMS
  * @property {import('../enums.js').NotifySmsStatus} smsStatus - SMS status
  * @property {boolean} [contactPreference] - Preferred contact method
  * @property {string} [contactPreferenceDetails] - Contact method details
@@ -34,11 +34,11 @@ export class Parent {
         ? stringToBoolean(options.hasParentalResponsibility)
         : undefined
     this.notify = stringToBoolean(options?.notify)
-    this.tel = options.tel || ''
-    this.email = options.email
+    this.tel = options?.tel
+    this.email = options?.email
     this.emailStatus = this?.email && options?.emailStatus
     this.sms = stringToBoolean(options.sms) || false
-    this.smsStatus = this?.sms && options?.smsStatus
+    this.smsStatus = this?.tel && options?.smsStatus
     this.contactPreference =
       stringToBoolean(options?.contactPreference) || false
 

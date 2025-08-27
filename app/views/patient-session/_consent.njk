@@ -1,3 +1,5 @@
+{% from "../_macros/parent-email.njk" import appParentEmail with context %}
+{% from "../_macros/parent-sms.njk" import appParentSms with context %}
 {% set isVaccinated = patientSession.report == PatientStatus.Vaccinated %}
 
 {{ appHeading({
@@ -8,15 +10,17 @@
 
 {% call card({
   feature: true,
-  heading: programme.name + ": " + (patientSession.status.consent.text | lower),
-  headingClasses: "app-card__heading--" + patientSession.status.consent.colour,
+  heading: programme.name + ": " + (patientSession.status.patientConsent.text),
+  headingClasses: "app-card__heading--" + patientSession.status.patientConsent.colour,
   headingLevel: 4
 }) %}
   {# Description #}
   {% if not isVaccinated %}
-    {% if session.consentWindow == ConsentWindow.Opening %}
-      {{ session.formatted.consentWindow | nhsukMarkdown }}
-    {% elif session.consentWindow != ConsentWindow.Open %}
+    {% if patientSession.patient.hasNoContactDetails %}
+      {{ __("patientSession.hasNoContactDetails.description") | nhsukMarkdown }}
+    {% elif session.consentWindow == ConsentWindow.Opening %}
+      {{ session.formatted.consentWindowSentence | nhsukMarkdown }}
+    {% else %}
       {{ patientSession.consentNotes | nhsukMarkdown }}
     {% endif %}
 
@@ -38,8 +42,8 @@
       classes: "nhsuk-button--secondary",
       text: __("patientSession.invite.label"),
       attributes: {
-        formmethod: patientSession.uri + "/new/invite",
-        formaction: "post"
+        formaction: patientSession.uri + "/new/invite",
+        formmethod: "post"
       }
     } if options.canInvite, {
       classes: "nhsuk-button--secondary",
@@ -67,30 +71,66 @@
     }) }}
   {% endif %}
 
-  {# Decision cards #}
-  {% if patientSession.responses | length %}
+  {% if patientSession.replies | length %}
+    {# Requests with responses or requests that couldn’t be delivered #}
     {{ appHeading({
       level: 4,
       size: "s",
-      title: __("patientSession.responses.label")
+      title: __("patientSession.replies.responses") if patientSession.responses.length > 0 else __("patientSession.replies.requests")
     }) }}
-    {% for consent in patientSession.responses %}
+
+    {% for reply in patientSession.replies %}
       {{ card({
         classes: "app-card--compact app-card--offset",
-        heading: consent.formatted.fullNameAndRelationship,
+        heading: reply.formatted.fullNameAndRelationship,
         headingLevel: 4,
-        href: consent.uri,
-        clickable: true,
+        href: reply.uri if reply.delivered,
+        clickable: true if reply.delivered,
         descriptionHtml: summaryList({
-          rows: summaryRows(consent, {
-            tel: {},
-            email: {},
+          rows: summaryRows(reply, {
+            tel: {
+              value: appParentSms(reply.parent, reply.given)
+            } if reply.parent.tel,
+            email: {
+              value: appParentEmail(reply.parent, reply.given)
+            } if reply.parent.email,
             createdAt: {},
             decisionStatus: {},
             vaccineCriteria: {}
           })
         })
       }) }}
+    {% endfor %}
+  {% elif not patientSession.patient.hasNoContactDetails %}
+    {# Requests that have been sent but with no response yet #}
+    {# We don’t create replies so use parent details instead #}
+
+    {{ appHeading({
+      level: 4,
+      size: "s",
+      title: __("patientSession.replies.pending")
+    }) }}
+
+    {% for parent in patientSession.patient.parents %}
+      {{ card({
+        classes: "app-card--compact app-card--offset",
+        heading: parent.formatted.fullNameAndRelationship,
+        headingLevel: 4,
+        descriptionHtml: summaryList({
+          rows: summaryRows(parent, {
+            tel: {},
+            email: {},
+            createdAt: {},
+            decisionStatus: {
+              label: __("reply.decisionStatus.label"),
+              value: tag({
+                classes: "nhsuk-tag--grey",
+                text: PatientConsentStatus.Scheduled if session.consentWindow == ConsentWindow.Opening else PatientConsentStatus.NoResponse
+              })
+            }
+          })
+        })
+      }) if parent.email or parent.tel }}
     {% endfor %}
   {% endif %}
 
