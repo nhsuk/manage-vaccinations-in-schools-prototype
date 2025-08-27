@@ -651,16 +651,20 @@ export class Session {
    */
   get formatted() {
     let consentWindow
+    let consentWindowSentence
     const consentDateStyle = { day: 'numeric', month: 'long' }
     switch (this.consentWindow) {
       case ConsentWindow.Opening:
         consentWindow = `Opens ${formatDate(this.openAt, consentDateStyle)}`
+        consentWindowSentence = `Consent window opens on ${formatDate(this.openAt, consentDateStyle)}`
         break
       case ConsentWindow.Closed:
         consentWindow = `Closed ${formatDate(this.closeAt, consentDateStyle)}`
+        consentWindowSentence = `Consent window closed on ${formatDate(this.closeAt, consentDateStyle)}`
         break
       case ConsentWindow.Open:
         consentWindow = `Open from ${formatDate(this.openAt, consentDateStyle)} until ${formatDate(this.closeAt, consentDateStyle)}`
+        consentWindowSentence = `Consent window is open from ${formatDate(this.openAt, consentDateStyle)} until ${formatDate(this.closeAt, consentDateStyle)}`
         break
       default:
         consentWindow = ''
@@ -715,6 +719,7 @@ export class Session {
           }
         ),
       consentWindow,
+      consentWindowSentence,
       location: Object.values(this.location)
         .filter((string) => string)
         .join(', '),

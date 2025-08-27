@@ -34,6 +34,7 @@ import {
 import {
   getConsentOutcomeStatus,
   getInstructionOutcomeStatus,
+  getPatientConsentStatus,
   getPatientStatus,
   getRegistrationStatus,
   getScreenOutcomeStatus,
@@ -488,14 +489,14 @@ export class PatientSession {
    * @returns {PatientConsentStatus} Patient consent status
    */
   get patientConsent() {
+    if (this.patient.hasNoContactDetails) {
+      return PatientConsentStatus.NoDetails
+    }
+
     if (this.session.consentWindow === ConsentWindow.None) {
       return PatientConsentStatus.NotScheduled
     } else if (this.session.consentWindow === ConsentWindow.Opening) {
       return PatientConsentStatus.Scheduled
-    }
-
-    if (this.patient.hasNoContactDetails) {
-      return PatientConsentStatus.NoDetails
     }
 
     switch (this.consent) {
@@ -736,6 +737,7 @@ export class PatientSession {
   get status() {
     return {
       consent: getConsentOutcomeStatus(this.consent),
+      patientConsent: getPatientConsentStatus(this.patientConsent),
       screen: getScreenOutcomeStatus(this.screen),
       instruct: getInstructionOutcomeStatus(this.instruct),
       register: getRegistrationStatus(this.register),
@@ -763,6 +765,7 @@ export class PatientSession {
     return {
       programme: this.programme.nameTag,
       consent: formatTag(this.status.consent),
+      patientConsent: formatTag(this.status.patientConsent),
       screen: this.screen && formatTag(this.status.screen),
       instruct: this.session.psdProtocol && formatTag(this.status.instruct),
       register: formatTag(this.status.register),

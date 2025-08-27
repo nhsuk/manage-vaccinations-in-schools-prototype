@@ -3,6 +3,7 @@ import _ from 'lodash'
 
 import vaccines from '../datasets/vaccines.js'
 import {
+  ConsentOutcome,
   ConsentVaccineCriteria,
   NotifyEmailStatus,
   NotifySmsStatus,
@@ -13,7 +14,10 @@ import {
   VaccineCriteria
 } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
-import { getReplyDecisionStatus } from '../utils/status.js'
+import {
+  getConsentOutcomeStatus,
+  getReplyDecisionStatus
+} from '../utils/status.js'
 import {
   formatMarkdown,
   formatOther,
@@ -69,30 +73,34 @@ export class Reply {
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.child = options?.child && new Child(options.child)
     this.parent = options?.parent && new Parent(options.parent)
-    this.decision = options?.decision
-    this.alternative =
-      options?.alternative && stringToBoolean(options?.alternative)
-    this.confirmed = stringToBoolean(options?.confirmed)
-    this.consultation = stringToBoolean(options?.consultation)
-    this.declined = this.decision === ReplyDecision.Declined
-    this.given = [
-      ReplyDecision.Given,
-      ReplyDecision.OnlyAlternativeInjection,
-      ReplyDecision.OnlyMenACWY,
-      ReplyDecision.OnlyTdIPV
-    ].includes(this.decision)
-    this.healthAnswers = this.given && options?.healthAnswers
-    this.triageNote = this.given && options?.triageNote
-    this.invalid =
-      this?.decision === ReplyDecision.NoResponse
-        ? false // Don’t show non response as invalid
-        : stringToBoolean(options?.invalid) || false
     this.method = options?.method
     this.selfConsent = options?.selfConsent
     this.note = options?.note || ''
     this.patient_uuid = options?.patient_uuid
     this.programme_id = options?.programme_id
     this.session_id = options?.session_id
+
+    // Some values only valid if the consent request was received
+    if (this.delivered) {
+      this.decision = options?.decision
+      this.alternative =
+        options?.alternative && stringToBoolean(options?.alternative)
+      this.confirmed = stringToBoolean(options?.confirmed)
+      this.consultation = stringToBoolean(options?.consultation)
+      this.declined = this.decision === ReplyDecision.Declined
+      this.given = [
+        ReplyDecision.Given,
+        ReplyDecision.OnlyAlternativeInjection,
+        ReplyDecision.OnlyMenACWY,
+        ReplyDecision.OnlyTdIPV
+      ].includes(this.decision)
+      this.healthAnswers = this.given && options?.healthAnswers
+      this.triageNote = this.given && options?.triageNote
+      this.invalid =
+        this?.decision === ReplyDecision.NoResponse
+          ? false // Don’t show non response as invalid
+          : stringToBoolean(options?.invalid) || false
+    }
 
     if (
       [
@@ -144,11 +152,10 @@ export class Reply {
     const hasEmailGotEmail =
       this.parent?.email &&
       this.parent?.emailStatus === NotifyEmailStatus.Delivered
-    const wantsSmsGotSms =
-      this.parent?.sms === true &&
-      this.parent?.smsStatus === NotifySmsStatus.Delivered
+    const hasTelSmsGotSms =
+      this.parent?.tel && this.parent?.smsStatus === NotifySmsStatus.Delivered
 
-    return hasEmailGotEmail || wantsSmsGotSms
+    return hasEmailGotEmail || hasTelSmsGotSms
   }
 
   /**
@@ -340,7 +347,11 @@ export class Reply {
    */
   get formatted() {
     let decisionStatus = formatTag(getReplyDecisionStatus(this.decision))
-    if (this.invalid) {
+    if (!this.delivered) {
+      decisionStatus = formatTag(
+        getConsentOutcomeStatus(ConsentOutcome.NotDelivered)
+      )
+    } else if (this.invalid) {
       decisionStatus = formatWithSecondaryText(
         formatTag({
           colour: 'grey',

@@ -8,7 +8,7 @@
 
 {% call card({
   feature: true,
-  heading: programme.name + ": " + (patientSession.status.screen.text | lower),
+  heading: programme.name + ": " + (patientSession.status.screen.text),
   headingClasses: "app-card__heading--" + patientSession.status.screen.colour,
   headingLevel: 4
 }) %}

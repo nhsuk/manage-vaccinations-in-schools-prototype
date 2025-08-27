@@ -86,6 +86,7 @@ export const patientSessionController = {
       canInvite: consent === ConsentOutcome.NotDelivered,
       // Send a reminder to give consent
       canRemind:
+        !patient.hasNoContactDetails &&
         session.consentWindow === ConsentWindow.Open &&
         !session.isActive &&
         consent === ConsentOutcome.NoResponse,

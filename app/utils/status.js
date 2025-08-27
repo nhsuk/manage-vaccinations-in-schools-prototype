@@ -2,6 +2,7 @@ import {
   ConsentOutcome,
   GillickCompetent,
   InstructionOutcome,
+  PatientConsentStatus,
   PatientStatus,
   RegistrationOutcome,
   ReplyDecision,
@@ -54,6 +55,42 @@ export function getConsentOutcomeStatus(consent) {
     colour,
     icon,
     text: consent
+  }
+}
+
+/**
+ * Get consent outcome status properties
+ *
+ * @param {PatientConsentStatus} patientConsent - Patient consent status
+ * @returns {object} Status properties
+ */
+export function getPatientConsentStatus(patientConsent) {
+  let colour
+  let text = patientConsent
+  switch (patientConsent) {
+    case PatientConsentStatus.NoResponse:
+    case PatientConsentStatus.NotScheduled:
+    case PatientConsentStatus.Scheduled:
+      colour = 'grey'
+      break
+    case PatientConsentStatus.NoDetails:
+    case PatientConsentStatus.NotDelivered:
+      colour = 'dark-orange'
+      break
+    case PatientConsentStatus.FollowUp:
+      colour = 'warm-yellow'
+      break
+    case ConsentOutcome.Refused:
+      colour = 'red'
+      break
+    default:
+      text = ConsentOutcome.Given
+      colour = 'green'
+  }
+
+  return {
+    colour,
+    text
   }
 }
 

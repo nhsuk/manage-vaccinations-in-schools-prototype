@@ -1,12 +1,10 @@
 {%- from "_macros/status.njk" import appStatus -%}
-{% macro appParentEmail(parent, showStatus) -%}
-  <p class="nhsuk-body nhsuk-u-margin-0">
-    <a href="mailto:{{ parent.email }}">{{ parent.email }}</a>
-  </p>
+{% macro appParentEmail(parent, hideStatus) -%}
+  <p class="nhsuk-body nhsuk-u-margin-0">{{ parent.email }}</p>
   {{ appStatus({
     classes: "app-status--small nhsuk-u-margin-top-1",
     text: parent.emailStatus,
     icon: "warning",
-    colour: "red"
-  }) if showStatus and parent.emailStatus and parent.emailStatus != "Delivered" }}
+    colour: "dark-orange"
+  }) if not hideStatus and parent.emailStatus != NotifyEmailStatus.Delivered }}
 {% endmacro %}

@@ -6,7 +6,7 @@
 
 {% call card({
   feature: true,
-  heading: programme.name + ": " + (patientSession.status.report.text | lower),
+  heading: programme.name + ": " + (patientSession.status.report.text),
   headingClasses: "app-card__heading--" + patientSession.status.report.colour,
   headingLevel: 4
 }) %}
