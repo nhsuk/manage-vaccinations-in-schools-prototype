@@ -79,10 +79,13 @@
     decorate: "patientSession.preScreen.note"
   }) }}
 
-  {{ appAutocomplete({
+  {{ select({
     label: { text: __("patientSession.preScreen.suppliedBy.title") },
     items: userItems(data.users, patientSession.preScreen.suppliedBy),
-    decorate: "patientSession.preScreen.suppliedBy_uid"
+    decorate: "patientSession.preScreen.suppliedBy_uid",
+    attributes: {
+      "data-module": "app-autocomplete"
+    }
   }) if options.hasSupplier }}
 
   <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">

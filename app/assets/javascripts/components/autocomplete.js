@@ -1,21 +1,42 @@
 import accessibleAutocomplete from 'accessible-autocomplete'
+import { Component } from 'nhsuk-frontend'
 
-export const AutocompleteComponent = class extends HTMLElement {
-  connectedCallback() {
-    this.$selectElement = this.querySelector('select')
-    this.name = this.$selectElement.name
-    this.options = Array.from(this.$selectElement.options)
-    this.value = this.$selectElement.value
+/**
+ * Autocomplete component
+ *
+ * @augments Component<HTMLSelectElement>
+ */
+export class Autocomplete extends Component {
+  static elementType = HTMLSelectElement
 
-    this.enhanceSelectElement()
+  /**
+   * @param {Element | null} $root - HTML element to use for component
+   */
+  constructor($root) {
+    super($root)
+
+    if ($root instanceof HTMLSelectElement) {
+      this.name = this.$root.name
+      this.options = Array.from(this.$root.options)
+      this.value = this.$root.value
+
+      this.enhanceSelectElement(this.$root)
+    }
   }
 
   /**
-   * Enhance select element
+   * Name for the component used when initialising using data-module attributes
    */
-  enhanceSelectElement() {
+  static moduleName = 'app-autocomplete'
+
+  /**
+   * Enhance select element
+   *
+   * @param {HTMLSelectElement} $element - Select element to enhance
+   */
+  enhanceSelectElement($element) {
     accessibleAutocomplete.enhanceSelectElement({
-      selectElement: this.$selectElement,
+      selectElement: $element,
       cssNamespace: 'app-autocomplete',
       defaultValue: this.value || '',
       inputClasses: 'nhsuk-input',

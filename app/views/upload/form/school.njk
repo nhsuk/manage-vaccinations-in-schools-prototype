@@ -3,13 +3,16 @@
 {% set title = __("upload.school.title") %}
 
 {% block form %}
-  {{ appAutocomplete({
+  {{ select({
     label: {
       html: appHeading({
         title: title
       })
     },
     items: schoolItems(data.schools, upload.school_urn),
-    decorate: "upload.school_urn"
+    decorate: "upload.school_urn",
+    attributes: {
+      "data-module": "app-autocomplete"
+    }
   }) }}
 {% endblock %}

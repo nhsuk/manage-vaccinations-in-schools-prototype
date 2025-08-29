@@ -3,7 +3,7 @@
 {% set title = __("patient.school.title") %}
 
 {% block form %}
-  {{ appAutocomplete({
+  {{ select({
     label: {
       classes: "nhsuk-label--l",
       html: appHeading({
@@ -12,6 +12,9 @@
       })
     },
     items: schoolItems(data.schools, patient.school_urn),
-    decorate: "patient.school_urn"
+    decorate: "patient.school_urn",
+    attributes: {
+      "data-module": "app-autocomplete"
+    }
   }) }}
 {% endblock %}
