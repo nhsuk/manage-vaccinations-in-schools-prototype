@@ -75,8 +75,6 @@ export function generateSession(programmePreset, academicYear, user, options) {
 
   const sessionHasCatchups = faker.datatype.boolean(0.5)
 
-  const psdProtocol = preset.primaryProgrammeTypes.includes(ProgrammeType.Flu)
-
   return new Session({
     createdAt: removeDays(term.from, 60),
     createdBy_uid: user.uid,
@@ -85,7 +83,6 @@ export function generateSession(programmePreset, academicYear, user, options) {
     registration: true,
     academicYear,
     programmePreset,
-    psdProtocol,
     ...(sessionHasCatchups && {
       catchupProgrammeTypes: preset.catchupProgrammeTypes
     }),
