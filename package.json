@@ -22,7 +22,7 @@
     "postinstall": "npm run create-data"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.0.0",
+    "@faker-js/faker": "^10.0.0",
     "@x-govuk/govuk-prototype-wizard": "^0.4.0",
     "accessible-autocomplete": "^3.0.1",
     "date-fns": "^4.0.0",
