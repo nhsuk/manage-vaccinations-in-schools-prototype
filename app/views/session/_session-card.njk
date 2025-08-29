@@ -1,5 +1,5 @@
 {% set overviewHtml %}
-  {% if not session.isUnplanned %}
+  {#- if not session.isUnplanned %}
     <div class="nhsuk-grid-row app-grid-row--dense nhsuk-card-group">
       <div class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
         {{ appDataCard({
@@ -37,7 +37,7 @@
         }) }}
       </div>
     </div>
-  {% endif %}
+  {% endif -#}
 {% endset %}
 
 {{ card({
