@@ -77,12 +77,13 @@ export const parentController = {
     const { data } = request.session
     const { session } = response.locals
 
-    const consent = Consent.create(
+    let consent = Consent.create(
       {
         session_id: session.id
       },
       data.wizard
     )
+    consent = new Consent(consent, data)
 
     response.redirect(`${consent.parentUri}/new/child`)
   },
