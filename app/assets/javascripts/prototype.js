@@ -1,6 +1,6 @@
 import { initAll } from 'nhsuk-frontend'
 
-// Initiate scripts on page load
+// Initiate NHS.UK frontend components on page load
 document.addEventListener('DOMContentLoaded', () => {
   initAll()
 })
