@@ -39,13 +39,13 @@
     }) }}
   {% else %}
     <div class="nhsuk-grid-row">
-      <auto-submit class="app-grid-column-filters">
+      <app-auto-submit class="app-grid-column-filters">
         {{ appPatientSearch({
           clear: session.uri + "/" + view,
           status: view if view != "record" and view != "consent",
           statuses: view if view == "consent"
         }) }}
-      </auto-submit>
+      </app-auto-submit>
 
       <div class="app-grid-column-results">
         {% set notices = [] %}

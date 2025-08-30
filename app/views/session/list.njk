@@ -16,11 +16,11 @@
   }) }}
 
   <div class="nhsuk-grid-row">
-    <auto-submit class="app-grid-column-filters">
+    <app-auto-submit class="app-grid-column-filters">
       {{ appSessionSearch({
         clear: "/sessions"
       }) }}
-    </auto-submit>
+    </app-auto-submit>
 
     <div class="app-grid-column-results">
       {% if data.type and data.type != "none" %}

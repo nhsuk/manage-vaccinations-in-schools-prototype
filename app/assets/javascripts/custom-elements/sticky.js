@@ -1,4 +1,4 @@
-export const IsStickyComponent = class extends HTMLElement {
+export const StickyComponent = class extends HTMLElement {
   constructor() {
     super()
     this.stickyElementStyle = null

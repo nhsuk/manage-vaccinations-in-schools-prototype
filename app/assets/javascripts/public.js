@@ -9,7 +9,7 @@ import {
 import { AutocompleteComponent } from './custom-elements/autocomplete.js'
 
 // Register custom elements
-customElements.define('auto-complete', AutocompleteComponent)
+customElements.define('app-autocomplete', AutocompleteComponent)
 
 // Initialise components
 document.addEventListener('DOMContentLoaded', () => {

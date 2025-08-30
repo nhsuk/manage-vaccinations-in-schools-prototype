@@ -6,7 +6,7 @@
 {%- set hasFieldset = true if params.fieldset else false %}
 {#- Capture the HTML so we can optionally nest it within a fieldset -#}
 {%- set innerHtml %}{{ caller() if caller }}{% endset %}
-<add-another class="app-add-another" id="{{ id }}">
+<app-add-another class="app-add-another" id="{{ id }}">
   {% if params.fieldset %}
     {% call fieldset({
       describedBy: describedBy,
@@ -29,5 +29,5 @@
       text: "Delete"
     }) | indent(4) }}
   </template>
-</add-another>
+</app-add-another>
 {% endmacro %}

@@ -31,13 +31,13 @@
     }]
   }) if not params.patientSession.session.isActive and params.patientSession.report != PatientOutcome.Vaccinated }}
 
-  <is-sticky class="app-patient-banner">
+  <app-sticky class="app-patient-banner">
     <div class="nhsuk-width-container">
       {{ appSecondaryNavigation({
         items: navigationItems
       }) if navigationItems }}
     </div>
-  </is-sticky>
+  </app-sticky>
 
   <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
     {{ __("patientSession." + params.view + ".title") }}
