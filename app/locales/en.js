@@ -1923,10 +1923,15 @@ export const en = {
       confirm: 'Import {{type}}',
       cancel: 'Cancel'
     },
-    errors: {
+    invalid: {
       title: 'Records could not be imported',
       description:
         'The records could not be imported due to errors in the CSV file. When fixing these errors, note that the header does not count as a row.'
+    },
+    failed: {
+      title: 'Too many records could not be matched',
+      description:
+        'The records could not be imported as an unusually low number of records were matched to PDS (spine). PDS successfully matched only 60 records, a 10% match rate.\n\nReview your file and try uploading it again.'
     },
     devoid: {
       label: 'Omitted records',
@@ -1934,9 +1939,6 @@ export const en = {
     },
     duplicates: {
       label: 'Duplicate records'
-    },
-    invalid: {
-      label: 'Missing vaccination'
     },
     id: {
       label: 'ID'
