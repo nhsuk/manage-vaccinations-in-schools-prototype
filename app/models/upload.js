@@ -245,11 +245,15 @@ export class Upload {
       case UploadStatus.Complete:
         colour = 'green'
         break
+      case UploadStatus.Review:
+        colour = 'dark-orange'
+        break
+      case UploadStatus.Failed:
       case UploadStatus.Invalid:
         colour = 'red'
         break
       default:
-        colour = 'blue'
+        colour = 'white'
     }
 
     return {
