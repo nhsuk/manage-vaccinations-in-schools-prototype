@@ -186,11 +186,11 @@
     description: __("upload.devoid.description")
   }) if upload.patients.length == 0 and upload.status == UploadStatus.Complete }}
 
-  {% if upload.validations | length %}
+  {% if upload.status == UploadStatus.Invalid %}
     {% set cardDescriptionHtml %}
-      <p class="nhsuk-body nhsuk-u-reading-width">
-        {{ __("upload.errors.description") }}
-      </p>
+      <div class="nhsuk-u-reading-width">
+        {{ __("upload.invalid.description") | nhsukMarkdown }}
+      </div>
 
       {{ details({
         summaryText: __("upload.file.format", { type: upload.type | lower }),
@@ -208,7 +208,26 @@
     {% endset %}
 
     {{ card({
-      heading: __("upload.errors.title"),
+      heading: __("upload.invalid.title"),
+      headingClasses: "nhsuk-heading-m app-card__heading--red",
+      headingLevel: 2,
+      descriptionHtml: cardDescriptionHtml,
+      feature: true
+    }) }}
+  {% elif upload.status == UploadStatus.Failed %}
+    {% set cardDescriptionHtml %}
+      <div class="nhsuk-u-reading-width">
+        {{ __("upload.failed.description") | nhsukMarkdown }}
+      </div>
+
+      {{ details({
+        summaryText: __("upload.file.format", { type: upload.type | lower }),
+        html: templateFormat
+      }) }}
+    {% endset %}
+
+    {{ card({
+      heading: __("upload.failed.title"),
       headingClasses: "nhsuk-heading-m app-card__heading--red",
       headingLevel: 2,
       descriptionHtml: cardDescriptionHtml,
