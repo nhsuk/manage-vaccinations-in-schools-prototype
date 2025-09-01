@@ -389,9 +389,11 @@ export const UploadType = {
  * @enum {string}
  */
 export const UploadStatus = {
-  Processing: 'Processing',
   Complete: 'Completed',
-  Invalid: 'Invalid'
+  Failed: 'Failed',
+  Invalid: 'Invalid',
+  Processing: 'Processing',
+  Review: 'Needs review'
 }
 
 /**
