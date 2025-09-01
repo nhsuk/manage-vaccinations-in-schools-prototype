@@ -11,6 +11,7 @@ import { today } from '../utils/date.js'
  * @param {Array<string>|boolean|undefined} patient_uuids - Patients
  * @param {import('../models/user.js').User} user - User
  * @param {import('../enums.js').UploadType} [type] - Upload type
+ * @param {import('../enums.js').UploadStatus} [status] - Upload status
  * @param {import('../models/school.js').School} [school] - School
  * @returns {Upload} Upload
  */
@@ -18,17 +19,15 @@ export function generateUpload(
   patient_uuids,
   user,
   type = UploadType.Cohort,
+  status = UploadStatus.Complete,
   school
 ) {
   const createdAt = faker.date.recent({ days: 14, refDate: today() })
   const fileName = `${prototypeFilters.slugify(type)}-${faker.number.int(5)}.csv`
 
   let validations
-  let status = UploadStatus.Complete
 
-  if (patient_uuids === false) {
-    // Simulate invalid file
-    status = UploadStatus.Invalid
+  if (status === UploadStatus.Invalid) {
     validations = {
       3: {
         CHILD_FIRST_NAME: 'is required but missing',
