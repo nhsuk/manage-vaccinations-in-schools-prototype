@@ -8,10 +8,9 @@ import { today } from '../utils/date.js'
 /**
  * Generate fake upload
  *
- * @param {Array<string>|boolean|undefined} patient_uuids - Patients
+ * @param {Array<string>} patient_uuids - Patients
  * @param {import('../models/user.js').User} user - User
  * @param {import('../enums.js').UploadType} [type] - Upload type
- * @param {import('../enums.js').UploadStatus} [status] - Upload status
  * @param {import('../models/school.js').School} [school] - School
  * @returns {Upload} Upload
  */
@@ -19,14 +18,33 @@ export function generateUpload(
   patient_uuids,
   user,
   type = UploadType.Cohort,
-  status = UploadStatus.Complete,
   school
 ) {
   const createdAt = faker.date.recent({ days: 14, refDate: today() })
   const fileName = `${prototypeFilters.slugify(type)}-${faker.number.int(5)}.csv`
 
-  let validations
+  const status = faker.helpers.weightedArrayElement([
+    { value: UploadStatus.Processing, weight: 1 },
+    { value: UploadStatus.Devoid, weight: 1 },
+    { value: UploadStatus.Invalid, weight: 1 },
+    { value: UploadStatus.Failed, weight: 1 },
+    { value: UploadStatus.Review, weight: 10 },
+    { value: UploadStatus.Approved, weight: 8 }
+  ])
 
+  // Processing upload
+  let progress
+  if (status === UploadStatus.Processing) {
+    progress = faker.number.int({ min: 1, max: 100 })
+  }
+
+  // Devoid upload
+  if (status === UploadStatus.Devoid) {
+    patient_uuids = []
+  }
+
+  // Invalid upload
+  let validations
   if (status === UploadStatus.Invalid) {
     validations = {
       3: {
@@ -41,12 +59,23 @@ export function generateUpload(
     }
   }
 
+  // Approved upload
+  let updatedAt
+  let updatedBy_uid
+  if (status === UploadStatus.Approved) {
+    updatedAt = new Date(createdAt.getTime() + 72 * 60000)
+    updatedBy_uid = user.uid
+  }
+
   return new Upload({
     createdAt,
     createdBy_uid: user.uid,
+    updatedAt,
+    updatedBy_uid,
     fileName,
     status,
     type,
+    progress,
     validations,
     patient_uuids,
     ...(school && {

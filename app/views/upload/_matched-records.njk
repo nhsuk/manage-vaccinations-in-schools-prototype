@@ -1,0 +1,57 @@
+{% set patientRows = [] %}
+{% for patient in matchedRecords %}
+  {% set patientRows = patientRows | push([
+    {
+      header: __("patient.fullName.label"),
+      html: patient.vaccination.link.fullNameAndNhsn if upload.type == UploadType.Report else patient.formatted.fullNameAndNhsn,
+      attributes: {
+        width: "30%"
+      }
+    },
+    {
+      header: __("patient.dob.label"),
+      html: patient.formatted.dob
+    },
+    {
+      header: __("patient.postalCode.label"),
+      text: patient.postalCode
+    },
+    {
+      header: __("patient.yearGroup.label"),
+      text: patient.formatted.yearGroup
+    } if upload.type == UploadType.School,
+    {
+      header: __("vaccination.createdAt.label"),
+      text: patient.vaccination.formatted.createdAt_date
+    } if upload.type == UploadType.Report
+  ]) %}
+{% endfor %}
+
+{{ appHeading({
+  title: __("upload.show.matched.title"),
+  level: 2,
+  size: "m",
+  summary: __mf("upload.show.matched." + upload.status, {
+    count: patientRows.length
+  })
+}) }}
+
+{{ details({
+  classes: "nhsuk-expander",
+  summaryText: __mf("upload.show.matched.count", {
+    count: patientRows.length
+  }),
+  html: table({
+    id: "matched",
+    headingLevel: 2,
+    responsive: true,
+    head: [
+      { text: __("patient.fullNameAndNhsn.label") },
+      { text: __("patient.dob.label") },
+      { text: __("patient.postalCode.label") },
+      { text: __("patient.yearGroup.label") } if upload.type == UploadType.School,
+      { text: __("vaccination.createdAt.label") } if upload.type == UploadType.Report
+    ],
+    rows: patientRows
+  })
+}) }}

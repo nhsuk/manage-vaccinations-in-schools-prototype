@@ -1,5 +1,7 @@
-{% extends "_layouts/default.njk" %}
+{% extends "_layouts/form.njk" %}
 
+{% set gridColumns = "full" %}
+{% set hideConfirmButton = true %}
 {% set programme = data.programmes[upload.programme_id] %}
 {% set title = __("upload.show.title", { upload: upload }) %}
 
@@ -18,173 +20,77 @@
     items: [{
       text: __("home.show.title"),
       href: "/"
-    }],
-    text: __("upload.list.title"),
-    href: "/uploads"
+    }, {
+      text: __("upload.list.title"),
+      href: "/uploads"
+    }, {
+      text: __("upload.imported.title"),
+      href: "/uploads/imported"
+    } if upload.status == UploadStatus.Approved]
   }) }}
 {% endblock %}
 
-{% block content %}
+{% block form %}
   {{ super() }}
 
   {{ appHeading({
     title: title
   }) }}
-
   <p class="nhsuk-body">
-    {{ tag(statusTag(upload.uploadStatus)) -}}
-
     {%- if upload.status == UploadStatus.Processing -%}
-      <span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16 nhsuk-u-margin-left-2">5 hours 13 minutes remaining</span>
-    {%- endif %}
+      <progress class="app-progress" value="{{ upload.progress }}" max="100"></progress><br><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">Processing: {{ upload.progress }}% complete</span>
+    {%- else -%}
+      {{ tag(statusTag(upload.uploadStatus)) -}}
+    {%- endif -%}
   </p>
 
-  {% set cardDescriptionHtml %}
+  {% call card({
+    heading: __("upload.show.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: cardDescriptionHtml
+  }) %}
     {{ summaryList({
       rows: summaryRows(upload, {
-        createdAt: {},
         createdBy: {},
+        updated: {},
         fileName: {},
         type: {},
         school: {},
         yearGroups: {},
-        invalid: {},
-        devoid: {},
-        duplicates: {}
+        patients: {}
       })
     }) }}
-    {{ link(upload.uri + "/bulk-remove-relationships", __("upload.removeRelationships.label")) | nhsukMarkdown if upload.status == UploadStatus.Complete }}
-  {% endset %}
+    {{ link(upload.uri + "/bulk-remove-relationships", __("upload.removeRelationships.label")) | nhsukMarkdown if upload.status == UploadStatus.Complete and upload.type != UploadType.Report }}
+  {% endcall %}
+
+  {% if upload.status == UploadStatus.Review or upload.status == UploadStatus.Approved %}
+    {% set newRecords = upload.patients | selectattr("isNew") %}
+    {% if newRecords.length %}
+      {% include "upload/_new-records.njk" %}
+    {% endif %}
+
+    {% set matchedRecords = upload.patients | selectattr("hasMatch") %}
+    {% if matchedRecords.length %}
+      {% include "upload/_matched-records.njk" %}
+    {% endif %}
+
+    {% set pendingRecords = upload.patients | selectattr("hasPendingChanges") %}
+    {% if pendingRecords.length %}
+      {% include "upload/_pending-records.njk" %}
+    {% endif %}
+
+    {% if upload.type != UploadType.Report and upload.moves.length %}
+      {% include "upload/_school-moves.njk" %}
+    {% endif %}
+  {% endif %}
 
   {{ card({
-    heading: __("upload.show.summary"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: cardDescriptionHtml
-  }) }}
-
-  {% set reviewRows = [] %}
-  {% for patient in upload.duplicates %}
-    {% set type = "vaccination" if upload.type == UploadType.Report else "child" %}
-    {% set reviewRows = reviewRows | push([
-      {
-        header: __("patient.fullName.label"),
-        html: patient.fullName
-      },
-      {
-        header: __("review.label"),
-        html: __("review.duplicate.description", type)
-      },
-      {
-        header: __("actions.label"),
-        html: appActionList({
-          items: [{
-            text: __("actions.review"),
-            href: "/uploads/reviews/" + upload.id + "/" + patient.nhsn
-          }]
-        })
-      }
-    ]) %}
-
-    {# Add an example of an archived record needing review #}
-    {% set reviewRows = reviewRows | push([
-      {
-        header: __("patient.label"),
-        html: "ABBOTT, Hector"
-      },
-      {
-        header: __("review.label"),
-        text: __("review.archived.description", type)
-      },
-      {
-        header: __("actions.label"),
-        html: appActionList({
-          items: [{
-            text: __("actions.review"),
-            href: "/uploads/reviews/" + upload.id + "/" + patient.nhsn + "/archived"
-          }]
-        })
-      }
-    ]) %}
-  {% endfor %}
-
-  {{ table({
-    id: "reviews",
-    panel: true,
-    heading: __mf("review.count", { count: reviewRows.length }),
+    heading: __("upload.devoid.title"),
+    headingClasses: "nhsuk-heading-m app-card__heading--grey",
     headingLevel: 2,
-    responsive: true,
-    head: [
-      {
-        text: __("patient.label"),
-        attributes: {
-          width: "30%"
-        }
-      },
-      {
-        text: __("review.label"),
-        attributes: {
-          width: "60%"
-        } },
-      {
-        text: __("actions.label"),
-        attributes: {
-          width: "10%"
-        }
-      }
-    ],
-    rows: reviewRows
-  }) if reviewRows.length }}
-
-  {% set patientRows = [] %}
-  {% for patient in upload.patients %}
-    {% set patientRows = patientRows | push([
-      {
-        header: __("patient.fullName.label"),
-        html: patient.vaccination.link.fullNameAndNhsn if upload.type == UploadType.Report else patient.formatted.fullNameAndNhsn,
-        attributes: {
-          width: "30%"
-        }
-      },
-      {
-        header: __("patient.dob.label"),
-        html: patient.formatted.dob
-      },
-      {
-        header: __("patient.postalCode.label"),
-        text: patient.postalCode
-      }, {
-        header: __("patient.yearGroup.label"),
-        text: patient.formatted.yearGroup
-      } if upload.type == UploadType.School, {
-        header: __("vaccination.createdAt.label"),
-        text: patient.vaccination.formatted.createdAt_date
-      } if upload.type == UploadType.Report
-    ]) %}
-  {% endfor %}
-
-  {{ table({
-    id: "patients",
-    panel: true,
-    heading: __mf("patient.count", { count: upload.patients.length }),
-    headingLevel: 2,
-    responsive: true,
-    head: [
-      { text: __("patient.fullNameAndNhsn.label") },
-      { text: __("patient.dob.label") },
-      { text: __("patient.postalCode.label") },
-      { text: __("patient.yearGroup.label") } if upload.type == UploadType.School,
-      { text: __("vaccination.createdAt.label") } if upload.type == UploadType.Report
-    ],
-    rows: patientRows
-  }) if upload.patients.length }}
-
-  {{ card({
-    heading: __mf("patient.count", { count: upload.patients.length }),
-    headingClasses: "nhsuk-heading-m",
-    headingLevel: 2,
-    feature: true,
-    description: __("upload.devoid.description")
-  }) if upload.patients.length == 0 and upload.status == UploadStatus.Complete }}
+    description: __("upload.devoid.description"),
+    feature: true
+  }) if upload.status == UploadStatus.Devoid }}
 
   {% if upload.status == UploadStatus.Invalid %}
     {% set cardDescriptionHtml %}
@@ -198,7 +104,11 @@
       }) }}
 
       {% for row, validations in upload.validations %}
-        <h3 class="nhsuk-heading-s">Row {{ row }}</h3>
+        {{ appHeading({
+          title: "Row " + row,
+          level: 3,
+          size: "s"
+        }) }}
         <ul>
         {% for key, message in validations %}
           <li><code>{{ key }}</code> {{ message }}</li>
@@ -232,6 +142,37 @@
       headingLevel: 2,
       descriptionHtml: cardDescriptionHtml,
       feature: true
+    }) }}
+  {% endif %}
+
+  {% if upload.patients.length > 0 and upload.status == UploadStatus.Review %}
+    <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+
+    {{ appButtonGroup({
+      buttons: [{
+        text: "Approve upload and import records",
+        attributes: {
+          formaction: upload.uri + "/approve"
+        }
+      }, {
+        classes: "nhsuk-button--secondary",
+        text: __("upload.delete.confirm"),
+        attributes: {
+          formaction: upload.uri + "/delete"
+        }
+      }]
+    }) }}
+  {% elif upload.status != UploadStatus.Processing and upload.status != UploadStatus.Approved %}
+    <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+
+    {{ appButtonGroup({
+      buttons: [{
+        classes: "nhsuk-button--secondary",
+        text: __("upload.delete.label"),
+        attributes: {
+          formaction: upload.uri + "/delete"
+        }
+      }]
     }) }}
   {% endif %}
 {% endblock %}

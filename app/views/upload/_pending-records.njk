@@ -1,0 +1,50 @@
+{% set patientRows = [] %}
+{% for patient in pendingRecords %}
+  {% set type = "vaccination" if upload.type == UploadType.Report else "child" %}
+  {% set patientRows = patientRows | push([
+    {
+      header: __("patient.fullNameAndNhsn.label"),
+      html: patient.formatted.fullNameAndNhsn
+    },
+    {
+      header: __("review.label"),
+      html: __("review.duplicate.description", type)
+    },
+    {
+      header: __("actions.label"),
+      html: appActionList({
+        items: [{
+          text: __("actions.review"),
+          href: "/uploads/reviews/" + upload.id + "/" + patient.nhsn
+        }]
+      })
+    } if upload.status == UploadStatus.Approved
+  ]) %}
+{% endfor %}
+
+{{ appHeading({
+  title: __("upload.show.partial.title"),
+  level: 2,
+  size: "m",
+  summary: __mf("upload.show.partial." + upload.status, {
+    count: patientRows.length
+  })
+}) }}
+
+{{ details({
+  classes: "nhsuk-expander",
+  summaryText: __mf("upload.show.partial.count", {
+    count: patientRows.length
+  }),
+  html: table({
+    id: "partial",
+    headingLevel: 2,
+    responsive: true,
+    head: [
+      { text: __("patient.fullNameAndNhsn.label") },
+      { text: __("review.label") },
+      { text: __("actions.label") } if upload.status == UploadStatus.Approved
+    ],
+    rows: patientRows
+  })
+}) }}
