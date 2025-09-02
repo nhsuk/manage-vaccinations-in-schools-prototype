@@ -9,6 +9,7 @@ import {
   formatYearGroup
 } from '../utils/string.js'
 
+import { Move } from './move.js'
 import { Patient } from './patient.js'
 import { School } from './school.js'
 import { User } from './user.js'
@@ -25,8 +26,9 @@ import { User } from './user.js'
  * @property {string} [createdBy_uid] - User who created upload
  * @property {Date} [updatedAt] - Updated date
  * @property {string} [fileName] - Original file name
+ * @property {number} [progress] - Upload import progress
+ * @property {object} [validations] - File validations
  * @property {Array<string>} [patient_uuids] - Patient record UUIDs
- * @property {number} [devoid] - Exact duplicate records found
  */
 export class Upload {
   constructor(options, context) {
@@ -37,17 +39,15 @@ export class Upload {
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
+    this.updatedBy_uid = options?.updatedBy_uid
     this.fileName = options?.fileName
+    this.progress = options?.progress || 100
     this.validations = options?.validations || []
     this.patient_uuids = options?.patient_uuids || []
 
     if (this.type === UploadType.School) {
       this.yearGroups = options?.yearGroups
       this.school_urn = options?.school_urn
-    }
-
-    if (this.status === UploadStatus.Complete) {
-      this.devoid = options?.devoid || faker.number.int({ min: 1, max: 99 })
     }
   }
 
@@ -63,6 +63,21 @@ export class Upload {
       }
     } catch (error) {
       console.error('Upload.createdBy', error.message)
+    }
+  }
+
+  /**
+   * Get user who approved upload
+   *
+   * @returns {User} User
+   */
+  get updatedBy() {
+    try {
+      if (this.updatedBy_uid) {
+        return User.findOne(this.updatedBy_uid, this.context)
+      }
+    } catch (error) {
+      console.error('Upload.updatedBy', error.message)
     }
   }
 
@@ -86,6 +101,15 @@ export class Upload {
           })
       }
 
+      // Simulate a subset of patient records being new
+      // Use the existence of a second parent as a proxy for this
+      patients = patients.map((patient) => {
+        patient.isNew =
+          patient.parent2 !== undefined && !patient.hasPendingChanges
+        patient.hasMatch = !patient.parent2 && !patient.hasPendingChanges
+        return patient
+      })
+
       return patients
     }
 
@@ -99,7 +123,7 @@ export class Upload {
    */
   get invalid() {
     if (
-      this.status === UploadStatus.Complete &&
+      this.status === UploadStatus.Review &&
       this.type === UploadType.Report
     ) {
       if (this.context?.patients && this.patient_uuids) {
@@ -118,7 +142,7 @@ export class Upload {
    * @returns {Array<Patient>|undefined} Patient records with pending changes
    */
   get duplicates() {
-    if (this.status === UploadStatus.Complete) {
+    if (this.status === UploadStatus.Review) {
       if (this.patients) {
         return this.patients
           .filter((patient) => patient.hasPendingChanges)
@@ -130,20 +154,15 @@ export class Upload {
   }
 
   /**
-   * Get number of incomplete patient records
+   * Get patient school movements
    *
-   * @returns {Array<Patient>|undefined} Patient records missing an NHS number
+   * @returns {Array<Move>|undefined} Patient school movements
    */
-  get incomplete() {
-    if (
-      this.status === UploadStatus.Complete &&
-      this.type === UploadType.Report
-    ) {
-      if (this.patients) {
-        return this.patients.filter((patient) => patient.hasMissingNhsNumber)
-      }
-
-      return []
+  get moves() {
+    if (this.status === UploadStatus.Review) {
+      return Move.findAll(this.context).filter((move) =>
+        this.patient_uuids.includes(move.patient_uuid)
+      )
     }
   }
 
@@ -159,17 +178,6 @@ export class Upload {
   }
 
   /**
-   * Get school name
-   *
-   * @returns {string|undefined} School name
-   */
-  get schoolName() {
-    if (this.school) {
-      return this.school.name
-    }
-  }
-
-  /**
    * Get formatted summary
    *
    * @returns {object} Formatted summaries
@@ -178,7 +186,7 @@ export class Upload {
     return {
       type:
         this.type === UploadType.School
-          ? formatWithSecondaryText(this.type, this.schoolName)
+          ? formatWithSecondaryText(this.type, this.school?.name)
           : this.type
     }
   }
@@ -209,28 +217,39 @@ export class Upload {
         .filter((yearGroup) => yearGroup !== '_unchecked')
         .map((yearGroup) => formatYearGroup(yearGroup))
 
+    const createdAt = formatDate(this.createdAt, {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    })
+    const updatedAt = formatDate(this.updatedAt, {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    })
+
     return {
-      createdAt: formatDate(this.createdAt, {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      }),
-      createdBy: this.createdBy?.fullName || '',
+      createdAt,
+      createdBy: this.createdBy?.fullName,
+      created: `${createdAt} by ${this.createdBy?.fullName}`,
+      updatedAt,
+      updatedBy: this.updatedBy?.fullName,
+      updated: this.updatedAt && `${updatedAt} by ${this.updatedBy?.fullName}`,
       ...(this.type === UploadType.School && {
-        school: this.schoolName,
+        school: this.school?.name,
         yearGroups: prototypeFilters.formatList(yearGroups)
       }),
-      ...(this.status === UploadStatus.Complete && {
-        devoid: `${prototypeFilters.plural(this.devoid, 'previously imported record')} omitted`,
-        duplicates: `${prototypeFilters.plural(this.duplicates.length, 'duplicate record')} need review`
+      ...(this.type === UploadType.School && {
+        school: this.school?.name,
+        yearGroups: prototypeFilters.formatList(yearGroups)
       }),
-      ...(this.status === UploadStatus.Complete &&
-        this.type === UploadType.Report && {
-          invalid: `${prototypeFilters.plural(this.invalid.length, 'record')} for a child who was not vaccinated omitted`
-        })
+      patients: this.patients.length
     }
   }
 
@@ -242,11 +261,14 @@ export class Upload {
   get uploadStatus() {
     let colour
     switch (this.status) {
-      case UploadStatus.Complete:
+      case UploadStatus.Approved:
         colour = 'green'
         break
       case UploadStatus.Review:
-        colour = 'dark-orange'
+        colour = 'blue'
+        break
+      case UploadStatus.Devoid:
+        colour = 'grey'
         break
       case UploadStatus.Failed:
       case UploadStatus.Invalid:
@@ -348,5 +370,16 @@ export class Upload {
     context.uploads[updatedUpload.id] = updatedUpload
 
     return updatedUpload
+  }
+
+  /**
+   * Delete
+   *
+   * @param {string} id - Upload ID
+   * @param {object} context - Context
+   * @static
+   */
+  static delete(id, context) {
+    delete context.uploads[id]
   }
 }

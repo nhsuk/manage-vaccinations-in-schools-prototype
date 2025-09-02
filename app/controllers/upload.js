@@ -1,6 +1,6 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
-import { UploadType } from '../enums.js'
+import { UploadStatus, UploadType } from '../enums.js'
 import { Notice } from '../models/notice.js'
 import { Upload } from '../models/upload.js'
 import { getDateValueDifference } from '../utils/date.js'
@@ -21,7 +21,13 @@ export const uploadController = {
       getDateValueDifference(b.createdAt, a.createdAt)
     )
 
-    response.locals.uploads = uploads
+    response.locals.uploads = uploads.filter(
+      ({ status }) => status !== UploadStatus.Approved
+    )
+
+    response.locals.imported = uploads.filter(
+      ({ status }) => status === UploadStatus.Approved
+    )
 
     // Required to show number of notices in upload section navigation
     response.locals.notices = Notice.findAll(data).filter(
@@ -42,6 +48,10 @@ export const uploadController = {
 
   list(request, response) {
     response.render(`upload/list`)
+  },
+
+  imported(request, response) {
+    response.render(`upload/imported`)
   },
 
   action(type) {
@@ -65,9 +75,11 @@ export const uploadController = {
 
     const upload = Upload.create(
       {
+        createdBy_uid: account.uid,
         programme_id,
         type,
-        createdBy_uid: account.uid,
+        status: UploadStatus.Processing,
+        progress: 1,
         fileName: 'example.csv',
         ...(type === UploadType.School &&
           urn && {
@@ -133,14 +145,12 @@ export const uploadController = {
             },
             [`/${upload_id}/new/school`]: {},
             [`/${upload_id}/new/year-groups`]: {},
-            [`/${upload_id}/new/file`]: {},
-            [`/${upload_id}/new/summary`]: {}
+            [`/${upload_id}/new/file`]: {}
           }
         : {
             [`/${upload_id}/new/school`]: {},
             [`/${upload_id}/new/year-groups`]: {},
-            [`/${upload_id}/new/file`]: {},
-            [`/${upload_id}/new/summary`]: {}
+            [`/${upload_id}/new/file`]: {}
           }),
       [`/${upload_id}`]: {}
     }
@@ -185,6 +195,38 @@ export const uploadController = {
     Upload.update(upload_id, request.body.upload, data.wizard)
 
     response.redirect(paths.next)
+  },
+
+  delete(request, response) {
+    const { upload_id } = request.params
+    const { data } = request.session
+    const { __ } = response.locals
+
+    Upload.delete(upload_id, data)
+
+    request.flash('success', __(`upload.delete.success`))
+
+    response.redirect('/uploads')
+  },
+
+  approve(request, response) {
+    const { account } = request.app.locals
+    const { upload_id } = request.params
+    const { data } = request.session
+    const { __ } = response.locals
+
+    Upload.update(
+      upload_id,
+      {
+        updatedBy_uid: account.uid,
+        status: UploadStatus.Approved
+      },
+      data
+    )
+
+    request.flash('success', __(`upload.approve.success`))
+
+    response.redirect('/uploads')
   },
 
   removeRelationships(request, response) {

@@ -19,11 +19,15 @@
     items: [{
       text: __("upload.recent.label"),
       href: "/uploads",
-      current: params.view == "list"
+      current: params.view == "recent"
     }, {
       text: (__("upload.reviews.label") + appCount(reviews.length)) | safe,
       href: "/uploads/reviews",
       current: params.view == "reviews"
+    }, {
+      text: __("upload.imported.label"),
+      href: "/uploads/imported",
+      current: params.view == "imported"
     }, {
       text: (__("upload.notices.label") + appCount(notices.length)) | safe,
       href: "/uploads/notices",

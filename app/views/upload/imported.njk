@@ -2,23 +2,18 @@
 
 {% extends "_layouts/default.njk" %}
 
-{% set title = __("upload.list.title") %}
+{% set title = __("upload.imported.title") %}
 
 {% block content %}
   {{ super() }}
 
   {{ uploadNavigation({
-    view: "recent"
+    view: "imported"
   }) }}
 
-  {% if uploads.length %}
+  {% if imported.length %}
     {% set uploadRows = [] %}
-    {% for upload in uploads %}
-      {% set progressHtml -%}
-        <progress class="app-progress" value="{{ upload.progress }}" max="100"></progress><br>
-        <span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">Processing: {{ upload.progress }}% complete</span>
-      {%- endset %}
-
+    {% for upload in imported %}
       {% set uploadRows = uploadRows | push([
         {
           header: __("upload.summary.label"),
@@ -30,7 +25,7 @@
         },
         {
           header: __("upload.status.label"),
-          html: progressHtml if upload.status == UploadStatus.Processing else tag(statusTag(upload.uploadStatus))
+          html: tag(statusTag(upload.uploadStatus)) + ("<br><span class=\"nhsuk-u-secondary-text-colour nhsuk-u-font-size-16\">5 hours 13 minutes remaining</span>" if upload.status == UploadStatus.Processing)
         },
         {
           header: __("upload.patients.label"),
@@ -42,7 +37,7 @@
 
     {{ table({
       id: "uploads",
-      heading: __mf("upload.recent.count", { count: uploads.length }) ,
+      heading: __mf("upload.imported.count", { count: uploads.length }) ,
       panel: true,
       responsive: true,
       head: [

@@ -4,7 +4,8 @@ import {
   RegistrationOutcome,
   ReplyDecision,
   ReplyRefusal,
-  ScreenOutcome
+  ScreenOutcome,
+  UploadStatus
 } from '../enums.js'
 
 /**
@@ -1850,38 +1851,90 @@ export const en = {
     }
   },
   upload: {
-    label: 'Record import',
-    count: '{count, plural, =0 {No imports} one {1 import} other {# imports}}',
-    list: {
-      label: 'Imports',
-      title: 'Import records',
-      description:
-        'Import child, cohort and vaccination records and see important notices'
-    },
+    label: 'Upload',
     action: {
       title: 'Are you sure you want to %s?',
       description: 'This cannot be undone.',
       cancel: 'No, return to import',
       confirm: 'Yes, %s'
     },
+    delete: {
+      label: 'Delete upload',
+      confirm: 'Cancel and delete upload',
+      success: 'Upload deleted'
+    },
+    approve: {
+      success: 'Upload approved'
+    },
+    list: {
+      label: 'Imports',
+      title: 'Imports',
+      description:
+        'Import child, cohort and vaccination records and see important notices'
+    },
     recent: {
-      label: 'Recent imports',
-      title: 'Recent imports'
+      label: 'Uploaded files',
+      title: 'Uploaded files',
+      count:
+        '{count, plural, =0 {No uploaded files} one {1 uploaded file} other {# uploaded files}}'
     },
     reviews: {
-      label: 'Import issues',
-      title: 'Import issues'
+      label: 'Upload issues',
+      title: 'Upload issues',
+      count: '{count, plural, =0 {No uploads} one {1 upload} other {# uploads}}'
+    },
+    imported: {
+      label: 'Imported records',
+      title: 'Imported records',
+      count:
+        '{count, plural, =0 {No imported records} one {1 imported record} other {# imported records}}'
     },
     notices: {
       label: 'Important notices'
     },
     show: {
-      title: 'Import ({{upload.formatted.createdAt}})',
-      summary: 'Details'
+      title: 'Upload ({{upload.formatted.createdAt}})',
+      summary: 'Details',
+      new: {
+        title: 'New records',
+        count:
+          '{count, plural, =0 {No new records} one {1 new record} other {# new records}}',
+        [UploadStatus.Review]:
+          'This upload includes {count, plural, =0 {no new records} one {1 new record} other {# new records}} that are not currently in Mavis. If you approve the upload, these records will be added to Mavis.',
+        [UploadStatus.Approved]:
+          '{count, plural, =0 {No new records} one {1 new record} other {# new records}} were added to Mavis'
+      },
+      partial: {
+        title: 'Records with a partial match',
+        count:
+          '{count, plural, =0 {No records} one {1 record} other {# records}} with a partial match',
+        [UploadStatus.Review]:
+          'This upload includes {count, plural, =0 {no records} one {1 record} other {# records}} that partially match existing records in Mavis. If you approve the upload, they will be flagged as import issues for review.',
+        [UploadStatus.Approved]:
+          '{count, plural, =0 {No records} one {1 record} other {# records}} flagged as import issues for review'
+      },
+      matched: {
+        title: 'Records automatically matched',
+        count:
+          '{count, plural, =0 {No records} one {1 record} other {# records}} automatically matched',
+        [UploadStatus.Review]:
+          'This upload includes {count, plural, =0 {no records} one {1 record} other {# records}} that already exist in Mavis. If you approve the upload, any additional information will be merged automatically with the existing records.',
+        [UploadStatus.Approved]:
+          '{count, plural, =0 {No records} one {1 record} other {# records}} were matched to existing records in Mavis. Any additional information has been merged into the existing record.'
+      },
+      moves: {
+        title: 'School moves',
+        count:
+          '{count, plural, =0 {No school moves} one {1 school move} other {# school moves}}',
+        [UploadStatus.Review]:
+          'This upload includes {count, plural, =0 {No children} one {1 child} other {# children}} with a different school to the one in their Mavis record',
+        [UploadStatus.Approved]:
+          '{count, plural, =0 {No children} one {1 child} other {# children}} moved schools'
+      }
     },
     new: {
-      label: 'Import records',
-      success: 'Records imported for processing'
+      label: 'Upload records',
+      success: 'Records uploaded for processing'
     },
     file: {
       title: 'Import {{type}}',
@@ -1917,47 +1970,47 @@ export const en = {
       label: 'Year groups',
       title: 'Which year groups do you want to import class list records for?'
     },
-    summary: {
-      title: 'Are you sure you want to import these {{type}}?',
-      description: 'The uploaded file contains {{size}} records.',
-      confirm: 'Import {{type}}',
-      cancel: 'Cancel'
-    },
     invalid: {
       title: 'Records could not be imported',
       description:
         'The records could not be imported due to errors in the CSV file. When fixing these errors, note that the header does not count as a row.'
+    },
+    devoid: {
+      title: 'No new records',
+      description: 'All records in this upload have already been imported'
     },
     failed: {
       title: 'Too many records could not be matched',
       description:
         'The records could not be imported as an unusually low number of records were matched to PDS (spine). PDS successfully matched only 60 records, a 10% match rate.\n\nReview your file and try uploading it again.'
     },
-    devoid: {
-      label: 'Omitted records',
-      description: 'All records in this CSV file had already been imported.'
-    },
-    duplicates: {
-      label: 'Duplicate records'
-    },
     id: {
       label: 'ID'
     },
-    createdAt: {
-      label: 'Imported on'
+    created: {
+      label: 'Uploaded'
     },
     createdBy: {
-      label: 'Imported by'
+      label: 'Uploaded by'
+    },
+    updated: {
+      label: 'Approved'
+    },
+    updatedBy: {
+      label: 'Approved by'
     },
     fileName: {
-      label: 'Uploaded file'
+      label: 'File'
+    },
+    summary: {
+      label: 'Date and uploaded file'
     },
     programme: {
       label: 'Programme'
     },
     type: {
       label: 'Type',
-      title: 'What type of records are you importing?',
+      title: 'What type of records are you uploading?',
       hint: {
         Cohort:
           'Records of children from a CHIS, local authority or school, used to create cohorts',
@@ -1973,7 +2026,7 @@ export const en = {
       label: 'Vaccination records'
     },
     patients: {
-      label: 'Child records'
+      label: 'Records'
     }
   },
   manual: {

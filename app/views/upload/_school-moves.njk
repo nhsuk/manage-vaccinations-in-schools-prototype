@@ -1,0 +1,44 @@
+{% set moveRows = [] %}
+{% for move in upload.moves %}
+  {% set moveRows = moveRows | push([
+    {
+      header: __("patient.fullNameAndNhsn.label"),
+      html: move.patient.formatted.fullNameAndNhsn
+    },
+    {
+      header: __("move.from_urn.label"),
+      html: move.formatted.from_urn
+    },
+    {
+      header: __("move.to_urn.label"),
+      html: move.formatted.to_urn
+    }
+  ]) %}
+{% endfor %}
+
+{{ appHeading({
+  title: __("upload.show.moves.title"),
+  level: 2,
+  size: "m",
+  summary: __mf("upload.show.moves." + upload.status, {
+    count: upload.moves.length
+  })
+}) }}
+
+{{ details({
+  classes: "nhsuk-expander",
+  summaryText: __mf("upload.show.moves.count", {
+    count: moveRows.length
+  }),
+  html: table({
+    id: "moves",
+    headingLevel: 2,
+    responsive: true,
+    head: [
+      { text: __("patient.fullNameAndNhsn.label") },
+      { text: __("move.from_urn.label") },
+      { text: __("move.to_urn.label") }
+    ],
+    rows: moveRows
+  })
+}) }}
