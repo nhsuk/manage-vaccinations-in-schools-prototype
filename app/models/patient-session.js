@@ -790,7 +790,7 @@ export class PatientSession {
     this.instruction_uuid = instruction.uuid
 
     this.patient.addEvent({
-      name: 'PSD instruction given',
+      name: 'PSD added',
       createdAt: instruction.createdAt,
       createdBy_uid: instruction.createdBy_uid,
       programme_ids: [this.programme_id]
