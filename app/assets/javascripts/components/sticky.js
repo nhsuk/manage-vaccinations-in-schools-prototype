@@ -1,15 +1,23 @@
-export const StickyComponent = class extends HTMLElement {
-  constructor() {
-    super()
+import { Component } from 'nhsuk-frontend'
+
+/**
+ * Sticky component
+ */
+export class Sticky extends Component {
+  /**
+   * @param {HTMLElement | null} $root - HTML element to use for component
+   */
+  constructor($root) {
+    super($root)
+
+    this.stickyElement = $root
     this.stickyElementStyle = null
     this.stickyElementTop = 0
 
     this.determineStickyState = this.determineStickyState.bind(this)
     this.throttledStickyState = this.throttle(this.determineStickyState, 100)
-  }
 
-  connectedCallback() {
-    this.stickyElementStyle = window.getComputedStyle(this)
+    this.stickyElementStyle = window.getComputedStyle($root)
     this.stickyElementTop = parseInt(this.stickyElementStyle.top, 10)
 
     window.addEventListener('scroll', this.throttledStickyState)
@@ -17,13 +25,17 @@ export const StickyComponent = class extends HTMLElement {
     this.determineStickyState()
   }
 
-  disconnectedCallback() {
-    window.removeEventListener('scroll', this.throttledStickyState)
-  }
+  /**
+   * Name for the component used when initialising using data-module attributes
+   */
+  static moduleName = 'app-sticky'
 
   determineStickyState() {
-    const currentTop = this.getBoundingClientRect().top
-    this.dataset.stuck = String(currentTop <= this.stickyElementTop)
+    const currentTop = this.stickyElement.getBoundingClientRect().top
+
+    this.stickyElement.dataset.stuck = String(
+      currentTop <= this.stickyElementTop
+    )
   }
 
   throttle(callback, limit) {
