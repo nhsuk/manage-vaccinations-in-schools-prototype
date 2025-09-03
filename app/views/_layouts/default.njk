@@ -27,10 +27,6 @@
   <script src="/assets/{{ assetsName }}.js" type="module"></script>
 {% endblock %}
 
-{% block bodyStart %}
-  <script>document.body.className += 'noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '';</script>
-{% endblock %}
-
 {% block header %}
   {{ appEnvironment(environment) if environment }}
   {{ header(headerOptions if headerOptions else {
