@@ -14,6 +14,8 @@ export class Sticky extends Component {
     this.stickyElementStyle = null
     this.stickyElementTop = 0
 
+    this.detailsElement = $root.closest('details')
+
     this.determineStickyState = this.determineStickyState.bind(this)
     this.throttledStickyState = this.throttle(this.determineStickyState, 100)
 
@@ -23,6 +25,13 @@ export class Sticky extends Component {
     window.addEventListener('scroll', this.throttledStickyState)
 
     this.determineStickyState()
+
+    if (this.detailsElement) {
+      this.detailsElement.addEventListener(
+        'toggle',
+        this.handleDetailsToggle.bind(this)
+      )
+    }
   }
 
   /**
@@ -30,12 +39,47 @@ export class Sticky extends Component {
    */
   static moduleName = 'app-sticky'
 
+  /**
+   * Determine sticky state
+   */
   determineStickyState() {
     const currentTop = this.stickyElement.getBoundingClientRect().top
 
     this.stickyElement.dataset.stuck = String(
       currentTop <= this.stickyElementTop
     )
+  }
+
+  /**
+   * Handle scroll position for expandable details elements
+   */
+  handleDetailsToggle() {
+    if (this.detailsElement.open) {
+      // Details is open - store current state
+      this.scrollPositionBeforeClose = window.scrollY
+      this.contentHeightBeforeClose = this.detailsElement.scrollHeight
+    } else {
+      // Details is closed - calculate and apply scroll adjustment
+      const currentScrollY = window.scrollY
+      const newContentHeight = this.detailsElement.scrollHeight
+      const heightDifference = this.contentHeightBeforeClose - newContentHeight
+
+      const elementTop =
+        this.stickyElement.getBoundingClientRect().top + window.scrollY
+
+      // If we’re scrolled past where the content used to be, adjust scroll
+      if (currentScrollY > elementTop && heightDifference > 0) {
+        const newScrollPosition = Math.max(
+          elementTop - this.stickyElementTop,
+          currentScrollY - heightDifference
+        )
+
+        window.scrollTo({
+          top: newScrollPosition,
+          behavior: 'smooth'
+        })
+      }
+    }
   }
 
   throttle(callback, limit) {
