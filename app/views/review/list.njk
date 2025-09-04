@@ -12,7 +12,7 @@
   }) }}
 
   {% if reviews.length %}
-    {% for upload in reviews %}
+    {% for upload in uploadsWithReviews %}
       {% set reviewRows = [] %}
       {% set type = "vaccination" if upload.type == UploadType.Report else "child" %}
       {% for patient in upload.duplicates %}

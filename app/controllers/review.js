@@ -33,7 +33,9 @@ export const reviewController = {
     const { data } = request.session
     const uploads = Upload.findAll(data)
 
-    response.locals.reviews = uploads
+    response.locals.reviews = uploads.flatMap((upload) => upload.duplicates)
+
+    response.locals.uploadsWithReviews = uploads
       .filter((upload) => upload.duplicates?.length > 0)
       .sort((a, b) => getDateValueDifference(b.createdAt, a.createdAt))
 
