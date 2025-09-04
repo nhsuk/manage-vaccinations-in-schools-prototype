@@ -233,13 +233,17 @@ export default () => {
         html += formatHealthAnswer(healthAnswer)
       }
 
-      const keyText = parentFacing
+      let keyText = parentFacing
         ? healthQuestions[key].label.replace('the child', 'your child')
-        : healthQuestions[key].label
+        : `<p class="nhsuk-body nhsuk-u-margin-bottom-1">${healthQuestions[key].label}</p>`
+
+      if (!parentFacing && healthQuestions[key].hint) {
+        keyText += `<p class="nhsuk-hint nhsuk-u-font-size-16 nhsuk-u-margin-bottom-2">${healthQuestions[key].hint}</p>`
+      }
 
       summaryRows.push({
         classes: undefined,
-        key: { text: keyText },
+        key: { html: keyText },
         value: { html },
         ...(edit && {
           actions: {
