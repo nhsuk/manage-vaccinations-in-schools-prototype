@@ -1907,27 +1907,27 @@ export const en = {
         count:
           '{count, plural, =0 {No new records} one {1 new record} other {# new records}}',
         [UploadStatus.Review]:
-          'This upload includes {count, plural, =0 {no new records} one {1 new record} other {# new records}} that are not currently in Mavis. If you approve the upload, these records will be added to Mavis.',
+          'This upload includes {count, plural, =0 {no new records that are} one {1 new record this is} other {# new records  that are}} not currently in Mavis. If you approve the upload, these records will be added to Mavis.',
         [UploadStatus.Approved]:
-          '{count, plural, =0 {No new records} one {1 new record} other {# new records}} were added to Mavis'
+          '{count, plural, =0 {No new records were} one {1 new record was} other {# new records were}} added to Mavis'
       },
       partial: {
         title: 'Records with a partial match',
         count:
           '{count, plural, =0 {No records} one {1 record} other {# records}} with a partial match',
         [UploadStatus.Review]:
-          'This upload includes {count, plural, =0 {no records} one {1 record} other {# records}} that partially match existing records in Mavis. If you approve the upload, they will be flagged as import issues for review.',
+          'This upload includes {count, plural, =0 {no records} one {1 record} other {# records}} that partially match existing records in Mavis. If you approve the upload, they will be flagged with import issues for review.',
         [UploadStatus.Approved]:
-          '{count, plural, =0 {No records} one {1 record} other {# records}} flagged as import issues for review'
+          '{count, plural, =0 {No records} one {1 record} other {# records}} flagged with import issues for review'
       },
       matched: {
         title: 'Records automatically matched',
         count:
           '{count, plural, =0 {No records} one {1 record} other {# records}} automatically matched',
         [UploadStatus.Review]:
-          'This upload includes {count, plural, =0 {no records} one {1 record} other {# records}} that already exist in Mavis. If you approve the upload, any additional information will be merged automatically with the existing records.',
+          'This upload includes {count, plural, =0 {no records that already exist} one {1 record that already exists} other {# records that already exist}} in Mavis. If you approve the upload, any additional information will be merged automatically with the existing records.',
         [UploadStatus.Approved]:
-          '{count, plural, =0 {No records} one {1 record} other {# records}} were matched to existing records in Mavis. Any additional information has been merged into the existing record.'
+          '{count, plural, =0 {No records were matched} one {1 record was matched} other {# records were matched}} to existing records in Mavis. Any additional information has been merged into the existing record.'
       },
       moves: {
         title: 'School moves',
