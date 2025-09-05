@@ -343,7 +343,12 @@ export const sessionController = {
     }
 
     // Filter by display option
-    for (const option of ['archived', 'hasMissingNhsNumber', 'post16']) {
+    for (const option of [
+      'archived',
+      'hasMissingNhsNumber',
+      'hasNoContactDetails',
+      'post16'
+    ]) {
       if (options?.includes(option)) {
         results = results.filter(({ patient }) => patient[option])
       }

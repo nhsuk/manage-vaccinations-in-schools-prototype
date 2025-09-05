@@ -1,3 +1,5 @@
+{% from "../_macros/parent-email.njk" import appParentEmail %}
+{% from "../_macros/parent-sms.njk" import appParentSms %}
 {% set isVaccinated = patientSession.report == PatientOutcome.Vaccinated %}
 
 {{ appHeading({
@@ -9,7 +11,9 @@
 {% set cardDescriptionHtml %}
   {# Description #}
   {% if not isVaccinated %}
-    {% if session.consentWindow == ConsentWindow.Opening %}
+    {% if patientSession.patient.hasNoContactDetails %}
+      {{ __("patientSession.hasNoContactDetails.description") | nhsukMarkdown }}
+    {% elif session.consentWindow == ConsentWindow.Opening %}
       {{ session.formatted.consentWindow | nhsukMarkdown }}
     {% elif session.consentWindow != ConsentWindow.Open %}
       {{ patientSession.status.consent.description | nhsukMarkdown }}
@@ -33,8 +37,8 @@
       classes: "nhsuk-button--secondary",
       text: __("patientSession.invite.label"),
       attributes: {
-        formmethod: patientSession.uri + "/new/invite",
-        formaction: "post"
+        formaction: patientSession.uri + "/new/invite",
+        formmethod: "post"
       }
     } if options.canInvite, {
       classes: "nhsuk-button--secondary",
@@ -62,27 +66,66 @@
     }) }}
   {% endif %}
 
-  {# Decision cards #}
-  {% if patientSession.responses | length %}
+  {% if patientSession.replies | length %}
+    {# Requests with responses or requests that couldn’t be delivered #}
     {{ appHeading({
       level: 4,
       size: "s",
-      title: __("patientSession.responses.label")
+      title: __("patientSession.replies.responses") if patientSession.responses.length > 0 else __("patientSession.replies.requests")
     }) }}
-    {% for consent in patientSession.responses %}
+
+    {% for reply in patientSession.replies %}
       {{ card({
         classes: "app-card--compact app-card--offset",
-        heading: consent.formatted.fullNameAndRelationship,
+        heading: reply.formatted.fullNameAndRelationship,
         headingLevel: 4,
-        href: consent.uri,
-        clickable: true,
+        href: reply.uri if reply.delivered,
+        clickable: true if reply.delivered,
         descriptionHtml: summaryList({
-          rows: summaryRows(consent, {
-            tel: {},
-            email: {},
+          rows: summaryRows(reply, {
+            tel: {
+              value: appParentSms(reply.parent, true)
+            },
+            email: {
+              value: appParentEmail(reply.parent, true)
+            },
             createdAt: {},
             decisionStatus: {},
             alternative: {}
+          })
+        })
+      }) }}
+    {% endfor %}
+  {% elif not patientSession.patient.hasNoContactDetails %}
+    {# Requests that have been sent but with no response yet #}
+    {# We don’t create replies so use parent details instead #}
+
+    {{ appHeading({
+      level: 4,
+      size: "s",
+      title: __("patientSession.replies.pending")
+    }) }}
+
+    {% for parent in patientSession.patient.parents %}
+      {{ card({
+        classes: "app-card--compact app-card--offset",
+        heading: parent.formatted.fullNameAndRelationship,
+        headingLevel: 4,
+        descriptionHtml: summaryList({
+          rows: summaryRows(parent, {
+            tel: {},
+            email: {},
+            createdAt: {},
+            decisionStatus: {
+              label: __("reply.decisionStatus.label"),
+              value: tag({
+                classes: "nhsuk-tag--white",
+                text: "Not sent"
+              } if session.consentWindow == ConsentWindow.Opening else {
+                classes: "nhsuk-tag--grey",
+                text: "No response"
+              })
+            }
           })
         })
       }) }}

@@ -103,6 +103,21 @@ export class Patient extends Child {
   }
 
   /**
+   * Has no parental contact details
+   *
+   * @returns {boolean} Has no parental details
+   */
+  get hasNoContactDetails() {
+    const thing =
+      !this.parent1?.email &&
+      !this.parent1?.tel &&
+      !this.parent2?.email &&
+      !this.parent2?.tel
+
+    return thing
+  }
+
+  /**
    * Get full name, formatted as LASTNAME, Firstname
    *
    * @returns {string} Full name

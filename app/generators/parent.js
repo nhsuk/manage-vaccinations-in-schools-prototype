@@ -42,10 +42,23 @@ export function generateParent(childLastName, isMum) {
   }
 
   // Contact details
-  const phoneNumber = '07### ######'.replace(/#+/g, (m) =>
-    faker.string.numeric(m.length)
-  )
-  const tel = faker.helpers.maybe(() => phoneNumber, { probability: 0.9 })
+  let email
+  const hasEmail = faker.datatype.boolean(0.8)
+  if (hasEmail) {
+    email = faker.internet.email({ firstName, lastName }).toLowerCase()
+  }
+  const emailStatus = faker.helpers.weightedArrayElement([
+    { value: NotifyEmailStatus.Delivered, weight: 100 },
+    { value: NotifyEmailStatus.Permanent, weight: 10 },
+    { value: NotifyEmailStatus.Temporary, weight: 5 },
+    { value: NotifyEmailStatus.Technical, weight: 1 }
+  ])
+
+  let tel
+  const hasTel = faker.datatype.boolean(0.9)
+  if (hasTel) {
+    tel = '07### ######'.replace(/#+/g, (m) => faker.string.numeric(m.length))
+  }
 
   const sms = faker.datatype.boolean(0.5)
   const smsStatus = faker.helpers.weightedArrayElement([
@@ -53,14 +66,6 @@ export function generateParent(childLastName, isMum) {
     { value: NotifySmsStatus.Permanent, weight: 10 },
     { value: NotifySmsStatus.Temporary, weight: 5 },
     { value: NotifySmsStatus.Technical, weight: 1 }
-  ])
-
-  const email = faker.internet.email({ firstName, lastName }).toLowerCase()
-  const emailStatus = faker.helpers.weightedArrayElement([
-    { value: NotifyEmailStatus.Delivered, weight: 100 },
-    { value: NotifyEmailStatus.Permanent, weight: 10 },
-    { value: NotifyEmailStatus.Temporary, weight: 5 },
-    { value: NotifyEmailStatus.Technical, weight: 1 }
   ])
 
   const contactPreference = faker.datatype.boolean(0.2)
@@ -71,9 +76,11 @@ export function generateParent(childLastName, isMum) {
     ...(relationship === ParentalRelationship.Other && {
       relationshipOther: 'Foster parent'
     }),
-    email,
-    emailStatus,
-    ...(tel && {
+    ...(hasEmail && {
+      email,
+      emailStatus
+    }),
+    ...(hasTel && {
       tel,
       sms,
       ...(sms && { smsStatus }),
