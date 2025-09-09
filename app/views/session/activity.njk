@@ -66,6 +66,21 @@
           html: notices | nhsukList
         }) if session.consents.length }}
 
+        {{ details({
+          classes: "nhsuk-expander app-expander--compact nhsuk-u-margin-top-3",
+          summaryText: "Your vaccinations today",
+          html: table({
+            responsive: true,
+            firstCellIsHeader: false,
+            head: [
+              { text: __("vaccine.label") },
+              { text: __("user.vaccinations.label") },
+              { text: __("defaultBatch.label") }
+            ],
+            rows: vaccinationTableRows(session)
+          }) if view == "record"
+        }) if view == "record" and session.isActive }}
+
         {% if data[view] and data[view] != "none" and data[view] != Activity.Record %}
           {% set title = __("patientSession." + view + ".label") + ": " + data[view] %}
         {% else %}
@@ -95,21 +110,6 @@
         {{ insetText({
           html: instructHtml
         }) if view == "instruct" and session.activity.instruct and account.canPrescribe }}
-
-        {{ details({
-          classes: "nhsuk-expander app-expander--compact",
-          summaryText: "Your vaccinations today",
-          html: table({
-            responsive: true,
-            firstCellIsHeader: false,
-            head: [
-              { text: __("vaccine.label") },
-              { text: __("user.vaccinations.label") },
-              { text: __("defaultBatch.label") }
-            ],
-            rows: vaccinationTableRows(session)
-          }) if view == "record"
-        }) if view == "record" and session.isActive }}
 
         {% for patientSession in results.page %}
           {% set statusHtml %}
