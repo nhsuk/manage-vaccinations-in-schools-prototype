@@ -4,59 +4,6 @@
 
 {% set title = session.location.name + " (" + session.academicYear + ")" %}
 
-{% set sessionActivityRows = [] %}
-{% if session.activity.addNhsNumber %}
-  {% set sessionActivityRows = sessionActivityRows | push({
-    key: {
-      text: __("session.activity.addNhsNumber.label")
-    },
-    value: {
-      html: link(session.uri + "/consent?options=hasMissingNhsNumber", __mf("session.activity.addNhsNumber.count", { count: session.activity.addNhsNumber }))
-    }
-  }) %}
-{% endif %}
-
-{% if session.consents.length %}
-  {% set sessionActivityRows = sessionActivityRows | push({
-    key: {
-      text: __("session.activity.matchResponses.label")
-    },
-    value: {
-      html: link(session.uri + "/consents", __mf("consent.count", { count: session.consents.length }))
-    }
-  }) %}
-{% endif %}
-
-{% if sessionActivityRow("getConsent") %}
-  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("getConsent")) %}
-{% endif %}
-
-{% if sessionActivityRow("followUp") %}
-  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("followUp")) %}
-{% endif %}
-
-{% if sessionActivityRow("resolveConsent") %}
-  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("resolveConsent")) %}
-{% endif %}
-
-{% if sessionActivityRow("triage") %}
-  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("triage")) %}
-{% endif %}
-
-{% if sessionActivityRow("instruct") and session.psdProtocol %}
-  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("instruct")) %}
-{% endif %}
-
-{% if sessionActivityRow("register") and session.isActive %}
-  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("register")) %}
-{% endif %}
-
-{% if sessionActivityRow("record") and session.isActive %}
-  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("record")) %}
-{% endif %}
-
-{% set cardColumnWidth = "one-third" if session.offersAlternativeVaccine or session.programmes.length != 1 else "one-half" %}
-
 {% block beforeContent %}
   {{ breadcrumb({
     items: [{
@@ -76,185 +23,34 @@
     view: "show"
   }) }}
 
-  {% set cardDescriptionHtml %}
-    {{ session.formatted.status | nhsukMarkdown }}
+  {% include "session/_session-programme-summary.njk" %}
 
-    {% if not session.isUnplanned %}
-      {{ appHeading({
-        classes: "nhsuk-u-margin-bottom-2",
-        level: 4,
-        size: "s",
-        title: __("session.dates.label")
-      }) }}
+  {% if not session.isUnplanned %}
+    {% include "session/_session-consent-summary.njk" %}
+  {% endif %}
 
-      {{ session.formatted.dates | safe }}
+  {% include "session/_session-dates-summary.njk" %}
 
-      {{ session.formatted.consentWindow | nhsukMarkdown if session.isPlanned }}
-    {% endif %}
+  {% if not session.isUnplanned %}
+    {% include "session/_session-activity-summary.njk" %}
+  {% endif %}
 
-    {{ appHeading({
-      classes: "nhsuk-u-margin-bottom-3",
-      level: 4,
-      size: "s",
-      title: __("session.show.summary")
+  {% call card({
+    heading: __("session.location.title"),
+    headingLevel: 3
+  }) %}
+    {{ summaryList({
+      rows: summaryRows(session, {
+        location: {},
+        school_urn: {},
+        consentForms: {}
+      })
     }) }}
 
-    <div class="nhsuk-grid-row nhsuk-card-group">
-      <div class="nhsuk-grid-column-{{ cardColumnWidth }} nhsuk-card-group__item">
-        {{ appDataCard({
-          heading: __("session.patients.label"),
-          compact: true,
-          data: session.patients.length
-        }) }}
-      </div>
-    {% if session.offersAlternativeVaccine %}
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ appDataCard({
-          heading: __("session.activity.vaccinatedWith", {
-            programme: session.primaryProgrammes[0],
-            vaccineMethod: VaccineMethod.Nasal | lower
-          }),
-          compact: true,
-          data: session.activity.reportNasalSprays
-        }) }}
-      </div>
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ appDataCard({
-          heading: __("session.activity.vaccinatedWith", {
-            programme: session.primaryProgrammes[0],
-            vaccineMethod: VaccineMethod.Injection | lower
-          }),
-          compact: true,
-          data: session.activity.reportInjections
-        }) }}
-      </div>
-    {% else %}
-      {% for programme in session.primaryProgrammes %}
-        <div class="nhsuk-grid-column-{{ cardColumnWidth }} nhsuk-card-group__item">
-          {{ appDataCard({
-            heading: __("session.activity.vaccinated", {
-              programme: programme
-            }),
-            compact: true,
-            data: session.activity.report
-          }) }}
-        </div>
-      {% endfor %}
-    {% endif %}
-    {% if session.isPlanned %}
-      <div class="nhsuk-grid-column-{{ cardColumnWidth }} nhsuk-card-group__item">
-        {{ appDataCard({
-          heading: ConsentOutcome.Refused,
-          colour: "red",
-          compact: true,
-          data: session.activity.checkRefusal
-        }) }}
-      </div>
-    {% endif %}
-    {% if session.isPlanned and session.offersAlternativeVaccine %}
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ appDataCard({
-          heading: __("session.activity.consentedWith", {
-            programme: session.primaryProgrammes[0],
-            vaccineMethod: VaccineMethod.Nasal | lower
-          }),
-          colour: "aqua-green",
-          compact: true,
-          data: session.activity.checkGivenForNasalSpray
-        }) }}
-      </div>
-      <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-        {{ appDataCard({
-          heading: __("session.activity.consentedWith", {
-            programme: session.primaryProgrammes[0],
-            vaccineMethod: VaccineMethod.Injection | lower
-          }),
-          colour: "aqua-green",
-          compact: true,
-          data: session.activity.checkGivenForInjection
-        }) }}
-      </div>
-    {% elif session.isPlanned %}
-      {% for programme in session.primaryProgrammes %}
-        <div class="nhsuk-grid-column-{{ cardColumnWidth }} nhsuk-card-group__item">
-          {{ appDataCard({
-            heading: __("session.activity.consented", {
-              programme: programme
-            }),
-            colour: "aqua-green",
-            compact: true,
-            data: session.activity.checkGiven
-          }) }}
-        </div>
-      {% endfor %}
-    {% endif %}
-    </div>
-
-    {{ __mf("session.activity.recordVaccination.count", {
-      count: session.activity.recordVaccination
-    }) | nhsukMarkdown }}
-
-    {% if session.isPlanned and sessionActivityRows.length %}
-      {{ appHeading({
-        classes: "nhsuk-u-margin-bottom-2",
-        level: 4,
-        size: "s",
-        title: __("session.activity.label")
-      }) }}
-
-      {{ summaryList({
-        rows: sessionActivityRows
-      }) }}
-    {% endif %}
-
-    {{ appButtonGroup({
-      buttons: [{
-        classes: "nhsuk-button--secondary",
-        text: __("session.schedule.title") if session.isUnplanned else __("session.edit.title"),
-        href: session.uri + "/edit"
-      }, {
-        classes: "nhsuk-button--secondary",
-        text: __("session.close.title"),
-        href: session.uri + "/close"
-      } if session.isCompleted],
-      links: [{
-        text: __("session.offline.title"),
-        href: session.uri + "/offline"
-      } if not session.isUnplanned]
-    }) }}
-  {% endset %}
-
-  <div class="nhsuk-grid-row">
-    <div class="nhsuk-grid-column-three-quarters">
-      {{ card({
-        heading: session.type,
-        headingLevel: 3,
-        descriptionHtml: cardDescriptionHtml
-      }) }}
-    </div>
-
-    <div class="nhsuk-grid-column-one-quarter">
-      {{ appHeading({
-        classes: "nhsuk-u-margin-top-5",
-        level: 3,
-        size: "s",
-        title: session.location.name
-      }) }}
-
-      {{ button({
-        classes: "nhsuk-button--secondary",
-        href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn,
-        text: __("session.upload-class-list.title")
-      }) if session.type == SessionType.School }}
-
-      {{ summaryList({
-        classes: "nhsuk-summary-list--no-border app-summary-list--full-width",
-        rows: summaryRows(session, {
-          school_urn: {},
-          address: {},
-          consentForms: {}
-        })
-      }) }}
-    </div>
-  </div>
+    {{ button({
+      classes: "nhsuk-button--secondary",
+      href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn,
+      text: __("session.upload-class-list.title")
+    }) if session.type == SessionType.School }}
+  {% endcall %}
 {% endblock %}
