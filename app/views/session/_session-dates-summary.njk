@@ -1,0 +1,137 @@
+{% call card({
+  heading: "Session in progress" if session.isActive else session.status,
+  headingLevel: 3
+}) %}
+  {% if session.isActive or session.isCompleted %}
+    {% set rows = [] %}
+    {# Add a row for each session date #}
+    {% for dateShort in session.formatted.datesShort %}
+      {% set dateRow = [{
+        header: __("session.date.label"),
+        html: dateShort
+      }] %}
+      {% if session.offersAlternativeVaccine %}
+        {% set dateRow = dateRow.concat([{
+          header: __("session.activity.vaccinatedWith", {
+            programme: session.primaryProgrammes[0],
+            vaccineMethod: VaccineMethod.Nasal | lower
+          }) | safe,
+          text: session.activity.reportNasalSprays if loop.first else 0,
+          format: "numeric"
+        }, {
+          header: __("session.activity.vaccinatedWith", {
+            programme: session.primaryProgrammes[0],
+            vaccineMethod: VaccineMethod.Injection | lower
+          }) | safe,
+          text: session.activity.reportInjections if loop.first else 0,
+          format: "numeric"
+        }]) %}
+      {% else %}
+        {% for programme in session.primaryProgrammes %}
+          {% set dateRow = dateRow.concat([{
+            header: __("session.activity.vaccinated", {
+              programme: programme
+            }) | safe,
+            text: session.activity.report if loop.first else 0,
+            format: "numeric"
+          }]) %}
+        {% endfor %}
+      {% endif %}
+      {% set rows = rows | push(dateRow) %}
+    {% endfor %}
+
+    {# Add a row for total across all session dates #}
+    {% set totalRow = [{
+      header: "All dates",
+      text: "Total"
+    }] %}
+    {% if session.offersAlternativeVaccine %}
+      {% set totalRow = totalRow.concat([{
+        header: __("session.activity.vaccinatedWith", {
+          programme: session.primaryProgrammes[0],
+          vaccineMethod: VaccineMethod.Nasal | lower
+        }) | safe,
+        html: "<strong>" + session.activity.reportNasalSprays + "</strong>",
+        format: "numeric"
+      }, {
+        header: __("session.activity.vaccinatedWith", {
+          programme: session.primaryProgrammes[0],
+          vaccineMethod: VaccineMethod.Injection | lower
+        }) | safe,
+        html: "<strong>" + session.activity.reportInjections + "</strong>",
+        format: "numeric"
+      }]) %}
+    {% else %}
+      {% for programme in session.primaryProgrammes %}
+        {% set totalRow = totalRow.concat([{
+          header: __("session.activity.vaccinated", {
+            programme: programme
+          }) | safe,
+          html: "<strong>" + session.activity.report + "</strong>",
+          format: "numeric"
+        }]) %}
+      {% endfor %}
+    {% endif %}
+    {% set rows = rows | push(totalRow) %}
+
+    {# Head row #}
+    {% set head = [{
+      text: __("session.date.label")
+    }] %}
+    {% if session.offersAlternativeVaccine %}
+      {% set head = head.concat([{
+        text: __("session.activity.vaccinatedWith", {
+          programme: session.primaryProgrammes[0],
+          vaccineMethod: VaccineMethod.Nasal | lower
+        }),
+        format: "numeric"
+      }, {
+        text: __("session.activity.vaccinatedWith", {
+          programme: session.primaryProgrammes[0],
+          vaccineMethod: VaccineMethod.Injection | lower
+        }),
+        format: "numeric"
+      }]) %}
+    {% else %}
+      {% for programme in session.primaryProgrammes %}
+        {% set head = head.concat([{
+          text: __("session.activity.vaccinated", {
+            programme: programme
+          }) | safe,
+          format: "numeric"
+        }]) %}
+      {% endfor %}
+    {% endif %}
+
+    {{ table({
+      id: "dates",
+      responsive: true,
+      head: head,
+      rows: rows
+    }) }}
+  {% else %}
+    {{ __mf("session.activity.recordVaccination.count", {
+      count: session.activity.recordVaccination
+    }) if session.isActive else session.formatted.dates | safe }}
+  {% endif %}
+
+  {{ appButtonGroup({
+    buttons: [
+      {
+        classes: "nhsuk-button--secondary",
+        text: __("session.schedule.title") if session.isUnplanned else __("session.edit.title"),
+        href: session.uri + "/edit"
+      },
+      {
+        classes: "nhsuk-button--secondary",
+        text: __("session.close.title"),
+        href: session.uri + "/close"
+      } if session.isCompleted
+    ],
+    links: [{
+      classes: "nhsuk-button--secondary",
+      text: __("session.offline.title"),
+      href: session.uri + "/offline"
+    }] if session.isPlanned
+  }) }}
+{% endcall %}

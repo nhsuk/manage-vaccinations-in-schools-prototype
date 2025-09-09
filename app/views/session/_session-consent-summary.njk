@@ -1,0 +1,50 @@
+{{ appHeading({
+  level: 3,
+  size: "m",
+  title: __("session.consent.label"),
+  summary: session.formatted.consentWindow if session.type == SessionType.School
+}) }}
+
+<div class="nhsuk-grid-row nhsuk-card-group">
+{% if session.offersAlternativeVaccine %}
+  <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+    {{ appDataCard({
+      heading: __("session.activity.consentedWith", {
+        programme: session.primaryProgrammes[0],
+        vaccineMethod: VaccineMethod.Nasal | lower
+      }),
+      data: session.activity.checkGivenForNasalSpray,
+      href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForNasalSpray
+    }) }}
+  </div>
+  <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+    {{ appDataCard({
+      heading: __("session.activity.consentedWith", {
+        programme: session.primaryProgrammes[0],
+        vaccineMethod: VaccineMethod.Injection | lower
+      }),
+      data: session.activity.checkGivenForInjection,
+      href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForInjection
+    }) }}
+  </div>
+{% else %}
+  {% for programme in session.primaryProgrammes %}
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ appDataCard({
+        heading: __("session.activity.consented", {
+          programme: programme
+        }),
+        data: session.activity.checkGiven,
+        href: session.uri + "/consent?consent=" + ConsentOutcome.Given
+      }) }}
+    </div>
+  {% endfor %}
+{% endif %}
+  <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+    {{ appDataCard({
+      heading: ConsentOutcome.Refused,
+      data: session.activity.checkRefusal,
+      href: session.uri + "/consent?consent=" + ConsentOutcome.Refused
+    }) }}
+  </div>
+</div>

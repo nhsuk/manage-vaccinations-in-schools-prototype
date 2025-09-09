@@ -184,7 +184,7 @@ export const ParentalRelationship = {
 export const PatientOutcome = {
   Vaccinated: 'Vaccinated',
   CouldNotVaccinate: 'Could not vaccinate',
-  NoOutcomeYet: 'No outcome yet'
+  NoOutcomeYet: 'No outcome'
 }
 
 /**
@@ -256,7 +256,7 @@ export const ProgrammePreset = {
     active: true,
     adolescent: true,
     primaryProgrammeTypes: [ProgrammeType.MenACWY, ProgrammeType.TdIPV],
-    catchupProgrammeTypes: [ProgrammeType.HPV],
+    // catchupProgrammeTypes: [ProgrammeType.HPV],
     term: SchoolTerm.Summer
   }
 }

@@ -1412,8 +1412,7 @@ export const en = {
       label: 'Find session'
     },
     show: {
-      label: 'Overview',
-      summary: 'Session overview'
+      label: 'Overview'
     },
     new: {
       label: 'Add a new session',
@@ -1556,6 +1555,9 @@ export const en = {
       title: 'Schedule sessions',
       description: 'Add dates for this school.'
     },
+    cohort: {
+      label: 'Eligible cohort'
+    },
     patients: {
       label: 'Children',
       count:
@@ -1684,7 +1686,8 @@ export const en = {
       title: 'Where is this community clinic taking place?'
     },
     location: {
-      label: 'Location'
+      label: 'Location',
+      title: 'About this location'
     },
     programmes: {
       label: 'Programmes',
