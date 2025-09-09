@@ -1,0 +1,40 @@
+{% set patientRows = [] %}
+{% for patient in upload.patients %}
+  {% set patientRows = patientRows | push([
+    {
+      header: __("patient.firstName.label"),
+      html: patient.lastName
+    },
+    {
+      header: __("patient.lastName.label"),
+      html: patient.firstName
+    },
+    {
+      header: __("patient.dob.label"),
+      html: patient.formatted.dob
+    },
+    {
+      header: __("patient.postalCode.label"),
+      text: patient.postalCode
+    }
+  ]) %}
+{% endfor %}
+
+{{ details({
+  classes: "nhsuk-expander",
+  summaryText: __mf("upload.failed.count", {
+    count: patientRows.length
+  }),
+  html: table({
+    id: "failed",
+    headingLevel: 2,
+    responsive: true,
+    head: [
+      { text: __("patient.firstName.label") },
+      { text: __("patient.lastName.label") },
+      { text: __("patient.dob.label") },
+      { text: __("patient.postalCode.label") }
+    ],
+    rows: patientRows
+  })
+}) | replace('class="nhsuk-details__summary"', 'class="nhsuk-details__summary" data-module="app-sticky"') }}

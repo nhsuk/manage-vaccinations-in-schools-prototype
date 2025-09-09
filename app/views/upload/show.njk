@@ -137,12 +137,15 @@
     {% endset %}
 
     {{ card({
+      classes: "nhsuk-u-margin-bottom-6",
       heading: __("upload.failed.title"),
       headingClasses: "nhsuk-heading-m app-card__heading--red",
       headingLevel: 2,
       descriptionHtml: cardDescriptionHtml,
       feature: true
     }) }}
+
+    {% include "upload/_failed-records.njk" %}
   {% endif %}
 
   {% if upload.patients.length > 0 and upload.status == UploadStatus.Review %}

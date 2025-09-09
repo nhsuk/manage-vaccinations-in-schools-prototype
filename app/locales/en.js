@@ -1989,7 +1989,9 @@ export const en = {
     failed: {
       title: 'Too many records could not be matched',
       description:
-        'The records could not be imported as an unusually low number of records were matched to PDS (spine). PDS successfully matched only 60 records, a 10% match rate.\n\nReview your file and try uploading it again.'
+        'The records could not be imported as an unusually low number of records were matched to PDS (spine). PDS successfully matched only 60 records, a 10% match rate.\n\nReview your file and try uploading it again.',
+      count:
+        '{count, plural, =0 {No unmatched records} one {1 unmatched record} other {# unmatched records}}'
     },
     id: {
       label: 'ID'
