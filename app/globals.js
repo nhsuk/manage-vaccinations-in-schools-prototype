@@ -6,7 +6,6 @@ import {
   Activity,
   ConsentOutcome,
   InstructionOutcome,
-  RegistrationOutcome,
   ScreenOutcome
 } from './enums.js'
 import { School } from './models/school.js'
@@ -320,7 +319,7 @@ export default () => {
       getConsent: {
         key: 'consent',
         value: ConsentOutcome.NoResponse,
-        action: 'reminders'
+        ...(!session.isCompleted && { action: 'reminders' })
       },
       followUp: {
         key: 'consent',
@@ -339,10 +338,6 @@ export default () => {
         value: InstructionOutcome.Needed,
         ...(account.canPrescribe && { action: 'instructions' })
       },
-      register: {
-        key: 'register',
-        value: RegistrationOutcome.Pending
-      },
       record: {
         key: 'record',
         value: Activity.Record,
@@ -352,6 +347,7 @@ export default () => {
 
     const { key, value, action, showProgrammes } = activities[activity]
 
+    let totalCount = 0
     const links = []
     if (showProgrammes) {
       for (const { nameSentenceCase, id } of session.programmes) {
@@ -363,6 +359,8 @@ export default () => {
         params.append('programme_id', id)
 
         const count = getSessionActivityCount(session, filters)
+        totalCount += count
+
         const label = __mf(`session.activity.${activity}.programmeCount`, {
           count,
           nameSentenceCase
@@ -381,6 +379,8 @@ export default () => {
       params.append(key, value)
 
       const count = getSessionActivityCount(session, filters)
+      totalCount += count
+
       const label = __mf(`session.activity.${activity}.count`, { count })
 
       if (count === 0) {
@@ -391,7 +391,7 @@ export default () => {
     }
 
     return (
-      links.length > 0 && {
+      totalCount > 0 && {
         key: {
           text: __(`session.activity.${activity}.label`)
         },
