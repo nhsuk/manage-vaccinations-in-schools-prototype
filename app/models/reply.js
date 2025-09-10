@@ -356,10 +356,17 @@ export class Reply {
         false
       )
     } else if (this.programme?.alternativeVaccine) {
-      const vaccineMethod =
-        this.decision === ReplyDecision.OnlyFluInjection
-          ? VaccineMethod.Injection
-          : VaccineMethod.Nasal
+      let vaccineMethod
+      switch (this.decision) {
+        case ReplyDecision.OnlyFluInjection:
+          vaccineMethod = VaccineMethod.Injection
+          break
+        case ReplyDecision.Given:
+          vaccineMethod = VaccineMethod.Nasal
+          break
+        default:
+          vaccineMethod = ''
+      }
 
       decisionStatus = formatWithSecondaryText(
         formatTag(this.status),
