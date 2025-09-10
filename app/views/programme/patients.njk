@@ -65,8 +65,12 @@
             rows: summaryRows(patientSession, {
               dob: {},
               yearGroup: {},
-              consent: {},
-              screen: {},
+              consent: {
+                value: patientSession.formatted.status.consent
+              },
+              screen: {
+                value: patientSession.formatted.status.screen
+              },
               status: {
                 label: __("patientSession.report.label"),
                 value: patientSession.formatted.status.report
