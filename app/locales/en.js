@@ -994,7 +994,7 @@ export const en = {
       label: 'Session outcome'
     },
     report: {
-      label: 'Programme outcome'
+      label: 'Outcome'
     },
     nextActivity: {
       label: 'Action required'
@@ -1478,8 +1478,8 @@ export const en = {
       title: 'Review session outcomes'
     },
     report: {
-      label: 'Programme outcome',
-      title: 'Programme outcome'
+      label: 'Outcome',
+      title: 'Outcome'
     },
     delegation: {
       title: 'Delegation'
@@ -1557,9 +1557,9 @@ export const en = {
       description: 'Add dates for this school.'
     },
     patients: {
-      label: 'Cohort',
+      label: 'Children',
       count:
-        '{count, plural, =0 {No children in session cohort} one {# child in session cohort} other {# children in session cohort}}'
+        '{count, plural, =0 {No children} one {# child} other {# children}}'
     },
     activity: {
       label: 'Action required',

@@ -16,6 +16,11 @@
         current: params.view == "show"
       },
       {
+        text: __("session.patients.label"),
+        href: params.session.uri + "/report",
+        current: params.view == "report"
+      },
+      {
         text: __("session.consent.label"),
         href: params.session.uri + "/consent",
         current: params.view == "consent"
@@ -39,11 +44,6 @@
         text: __("session.record.label"),
         href: params.session.uri + "/record",
         current: params.view == "record"
-      },
-      {
-        text: __("session.outcome.label"),
-        href: params.session.uri + "/outcome",
-        current: params.view == "outcome"
       }
     ]
   }) if not params.session.isUnplanned }}

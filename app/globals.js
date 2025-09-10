@@ -166,13 +166,28 @@ export default () => {
   }
 
   /**
-   * Get form field items for a given outcome Enum
+   * Get checkbox items for a given Enum
    *
    * @param {object} Enum - Enumerable name
    * @param {string} selected - Selected value
-   * @returns {object} Form field items
+   * @returns {object} Checkbox items
    */
-  globals.outcomeItems = function (Enum, selected) {
+  globals.checkboxFilterItems = function (Enum, selected) {
+    return Object.values(Enum).map((value) => ({
+      text: value,
+      value,
+      checked: value === selected
+    }))
+  }
+
+  /**
+   * Get radio items for a given Enum
+   *
+   * @param {object} Enum - Enumerable name
+   * @param {string} selected - Selected value
+   * @returns {object} Radio items
+   */
+  globals.radioFilterItems = function (Enum, selected) {
     return [
       {
         text: 'Any',

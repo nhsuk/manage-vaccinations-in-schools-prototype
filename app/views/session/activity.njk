@@ -42,8 +42,8 @@
       <app-auto-submit class="app-grid-column-filters">
         {{ appPatientSearch({
           clear: session.uri + "/" + view,
-          status: view if view != "record" and view != "consent",
-          statuses: view if view == "consent"
+          checkboxFilters: checkboxFilters,
+          radioFilters: radioFilters
         }) }}
       </app-auto-submit>
 
@@ -141,16 +141,20 @@
                 vaccineMethod: {
                   label: __("patientSession.vaccineMethod.label"),
                   value: patientSession.formatted.vaccineMethod
-                } if vaccineMethodItems,
+                } if session.offersAlternativeVaccine and view == "register" or view == "record",
                 instruct: {
                   label: __("patientSession.instruct.label"),
                   value: patientSession.formatted.status.instruct
-                } if patientSession.instruct and view != "instruct" and view != "consent",
+                } if patientSession.instruct and view != "instruct",
                 status: {
                   label: __("patientSession." + view + ".label"),
                   value: statusHtml,
                   href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.register != RegistrationOutcome.Pending
                 } if view != "record",
+                report: {
+                  label: __("patientSession.report.label"),
+                  value: patientSession.formatted.status.report
+                } if view == "register",
                 notes: {
                   label: __("patientSession.pinnedNote.label"),
                   value: appEvent({

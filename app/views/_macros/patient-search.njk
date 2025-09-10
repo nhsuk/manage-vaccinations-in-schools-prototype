@@ -49,65 +49,20 @@
       items: programmeItems
     }) if programmeItems }}
 
-    {{ radios({
-      fieldset: {
-        legend: {
-          classes: "nhsuk-fieldset__legend--s",
-          text: __("patientSession.nextActivity.label")
-        }
-      },
-      id: "nextActivity",
-      name: "nextActivity",
-      items: nextActivityItems
-    }) if nextActivityItems }}
+    {% for name, enums in params.checkboxFilters %}
+      {{ checkboxes({
+        fieldset: {
+          legend: {
+            classes: "nhsuk-fieldset__legend--s",
+            text: __("patientSession." + name + ".label")
+          }
+        },
+        items: checkboxFilterItems(enums, data[name]),
+        decorate: name
+      }) if enums }}
+    {% endfor %}
 
-    {{ radios({
-      fieldset: {
-        legend: {
-          classes: "nhsuk-fieldset__legend--s",
-          text: __("patientSession.vaccineMethod.label")
-        }
-      },
-      id: "vaccineMethod",
-      name: "vaccineMethod",
-      items: vaccineMethodItems
-    }) if vaccineMethodItems }}
-
-    {{ radios({
-      fieldset: {
-        legend: {
-          classes: "nhsuk-fieldset__legend--s",
-          text: __("patientSession.instruct.label")
-        }
-      },
-      id: "instruct",
-      name: "instruct",
-      items: instructItems
-    }) if instructItems }}
-
-    {{ checkboxes({
-      fieldset: {
-        legend: {
-          classes: "nhsuk-fieldset__legend--s",
-          text: __("patientSession." + params.statuses + ".label")
-        }
-      },
-      items: statusesItems,
-      decorate: params.statuses
-    }) if params.statuses }}
-
-    {{ radios({
-      fieldset: {
-        legend: {
-          classes: "nhsuk-fieldset__legend--s",
-          text: __("patientSession." + params.status + ".label")
-        }
-      },
-      items: statusItems,
-      decorate: params.status
-    }) if params.status }}
-
-    {% for name, enums in params.outcomes %}
+    {% for name, enums in params.radioFilters %}
       {{ radios({
         fieldset: {
           legend: {
@@ -115,9 +70,9 @@
             text: __("patientSession." + name + ".label")
           }
         },
-        items: outcomeItems(enums, data[name]),
+        items: radioFilterItems(enums, data[name]),
         decorate: name
-      }) }}
+      }) if enums }}
     {% endfor %}
 
     {{ checkboxes({

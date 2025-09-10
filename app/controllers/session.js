@@ -10,7 +10,6 @@ import {
   RegistrationOutcome,
   ScreenOutcome,
   SessionType,
-  VaccinationOutcome,
   VaccineMethod
 } from '../enums.js'
 import { Clinic } from '../models/clinic.js'
@@ -54,7 +53,8 @@ export const sessionController = {
         'instruct',
         'register',
         'record',
-        'outcome'
+        'outcome',
+        'report'
       ].includes(view)
     ) {
       view = 'activity'
@@ -317,10 +317,11 @@ export const sessionController = {
       instruct: request.query.instruct || 'none',
       register: request.query.register || 'none',
       record: 'none',
-      outcome: request.query.outcome || 'none'
+      outcome: request.query.outcome || 'none',
+      report: request.query.report || 'none'
     }
 
-    for (const activity of ['screen', 'instruct', 'register', 'outcome']) {
+    for (const activity of ['screen', 'instruct', 'register', 'report']) {
       if (activity === view && filters[view] !== 'none') {
         results = results.filter(
           (patientSession) => patientSession[view] === filters[view]
@@ -386,109 +387,46 @@ export const sessionController = {
       }))
     }
 
-    // Vaccination method and instruction outcome filter options
-    // (if session administering alternative)
-    if (
-      session.offersAlternativeVaccine &&
-      ['register', 'record', 'outcome'].includes(view)
-    ) {
-      response.locals.vaccineMethodItems = [
-        {
-          text: 'Any',
-          value: 'none',
-          checked: !vaccineMethod || vaccineMethod === 'none'
-        },
-        ...Object.values(VaccineMethod).map((value) => ({
-          text: value,
-          value,
-          checked: vaccineMethod === value
-        }))
-      ]
-
-      response.locals.instructItems = [
-        {
-          text: 'Any',
-          value: 'none',
-          checked: !instruct || instruct === 'none'
-        },
-        ...Object.values(InstructionOutcome).map((value) => ({
-          text: value,
-          value,
-          checked: instruct === value
-        }))
-      ]
+    // Checkbox filter options (select many)
+    const checkboxFilters = {
+      consent: {
+        consent: session.offersAlternativeVaccine
+          ? Object.values(ConsentOutcome).filter(
+              (outcome) => outcome !== ConsentOutcome.Given
+            )
+          : ConsentOutcome
+      }
     }
 
-    // Consent status filter options (select many)
-    if (view === 'consent') {
-      const consentOutcomes = session.offersAlternativeVaccine
-        ? Object.values(ConsentOutcome).filter(
-            (outcome) => outcome !== ConsentOutcome.Given
-          )
-        : ConsentOutcome
+    response.locals.checkboxFilters = checkboxFilters[view]
 
-      response.locals.statusesItems = Object.values(consentOutcomes).map(
-        (value) => ({
-          text: value,
-          value,
-          checked: request.query.consent === value
-        })
-      )
-    }
-
-    // Screen/register/outcome status filter options (select one)
-    for (const activity of ['screen', 'instruct', 'register', 'outcome']) {
-      const screenOutcomes = session.offersAlternativeVaccine
-        ? Object.values(ScreenOutcome).filter(
-            (value) => value !== ScreenOutcome.Vaccinate
-          )
-        : ScreenOutcome
-
-      const statusItems = {
-        screen: screenOutcomes,
-        instruct: InstructionOutcome,
+    // Radio filter options (select one)
+    const radioFilters = {
+      screen: {
+        screen: session.offersAlternativeVaccine
+          ? Object.values(ScreenOutcome).filter(
+              (value) => value !== ScreenOutcome.Vaccinate
+            )
+          : ScreenOutcome
+      },
+      instruct: {
+        instruct: InstructionOutcome
+      },
+      register: {
         register: RegistrationOutcome,
-        outcome: VaccinationOutcome
-      }
-
-      if (view === activity && statusItems[view]) {
-        response.locals.statusItems = [
-          {
-            text: 'Any',
-            value: 'none',
-            checked: filters[view] === 'none'
-          },
-          ...Object.values(statusItems[view]).map((value) => ({
-            text: value,
-            value,
-            checked: filters[view] === value
-          }))
-        ]
+        vaccineMethod: session.offersAlternativeVaccine && VaccineMethod,
+        instruct: session.psdProtocol && InstructionOutcome,
+        report: PatientOutcome
+      },
+      record: {
+        vaccineMethod: session.offersAlternativeVaccine && VaccineMethod
+      },
+      report: {
+        report: PatientOutcome
       }
     }
 
-    // Next activity
-    if (view === 'register' || view === 'outcome') {
-      const nextActivityOutcomes = Object.values(Activity).filter(
-        (value) =>
-          ![Activity.Register, Activity.Report, Activity.DoNotRecord].includes(
-            value
-          )
-      )
-
-      response.locals.nextActivityItems = [
-        {
-          text: 'Any',
-          value: 'none',
-          checked: !nextActivity || nextActivity === 'none'
-        },
-        ...Object.values(nextActivityOutcomes).map((value) => ({
-          text: value,
-          value,
-          checked: nextActivity === value
-        }))
-      ]
-    }
+    response.locals.radioFilters = radioFilters[view]
 
     if (session.school) {
       response.locals.yearGroupItems = session.school.yearGroups.map(
