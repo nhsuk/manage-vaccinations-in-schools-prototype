@@ -631,7 +631,11 @@ export class PatientSession {
         instruct: this.session.psdProtocol && formatTag(this.status.instruct),
         register: formatTag(this.status.register),
         outcome: formatProgrammeStatus(this.programme, this.status.outcome),
-        report: formatProgrammeStatus(this.programme, this.status.report)
+        report: formatProgrammeStatus(
+          this.programme,
+          this.status.report,
+          this.reason.report
+        )
       },
       nextActivityPerProgramme: formatList(nextActivityPerProgramme),
       outstandingVaccinations: filters.formatList(outstandingVaccinations),
