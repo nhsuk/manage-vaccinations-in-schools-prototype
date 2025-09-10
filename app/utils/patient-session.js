@@ -410,17 +410,13 @@ export const getReportOutcome = (patientSession) => {
   // Consent outcome
   if (
     patientSession.consent === ConsentOutcome.Refused ||
-    patientSession.consent === ConsentOutcome.FinalRefusal ||
-    patientSession.consent === ConsentOutcome.Inconsistent
+    patientSession.consent === ConsentOutcome.FinalRefusal
   ) {
     return PatientOutcome.CouldNotVaccinate
   }
 
   // Screen outcome
-  if (
-    patientSession.screen === ScreenOutcome.DelayVaccination ||
-    patientSession.screen === ScreenOutcome.DoNotVaccinate
-  ) {
+  if (patientSession.screen === ScreenOutcome.DoNotVaccinate) {
     return PatientOutcome.CouldNotVaccinate
   }
 
