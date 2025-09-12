@@ -46,7 +46,12 @@ export const patientController = {
     }
 
     // Filter by display option
-    for (const option of ['archived', 'hasMissingNhsNumber', 'post16']) {
+    for (const option of [
+      'archived',
+      'hasMissingNhsNumber',
+      'hasNoContactDetails',
+      'post16'
+    ]) {
       if (options?.includes(option)) {
         patients = patients.filter((patient) => patient[option])
       }

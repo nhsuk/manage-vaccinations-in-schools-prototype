@@ -4,6 +4,7 @@
   {{ appStatus({
     classes: "app-status--small nhsuk-u-margin-top-1",
     text: parent.smsStatus,
-    colour: "red"
+    icon: "warning",
+    colour: "dark-orange"
   }) if showStatus and parent.smsStatus and parent.smsStatus != "Delivered" }}
 {% endmacro %}
