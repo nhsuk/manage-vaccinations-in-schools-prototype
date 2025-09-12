@@ -1,0 +1,54 @@
+{% set sessionActivityRows = [] %}
+{% if session.activity.addNhsNumber %}
+  {% set sessionActivityRows = sessionActivityRows | push({
+    key: {
+      text: __("session.activity.addNhsNumber.label")
+    },
+    value: {
+      html: link(session.uri + "/report?options=hasMissingNhsNumber", __mf("session.activity.addNhsNumber.count", { count: session.activity.addNhsNumber }))
+    }
+  }) %}
+{% endif %}
+
+{% if session.consents.length %}
+  {% set sessionActivityRows = sessionActivityRows | push({
+    key: {
+      text: __("session.activity.matchResponses.label")
+    },
+    value: {
+      html: link(session.uri + "/consents", __mf("consent.count", { count: session.consents.length }))
+    }
+  }) %}
+{% endif %}
+
+{% if sessionActivityRow("getConsent") %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("getConsent")) %}
+{% endif %}
+
+{% if sessionActivityRow("followUp") %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("followUp")) %}
+{% endif %}
+
+{% if sessionActivityRow("resolveConsent") %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("resolveConsent")) %}
+{% endif %}
+
+{% if sessionActivityRow("triage") %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("triage")) %}
+{% endif %}
+
+{% if sessionActivityRow("instruct") and session.psdProtocol %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("instruct")) %}
+{% endif %}
+
+{% if sessionActivityRow("record") and session.isActive %}
+  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("record")) %}
+{% endif %}
+
+{{ card({
+  heading: __("session.activity.label"),
+  headingLevel: 3,
+  descriptionHtml: summaryList({
+    rows: sessionActivityRows | removeLastSummaryBorder
+  })
+}) if sessionActivityRows.length > 0 }}

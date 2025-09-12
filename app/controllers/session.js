@@ -316,7 +316,6 @@ export const sessionController = {
       screen: request.query.screen || 'none',
       instruct: request.query.instruct || 'none',
       register: request.query.register || 'none',
-      record: 'none',
       outcome: request.query.outcome || 'none',
       report: request.query.report || 'none'
     }

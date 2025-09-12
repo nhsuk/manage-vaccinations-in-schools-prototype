@@ -4,8 +4,7 @@
 
 {% macro sessionNavigation(params) %}
   {{ appHeading({
-    title: params.session.location.name,
-    summary: params.session.programmeNames.titleCase + " (" + session.academicYear + ")"
+    title: params.session.location.name
   }) }}
 
   {{ appSecondaryNavigation({

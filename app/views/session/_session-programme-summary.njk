@@ -1,0 +1,47 @@
+{% for programme in session.primaryProgrammes %}
+  {{ appHeading({
+    title: programme.name,
+    level: 3,
+    size: "m"
+  }) }}
+  <div class="nhsuk-grid-row nhsuk-card-group">
+    <div class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+      {{ appDataCard({
+        heading: __("session.cohort.label"),
+        colour: "blue",
+        compact: session.primaryProgrammes.length > 1,
+        data: session.patients.length
+      }) }}
+    </div>
+    <div class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+      {{ appDataCard({
+        heading: PatientOutcome.Vaccinated,
+        headingLevel: 3,
+        colour: "green",
+        compact: session.primaryProgrammes.length > 1,
+        data: session.activity.report,
+        href: session.uri + "/report?report=" + PatientOutcome.Vaccinated + "&programme_id=" + programme.id
+      }) }}
+    </div>
+    <div class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+      {{ appDataCard({
+        heading: PatientOutcome.CouldNotVaccinate,
+        headingLevel: 3,
+        colour: "red",
+        compact: session.primaryProgrammes.length > 1,
+        data: session.activity.couldNotVaccinate,
+        href: session.uri + "/report?report=" + PatientOutcome.CouldNotVaccinate + "&programme_id=" + programme.id
+      }) }}
+    </div>
+    <div class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+      {{ appDataCard({
+        heading: PatientOutcome.NoOutcomeYet,
+        headingLevel: 3,
+        colour: "grey",
+        compact: session.primaryProgrammes.length > 1,
+        data: session.activity.noOutcomeYet,
+        href: session.uri + "/report?report=" + PatientOutcome.NoOutcomeYet + "&programme_id=" + programme.id
+      }) }}
+    </div>
+  </div>
+{% endfor %}

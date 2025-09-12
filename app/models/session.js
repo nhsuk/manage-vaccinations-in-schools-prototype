@@ -642,19 +642,29 @@ export class Session {
       ]),
       report: getSessionActivityCount(this, [
         {
-          outcome: PatientOutcome.Vaccinated
+          report: PatientOutcome.Vaccinated
         }
       ]),
       reportNasalSprays: getSessionActivityCount(this, [
         {
-          outcome: PatientOutcome.Vaccinated,
+          report: PatientOutcome.Vaccinated,
           'vaccine.method': VaccineMethod.Nasal
         }
       ]),
       reportInjections: getSessionActivityCount(this, [
         {
-          outcome: PatientOutcome.Vaccinated,
+          report: PatientOutcome.Vaccinated,
           'vaccine.method': VaccineMethod.Injection
+        }
+      ]),
+      couldNotVaccinate: getSessionActivityCount(this, [
+        {
+          report: PatientOutcome.CouldNotVaccinate
+        }
+      ]),
+      noOutcomeYet: getSessionActivityCount(this, [
+        {
+          report: PatientOutcome.NoOutcomeYet
         }
       ])
     }
@@ -760,6 +770,13 @@ export class Session {
         ? this.dates.map((date) => formatDate(date, { dateStyle: 'full' }))
         : ''
 
+    const formattedShortDates =
+      this.dates.length > 0
+        ? this.dates.map((date) =>
+            formatDate(date, { dateStyle: 'long' }).replaceAll(' ', '&nbsp;')
+          )
+        : ''
+
     const formattedReminderDates =
       this.reminderDates.length > 0
         ? this.reminderDates.map((date) =>
@@ -779,6 +796,7 @@ export class Session {
     return {
       address: this.address?.formatted.multiline,
       dates: formatList(formattedDates).replace(' nhsuk-list--bullet', ''),
+      datesShort: formattedShortDates,
       firstDate: formatDate(this.firstDate, { dateStyle: 'full' }),
       nextDate: formatDate(this.nextDate, {
         weekday: 'long',

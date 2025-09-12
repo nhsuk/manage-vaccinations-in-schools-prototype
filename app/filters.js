@@ -48,6 +48,20 @@ export default (env) => {
   }
 
   /**
+   * Remove border from last summary row
+   *
+   * @param {Array} array - Summary rows
+   * @returns {Array} Summary rows
+   */
+  filters.removeLastSummaryBorder = function (array) {
+    if (array && Array.isArray(array) && array.length > 0) {
+      array.at(-1).classes = 'nhsuk-summary-list__row--no-border'
+
+      return array
+    }
+  }
+
+  /**
    * Convert govuk-summary-card to nhsuk-card containing a summary list
    *
    * @param {string} string - HTML
