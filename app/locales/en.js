@@ -427,10 +427,26 @@ export const en = {
       label: 'Decision'
     },
     alternative: {
-      title:
-        'If your child cannot have the nasal spray, do you agree to them having the injected vaccine instead?',
-      label: 'Consent also given for injected vaccine?',
-      hint: 'We may decide the nasal spray vaccine is not suitable. In this case, we may offer the injected vaccine instead.'
+      SeasonalFlu: {
+        label: 'Consent also given for injected vaccine?',
+        title:
+          'If your child cannot have the nasal spray, do you agree to them having the injected vaccine instead?',
+        hint: 'We may decide the nasal spray vaccine is not suitable. In this case, we may offer the injected vaccine instead.',
+        yes: 'Yes',
+        no: 'No'
+      },
+      MMR: {
+        label: 'Consent given for gelatine-free vaccine only?',
+        title: 'Does your child need the alternative MMR vaccine?',
+        hint: 'The standard MMR vaccine contains gelatine from pigs. An alternative vaccine is available that does not contain gelatine.',
+        yes: {
+          label: 'Yes'
+        },
+        no: {
+          label:
+            'No, my child can have either the standard or alternative vaccine'
+        }
+      }
     },
     consultation: {
       title:

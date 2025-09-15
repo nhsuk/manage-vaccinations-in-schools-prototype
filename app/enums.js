@@ -287,6 +287,7 @@ export const RegistrationOutcome = {
 export const ReplyDecision = {
   NoResponse: 'No response',
   Given: 'Consent given',
+  OnlyGelatineFreeInjection: 'Consent given for the alternative MMR vaccine',
   OnlyFluInjection: 'Consent given for flu injection',
   OnlyMenACWY: 'Consent given for MenACWY only',
   OnlyTdIPV: 'Consent given for Td/IPV only',

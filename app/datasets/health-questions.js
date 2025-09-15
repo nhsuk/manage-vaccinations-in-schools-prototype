@@ -52,7 +52,7 @@ export const healthQuestions = {
   immuneSystem: {
     label:
       'Does the child have a disease or treatment that severely affects their immune system?',
-    hint: 'The nasal spray flu vaccine is a live vaccine. It is not suitable for people who are severely immunocompromised.',
+    hint: 'The %s vaccine is a live vaccine. It is not suitable for people who are severely immunocompromised.',
     detailsHint: false
   },
   immuneSystemCloseContact: {
