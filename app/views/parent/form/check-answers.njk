@@ -87,8 +87,9 @@
             href: editPath("decision")
           },
           alternative: {
+            label: __("consent.alternative." + session.programmePreset + ".label"),
             href: editPath("alternative")
-          },
+          } if session.offersAlternativeVaccine,
           refusalReason: {
             href: editPath("refusal-reason")
           },
