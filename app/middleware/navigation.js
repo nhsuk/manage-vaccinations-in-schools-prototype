@@ -20,7 +20,8 @@ export const navigation = (request, response, next) => {
     consentUrl: {
       SeasonalFlu: getSessionConsentUrl(sessions, 'SeasonalFlu'),
       HPV: getSessionConsentUrl(sessions, 'HPV'),
-      Doubles: getSessionConsentUrl(sessions, 'Doubles')
+      Doubles: getSessionConsentUrl(sessions, 'Doubles'),
+      MMR: getSessionConsentUrl(sessions, 'MMR')
     }
   }
 
