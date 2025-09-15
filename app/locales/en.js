@@ -1568,38 +1568,38 @@ export const en = {
       consented: 'Consent given for {{programme.nameSentenceCase}}',
       consentedWith:
         'Consent given for {{programme.nameSentenceCase}} ({{vaccineMethod}})',
-      vaccinated: 'Vaccinations given for {{programme.nameSentenceCase}}',
+      vaccinated: '{{programme.name}} vaccinations given',
       vaccinatedWith:
-        'Vaccinations given for {{programme.nameSentenceCase}} ({{vaccineMethod}})',
+        '{{programme.name}} vaccinations given ({{vaccineMethod}})',
       addNhsNumber: {
-        label: 'Add NHS number',
+        label: 'No NHS number',
         count:
-          '{count, plural, =0 {No children} one {# child} other {# children}} without an NHS number'
+          '{count, plural, =0 {No children} one {# child} other {# children}} with no NHS number'
       },
       matchResponses: {
-        label: 'Match responses',
+        label: 'Unmatched consent',
         count:
-          '{count, plural, =0 {no unmatched consent responses} one {# unmatched consent response} other {# unmatched consent responses}}'
+          '{count, plural, =0 {No unmatched responses} one {# unmatched response} other {# unmatched responses}}'
       },
       getConsent: {
         label: 'No consent response',
         count:
-          '{count, plural, =0 {No children with no response} one {# child with no response} other {# children with no response}}'
+          '{count, plural, =0 {No children} one {# child} other {# children}} with no response'
       },
       checkGiven: {
         label: 'Consent given',
         count:
-          '{count, plural, =0 {No children with consent given} one {# child with consent given} other {# children with consent given}}'
+          '{count, plural, =0 {No children} one {# child} other {# children}} with consent given'
       },
       checkGivenForInjection: {
         label: 'Consent given for injected vaccine',
         count:
-          '{count, plural, =0 {No children with consent given for injected vaccine} one {# child with consent given for injected vaccine} other {# children with consent given for injected vaccine}}'
+          '{count, plural, =0 {No children} one {# child} other {# children}} with consent given for injected vaccine'
       },
       checkGivenForNasalSpray: {
         label: 'Consent given for nasal spray',
         count:
-          '{count, plural, =0 {No children with consent given for nasal spray} one {# child with consent given for nasal spray} other {# children with consent given for nasal spray}}'
+          '{count, plural, =0 {No children} one {# child} other {# children}} with consent given for nasal spray'
       },
       checkRefusal: {
         label: 'Consent refused',
@@ -1607,37 +1607,37 @@ export const en = {
           '{count, plural, =0 {No children with consent refused} one {# child with consent refused} other {# children with consent refused}}'
       },
       followUp: {
-        label: 'Requested follow up',
+        label: 'Follow-up requested',
         count:
-          '{count, plural, =0 {No children to follow up} one {# child to follow up} other {# children to follow up}}'
+          '{count, plural, =0 {No children with a follow-up request} one {# child with a follow-up request} other {# children with follow-up requests}}'
       },
       resolveConsent: {
         label: 'Conflicting consent',
         count:
-          '{count, plural, =0 {No children to review} one {# child to review} other {# children to review}}'
+          '{count, plural, =0 {No children} one {# child} other {# children}} with conflicting consent'
       },
       triage: {
         label: 'Triage needed',
         count:
-          '{count, plural, =0 {No children to triage} one {# child to triage} other {# children to triage}}'
+          '{count, plural, =0 {No children} one {# child} other {# children}} to triage'
       },
       instruct: {
-        label: 'PSDs',
+        label: 'PSD review needed',
         count:
-          '{count, plural, =0 {No children to review} one {# child to review} other {# children to review}}'
+          '{count, plural, =0 {No children} one {# child} other {# children}} need PSD review'
       },
       register: {
-        label: 'Register attendance',
+        label: 'Registration needed',
         count:
-          '{count, plural, =0 {No children to register} one {# child to register} other {# children to register}}'
+          '{count, plural, =0 {No children} one {# child} other {# children}} to register'
       },
       // Registered and ready for vaccinator
       record: {
         label: 'Ready for vaccinator',
         count:
-          '{count, plural, =0 {No children ready for vaccinator} one {# child ready for vaccinator} other {# children ready for vaccinator}}',
+          '{count, plural, =0 {No children} one {# child} other {# children}} ready for vaccinator',
         programmeCount:
-          '{count, plural, =0 {No children ready for {nameSentenceCase} vaccinator} one {# child ready for {nameSentenceCase} vaccinator} other {# children ready for {nameSentenceCase} vaccinator}}'
+          '{count, plural, =0 {No children} one {# child} other {# children}} ready for {nameSentenceCase} vaccinator'
       },
       // Ready for vaccinator, regardless of session/registration status
       stillToVaccinate: {
@@ -1651,19 +1651,19 @@ export const en = {
       report: {
         label: 'Vaccinated',
         count:
-          '{count, plural, =0 {No vaccinations given} one {# vaccination given} other {# vaccinations given}}',
+          '{count, plural, =0 {No vaccinations} one {# vaccination} other {# vaccinations}} given',
         programmeCount:
-          '{count, plural, =0 {No vaccinations given for {nameSentenceCase}} one {# vaccination given for {nameSentenceCase}} other {# vaccinations given for {nameSentenceCase}}}'
+          '{count, plural, =0 {No vaccinations} one {# vaccination} other {# vaccinations}} given for {nameSentenceCase}'
       },
       reportInjections: {
         label: 'Vaccinated with injected vaccine',
         count:
-          '{count, plural, =0 {No vaccinations given with injected vaccine} one {# vaccination given with injected vaccine} other {# vaccinations given with injected vaccine}}'
+          '{count, plural, =0 {No vaccinations} one {# vaccination} other {# vaccinations}} given with injected vaccine'
       },
       reportNasalSprays: {
         label: 'Vaccinated with nasal spray',
         count:
-          '{count, plural, =0 {No vaccinations given with nasal spray} one {# vaccination with given nasal spray} other {# vaccinations given with nasal spray}}'
+          '{count, plural, =0 {No vaccinations} one {# vaccination} other {# vaccinations}} given with nasal spray'
       }
     },
     date: {
@@ -1691,7 +1691,7 @@ export const en = {
     },
     location: {
       label: 'Location',
-      title: 'About this location'
+      title: 'About this %s'
     },
     programmes: {
       label: 'Programmes',

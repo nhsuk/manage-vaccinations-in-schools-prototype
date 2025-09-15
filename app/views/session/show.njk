@@ -36,7 +36,7 @@
   {% endif %}
 
   {% call card({
-    heading: __("session.location.title"),
+    heading: __("session.location.title", "clinic" if session.type == SessionType.Clinic else "school"),
     headingLevel: 3
   }) %}
     {{ summaryList({
