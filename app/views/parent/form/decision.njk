@@ -3,7 +3,7 @@
 {% set title = __("consent.decision.title", { session: session }) %}
 
 {% block form %}
-  {%- set programmeRadiosHtml = radios({
+  {% set programmeRadiosHtml = radios({
     fieldset: {
       legend: {
         text: "Which vaccinations do you give consent for?"
