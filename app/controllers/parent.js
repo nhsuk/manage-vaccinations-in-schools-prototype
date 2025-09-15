@@ -116,8 +116,8 @@ export const parentController = {
     )
     response.locals.consent = consent
 
-    const programmes = consent.session ? consent.session.primaryProgrammes : []
     const { offersAlternativeVaccine } = consent?.session
+    const programmes = consent.session ? consent.session.primaryProgrammes : []
 
     // If programme has alternative vaccine, and given consent has been given
     // for the default, ask for consent for the alternative as well
@@ -220,7 +220,7 @@ export const parentController = {
             ? ReplyDecision.OnlyTdIPV
             : ReplyDecision.OnlyMenACWY
       }))
-    } else if (offersAlternativeVaccine) {
+    } else if (consent.session.programmePreset === 'SeasonalFlu') {
       // Flu: Ask which vaccine the parent would prefer
       response.locals.decisionItems = [
         {
@@ -239,7 +239,7 @@ export const parentController = {
         }
       ]
     } else {
-      // HPV: Yes or no
+      // HPV and MMR: Yes or no
       response.locals.decisionItems = [
         {
           text: __('consent.decision.yes.label'),
@@ -252,9 +252,12 @@ export const parentController = {
       ]
     }
 
-    response.locals.programmeIsFlu = programmes
-      .map(({ type }) => type)
-      .includes(ProgrammeType.Flu)
+    response.locals.vaccineIncludesGelatine = [
+      ProgrammeType.Flu,
+      ProgrammeType.MMR
+    ].some((type) =>
+      programmes.map((programme) => programme.type).includes(type)
+    )
 
     next()
   },

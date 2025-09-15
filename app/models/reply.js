@@ -41,6 +41,7 @@ import { User } from './user.js'
  * @property {import('./parent.js').Parent} [parent] - Parent or guardian
  * @property {ReplyDecision} [decision] - Consent decision
  * @property {boolean} [alternative] - Consent for alternative vaccine
+ * @property {boolean} [mmr] - Consent for MMR vaccine
  * @property {boolean} [confirmed] - Decision confirmed
  * @property {boolean} [consultation] - Consultation requested
  * @property {boolean} declined - Reply declines consent
@@ -70,6 +71,7 @@ export class Reply {
     this.decision = options?.decision
     this.alternative =
       options?.alternative && stringToBoolean(options?.alternative)
+    this.mmr = options?.mmr && stringToBoolean(options?.mmr)
     this.confirmed = stringToBoolean(options?.confirmed)
     this.consultation = stringToBoolean(options?.consultation)
     this.declined = this.decision === ReplyDecision.Declined
@@ -192,7 +194,7 @@ export class Reply {
    * @returns {Array} Health questions
    */
   get healthQuestionsForDecision() {
-    const { Flu, HPV, MenACWY, TdIPV } = ProgrammeType
+    const { Flu, HPV, MenACWY, MMR, TdIPV } = ProgrammeType
     const { Injection, Nasal } = VaccineMethod
     const programme = this.session.primaryProgrammes[0]
 
@@ -242,9 +244,22 @@ export class Reply {
       consentedVaccine = this.session.vaccines
     }
 
+    /** @type {Array} */
     const consentedVaccines = Array.isArray(consentedVaccine)
       ? consentedVaccine
       : [consentedVaccine]
+
+    // Additional consent given for MMR
+    if (this.mmr) {
+      const mmrVaccine = Object.values(vaccines).find(
+        (programme) => programme.type === MMR
+      )
+
+      if (mmrVaccine) {
+        consentedVaccines.push(mmrVaccine)
+      }
+    }
+
     for (const vaccine of consentedVaccines) {
       for (const [key, value] of Object.entries(vaccine.healthQuestions)) {
         healthQuestionsForDecision.set(key, value)

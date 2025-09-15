@@ -223,8 +223,7 @@ export default {
       'eggAllergy': {},
       'immuneSystem': {},
       'immuneSystemCloseContact': {},
-      'medicalConditions': {},
-      'previousReaction': {}
+      'medicalConditions': {}
     },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
@@ -256,8 +255,7 @@ export default {
       'allergy': {},
       'immuneSystem': {},
       'immuneSystemCloseContact': {},
-      'medicalConditions': {},
-      'previousReaction': {}
+      'medicalConditions': {}
     },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
