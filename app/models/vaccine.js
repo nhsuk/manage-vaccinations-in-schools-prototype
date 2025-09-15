@@ -22,7 +22,7 @@ import { Batch } from './batch.js'
  * @property {object} [leaflet] - Leaflet
  * @property {number} dose - Dosage
  * @property {import('../enums.js').VaccineMethod} method - Method
- * @property {import('../enums.js').VaccinationProtocol} delegationProtocol - Delegation protocol
+ * @property {import('../enums.js').VaccinationProtocol} [delegationProtocol] - Delegation protocol
  * @property {Array<VaccineSideEffect>} sideEffects - Side effects
  * @property {object} healthQuestions - Health questions
  * @property {Array<import('../enums.js').PreScreenQuestion>} preScreenQuestions - Pre-screening questions
