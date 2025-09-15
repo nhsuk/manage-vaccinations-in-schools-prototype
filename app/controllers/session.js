@@ -342,10 +342,17 @@ export const sessionController = {
       )
     }
 
-    // Filter by display option
+    // Filter patient by display option
     for (const option of ['archived', 'hasMissingNhsNumber', 'post16']) {
       if (options?.includes(option)) {
         results = results.filter(({ patient }) => patient[option])
+      }
+    }
+
+    // Filter patient session by display option
+    for (const option of ['stillToVaccinate']) {
+      if (options?.includes(option)) {
+        results = results.filter((patientSession) => patientSession[option])
       }
     }
 
