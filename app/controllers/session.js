@@ -465,6 +465,7 @@ export const sessionController = {
       'instruct',
       'register',
       'outcome',
+      'report',
       'vaccineMethod',
       'nextActivity'
     ]) {
