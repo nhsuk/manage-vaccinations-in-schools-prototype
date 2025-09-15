@@ -49,11 +49,6 @@ export const healthQuestions = {
     hint: 'This does not include visits to A&E or stays in hospital wards outside the intensive care unit',
     detailsHint: false
   },
-  immunosuppressant: {
-    label: 'Does the child take any immunosuppressant medication?',
-    hint: false,
-    detailsHint: false
-  },
   immuneSystem: {
     label:
       'Does the child have a disease or treatment that severely affects their immune system?',
