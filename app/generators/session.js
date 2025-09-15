@@ -1,12 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import schoolTerms from '../datasets/school-terms.js'
-import {
-  OrganisationDefaults,
-  ProgrammePreset,
-  ProgrammeType,
-  SessionType
-} from '../enums.js'
+import { OrganisationDefaults, ProgrammePreset, SessionType } from '../enums.js'
 import { Session } from '../models/session.js'
 import { addDays, removeDays, setMidday } from '../utils/date.js'
 
