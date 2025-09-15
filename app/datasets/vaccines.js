@@ -198,5 +198,73 @@ export default {
       PreScreenQuestion.IsVaccinated,
       PreScreenQuestion.IsHappy
     ]
+  },
+  // MMR vaccines
+  '13968211000001108': {
+    snomed: '13968211000001108',
+    type: 'MMR',
+    brand: 'MMRVaXPro',
+    manufacturer: 'Merck Sharp & Dohme (UK) Ltd',
+    leaflet: {
+      url: 'https://www.medicines.org.uk/emc/files/pil.6307.pdf',
+      size: '103KB'
+    },
+    method: VaccineMethod.Injection,
+    dose: 0.5,
+    sideEffects: [
+      VaccineSideEffect.Bruising,
+      VaccineSideEffect.TemperatureShiver,
+      VaccineSideEffect.SickFeeling,
+      VaccineSideEffect.PainArms
+    ],
+    healthQuestions: {
+      'bleeding': {},
+      'allergy': {},
+      'eggAllergy': {},
+      'immuneSystem': {},
+      'immuneSystemCloseContact': {},
+      'medicalConditions': {},
+      'previousReaction': {}
+    },
+    preScreenQuestions: [
+      PreScreenQuestion.IsWell,
+      PreScreenQuestion.IsPregnant,
+      PreScreenQuestion.IsAllergic,
+      PreScreenQuestion.IsVaccinated,
+      PreScreenQuestion.IsHappy
+    ]
+  },
+  '34925111000001104': {
+    snomed: '34925111000001104',
+    type: 'MMR',
+    brand: 'Priorix',
+    manufacturer: 'GlaxoSmithKline UK Ltd',
+    leaflet: {
+      url: 'https://www.medicines.org.uk/emc/files/pil.1159.pdf',
+      size: '266KB'
+    },
+    method: VaccineMethod.Injection,
+    dose: 0.5,
+    sideEffects: [
+      VaccineSideEffect.Bruising,
+      VaccineSideEffect.TemperatureShiver,
+      VaccineSideEffect.SickFeeling,
+      VaccineSideEffect.PainArms
+    ],
+    healthQuestions: {
+      'bleeding': {},
+      'allergy': {},
+      'immuneSystem': {},
+      'immuneSystemCloseContact': {},
+      'medicalConditions': {},
+      'previousReaction': {}
+    },
+    preScreenQuestions: [
+      PreScreenQuestion.IsWell,
+      PreScreenQuestion.IsPregnant,
+      PreScreenQuestion.IsAllergic,
+      PreScreenQuestion.IsVaccinated,
+      PreScreenQuestion.IsHappy
+    ]
   }
 }
