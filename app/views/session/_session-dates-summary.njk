@@ -3,6 +3,13 @@
   headingLevel: 3
 }) %}
   {% if session.isActive or session.isCompleted %}
+    {{ insetText({
+      classes: "nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-4",
+      html: link(session.uri + "/report?options=stillToVaccinate", __mf("session.activity.stillToVaccinate.count", {
+        count: session.activity.stillToVaccinate
+      })) | nhsukMarkdown
+    }) }}
+
     {% set rows = [] %}
     {# Add a row for each session date #}
     {% for dateShort in session.formatted.datesShort %}
@@ -110,9 +117,7 @@
       rows: rows
     }) }}
   {% else %}
-    {{ __mf("session.activity.recordVaccination.count", {
-      count: session.activity.recordVaccination
-    }) if session.isActive else session.formatted.dates | safe }}
+    {{ session.formatted.dates | safe }}
   {% endif %}
 
   {{ appButtonGroup({

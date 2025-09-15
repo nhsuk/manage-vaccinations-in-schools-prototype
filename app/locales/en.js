@@ -1640,9 +1640,13 @@ export const en = {
           '{count, plural, =0 {No children ready for {nameSentenceCase} vaccinator} one {# child ready for {nameSentenceCase} vaccinator} other {# children ready for {nameSentenceCase} vaccinator}}'
       },
       // Ready for vaccinator, regardless of session/registration status
-      recordVaccination: {
+      stillToVaccinate: {
+        label: 'Still to vaccinate',
+        hint: 'With consent, not refused vaccine, not vaccinated yet',
+        description:
+          'Children with consent, who have not refused the vaccine and have not been vaccinated yet',
         count:
-          '{count, plural, =0 {There are no children} one {There is # child} other {There are # children}} with consent who still need to be vaccinated'
+          '{count, plural, =0 {No children} one {# child} other {# children}} with consent have not been vaccinated yet'
       },
       report: {
         label: 'Vaccinated',

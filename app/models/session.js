@@ -635,9 +635,9 @@ export class Session {
           instruct: InstructionOutcome.Needed
         }
       ]),
-      recordVaccination: getSessionActivityCount(this, [
+      stillToVaccinate: getSessionActivityCount(this, [
         {
-          nextActivity: Activity.Record
+          stillToVaccinate: true
         }
       ]),
       report: getSessionActivityCount(this, [

@@ -366,6 +366,18 @@ export class PatientSession {
   }
 
   /**
+   * Still to vaccinate
+   *
+   * @returns {boolean} Patient still needs vaccination
+   */
+  get stillToVaccinate() {
+    return (
+      this.nextActivity === Activity.Record &&
+      this.outcome === PatientOutcome.NoOutcomeYet
+    )
+  }
+
+  /**
    * Get next activity
    *
    * @returns {Activity} Activity

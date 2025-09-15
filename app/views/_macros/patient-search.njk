@@ -49,6 +49,21 @@
       items: programmeItems
     }) if programmeItems }}
 
+    {{ checkboxes({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("patient.search.showOnly")
+        }
+      },
+      items: [{
+        text: __("session.activity.stillToVaccinate.label"),
+        hint: { text: __("session.activity.stillToVaccinate.hint") },
+        value: "stillToVaccinate"
+      }],
+      decorate: "options"
+    }) if view == "report" }}
+
     {% for name, enums in params.checkboxFilters %}
       {{ checkboxes({
         fieldset: {
