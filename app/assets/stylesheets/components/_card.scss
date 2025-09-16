@@ -7,7 +7,7 @@
     border-color: nhsuk-tint(nhsuk-colour("aqua-green"), 50%);
     color: nhsuk-shade(nhsuk-colour("aqua-green"), 50%);
 
-    &.nhsuk-card__clickable:active {
+    &.nhsuk-card--clickable:active {
       border-color: nhsuk-shade(nhsuk-colour("aqua-green"), 50%);
     }
   }
@@ -17,7 +17,7 @@
     border-color: nhsuk-tint(nhsuk-colour("blue"), 30%);
     color: nhsuk-shade(nhsuk-colour("blue"), 30%);
 
-    &.nhsuk-card__clickable:active {
+    &.nhsuk-card--clickable:active {
       border-color: nhsuk-shade(nhsuk-colour("blue"), 30%);
     }
   }
@@ -27,7 +27,7 @@
     border-color: nhsuk-tint(nhsuk-colour("green"), 40%);
     color: nhsuk-shade(nhsuk-colour("green"), 40%);
 
-    &.nhsuk-card__clickable:active {
+    &.nhsuk-card--clickable:active {
       border-color: nhsuk-shade(nhsuk-colour("green"), 40%);
     }
   }
@@ -37,7 +37,7 @@
     border-color: nhsuk-tint(nhsuk-colour("grey-1"), 30%);
     color: nhsuk-shade(nhsuk-colour("grey-1"), 30%);
 
-    &.nhsuk-card__clickable:active {
+    &.nhsuk-card--clickable:active {
       border-color: nhsuk-shade(nhsuk-colour("grey-1"), 30%);
     }
   }
@@ -47,7 +47,7 @@
     border-color: nhsuk-tint(nhsuk-colour("red"), 50%);
     color: nhsuk-shade(nhsuk-colour("red"), 50%);
 
-    &.nhsuk-card__clickable:active {
+    &.nhsuk-card--clickable:active {
       border-color: nhsuk-shade(nhsuk-colour("red"), 50%);
     }
   }
