@@ -1568,9 +1568,8 @@ export const en = {
       consented: 'Consent given for {{programme.nameSentenceCase}}',
       consentedWith:
         'Consent given for {{programme.nameSentenceCase}} ({{vaccineMethod}})',
-      vaccinated: '{{programme.name}} vaccinations given',
-      vaccinatedWith:
-        '{{programme.name}} vaccinations given ({{vaccineMethod}})',
+      vaccinated: 'Vaccinations given',
+      vaccinatedWith: '{{programme.name}} ({{vaccineMethod}})',
       addNhsNumber: {
         label: 'No NHS number',
         count:
