@@ -541,7 +541,7 @@ export default () => {
           : 'Not provided'
 
         summaryRows.push({
-          classes: undefined,
+          classes: '',
           key: {
             text: label
           },
