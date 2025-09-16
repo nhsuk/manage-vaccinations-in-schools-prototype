@@ -102,9 +102,7 @@
     {% else %}
       {% for programme in session.primaryProgrammes %}
         {% set head = head.concat([{
-          text: __("session.activity.vaccinated", {
-            programme: programme
-          }) | safe,
+          text: programme.name,
           format: "numeric"
         }]) %}
       {% endfor %}
@@ -112,6 +110,7 @@
 
     {{ table({
       id: "dates",
+      caption: __("session.activity.vaccinated"),
       responsive: true,
       head: head,
       rows: rows
