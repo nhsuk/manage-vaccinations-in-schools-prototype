@@ -108,7 +108,7 @@ export const parentController = {
   readForm(request, response, next) {
     const { session_id, consent_uuid } = request.params
     const { data, referrer } = request.session
-    const { __ } = response.locals
+    const { __, session } = response.locals
 
     const consent = new Consent(
       Consent.findOne(consent_uuid, data?.wizard),
@@ -116,23 +116,21 @@ export const parentController = {
     )
     response.locals.consent = consent
 
-    const { offersAlternativeVaccine } = consent?.session
-    const programmes = consent.session ? consent.session.primaryProgrammes : []
-
     // If programme has alternative vaccine, and given consent has been given
     // for the default, ask for consent for the alternative as well
     const getConsentForAlternativeVaccine =
-      offersAlternativeVaccine && consent.decision === ReplyDecision.Given
+      (session.offersAlternativeVaccine &&
+        consent.decision === ReplyDecision.Given) ||
+      consent.mmr === true
 
     const journey = {
       [`/${session_id}`]: {},
       [`/${session_id}/${consent_uuid}/new/child`]: {},
       [`/${session_id}/${consent_uuid}/new/dob`]: {},
-      ...(consent.session?.type === SessionType.School
+      ...(session?.type === SessionType.School
         ? { [`/${session_id}/${consent_uuid}/new/confirm-school`]: {} }
         : {}),
-      ...(consent.session?.type === SessionType.School &&
-      data.confirmSchool !== 'yes'
+      ...(session?.type === SessionType.School && data.confirmSchool !== 'yes'
         ? {
             [`/${session_id}/${consent_uuid}/new/school`]: {}
           }
@@ -152,6 +150,10 @@ export const parentController = {
           value: ReplyDecision.Refused
         }
       },
+      ...(session?.programmePreset &&
+        !['SeasonalFlu', 'MMR'].includes(session.programmePreset) && {
+          [`/${session_id}/${consent_uuid}/new/mmr`]: {}
+        }),
       [`/${session_id}/${consent_uuid}/new/address`]: {},
       ...(getConsentForAlternativeVaccine && {
         [`/${session_id}/${consent_uuid}/new/alternative`]: {}
@@ -193,7 +195,7 @@ export const parentController = {
         value: relationship
       }))
 
-    if (programmes.length > 1) {
+    if (session.primaryProgrammes.length > 1) {
       // MenACWY and Td/IPV: Ask for consent for none, one or all programmes
       response.locals.decisionItems = [
         {
@@ -213,14 +215,16 @@ export const parentController = {
         }
       ]
 
-      response.locals.programmeItems = programmes.map((programme) => ({
-        text: programme.name,
-        value:
-          programme.id === 'td-ipv'
-            ? ReplyDecision.OnlyTdIPV
-            : ReplyDecision.OnlyMenACWY
-      }))
-    } else if (consent.session.programmePreset === 'SeasonalFlu') {
+      response.locals.programmeItems = session.primaryProgrammes.map(
+        (programme) => ({
+          text: programme.name,
+          value:
+            programme.id === 'td-ipv'
+              ? ReplyDecision.OnlyTdIPV
+              : ReplyDecision.OnlyMenACWY
+        })
+      )
+    } else if (session.programmePreset === 'SeasonalFlu') {
       // Flu: Ask which vaccine the parent would prefer
       response.locals.decisionItems = [
         {
@@ -256,7 +260,7 @@ export const parentController = {
       ProgrammeType.Flu,
       ProgrammeType.MMR
     ].some((type) =>
-      programmes.map((programme) => programme.type).includes(type)
+      session.programmes.map((programme) => programme.type).includes(type)
     )
 
     next()

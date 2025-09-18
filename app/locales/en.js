@@ -426,6 +426,23 @@ export const en = {
     decisionStatus: {
       label: 'Decision'
     },
+    mmr: {
+      title: 'MMR (measles, mumps and rubella)',
+      label: 'Decision',
+      description:
+        'The MMR vaccine protects against measles, mumps and rubella, which can lead to serious health problems. Having 2 doses of the vaccine gives long-term protection against all 3 illnesses.\n\nIf your child has not had 2 doses of the MMR vaccine, we can vaccinate them during this session.\n\nIf you’re not sure whether your child is fully vaccinated, having a further dose will not cause any harm.',
+      legend:
+        'Do you agree to your child having the MMR vaccination in school?',
+      yes: {
+        label: 'Yes, I agree'
+      },
+      no: {
+        label: 'No'
+      },
+      consultation: {
+        label: 'I’m not sure – I’d like to talk to a member of the team first'
+      }
+    },
     alternative: {
       SeasonalFlu: {
         label: 'Consent also given for injected vaccine?',
