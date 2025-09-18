@@ -110,7 +110,7 @@
 }
 
 // Align counts across cards
-.nhsuk-card:has(> .nhsuk-card__content > .app-card__count) {
+.nhsuk-card:has(> .nhsuk-card__content > .app-card__data) {
   display: flex;
 
   .nhsuk-card__heading {
@@ -125,7 +125,7 @@
   }
 }
 
-.app-card__count {
+.app-card__data {
   @include nhsuk-font-size(48);
   @include nhsuk-typography-weight-bold;
 

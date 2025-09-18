@@ -2,7 +2,7 @@
 
 {% macro appDataCard(params) %}
 {% set descriptionHtml %}
-  <p class="nhsuk-card__description app-card__count">
+  <p class="nhsuk-card__description app-card__data">
     {{- params.data | default(0) -}}
   </p>
   {% if params.meta %}
