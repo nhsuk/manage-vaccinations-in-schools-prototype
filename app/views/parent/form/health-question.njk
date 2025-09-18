@@ -1,7 +1,8 @@
 {% extends "_layouts/form.njk" %}
 
 {% set title = __("healthQuestions." + key + ".label") %}
-{% set hint = __("healthQuestions." + key + ".hint") %}
+{% set vaccineName = "nasal spray flu" if session.programmePreset == "SeasonalFlu" else "MMR" %}
+{% set hint = __("healthQuestions." + key + ".hint", vaccineName) %}
 {% set detailsHint = __("healthQuestions." + key + ".detailsHint") %}
 
 {% block form %}
