@@ -29,6 +29,15 @@
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ appDataCard({
+        heading: PatientOutcome.NoOutcomeYet,
+        headingLevel: 3,
+        colour: "grey",
+        data: programme.report(PatientOutcome.NoOutcomeYet).length,
+        href: programme.uri + "/patients?report=" + PatientOutcome.NoOutcomeYet if not isDataConsumer
+      }) }}
+    </div>
+    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+      {{ appDataCard({
         heading: PatientOutcome.Vaccinated,
         headingLevel: 3,
         colour: "green",
@@ -43,15 +52,6 @@
         colour: "red",
         data: programme.report(PatientOutcome.CouldNotVaccinate).length,
         href: programme.uri + "/patients?report=" + PatientOutcome.CouldNotVaccinate if not isDataConsumer
-      }) }}
-    </div>
-    <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ appDataCard({
-        heading: PatientOutcome.NoOutcomeYet,
-        headingLevel: 3,
-        colour: "grey",
-        data: programme.report(PatientOutcome.NoOutcomeYet).length,
-        href: programme.uri + "/patients?report=" + PatientOutcome.NoOutcomeYet if not isDataConsumer
       }) }}
     </div>
   </div>
