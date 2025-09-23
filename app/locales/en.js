@@ -1555,11 +1555,12 @@ export const en = {
       title: 'Schedule sessions',
       description: 'Add dates for this school.'
     },
-    cohort: {
-      label: 'Eligible cohort'
-    },
     patients: {
       label: 'Children',
+      eligible: 'Eligible children',
+      hint: 'Due vaccination, not vaccinated elsewhere',
+      description:
+        'Children due a vaccination this year who have not been vaccinated at another location',
       count:
         '{count, plural, =0 {No children} one {# child} other {# children}}'
     },

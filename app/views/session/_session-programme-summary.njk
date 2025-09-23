@@ -1,16 +1,18 @@
 {% for programme in session.primaryProgrammes %}
   {{ appHeading({
     title: programme.name,
+    summary: __("session.patients.description"),
     level: 3,
     size: "m"
   }) }}
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
       {{ appDataCard({
-        heading: __("session.cohort.label"),
+        heading: __("session.patients.eligible"),
         colour: "blue",
         compact: session.primaryProgrammes.length > 1,
-        data: session.patients.length
+        data: session.patients.length,
+        href: session.uri + "/report?programme_id=" + programme.id
       }) }}
     </div>
     <div class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
