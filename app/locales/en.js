@@ -1672,7 +1672,14 @@ export const en = {
     },
     dates: {
       label: 'Session dates',
-      title: 'When will sessions be held?'
+      title: 'When will sessions be held?',
+      check: {
+        title: 'Have you imported historical vaccination records for %s?',
+        description:
+          'Scheduling this session will send 876 consent requests to parents of children not in Year 8 on %s.\n\nMake sure you have uploaded all historical vaccination records for children in this school before you continue.\n\nIf you do not do this, you risk sending invitations to parents of already vaccinated children.',
+        confirm: 'Keep session dates',
+        cancel: 'Remove session dates'
+      }
     },
     dateSummary: {
       label: 'Session dates'

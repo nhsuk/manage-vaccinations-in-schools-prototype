@@ -576,6 +576,7 @@ export const sessionController = {
               [`/${session_id}/${type}/clinic`]: {},
               [`/${session_id}/${type}/dates`]: {}
             }),
+        [`/${session_id}/${type}/dates-check`]: {},
         [`/${session_id}/${type}/check-answers`]: {},
         [`/${session_id}`]: {}
       }
