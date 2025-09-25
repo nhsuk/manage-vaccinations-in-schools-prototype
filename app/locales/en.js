@@ -1701,7 +1701,14 @@ export const en = {
     },
     dates: {
       label: 'Session dates',
-      title: 'When will sessions be held?'
+      title: 'When will sessions be held?',
+      check: {
+        title: 'Have you imported historical vaccination records for %s?',
+        description:
+          '1% of children in {{yearGroups}} in this session have vaccination records. This is unusually low coverage for catch-up year groups.\n\nCheck and confirm that vaccination records have been imported for all children in this school before you continue.\n\nScheduling this session now will send consent requests to 40 parents of children in {{yearGroups}} on {{firstDate}}. Many of them may be parents of already vaccinated children.',
+        confirm: 'Keep session dates',
+        cancel: 'Remove session dates'
+      }
     },
     dateSummary: {
       label: 'Session dates'
