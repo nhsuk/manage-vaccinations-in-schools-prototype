@@ -1,3 +1,4 @@
+import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import { isAfter } from 'date-fns'
 
 import programmes from '../datasets/programmes.js'
@@ -7,6 +8,7 @@ import { isBetweenDates, today } from '../utils/date.js'
 import {
   formatLink,
   formatTag,
+  formatYearGroup,
   sentenceCaseProgrammeName
 } from '../utils/string.js'
 
@@ -238,6 +240,10 @@ export class Programme {
         )
       : []
 
+    const yearGroups = this.yearGroups.map((yearGroup) =>
+      formatYearGroup(yearGroup)
+    )
+
     return {
       consentPdf:
         this.consentPdf &&
@@ -248,6 +254,7 @@ export class Programme {
             download: 'true'
           }
         ),
+      yearGroups: prototypeFilters.formatList(yearGroups),
       vaccines: vaccineList.join('<br>')
     }
   }
