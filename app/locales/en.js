@@ -426,11 +426,44 @@ export const en = {
     decisionStatus: {
       label: 'Decision'
     },
+    mmr: {
+      title: 'MMR (measles, mumps and rubella)',
+      label: 'Decision',
+      description:
+        'The MMR vaccine protects against measles, mumps and rubella, which can lead to serious health problems. Having 2 doses of the vaccine gives long-term protection against all 3 illnesses.\n\nIf your child has not had 2 doses of the MMR vaccine, we can vaccinate them during this session.\n\nIf you’re not sure whether your child is fully vaccinated, having a further dose will not cause any harm.',
+      legend:
+        'Do you agree to your child having the MMR vaccination in school?',
+      yes: {
+        label: 'Yes, I agree'
+      },
+      no: {
+        label: 'No'
+      },
+      consultation: {
+        label: 'I’m not sure – I’d like to talk to a member of the team first'
+      }
+    },
     alternative: {
-      title:
-        'If your child cannot have the nasal spray, do you agree to them having the injected vaccine instead?',
-      label: 'Consent also given for injected vaccine?',
-      hint: 'We may decide the nasal spray vaccine is not suitable. In this case, we may offer the injected vaccine instead.'
+      SeasonalFlu: {
+        label: 'Consent also given for injected vaccine?',
+        title:
+          'If your child cannot have the nasal spray, do you agree to them having the injected vaccine instead?',
+        hint: 'We may decide the nasal spray vaccine is not suitable. In this case, we may offer the injected vaccine instead.',
+        yes: 'Yes',
+        no: 'No'
+      },
+      MMR: {
+        label: 'Consent given for gelatine-free vaccine only?',
+        title: 'Does your child need the alternative MMR vaccine?',
+        hint: 'The standard MMR vaccine contains gelatine from pigs. An alternative vaccine is available that does not contain gelatine.',
+        yes: {
+          label: 'Yes'
+        },
+        no: {
+          label:
+            'No, my child can have either the standard or alternative vaccine'
+        }
+      }
     },
     consultation: {
       title:

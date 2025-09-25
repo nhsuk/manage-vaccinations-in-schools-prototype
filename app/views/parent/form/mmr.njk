@@ -1,0 +1,31 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("consent.mmr.title") %}
+
+{% block form %}
+  {{ appHeading({
+    title: title
+  }) }}
+
+  {{ __("consent.mmr.description") | nhsukMarkdown }}
+
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("consent.mmr.legend")
+      }
+    },
+    items: [{
+      text: __("consent.mmr.yes.label"),
+      value: true
+    }, {
+      text: __("consent.mmr.no.label"),
+      value: false
+    }, {
+      text: __("consent.mmr.consultation.label"),
+      value: "consultation"
+    }],
+    decorate: "consent.mmr"
+  }) }}
+{% endblock %}

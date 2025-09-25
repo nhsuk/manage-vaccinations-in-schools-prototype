@@ -87,5 +87,28 @@ export default {
     catchupYearGroups: [10, 11],
     vaccine_smomeds: ['39779611000001104'],
     nhseSyncable: false
+  },
+  [ProgrammeType.MMR]: {
+    type: ProgrammeType.MMR,
+    name: 'MMR',
+    title: 'Measles, mumps and rubella (MMR)',
+    vaccineName: 'MMR vaccine',
+    information: {
+      startPage:
+        'The MMR vaccine protects against measles, mumps and rubella. Having 2 doses gives lasting protection against all 3 illnesses. If you’re not sure how many doses your child has had, having further doses will not cause any harm.\n\nResearch has shown there is no link between the MMR vaccine and autism.',
+      description:
+        'The MMR vaccine protects against measles, mumps and rubella. Having 2 doses gives lasting protection against all 3 illnesses. If you’re not sure how many doses your child has had, having further doses will not cause any harm.\n\nResearch has shown there is no link between the MMR vaccine and autism.',
+      url: 'https://www.nhs.uk/vaccinations/mmr-vaccine/'
+    },
+    guidance: {
+      url: 'https://www.gov.uk/government/publications/mmr-for-all-general-leaflet',
+      hint: 'with information available in different languages'
+    },
+    sequence: ['1P', '2P'],
+    sequenceDefault: '1P',
+    yearGroups: [8],
+    catchupYearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    vaccine_smomeds: ['13968211000001108', '34925111000001104'],
+    nhseSyncable: true
   }
 }

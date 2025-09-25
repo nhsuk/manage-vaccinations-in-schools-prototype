@@ -220,7 +220,8 @@ export const ProgrammeType = {
   Flu: 'Flu',
   HPV: 'HPV',
   TdIPV: 'Td/IPV',
-  MenACWY: 'MenACWY'
+  MenACWY: 'MenACWY',
+  MMR: 'MMR'
 }
 
 /**
@@ -249,6 +250,7 @@ export const ProgrammePreset = {
     active: true,
     adolescent: true,
     primaryProgrammeTypes: [ProgrammeType.HPV],
+    // catchupProgrammeTypes: [ProgrammeType.MMR],
     term: SchoolTerm.Spring
   },
   Doubles: {
@@ -256,8 +258,14 @@ export const ProgrammePreset = {
     active: true,
     adolescent: true,
     primaryProgrammeTypes: [ProgrammeType.MenACWY, ProgrammeType.TdIPV],
-    // catchupProgrammeTypes: [ProgrammeType.HPV],
+    // catchupProgrammeTypes: [ProgrammeType.HPV, ProgrammeType.MMR],
     term: SchoolTerm.Summer
+  },
+  MMR: {
+    name: 'MMR',
+    active: true,
+    primaryProgrammeTypes: [ProgrammeType.MMR],
+    term: SchoolTerm.Spring
   }
 }
 
@@ -279,6 +287,7 @@ export const RegistrationOutcome = {
 export const ReplyDecision = {
   NoResponse: 'No response',
   Given: 'Consent given',
+  OnlyGelatineFreeInjection: 'Consent given for the alternative MMR vaccine',
   OnlyFluInjection: 'Consent given for flu injection',
   OnlyMenACWY: 'Consent given for MenACWY only',
   OnlyTdIPV: 'Consent given for Td/IPV only',
