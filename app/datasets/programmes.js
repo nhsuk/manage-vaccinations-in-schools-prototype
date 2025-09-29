@@ -15,7 +15,7 @@ export default {
     },
     guidance: {
       url: 'https://www.gov.uk/government/publications/flu-vaccination-leaflets-and-posters',
-      hint: 'with information available in different languages and alternative formats, including BSL and Braille'
+      hint: 'including in other languages and alternative formats, including BSL and Braille'
     },
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
     vaccine_smomeds: ['43208811000001106', '40085011000001101'],
@@ -35,7 +35,7 @@ export default {
     },
     guidance: {
       url: 'https://www.gov.uk/government/publications/hpv-vaccine-vaccination-guide-leaflet',
-      hint: 'with information available in different languages and alternative formats, including BSL and Braille'
+      hint: 'including in other languages and alternative formats, including BSL and Braille'
     },
     sequence: ['1P', '2P', '3P'],
     sequenceDefault: '1P',
@@ -102,7 +102,7 @@ export default {
     },
     guidance: {
       url: 'https://www.gov.uk/government/publications/mmr-for-all-general-leaflet',
-      hint: 'with information available in different languages'
+      hint: 'including in other languages'
     },
     sequence: ['1P', '2P'],
     sequenceDefault: '1P',
