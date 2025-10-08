@@ -38,9 +38,14 @@ export const healthQuestions = {
     detailsHint: 'Include the steroid name, dose and end date of the course'
   },
   bleeding: {
-    label:
-      'Does the child have a bleeding disorder or are they taking anticoagulant therapy?',
+    label: 'Does your child have a bleeding disorder?',
     hint: false,
+    detailsHint: false
+  },
+  bloodThinning: {
+    label:
+      'Does your child take blood-thinning medicine (anticoagulants)?',
+    hint: 'For example, warfarin, or other medicine used to prevent blood clots.',
     detailsHint: false
   },
   eggAllergy: {
@@ -52,7 +57,7 @@ export const healthQuestions = {
   immuneSystem: {
     label:
       'Does the child have a disease or treatment that severely affects their immune system?',
-    hint: 'The %s vaccine is a live vaccine. It is not suitable for people who are severely immunocompromised.',
+    hint: 'The %s vaccine is a live vaccine. It is not suitable for people who have serious problems with their immune systems.',
     detailsHint: false
   },
   immuneSystemCloseContact: {
@@ -60,11 +65,11 @@ export const healthQuestions = {
       'Is the child in regular close contact with anyone currently having treatment that severely affects their immune system?',
     hint: false,
     detailsHint:
-      'Let us know if they are able to avoid contact with the immunocompromised person for 2 weeks'
+      'Let us know if they can avoid contact with this person for 2 weeks'
   },
   medicalConditions: {
     label:
-      'Does the child have any other medical conditions the immunisation team should be aware of?',
+      'Does the child have any other medical conditions we should know about?',
     hint: false,
     detailsHint: false
   },
@@ -72,6 +77,18 @@ export const healthQuestions = {
     label:
       'Has the child ever had a severe reaction to any medicines, including vaccines?',
     hint: false,
+    detailsHint: false
+  },
+  previousReactionMmr: {
+    label:
+      'Has your child had a severe allergic reaction (anaphylaxis) to a previous dose of MMR or any other measles, mumps or rubella vaccine?',
+    hint: false,
+    detailsHint: false
+  },
+  previousReactionNeomycinGelatine: {
+    label:
+      'Has your child ever had a severe allergic reaction (anaphylaxis) to neomycin or gelatine?',
+    hint: 'Neomycin is an antibiotic sometimes found in creams or ointments. Gelatine is an ingredient in some foods and vaccines.',
     detailsHint: false
   },
   recentFluVaccination: {
