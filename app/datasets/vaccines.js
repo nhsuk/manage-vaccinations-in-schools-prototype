@@ -219,8 +219,9 @@ export default {
     ],
     healthQuestions: {
       'bleeding': {},
-      'allergy': {},
-      'eggAllergy': {},
+      'bloodThinning': {},
+      'previousReactionMmr': {},
+      'previousReactionNeomycinGelatine': {},
       'immuneSystem': {},
       'immuneSystemCloseContact': {},
       'medicalConditions': {}
@@ -252,7 +253,9 @@ export default {
     ],
     healthQuestions: {
       'bleeding': {},
-      'allergy': {},
+      'bloodThinning': {},
+      'previousReactionMmr': {},
+      'previousReactionNeomycinGelatine': {},
       'immuneSystem': {},
       'immuneSystemCloseContact': {},
       'medicalConditions': {}

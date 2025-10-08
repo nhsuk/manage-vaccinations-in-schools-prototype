@@ -454,14 +454,13 @@ export const en = {
       },
       MMR: {
         label: 'Consent given for gelatine-free vaccine only?',
-        title: 'Does your child need the alternative MMR vaccine?',
-        hint: 'The standard MMR vaccine contains gelatine from pigs. An alternative vaccine is available that does not contain gelatine.',
+        title: 'Do you want your child to have a vaccine without gelatine?',
+        hint: 'One type of MMR vaccine contains gelatine from pigs. An alternative MMR vaccine is available that does not contain gelatine.',
         yes: {
-          label: 'Yes'
+          label: 'I want my child to have the vaccine that does not contain gelatine'
         },
         no: {
-          label:
-            'No, my child can have either the standard or alternative vaccine'
+          label: 'My child can have either type of vaccine'
         }
       }
     },
