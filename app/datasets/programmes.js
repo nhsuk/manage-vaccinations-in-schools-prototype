@@ -93,6 +93,10 @@ export default {
     name: 'MMR',
     title: 'Measles, mumps and rubella (MMR)',
     vaccineName: 'MMR vaccine',
+    emailNames: {
+      default: 'MMR catch-up',
+      invite: 'MMR (measles, mumps and rubella) catch-up'
+    },
     information: {
       startPage:
         'The MMR vaccine protects against measles, mumps and rubella. Having 2 doses gives lasting protection against all 3 illnesses. If you’re not sure how many doses your child has had, having further doses will not cause any harm. If your child has had 2 doses, please confirm this using the consent request form.\n\nResearch has shown there is no link between the MMR vaccine and autism.',

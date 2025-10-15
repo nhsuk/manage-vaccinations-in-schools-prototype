@@ -12,6 +12,7 @@ import {
   OrganisationDefaults,
   PatientOutcome,
   ProgrammePreset,
+  ProgrammeType,
   SessionStatus,
   SessionType,
   VaccineMethod
@@ -547,13 +548,20 @@ export class Session {
 
     return {
       sentenceCase: `${filters.formatList(
-        this.primaryProgrammes.map(({ name }) =>
-          sentenceCaseProgrammeName(name)
+        this.primaryProgrammes.map((programme) =>
+          sentenceCaseProgrammeName(programme.emailName())
         )
       )} ${pluralisation}`,
-      titleCase: `${filters.formatList(this.primaryProgrammes.map(({ name }) => name))}
+      titleCase: `${filters.formatList(this.primaryProgrammes.map((programme) => programme.emailName()))}
         ${pluralisation}`
     }
+  }
+
+  get vaccinationInviteNames() {
+    if (this.primaryProgrammes[0].type === ProgrammeType.MMR) {
+      return this.primaryProgrammes[0].emailName('invite')
+    }
+    return this.vaccinationNames.titleCase
   }
 
   /**
