@@ -116,6 +116,6 @@ export const healthQuestions = {
   vaccinationInLastMonth: {
     label: 'Has the child had any vaccinations in the last month?',
     hint: false,
-    detailsHint: "Let us know the name of the vaccine and the date it was given"
+    detailsHint: false
   }
 }
