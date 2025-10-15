@@ -591,7 +591,7 @@ export const en = {
     consent: {
       invite: {
         label: 'Invitation',
-        name: '{{session.vaccinationNames.titleCase}} on {{session.summary.dates}}'
+        name: '{{session.vaccinationInviteNames}} on {{session.summary.dates}}'
       },
       'invite-catch-up': {
         label: 'Invitation (catch-up)',

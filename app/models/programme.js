@@ -23,6 +23,7 @@ import { Vaccine } from './vaccine.js'
  * @property {object} [context] - Context
  * @property {string} id - ID
  * @property {string} name - Name
+ * @property {string} emailName - Email name
  * @property {string} title - Title
  * @property {object} information - NHS.UK programme information
  * @property {object} guidance - GOV.UK guidance
@@ -60,6 +61,16 @@ export class Programme {
    */
   get name() {
     return this.type
+  }
+
+  /**
+   * Get programme name for use in emails
+   *
+   * @returns {string} Programme email name
+   * @param {string} template - Email template the name is for
+   */
+  emailName(template = 'default') {
+    return programmes[this.type].emailNames?.[template] || this.name
   }
 
   /**
@@ -223,8 +234,8 @@ export class Programme {
   get formatted() {
     const vaccineList = Array.isArray(this.vaccine_smomeds)
       ? this.vaccine_smomeds.map(
-          (snomed) => new Vaccine(vaccines[snomed]).brand
-        )
+        (snomed) => new Vaccine(vaccines[snomed]).brand
+      )
       : []
 
     return {
