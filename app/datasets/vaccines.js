@@ -224,6 +224,7 @@ export default {
       'previousReactionNeomycinGelatine': {},
       'immuneSystem': {},
       'immuneSystemCloseContact': {},
+      'vaccinationInLastMonth': {},
       'medicalConditions': {}
     },
     preScreenQuestions: [
@@ -258,6 +259,7 @@ export default {
       'previousReactionNeomycinGelatine': {},
       'immuneSystem': {},
       'immuneSystemCloseContact': {},
+      'vaccinationInLastMonth': {},
       'medicalConditions': {}
     },
     preScreenQuestions: [
