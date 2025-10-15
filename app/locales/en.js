@@ -419,6 +419,9 @@ export const en = {
         label: 'Yes, I agree to the alternative flu injection',
         hint: 'This is suitable for children who do not use gelatine products, or if they cannot have the nasal spray vaccine for medical reasons'
       },
+      mmr: {
+        hint: 'This is a catch-up vaccination for children who have not yet had two doses of the MMR vaccine. These are usually given when children are aged 1 and 3. If you’re sure that your child is already fully vaccinated, choose "no".',
+      },
       no: {
         label: 'No'
       }
