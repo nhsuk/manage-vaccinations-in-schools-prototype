@@ -14,6 +14,10 @@ We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to 
 
 We’d like your consent to vaccinate {{ consent.child.firstName }}. You can give this by filling in our online form (the link is below).
 
+{% if programme.type == ProgrammeType.MMR %}
+If you’re sure your child has had 2 doses, please confirm this using the consent request form.
+{% endif %}
+
 {% if session.dates.length > 1 %}
 We can’t say on which of the above dates your child will have the vaccination because of the number of pupils involved.
 {% endif %}
