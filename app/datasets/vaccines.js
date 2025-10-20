@@ -220,6 +220,7 @@ export default {
     healthQuestions: {
       'bleeding': {},
       'bloodThinning': {},
+      'bloodTransfusion': {},
       'previousReactionMmr': {},
       'previousReactionNeomycinGelatine': {},
       'immuneSystem': {},
@@ -255,6 +256,7 @@ export default {
     healthQuestions: {
       'bleeding': {},
       'bloodThinning': {},
+      'bloodTransfusion': {},
       'previousReactionMmr': {},
       'previousReactionNeomycinGelatine': {},
       'immuneSystem': {},

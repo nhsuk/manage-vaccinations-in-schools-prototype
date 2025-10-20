@@ -47,6 +47,12 @@ export const healthQuestions = {
     hint: 'For example, warfarin, or other medicine used to prevent blood clots.',
     detailsHint: false
   },
+  bloodTransfusion: {
+    label:
+      'Has the child received a blood or plasma transfusion, or immunoglobulin in the last 3 months?',
+    hint: false,
+    detailsHint: false
+  },
   eggAllergy: {
     label:
       'Has the child ever been admitted to intensive care due to a severe allergic reaction (anaphylaxis) to egg?',
