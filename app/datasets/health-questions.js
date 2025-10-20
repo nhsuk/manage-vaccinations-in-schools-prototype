@@ -38,13 +38,12 @@ export const healthQuestions = {
     detailsHint: 'Include the steroid name, dose and end date of the course'
   },
   bleeding: {
-    label: 'Does your child have a bleeding disorder?',
+    label: 'Does the child have a bleeding disorder?',
     hint: false,
     detailsHint: false
   },
   bloodThinning: {
-    label:
-      'Does your child take blood-thinning medicine (anticoagulants)?',
+    label: 'Does the child take blood-thinning medicine (anticoagulants)?',
     hint: 'For example, warfarin, or other medicine used to prevent blood clots.',
     detailsHint: false
   },
