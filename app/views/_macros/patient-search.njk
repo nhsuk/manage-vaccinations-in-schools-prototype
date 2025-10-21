@@ -38,6 +38,7 @@
     }) }}
 
     {{ checkboxes({
+      classes: "nhsuk-checkboxes--small",
       fieldset: {
         legend: {
           classes: "nhsuk-fieldset__legend--s",
@@ -50,6 +51,7 @@
     }) if programmeItems }}
 
     {{ checkboxes({
+      classes: "nhsuk-checkboxes--small",
       fieldset: {
         legend: {
           classes: "nhsuk-fieldset__legend--s",
@@ -70,6 +72,7 @@
 
     {% for name, enums in params.checkboxFilters %}
       {{ checkboxes({
+        classes: "nhsuk-checkboxes--small",
         fieldset: {
           legend: {
             classes: "nhsuk-fieldset__legend--s",
@@ -83,6 +86,7 @@
 
     {% for name, enums in params.radioFilters %}
       {{ radios({
+        classes: "nhsuk-radios--small",
         fieldset: {
           legend: {
             classes: "nhsuk-fieldset__legend--s",
@@ -95,6 +99,7 @@
     {% endfor %}
 
     {{ checkboxes({
+      classes: "nhsuk-checkboxes--small",
       fieldset: {
         legend: {
           classes: "nhsuk-fieldset__legend--s",
@@ -118,6 +123,7 @@
       }) }}
 
       {{ checkboxes({
+        classes: "nhsuk-checkboxes--small",
         fieldset: {
           legend: {
             classes: "nhsuk-fieldset__legend--s",
