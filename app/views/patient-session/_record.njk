@@ -127,7 +127,7 @@
         },
         conditional: {
           html: vaccinationSiteHtml
-        } if patientSession.vaccine.method === VaccineMethod.Injection
+        } if patientSession.vaccine.method != VaccineMethod.Nasal
       },
       {
         text: __("patientSession.preScreen.ready.no"),
