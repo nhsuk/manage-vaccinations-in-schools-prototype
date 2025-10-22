@@ -247,9 +247,12 @@ export default () => {
         html += formatHealthAnswer(healthAnswer)
       }
 
-      const keyText = parentFacing
-        ? healthQuestions[key].label.replace('the child', 'your child')
-        : healthQuestions[key].label
+      let keyText =
+        healthQuestions[key].labelWithOptions || healthQuestions[key].label
+
+      keyText = parentFacing
+        ? keyText.replace('the child', 'your child')
+        : keyText
 
       summaryRows.push({
         classes: undefined,

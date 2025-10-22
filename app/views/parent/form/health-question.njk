@@ -6,29 +6,38 @@
 {% set detailsHint = __("healthQuestions." + key + ".detailsHint") %}
 
 {% block form %}
-  {{ radios({
-    fieldset: {
-      legend: {
-        html: appHeading({
-          classes: "nhsuk-fieldset__legend--l",
-          title: title | replace('the child', 'your child')
-        })
-      }
-    },
-    hint: { text: hint } if hint,
-    items: [{
-      text: __("consent.healthAnswers.yes"),
-      conditional: {
-        html: textarea({
-          label: { text: __("consent.healthAnswers.details") },
-          hint: { text: detailsHint } if detailsHint,
-          decorate: ["consent", "healthAnswers", key, "details"]
-        })
-      } if not hasSubQuestions
-    },
-    {
-      text: __("consent.healthAnswers.no")
-    }],
-    decorate: ["consent", "healthAnswers", key, "answer"]
-  }) }}
+  {% call fieldset({
+    legend: {
+      html: appHeading({
+        classes: "nhsuk-fieldset__legend--l",
+        title: title | replace('the child', 'your child')
+      })
+    }
+  }) %}
+    {% if __("healthQuestions." + key + ".options") %}
+    <ul class="nhsuk-list nhsuk-list--bullet">
+      {% for option in __("healthQuestions." + key + ".options") %}
+        <li>{{ option }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {{ radios({
+      hint: { text: hint } if hint,
+      items: [{
+        text: __("consent.healthAnswers.yes"),
+        conditional: {
+          html: textarea({
+            label: { text: __("consent.healthAnswers.details") },
+            hint: { text: detailsHint } if detailsHint,
+            decorate: ["consent", "healthAnswers", key, "details"]
+          })
+        } if not hasSubQuestions
+      },
+      {
+        text: __("consent.healthAnswers.no")
+      }],
+      decorate: ["consent", "healthAnswers", key, "answer"]
+    }) }}
+  {% endcall %}
 {% endblock %}
