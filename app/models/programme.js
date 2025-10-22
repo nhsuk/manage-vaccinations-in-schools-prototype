@@ -234,8 +234,8 @@ export class Programme {
   get formatted() {
     const vaccineList = Array.isArray(this.vaccine_smomeds)
       ? this.vaccine_smomeds.map(
-        (snomed) => new Vaccine(vaccines[snomed]).brand
-      )
+          (snomed) => new Vaccine(vaccines[snomed]).brand
+        )
       : []
 
     return {

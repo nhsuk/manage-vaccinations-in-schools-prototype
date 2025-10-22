@@ -420,7 +420,7 @@ export const en = {
         hint: 'This is suitable for children who do not use gelatine products, or if they cannot have the nasal spray vaccine for medical reasons'
       },
       mmr: {
-        hint: 'This is a catch-up vaccination for children who have not yet had two doses of the MMR vaccine. These are usually given when children are aged 1 and 3. If you’re sure that your child is already fully vaccinated, choose "no".',
+        hint: 'This is a catch-up vaccination for children who have not yet had two doses of the MMR vaccine. These are usually given when children are aged 1 and 3. If you’re sure that your child is already fully vaccinated, choose "no".'
       },
       no: {
         label: 'No'
@@ -460,7 +460,8 @@ export const en = {
         title: 'Do you want your child to have a vaccine without gelatine?',
         hint: 'One type of MMR vaccine contains gelatine from pigs. An alternative MMR vaccine is available that does not contain gelatine.',
         yes: {
-          label: 'I want my child to have the vaccine that does not contain gelatine'
+          label:
+            'I want my child to have the vaccine that does not contain gelatine'
         },
         no: {
           label: 'My child can have either type of vaccine'
@@ -1308,14 +1309,14 @@ export const en = {
         label: 'No response'
       }
     },
+    decisionStatus: {
+      label: 'Decision'
+    },
     email: {
       label: 'Email address'
     },
     tel: {
       label: 'Phone number'
-    },
-    decisionStatus: {
-      label: 'Decision'
     },
     alternative: {
       label: 'Consent also given for injected vaccine?',
