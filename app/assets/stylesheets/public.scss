@@ -1,6 +1,9 @@
 // Import NHS.UK Frontend
 @forward "vendor/nhsuk-frontend";
 
+// Public-specific core helpers
+@forward "core/elements";
+
 // Public-specific components
 @forward "components/autocomplete";
 @forward "components/environment";
