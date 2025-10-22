@@ -18,28 +18,27 @@
         html: dateShort
       }] %}
       {% if session.offersAlternativeVaccine %}
+        {% set programme = session.primaryProgrammes[0] %}
         {% set dateRow = dateRow.concat([{
-          header: __("session.activity.vaccinatedWith", {
-            programme: session.primaryProgrammes[0],
-            vaccineMethod: VaccineMethod.Nasal | lower
+          header: __("session.tally.vaccinatedNasal.label", {
+            programme: programme
           }) | safe,
-          text: session.activity.reportNasalSprays if loop.first else 0,
+          text: session.tally(programme.id).vaccinatedNasal if loop.first else 0,
           format: "numeric"
         }, {
-          header: __("session.activity.vaccinatedWith", {
-            programme: session.primaryProgrammes[0],
-            vaccineMethod: VaccineMethod.Injection | lower
+          header: __("session.tally.vaccinatedInjection.label", {
+            programme: programme
           }) | safe,
-          text: session.activity.reportInjections if loop.first else 0,
+          text: session.tally(programme.id).vaccinatedInjection if loop.first else 0,
           format: "numeric"
         }]) %}
       {% else %}
         {% for programme in session.primaryProgrammes %}
           {% set dateRow = dateRow.concat([{
-            header: __("session.activity.vaccinated", {
+            header: __("session.tally.vaccinated.label", {
               programme: programme
             }) | safe,
-            text: session.activity.report if loop.first else 0,
+            text: session.tally(programme.id).vaccinated if loop.first else 0,
             format: "numeric"
           }]) %}
         {% endfor %}
@@ -53,28 +52,27 @@
       text: "Total"
     }] %}
     {% if session.offersAlternativeVaccine %}
+      {% set programme = session.primaryProgrammes[0] %}
       {% set totalRow = totalRow.concat([{
-        header: __("session.activity.vaccinatedWith", {
-          programme: session.primaryProgrammes[0],
-          vaccineMethod: VaccineMethod.Nasal | lower
+        header: __("session.tally.vaccinatedNasal.label", {
+          programme: programme
         }) | safe,
-        html: "<strong>" + session.activity.reportNasalSprays + "</strong>",
+        html: "<strong>" + session.tally(programme.id).vaccinatedNasal   + "</strong>",
         format: "numeric"
       }, {
-        header: __("session.activity.vaccinatedWith", {
-          programme: session.primaryProgrammes[0],
-          vaccineMethod: VaccineMethod.Injection | lower
+        header: __("session.tally.vaccinatedInjection.label", {
+          programme: programme
         }) | safe,
-        html: "<strong>" + session.activity.reportInjections + "</strong>",
+        html: "<strong>" + session.tally(programme.id).vaccinatedInjection + "</strong>",
         format: "numeric"
       }]) %}
     {% else %}
       {% for programme in session.primaryProgrammes %}
         {% set totalRow = totalRow.concat([{
-          header: __("session.activity.vaccinated", {
+          header: __("session.tally.vaccinated.label", {
             programme: programme
           }) | safe,
-          html: "<strong>" + session.activity.report + "</strong>",
+          html: "<strong>" + session.tally(programme.id).vaccinated + "</strong>",
           format: "numeric"
         }]) %}
       {% endfor %}
@@ -86,16 +84,15 @@
       text: __("session.date.label")
     }] %}
     {% if session.offersAlternativeVaccine %}
+      {% set programme = session.primaryProgrammes[0] %}
       {% set head = head.concat([{
-        text: __("session.activity.vaccinatedWith", {
-          programme: session.primaryProgrammes[0],
-          vaccineMethod: VaccineMethod.Nasal | lower
+        text: __("session.tally.vaccinatedNasal.label", {
+          programme: programme
         }),
         format: "numeric"
       }, {
-        text: __("session.activity.vaccinatedWith", {
-          programme: session.primaryProgrammes[0],
-          vaccineMethod: VaccineMethod.Injection | lower
+        text: __("session.tally.vaccinatedInjection.label", {
+          programme: programme
         }),
         format: "numeric"
       }]) %}
@@ -110,13 +107,15 @@
 
     {{ table({
       id: "dates",
-      caption: __("session.activity.vaccinated"),
+      caption: __("session.tally.vaccinated.caption"),
       responsive: true,
       head: head,
       rows: rows
     }) }}
   {% else %}
     {{ session.formatted.dates | safe }}
+
+    {{ session.formatted.consentWindow | nhsukMarkdown if session.type == SessionType.School }}
   {% endif %}
 
   {{ appButtonGroup({

@@ -452,6 +452,19 @@ export class PatientSession {
   }
 
   /**
+   * Consent has not been given
+   *
+   * @returns {boolean} Consent has not been given
+   */
+  get didNotConsent() {
+    return [
+      ConsentOutcome.Refused,
+      ConsentOutcome.FinalRefusal,
+      ConsentOutcome.Inconsistent
+    ].includes(this.consent)
+  }
+
+  /**
    * Get consent health answers
    *
    * @returns {object|boolean} Consent health answers

@@ -1557,20 +1557,11 @@ export const en = {
     },
     patients: {
       label: 'Children',
-      eligible: 'Eligible children',
-      hint: 'Due vaccination, not vaccinated elsewhere',
-      description:
-        'Children due a vaccination this year who have not been vaccinated at another location',
       count:
         '{count, plural, =0 {No children} one {# child} other {# children}}'
     },
     activity: {
       label: 'Action required',
-      consented: 'Consent given for {{programme.nameSentenceCase}}',
-      consentedWith:
-        'Consent given for {{programme.nameSentenceCase}} ({{vaccineMethod}})',
-      vaccinated: 'Vaccinations given',
-      vaccinatedWith: '{{programme.name}} ({{vaccineMethod}})',
       addNhsNumber: {
         label: 'No NHS number',
         count:
@@ -1585,26 +1576,6 @@ export const en = {
         label: 'No consent response',
         count:
           '{count, plural, =0 {No children} one {# child} other {# children}} with no response'
-      },
-      checkGiven: {
-        label: 'Consent given',
-        count:
-          '{count, plural, =0 {No children} one {# child} other {# children}} with consent given'
-      },
-      checkGivenForInjection: {
-        label: 'Consent given for injected vaccine',
-        count:
-          '{count, plural, =0 {No children} one {# child} other {# children}} with consent given for injected vaccine'
-      },
-      checkGivenForNasalSpray: {
-        label: 'Consent given for nasal spray',
-        count:
-          '{count, plural, =0 {No children} one {# child} other {# children}} with consent given for nasal spray'
-      },
-      checkRefusal: {
-        label: 'Consent refused',
-        count:
-          '{count, plural, =0 {No children with consent refused} one {# child with consent refused} other {# children with consent refused}}'
       },
       followUp: {
         label: 'Follow-up requested',
@@ -1647,23 +1618,39 @@ export const en = {
           'Children with consent, who have not refused the vaccine and have not been vaccinated yet',
         count:
           '{count, plural, =0 {No children} one {# child} other {# children}} with consent have not been vaccinated yet'
+      }
+    },
+    tally: {
+      eligible: {
+        label: 'Eligible for vaccination',
+        hint: 'Due vaccination, not vaccinated elsewhere',
+        count:
+          '{count, plural, =0 {No children are} one {# child is} other {# children are}} eligible for vaccination this academic year and have not been vaccinated elsewhere'
       },
-      report: {
+      noResponse: {
+        label: 'No response'
+      },
+      consentGiven: {
+        label: 'Consent given'
+      },
+      consentGivenForInjection: {
+        label: 'Consent given for injection'
+      },
+      consentGivenForNasal: {
+        label: 'Consent given for nasal spray'
+      },
+      didNotConsent: {
+        label: 'Did not consent'
+      },
+      vaccinated: {
         label: 'Vaccinated',
-        count:
-          '{count, plural, =0 {No vaccinations} one {# vaccination} other {# vaccinations}} given',
-        programmeCount:
-          '{count, plural, =0 {No vaccinations} one {# vaccination} other {# vaccinations}} given for {nameSentenceCase}'
+        caption: 'Vaccinations given in this session'
       },
-      reportInjections: {
-        label: 'Vaccinated with injected vaccine',
-        count:
-          '{count, plural, =0 {No vaccinations} one {# vaccination} other {# vaccinations}} given with injected vaccine'
+      vaccinatedNasal: {
+        label: '{{programme.name}} (Nasal spray)'
       },
-      reportNasalSprays: {
-        label: 'Vaccinated with nasal spray',
-        count:
-          '{count, plural, =0 {No vaccinations} one {# vaccination} other {# vaccinations}} given with nasal spray'
+      vaccinatedInjection: {
+        label: '{{programme.name}} (Injection)'
       }
     },
     date: {

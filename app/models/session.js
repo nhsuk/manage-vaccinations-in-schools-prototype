@@ -12,7 +12,6 @@ import {
   OrganisationDefaults,
   PatientOutcome,
   ProgrammePreset,
-  ScreenOutcome,
   SessionStatus,
   SessionType,
   VaccineMethod
@@ -604,29 +603,9 @@ export class Session {
           'patient.hasMissingNhsNumber': true
         }
       ]),
-      checkGiven: getSessionActivityCount(this, [
+      getConsent: getSessionActivityCount(this, [
         {
-          consentGiven: true
-        }
-      ]),
-      checkGivenForNasalSpray: getSessionActivityCount(this, [
-        {
-          consent: ConsentOutcome.GivenForNasalSpray
-        }
-      ]),
-      checkGivenForInjection: getSessionActivityCount(this, [
-        {
-          consent: ConsentOutcome.GivenForInjection
-        }
-      ]),
-      checkRefusal: getSessionActivityCount(this, [
-        {
-          consent: ConsentOutcome.Refused
-        }
-      ]),
-      triage: getSessionActivityCount(this, [
-        {
-          screen: ScreenOutcome.NeedsTriage
+          consent: ConsentOutcome.NoResponse
         }
       ]),
       instruct: getSessionActivityCount(this, [
@@ -639,32 +618,70 @@ export class Session {
         {
           stillToVaccinate: true
         }
-      ]),
-      report: getSessionActivityCount(this, [
+      ])
+    }
+  }
+
+  /**
+   * Get session tally counts per programme
+   *
+   * @param {string} programme_id - Programme ID
+   * @returns {object} Session tally counts
+   */
+  tally(programme_id) {
+    return {
+      eligible: getSessionActivityCount(this, [
         {
-          report: PatientOutcome.Vaccinated
+          programme_id
         }
       ]),
-      reportNasalSprays: getSessionActivityCount(this, [
+      noResponse: getSessionActivityCount(this, [
+        {
+          consent: ConsentOutcome.NoResponse
+        }
+      ]),
+      consentGiven: getSessionActivityCount(this, [
+        {
+          consentGiven: true,
+          programme_id
+        }
+      ]),
+      consentGivenForNasal: getSessionActivityCount(this, [
+        {
+          consent: ConsentOutcome.GivenForNasalSpray,
+          programme_id
+        }
+      ]),
+      consentGivenForInjection: getSessionActivityCount(this, [
+        {
+          consent: ConsentOutcome.GivenForInjection,
+          programme_id
+        }
+      ]),
+      didNotConsent: getSessionActivityCount(this, [
+        {
+          didNotConsent: true,
+          programme_id
+        }
+      ]),
+      vaccinated: getSessionActivityCount(this, [
         {
           report: PatientOutcome.Vaccinated,
-          'vaccine.method': VaccineMethod.Nasal
+          programme_id
         }
       ]),
-      reportInjections: getSessionActivityCount(this, [
+      vaccinatedNasal: getSessionActivityCount(this, [
         {
           report: PatientOutcome.Vaccinated,
-          'vaccine.method': VaccineMethod.Injection
+          'vaccine.method': VaccineMethod.Nasal,
+          programme_id
         }
       ]),
-      couldNotVaccinate: getSessionActivityCount(this, [
+      vaccinatedInjection: getSessionActivityCount(this, [
         {
-          report: PatientOutcome.CouldNotVaccinate
-        }
-      ]),
-      noOutcomeYet: getSessionActivityCount(this, [
-        {
-          report: PatientOutcome.NoOutcomeYet
+          report: PatientOutcome.Vaccinated,
+          'vaccine.method': VaccineMethod.Injection,
+          programme_id
         }
       ])
     }
