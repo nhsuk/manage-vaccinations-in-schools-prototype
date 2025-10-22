@@ -197,9 +197,9 @@ export const PreScreenQuestion = {
   IsMedicated: 'is not taking any medication which prevents vaccination',
   IsAsthmatic:
     'if they have asthma, has not had a flare-up of symptoms in the past 72 hours, including wheezing or needing to use a reliever inhaler more than usual',
-  IsAllergic: 'has no allergies which would prevent vaccination',
-  IsVaccinated: 'has not already had this vaccination',
-  IsHappy: 'knows what the vaccination is for, and agrees to have it'
+  IsHappy: 'knows what the vaccination is for, and agrees to have it',
+  IsNotContraindicated:
+    'has no other contraindications which prevent vaccination'
 }
 
 /**

@@ -45,9 +45,8 @@ export default {
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsMedicated,
       PreScreenQuestion.IsAsthmatic,
-      PreScreenQuestion.IsAllergic,
-      PreScreenQuestion.IsVaccinated,
-      PreScreenQuestion.IsHappy
+      PreScreenQuestion.IsHappy,
+      PreScreenQuestion.IsNotContraindicated
     ]
   },
   '40085011000001101': {
@@ -83,9 +82,8 @@ export default {
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsMedicated,
-      PreScreenQuestion.IsAllergic,
-      PreScreenQuestion.IsVaccinated,
-      PreScreenQuestion.IsHappy
+      PreScreenQuestion.IsHappy,
+      PreScreenQuestion.IsNotContraindicated
     ]
   },
   // HPV vaccines
@@ -118,9 +116,8 @@ export default {
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsPregnant,
-      PreScreenQuestion.IsAllergic,
-      PreScreenQuestion.IsVaccinated,
-      PreScreenQuestion.IsHappy
+      PreScreenQuestion.IsHappy,
+      PreScreenQuestion.IsNotContraindicated
     ]
   },
   // 3-in-1 vaccines
@@ -155,9 +152,8 @@ export default {
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsPregnant,
       PreScreenQuestion.IsMedicated,
-      PreScreenQuestion.IsAllergic,
-      PreScreenQuestion.IsVaccinated,
-      PreScreenQuestion.IsHappy
+      PreScreenQuestion.IsHappy,
+      PreScreenQuestion.IsNotContraindicated
     ]
   },
   // MenACWY vaccines
@@ -194,9 +190,8 @@ export default {
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsMedicated,
-      PreScreenQuestion.IsAllergic,
-      PreScreenQuestion.IsVaccinated,
-      PreScreenQuestion.IsHappy
+      PreScreenQuestion.IsHappy,
+      PreScreenQuestion.IsNotContraindicated
     ]
   },
   // MMR vaccines
@@ -231,9 +226,8 @@ export default {
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsPregnant,
-      PreScreenQuestion.IsAllergic,
-      PreScreenQuestion.IsVaccinated,
-      PreScreenQuestion.IsHappy
+      PreScreenQuestion.IsHappy,
+      PreScreenQuestion.IsNotContraindicated
     ]
   },
   '34925111000001104': {
@@ -267,9 +261,8 @@ export default {
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
       PreScreenQuestion.IsPregnant,
-      PreScreenQuestion.IsAllergic,
-      PreScreenQuestion.IsVaccinated,
-      PreScreenQuestion.IsHappy
+      PreScreenQuestion.IsHappy,
+      PreScreenQuestion.IsNotContraindicated
     ]
   }
 }
