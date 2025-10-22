@@ -25,10 +25,6 @@
 
   {% include "session/_session-programme-summary.njk" %}
 
-  {% if not session.isUnplanned %}
-    {% include "session/_session-consent-summary.njk" %}
-  {% endif %}
-
   {% include "session/_session-dates-summary.njk" %}
 
   {% if not session.isUnplanned %}
