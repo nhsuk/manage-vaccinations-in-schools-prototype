@@ -233,9 +233,9 @@ export const parentController = {
           value: ReplyDecision.Given
         },
         {
-          text: __('consent.decision.injection.label'),
-          hint: { text: __('consent.decision.injection.hint') },
-          value: ReplyDecision.OnlyFluInjection
+          text: __('consent.decision.alternative.label'),
+          hint: { text: __('consent.decision.alternative.hint') },
+          value: ReplyDecision.OnlyAlternative
         },
         {
           text: __('consent.decision.no.label'),

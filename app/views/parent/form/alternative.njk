@@ -14,13 +14,13 @@
       }
     },
     hint: {
-      text: __("consent.alternative." + type + ".hint")
+      text: __("consent.alternative." + session.programmePreset + ".hint")
     },
     items: [{
-      text: __("consent.alternative." + type + ".yes.label"),
+      text: __("consent.alternative." + session.programmePreset + ".yes"),
       value: true
     }, {
-      text: __("consent.alternative." + type + ".no.label"),
+      text: __("consent.alternative." + session.programmePreset + ".no"),
       value: false
     }],
     decorate: "consent.alternative"

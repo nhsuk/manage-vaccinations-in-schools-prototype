@@ -30,6 +30,10 @@ export function getCohortEligibility(cohort, patient) {
       // Flu vaccination is available for all year groups
       return cohort.yearGroup >= 0 && cohort.yearGroup <= 11
 
+    case ProgrammeType.MMR:
+      // MMR vaccination is available for all year groups
+      return cohort.yearGroup >= 0 && cohort.yearGroup <= 11
+
     case ProgrammeType.HPV:
       // HPV vaccination is only for Year 8
       return cohort.yearGroup === 8

@@ -17,7 +17,7 @@ import { hasAnswersNeedingTriage } from '../utils/reply.js'
 import { formatParent } from '../utils/string.js'
 import {
   getScreenOutcomesForConsentMethod,
-  getScreenVaccinationMethod
+  getScreenVaccineMethod
 } from '../utils/triage.js'
 
 export const replyController = {
@@ -274,10 +274,9 @@ export const replyController = {
       response.locals.screenOutcomesForConsentMethod =
         getScreenOutcomesForConsentMethod(programme, [reply])
 
-      response.locals.screenVaccinationMethod = getScreenVaccinationMethod(
-        programme,
-        [reply]
-      )
+      response.locals.screenVaccineMethod = getScreenVaccineMethod(programme, [
+        reply
+      ])
 
       next()
     }

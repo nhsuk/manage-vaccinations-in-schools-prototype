@@ -21,33 +21,27 @@
         href: session.uri + "/consent?consent=" + ConsentOutcome.NoResponse + "&programme_id=" + programme.id
       }) }}
     </div>
-{% if session.offersAlternativeVaccine %}
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
-        heading: __("session.tally.consentGivenForNasal.label"),
-        colour: "aqua-green",
-        compact: true,
-        data: session.tally(programme.id).consentGivenForNasal,
-        href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForNasalSpray
-      }) }}
-    </div>
-    <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
-      {{ appDataCard({
-        heading: __("session.tally.consentGivenForInjection.label"),
-        colour: "aqua-green",
-        compact: true,
-        data: session.tally(programme.id).consentGivenForInjection,
-        href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForInjection
-      }) }}
-    </div>
-{% else %}
-    <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
-      {{ appDataCard({
-        heading: __("session.tally.consentGiven.label"),
+        heading: __("session.tally.consentGiven.label", {
+          vaccineMethod: programme.standardVaccine.method | lower
+        }),
         colour: "aqua-green",
         compact: true,
         data: session.tally(programme.id).consentGiven,
         href: session.uri + "/consent?consent=" + ConsentOutcome.Given
+      }) }}
+    </div>
+{% if programme.alternativeVaccine %}
+    <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
+      {{ appDataCard({
+        heading: __("session.tally.consentGiven.label", {
+          vaccineMethod: "gelatine-free injection"
+        }),
+        colour: "aqua-green",
+        compact: true,
+        data: session.tally(programme.id).consentGivenForAlternativeOnly,
+        href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForAlternativeOnly
       }) }}
     </div>
 {% endif %}

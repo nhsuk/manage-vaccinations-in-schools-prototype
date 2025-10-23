@@ -60,6 +60,7 @@ export default {
     },
     method: VaccineMethod.Injection,
     delegationProtocol: VaccinationProtocol.National,
+    alternative: true,
     dose: 0.5,
     sideEffects: [
       VaccineSideEffect.PainSite,
@@ -198,7 +199,7 @@ export default {
   '13968211000001108': {
     snomed: '13968211000001108',
     type: 'MMR',
-    brand: 'MMRVaXPro',
+    brand: 'MMRVaxPro',
     manufacturer: 'Merck Sharp & Dohme (UK) Ltd',
     leaflet: {
       url: 'https://www.medicines.org.uk/emc/files/pil.6307.pdf',
@@ -240,6 +241,7 @@ export default {
       size: '266KB'
     },
     method: VaccineMethod.Injection,
+    alternative: true,
     dose: 0.5,
     sideEffects: [
       VaccineSideEffect.Bruising,

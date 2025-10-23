@@ -7,6 +7,7 @@ import {
   ConsentOutcome,
   InstructionOutcome,
   PatientOutcome,
+  RecordVaccineMethod,
   RegistrationOutcome,
   ScreenOutcome,
   SessionType,
@@ -240,7 +241,7 @@ export const sessionController = {
   readPatientSessions(request, response, next) {
     const { account } = request.app.locals
     const { view } = request.params
-    const {
+    let {
       options,
       q,
       consent,
@@ -304,10 +305,14 @@ export const sessionController = {
       )
     }
 
-    // Filter by consent status
+    // Filter by exact consent status
     if (consent) {
+      consent = Array.isArray(consent) ? consent : [consent]
+
       results = results.filter((patientSession) =>
-        consent.includes(patientSession.consent)
+        consent.some(
+          (consentOutcome) => consentOutcome === patientSession.consent
+        )
       )
     }
 
@@ -396,11 +401,7 @@ export const sessionController = {
     // Checkbox filter options (select many)
     const checkboxFilters = {
       consent: {
-        consent: session.offersAlternativeVaccine
-          ? Object.values(ConsentOutcome).filter(
-              (outcome) => outcome !== ConsentOutcome.Given
-            )
-          : ConsentOutcome
+        consent: ConsentOutcome
       }
     }
 
@@ -420,12 +421,12 @@ export const sessionController = {
       },
       register: {
         register: RegistrationOutcome,
-        vaccineMethod: session.offersAlternativeVaccine && VaccineMethod,
+        vaccineMethod: session.offersAlternativeVaccine && RecordVaccineMethod,
         instruct: session.psdProtocol && InstructionOutcome,
         report: PatientOutcome
       },
       record: {
-        vaccineMethod: session.offersAlternativeVaccine && VaccineMethod
+        vaccineMethod: session.offersAlternativeVaccine && RecordVaccineMethod
       },
       report: {
         report: PatientOutcome

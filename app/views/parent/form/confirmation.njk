@@ -1,7 +1,9 @@
 {% extends "_layouts/default.njk" %}
 
 {% set paths = { back: false } %}
-{% set title = __("consent.confirmation.title." + consent.decision) %}
+{% set title = __("consent.confirmation.title." + consent.decision, {
+  session: session
+}) %}
 {% set text = __("consent.confirmation.text." + consent.decision, {
   consent: consent,
   session: session

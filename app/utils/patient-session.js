@@ -78,8 +78,7 @@ export const getConsentStatus = (patientSession) => {
       icon = 'cross'
       break
     case ConsentOutcome.Given:
-    case ConsentOutcome.GivenForInjection:
-    case ConsentOutcome.GivenForNasalSpray:
+    case ConsentOutcome.GivenForAlternativeOnly:
       colour = 'aqua-green'
       description = `${patient.fullName} is ready for the vaccinator.`
       icon = 'tick'
@@ -174,9 +173,9 @@ export const getScreenStatus = (patientSession) => {
       colour = 'aqua-green'
       description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate.`
       break
-    case ScreenOutcome.VaccinateInjection:
+    case ScreenOutcome.VaccinateAlternative:
       colour = 'aqua-green'
-      description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the injected vaccine only.`
+      description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the injected gelatine-free vaccine only.`
       break
     case ScreenOutcome.VaccinateNasal:
       colour = 'aqua-green'

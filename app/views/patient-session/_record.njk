@@ -4,10 +4,10 @@
   size: "m",
   title: __("patientSession.record.titleWithMethod", {
     session: session,
-    method: patientSession.vaccine.method | lower
+    method: patientSession.vaccineMethod | lower
   }),
   attributes: {
-    "data-method": patientSession.vaccine.method
+    "data-method": patientSession.vaccineMethod
   }
 } if patientSession.programme.alternativeVaccine else {
   level: 3,
@@ -135,7 +135,7 @@
       },
       {
         divider: "or"
-      } if canRecordAlternativeVaccine,
+      } if canRecordEitherVaccine,
       {
         text: __("patientSession.preScreen.ready.alternative"),
         value: "alternative",
@@ -145,7 +145,7 @@
         conditional: {
           html: vaccinationSiteHtml
         }
-      } if canRecordAlternativeVaccine
+      } if canRecordEitherVaccine
     ],
     decorate: "patientSession.preScreen.ready",
     _validate: {

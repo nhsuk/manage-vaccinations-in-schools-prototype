@@ -14,8 +14,7 @@ import {
   ProgrammePreset,
   ProgrammeType,
   SessionStatus,
-  SessionType,
-  VaccineMethod
+  SessionType
 } from '../enums.js'
 import {
   removeDays,
@@ -650,19 +649,13 @@ export class Session {
       ]),
       consentGiven: getSessionActivityCount(this, [
         {
-          consentGiven: true,
+          consent: ConsentOutcome.Given,
           programme_id
         }
       ]),
-      consentGivenForNasal: getSessionActivityCount(this, [
+      consentGivenForAlternativeOnly: getSessionActivityCount(this, [
         {
-          consent: ConsentOutcome.GivenForNasalSpray,
-          programme_id
-        }
-      ]),
-      consentGivenForInjection: getSessionActivityCount(this, [
-        {
-          consent: ConsentOutcome.GivenForInjection,
+          consent: ConsentOutcome.GivenForAlternativeOnly,
           programme_id
         }
       ]),
@@ -678,17 +671,17 @@ export class Session {
           programme_id
         }
       ]),
-      vaccinatedNasal: getSessionActivityCount(this, [
+      vaccinatedStandard: getSessionActivityCount(this, [
         {
           report: PatientOutcome.Vaccinated,
-          'vaccine.method': VaccineMethod.Nasal,
+          'vaccine.alternative': false,
           programme_id
         }
       ]),
-      vaccinatedInjection: getSessionActivityCount(this, [
+      vaccinatedAlternative: getSessionActivityCount(this, [
         {
           report: PatientOutcome.Vaccinated,
-          'vaccine.method': VaccineMethod.Injection,
+          'vaccine.alternative': true,
           programme_id
         }
       ])

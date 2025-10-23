@@ -3,6 +3,7 @@ import _ from 'lodash'
 
 import vaccines from '../datasets/vaccines.js'
 import {
+  ConsentVaccineMethod,
   NotifyEmailStatus,
   NotifySmsStatus,
   ProgrammeType,
@@ -41,6 +42,8 @@ import { User } from './user.js'
  * @property {import('./parent.js').Parent} [parent] - Parent or guardian
  * @property {ReplyDecision} [decision] - Consent decision
  * @property {boolean} [alternative] - Consent for alternative vaccine
+ *   Flu: consent given for alternative as well
+ *   MMR: consent given for alternative only
  * @property {boolean} [mmr] - Consent for MMR vaccine
  * @property {boolean} [confirmed] - Decision confirmed
  * @property {boolean} [consultation] - Consultation requested
@@ -77,7 +80,7 @@ export class Reply {
     this.declined = this.decision === ReplyDecision.Declined
     this.given = [
       ReplyDecision.Given,
-      ReplyDecision.OnlyFluInjection,
+      ReplyDecision.OnlyAlternative,
       ReplyDecision.OnlyMenACWY,
       ReplyDecision.OnlyTdIPV
     ].includes(this.decision)
@@ -180,12 +183,32 @@ export class Reply {
   }
 
   /**
-   * Has parent given consent for an injected vaccine?
+   * Get chosen vaccine method
    *
-   * @returns {boolean} Consent given for an injected vaccine
+   * @returns {ConsentVaccineMethod|undefined} Chosen vaccination method
    */
-  get hasConsentForInjection() {
-    return this.decision === ReplyDecision.OnlyFluInjection || this.alternative
+  get vaccineMethod() {
+    if (this.given) {
+      switch (true) {
+        case this.programme.type === ProgrammeType.Flu &&
+          this.decision === ReplyDecision.Given &&
+          !this.alternative:
+          return ConsentVaccineMethod.NasalSprayOnly
+        case this.decision === ReplyDecision.OnlyAlternative:
+          return ConsentVaccineMethod.AlternativeOnly
+        default:
+          return ConsentVaccineMethod.Any
+      }
+    }
+  }
+
+  /**
+   * Has parent given consent for an alternative injected vaccine?
+   *
+   * @returns {boolean} Consent given for alternative injected vaccine
+   */
+  get hasConsentForAlternative() {
+    return this.decision === ReplyDecision.OnlyAlternative || this.alternative
   }
 
   /**
@@ -196,30 +219,40 @@ export class Reply {
   get healthQuestionsForDecision() {
     const { Flu, HPV, MenACWY, MMR, TdIPV } = ProgrammeType
     const { Injection, Nasal } = VaccineMethod
-    const programme = this.session.primaryProgrammes[0]
 
     const healthQuestionsForDecision = new Map()
-    let consentedMethod
     let consentedVaccine
 
     // Consent given for flu programme with method of vaccination
-    if (programme.type === Flu) {
+    if (this.programme.type === Flu) {
       consentedVaccine = Object.values(vaccines).filter(
         (programme) => programme.type === Flu
       )
 
       // If no consent for alternative injection or only consent for injection
       if (!this.alternative) {
-        consentedMethod =
-          this.decision === ReplyDecision.OnlyFluInjection ? Injection : Nasal
+        const consentedMethod =
+          this.decision === ReplyDecision.OnlyAlternative ? Injection : Nasal
         consentedVaccine = Object.values(vaccines).find(
           (programme) => programme.method === consentedMethod
         )
       }
     }
 
+    // Consent given for flu programme with method of vaccination
+    if (this.programme.type === MMR) {
+      consentedVaccine = Object.values(vaccines).filter(
+        (programme) => programme.type === MMR
+      )
+
+      // If consent given for alternative injection only
+      if (this.decision === ReplyDecision.OnlyAlternative) {
+        consentedVaccine = this.programme.alternativeVaccine
+      }
+    }
+
     // Consent given for HPV programme
-    if (programme.type === HPV) {
+    if (this.programme.type === HPV) {
       consentedVaccine = Object.values(vaccines).find(
         (programme) => programme.type === HPV
       )
@@ -326,11 +359,9 @@ export class Reply {
     let text = this.decision
     switch (this.decision) {
       case ReplyDecision.Given:
-        colour = 'aqua-green'
-        break
-      case ReplyDecision.OnlyFluInjection:
-        colour = 'aqua-green'
+      case ReplyDecision.OnlyAlternative:
         text = ReplyDecision.Given
+        colour = 'aqua-green'
         break
       case ReplyDecision.Declined:
         colour = 'warm-yellow'
@@ -368,24 +399,6 @@ export class Reply {
       decisionStatus = formatWithSecondaryText(
         formatTag(this.status),
         'Confirmed',
-        false
-      )
-    } else if (this.programme?.alternativeVaccine) {
-      let vaccineMethod
-      switch (this.decision) {
-        case ReplyDecision.OnlyFluInjection:
-          vaccineMethod = VaccineMethod.Injection
-          break
-        case ReplyDecision.Given:
-          vaccineMethod = VaccineMethod.Nasal
-          break
-        default:
-          vaccineMethod = ''
-      }
-
-      decisionStatus = formatWithSecondaryText(
-        formatTag(this.status),
-        vaccineMethod,
         false
       )
     }

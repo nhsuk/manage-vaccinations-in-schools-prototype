@@ -53,11 +53,20 @@ export const ConsentOutcome = {
   NoResponse: 'No response',
   Inconsistent: 'Conflicting consent',
   Given: 'Consent given',
-  GivenForInjection: 'Consent given for injected vaccine',
-  GivenForNasalSpray: 'Consent given for nasal spray',
+  GivenForAlternativeOnly: 'Consent given for gelatine-free injection',
   Declined: 'Follow up requested',
   Refused: 'Consent refused',
   FinalRefusal: 'Refusal confirmed'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ConsentVaccineMethod = {
+  Any: 'No preference',
+  AlternativeOnly: 'Gelatine-free injection only',
+  NasalSprayOnly: 'Nasal spray only'
 }
 
 /**
@@ -273,6 +282,16 @@ export const ProgrammePreset = {
  * @readonly
  * @enum {string}
  */
+export const RecordVaccineMethod = {
+  Any: 'Either',
+  AlternativeOnly: 'Gelatine-free injection',
+  NasalSprayOnly: 'Nasal spray'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const RegistrationOutcome = {
   Pending: 'Not registered yet',
   Present: 'Attending session',
@@ -287,8 +306,7 @@ export const RegistrationOutcome = {
 export const ReplyDecision = {
   NoResponse: 'No response',
   Given: 'Consent given',
-  OnlyGelatineFreeInjection: 'Consent given for the alternative MMR vaccine',
-  OnlyFluInjection: 'Consent given for flu injection',
+  OnlyAlternative: 'Consent given for gelatine-free injection',
   OnlyMenACWY: 'Consent given for MenACWY only',
   OnlyTdIPV: 'Consent given for Td/IPV only',
   Declined: 'Follow up requested',
@@ -333,11 +351,10 @@ export const SchoolPhase = {
  * @readonly
  * @enum {string}
  */
-export const ScreenVaccinationMethod = {
-  NasalOnly: 'The parent has consented to the nasal spray only',
-  InjectionOnly: 'The parent has consented to the injected vaccine only',
-  NasalOrInjection:
-    'The parent has consented to the injected vaccine being offered if the nasal spray is not suitable'
+export const ScreenVaccineMethod = {
+  Any: 'The parent has consented to the injected vaccine being offered if the nasal spray is not suitable',
+  AlternativeOnly: 'The parent has consented to the injected vaccine only',
+  NasalSprayOnly: 'The parent has consented to the nasal spray only'
 }
 
 /**
@@ -346,7 +363,7 @@ export const ScreenVaccinationMethod = {
  */
 export const ScreenOutcome = {
   Vaccinate: 'Safe to vaccinate',
-  VaccinateInjection: 'Safe to vaccinate with injected vaccine',
+  VaccinateAlternative: 'Safe to vaccinate with gelatine-free injection',
   VaccinateNasal: 'Safe to vaccinate with nasal spray',
   NeedsTriage: 'Needs triage',
   DelayVaccination: 'Delay vaccination',

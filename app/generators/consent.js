@@ -53,8 +53,8 @@ export function generateConsent(
     { value: ReplyDecision.Given, weight: 10 },
     { value: ReplyDecision.Declined, weight: 3 },
     { value: ReplyDecision.Refused, weight: 1 },
-    ...(programme.type === ProgrammeType.Flu
-      ? [{ value: ReplyDecision.OnlyFluInjection, weight: 1 }]
+    ...([ProgrammeType.Flu, ProgrammeType.MMR].includes(programme.type)
+      ? [{ value: ReplyDecision.OnlyAlternative, weight: 2 }]
       : [])
   ])
 
@@ -74,7 +74,7 @@ export function generateConsent(
   ])
 
   let vaccineMethod = VaccineMethod.Injection
-  if (isFluProgramme && decision !== ReplyDecision.OnlyFluInjection) {
+  if (isFluProgramme && decision !== ReplyDecision.OnlyAlternative) {
     vaccineMethod = VaccineMethod.Nasal
   }
 
@@ -118,9 +118,12 @@ export function generateConsent(
     decision,
     method,
     ...(decision === ReplyDecision.Given && { alternative }),
-    ...([ReplyDecision.Given, ReplyDecision.OnlyFluInjection].includes(
-      decision
-    ) && { healthAnswers, triageNote }),
+    ...([
+      ReplyDecision.Given,
+      ReplyDecision.OnlyAlternative,
+      ReplyDecision.OnlyMenACWY,
+      ReplyDecision.OnlyTdIPV
+    ].includes(decision) && { healthAnswers, triageNote }),
     ...(decision === ReplyDecision.Refused && {
       refusalReason,
       ...(refusalReason === ReplyRefusal.AlreadyGiven && {

@@ -6,6 +6,7 @@ import {
   AuditEventType,
   ConsentOutcome,
   PatientOutcome,
+  RecordVaccineMethod,
   ReplyDecision,
   ScreenOutcome,
   TriageOutcome
@@ -42,7 +43,7 @@ import {
 import {
   getScreenOutcome,
   getScreenOutcomesForConsentMethod,
-  getScreenVaccinationMethod,
+  getScreenVaccineMethod,
   getTriageOutcome
 } from '../utils/triage.js'
 
@@ -216,23 +217,23 @@ export class PatientSession {
    *
    * @returns {boolean} Consent given for an injected vaccine
    */
-  get hasConsentForInjection() {
+  get hasConsentForAlternative() {
     return this.responses.every(
-      ({ hasConsentForInjection }) => hasConsentForInjection
+      ({ hasConsentForAlternative }) => hasConsentForAlternative
     )
   }
 
   /**
-   * Has every parent given consent only for an injected vaccine?
+   * Has every parent given consent only for alternative injected vaccine?
    *
    * We need this so that we don’t offer multiple triage outcomes if consent has
    * only been given for the injected vaccine
    *
-   * @returns {boolean} Consent given for an injected vaccine
+   * @returns {boolean} Consent given for an alternative injected vaccine
    */
-  get hasConsentForInjectionOnly() {
+  get hasConsentForAlternativeOnly() {
     return this.responses.every(
-      ({ decision }) => decision === ReplyDecision.OnlyFluInjection
+      ({ decision }) => decision === ReplyDecision.OnlyAlternative
     )
   }
 
@@ -246,12 +247,12 @@ export class PatientSession {
   }
 
   /**
-   * Get vaccination method(s) consented to use if safe to vaccinate
+   * Get vaccine method(s) consented to use if safe to vaccinate
    *
-   * @returns {import('../enums.js').ScreenVaccinationMethod|boolean} Method
+   * @returns {import('../enums.js').ScreenVaccineMethod|boolean} Method
    */
-  get screenVaccinationMethod() {
-    return getScreenVaccinationMethod(this.programme, this.responses)
+  get screenVaccineMethod() {
+    return getScreenVaccineMethod(this.programme, this.responses)
   }
 
   /**
@@ -305,9 +306,6 @@ export class PatientSession {
    * @returns {import('./vaccine.js').Vaccine|undefined} Vaccine method
    */
   get vaccine() {
-    const standardVaccine = this.programme.vaccines.find((vaccine) => vaccine)
-    const alternativeVaccine = this.programme.alternativeVaccine
-
     // Need consent response(s) before we can determine the chosen method
     // We only want to instruct on patients being vaccinated using nasal spray
     if (!this.consentGiven) {
@@ -316,21 +314,54 @@ export class PatientSession {
 
     // If no alternative, can only have been the standard vaccine
     if (!this.programme.alternativeVaccine) {
-      return standardVaccine
+      return this.programme.standardVaccine
     }
 
     // Administered vaccine was the alternative
-    if (this.alternative) {
-      return alternativeVaccine
+    if (this.consent === ConsentOutcome.GivenForAlternativeOnly) {
+      return this.programme.alternativeVaccine
     }
 
     // Return vaccine based on consent (and triage) outcomes
-    const hasScreenedForInjection =
-      this.screen === ScreenOutcome.VaccinateInjection
+    const hasScreenedForAlternativeOnly =
+      this.screen === ScreenOutcome.VaccinateAlternative
 
-    return this.hasConsentForInjectionOnly || hasScreenedForInjection
-      ? alternativeVaccine // Injection
-      : standardVaccine // Nasal
+    return this.hasConsentForAlternativeOnly || hasScreenedForAlternativeOnly
+      ? this.programme.alternativeVaccine
+      : this.programme.standardVaccine
+  }
+
+  /**
+   * Get vaccine to administer (or was administered) in this patient session
+   *
+   * For all programmes besides flu, this will be an injection.
+   * For the flu programme, this depends on consent responses
+   *
+   * @returns {import('../enums.js').RecordVaccineMethod|undefined} Vaccination method
+   */
+  get vaccineMethod() {
+    // If no programme does not offer alternatives, don’t return a method
+    if (!this.programme.alternativeVaccine) {
+      return
+    }
+
+    // Need consent response(s) before we can determine the chosen method
+    if (!this.consentGiven) {
+      return
+    }
+
+    if (this.screen === ScreenOutcome.VaccinateNasal) {
+      return RecordVaccineMethod.NasalSprayOnly
+    }
+
+    if (
+      this.consent === ConsentOutcome.GivenForAlternativeOnly ||
+      this.screen === ScreenOutcome.VaccinateAlternative
+    ) {
+      return RecordVaccineMethod.AlternativeOnly
+    }
+
+    return RecordVaccineMethod.Any
   }
 
   /**
@@ -338,12 +369,12 @@ export class PatientSession {
    *
    * @returns {boolean} Either vaccine be administered
    */
-  get canRecordAlternativeVaccine() {
+  get canRecordEitherVaccine() {
     const hasScreenedForNasal = this.screen === ScreenOutcome.VaccinateNasal
 
     return (
-      this.hasConsentForInjection &&
-      !this.hasConsentForInjectionOnly &&
+      this.hasConsentForAlternative &&
+      !this.hasConsentForAlternativeOnly &&
       !hasScreenedForNasal
     )
   }
@@ -446,8 +477,7 @@ export class PatientSession {
   get consentGiven() {
     return [
       ConsentOutcome.Given,
-      ConsentOutcome.GivenForInjection,
-      ConsentOutcome.GivenForNasalSpray
+      ConsentOutcome.GivenForAlternativeOnly
     ].includes(this.consent)
   }
 
@@ -665,7 +695,7 @@ export class PatientSession {
       nextActivityPerProgramme: formatList(nextActivityPerProgramme),
       outstandingVaccinations: filters.formatList(outstandingVaccinations),
       vaccineMethod:
-        this.vaccine?.method && formatVaccineMethod(this.vaccine.method),
+        this.vaccineMethod && formatVaccineMethod(this.vaccineMethod),
       yearGroup: formattedYearGroup
     }
   }

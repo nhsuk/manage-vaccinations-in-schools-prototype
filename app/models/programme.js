@@ -2,7 +2,7 @@ import { isAfter } from 'date-fns'
 
 import programmes from '../datasets/programmes.js'
 import vaccines from '../datasets/vaccines.js'
-import { ProgrammeStatus, VaccineMethod } from '../enums.js'
+import { ProgrammeStatus } from '../enums.js'
 import { isBetweenDates, today } from '../utils/date.js'
 import {
   formatLink,
@@ -33,6 +33,7 @@ import { Vaccine } from './vaccine.js'
  * @property {Array<string>} sequence - Vaccine dose sequence
  * @property {string} sequenceDefault - Default vaccine dose sequence
  * @property {Array<number>} yearGroups - Year groups available to
+ * @property {Array<number>} catchupYearGroups - Year groups catch-ups available to
  * @property {boolean} nhseSyncable- Vaccination records can be synced
  * @property {Array<string>} cohort_uids - Cohort UIDs
  * @property {Array<string>} vaccine_smomeds - Vaccines administered
@@ -48,7 +49,8 @@ export class Programme {
     this.type = options?.type
     this.sequence = options?.sequence
     this.sequenceDefault = options?.sequenceDefault
-    this.yearGroups = options?.yearGroups
+    this.yearGroups = options?.yearGroups || []
+    this.catchupYearGroups = options?.catchupYearGroups || []
     this.nhseSyncable = options?.nhseSyncable
     this.cohort_uids = options?.cohort_uids || []
     this.vaccine_smomeds = options?.vaccine_smomeds
@@ -133,17 +135,23 @@ export class Programme {
   }
 
   /**
+   * Standard vaccine for a programme
+   * Flu offers a nasal spray and MMR offers an injection that contains gelatine
+   *
+   * @returns {Vaccine|undefined} Standard vaccine
+   */
+  get standardVaccine() {
+    return this.vaccines.find((vaccine) => vaccine && !vaccine.alternative)
+  }
+
+  /**
    * Alternative vaccine for a programme
-   * For example, flu programme offers nasal spray with injection as alternative
+   * Both Flu and MMR programmes offer alternative gelatine-free injection
    *
    * @returns {Vaccine|undefined} Alternative vaccine
    */
   get alternativeVaccine() {
-    if (this.vaccines.length > 1) {
-      return this.vaccines.find(
-        (vaccine) => vaccine && vaccine.method === VaccineMethod.Injection
-      )
-    }
+    return this.vaccines.find((vaccine) => vaccine && vaccine.alternative)
   }
 
   /**

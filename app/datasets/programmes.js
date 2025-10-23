@@ -110,7 +110,6 @@ export default {
     },
     sequence: ['1P', '2P'],
     sequenceDefault: '1P',
-    yearGroups: [8],
     catchupYearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
     vaccine_smomeds: ['13968211000001108', '34925111000001104'],
     nhseSyncable: true

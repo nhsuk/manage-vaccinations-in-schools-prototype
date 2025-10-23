@@ -21,6 +21,7 @@ import { Batch } from './batch.js'
  * @property {string} manufacturer - Manufacturer
  * @property {object} [leaflet] - Leaflet
  * @property {number} dose - Dosage
+ * @property {boolean} [alternative] - Used as alternative vaccine
  * @property {import('../enums.js').VaccineMethod} method - Method
  * @property {import('../enums.js').VaccinationProtocol} [delegationProtocol] - Delegation protocol
  * @property {Array<VaccineSideEffect>} sideEffects - Side effects
@@ -36,6 +37,7 @@ export class Vaccine {
     this.manufacturer = options.manufacturer
     this.leaflet = options.leaflet
     this.dose = options.dose
+    this.alternative = options.alternative
     this.method = options.method
     this.delegationProtocol = options.delegationProtocol
     this.sideEffects = options.sideEffects

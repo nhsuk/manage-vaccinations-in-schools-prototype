@@ -415,7 +415,7 @@ export const en = {
         label: 'Yes, I agree to them having the nasal spray vaccine',
         hint: 'This is the recommended option and gives the best protection against flu'
       },
-      injection: {
+      alternative: {
         label: 'Yes, I agree to the alternative flu injection',
         hint: 'This is suitable for children who do not use gelatine products, or if they cannot have the nasal spray vaccine for medical reasons'
       },
@@ -459,13 +459,8 @@ export const en = {
         label: 'Consent given for gelatine-free vaccine only?',
         title: 'Do you want your child to have a vaccine without gelatine?',
         hint: 'One type of MMR vaccine contains gelatine from pigs. An alternative MMR vaccine is available that does not contain gelatine.',
-        yes: {
-          label:
-            'I want my child to have the vaccine that does not contain gelatine'
-        },
-        no: {
-          label: 'My child can have either type of vaccine'
-        }
+        yes: 'I want my child to have the vaccine that does not contain gelatine',
+        no: 'My child can have either type of vaccine'
       }
     },
     consultation: {
@@ -515,8 +510,8 @@ export const en = {
     confirmation: {
       title: {
         [ReplyDecision.Given]: 'Consent confirmed',
-        [ReplyDecision.OnlyFluInjection]:
-          'Consent for the flu injection vaccination confirmed',
+        [ReplyDecision.OnlyAlternative]:
+          'Consent for the {{session.vaccinationNames.sentenceCase}} gelatine-free injection vaccination confirmed',
         [ReplyDecision.OnlyMenACWY]:
           'Consent for the MenACWY vaccination confirmed',
         [ReplyDecision.OnlyTdIPV]:
@@ -527,8 +522,8 @@ export const en = {
       text: {
         [ReplyDecision.Given]:
           '{{consent.child.fullName}} is due to get the {{session.vaccinationNames.sentenceCase}} at school on {{session.summary.datesDisjunction}}',
-        [ReplyDecision.OnlyFluInjection]:
-          '{{consent.child.fullName}} is due to get the flu injection at school on {{session.summary.datesDisjunction}}',
+        [ReplyDecision.OnlyAlternative]:
+          '{{consent.child.fullName}} is due to get the {{session.vaccinationNames.sentenceCase}} gelatine-free injection at school on {{session.summary.datesDisjunction}}',
         [ReplyDecision.OnlyMenACWY]:
           '{{consent.child.fullName}} is due to get the MenACWY vaccination at school on {{session.summary.datesDisjunction}}',
         [ReplyDecision.OnlyTdIPV]:
@@ -543,7 +538,7 @@ export const en = {
         // so text should say either ‘vaccination is’ or ‘vaccinations are’
         [ReplyDecision.Given]:
           'As you answered ‘yes’ to one or more of the health questions, we need to check the {{session.vaccinationNames.sentenceCase}} is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
-        [ReplyDecision.OnlyFluInjection]:
+        [ReplyDecision.OnlyAlternative]:
           'As you answered ‘yes’ to one or more of the health questions, we need to check the {{session.vaccinationNames.sentenceCase}} is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
         [ReplyDecision.OnlyMenACWY]:
           'As you answered ‘yes’ to one or more of the health questions, we need to check the MenACWY vaccination is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
@@ -1045,7 +1040,7 @@ export const en = {
       label: 'Year group'
     },
     vaccineMethod: {
-      label: 'Vaccination method'
+      label: 'Vaccine type'
     },
     outstandingVaccinations: {
       message:
@@ -1299,7 +1294,7 @@ export const en = {
       nasal: {
         label: 'Yes, for the nasal spray'
       },
-      injection: {
+      alternative: {
         label: 'Yes, for the injected vaccine only'
       },
       no: {
@@ -1323,6 +1318,9 @@ export const en = {
       title:
         'Do they also agree to the injected vaccine if the nasal spray is not suitable?',
       hint: 'For example, if the child is heavily congested on the day of the vaccination'
+    },
+    vaccineMethod: {
+      label: 'Chosen vaccine'
     },
     invalid: {
       label: 'Invalid response'
@@ -1667,26 +1665,14 @@ export const en = {
         label: 'No response'
       },
       consentGiven: {
-        label: 'Consent given'
-      },
-      consentGivenForInjection: {
-        label: 'Consent given for injection'
-      },
-      consentGivenForNasal: {
-        label: 'Consent given for nasal spray'
+        label: 'Consent given for {{vaccineMethod}}'
       },
       didNotConsent: {
         label: 'Did not consent'
       },
       vaccinated: {
-        label: 'Vaccinated',
+        label: '{{programme.name}} ({{vaccineMethod}})',
         caption: 'Vaccinations given in this session'
-      },
-      vaccinatedNasal: {
-        label: '{{programme.name}} (Nasal spray)'
-      },
-      vaccinatedInjection: {
-        label: '{{programme.name}} (Injection)'
       }
     },
     date: {
@@ -1874,8 +1860,8 @@ export const en = {
     outcome: {
       label: 'Outcome',
       [ScreenOutcome.Vaccinate]: 'Yes, it’s safe to vaccinate',
-      [ScreenOutcome.VaccinateInjection]:
-        'Yes, it’s safe to vaccinate with injected vaccine',
+      [ScreenOutcome.VaccinateAlternative]:
+        'Yes, it’s safe to vaccinate with gelatine-free injection',
       [ScreenOutcome.VaccinateNasal]:
         'Yes, it’s safe to vaccinate with nasal spray',
       [ScreenOutcome.DoNotVaccinate]: 'No, do not vaccinate',
