@@ -82,6 +82,11 @@ export const patientController = {
       }
     }
 
+    // Toggle initial view
+    response.locals.initial =
+      Object.keys(request.query).filter((key) => key !== 'referrer').length ===
+      0
+
     // Results
     response.locals.patients = patients
     response.locals.results = getResults(results, request.query)

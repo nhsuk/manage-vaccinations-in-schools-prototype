@@ -54,42 +54,51 @@
         clear: "/consents/" + consent.uuid + "/match"
       }) }}
 
-      {{ appHeading({
-        level: 3,
-        size: "m",
-        title: __("search.results"),
-        summary: __mf("patient.results", {
-          from: results.from,
-          to: results.to,
-          count: results.count
-        }) | safe
-      }) }}
-
-      {% for patient in results.page %}
-        {{ card({
-          classes: "app-card--compact",
-          heading: patient.fullName | highlightQuery(data.q),
-          headingLevel: 4,
-          clickable: true,
-          href: consentPath + "/link?patient_uuid=" + patient.uuid,
-          descriptionHtml: summaryList({
-            rows: summaryRows(patient, {
-              dob: {},
-              postalCode: {
-                value: patient.postalCode | highlightQuery(data.q)
-              },
-              school: {
-                value: patient.school.name | highlightQuery(data.q)
-              },
-              parents: {
-                value: patient.formatted.parents | highlightQuery(data.q)
-              }
-            })
-          })
+      {% if initial %}
+        {{ appHeading({
+          level: 3,
+          size: "m",
+          title: __("search.results"),
+          summary: __("search.initial") | safe
         }) }}
-      {% endfor %}
+      {% else %}
+        {{ appHeading({
+          level: 3,
+          size: "m",
+          title: __("search.results"),
+          summary: __mf("patient.results", {
+            from: results.from,
+            to: results.to,
+            count: results.count
+          }) | safe
+        }) }}
 
-      {{ pagination(pages) }}
+        {% for patient in results.page %}
+          {{ card({
+            classes: "app-card--compact",
+            heading: patient.fullName | highlightQuery(data.q),
+            headingLevel: 4,
+            clickable: true,
+            href: consentPath + "/link?patient_uuid=" + patient.uuid,
+            descriptionHtml: summaryList({
+              rows: summaryRows(patient, {
+                dob: {},
+                postalCode: {
+                  value: patient.postalCode | highlightQuery(data.q)
+                },
+                school: {
+                  value: patient.school.name | highlightQuery(data.q)
+                },
+                parents: {
+                  value: patient.formatted.parents | highlightQuery(data.q)
+                }
+              })
+            })
+          }) }}
+        {% endfor %}
+
+        {{ pagination(pages) }}
+      {% endif %}
     </div>
   </div>
 {% endblock %}

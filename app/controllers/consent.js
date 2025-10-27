@@ -94,13 +94,19 @@ export const consentController = {
       patients = patients.filter((patient) => patient.hasMissingNhsNumber)
     }
 
-    // Clean up session data
-    delete data.hasMissingNhsNumber
-    delete data.q
+    // Toggle initial view
+    response.locals.initial =
+      Object.keys(request.query).filter((key) => key !== 'referrer').length ===
+      0
 
+    // Results
     response.locals.patients = patients
     response.locals.results = getResults(patients, page, limit)
     response.locals.pages = getPagination(patients, request.query)
+
+    // Clean up session data
+    delete data.hasMissingNhsNumber
+    delete data.q
 
     next()
   },

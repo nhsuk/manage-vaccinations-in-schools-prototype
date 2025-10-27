@@ -1438,6 +1438,8 @@ export const en = {
   search: {
     label: 'Search',
     advanced: 'Advanced filters',
+    initial:
+      'Search for a child or use filters to see children matching your selection',
     results: 'Search results',
     confirm: 'Update results',
     clear: 'Clear filters'
