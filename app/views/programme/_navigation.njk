@@ -16,10 +16,6 @@
         href: params.programme.uri,
         current: params.view == "show"
       }, {
-        text: (__("programme.patients.label") + appCount(params.programme.patientSessions.length)) | safe,
-        href: params.programme.uri + "/patients",
-        current: params.view == "patients"
-      }, {
         text: (__("programme.sessions.label") + appCount(params.programme.sessions.length)) | safe,
         href: params.programme.uri + "/sessions",
         current: params.view == "sessions"

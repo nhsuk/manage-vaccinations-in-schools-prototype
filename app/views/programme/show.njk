@@ -32,8 +32,7 @@
         heading: PatientOutcome.NoOutcomeYet,
         headingLevel: 3,
         colour: "grey",
-        data: programme.report(PatientOutcome.NoOutcomeYet).length,
-        href: programme.uri + "/patients?report=" + PatientOutcome.NoOutcomeYet if not isDataConsumer
+        data: programme.report(PatientOutcome.NoOutcomeYet).length
       }) }}
     </div>
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
@@ -41,8 +40,7 @@
         heading: PatientOutcome.Vaccinated,
         headingLevel: 3,
         colour: "green",
-        data: programme.report(PatientOutcome.Vaccinated).length,
-        href: programme.uri + "/patients?report=" + PatientOutcome.Vaccinated if not isDataConsumer
+        data: programme.report(PatientOutcome.Vaccinated).length
       }) }}
     </div>
     <div class="nhsuk-grid-column-one-third nhsuk-card-group__item">
@@ -50,8 +48,7 @@
         heading: PatientOutcome.CouldNotVaccinate,
         headingLevel: 3,
         colour: "red",
-        data: programme.report(PatientOutcome.CouldNotVaccinate).length,
-        href: programme.uri + "/patients?report=" + PatientOutcome.CouldNotVaccinate if not isDataConsumer
+        data: programme.report(PatientOutcome.CouldNotVaccinate).length
       }) }}
     </div>
   </div>
