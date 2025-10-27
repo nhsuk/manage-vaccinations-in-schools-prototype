@@ -12,7 +12,9 @@ We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to 
 {%- endfor %}
 {% endif %}
 
-We’d like your consent to vaccinate {{ consent.child.firstName }}. You can give this by filling in our online form (the link is below).
+We’d like your consent to vaccinate {{ consent.child.firstName }}. You can respond by filling in our online form.
+
+> Do not reply to this email to tell us your decision. The link to the online consent form is below.
 
 {% if programme.type == ProgrammeType.MMR %}
 If you’re sure your child has had 2 doses, please confirm this using the consent request form.
@@ -42,7 +44,7 @@ You can also find a range of [information about the {{ programme.vaccineName.sen
 
 You need to respond by {{ session.formatted.firstDate }}.
 
-If you do not respond, you’ll be sent automatic reminders. Responding will stop reminders.
+If you do not respond, you’ll get automatic reminders. Responding will stop reminders.
 
 {% include "emails/consent/_trouble-using-online-form.njk" %}
 
