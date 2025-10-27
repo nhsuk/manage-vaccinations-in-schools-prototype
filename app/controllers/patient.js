@@ -1,7 +1,8 @@
 import _ from 'lodash'
 
-import { ArchiveRecordReason } from '../enums.js'
+import { AcademicYear, ArchiveRecordReason } from '../enums.js'
 import { Patient } from '../models/patient.js'
+import { Programme } from '../models/programme.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const patientController = {
@@ -30,35 +31,76 @@ export const patientController = {
   },
 
   readAll(request, response, next) {
-    const { options, q } = request.query
+    let { options, programme_ids, q } = request.query
     const { data } = request.session
 
-    let patients = Patient.findAll(data)
+    const latestAcademicYear = Object.values(AcademicYear).at(-1)
+    const programmes = Programme.findAll(data)
+      .filter((programme) => programme.year === latestAcademicYear)
+      .sort((a, b) => a.name.localeCompare(b.name))
+
+    const patients = Patient.findAll(data)
 
     // Sort
-    patients = _.sortBy(patients, 'lastName')
+    let results = _.sortBy(patients, 'lastName')
 
     // Query
     if (q) {
-      patients = patients.filter((patient) =>
+      results = results.filter((patient) =>
         patient.tokenized.includes(String(q).toLowerCase())
       )
+    }
+
+    // Filter by programme
+    if (programme_ids) {
+      programme_ids = Array.isArray(programme_ids)
+        ? programme_ids
+        : [programme_ids]
+      results = results.filter((patient) =>
+        programme_ids.some((id) => patient.programme_ids.includes(id))
+      )
+    }
+
+    // Filter by outcome
+    for (const name of ['consent', 'screen', 'report']) {
+      const outcome = request.query[name]
+      if (outcome && outcome !== 'none' && programme_ids) {
+        results = results.filter((patient) =>
+          patient.patientSessions.some(
+            (patientSession) =>
+              patientSession[name] === outcome &&
+              programme_ids.includes(patientSession.programme_id)
+          )
+        )
+      }
     }
 
     // Filter by display option
     for (const option of ['archived', 'hasMissingNhsNumber', 'post16']) {
       if (options?.includes(option)) {
-        patients = patients.filter((patient) => patient[option])
+        results = results.filter((patient) => patient[option])
       }
     }
 
-    // Clean up session data
-    delete data.options
-    delete data.q
-
+    // Results
     response.locals.patients = patients
-    response.locals.results = getResults(patients, request.query)
-    response.locals.pages = getPagination(patients, request.query)
+    response.locals.results = getResults(results, request.query)
+    response.locals.pages = getPagination(results, request.query)
+
+    // Programme filter options
+    response.locals.programmeItems = programmes.map((programme) => ({
+      text: programme.name,
+      value: programme.id,
+      checked: programme_ids?.includes(programme.id)
+    }))
+
+    // Clean up session data
+    delete data.consent
+    delete data.screen
+    delete data.report
+    delete data.options
+    delete data.programme_ids
+    delete data.q
 
     next()
   },
@@ -76,16 +118,16 @@ export const patientController = {
   filterList(request, response) {
     const params = new URLSearchParams()
 
-    // Single value per filter
-    for (const key of ['q']) {
+    // Radios and text inputs
+    for (const key of ['consent', 'q', 'report', 'screen']) {
       const value = request.body[key]
       if (value) {
         params.append(key, String(value))
       }
     }
 
-    // Multiple values per filter
-    for (const key of ['options']) {
+    // Checkboxes
+    for (const key of ['options', 'programme_ids']) {
       const value = request.body[key]
       const values = Array.isArray(value) ? value : [value]
       if (value) {

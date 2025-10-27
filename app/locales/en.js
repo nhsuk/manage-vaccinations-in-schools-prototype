@@ -882,7 +882,7 @@ export const en = {
       showOnly: 'Show only',
       archived: 'Archived records',
       hasMissingNhsNumber: 'Children missing an NHS&nbsp;number',
-      post16: 'Children over 16 years old'
+      post16: 'Children aged out of programmes'
     },
     archiveReason: {
       label: 'Reason archived'

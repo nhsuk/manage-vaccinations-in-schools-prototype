@@ -117,7 +117,7 @@
             {% if view == "register" %}
               {{ patientSession.formatted.status.register | safe }}
             {% else %}
-              {% set ids = data.programme_id or session.programme_ids %}
+              {% set ids = data.programme_ids or session.programme_ids %}
               {% for patientSession in patientSession.siblingPatientSessions %}
                 {% if ids | includes(patientSession.programme_id) %}
                   {% if patientSession.formatted.status[view] %}

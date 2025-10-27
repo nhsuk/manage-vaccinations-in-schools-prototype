@@ -213,7 +213,7 @@ export const sessionController = {
   filter(request, response) {
     const params = new URLSearchParams()
 
-    // Radios
+    // Radios and text inputs
     for (const key of ['academicYear', 'q', 'status', 'type']) {
       const value = request.body[key]
       if (value) {
@@ -240,12 +240,12 @@ export const sessionController = {
   readPatientSessions(request, response, next) {
     const { account } = request.app.locals
     const { view } = request.params
-    const {
+    let {
       options,
       q,
       consent,
       instruct,
-      programme_id,
+      programme_ids,
       nextActivity,
       vaccineMethod,
       yearGroup
@@ -277,9 +277,12 @@ export const sessionController = {
     }
 
     // Filter by programme
-    if (programme_id) {
+    if (programme_ids) {
+      programme_ids = Array.isArray(programme_ids)
+        ? programme_ids
+        : [programme_ids]
       results = results.filter((patientSession) =>
-        programme_id.includes(patientSession.programme_id)
+        programme_ids.includes(patientSession.programme_id)
       )
     }
 
@@ -389,7 +392,7 @@ export const sessionController = {
       response.locals.programmeItems = session.programmes.map((programme) => ({
         text: programme.name,
         value: programme.id,
-        checked: programme_id?.includes(programme.id)
+        checked: programme_ids?.includes(programme.id)
       }))
     }
 
@@ -447,7 +450,7 @@ export const sessionController = {
     // Clean up session data
     delete data.options
     delete data.q
-    delete data.programme_id
+    delete data.programme_ids
     delete data.vaccineMethod
     delete data.consent
     delete data.screen
@@ -482,7 +485,7 @@ export const sessionController = {
     }
 
     // Checkboxes
-    for (const key of ['options', 'consent', 'programme_id', 'yearGroup']) {
+    for (const key of ['options', 'consent', 'programme_ids', 'yearGroup']) {
       const value = request.body[key]
       const values = Array.isArray(value) ? value : [value]
       if (value) {
