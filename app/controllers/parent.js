@@ -211,7 +211,10 @@ export const parentController = {
         },
         {
           text: __('consent.decision.no.label'),
-          value: ReplyDecision.Refused
+          value: ReplyDecision.Refused,
+          hint: {
+            text: __('consent.decision.no.hint')
+          }
         }
       ]
 
@@ -239,7 +242,10 @@ export const parentController = {
         },
         {
           text: __('consent.decision.no.label'),
-          value: ReplyDecision.Refused
+          value: ReplyDecision.Refused,
+          hint: {
+            text: __('consent.decision.no.hint')
+          }
         }
       ]
     } else {
@@ -251,7 +257,10 @@ export const parentController = {
         },
         {
           text: __('consent.decision.no.label'),
-          value: ReplyDecision.Refused
+          value: ReplyDecision.Refused,
+          hint: {
+            text: __('consent.decision.no.hint')
+          }
         }
       ]
     }

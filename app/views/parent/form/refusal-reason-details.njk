@@ -10,6 +10,9 @@
         title: title
       })
     },
+    hint: {
+      text: __("consent.refusalReasonDetails.MMR.hint")
+     } if session.programmePreset == "MMR",
     decorate: "consent.refusalReasonDetails"
   }) }}
 {% endblock %}

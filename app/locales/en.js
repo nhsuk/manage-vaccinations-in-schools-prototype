@@ -420,10 +420,11 @@ export const en = {
         hint: 'This is suitable for children who do not use gelatine products, or if they cannot have the nasal spray vaccine for medical reasons'
       },
       mmr: {
-        hint: 'This is a catch-up vaccination for children who have not yet had two doses of the MMR vaccine. These are usually given when children are aged 1 and 3. If you’re sure that your child is already fully vaccinated, choose "no".'
+        hint: 'This is a catch-up vaccination for those who have not yet had 2 doses of the MMR vaccine. Children usually have these when they are 1 and 3 years old.'
       },
       no: {
-        label: 'No'
+        label: 'No',
+        hint: 'If you do not agree to the vaccination, you’ll get a chance to tell us why'
       }
     },
     decisionStatus: {
@@ -478,7 +479,7 @@ export const en = {
     },
     refusalReason: {
       title:
-        'Please tell us why you do not agree to your child having the {{session.vaccinationNames.sentenceCase}}',
+        'Please tell us why you do not agree to your child having the {{session.vaccinationNames.sentenceCase}} in school',
       label: 'Refusal reason',
       alreadyGiven: {
         one: ReplyRefusal.AlreadyGiven,
@@ -491,13 +492,16 @@ export const en = {
     },
     refusalReasonDetails: {
       label: 'Refusal details',
+      MMR: {
+        hint: 'Children need 2 doses of the MMR vaccine to be fully protected. If your child has had more than 1 dose, give details about both doses.'
+      },
       title: {
         [ReplyRefusal.AlreadyGiven]:
-          'Where did the child get their vaccination?',
+          'When and where did your child get their vaccination?',
         [ReplyRefusal.GettingElsewhere]:
-          'Where will the child get their vaccination?',
+          'When and where will your child get their vaccination?',
         [ReplyRefusal.Medical]:
-          'What medical reasons prevent the child from being vaccinated?'
+          'What medical reasons prevent your child from being vaccinated?'
       }
     },
     healthAnswers: {
