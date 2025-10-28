@@ -1022,6 +1022,7 @@ export const en = {
       label: 'Consent status'
     },
     screen: {
+      title: 'Triage',
       label: 'Triage status'
     },
     instruct: {

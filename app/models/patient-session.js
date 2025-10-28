@@ -46,6 +46,7 @@ import {
   getTriageOutcome
 } from '../utils/triage.js'
 
+import { AuditEvent } from './audit-event.js'
 import { Gillick } from './gillick.js'
 import { Instruction } from './instruction.js'
 import { Patient } from './patient.js'
@@ -150,9 +151,24 @@ export class PatientSession {
    * @returns {Array<import('./audit-event.js').AuditEvent>} Audit events
    */
   get triageNotes() {
-    return this.auditEvents
+    const triageNotes = this.auditEvents
       .filter(({ programme_ids }) => programme_ids.includes(this.programme_id))
       .filter(({ outcome }) => outcome)
+
+    if (this.responsesWithTriageNotes) {
+      const firstResponseWithTriageNote = this.responsesWithTriageNotes[0]
+
+      if (Object.values(triageNotes).length > 0) {
+        const thing = new AuditEvent({
+          createdAt: firstResponseWithTriageNote.createdAt,
+          name: `${firstResponseWithTriageNote.parent.fullName}’s answers to health questions need triage`
+        })
+
+        triageNotes.unshift(thing)
+      }
+    }
+
+    return triageNotes
   }
 
   /**

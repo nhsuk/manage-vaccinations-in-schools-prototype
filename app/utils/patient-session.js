@@ -159,34 +159,34 @@ export const getScreenStatus = (patientSession) => {
   switch (screen) {
     case ScreenOutcome.NeedsTriage:
       colour = 'blue'
-      description = 'You need to decide if it’s safe to vaccinate.'
+      description = `You need to decide if it’s safe to vaccinate ${patient.firstName}`
       break
     case ScreenOutcome.DelayVaccination:
       colour = 'dark-orange'
-      description = `${user.fullName} decided that ${patient.fullName}’s vaccination should be delayed.`
+      description = `${user.fullName} decided that ${patient.firstName}’s vaccination should be delayed`
       reason = 'Vaccination delayed'
       break
     case ScreenOutcome.DoNotVaccinate:
       colour = 'red'
-      description = `${user.fullName} decided that ${patient.fullName} should not be vaccinated.`
+      description = `${user.fullName} decided that ${patient.firstName} should not be vaccinated`
       reason = 'Do not vaccinate in this year’s programme'
       break
     case ScreenOutcome.Vaccinate:
       colour = 'aqua-green'
-      description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate.`
+      description = `${user.fullName} decided that ${patient.firstName} is safe to vaccinate`
       break
     case ScreenOutcome.VaccinateInjection:
       colour = 'aqua-green'
-      description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the injected vaccine only.`
+      description = `${user.fullName} decided that ${patient.firstName} is safe to vaccinate using the injected vaccine only`
       break
     case ScreenOutcome.VaccinateNasal:
       colour = 'aqua-green'
-      description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the nasal spray only.`
+      description = `${user.fullName} decided that ${patient.firstName} is safe to vaccinate using the nasal spray only`
       break
     default:
       text = TriageOutcome.NotNeeded
       colour = 'aqua-green'
-      description = `No triage is needed for ${patient.fullName}.`
+      description = `No triage is needed for ${patient.firstName}`
   }
 
   return {
