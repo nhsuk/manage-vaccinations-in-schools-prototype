@@ -52,6 +52,7 @@ import {
   getScreenVaccineCriteria
 } from '../utils/triage.js'
 
+import { AuditEvent } from './audit-event.js'
 import { Gillick } from './gillick.js'
 import { Instruction } from './instruction.js'
 import { Patient } from './patient.js'
@@ -156,9 +157,24 @@ export class PatientSession {
    * @returns {Array<import('./audit-event.js').AuditEvent>} Audit events
    */
   get triageNotes() {
-    return this.auditEvents
+    const triageNotes = this.auditEvents
       .filter(({ programme_ids }) => programme_ids.includes(this.programme_id))
       .filter(({ outcome }) => outcome)
+
+    if (this.responsesWithTriageNotes) {
+      const firstResponseWithTriageNote = this.responsesWithTriageNotes[0]
+
+      if (Object.values(triageNotes).length > 0) {
+        const thing = new AuditEvent({
+          createdAt: firstResponseWithTriageNote.createdAt,
+          name: `${firstResponseWithTriageNote.parent.fullName}’s answers to health questions need triage`
+        })
+
+        triageNotes.unshift(thing)
+      }
+    }
+
+    return triageNotes
   }
 
   /**
@@ -431,27 +447,22 @@ export class PatientSession {
    * @returns {string} Explanatory notes
    */
   get consentNotes() {
-    const { patient, parentalRelationships, parentsRequestingFollowUp } = this
-    const relationships = filters.formatList(parentalRelationships)
-    const parentNames = filters.formatList(parentsRequestingFollowUp)
+    const relationships = filters.formatList(this.parentalRelationships)
+    const parentNames = filters.formatList(this.parentsRequestingFollowUp)
 
     switch (this.consent) {
       case ConsentOutcome.NoResponse:
-        return 'No-one responded to our requests for consent.'
+        return 'No-one responded to our requests for consent'
       case ConsentOutcome.NoRequest:
-        return 'Consent response could not be delivered.'
+        return 'Consent response could not be delivered'
       case ConsentOutcome.Inconsistent:
-        return 'You can only vaccinate if all respondents give consent.'
-      case ConsentOutcome.Given:
-      case ConsentOutcome.GivenForAlternativeInjection:
-      case ConsentOutcome.GivenForIntranasal:
-        return `${patient.fullName} is ready for the vaccinator.`
+        return 'You can only vaccinate if all respondents give consent'
       case ConsentOutcome.Declined:
-        return `${parentNames} would like to speak to a member of the team about other options for their child’s vaccination.`
+        return `${parentNames} would like to speak to a member of the team about other options for their child’s vaccination`
       case ConsentOutcome.Refused:
-        return `${relationships} refused to give consent.`
+        return `${relationships} refused to give consent`
       case ConsentOutcome.FinalRefusal:
-        return `Refusal to give consent confirmed by ${relationships}.`
+        return `Refusal to give consent confirmed by ${relationships}`
       default:
     }
   }
@@ -594,19 +605,19 @@ export class PatientSession {
 
     switch (this.screen) {
       case ScreenOutcome.NeedsTriage:
-        return 'You need to decide if it’s safe to vaccinate.'
+        return `You need to decide if it’s safe to vaccinate ${patient.firstName}`
       case ScreenOutcome.DelayVaccination:
-        return `${user.fullName} decided that ${patient.fullName}’s vaccination should be delayed.`
+        return `${user.fullName} decided that ${patient.firstName}’s vaccination should be delayed`
       case ScreenOutcome.DoNotVaccinate:
-        return `${user.fullName} decided that ${patient.fullName} should not be vaccinated.`
+        return `${user.fullName} decided that ${patient.firstName} should not be vaccinated`
       case ScreenOutcome.Vaccinate:
-        return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate.`
+        return `${user.fullName} decided that ${patient.firstName} is safe to vaccinate`
       case ScreenOutcome.VaccinateAlternativeInjection:
-        return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the injected vaccine only.`
+        return `${user.fullName} decided that ${patient.firstName} is safe to vaccinate using the injected vaccine only`
       case ScreenOutcome.VaccinateIntranasal:
-        return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the nasal spray only.`
+        return `${user.fullName} decided that ${patient.firstName} is safe to vaccinate using the nasal spray only`
       default:
-        return `No triage is needed for ${patient.fullName}.`
+        return `No triage is needed for ${patient.firstName}`
     }
   }
 

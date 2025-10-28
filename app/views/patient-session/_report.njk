@@ -1,43 +1,35 @@
-{{ appHeading({
-  level: 3,
-  size: "m",
-  title: __("session.report.label")
-}) }}
+{{ patientSession.formatted.report | nhsukMarkdown }}
 
-{% call card({
-  feature: true,
-  heading: programme.name + ": " + (patientSession.status.report.text | lower),
-  headingClasses: "app-card__heading--" + patientSession.status.report.colour,
-  headingLevel: 4
-}) %}
-  {# Decision table #}
-  {% set vaccinationRows = [] %}
-  {% for vaccination in patientSession.vaccinations | reverse %}
-    {% set vaccinationRows = vaccinationRows | push([
-      {
-        header: __("vaccination.createdAt_date.label"),
-        html: vaccination.link.createdAt_date
-      },
-      {
-        header: __("vaccination.location.label"),
-        text: vaccination.location
-      },
-      {
-        header: __("vaccination.outcome.label"),
-        html: vaccination.formatted.outcome
-      }
-    ]) %}
-  {% endfor %}
+<hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
 
-  {{ table({
-    id: "vaccinations",
-    caption: __("patient.vaccinations.label"),
-    responsive: true,
-    head: [
-      { text: __("vaccination.createdAt_date.label") },
-      { text: __("vaccination.location.label") },
-      { text: __("vaccination.outcome.label") }
-    ],
-    rows: vaccinationRows
-  }) if patientSession.vaccinations | length }}
-{% endcall %}
+{# Decision table #}
+{% set vaccinationRows = [] %}
+{% for vaccination in patientSession.vaccinations | reverse %}
+  {% set vaccinationRows = vaccinationRows | push([
+    {
+      header: __("vaccination.createdAt_date.label"),
+      html: vaccination.link.createdAt_date
+    },
+    {
+      header: __("vaccination.location.label"),
+      text: vaccination.location
+    },
+    {
+      header: __("vaccination.outcome.label"),
+      html: vaccination.formatted.outcome
+    }
+  ]) %}
+{% endfor %}
+
+{{ table({
+  id: "vaccinations",
+  caption: __("patient.vaccinations.label"),
+  captionClasses: "nhsuk-table__caption--m",
+  responsive: true,
+  head: [
+    { text: __("vaccination.createdAt_date.label") },
+    { text: __("vaccination.location.label") },
+    { text: __("vaccination.outcome.label") }
+  ],
+  rows: vaccinationRows
+}) if patientSession.vaccinations | length }}

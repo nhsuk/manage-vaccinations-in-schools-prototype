@@ -1023,22 +1023,22 @@ export const en = {
       label: 'Session note'
     },
     consent: {
-      title: 'Consent for %s',
+      title: 'Consent',
       label: 'Consent status'
     },
     screen: {
+      title: 'Triage',
       label: 'Triage status'
     },
     instruct: {
       label: 'PSD status'
     },
     register: {
+      title: 'Register attendance',
       label: 'Registration status'
     },
-    outcome: {
-      label: 'Session outcome'
-    },
     report: {
+      title: 'Programme status',
       label: 'Programme status'
     },
     information: {

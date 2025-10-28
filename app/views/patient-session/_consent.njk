@@ -3,111 +3,96 @@
 {{ appHeading({
   level: 3,
   size: "m",
-  title: __("session.consent.label")
+  title: __("patientSession.consent.title", programme.nameSentenceCase),
+  summary: session.formatted.consentWindow if session.consentWindow == ConsentWindow.Opening else patientSession.status.consent.text
 }) }}
 
-{% call card({
-  feature: true,
-  heading: programme.name + ": " + (patientSession.status.consent.text | lower),
-  headingClasses: "app-card__heading--" + patientSession.status.consent.colour,
-  headingLevel: 4
-}) %}
-  {# Description #}
-  {% if not isVaccinated %}
-    {% if session.consentWindow == ConsentWindow.Opening %}
-      {{ session.formatted.consentWindow | nhsukMarkdown }}
-    {% elif session.consentWindow != ConsentWindow.Open %}
-      {{ patientSession.consentNotes | nhsukMarkdown }}
-    {% endif %}
-
-    {% if patientSession.patient.lastReminderDate %}
-      {{ patientSession.patient.formatted.lastReminderDate | nhsukMarkdown }}
-    {% endif %}
+{# Reminders #}
+{% if not isVaccinated %}
+  {% if patientSession.patient.lastReminderDate %}
+    {{ patientSession.patient.formatted.lastReminderDate | nhsukMarkdown }}
   {% endif %}
+{% endif %}
 
-  {# Actions #}
-  {{ appButtonGroup({
-    buttons: [{
-      classes: "nhsuk-button--secondary",
-      text: __("remind.new.title"),
-      attributes: {
-        formaction: patientSession.uri + "/new/remind",
-        formmethod: "post"
-      }
-    } if options.canRemind, {
-      classes: "nhsuk-button--secondary",
-      text: __("patientSession.invite.label"),
-      attributes: {
-        formmethod: patientSession.uri + "/new/invite",
-        formaction: "post"
-      }
-    } if options.canInvite, {
-      classes: "nhsuk-button--secondary",
-      text: __("reply.new.title"),
-      href: patientSession.uri + "/replies/new?referrer=" + referrer
-    } if options.canRespond]
-  }) if not isVaccinated }}
+{# Actions #}
+{{ actionLink({
+  text: __("reply.new.title"),
+  href: patientSession.uri + "/replies/new?referrer=" + referrer
+}) if not isVaccinated }}
 
-  {# Gillick #}
-  {% if options.canGillick or patientSession.gillick %}
-    {{ appHeading({
-      level: 4,
-      size: "s",
-      title: __("patientSession.gillick.label")
-    }) }}
-    {{ appStatus(patientSession.gillick.formatted.competent) }}
-  {% endif %}
+{{ appButtonGroup({
+  buttons: [{
+    classes: "nhsuk-button--secondary",
+    text: __("remind.new.title"),
+    attributes: {
+      formaction: patientSession.uri + "/new/remind",
+      formmethod: "post"
+    }
+  } if options.canRemind, {
+    classes: "nhsuk-button--secondary",
+    text: __("patientSession.invite.label"),
+    attributes: {
+      formmethod: patientSession.uri + "/new/invite",
+      formaction: "post"
+    }
+  } if options.canInvite]
+}) if not isVaccinated }}
 
-  {% if options.canGillick and not isVaccinated %}
-    {% set type = "edit" if patientSession.gillick.competent else "new" %}
-    {{ button({
-      classes: "nhsuk-button--secondary",
-      text: __("patientSession.gillick." + type + ".title"),
-      href: patientSession.uri + "/" + type + "/gillick?referrer=" + referrer
-    }) }}
-  {% endif %}
+{# Gillick #}
+{% if options.canGillick or patientSession.gillick %}
+  {{ appHeading({
+    level: 4,
+    size: "s",
+    title: __("patientSession.gillick.label")
+  }) }}
+  {{ appStatus(patientSession.gillick.formatted.competent) }}
+{% endif %}
 
-  {# Decision cards #}
-  {% if patientSession.responses | length %}
-    {{ appHeading({
-      level: 4,
-      size: "s",
-      title: __("patientSession.responses.label")
-    }) }}
-    {% for consent in patientSession.responses %}
-      {{ card({
-        classes: "app-card--compact app-card--offset",
-        heading: consent.formatted.fullNameAndRelationship,
-        headingLevel: 4,
-        href: consent.uri,
-        clickable: true,
-        descriptionHtml: summaryList({
-          rows: summaryRows(consent, {
-            tel: {},
-            email: {},
-            createdAt: {},
-            decisionStatus: {},
-            vaccineCriteria: {}
-          })
+{% if options.canGillick and not isVaccinated %}
+  {% set type = "edit" if patientSession.gillick.competent else "new" %}
+  {{ button({
+    classes: "nhsuk-button--secondary",
+    text: __("patientSession.gillick." + type + ".title"),
+    href: patientSession.uri + "/" + type + "/gillick?referrer=" + referrer
+  }) }}
+{% endif %}
+
+{# Decision cards #}
+{% if patientSession.responses | length %}
+  {{ appHeading({
+    level: 4,
+    size: "s",
+    title: __("patientSession.responses.label")
+  }) }}
+  {% for consent in patientSession.responses %}
+    {{ card({
+      heading: consent.formatted.fullNameAndRelationship,
+      headingLevel: 4,
+      href: consent.uri,
+      clickable: true,
+      descriptionHtml: summaryList({
+        rows: summaryRows(consent, {
+          tel: {},
+          email: {},
+          createdAt: {},
+          decisionStatus: {},
+          vaccineCriteria: {}
         })
-      }) }}
-    {% endfor %}
-  {% endif %}
-
-  {# Health answers #}
-  {% if patientSession.consentHealthAnswers %}
-    <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
-
-    {{ appHeading({
-      classes: "nhsuk-u-margin-bottom-2",
-      level: 4,
-      size: "s",
-      title: __("healthAnswers.label")
+      })
     }) }}
+  {% endfor %}
+{% endif %}
 
-    {{ summaryList({
-      classes: "app-summary-list--full-width",
-      rows: healthAnswerRows(patientSession.consentHealthAnswers)
-    }) }}
-  {% endif %}
-{% endcall %}
+{# Health answers #}
+{% if patientSession.consentHealthAnswers %}
+  {{ appHeading({
+    level: 4,
+    size: "s",
+    title: __("healthAnswers.label")
+  }) }}
+
+  {{ summaryList({
+    classes: "app-summary-list--full-width",
+    rows: healthAnswerRows(patientSession.consentHealthAnswers)
+  }) }}
+{% endif %}
