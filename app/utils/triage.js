@@ -80,16 +80,21 @@ export const getScreenOutcome = (patientSession) => {
 
   const responses = Object.values(patientSession.responses)
   const responsesToTriage = getRepliesWithHealthAnswers(responses)
+  const lastTriageNoteWithOutcome = patientSession.triageNotes
+    .filter((event) => event.outcome)
+    .at(-1)
 
+  // Triage completed without any answers to health questions
   if (responsesToTriage.length === 0) {
+    if (lastTriageNoteWithOutcome) {
+      return lastTriageNoteWithOutcome.outcome
+    }
+
     return false
   }
 
+  // Triage needed or completed due to answers to health questions
   if (responsesToTriage.length > 0) {
-    const lastTriageNoteWithOutcome = patientSession.triageNotes
-      .filter((event) => event.outcome)
-      .at(-1)
-
     if (lastTriageNoteWithOutcome) {
       return lastTriageNoteWithOutcome.outcome
     }
