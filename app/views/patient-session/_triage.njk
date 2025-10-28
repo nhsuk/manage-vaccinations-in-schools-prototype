@@ -8,16 +8,16 @@
 
 {% set cardDescriptionHtml %}
   {# Description #}
-  {% if not isVaccinated %}
-    {{ patientSession.status.screen.description | nhsukMarkdown }}
-  {% endif %}
+  {{ patientSession.status.screen.description | nhsukMarkdown }}
 
   {# Actions #}
-  {{ button({
-    classes: "nhsuk-button--secondary",
-    text: __("triage.edit.title"),
-    href: patientSession.uri + "/edit/triage?referrer=" + referrer
-  }) if options.hasTriage and not isVaccinated }}
+  {{ appButtonGroup({
+    buttons: [{
+      classes: "nhsuk-button--secondary",
+      text: __("triage.edit.title"),
+      href: patientSession.uri + "/edit/triage?referrer=" + referrer
+    }]
+  }) if options.canTriage and not isVaccinated }}
 
   {# Decision table #}
   {% set triageNoteRows = [] %}
@@ -61,7 +61,9 @@
       ],
       rows: triageNoteRows
     }) }}
-  {% else %}
+  {% endif %}
+
+  {% if needsTriage %}
     <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
 
     {% set psdRadiosHtml = radios({

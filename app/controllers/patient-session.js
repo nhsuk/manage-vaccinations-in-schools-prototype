@@ -100,8 +100,10 @@ export const patientSessionController = {
         programme.type !== ProgrammeType.Flu &&
         session.isActive &&
         !consentGiven,
-      // Patient requires triage
-      canTriage: triage !== TriageOutcome.NotNeeded,
+      // Patient can be triaged
+      canTriage: consentGiven,
+      // Patient needs triage
+      needsTriage: triage === TriageOutcome.Needed,
       // Patient already triaged
       hasTriage: triageNotes.length > 0,
       hasSupplier: userIsHCA && userHasSupplier,

@@ -155,6 +155,7 @@ export const getScreenStatus = (patientSession) => {
   let colour
   let description
   let reason = screen
+  let text = screen
   switch (screen) {
     case ScreenOutcome.NeedsTriage:
       colour = 'blue'
@@ -183,13 +184,16 @@ export const getScreenStatus = (patientSession) => {
       description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the nasal spray only.`
       break
     default:
+      text = TriageOutcome.NotNeeded
+      colour = 'grey'
+      description = `${patient.fullName} does not need triage.`
   }
 
   return {
     colour,
     description,
     reason,
-    text: screen
+    text
   }
 }
 
