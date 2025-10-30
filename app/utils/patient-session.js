@@ -126,7 +126,7 @@ export const getTriageStatus = (patientSession) => {
       colour = 'blue'
       break
     case TriageOutcome.NotNeeded:
-      colour = 'grey'
+      colour = 'aqua-green'
       break
     case TriageOutcome.Completed:
       colour = false
@@ -185,7 +185,7 @@ export const getScreenStatus = (patientSession) => {
       break
     default:
       text = TriageOutcome.NotNeeded
-      colour = 'grey'
+      colour = 'aqua-green'
       description = `No triage is needed for ${patient.fullName}.`
   }
 
