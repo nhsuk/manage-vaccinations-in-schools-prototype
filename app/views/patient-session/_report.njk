@@ -1,47 +1,41 @@
 {{ appHeading({
   level: 3,
   size: "m",
-  title: __("session.report.label")
+  title: __("patientSession.report.title"),
+  summary: patientSession.status.report.text,
+  attributes: {
+    id: "report"
+  }
 }) }}
 
-{% set cardDescriptionHtml %}
-  {# Decision table #}
-  {% set vaccinationRows = [] %}
-  {% for vaccination in patientSession.vaccinations | reverse %}
-    {% set vaccinationRows = vaccinationRows | push([
-      {
-        header: __("vaccination.createdAt_date.label"),
-        html: vaccination.link.createdAt_date
-      },
-      {
-        header: __("vaccination.location.label"),
-        text: vaccination.location
-      },
-      {
-        header: __("vaccination.outcome.label"),
-        html: vaccination.formatted.outcomeStatus
-      }
-    ]) %}
-  {% endfor %}
+{# Decision table #}
+{% set vaccinationRows = [] %}
+{% for vaccination in patientSession.vaccinations | reverse %}
+  {% set vaccinationRows = vaccinationRows | push([
+    {
+      header: __("vaccination.createdAt_date.label"),
+      html: vaccination.link.createdAt_date
+    },
+    {
+      header: __("vaccination.location.label"),
+      text: vaccination.location
+    },
+    {
+      header: __("vaccination.outcome.label"),
+      html: vaccination.formatted.outcomeStatus
+    }
+  ]) %}
+{% endfor %}
 
-  {{ table({
-    id: "vaccinations",
-    caption: __("patient.vaccinations.label"),
-    sort: "createdAt",
-    responsive: true,
-    head: [
-      { text: __("vaccination.createdAt_date.label") },
-      { text: __("vaccination.location.label") },
-      { text: __("vaccination.outcome.label") }
-    ],
-    rows: vaccinationRows
-  }) if patientSession.vaccinations | length }}
-{% endset %}
-
-{{ card({
-  feature: true,
-  heading: programme.name + ": " + (patientSession.status.report.text | lower),
-  headingClasses: "app-card__heading--" + patientSession.status.report.colour,
-  headingLevel: 4,
-  descriptionHtml: cardDescriptionHtml
-}) }}
+{{ table({
+  id: "vaccinations",
+  caption: __("patient.vaccinations.label"),
+  sort: "createdAt",
+  responsive: true,
+  head: [
+    { text: __("vaccination.createdAt_date.label") },
+    { text: __("vaccination.location.label") },
+    { text: __("vaccination.outcome.label") }
+  ],
+  rows: vaccinationRows
+}) if patientSession.vaccinations | length }}

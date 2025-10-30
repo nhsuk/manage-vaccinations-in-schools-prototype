@@ -12,20 +12,6 @@
 
   {{ appActionList({
     items: [{
-      tag: statusTag(params.patientSession.status.instruct)
-    } if session.psdProtocol and patientSession.instruct, {
-      tag: statusTag(params.patientSession.status.register)
-    } if session.registration, {
-      text: __("patientSession.registration.title"),
-      href: params.patientSession.uri + "/edit/registration?referrer=" + referrer
-    } if session.registration and params.patientSession.register != RegistrationOutcome.Complete, {
-      text: __("patientSession.record.title"),
-      href: "#"
-    } if not params.patientSession.session.isActive and params.patientSession.report != PatientOutcome.Vaccinated]
-  }) if params.patientSession.session.isActive }}
-
-  {{ appActionList({
-    items: [{
       text: __("patientSession.vaccination.title"),
       href: params.patientSession.uri + "/new/vaccination"
     }]

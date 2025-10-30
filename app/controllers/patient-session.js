@@ -93,8 +93,6 @@ export const patientSessionController = {
         session.consentWindow === ConsentWindow.Open &&
         !session.isActive &&
         consent === ConsentOutcome.NoResponse,
-      // Get verbal consent
-      canRespond: !consentGiven,
       // Perform Gillick assessment
       canGillick:
         programme.type !== ProgrammeType.Flu &&
@@ -107,6 +105,7 @@ export const patientSessionController = {
       // Patient already triaged
       hasTriage: triageNotes.length > 0,
       hasSupplier: userIsHCA && userHasSupplier,
+      canRegister: session.registration && session.isActive,
       canRecord:
         account.vaccineMethods?.includes(patientSession.vaccine?.method) &&
         record === Activity.Record,

@@ -56,11 +56,11 @@
   <div class="nhsuk-grid-row">
     <div class="app-grid-column-patient-record" data-module="app-sticky">
       {{ appHeading({
-        classes: "nhsuk-u-margin-top-1",
         level: 3,
-        size: "s",
+        size: "m",
         title: patientSession.patient.fullName
       }) }}
+
       {{ summaryList({
         classes: "nhsuk-u-margin-bottom-2 nhsuk-summary-list--no-border app-summary-list--full-width",
         rows: summaryRows(patient, {
@@ -86,14 +86,83 @@
         }) }}
       {% endfor %}
 
+      {% if options.canReport %}
+        {% include "patient-session/_report.njk" %}
+      {% else %}
+        {{ appHeading({
+          level: 3,
+          size: "m",
+          title: "Summary"
+        }) }}
+
+        {{ taskList({
+          idPrefix: "summary",
+          items: [
+            {
+              title: {
+                text: __("patientSession.consent.title")
+              },
+              href: "#consent",
+              status: {
+                tag: statusTag(patientSession.status.consent)
+              }
+            },
+            {
+              title: {
+                text: __("patientSession.screen.title")
+              },
+              href: "#screen" if options.canTriage,
+              status: {
+                tag: statusTag(patientSession.status.screen)
+              } if options.canTriage else {
+                text: "Cannot start yet",
+                classes: "nhsuk-task-list__status--cannot-start-yet"
+              }
+            },
+            {
+              title: {
+                text: __("session.instruct.label")
+              },
+              status: {
+                tag: statusTag(patientSession.status.instruct)
+              }
+            } if session.psdProtocol and patientSession.instruct,
+            {
+              title: {
+                text: __("patientSession.register.title")
+              },
+              href: "#register",
+              status: {
+                tag: statusTag(patientSession.status.register)
+              }
+            } if options.canRegister,
+            {
+              title: {
+                text: __("patientSession.record.titleWithMethod", {
+                  session: session,
+                  method: patientSession.vaccine.method | lower
+                }) if options.canRecord else __("patientSession.record.title")
+              },
+              href: "#record" if options.canRecord,
+              status: {
+                tag: statusTag(patientSession.status.outcome)
+              } if options.canRecord else {
+                text: "Cannot start yet",
+                classes: "nhsuk-task-list__status--cannot-start-yet"
+              }
+            }
+          ]
+        }) }}
+      {% endif %}
+
       {% include "patient-session/_consent.njk" %}
 
       {% if options.canTriage %}
         {% include "patient-session/_triage.njk" %}
       {% endif %}
 
-      {% if options.canReport %}
-        {% include "patient-session/_report.njk" %}
+      {% if options.canRegister %}
+        {% include "patient-session/_register.njk" %}
       {% endif %}
 
       {% if options.canRecord %}

@@ -1,0 +1,18 @@
+<hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+
+{{ appHeading({
+  level: 3,
+  size: "m",
+  title: __("patientSession.register.title"),
+  summary: patientSession.status.register.text,
+  attributes: {
+    id: "register"
+  }
+}) }}
+
+{# Actions #}
+{{ actionLink({
+  classes: "nhsuk-u-margin-0",
+  text: __("patientSession.registration.title"),
+  href: patientSession.uri + "/edit/registration?referrer=" + referrer
+}) if patientSession.register != RegistrationOutcome.Complete }}

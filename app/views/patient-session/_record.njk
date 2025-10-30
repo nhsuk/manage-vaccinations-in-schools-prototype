@@ -1,3 +1,5 @@
+<hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+
 {{ appHeading({
   classes: "app-vaccine-method",
   level: 3,
@@ -14,7 +16,10 @@
   size: "m",
   title: __("patientSession.record.title", {
     session: session
-  })
+  }),
+  attributes: {
+    id: "record"
+  }
 }) }}
 
 {% set preScreenDescriptionHtml %}

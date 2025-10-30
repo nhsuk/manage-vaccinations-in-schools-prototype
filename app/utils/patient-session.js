@@ -55,7 +55,7 @@ export const getNextActivity = ({
  * @returns {object} Consent status properties
  */
 export const getConsentStatus = (patientSession) => {
-  const { consent, patient, parentalRelationships, parentsRequestingFollowUp } =
+  const { consent, parentalRelationships, parentsRequestingFollowUp } =
     patientSession
   const relationships = prototypeFilters.formatList(parentalRelationships)
   const parentNames = prototypeFilters.formatList(parentsRequestingFollowUp)
@@ -66,37 +66,36 @@ export const getConsentStatus = (patientSession) => {
   switch (consent) {
     case ConsentOutcome.NoResponse:
       colour = 'grey'
-      description = 'No-one responded to our requests for consent.'
+      description = 'No-one responded to our requests for consent'
       break
     case ConsentOutcome.NoRequest:
       colour = 'dark-orange'
-      description = 'Consent response could not be delivered.'
+      description = 'Consent response could not be delivered'
       break
     case ConsentOutcome.Inconsistent:
       colour = 'dark-orange'
-      description = 'You can only vaccinate if all respondents give consent.'
+      description = 'You can only vaccinate if all respondents give consent'
       icon = 'cross'
       break
     case ConsentOutcome.Given:
     case ConsentOutcome.GivenForInjection:
     case ConsentOutcome.GivenForNasalSpray:
       colour = 'aqua-green'
-      description = `${patient.fullName} is ready for the vaccinator.`
       icon = 'tick'
       break
     case ConsentOutcome.Declined:
       colour = 'warm-yellow'
-      description = `${parentNames} would like to speak to a member of the team about other options for their child’s vaccination.`
+      description = `${parentNames} would like to speak to a member of the team about other options for their child’s vaccination`
       icon = 'info'
       break
     case ConsentOutcome.Refused:
       colour = 'red'
-      description = `${relationships} refused to give consent.`
+      description = `${relationships} refused to give consent`
       icon = 'cross'
       break
     case ConsentOutcome.FinalRefusal:
       colour = 'red'
-      description = `Refusal to give consent confirmed by ${relationships}.`
+      description = `Refusal to give consent confirmed by ${relationships}`
       icon = 'cross'
       break
     default:
