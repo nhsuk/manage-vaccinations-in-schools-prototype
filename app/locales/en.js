@@ -1034,7 +1034,7 @@ export const en = {
       label: 'Session outcome'
     },
     report: {
-      label: 'Outcome'
+      label: 'Programme status'
     },
     nextActivity: {
       label: 'Action required'
@@ -1519,8 +1519,8 @@ export const en = {
       title: 'Review session outcomes'
     },
     report: {
-      label: 'Outcome',
-      title: 'Outcome'
+      label: 'Programme status',
+      title: 'Programme status'
     },
     delegation: {
       title: 'Delegation'

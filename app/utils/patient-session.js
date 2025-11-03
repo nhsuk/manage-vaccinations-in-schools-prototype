@@ -4,7 +4,7 @@ import {
   Activity,
   ConsentOutcome,
   InstructionOutcome,
-  PatientOutcome,
+  ProgrammeOutcome,
   RegistrationOutcome,
   ScreenOutcome,
   TriageOutcome,
@@ -41,7 +41,7 @@ export const getNextActivity = ({
     return Activity.DoNotRecord
   }
 
-  if (report === PatientOutcome.Vaccinated) {
+  if (report === ProgrammeOutcome.Vaccinated) {
     return Activity.Report
   }
 
@@ -285,7 +285,7 @@ export const getOutcomeStatus = (patientSession) => {
 }
 
 /**
- * Get patient (programme) outcome status properties
+ * Get patient programme outcome status properties
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
  * @returns {object} Patient (programme) outcome status properties
@@ -295,13 +295,15 @@ export const getReportStatus = (patientSession) => {
 
   let colour
   switch (report) {
-    case PatientOutcome.Vaccinated:
-      colour = 'green'
-      break
-    case PatientOutcome.CouldNotVaccinate:
+    case ProgrammeOutcome.Ineligible:
       colour = 'red'
       break
-    case PatientOutcome.NoOutcomeYet:
+    case ProgrammeOutcome.Eligible:
+      colour = 'dark-orange'
+      break
+    case ProgrammeOutcome.Due:
+      colour = 'green'
+      break
     default:
       colour = 'white'
       break
@@ -346,7 +348,7 @@ export const getRegistrationOutcome = (patientSession) => {
     return RegistrationOutcome.Present
   }
 
-  if (report === PatientOutcome.Vaccinated) {
+  if (report === ProgrammeOutcome.Vaccinated) {
     return RegistrationOutcome.Complete
   } else if (session.register[patient.uuid]) {
     return session.register[patient.uuid]
@@ -378,7 +380,7 @@ export const getRecordOutcome = (patientSession) => {
  * Get vaccination (session) outcome
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {VaccinationOutcome|PatientOutcome} Vaccination (session) outcome
+ * @returns {VaccinationOutcome} Vaccination (session) outcome
  */
 export const getSessionOutcome = (patientSession) => {
   if (patientSession.lastRecordedVaccination) {
@@ -392,37 +394,23 @@ export const getSessionOutcome = (patientSession) => {
   } else if (patientSession.screen === ScreenOutcome.DoNotVaccinate) {
     return VaccinationOutcome.Contraindications
   }
-
-  return PatientOutcome.NoOutcomeYet
 }
 
 /**
- * Get patient (programme) outcome
+ * Get programme outcome
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {PatientOutcome} Overall patient (programme) outcome
+ * @returns {ProgrammeOutcome} Overall programme outcome
  */
 export const getReportOutcome = (patientSession) => {
   if (patientSession.vaccinations?.length > 0) {
     if (patientSession.vaccinations.at(-1).given) {
-      return PatientOutcome.Vaccinated
+      return ProgrammeOutcome.Vaccinated
     }
-
-    return PatientOutcome.CouldNotVaccinate
+  } else if (patientSession.consentGiven) {
+    return ProgrammeOutcome.Due
   }
 
-  // Consent outcome
-  if (
-    patientSession.consent === ConsentOutcome.Refused ||
-    patientSession.consent === ConsentOutcome.FinalRefusal
-  ) {
-    return PatientOutcome.CouldNotVaccinate
-  }
-
-  // Screen outcome
-  if (patientSession.screen === ScreenOutcome.DoNotVaccinate) {
-    return PatientOutcome.CouldNotVaccinate
-  }
-
-  return PatientOutcome.NoOutcomeYet
+  // TODO: Check for patient’s eligibility in programme
+  return ProgrammeOutcome.Eligible
 }

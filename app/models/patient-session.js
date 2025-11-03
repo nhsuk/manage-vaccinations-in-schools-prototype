@@ -5,7 +5,7 @@ import {
   Activity,
   AuditEventType,
   ConsentOutcome,
-  PatientOutcome,
+  ProgrammeOutcome,
   ReplyDecision,
   ScreenOutcome,
   TriageOutcome
@@ -371,10 +371,7 @@ export class PatientSession {
    * @returns {boolean} Patient still needs vaccination
    */
   get stillToVaccinate() {
-    return (
-      this.nextActivity === Activity.Record &&
-      this.outcome === PatientOutcome.NoOutcomeYet
-    )
+    return this.report === ProgrammeOutcome.Due
   }
 
   /**
@@ -550,16 +547,16 @@ export class PatientSession {
   /**
    * Get vaccination (session) outcome
    *
-   * @returns {import('../enums.js').VaccinationOutcome|PatientOutcome} Vaccination (session) outcome
+   * @returns {import('../enums.js').VaccinationOutcome} Vaccination (session) outcome
    */
   get outcome() {
     return getSessionOutcome(this)
   }
 
   /**
-   * Get patient (programme) outcome
+   * Get programme outcome
    *
-   * @returns {PatientOutcome} Overall patient (programme) outcome
+   * @returns {ProgrammeOutcome} Programme outcome
    */
   get report() {
     return getReportOutcome(this)
@@ -610,7 +607,7 @@ export class PatientSession {
       triage:
         this.triage === TriageOutcome.Completed && this.status.screen.reason,
       report:
-        this.report === PatientOutcome.CouldNotVaccinate &&
+        this.report === ProgrammeOutcome.Eligible &&
         this.couldNotVaccinateReason
     }
   }

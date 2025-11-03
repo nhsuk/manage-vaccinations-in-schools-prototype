@@ -181,16 +181,6 @@ export const ParentalRelationship = {
  * @readonly
  * @enum {string}
  */
-export const PatientOutcome = {
-  Vaccinated: 'Vaccinated',
-  CouldNotVaccinate: 'Could not vaccinate',
-  NoOutcomeYet: 'No outcome'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
 export const PreScreenQuestion = {
   IsWell: 'is not acutely unwell',
   IsPregnant: 'is not pregnant',
@@ -200,6 +190,17 @@ export const PreScreenQuestion = {
   IsHappy: 'knows what the vaccination is for, and agrees to have it',
   IsNotContraindicated:
     'has no other contraindications which prevent vaccination'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const ProgrammeOutcome = {
+  Ineligible: 'Not eligible',
+  Eligible: 'Eligible',
+  Due: 'Due vaccination',
+  Vaccinated: 'Vaccinated'
 }
 
 /**

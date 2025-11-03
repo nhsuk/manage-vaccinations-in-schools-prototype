@@ -22,21 +22,6 @@
           header: __("programme.patients.label"),
           text: programme.patientSessions.length or "0",
           format: "numeric"
-        },
-        {
-          header: PatientOutcome.Vaccinated,
-          text: programme.report(PatientOutcome.Vaccinated).length or "0",
-          format: "numeric"
-        },
-        {
-          header: PatientOutcome.CouldNotVaccinate,
-          text: programme.report(PatientOutcome.CouldNotVaccinate).length or "0",
-          format: "numeric"
-        },
-        {
-          header: PatientOutcome.NoOutcomeYet,
-          text: programme.report(PatientOutcome.NoOutcomeYet).length or "0",
-          format: "numeric"
         }
       ]) %}
     {% endfor %}
@@ -56,18 +41,6 @@
         },
         {
           text: __("programme.patients.label"),
-          format: "numeric"
-        },
-        {
-          text: PatientOutcome.Vaccinated,
-          format: "numeric"
-        },
-        {
-          text: PatientOutcome.CouldNotVaccinate,
-          format: "numeric"
-        },
-        {
-          text: PatientOutcome.NoOutcomeYet,
           format: "numeric"
         }
       ],

@@ -4,8 +4,8 @@ import {
   ConsentOutcome,
   ConsentWindow,
   InstructionOutcome,
-  PatientOutcome,
   PreScreenQuestion,
+  ProgrammeOutcome,
   ProgrammeType,
   RegistrationOutcome,
   ScreenOutcome,
@@ -47,12 +47,12 @@ export const patientSessionController = {
       vaccine
     } = patientSession
 
-    const outcomed = patientSession.siblingPatientSessions.filter(
-      ({ outcome }) => outcome !== PatientOutcome.NoOutcomeYet
+    const vaccinated = patientSession.siblingPatientSessions.filter(
+      ({ outcome }) => outcome !== ProgrammeOutcome.Vaccinated
     )
 
-    const notOutcomed = patientSession.siblingPatientSessions.filter(
-      ({ outcome }) => outcome === PatientOutcome.NoOutcomeYet
+    const due = patientSession.siblingPatientSessions.filter(
+      ({ outcome }) => outcome === ProgrammeOutcome.Due
     )
 
     // National protocol
@@ -84,8 +84,7 @@ export const patientSessionController = {
 
     response.locals.options = {
       // Show outstanding vaccinations
-      showOutstandingVaccinations:
-        outcomed.length > 0 && notOutcomed.length > 0,
+      showOutstandingVaccinations: vaccinated.length > 0 && due.length > 0,
       // Invite to session
       canInvite: consent === ConsentOutcome.NoRequest,
       // Send a reminder to give consent
@@ -111,7 +110,7 @@ export const patientSessionController = {
         account.vaccineMethods?.includes(patientSession.vaccine?.method) &&
         record === Activity.Record,
       canReport:
-        report !== PatientOutcome.NoOutcomeYet &&
+        report === ProgrammeOutcome.Vaccinated &&
         patientSession.lastRecordedVaccination
     }
 
@@ -137,7 +136,7 @@ export const patientSessionController = {
     const view = request.path.split('/').at(-1)
     response.locals.navigationItems = [
       ...patientSession.siblingPatientSessions.map((patientSession) => ({
-        ...(patientSession.report === PatientOutcome.Vaccinated && {
+        ...(patientSession.report === ProgrammeOutcome.Vaccinated && {
           icon: 'tick'
         }),
         text: patientSession.programme.name,
@@ -224,7 +223,7 @@ export const patientSessionController = {
 
     if (
       register === RegistrationOutcome.Absent &&
-      patientSession.report !== PatientOutcome.CouldNotVaccinate
+      patientSession.report !== ProgrammeOutcome.Eligible
     ) {
       // Record vaccination outcome as absent if safe to vaccinate
       const programme = Programme.findOne(session.programme_ids[0], data)
