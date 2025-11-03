@@ -10,7 +10,7 @@ import {
   ConsentWindow,
   InstructionOutcome,
   OrganisationDefaults,
-  PatientOutcome,
+  ProgrammeOutcome,
   ProgrammePreset,
   ProgrammeType,
   SessionStatus,
@@ -674,20 +674,20 @@ export class Session {
       ]),
       vaccinated: getSessionActivityCount(this, [
         {
-          report: PatientOutcome.Vaccinated,
+          report: ProgrammeOutcome.Vaccinated,
           programme_id
         }
       ]),
       vaccinatedNasal: getSessionActivityCount(this, [
         {
-          report: PatientOutcome.Vaccinated,
+          report: ProgrammeOutcome.Vaccinated,
           'vaccine.method': VaccineMethod.Nasal,
           programme_id
         }
       ]),
       vaccinatedInjection: getSessionActivityCount(this, [
         {
-          report: PatientOutcome.Vaccinated,
+          report: ProgrammeOutcome.Vaccinated,
           'vaccine.method': VaccineMethod.Injection,
           programme_id
         }
@@ -722,8 +722,7 @@ export class Session {
         ({ consent }) => consent === ConsentOutcome.NoResponse
       ),
       couldNotVaccinate: this.patients.filter(
-        ({ consentGiven, report }) =>
-          consentGiven && report !== PatientOutcome.Vaccinated
+        ({ report }) => report !== ProgrammeOutcome.Vaccinated
       )
     }
   }
@@ -734,20 +733,7 @@ export class Session {
    * @returns {Array<PatientSession>} Patient sessions
    */
   get patientSessionsForClinic() {
-    return this.patients
-      .filter(({ consent }) =>
-        [
-          ConsentOutcome.NoResponse,
-          ConsentOutcome.NoRequest,
-          ConsentOutcome.Given
-        ].includes(consent)
-      )
-      .filter(({ report }) =>
-        [
-          PatientOutcome.CouldNotVaccinate,
-          PatientOutcome.NoOutcomeYet
-        ].includes(report)
-      )
+    return this.patients.filter(({ report }) => report === ProgrammeOutcome.Due)
   }
 
   get details() {

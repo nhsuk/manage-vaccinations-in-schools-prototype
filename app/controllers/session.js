@@ -6,7 +6,7 @@ import {
   Activity,
   ConsentOutcome,
   InstructionOutcome,
-  PatientOutcome,
+  ProgrammeOutcome,
   RegistrationOutcome,
   ScreenOutcome,
   SessionType,
@@ -334,7 +334,8 @@ export const sessionController = {
     // Don’t show screen outcome for children who have already been vaccinated
     if (view === 'screen') {
       results = results.filter(
-        (patientSession) => patientSession.outcome !== PatientOutcome.Vaccinated
+        (patientSession) =>
+          patientSession.outcome !== ProgrammeOutcome.Vaccinated
       )
     }
 
@@ -425,13 +426,13 @@ export const sessionController = {
         register: RegistrationOutcome,
         vaccineMethod: session.offersAlternativeVaccine && VaccineMethod,
         instruct: session.psdProtocol && InstructionOutcome,
-        report: PatientOutcome
+        report: ProgrammeOutcome
       },
       record: {
         vaccineMethod: session.offersAlternativeVaccine && VaccineMethod
       },
       report: {
-        report: PatientOutcome
+        report: ProgrammeOutcome
       }
     }
 
