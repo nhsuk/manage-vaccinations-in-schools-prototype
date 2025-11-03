@@ -3,24 +3,24 @@
 {%- from "x-nhsuk/decorated/input/macro.njk" import input with context %}
 
 {% macro appSearchInput(params) %}
-<div class="app-search-input{%- if params.classes %} {{ params.classes }}{% endif %}" role="search">
-  {{ input({
-    classes: "app-search-input__input",
-    label: {
-      classes: "nhsuk-u-visually-hidden",
-      text: params.label.text
-    },
-    type: "search",
-    autocomplete: "off",
-    attributes: params.attributes,
-    decorate: params.decorate or "q"
-  }) }}
-
-  {{ button({
-    classes: "app-button--icon app-search-input__submit",
-    html: nhsukIcon("search", {
-      title: "Search"
-    })
-  }) }}
-</div>
+{{ input({
+  label: {
+    classes: "nhsuk-u-visually-hidden",
+    text: params.label.text
+  },
+  type: "search",
+  autocomplete: "off",
+  attributes: params.attributes,
+  decorate: params.decorate or "q",
+  formGroup: {
+    classes: "app-form-group--search-input",
+    afterInput: {
+      html: button({
+        html: nhsukIcon("search", {
+          title: "Search"
+        })
+      })
+    }
+  }
+}) }}
 {% endmacro %}

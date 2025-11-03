@@ -41,11 +41,3 @@ $_secondary-warning-button-hover-colour: color.change($nhsuk-warning-button-colo
 
   @include nhsuk-font-size(16);
 }
-
-.app-button--icon {
-  .nhsuk-icon {
-    display: block;
-    height: 28px;
-    width: 28px;
-  }
-}
