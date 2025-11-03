@@ -4,6 +4,7 @@ import { AcademicYear, ArchiveRecordReason } from '../enums.js'
 import { Patient } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
 import { getResults, getPagination } from '../utils/pagination.js'
+import { formatYearGroup } from '../utils/string.js'
 
 export const patientController = {
   read(request, response, next, patient_uuid) {
@@ -31,7 +32,7 @@ export const patientController = {
   },
 
   readAll(request, response, next) {
-    let { options, programme_ids, q } = request.query
+    let { options, programme_ids, q, yearGroup } = request.query
     const { data } = request.session
 
     const latestAcademicYear = Object.values(AcademicYear).at(-1)
@@ -43,6 +44,13 @@ export const patientController = {
 
     // Sort
     let results = _.sortBy(patients, 'lastName')
+
+    // Convert year groups query into an array of numbers
+    let yearGroups
+    if (yearGroup) {
+      yearGroups = Array.isArray(yearGroup) ? yearGroup : [yearGroup]
+      yearGroups = yearGroups.map((year) => Number(year))
+    }
 
     // Query
     if (q) {
@@ -75,6 +83,13 @@ export const patientController = {
       }
     }
 
+    // Filter by year group
+    if (yearGroup) {
+      results = results.filter((patient) =>
+        yearGroups.includes(patient.yearGroup)
+      )
+    }
+
     // Filter by display option
     for (const option of ['archived', 'hasMissingNhsNumber', 'post16']) {
       if (options?.includes(option)) {
@@ -99,6 +114,12 @@ export const patientController = {
       checked: programme_ids?.includes(programme.id)
     }))
 
+    // Year group filter options
+    response.locals.yearGroupItems = [...Array(12).keys()].map((yearGroup) => ({
+      text: formatYearGroup(yearGroup),
+      value: yearGroup
+    }))
+
     // Clean up session data
     delete data.consent
     delete data.screen
@@ -106,6 +127,7 @@ export const patientController = {
     delete data.options
     delete data.programme_ids
     delete data.q
+    delete data.yearGroup
 
     next()
   },
@@ -132,7 +154,7 @@ export const patientController = {
     }
 
     // Checkboxes
-    for (const key of ['options', 'programme_ids']) {
+    for (const key of ['options', 'programme_ids', 'yearGroup']) {
       const value = request.body[key]
       const values = Array.isArray(value) ? value : [value]
       if (value) {
