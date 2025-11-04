@@ -48,7 +48,7 @@ export class Gillick {
    */
   get status() {
     return {
-      colour: this.competent === GillickCompetent.True ? 'aqua-green' : 'red',
+      colour: this.competent === GillickCompetent.True ? 'green' : 'red',
       description: `${this.updatedAt ? 'Updated' : 'Created'} Gillick assessment`,
       icon: this.competent === GillickCompetent.True ? 'tick' : 'cross',
       text: this.competent

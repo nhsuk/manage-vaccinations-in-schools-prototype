@@ -80,7 +80,7 @@ export const getConsentStatus = (patientSession) => {
     case ConsentOutcome.Given:
     case ConsentOutcome.GivenForInjection:
     case ConsentOutcome.GivenForNasalSpray:
-      colour = 'aqua-green'
+      colour = 'green'
       description = `${patient.fullName} is ready for the vaccinator.`
       icon = 'tick'
       break
@@ -126,7 +126,7 @@ export const getTriageStatus = (patientSession) => {
       colour = 'blue'
       break
     case TriageOutcome.NotNeeded:
-      colour = 'aqua-green'
+      colour = 'green'
       break
     case TriageOutcome.Completed:
       colour = false
@@ -172,20 +172,20 @@ export const getScreenStatus = (patientSession) => {
       reason = 'Do not vaccinate in this year’s programme'
       break
     case ScreenOutcome.Vaccinate:
-      colour = 'aqua-green'
+      colour = 'green'
       description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate.`
       break
     case ScreenOutcome.VaccinateInjection:
-      colour = 'aqua-green'
+      colour = 'green'
       description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the injected vaccine only.`
       break
     case ScreenOutcome.VaccinateNasal:
-      colour = 'aqua-green'
+      colour = 'green'
       description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the nasal spray only.`
       break
     default:
       text = TriageOutcome.NotNeeded
-      colour = 'aqua-green'
+      colour = 'green'
       description = `No triage is needed for ${patient.fullName}.`
   }
 
@@ -207,7 +207,7 @@ export const getInstructionStatus = (patientSession) => {
   let colour
   switch (patientSession.instruct) {
     case InstructionOutcome.Given:
-      colour = 'aqua-green'
+      colour = 'green'
       break
     default:
       colour = 'grey'
@@ -230,7 +230,7 @@ export const getRegistrationStatus = (patientSession) => {
   let description
   switch (patientSession.register) {
     case RegistrationOutcome.Present:
-      colour = 'aqua-green'
+      colour = 'green'
       description = `Registered as attending today’s session at ${patientSession.session.location.name}`
       break
     case RegistrationOutcome.Absent:
@@ -238,7 +238,7 @@ export const getRegistrationStatus = (patientSession) => {
       description = `Registered as absent from today’s session at ${patientSession.session.location.name}`
       break
     case RegistrationOutcome.Complete:
-      colour = 'green'
+      colour = 'white'
       break
     default:
       colour = 'grey'
@@ -296,7 +296,7 @@ export const getReportStatus = (patientSession) => {
   let colour
   switch (report) {
     case ProgrammeOutcome.Ineligible:
-      colour = 'red'
+      colour = 'grey'
       break
     case ProgrammeOutcome.Eligible:
       colour = 'dark-orange'

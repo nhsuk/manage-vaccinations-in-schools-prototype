@@ -317,7 +317,7 @@ export class Vaccination {
         colour = 'green'
         break
       default:
-        colour = 'red'
+        colour = 'dark-orange'
     }
 
     return {
