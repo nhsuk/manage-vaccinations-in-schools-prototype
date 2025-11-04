@@ -726,12 +726,12 @@ export const en = {
   },
   organisation: {
     show: {
-      label: 'Organisation',
-      title: 'Your organisation',
-      description: 'Manage your organisation’s settings'
+      label: 'Your team',
+      title: 'Your team',
+      description: 'Manage your team’s settings'
     },
     edit: {
-      success: 'Organisation settings updated'
+      success: 'Team settings updated'
     },
     contact: {
       title: 'Contact details',
