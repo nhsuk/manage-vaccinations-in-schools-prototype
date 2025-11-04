@@ -25,7 +25,7 @@
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: __("session.tally.consentGivenForNasal.label"),
-        colour: "aqua-green",
+        colour: "green",
         compact: true,
         data: session.tally(programme.id).consentGivenForNasal,
         href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForNasalSpray
@@ -34,7 +34,7 @@
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: __("session.tally.consentGivenForInjection.label"),
-        colour: "aqua-green",
+        colour: "green",
         compact: true,
         data: session.tally(programme.id).consentGivenForInjection,
         href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForInjection
@@ -44,7 +44,7 @@
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: __("session.tally.consentGiven.label"),
-        colour: "aqua-green",
+        colour: "green",
         compact: true,
         data: session.tally(programme.id).consentGiven,
         href: session.uri + "/consent?consent=" + ConsentOutcome.Given
@@ -65,7 +65,6 @@
       {{ appDataCard({
         heading: __("session.tally.vaccinated.label"),
         headingLevel: 3,
-        colour: "green",
         compact: true,
         data: session.tally(programme.id).vaccinated,
         href: session.uri + "/report?report=" + ProgrammeOutcome.Vaccinated + "&programme_id=" + programme.id

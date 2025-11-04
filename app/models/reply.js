@@ -326,10 +326,10 @@ export class Reply {
     let text = this.decision
     switch (this.decision) {
       case ReplyDecision.Given:
-        colour = 'aqua-green'
+        colour = 'green'
         break
       case ReplyDecision.OnlyFluInjection:
-        colour = 'aqua-green'
+        colour = 'green'
         text = ReplyDecision.Given
         break
       case ReplyDecision.Declined:

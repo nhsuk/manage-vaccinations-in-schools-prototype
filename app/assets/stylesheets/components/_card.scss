@@ -2,16 +2,6 @@
 @use "../core" as app;
 
 .app-card {
-  &--aqua-green {
-    background-color: nhsuk-tint(nhsuk-colour("aqua-green"), 80%);
-    border-color: nhsuk-tint(nhsuk-colour("aqua-green"), 50%);
-    color: nhsuk-shade(nhsuk-colour("aqua-green"), 50%);
-
-    &.nhsuk-card--clickable:active {
-      border-color: nhsuk-shade(nhsuk-colour("aqua-green"), 50%);
-    }
-  }
-
   &--blue {
     background-color: nhsuk-tint(nhsuk-colour("blue"), 80%);
     border-color: nhsuk-tint(nhsuk-colour("blue"), 30%);
@@ -66,7 +56,6 @@
     }
   }
 
-  &--aqua-green,
   &--blue,
   &--green,
   &--grey,
@@ -122,10 +111,6 @@
 }
 
 .app-card__heading {
-  &--aqua-green {
-    background-color: nhsuk-colour("aqua-green");
-  }
-
   &--dark-orange {
     background-color: app.$dark-orange-colour;
   }
