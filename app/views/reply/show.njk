@@ -12,13 +12,13 @@
       href: "/sessions"
     }, {
       text: reply.session.location.name,
-      href: "/sessions/" + reply.session.id
+      href: reply.session.uri
     }, {
       text: __("session.consent.label"),
-      href: "/sessions/" + reply.session.id + "/consent"
+      href: reply.session.uri + "/consent"
     }, {
       text: reply.patient.fullName,
-      href: "/sessions/" + reply.session.id + "/patients/" + reply.patient.nhsn + "/" + reply.programme.id + "?activity=consent"
+      href: reply.session.uri + "/patients/" + reply.patient.nhsn + "/" + reply.programme.id + "?activity=consent"
     }]
   }) }}
 {% endblock %}

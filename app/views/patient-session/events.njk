@@ -17,10 +17,10 @@
       href: "/sessions"
     }, {
       text: session.location.name,
-      href: "/sessions/" + session.id
+      href: session.uri
     }, {
       text: __("session." + activity + ".label"),
-      href: "/sessions/" + session.id + "/" + activity
+      href: session.uri + "/" + activity
     }]
   }) }}
 {% endblock %}
