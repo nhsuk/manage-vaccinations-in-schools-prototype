@@ -1358,7 +1358,7 @@ export const en = {
     }
   },
   review: {
-    label: 'Issue to review',
+    label: 'Changes to review',
     count:
       '{count, plural, =0 {No imported records need} one {1 imported record needs} other {# imported records need}} review',
     archived: {
