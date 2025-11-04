@@ -1186,7 +1186,6 @@ export const en = {
         'Use this area to:\n- organise vaccination sessions\n- report vaccinations'
     },
     show: {
-      cohorts: 'Cohorts',
       responses: 'Consent responses'
     },
     patients: {

@@ -52,29 +52,6 @@
     href: programme.uri + "/download/new"
   }) if programme.vaccinations.length }}
 
-  {{ appHeading({
-    level: 3,
-    size: "m",
-    title: __("programme.show.cohorts")
-  }) }}
-
-  <ul class="nhsuk-grid-row nhsuk-card-group">
-    {% for yearGroup in programme.yearGroups %}
-      <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
-        {{ card({
-          clickable: true if not isDataConsumer,
-          heading: yearGroup | yearGroup,
-          headingClasses: "nhsuk-heading-s",
-          headingLevel: 4,
-          href: programme.uri + "/patients?yearGroup=" + yearGroup if not isDataConsumer,
-          descriptionHtml: __mf("patient.count", {
-            count: programme.patientSessions | where("yearGroup", yearGroup) | length
-          })
-        }) }}
-      </li>
-    {% endfor %}
-  </ul>
-
 {% if programme.sessions.length %}
   {{ appHeading({
     level: 3,

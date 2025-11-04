@@ -1,9 +1,5 @@
 import { getCohortEligibility } from '../utils/cohort.js'
-import {
-  formatLink,
-  formatYearGroup,
-  sentenceCaseProgrammeName
-} from '../utils/string.js'
+import { formatYearGroup, sentenceCaseProgrammeName } from '../utils/string.js'
 
 // eslint-disable-next-line no-unused-vars
 import { PatientSession } from './patient-session.js'
@@ -68,29 +64,7 @@ export class Cohort {
    * @returns {object} Name
    */
   get name() {
-    return `${this.formatted.yearGroup} (${this.year}) ${sentenceCaseProgrammeName(this.programme.name)} cohort`
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} Formatted values
-   */
-  get formatted() {
-    return {
-      yearGroup: formatYearGroup(this.yearGroup)
-    }
-  }
-
-  /**
-   * Get formatted links
-   *
-   * @returns {object} Formatted links
-   */
-  get link() {
-    return {
-      name: formatLink(this.uri, this.name)
-    }
+    return `${formatYearGroup(this.yearGroup)} (${this.year}) ${sentenceCaseProgrammeName(this.programme.name)} cohort`
   }
 
   /**
@@ -100,15 +74,6 @@ export class Cohort {
    */
   get ns() {
     return 'cohort'
-  }
-
-  /**
-   * Get URI
-   *
-   * @returns {string} URI
-   */
-  get uri() {
-    return `/programmes/${this.programme_id}/patients?yearGroup=${this.yearGroup}`
   }
 
   /**
