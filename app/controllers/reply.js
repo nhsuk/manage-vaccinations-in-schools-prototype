@@ -35,9 +35,11 @@ export const replyController = {
   },
 
   redirect(request, response) {
-    const { nhsn, programme_id } = request.params
+    const { nhsn, programme_id, session_id } = request.params
 
-    response.redirect(`/programmes/${programme_id}/patients/${nhsn}`)
+    response.redirect(
+      `/sessions/${session_id}/patients/${nhsn}/${programme_id}`
+    )
   },
 
   show(request, response) {

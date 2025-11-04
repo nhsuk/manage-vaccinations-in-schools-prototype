@@ -60,8 +60,6 @@ router.use('/organisations/:organisation_code/clinics', clinicRoutes)
 router.use('/patients', patientRoutes)
 router.use('/programmes', programmeRoutes)
 router.use('/programmes/:programme_id/download', downloadRoutes)
-router.use('/programmes/:programme_id/patients', patientSessionRoutes)
-router.use('/programmes/:programme_id/patients/:nhsn/replies', replyRoutes)
 router.use('/programmes/:programme_id/vaccinations', vaccinationRoutes)
 router.use(
   '/programmes/:programme_id/vaccinations/:vaccination_uuid/patients',
@@ -70,6 +68,11 @@ router.use(
 router.use('/schools', schoolRoutes)
 router.use('/sessions/:session_id/consents', consentRoutes)
 router.use('/sessions/:session_id/default-batch', defaultBatchRoutes)
+router.use('/sessions/:session_id/patients', patientSessionRoutes)
+router.use(
+  '/sessions/:session_id/patients/:nhsn/:programme_id/replies',
+  replyRoutes
+)
 router.use('/sessions', sessionRoutes)
 router.use('/uploads/notices', noticeRoutes)
 router.use('/uploads/reviews', reviewRoutes)

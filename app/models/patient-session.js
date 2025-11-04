@@ -682,7 +682,7 @@ export class PatientSession {
    * @returns {string} URI
    */
   get uri() {
-    return `/programmes/${this.programme_id}/patients/${this.patient.nhsn}`
+    return `/sessions/${this.session_id}/patients/${this.patient.nhsn}/${this.programme_id}`
   }
 
   /**

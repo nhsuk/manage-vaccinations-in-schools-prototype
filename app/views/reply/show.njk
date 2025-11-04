@@ -18,7 +18,7 @@
       href: "/sessions/" + reply.session.id + "/consent"
     }, {
       text: reply.patient.fullName,
-      href: "/programmes/" + reply.programme.id + "/patients/" + reply.patient.nhsn + "?activity=consent"
+      href: "/sessions/" + reply.session.id + "/patients/" + reply.patient.nhsn + "/" + reply.programme.id + "?activity=consent"
     }]
   }) }}
 {% endblock %}

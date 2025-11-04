@@ -22,18 +22,6 @@
     }, {
       text: __("session." + activity + ".label"),
       href: "/sessions/" + session.id + "/" + activity
-    }] if activity else [{
-      text: __("home.show.title"),
-      href: "/"
-    }, {
-      text: __("programme.list.title"),
-      href: "/programmes"
-    }, {
-      text: patientSession.programme.name,
-      href: "/programmes/" + patientSession.programme_id
-    }, {
-      text: __("programme.patients.title"),
-      href: "/programmes/" + patientSession.programme_id + "/patients"
     }]
   }) }}
 {% endblock %}
