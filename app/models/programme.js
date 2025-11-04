@@ -285,7 +285,7 @@ export class Programme {
    * @returns {string} URI
    */
   get uri() {
-    return `/programmes/${this.id}`
+    return `/reports/${this.id}`
   }
 
   /**

@@ -326,7 +326,7 @@ export class Download {
    * @returns {string} URI
    */
   get uri() {
-    return `/programmes/${this.programme_id}/download/${this.id}`
+    return `/reports/${this.programme_id}/download/${this.id}`
   }
 
   /**

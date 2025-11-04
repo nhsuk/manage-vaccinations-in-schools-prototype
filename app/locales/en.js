@@ -837,8 +837,7 @@ export const en = {
     list: {
       label: 'Children',
       title: 'Children',
-      description:
-        'Use this area to:\n- find child records\n- view child vaccinations'
+      description: 'Find children and view their vaccination history'
     },
     show: {
       title: 'Child record'
@@ -1180,10 +1179,10 @@ export const en = {
   programme: {
     label: 'Programme',
     list: {
-      label: 'Programmes',
-      title: 'Programmes',
+      label: 'Reports',
+      title: 'Reports',
       description:
-        'Use this area to:\n- organise vaccination sessions\n- report vaccinations'
+        'View the progress of vaccination programmes and download vaccination data'
     },
     show: {
       responses: 'Consent responses'
@@ -1547,7 +1546,7 @@ export const en = {
       label: 'Sessions',
       title: 'Sessions',
       description:
-        'Use this area to:\n- review consent responses\n- triage health records\n- record vaccinations\n- review session outcomes'
+        'Review consent responses, triage answers to health questions and record vaccinations'
     },
     notices: {
       label: 'Needs review'
