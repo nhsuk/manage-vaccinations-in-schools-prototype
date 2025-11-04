@@ -1186,27 +1186,17 @@ export const en = {
         'Use this area to:\n- organise vaccination sessions\n- report vaccinations'
     },
     show: {
-      label: 'Overview',
-      title: 'Overview',
       cohorts: 'Cohorts',
       responses: 'Consent responses'
     },
     patients: {
-      label: 'Children',
-      title: 'Children'
-    },
-    sessions: {
-      label: 'Sessions',
-      title: 'Sessions'
+      label: 'Children'
     },
     name: {
       label: 'Programme'
     },
     type: {
       label: 'Programme type'
-    },
-    vaccines: {
-      label: 'Vaccines given'
     }
   },
   remind: {

@@ -1,10 +1,8 @@
-{% from "programme/_navigation.njk" import programmeNavigation with context %}
-
 {% extends "_layouts/default.njk" %}
 
 {% set isDataConsumer = account.role == UserRole.DataConsumer %}
 {% set paths = { back: "/home" } if isDataConsumer %}
-{% set title = programme.name + " – " + __("programme.show.title") %}
+{% set title = programme.name + " (" + programme.year + ")" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -20,10 +18,9 @@
 {% block content %}
   {{ super() }}
 
-  {{ programmeNavigation({
-    isDataConsumer: isDataConsumer,
-    programme: programme,
-    view: "show"
+  {{ appHeading({
+    summary: programme.year,
+    title: programme.name
   }) }}
 
   <div class="nhsuk-grid-row nhsuk-card-group">
