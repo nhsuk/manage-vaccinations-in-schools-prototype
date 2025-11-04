@@ -34,19 +34,14 @@
     navigation: {
       items: [
         {
-          href: "/programmes",
-          text: __("programme.list.label"),
-          active: navigation.activeSection == "programmes"
+          href: "/patients",
+          text: __("patient.list.label"),
+          active: navigation.activeSection == "patients"
         },
         {
           href: "/sessions",
           text: __("session.list.label"),
           active: navigation.activeSection == "sessions"
-        },
-        {
-          href: "/patients",
-          text: __("patient.list.label"),
-          active: navigation.activeSection == "patients"
         },
         {
           classes: "app-header__navigation-item--with-count",
@@ -70,6 +65,11 @@
           href: "/uploads",
           html: __("upload.list.label") + appCount(data.counts.uploads),
           active: navigation.activeSection == "uploads"
+        },
+        {
+          href: "/reports",
+          text: __("programme.list.label"),
+          active: navigation.activeSection == "reports"
         },
         {
           href: organisation.uri,

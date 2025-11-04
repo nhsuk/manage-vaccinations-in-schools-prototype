@@ -6,7 +6,7 @@ export const homeController = {
     const { account } = request.app.locals
 
     if (account.role === UserRole.DataConsumer) {
-      response.redirect('/programmes')
+      response.redirect('/reports')
     } else {
       response.redirect('/dashboard')
     }

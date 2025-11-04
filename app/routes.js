@@ -58,11 +58,11 @@ router.use('/moves', moveRoutes)
 router.use('/organisations', organisationRoutes)
 router.use('/organisations/:organisation_code/clinics', clinicRoutes)
 router.use('/patients', patientRoutes)
-router.use('/programmes', programmeRoutes)
-router.use('/programmes/:programme_id/download', downloadRoutes)
-router.use('/programmes/:programme_id/vaccinations', vaccinationRoutes)
+router.use('/reports', programmeRoutes)
+router.use('/reports/:programme_id/download', downloadRoutes)
+router.use('/reports/:programme_id/vaccinations', vaccinationRoutes)
 router.use(
-  '/programmes/:programme_id/vaccinations/:vaccination_uuid/patients',
+  '/reports/:programme_id/vaccinations/:vaccination_uuid/patients',
   patientRoutes
 )
 router.use('/schools', schoolRoutes)

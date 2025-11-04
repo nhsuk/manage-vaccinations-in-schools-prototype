@@ -45,7 +45,7 @@ export const downloadController = {
   redirect(request, response) {
     const { programme_id } = request.params
 
-    response.redirect(`/programmes/${programme_id}`)
+    response.redirect(`/reports/${programme_id}`)
   },
 
   new(request, response) {

@@ -21,10 +21,10 @@
     <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         clickable: true,
-        heading: __("programme.list.title"),
+        heading: __("patient.list.title"),
         headingClasses: "nhsuk-heading-m",
-        href: "/programmes",
-        descriptionHtml: __("programme.list.description") | nhsukMarkdown
+        href: "/patients",
+        descriptionHtml: __("patient.list.description") | nhsukMarkdown
       }) }}
     </li>
     <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
@@ -39,10 +39,10 @@
     <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         clickable: true,
-        heading: __("patient.list.title"),
+        heading: __("programme.list.title"),
         headingClasses: "nhsuk-heading-m",
-        href: "/patients",
-        descriptionHtml: __("patient.list.description") | nhsukMarkdown
+        href: "/reports",
+        descriptionHtml: __("programme.list.description") | nhsukMarkdown
       }) }}
     </li>
   </ul>
@@ -72,20 +72,20 @@
       {{ card({
         clickable: true,
         secondary: true,
-        heading: __("upload.list.title"),
+        heading: __("vaccine.list.title"),
         headingClasses: "nhsuk-heading-s",
-        href: "/uploads",
-        description: __("upload.list.description")
+        href: "/vaccines",
+        description: __("vaccine.list.description")
       }) }}
     </li>
     <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         clickable: true,
         secondary: true,
-        heading: __("vaccine.list.title"),
+        heading: __("upload.list.title"),
         headingClasses: "nhsuk-heading-s",
-        href: "/vaccines",
-        description: __("vaccine.list.description")
+        href: "/uploads",
+        description: __("upload.list.description")
       }) }}
     </li>
     <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
