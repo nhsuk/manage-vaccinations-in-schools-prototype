@@ -7,8 +7,18 @@
       html: patient.formatted.fullNameAndNhsn
     },
     {
+      classes: "app-table__cell--summary-list",
       header: __("review.label"),
-      html: __("review.duplicate.description", type)
+      html: summaryList({
+        rows: summaryRows(patient, {
+          dob: {
+            value: patient.formatted.dob + " → " + ("1 January 2021" | highlightDifference(patient.formatted.dob))
+          },
+          yearGroup: {
+            value: patient.formatted.yearGroup + " → " + ("Reception" | highlightDifference(patient.formatted.yearGroup))
+          }
+        })
+      })
     },
     {
       header: __("actions.label"),
