@@ -38,7 +38,6 @@ import {
   formatTag,
   formatWithSecondaryText,
   sentenceCaseProgrammeName,
-  stringToArray,
   stringToBoolean
 } from '../utils/string.js'
 
@@ -69,7 +68,6 @@ import { Vaccine } from './vaccine.js'
  * @property {object} [register] - Patient register
  * @property {string} [programmePreset] - Programme preset name
  * @property {AcademicYear} [academicYear] - Programme year
- * @property {Array<string>} [catchupProgrammeTypes] - Catchup programmes
  * @property {boolean} [nationalProtocol] - Enable national protocol
  * @property {boolean} [psdProtocol] - Enable PSD protocol
  */
@@ -101,7 +99,6 @@ export class Session {
     this.register = options?.register || {}
     this.academicYear = options?.academicYear || latestAcademicYear
     this.programmePreset = options?.programmePreset
-    this.catchupProgrammeTypes = stringToArray(options?.catchupProgrammeTypes)
     this.psdProtocol = stringToBoolean(options?.psdProtocol) || false
 
     if (this.programmePreset === 'SeasonalFlu') {
@@ -405,70 +402,18 @@ export class Session {
    *
    * @returns {Array<string>} Programme IDs
    */
-  get primaryProgramme_ids() {
+  get programme_ids() {
     const programme_ids = new Set()
 
     if (this.programmePreset) {
       const preset = ProgrammePreset[this.programmePreset]
-      for (const programmeType of preset.primaryProgrammeTypes) {
+      for (const programmeType of preset.programmeTypes) {
         const id = formatProgrammeId(programmeType, this.academicYear)
         programme_ids.add(id)
       }
     }
 
     return [...programme_ids]
-  }
-
-  /**
-   * Get catch-up programme ids
-   *
-   * @returns {Array<string>} Programme IDs
-   */
-  get catchupProgramme_ids() {
-    const programme_ids = new Set()
-
-    if (this.catchupProgrammeTypes) {
-      const catchupProgrammeTypes = this.catchupProgrammeTypes?.filter(
-        (type) => type !== '_unchecked'
-      )
-      for (const programmeType of catchupProgrammeTypes) {
-        const id = formatProgrammeId(programmeType, this.academicYear)
-        programme_ids.add(id)
-      }
-    }
-
-    return [...programme_ids]
-  }
-
-  /**
-   * Get programme ids
-   *
-   * @returns {Array<string>} Programme IDs
-   */
-  get programme_ids() {
-    return [...this.primaryProgramme_ids, ...this.catchupProgramme_ids]
-  }
-
-  /**
-   * Get primary programmes
-   *
-   * @returns {Array<Programme>} Programmes
-   */
-  get primaryProgrammes() {
-    return this.primaryProgramme_ids
-      .map((id) => Programme.findOne(id, this.context))
-      .sort((a, b) => a.name.localeCompare(b.name))
-  }
-
-  /**
-   * Get catch-up programmes
-   *
-   * @returns {Array<Programme>} Programmes
-   */
-  get catchupProgrammes() {
-    return this.catchupProgramme_ids
-      .map((id) => Programme.findOne(id, this.context))
-      .sort((a, b) => a.name.localeCompare(b.name))
   }
 
   /**
@@ -544,22 +489,22 @@ export class Session {
    */
   get vaccinationNames() {
     const pluralisation =
-      this.primaryProgrammes.length === 1 ? 'vaccination' : 'vaccinations'
+      this.programmes.length === 1 ? 'vaccination' : 'vaccinations'
 
     return {
       sentenceCase: `${filters.formatList(
-        this.primaryProgrammes.map((programme) =>
+        this.programmes.map((programme) =>
           sentenceCaseProgrammeName(programme.emailName())
         )
       )} ${pluralisation}`,
-      titleCase: `${filters.formatList(this.primaryProgrammes.map((programme) => programme.emailName()))}
+      titleCase: `${filters.formatList(this.programmes.map((programme) => programme.emailName()))}
         ${pluralisation}`
     }
   }
 
   get vaccinationInviteNames() {
-    if (this.primaryProgrammes[0].type === ProgrammeType.MMR) {
-      return this.primaryProgrammes[0].emailName('invite')
+    if (this.programmes[0].type === ProgrammeType.MMR) {
+      return this.programmes[0].emailName('invite')
     }
     return this.vaccinationNames.titleCase
   }
@@ -801,9 +746,6 @@ export class Session {
 
     const reminderWeeks = filters.plural(this.reminderWeeks, 'week')
 
-    const programmePresetHasCatchups =
-      ProgrammePreset[this.programmePreset]?.catchupProgrammeTypes
-
     return {
       address: this.address?.formatted.multiline,
       dates: formatList(formattedDates).replace(' nhsuk-list--bullet', ''),
@@ -832,14 +774,6 @@ export class Session {
         this.consents.length > 0
           ? filters.plural(this.consents.length, 'child')
           : undefined,
-      primaryProgrammes: this.primaryProgrammes
-        .flatMap(({ nameTag }) => nameTag)
-        .join(' '),
-      catchupProgrammes: this.catchupProgrammes?.length
-        ? this.catchupProgrammes.flatMap(({ nameTag }) => nameTag).join(' ')
-        : programmePresetHasCatchups
-          ? null // Show row with link to add catch-up programmes
-          : '', // Hide row
       programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' '),
       consentUrl:
         this.consentUrl &&

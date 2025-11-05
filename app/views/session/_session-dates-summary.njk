@@ -18,7 +18,7 @@
         html: dateShort
       }] %}
       {% if session.offersAlternativeVaccine %}
-        {% set programme = session.primaryProgrammes[0] %}
+        {% set programme = session.programmes[0] %}
         {% set dateRow = dateRow.concat([{
           header: __("session.tally.vaccinatedNasal.label", {
             programme: programme
@@ -33,7 +33,7 @@
           format: "numeric"
         }]) %}
       {% else %}
-        {% for programme in session.primaryProgrammes %}
+        {% for programme in session.programmes %}
           {% set dateRow = dateRow.concat([{
             header: __("session.tally.vaccinated.label", {
               programme: programme
@@ -52,7 +52,7 @@
       text: "Total"
     }] %}
     {% if session.offersAlternativeVaccine %}
-      {% set programme = session.primaryProgrammes[0] %}
+      {% set programme = session.programmes[0] %}
       {% set totalRow = totalRow.concat([{
         header: __("session.tally.vaccinatedNasal.label", {
           programme: programme
@@ -67,7 +67,7 @@
         format: "numeric"
       }]) %}
     {% else %}
-      {% for programme in session.primaryProgrammes %}
+      {% for programme in session.programmes %}
         {% set totalRow = totalRow.concat([{
           header: __("session.tally.vaccinated.label", {
             programme: programme
@@ -84,7 +84,7 @@
       text: __("session.date.label")
     }] %}
     {% if session.offersAlternativeVaccine %}
-      {% set programme = session.primaryProgrammes[0] %}
+      {% set programme = session.programmes[0] %}
       {% set head = head.concat([{
         text: __("session.tally.vaccinatedNasal.label", {
           programme: programme
@@ -97,7 +97,7 @@
         format: "numeric"
       }]) %}
     {% else %}
-      {% for programme in session.primaryProgrammes %}
+      {% for programme in session.programmes %}
         {% set head = head.concat([{
           text: programme.name,
           format: "numeric"

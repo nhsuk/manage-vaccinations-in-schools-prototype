@@ -4,7 +4,7 @@ If you want your child to get the {{ session.vaccinationNames.sentenceCase }}, y
 
 If you’ve already responded to the consent request, you can ignore this message.
 
-{% for programme in session.primaryProgrammes %}
+{% for programme in session.programmes %}
 ## About the {{ programme.vaccineName.sentenceCase }}
 
 {{ programme.information.description }}

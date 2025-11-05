@@ -243,29 +243,27 @@ export const ProgrammePreset = {
   SeasonalFlu: {
     name: 'Flu',
     active: true,
-    primaryProgrammeTypes: [ProgrammeType.Flu],
+    programmeTypes: [ProgrammeType.Flu],
     term: SchoolTerm.Autumn
   },
   HPV: {
     name: 'HPV',
     active: true,
     adolescent: true,
-    primaryProgrammeTypes: [ProgrammeType.HPV],
-    // catchupProgrammeTypes: [ProgrammeType.MMR],
+    programmeTypes: [ProgrammeType.HPV],
     term: SchoolTerm.Spring
   },
   Doubles: {
     name: 'MenACWY & Td/IPV',
     active: true,
     adolescent: true,
-    primaryProgrammeTypes: [ProgrammeType.MenACWY, ProgrammeType.TdIPV],
-    // catchupProgrammeTypes: [ProgrammeType.HPV, ProgrammeType.MMR],
+    programmeTypes: [ProgrammeType.MenACWY, ProgrammeType.TdIPV],
     term: SchoolTerm.Summer
   },
   MMR: {
     name: 'MMR',
     active: true,
-    primaryProgrammeTypes: [ProgrammeType.MMR],
+    programmeTypes: [ProgrammeType.MMR],
     term: SchoolTerm.Spring
   }
 }

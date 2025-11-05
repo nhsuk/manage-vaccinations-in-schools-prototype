@@ -146,19 +146,19 @@ export const sessionController = {
           checked: filters.academicYear === value
         }))
 
-    const primaryProgrammesMap = new Map()
+    const programmesMap = new Map()
     sessions
       .filter((session) => session.academicYear === filters.academicYear)
-      .flatMap((session) => session.primaryProgrammes || [])
+      .flatMap((session) => session.programmes || [])
       .forEach((programme) => {
-        primaryProgrammesMap.set(programme.id, programme)
+        programmesMap.set(programme.id, programme)
       })
 
-    const primaryProgrammes = [...primaryProgrammesMap.values()]
+    const programmes = [...programmesMap.values()]
 
     // Programme filter options
-    if (primaryProgrammes.length > 1) {
-      response.locals.programmeItems = primaryProgrammes
+    if (programmes.length > 1) {
+      response.locals.programmeItems = programmes
         .map((programme) => ({
           text: programme.name,
           value: programme.id,

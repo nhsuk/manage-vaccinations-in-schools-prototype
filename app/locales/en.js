@@ -1708,13 +1708,6 @@ export const en = {
       label: 'Programmes',
       title: 'Which programmes is this session part of?'
     },
-    primaryProgrammes: {
-      label: 'Programmes'
-    },
-    catchupProgrammes: {
-      label: 'Catch-ups',
-      title: 'Which catch-up programmes does this session support?'
-    },
     status: {
       label: 'Status'
     },

@@ -68,8 +68,6 @@ export function generateSession(programmePreset, academicYear, user, options) {
     )
   }
 
-  const sessionHasCatchups = faker.datatype.boolean(0.5)
-
   return new Session({
     createdAt: removeDays(term.from, 60),
     createdBy_uid: user.uid,
@@ -78,9 +76,6 @@ export function generateSession(programmePreset, academicYear, user, options) {
     registration: true,
     academicYear,
     programmePreset,
-    ...(sessionHasCatchups && {
-      catchupProgrammeTypes: preset.catchupProgrammeTypes
-    }),
     ...(clinic_id && { type: SessionType.Clinic, clinic_id }),
     ...(school_urn && { type: SessionType.School, school_urn })
   })

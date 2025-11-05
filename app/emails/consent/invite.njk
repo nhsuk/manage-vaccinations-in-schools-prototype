@@ -2,12 +2,12 @@
 We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to give pupils their annual flu vaccination.
 {% elif programme.type == ProgrammeType.MMR %}
 We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to offer the MMR vaccination to children who have not yet had 2 doses of the vaccine.
-{% elif session.primaryProgrammes.length == 1 %}
+{% elif session.programmes.length == 1 %}
 We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to offer the {{ session.programmeNames.sentenceCase }} vaccine to your child.
 {% else %}
 We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to offer the following vaccines to your child:
 
-{% for programme in session.primaryProgrammes %}
+{% for programme in session.programmes %}
 - {{ programme.title }}
 {%- endfor %}
 {% endif %}
@@ -24,7 +24,7 @@ If you’re sure your child has had 2 doses, please confirm this using the conse
 We can’t say on which of the above dates your child will have the vaccination because of the number of pupils involved.
 {% endif %}
 
-{% for programme in session.primaryProgrammes %}
+{% for programme in session.programmes %}
 ## About the {{ programme.vaccineName.sentenceCase }}
 
 {{ programme.information.description }}

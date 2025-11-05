@@ -1,6 +1,6 @@
 {% set columnWidth = "fifth" if session.offersAlternativeVaccine else "quarter" %}
 
-{% for programme in session.primaryProgrammes %}
+{% for programme in session.programmes %}
   {{ appHeading({
     title: programme.name,
     summary: __mf("session.tally.eligible.count", {

@@ -58,10 +58,10 @@ export const parentController = {
         data
       )
 
-      response.locals.programme = session.primaryProgrammes[0]
+      response.locals.programme = session.programmes[0]
 
       const sideEffects = new Set()
-      for (const programme of session.primaryProgrammes) {
+      for (const programme of session.programmes) {
         for (const sideEffect of programme.vaccines[0].sideEffects) {
           sideEffects.add(sideEffect)
         }
@@ -190,7 +190,7 @@ export const parentController = {
         value: relationship
       }))
 
-    if (session.primaryProgrammes.length > 1) {
+    if (session.programmes.length > 1) {
       // MenACWY and Td/IPV: Ask for consent for none, one or all programmes
       response.locals.decisionItems = [
         {
@@ -213,15 +213,13 @@ export const parentController = {
         }
       ]
 
-      response.locals.programmeItems = session.primaryProgrammes.map(
-        (programme) => ({
-          text: programme.name,
-          value:
-            programme.id === 'td-ipv'
-              ? ReplyDecision.OnlyTdIPV
-              : ReplyDecision.OnlyMenACWY
-        })
-      )
+      response.locals.programmeItems = session.programmes.map((programme) => ({
+        text: programme.name,
+        value:
+          programme.id === 'td-ipv'
+            ? ReplyDecision.OnlyTdIPV
+            : ReplyDecision.OnlyMenACWY
+      }))
     } else if (session.programmePreset === 'SeasonalFlu') {
       // Flu: Ask which vaccine the parent would prefer
       response.locals.decisionItems = [

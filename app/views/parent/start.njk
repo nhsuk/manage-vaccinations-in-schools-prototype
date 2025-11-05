@@ -10,8 +10,8 @@
         title: serviceName
       }) }}
 
-      {% for programme in session.primaryProgrammes %}
-        {% if session.primaryProgrammes.length != 1 %}
+      {% for programme in session.programmes %}
+        {% if session.programmes.length != 1 %}
           <h2 class="nhsuk-heading-m">{{ programme.title }}</h2>
         {% endif %}
 
