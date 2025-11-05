@@ -24,7 +24,9 @@
 {% if session.offersAlternativeVaccine %}
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
-        heading: __("session.tally.consentGivenForIntranasal.label"),
+        heading: __("session.tally.consentGivenForVaccineCriteria.label", {
+          vaccineCriteria: programme.standardVaccine.criteria | lower
+        }),
         colour: "green",
         compact: true,
         data: session.tally(programme.id).consentGivenForIntranasal,
@@ -33,7 +35,9 @@
     </div>
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
-        heading: __("session.tally.consentGivenForAlternativeInjection.label"),
+        heading: __("session.tally.consentGivenForVaccineCriteria.label", {
+          vaccineCriteria: programme.alternativeVaccine.criteria | lower
+        }),
         colour: "green",
         compact: true,
         data: session.tally(programme.id).consentGivenForAlternativeInjection,

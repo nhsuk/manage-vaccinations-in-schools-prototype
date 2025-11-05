@@ -1653,11 +1653,8 @@ export const en = {
       consentGiven: {
         label: 'Consent given'
       },
-      consentGivenForAlternativeInjection: {
-        label: 'Consent given for injection'
-      },
-      consentGivenForIntranasal: {
-        label: 'Consent given for nasal spray'
+      consentGivenForVaccineCriteria: {
+        label: 'Consent given for {{vaccineCriteria}}'
       },
       didNotConsent: {
         label: 'Did not consent'

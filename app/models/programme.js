@@ -137,6 +137,19 @@ export class Programme {
   }
 
   /**
+   * Standard vaccine for a programme
+   * Flu offers a nasal spray and MMR offers an injection that contains gelatine
+   *
+   * @returns {Vaccine|undefined} Standard vaccine
+   */
+  get standardVaccine() {
+    return this.vaccines.find(
+      (vaccine) =>
+        vaccine && vaccine.criteria !== VaccineCriteria.AlternativeInjection
+    )
+  }
+
+  /**
    * Alternative vaccine for a programme
    * Both Flu and MMR programmes offer alternative gelatine-free injection
    *
