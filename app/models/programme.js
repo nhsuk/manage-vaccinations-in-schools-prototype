@@ -34,7 +34,8 @@ import { Vaccine } from './vaccine.js'
  * @property {AcademicYear} year - Academic year
  * @property {Array<string>} sequence - Vaccine dose sequence
  * @property {string} sequenceDefault - Default vaccine dose sequence
- * @property {Array<number>} yearGroups - Year groups available to
+ * @property {Array<number>} yearGroups - Year groups for routine vaccinations
+ * @property {Array<number>} catchupYearGroups - Year groups for catch-ups
  * @property {boolean} nhseSyncable- Vaccination records can be synced
  * @property {Array<string>} cohort_uids - Cohort UIDs
  * @property {Array<string>} vaccine_smomeds - Vaccines administered
@@ -50,7 +51,8 @@ export class Programme {
     this.type = options?.type
     this.sequence = options?.sequence
     this.sequenceDefault = options?.sequenceDefault
-    this.yearGroups = options?.yearGroups
+    this.yearGroups = options?.yearGroups || []
+    this.catchupYearGroups = options?.catchupYearGroups || []
     this.nhseSyncable = options?.nhseSyncable
     this.cohort_uids = options?.cohort_uids || []
     this.vaccine_smomeds = options?.vaccine_smomeds
@@ -136,7 +138,7 @@ export class Programme {
 
   /**
    * Alternative vaccine for a programme
-   * For example, flu programme offers nasal spray with injection as alternative
+   * Both Flu and MMR programmes offer alternative gelatine-free injection
    *
    * @returns {Vaccine|undefined} Alternative vaccine
    */

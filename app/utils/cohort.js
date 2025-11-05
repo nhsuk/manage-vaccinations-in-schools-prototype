@@ -38,6 +38,10 @@ export function getCohortEligibility(cohort, patient) {
       // MenACWY vaccination is only for Year 9
       return cohort.yearGroup === 9
 
+    case ProgrammeType.MMR:
+      // MMR vaccination is available for all year groups
+      return cohort.yearGroup >= 0 && cohort.yearGroup <= 11
+
     case ProgrammeType.TdIPV:
       // Td/IPV vaccination is only for Year 9
       return cohort.yearGroup === 9
