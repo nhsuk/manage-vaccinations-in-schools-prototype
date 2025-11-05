@@ -307,10 +307,14 @@ export const sessionController = {
       )
     }
 
-    // Filter by consent status
+    // Filter by exact consent status
     if (consent) {
+      consent = Array.isArray(consent) ? consent : [consent]
+
       results = results.filter((patientSession) =>
-        consent.includes(patientSession.consent)
+        consent.some(
+          (consentOutcome) => consentOutcome === patientSession.consent
+        )
       )
     }
 
