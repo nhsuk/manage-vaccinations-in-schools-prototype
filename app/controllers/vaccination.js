@@ -7,7 +7,7 @@ import {
   VaccinationOutcome,
   VaccinationProtocol,
   VaccinationSite,
-  VaccineMethod,
+  VaccineCriteria,
   UserRole
 } from '../enums.js'
 import { Batch } from '../models/batch.js'
@@ -85,7 +85,7 @@ export const vaccinationController = {
       VaccinationSite.ArmLeftUpper,
       VaccinationSite.ArmRightUpper
     ].includes(injectionSite)
-    const isNasalSpray = vaccine?.method === VaccineMethod.Nasal
+    const isNasalSpray = vaccine?.criteria === VaccineCriteria.Intranasal
     const VaccinationSiteGiven = injectionSiteGiven || isNasalSpray
 
     switch (true) {

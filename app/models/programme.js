@@ -3,7 +3,7 @@ import { isAfter } from 'date-fns'
 
 import programmes from '../datasets/programmes.js'
 import vaccines from '../datasets/vaccines.js'
-import { ProgrammeStatus, VaccineMethod } from '../enums.js'
+import { ProgrammeStatus, VaccineCriteria } from '../enums.js'
 import { isBetweenDates, today } from '../utils/date.js'
 import {
   formatLink,
@@ -143,7 +143,8 @@ export class Programme {
   get alternativeVaccine() {
     if (this.vaccines.length > 1) {
       return this.vaccines.find(
-        (vaccine) => vaccine && vaccine.method === VaccineMethod.Injection
+        (vaccine) =>
+          vaccine && vaccine.criteria === VaccineCriteria.AlternativeInjection
       )
     }
   }

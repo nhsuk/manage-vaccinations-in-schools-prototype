@@ -14,7 +14,7 @@
     },
     suffix: "ml",
     decorate: "vaccination.dose"
-  }) if vaccination.vaccine.method != VaccineMethod.Nasal else radios({
+  }) if vaccination.vaccine.criteria != VaccineCriteria.Intranasal else radios({
     fieldset: {
       legend: {
         html: appHeading({

@@ -11,7 +11,7 @@ import {
   VaccinationProtocol,
   VaccinationSite,
   VaccinationSyncStatus,
-  VaccineMethod
+  VaccineCriteria
 } from '../enums.js'
 import {
   convertIsoDateToObject,
@@ -179,12 +179,12 @@ export class Vaccination {
   get method() {
     if (!this.vaccine || !this.given) return
 
-    if (this.vaccine.method === VaccineMethod.Nasal) {
+    if (this.vaccine.criteria === VaccineCriteria.Intranasal) {
       this.injectionMethod = VaccinationMethod.Nasal
     }
 
     if (
-      this.vaccine.method === VaccineMethod.Injection &&
+      this.vaccine.criteria !== VaccineCriteria.Intranasal &&
       this.injectionMethod === VaccinationMethod.Nasal
     ) {
       // Change previously set injection site to intramuscular (good default)

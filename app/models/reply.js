@@ -9,7 +9,7 @@ import {
   ReplyDecision,
   ReplyMethod,
   ReplyRefusal,
-  VaccineMethod
+  VaccineCriteria
 } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
 import {
@@ -195,7 +195,6 @@ export class Reply {
    */
   get healthQuestionsForDecision() {
     const { Flu, HPV, MenACWY, MMR, TdIPV } = ProgrammeType
-    const { Injection, Nasal } = VaccineMethod
     const programme = this.session.primaryProgrammes[0]
 
     const healthQuestionsForDecision = new Map()
@@ -211,7 +210,9 @@ export class Reply {
       // If no consent for alternative injection or only consent for injection
       if (!this.alternative) {
         consentedMethod =
-          this.decision === ReplyDecision.OnlyFluInjection ? Injection : Nasal
+          this.decision === ReplyDecision.OnlyFluInjection
+            ? VaccineCriteria.AlternativeInjection
+            : VaccineCriteria.Intranasal
         consentedVaccine = Object.values(vaccines).find(
           (programme) => programme.method === consentedMethod
         )
@@ -371,21 +372,21 @@ export class Reply {
         false
       )
     } else if (this.programme?.alternativeVaccine) {
-      let vaccineMethod
+      let vaccineCriteria
       switch (this.decision) {
         case ReplyDecision.OnlyFluInjection:
-          vaccineMethod = VaccineMethod.Injection
+          vaccineCriteria = VaccineCriteria.AlternativeInjection
           break
         case ReplyDecision.Given:
-          vaccineMethod = VaccineMethod.Nasal
+          vaccineCriteria = VaccineCriteria.Intranasal
           break
         default:
-          vaccineMethod = ''
+          vaccineCriteria = ''
       }
 
       decisionStatus = formatWithSecondaryText(
         formatTag(this.status),
-        vaccineMethod,
+        vaccineCriteria,
         false
       )
     }

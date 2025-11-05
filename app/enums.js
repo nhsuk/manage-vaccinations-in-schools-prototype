@@ -486,6 +486,16 @@ export const VaccinationSyncStatus = {
  * @readonly
  * @enum {string}
  */
+export const VaccineCriteria = {
+  AlternativeInjection: 'Gelatine-free injection',
+  Injection: 'Injection',
+  Intranasal: 'Nasal spray'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const VaccineMethod = {
   Nasal: 'Nasal spray',
   Injection: 'Injection'

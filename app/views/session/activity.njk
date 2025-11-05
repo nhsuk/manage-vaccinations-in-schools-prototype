@@ -139,9 +139,9 @@
                   label: __("patientSession.nextActivityPerProgramme.label"),
                   value: patientSession.formatted.nextActivityPerProgramme
                 } if (view == "register" and patientSession.register != RegistrationOutcome.Absent) or view == "record" or view == "outcome" and patientSession.outcome != ProgrammeOutcome.Vaccinated,
-                vaccineMethod: {
-                  label: __("patientSession.vaccineMethod.label"),
-                  value: patientSession.formatted.vaccineMethod
+                vaccineCriteria: {
+                  label: __("patientSession.vaccineCriteria.label"),
+                  value: patientSession.formatted.vaccineCriteria
                 } if session.offersAlternativeVaccine and view == "register" or view == "record",
                 instruct: {
                   label: __("patientSession.instruct.label"),

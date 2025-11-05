@@ -394,15 +394,15 @@ export function formatOther(other, string) {
 }
 
 /**
- * Format vaccine method
+ * Format vaccine criteria
  *
  * @param {string} string - String
  * @returns {string} Formatted HTML
  */
-export function formatVaccineMethod(string) {
+export function formatVaccineCriteria(string) {
   if (!string) return
 
-  return `<span class="app-vaccine-method" data-method="${string}">${string}</span>`
+  return `<span class="app-vaccine-criteria" data-value="${string}">${string}</span>`
 }
 
 /**

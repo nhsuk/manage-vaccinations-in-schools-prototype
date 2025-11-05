@@ -6,7 +6,7 @@ import {
   ReplyDecision,
   ReplyMethod,
   ReplyRefusal,
-  VaccineMethod
+  VaccineCriteria
 } from '../enums.js'
 import { Consent } from '../models/consent.js'
 import { today } from '../utils/date.js'
@@ -73,13 +73,13 @@ export function generateConsent(
     { value: ReplyMethod.Paper, weight: 1 }
   ])
 
-  let vaccineMethod = VaccineMethod.Injection
+  let vaccineCriteria = VaccineCriteria.Injection
   if (isFluProgramme && decision !== ReplyDecision.OnlyFluInjection) {
-    vaccineMethod = VaccineMethod.Nasal
+    vaccineCriteria = VaccineCriteria.Intranasal
   }
 
   const vaccine = programme.vaccines.find(
-    ({ method }) => method === vaccineMethod
+    ({ method }) => method === vaccineCriteria
   )
 
   const healthCondition = faker.helpers.objectKey(healthConditions)

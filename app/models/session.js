@@ -15,7 +15,7 @@ import {
   ProgrammeType,
   SessionStatus,
   SessionType,
-  VaccineMethod
+  VaccineCriteria
 } from '../enums.js'
 import {
   removeDays,
@@ -681,14 +681,14 @@ export class Session {
       vaccinatedNasal: getSessionActivityCount(this, [
         {
           report: ProgrammeOutcome.Vaccinated,
-          'vaccine.method': VaccineMethod.Nasal,
+          'vaccine.criteria': VaccineCriteria.Intranasal,
           programme_id
         }
       ]),
       vaccinatedInjection: getSessionActivityCount(this, [
         {
           report: ProgrammeOutcome.Vaccinated,
-          'vaccine.method': VaccineMethod.Injection,
+          'vaccine.criteria': VaccineCriteria.AlternativeInjection,
           programme_id
         }
       ])

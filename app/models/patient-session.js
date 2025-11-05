@@ -36,7 +36,7 @@ import {
   formatList,
   formatProgrammeStatus,
   formatTag,
-  formatVaccineMethod,
+  formatVaccineCriteria,
   formatYearGroup
 } from '../utils/string.js'
 import {
@@ -661,8 +661,8 @@ export class PatientSession {
       },
       nextActivityPerProgramme: formatList(nextActivityPerProgramme),
       outstandingVaccinations: filters.formatList(outstandingVaccinations),
-      vaccineMethod:
-        this.vaccine?.method && formatVaccineMethod(this.vaccine.method),
+      vaccineCriteria:
+        this.vaccine?.criteria && formatVaccineCriteria(this.vaccine.criteria),
       yearGroup: formattedYearGroup
     }
   }

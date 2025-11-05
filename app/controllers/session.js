@@ -10,6 +10,7 @@ import {
   RegistrationOutcome,
   ScreenOutcome,
   SessionType,
+  VaccineCriteria,
   VaccineMethod
 } from '../enums.js'
 import { Clinic } from '../models/clinic.js'
@@ -247,7 +248,7 @@ export const sessionController = {
       instruct,
       programme_ids,
       nextActivity,
-      vaccineMethod,
+      vaccineCriteria,
       yearGroup
     } = request.query
     const { data } = request.session
@@ -293,10 +294,10 @@ export const sessionController = {
       )
     }
 
-    // Filter by vaccine method
-    if (vaccineMethod && vaccineMethod !== 'none') {
+    // Filter by vaccine criteria
+    if (vaccineCriteria && vaccineCriteria !== 'none') {
       results = results.filter(
-        (patientSession) => patientSession.vaccine?.method === vaccineMethod
+        (patientSession) => patientSession.vaccine?.criteria === vaccineCriteria
       )
     }
 
@@ -428,12 +429,12 @@ export const sessionController = {
       },
       register: {
         register: RegistrationOutcome,
-        vaccineMethod: session.offersAlternativeVaccine && VaccineMethod,
+        vaccineCriteria: session.offersAlternativeVaccine && VaccineCriteria,
         instruct: session.psdProtocol && InstructionOutcome,
         report: ProgrammeOutcome
       },
       record: {
-        vaccineMethod: session.offersAlternativeVaccine && VaccineMethod
+        vaccineCriteria: session.offersAlternativeVaccine && VaccineCriteria
       },
       report: {
         report: ProgrammeOutcome
@@ -456,7 +457,7 @@ export const sessionController = {
     delete data.options
     delete data.q
     delete data.programme_ids
-    delete data.vaccineMethod
+    delete data.vaccineCriteria
     delete data.consent
     delete data.screen
     delete data.instruct
@@ -480,7 +481,7 @@ export const sessionController = {
       'register',
       'outcome',
       'report',
-      'vaccineMethod',
+      'vaccineCriteria',
       'nextActivity'
     ]) {
       const value = request.body[key]

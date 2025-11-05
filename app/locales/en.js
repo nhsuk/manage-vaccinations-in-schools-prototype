@@ -1051,8 +1051,8 @@ export const en = {
     yearGroup: {
       label: 'Year group'
     },
-    vaccineMethod: {
-      label: 'Vaccination method'
+    vaccineCriteria: {
+      label: 'Vaccine type'
     },
     outstandingVaccinations: {
       message:

@@ -1,5 +1,5 @@
 {{ appHeading({
-  classes: "app-vaccine-method",
+  classes: "app-vaccine-criteria",
   level: 3,
   size: "m",
   title: __("patientSession.record.titleWithMethod", {
@@ -7,7 +7,7 @@
     method: patientSession.vaccine.method | lower
   }),
   attributes: {
-    "data-method": patientSession.vaccine.method
+    "data-value": patientSession.vaccine.criteria
   }
 } if patientSession.programme.alternativeVaccine else {
   level: 3,
@@ -127,7 +127,7 @@
         },
         conditional: {
           html: vaccinationSiteHtml
-        } if patientSession.vaccine.method != VaccineMethod.Nasal
+        } if patientSession.vaccine.criteria != VaccineCriteria.Intranasal
       },
       {
         text: __("patientSession.preScreen.ready.no"),

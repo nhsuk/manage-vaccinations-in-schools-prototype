@@ -2,6 +2,7 @@ import {
   PreScreenQuestion,
   VaccineMethod,
   VaccinationProtocol,
+  VaccineCriteria,
   VaccineSideEffect
 } from '../enums.js'
 
@@ -17,6 +18,7 @@ export default {
       url: 'https://www.medicines.org.uk/emc/files/pil.15790.pdf',
       size: '197KB'
     },
+    criteria: VaccineCriteria.Intranasal,
     method: VaccineMethod.Nasal,
     delegationProtocol: VaccinationProtocol.PSD,
     dose: 0.2,
@@ -58,6 +60,7 @@ export default {
       url: 'https://www.medicines.org.uk/emc/files/pil.12882.pdf',
       size: '174KB'
     },
+    criteria: VaccineCriteria.AlternativeInjection,
     method: VaccineMethod.Injection,
     delegationProtocol: VaccinationProtocol.National,
     dose: 0.5,
@@ -98,6 +101,7 @@ export default {
       url: 'https://www.medicines.org.uk/emc/files/pil.7330.pdf',
       size: '110KB'
     },
+    criteria: VaccineCriteria.Injection,
     method: VaccineMethod.Injection,
     delegationProtocol: VaccinationProtocol.PSD,
     dose: 0.5,
@@ -132,6 +136,7 @@ export default {
       url: 'https://www.medicines.org.uk/emc/files/pil.5581.pdf',
       size: '2.64MB'
     },
+    criteria: VaccineCriteria.Injection,
     method: VaccineMethod.Injection,
     delegationProtocol: VaccinationProtocol.PSD,
     dose: 0.5,
@@ -168,6 +173,7 @@ export default {
       url: 'https://www.medicines.org.uk/emc/files/pil.12818.pdf',
       size: '177KB'
     },
+    criteria: VaccineCriteria.Injection,
     method: VaccineMethod.Injection,
     delegationProtocol: VaccinationProtocol.PSD,
     dose: 0.5,
@@ -204,6 +210,7 @@ export default {
       url: 'https://www.medicines.org.uk/emc/files/pil.6307.pdf',
       size: '103KB'
     },
+    criteria: VaccineCriteria.Injection,
     method: VaccineMethod.Injection,
     dose: 0.5,
     sideEffects: [
@@ -239,6 +246,7 @@ export default {
       url: 'https://www.medicines.org.uk/emc/files/pil.1159.pdf',
       size: '266KB'
     },
+    criteria: VaccineCriteria.AlternativeInjection,
     method: VaccineMethod.Injection,
     dose: 0.5,
     sideEffects: [

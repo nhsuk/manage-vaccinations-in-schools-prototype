@@ -9,7 +9,7 @@ import {
   ScreenOutcome,
   TriageOutcome,
   VaccinationOutcome,
-  VaccineMethod
+  VaccineCriteria
 } from '../enums.js'
 
 /**
@@ -326,7 +326,7 @@ export const getInstructionOutcome = (patientSession) => {
     return false
   }
 
-  if (patientSession.vaccine.method === VaccineMethod.Nasal) {
+  if (patientSession.vaccine.criteria === VaccineCriteria.Intranasal) {
     return patientSession.instruction
       ? InstructionOutcome.Given
       : InstructionOutcome.Needed
