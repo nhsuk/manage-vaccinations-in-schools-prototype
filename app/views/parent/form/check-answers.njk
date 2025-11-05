@@ -102,25 +102,6 @@
         })
       })
     }) }}
-
-    {{ card({
-      heading: "Consent for the MMR vaccination",
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(consent, {
-          mmr: {
-            href: editPath("mmr")
-          },
-          alternative: {
-            label: __("consent.alternative.MMR.label"),
-            href: editPath("alternative")
-          },
-          consultation: {
-            href: editPath("consultation")
-          }
-        })
-      })
-    }) if session.programmePreset != "MMR" }}
   {% endif %}
 
   {{ card({

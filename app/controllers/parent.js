@@ -119,9 +119,8 @@ export const parentController = {
     // If programme has alternative vaccine, and given consent has been given
     // for the default, ask for consent for the alternative as well
     const getConsentForAlternativeVaccine =
-      (session.offersAlternativeVaccine &&
-        consent.decision === ReplyDecision.Given) ||
-      consent.mmr === true
+      session.offersAlternativeVaccine &&
+      consent.decision === ReplyDecision.Given
 
     const journey = {
       [`/${session_id}`]: {},
@@ -150,10 +149,6 @@ export const parentController = {
           value: ReplyDecision.Refused
         }
       },
-      ...(session?.programmePreset &&
-        !['SeasonalFlu', 'MMR'].includes(session.programmePreset) && {
-          [`/${session_id}/${consent_uuid}/new/mmr`]: {}
-        }),
       [`/${session_id}/${consent_uuid}/new/address`]: {},
       ...(getConsentForAlternativeVaccine && {
         [`/${session_id}/${consent_uuid}/new/alternative`]: {}
