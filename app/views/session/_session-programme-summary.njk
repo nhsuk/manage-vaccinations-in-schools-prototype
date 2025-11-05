@@ -33,11 +33,11 @@
     </div>
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
-        heading: __("session.tally.consentGivenForInjection.label"),
+        heading: __("session.tally.consentGivenForAlternativeInjection.label"),
         colour: "green",
         compact: true,
-        data: session.tally(programme.id).consentGivenForInjection,
-        href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForInjection
+        data: session.tally(programme.id).consentGivenForAlternativeInjection,
+        href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForAlternativeInjection
       }) }}
     </div>
 {% else %}

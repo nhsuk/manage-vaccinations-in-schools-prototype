@@ -53,7 +53,7 @@ export const ConsentOutcome = {
   NoResponse: 'No response',
   Inconsistent: 'Conflicting consent',
   Given: 'Consent given',
-  GivenForInjection: 'Consent given for injected vaccine',
+  GivenForAlternativeInjection: 'Consent given for injected vaccine',
   GivenForIntranasal: 'Consent given for nasal spray',
   Declined: 'Follow up requested',
   Refused: 'Consent refused',

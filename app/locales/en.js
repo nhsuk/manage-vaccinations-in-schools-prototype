@@ -1650,7 +1650,7 @@ export const en = {
       consentGiven: {
         label: 'Consent given'
       },
-      consentGivenForInjection: {
+      consentGivenForAlternativeInjection: {
         label: 'Consent given for injection'
       },
       consentGivenForIntranasal: {

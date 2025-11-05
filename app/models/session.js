@@ -605,9 +605,9 @@ export class Session {
           programme_id
         }
       ]),
-      consentGivenForInjection: getSessionActivityCount(this, [
+      consentGivenForAlternativeInjection: getSessionActivityCount(this, [
         {
-          consent: ConsentOutcome.GivenForInjection,
+          consent: ConsentOutcome.GivenForAlternativeInjection,
           programme_id
         }
       ]),

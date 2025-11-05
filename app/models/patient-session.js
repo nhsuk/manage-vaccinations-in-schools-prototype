@@ -444,7 +444,7 @@ export class PatientSession {
   get consentGiven() {
     return [
       ConsentOutcome.Given,
-      ConsentOutcome.GivenForInjection,
+      ConsentOutcome.GivenForAlternativeInjection,
       ConsentOutcome.GivenForIntranasal
     ].includes(this.consent)
   }

@@ -78,7 +78,7 @@ export const getConsentStatus = (patientSession) => {
       icon = 'cross'
       break
     case ConsentOutcome.Given:
-    case ConsentOutcome.GivenForInjection:
+    case ConsentOutcome.GivenForAlternativeInjection:
     case ConsentOutcome.GivenForIntranasal:
       colour = 'green'
       description = `${patient.fullName} is ready for the vaccinator.`
