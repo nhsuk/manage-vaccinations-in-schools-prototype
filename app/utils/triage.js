@@ -1,7 +1,7 @@
 import {
   ReplyDecision,
   ScreenOutcome,
-  ScreenVaccinationMethod,
+  ScreenVaccineCriteria,
   TriageOutcome
 } from '../enums.js'
 
@@ -39,13 +39,13 @@ export const getScreenOutcomesForConsentMethod = (programme, replies) => {
 }
 
 /**
- * Get vaccination method(s) consented to use if safe to vaccinate
+ * Get vaccination criteria consented to use if safe to vaccinate
  *
  * @param {import('../models/programme.js').Programme} programme - Programme
  * @param {Array<import('../models/reply.js').Reply>} replies - Replies
- * @returns {import('../enums.js').ScreenVaccinationMethod|boolean} Method
+ * @returns {import('../enums.js').ScreenVaccineCriteria|boolean} Criteria
  */
-export const getScreenVaccinationMethod = (programme, replies) => {
+export const getScreenVaccineCriteria = (programme, replies) => {
   const hasConsentForInjection = replies?.every(
     ({ hasConsentForInjection }) => hasConsentForInjection
   )
@@ -56,12 +56,12 @@ export const getScreenVaccinationMethod = (programme, replies) => {
 
   if (programme?.alternativeVaccine) {
     if (hasConsentForInjectionOnly) {
-      return ScreenVaccinationMethod.InjectionOnly
+      return ScreenVaccineCriteria.AlternativeInjection
     } else if (!hasConsentForInjection) {
-      return ScreenVaccinationMethod.NasalOnly
+      return ScreenVaccineCriteria.Intranasal
     }
 
-    return ScreenVaccinationMethod.NasalOrInjection
+    return ScreenVaccineCriteria.Either
   }
 
   return false

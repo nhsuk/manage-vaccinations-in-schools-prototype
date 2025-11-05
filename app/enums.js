@@ -334,11 +334,11 @@ export const SchoolPhase = {
  * @readonly
  * @enum {string}
  */
-export const ScreenVaccinationMethod = {
-  NasalOnly: 'The parent has consented to the nasal spray only',
-  InjectionOnly: 'The parent has consented to the injected vaccine only',
-  NasalOrInjection:
-    'The parent has consented to the injected vaccine being offered if the nasal spray is not suitable'
+export const ScreenVaccineCriteria = {
+  AlternativeInjection: 'The parent has consented to the injected vaccine only',
+  Either:
+    'The parent has consented to the injected vaccine being offered if the nasal spray is not suitable',
+  Intranasal: 'The parent has consented to the nasal spray only'
 }
 
 /**

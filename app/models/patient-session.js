@@ -42,7 +42,7 @@ import {
 import {
   getScreenOutcome,
   getScreenOutcomesForConsentMethod,
-  getScreenVaccinationMethod,
+  getScreenVaccineCriteria,
   getTriageOutcome
 } from '../utils/triage.js'
 
@@ -246,12 +246,12 @@ export class PatientSession {
   }
 
   /**
-   * Get vaccination method(s) consented to use if safe to vaccinate
+   * Get vaccination criteria consented to use if safe to vaccinate
    *
-   * @returns {import('../enums.js').ScreenVaccinationMethod|boolean} Method
+   * @returns {import('../enums.js').ScreenVaccineCriteria|boolean} Criteria
    */
-  get screenVaccinationMethod() {
-    return getScreenVaccinationMethod(this.programme, this.responses)
+  get screenVaccineCriteria() {
+    return getScreenVaccineCriteria(this.programme, this.responses)
   }
 
   /**
