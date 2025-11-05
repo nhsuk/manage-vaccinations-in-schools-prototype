@@ -1,7 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set type = "Flu" if session.programmePreset == "SeasonalFlu" else "MMR" %}
-{% set title = __("consent.alternative." + type + ".title") %}
+{% set title = __("consent.alternative." + session.programmePreset + ".title") %}
 
 {% block form %}
   {{ radios({
@@ -14,13 +13,13 @@
       }
     },
     hint: {
-      text: __("consent.alternative." + type + ".hint")
+      text: __("consent.alternative." + session.programmePreset + ".hint")
     },
     items: [{
-      text: __("consent.alternative." + type + ".yes.label"),
+      text: __("consent.alternative." + session.programmePreset + ".yes.label"),
       value: true
     }, {
-      text: __("consent.alternative." + type + ".no.label"),
+      text: __("consent.alternative." + session.programmePreset + ".no.label"),
       value: false
     }],
     decorate: "consent.alternative"
