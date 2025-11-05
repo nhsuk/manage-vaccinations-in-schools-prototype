@@ -198,7 +198,7 @@ export default {
   '13968211000001108': {
     snomed: '13968211000001108',
     type: 'MMR',
-    brand: 'MMRVaXPro',
+    brand: 'M-M-RvaxPro',
     manufacturer: 'Merck Sharp & Dohme (UK) Ltd',
     leaflet: {
       url: 'https://www.medicines.org.uk/emc/files/pil.6307.pdf',
