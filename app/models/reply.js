@@ -3,6 +3,7 @@ import _ from 'lodash'
 
 import vaccines from '../datasets/vaccines.js'
 import {
+  ConsentVaccineCriteria,
   NotifyEmailStatus,
   NotifySmsStatus,
   ProgrammeType,
@@ -174,6 +175,27 @@ export class Reply {
       }
     } catch (error) {
       console.error('Reply.createdBy', error.message)
+    }
+  }
+
+  /**
+   * Get chosen vaccine method
+   *
+   * @returns {ConsentVaccineCriteria|undefined} Chosen vaccination method
+   */
+  get vaccineCriteria() {
+    if (this.given) {
+      switch (true) {
+        case this.programme.type === ProgrammeType.Flu &&
+          this.decision === ReplyDecision.Given &&
+          !this.alternative:
+          return ConsentVaccineCriteria.IntranasalOnly
+        case this.decision === ReplyDecision.OnlyFluInjection:
+        case this.decision === ReplyDecision.OnlyGelatineFreeInjection:
+          return ConsentVaccineCriteria.AlternativeInjectionOnly
+        default:
+          return ConsentVaccineCriteria.Either
+      }
     }
   }
 
@@ -356,24 +378,6 @@ export class Reply {
       decisionStatus = formatWithSecondaryText(
         formatTag(this.status),
         'Confirmed',
-        false
-      )
-    } else if (this.programme?.alternativeVaccine) {
-      let vaccineCriteria
-      switch (this.decision) {
-        case ReplyDecision.OnlyFluInjection:
-          vaccineCriteria = VaccineCriteria.AlternativeInjection
-          break
-        case ReplyDecision.Given:
-          vaccineCriteria = VaccineCriteria.Intranasal
-          break
-        default:
-          vaccineCriteria = ''
-      }
-
-      decisionStatus = formatWithSecondaryText(
-        formatTag(this.status),
-        vaccineCriteria,
         false
       )
     }

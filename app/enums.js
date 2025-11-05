@@ -64,6 +64,16 @@ export const ConsentOutcome = {
  * @readonly
  * @enum {string}
  */
+export const ConsentVaccineCriteria = {
+  AlternativeInjectionOnly: 'Gelatine-free injected vaccine only',
+  Either: 'No preference',
+  IntranasalOnly: 'Nasal spray only'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const ConsentWindow = {
   Opening: 'Opening',
   Open: 'Open',

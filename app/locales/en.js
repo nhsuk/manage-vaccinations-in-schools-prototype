@@ -428,7 +428,7 @@ export const en = {
       }
     },
     decisionStatus: {
-      label: 'Decision'
+      label: 'Response'
     },
     alternative: {
       SeasonalFlu: {
@@ -1265,7 +1265,7 @@ export const en = {
       label: 'Method'
     },
     decision: {
-      label: 'Decision',
+      label: 'Response',
       title: {
         Child:
           'Does the child agree to having the {{programme.vaccineName.sentenceCase}}?',
@@ -1289,7 +1289,10 @@ export const en = {
       }
     },
     decisionStatus: {
-      label: 'Decision'
+      label: 'Response'
+    },
+    vaccineCriteria: {
+      label: 'Chosen vaccine'
     },
     email: {
       label: 'Email address'
