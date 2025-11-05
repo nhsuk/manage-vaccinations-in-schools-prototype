@@ -8,9 +8,9 @@ export const authentication = (request, response, next) => {
 
   // Vaccine method(s)
   if ([UserRole.Nurse, UserRole.NursePrescriber].includes(user.role)) {
-    user.vaccineMethods = [VaccineMethod.Injection, VaccineMethod.Nasal]
+    user.vaccineMethods = [VaccineMethod.Injection, VaccineMethod.Intranasal]
   } else if (data?.token?.role === UserRole.HCA) {
-    user.vaccineMethods = [VaccineMethod.Nasal]
+    user.vaccineMethods = [VaccineMethod.Intranasal]
   } else {
     user.vaccineMethods = []
   }

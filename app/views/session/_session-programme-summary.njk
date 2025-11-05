@@ -24,11 +24,11 @@
 {% if session.offersAlternativeVaccine %}
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
-        heading: __("session.tally.consentGivenForNasal.label"),
+        heading: __("session.tally.consentGivenForIntranasal.label"),
         colour: "green",
         compact: true,
-        data: session.tally(programme.id).consentGivenForNasal,
-        href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForNasalSpray
+        data: session.tally(programme.id).consentGivenForIntranasal,
+        href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForIntranasal
       }) }}
     </div>
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">

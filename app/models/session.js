@@ -654,9 +654,9 @@ export class Session {
           programme_id
         }
       ]),
-      consentGivenForNasal: getSessionActivityCount(this, [
+      consentGivenForIntranasal: getSessionActivityCount(this, [
         {
-          consent: ConsentOutcome.GivenForNasalSpray,
+          consent: ConsentOutcome.GivenForIntranasal,
           programme_id
         }
       ]),

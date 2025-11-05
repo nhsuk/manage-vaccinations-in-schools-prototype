@@ -339,7 +339,8 @@ export class PatientSession {
    * @returns {boolean} Either vaccine be administered
    */
   get canRecordAlternativeVaccine() {
-    const hasScreenedForNasal = this.screen === ScreenOutcome.VaccinateNasal
+    const hasScreenedForNasal =
+      this.screen === ScreenOutcome.VaccinateIntranasal
 
     return (
       this.hasConsentForInjection &&
@@ -444,7 +445,7 @@ export class PatientSession {
     return [
       ConsentOutcome.Given,
       ConsentOutcome.GivenForInjection,
-      ConsentOutcome.GivenForNasalSpray
+      ConsentOutcome.GivenForIntranasal
     ].includes(this.consent)
   }
 

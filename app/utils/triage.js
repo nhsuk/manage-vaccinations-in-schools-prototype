@@ -26,7 +26,7 @@ export const getScreenOutcomesForConsentMethod = (programme, replies) => {
   return [
     ...(!programme?.alternativeVaccine ? [ScreenOutcome.Vaccinate] : []),
     ...(programme?.alternativeVaccine && !hasConsentForInjectionOnly
-      ? [ScreenOutcome.VaccinateNasal]
+      ? [ScreenOutcome.VaccinateIntranasal]
       : []),
     ...(programme?.alternativeVaccine && hasConsentForInjection
       ? [ScreenOutcome.VaccinateInjection]

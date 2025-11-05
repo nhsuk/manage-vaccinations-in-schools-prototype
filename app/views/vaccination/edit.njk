@@ -24,10 +24,10 @@
           href: "edit/vaccine" if programme.alternativeVaccine
         },
         method: {
-          href: "edit/method" if vaccination.method != VaccinationMethod.Nasal
+          href: "edit/method" if vaccination.method != VaccinationMethod.Intranasal
         },
         site: {
-          href: "edit/site" if vaccination.method != VaccinationMethod.Nasal
+          href: "edit/site" if vaccination.method != VaccinationMethod.Intranasal
         },
         dose: {
           href: "edit/dose"

@@ -1670,7 +1670,7 @@ export const en = {
       consentGivenForInjection: {
         label: 'Consent given for injection'
       },
-      consentGivenForNasal: {
+      consentGivenForIntranasal: {
         label: 'Consent given for nasal spray'
       },
       didNotConsent: {
@@ -1881,7 +1881,7 @@ export const en = {
       [ScreenOutcome.Vaccinate]: 'Yes, it’s safe to vaccinate',
       [ScreenOutcome.VaccinateInjection]:
         'Yes, it’s safe to vaccinate with injected vaccine',
-      [ScreenOutcome.VaccinateNasal]:
+      [ScreenOutcome.VaccinateIntranasal]:
         'Yes, it’s safe to vaccinate with nasal spray',
       [ScreenOutcome.DoNotVaccinate]: 'No, do not vaccinate',
       [ScreenOutcome.DelayVaccination]:

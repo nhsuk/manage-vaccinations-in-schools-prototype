@@ -19,7 +19,7 @@ export default {
       size: '197KB'
     },
     criteria: VaccineCriteria.Intranasal,
-    method: VaccineMethod.Nasal,
+    method: VaccineMethod.Intranasal,
     delegationProtocol: VaccinationProtocol.PSD,
     dose: 0.2,
     sideEffects: [

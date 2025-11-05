@@ -54,7 +54,7 @@ export const ConsentOutcome = {
   Inconsistent: 'Conflicting consent',
   Given: 'Consent given',
   GivenForInjection: 'Consent given for injected vaccine',
-  GivenForNasalSpray: 'Consent given for nasal spray',
+  GivenForIntranasal: 'Consent given for nasal spray',
   Declined: 'Follow up requested',
   Refused: 'Consent refused',
   FinalRefusal: 'Refusal confirmed'
@@ -348,7 +348,7 @@ export const ScreenVaccineCriteria = {
 export const ScreenOutcome = {
   Vaccinate: 'Safe to vaccinate',
   VaccinateInjection: 'Safe to vaccinate with injected vaccine',
-  VaccinateNasal: 'Safe to vaccinate with nasal spray',
+  VaccinateIntranasal: 'Safe to vaccinate with nasal spray',
   NeedsTriage: 'Needs triage',
   DelayVaccination: 'Delay vaccination',
   DoNotVaccinate: 'Do not vaccinate'
@@ -440,7 +440,7 @@ export const VaccinationOutcome = {
  * @enum {string}
  */
 export const VaccinationMethod = {
-  Nasal: 'Nasal spray',
+  Intranasal: 'Nasal spray',
   Intramuscular: 'Intramuscular (IM) injection',
   Subcutaneous: 'Subcutaneous injection'
 }
@@ -497,8 +497,8 @@ export const VaccineCriteria = {
  * @enum {string}
  */
 export const VaccineMethod = {
-  Nasal: 'Nasal spray',
-  Injection: 'Injection'
+  Injection: 'Injection',
+  Intranasal: 'Nasal spray'
 }
 
 /**

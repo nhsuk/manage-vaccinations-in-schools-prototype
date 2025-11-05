@@ -141,7 +141,7 @@ export const getConfirmedConsentOutcome = (reply, session) => {
         return ConsentOutcome.GivenForInjection
       }
 
-      return ConsentOutcome.GivenForNasalSpray
+      return ConsentOutcome.GivenForIntranasal
     }
 
     return ConsentOutcome.Given

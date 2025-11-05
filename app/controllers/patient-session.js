@@ -71,7 +71,7 @@ export const patientSessionController = {
     if (session.psdProtocol && userIsHCA && patientHasPsd === false) {
       // Downgrade permissions for HCAs as patient doesn’t have a PSD
       account.vaccineMethods = account.vaccineMethods.filter(
-        (method) => method !== VaccineMethod.Nasal
+        (method) => method !== VaccineMethod.Intranasal
       )
     }
 
@@ -80,7 +80,7 @@ export const patientSessionController = {
       (vaccine?.method === VaccineMethod.Injection &&
         session.nationalProtocol) ||
       // Nasal spray using PGD
-      (vaccine?.method === VaccineMethod.Nasal && !session.psdProtocol)
+      (vaccine?.method === VaccineMethod.Intranasal && !session.psdProtocol)
 
     response.locals.options = {
       // Show outstanding vaccinations

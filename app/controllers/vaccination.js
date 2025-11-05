@@ -147,7 +147,7 @@ export const vaccinationController = {
         }),
         ...(isNasalSpray && {
           dose: vaccine.dose,
-          injectionMethod: VaccinationMethod.Nasal,
+          injectionMethod: VaccinationMethod.Intranasal,
           injectionSite: VaccinationSite.Nose,
           suppliedBy_uid,
           protocol,
@@ -296,7 +296,7 @@ export const vaccinationController = {
         .filter((batch) => !batch.archivedAt)
 
       response.locals.injectionMethodItems = Object.entries(VaccinationMethod)
-        .filter(([, value]) => value !== VaccinationMethod.Nasal)
+        .filter(([, value]) => value !== VaccinationMethod.Intranasal)
         .map(([key, value]) => ({
           text: VaccinationMethod[key],
           value

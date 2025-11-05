@@ -180,12 +180,12 @@ export class Vaccination {
     if (!this.vaccine || !this.given) return
 
     if (this.vaccine.criteria === VaccineCriteria.Intranasal) {
-      this.injectionMethod = VaccinationMethod.Nasal
+      this.injectionMethod = VaccinationMethod.Intranasal
     }
 
     if (
       this.vaccine.criteria !== VaccineCriteria.Intranasal &&
-      this.injectionMethod === VaccinationMethod.Nasal
+      this.injectionMethod === VaccinationMethod.Intranasal
     ) {
       // Change previously set injection site to intramuscular (good default)
       this.injectionMethod = VaccinationMethod.Intramuscular
@@ -202,13 +202,13 @@ export class Vaccination {
   get site() {
     if (!this.vaccine || !this.given) return
 
-    if (this.method === VaccinationMethod.Nasal) {
+    if (this.method === VaccinationMethod.Intranasal) {
       // Method is nasal, so site is ‘Nose’
       this.injectionSite = VaccinationSite.Nose
     }
 
     if (
-      this.method !== VaccinationMethod.Nasal &&
+      this.method !== VaccinationMethod.Intranasal &&
       this.injectionSite === VaccinationSite.Nose
     ) {
       // Reset any previously set injection site as can no longer be ‘Nose’
