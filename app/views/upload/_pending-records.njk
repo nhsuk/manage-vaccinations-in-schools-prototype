@@ -18,7 +18,7 @@
             value: patient.formatted.yearGroup + " → " + ("Reception" | highlightDifference(patient.formatted.yearGroup))
           }
         })
-      })
+      }) if upload.status == UploadStatus.Review else __("review.duplicate.description", type)
     },
     {
       header: __("actions.label"),
@@ -33,17 +33,17 @@
 {% endfor %}
 
 {{ appHeading({
-  title: __("upload.show.partial.title"),
+  title: __("upload.show.partial.title." + upload.status),
   level: 2,
   size: "m",
-  summary: __mf("upload.show.partial." + upload.status, {
+  summary: __mf("upload.show.partial.summary." + upload.status, {
     count: patientRows.length
   })
 }) }}
 
 {{ details({
   classes: "nhsuk-expander",
-  summaryText: __mf("upload.show.partial.count", {
+  summaryText: __mf("upload.show.partial.count." + upload.status, {
     count: patientRows.length
   }),
   html: table({

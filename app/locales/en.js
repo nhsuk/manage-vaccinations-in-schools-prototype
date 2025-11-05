@@ -1937,37 +1937,46 @@ export const en = {
         title: 'New records',
         count:
           '{count, plural, =0 {No new records} one {1 new record} other {# new records}}',
-        [UploadStatus.Review]:
-          'This upload includes {count, plural, =0 {no new records that are} one {1 new record this is} other {# new records  that are}} not currently in Mavis. If you approve the upload, these records will be added to Mavis.',
-        [UploadStatus.Approved]:
-          '{count, plural, =0 {No new records were} one {1 new record was} other {# new records were}} added to Mavis'
+        summary:
+          'This upload includes {count, plural, =0 {no new records that are} one {1 new record this is} other {# new records  that are}} not currently in Mavis. If you approve the upload, these records will be added to Mavis.'
       },
       partial: {
-        title: 'Records with a partial match',
-        count:
-          '{count, plural, =0 {No records} one {1 record} other {# records}} with a partial match',
-        [UploadStatus.Review]:
-          'This upload includes {count, plural, =0 {no records} one {1 record} other {# records}} that partially match existing records in Mavis. If you approve the upload, they will be flagged with import issues for review.',
-        [UploadStatus.Approved]:
-          '{count, plural, =0 {No records} one {1 record} other {# records}} flagged with import issues for review'
+        title: {
+          [UploadStatus.Review]:
+            'Close matches to existing records – will need review after import',
+          [UploadStatus.Approved]: 'Upload issues in this import – need review'
+        },
+        count: {
+          [UploadStatus.Review]:
+            '{count, plural, =0 {No close matches} one {1 close match} other {# close matches}} to existing records',
+          [UploadStatus.Approved]:
+            '{count, plural, =0 {No upload issues} one {1 upload issue} other {# upload issues}}'
+        },
+        summary: {
+          [UploadStatus.Review]:
+            'This upload includes {count, plural, =0 {no records} one {1 record} other {# records}} that are close matches to existing records in Mavis. If you approve the upload, any differences will be flagged as import issues needing review.',
+          [UploadStatus.Approved]:
+            '{count, plural, =0 {No records} one {1 record} other {# records}} flagged with import issues for review'
+        }
       },
       matched: {
-        title: 'Records automatically matched',
+        title: 'Records already in Mavis',
         count:
-          '{count, plural, =0 {No records} one {1 record} other {# records}} automatically matched',
-        [UploadStatus.Review]:
-          'This upload includes {count, plural, =0 {no records that already exist} one {1 record that already exists} other {# records that already exist}} in Mavis. If you approve the upload, any additional information will be merged automatically with the existing records.',
-        [UploadStatus.Approved]:
-          '{count, plural, =0 {No records were matched} one {1 record was matched} other {# records were matched}} to existing records in Mavis. Any additional information has been merged into the existing record.'
+          '{count, plural, =0 {No records} one {1 record} other {# records}} already in Mavis',
+        summary:
+          'This upload includes {count, plural, =0 {no records that already exist} one {1 record that already exists} other {# records that already exist}} in Mavis. If you approve the upload, any new information will be added to the existing records.'
+      },
+      imported: {
+        title: 'Imported records',
+        count:
+          '{count, plural, =0 {No imported records} one {1 imported record} other {# imported records}}'
       },
       moves: {
-        title: 'School moves',
+        title: 'School moves – will need review after import',
         count:
           '{count, plural, =0 {No school moves} one {1 school move} other {# school moves}}',
-        [UploadStatus.Review]:
-          'This upload includes {count, plural, =0 {No children} one {1 child} other {# children}} with a different school to the one in their Mavis record',
-        [UploadStatus.Approved]:
-          '{count, plural, =0 {No children} one {1 child} other {# children}} moved schools'
+        summary:
+          'This upload includes {count, plural, =0 {No children} one {1 child} other {# children}} with a different school to the one in their Mavis record. If you approve the upload, these will be flagged as school moves needing review.'
       }
     },
     new: {
