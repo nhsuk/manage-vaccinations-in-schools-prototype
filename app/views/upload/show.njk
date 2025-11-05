@@ -1,3 +1,5 @@
+{% from "upload/_patient-records.njk" import patientRecords with context %}
+
 {% extends "_layouts/form.njk" %}
 
 {% set gridColumns = "full" %}
@@ -63,16 +65,16 @@
     {{ link(upload.uri + "/bulk-remove-relationships", __("upload.removeRelationships.label")) | nhsukMarkdown if upload.status == UploadStatus.Complete and upload.type != UploadType.Report }}
   {% endcall %}
 
-  {% if upload.status == UploadStatus.Review or upload.status == UploadStatus.Approved %}
-    {% set newRecords = upload.patients | selectattr("isNew") %}
-    {% if newRecords.length %}
-      {% include "upload/_new-records.njk" %}
-    {% endif %}
+  {% if upload.status == UploadStatus.Review %}
+    {{ patientRecords({
+      key: "new",
+      patients: upload.patients | selectattr("isNew")
+    }) }}
 
-    {% set matchedRecords = upload.patients | selectattr("hasMatch") %}
-    {% if matchedRecords.length %}
-      {% include "upload/_matched-records.njk" %}
-    {% endif %}
+    {{ patientRecords({
+      key: "matched",
+      patients: upload.patients | selectattr("hasMatch")
+    }) }}
 
     {% set pendingRecords = upload.patients | selectattr("hasPendingChanges") %}
     {% if pendingRecords.length %}
@@ -82,6 +84,16 @@
     {% if upload.type != UploadType.Report and upload.moves.length %}
       {% include "upload/_school-moves.njk" %}
     {% endif %}
+  {% elif upload.status == UploadStatus.Approved %}
+    {% set pendingRecords = upload.patients | selectattr("hasPendingChanges") %}
+    {% if pendingRecords.length %}
+      {% include "upload/_pending-records.njk" %}
+    {% endif %}
+
+    {{ patientRecords({
+      key: "imported",
+      patients: upload.patients | rejectattr("hasPendingChanges")
+    }) }}
   {% endif %}
 
   {{ card({
