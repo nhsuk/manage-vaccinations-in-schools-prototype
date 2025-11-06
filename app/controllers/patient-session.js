@@ -4,8 +4,8 @@ import {
   ConsentOutcome,
   ConsentWindow,
   InstructionOutcome,
+  PatientStatus,
   PreScreenQuestion,
-  ProgrammeOutcome,
   ProgrammeType,
   RegistrationOutcome,
   ScreenOutcome,
@@ -48,11 +48,11 @@ export const patientSessionController = {
     } = patientSession
 
     const vaccinated = patientSession.siblingPatientSessions.filter(
-      ({ outcome }) => outcome !== ProgrammeOutcome.Vaccinated
+      ({ report }) => report !== PatientStatus.Vaccinated
     )
 
     const due = patientSession.siblingPatientSessions.filter(
-      ({ outcome }) => outcome === ProgrammeOutcome.Due
+      ({ report }) => report === PatientStatus.Due
     )
 
     // National protocol
@@ -110,7 +110,7 @@ export const patientSessionController = {
         account.vaccineMethods?.includes(patientSession.vaccine?.method) &&
         record === Activity.Record,
       canReport:
-        report === ProgrammeOutcome.Vaccinated &&
+        report === PatientStatus.Vaccinated &&
         patientSession.lastRecordedVaccination
     }
 
@@ -136,7 +136,7 @@ export const patientSessionController = {
     const view = request.path.split('/').at(-1)
     response.locals.navigationItems = [
       ...patientSession.siblingPatientSessions.map((patientSession) => ({
-        ...(patientSession.report === ProgrammeOutcome.Vaccinated && {
+        ...(patientSession.report === PatientStatus.Vaccinated && {
           icon: 'tick'
         }),
         text: patientSession.programme.name,
@@ -223,7 +223,7 @@ export const patientSessionController = {
 
     if (
       register === RegistrationOutcome.Absent &&
-      patientSession.report !== ProgrammeOutcome.Eligible
+      patientSession.report !== PatientStatus.Consent
     ) {
       // Record vaccination outcome as absent if safe to vaccinate
       const programme = Programme.findOne(session.programme_ids[0], data)

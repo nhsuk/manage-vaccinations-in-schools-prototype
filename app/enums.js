@@ -261,6 +261,21 @@ export const ParentalRelationship = {
  * @readonly
  * @enum {string}
  */
+export const PatientStatus = {
+  Ineligible: 'Not eligible',
+  Consent: 'Needs consent',
+  Refused: 'Has refusal',
+  Triage: 'Needs triage',
+  Due: 'Due vaccination',
+  Deferred: 'Could not vaccinate',
+  PartiallyVaccinated: 'Partially vaccinated',
+  Vaccinated: 'Fully vaccinated'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const PreScreenQuestion = {
   IsWell: 'is not acutely unwell',
   IsPregnant: 'is not pregnant',
@@ -270,17 +285,6 @@ export const PreScreenQuestion = {
   IsHappy: 'knows what the vaccination is for, and agrees to have it',
   IsNotContraindicated:
     'has no other contraindications which prevent vaccination'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
-export const ProgrammeOutcome = {
-  Ineligible: 'Not eligible',
-  Eligible: 'Eligible',
-  Due: 'Due vaccination',
-  Vaccinated: 'Vaccinated'
 }
 
 /**
@@ -343,8 +347,8 @@ export const ProgrammePreset = {
  * @enum {string}
  */
 export const RecordVaccineCriteria = {
-  Any: 'Either injection',
-  AlternativeInjectionOnly: 'Gelatine-free injection',
+  Any: 'Either',
+  AlternativeInjectionOnly: 'Alternative injection',
   IntranasalOnly: 'Nasal spray'
 }
 
@@ -509,8 +513,7 @@ export const VaccinationOutcome = {
   Contraindications: 'Child contraindicated',
   Refused: 'Child refused',
   Absent: 'Child absent',
-  Unwell: 'Child unwell',
-  NoConsent: 'Unable to contact parent'
+  Unwell: 'Child unwell'
 }
 
 /**

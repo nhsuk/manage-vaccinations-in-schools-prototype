@@ -10,7 +10,7 @@ import {
   ConsentWindow,
   InstructionOutcome,
   OrganisationDefaults,
-  ProgrammeOutcome,
+  PatientStatus,
   ProgrammePreset,
   ProgrammeType,
   SessionStatus,
@@ -644,21 +644,21 @@ export class Session {
       ]),
       vaccinated: getSessionActivityCount(this, [
         {
-          report: ProgrammeOutcome.Vaccinated,
+          report: PatientStatus.Vaccinated,
           'vaccine.criteria': VaccineCriteria.Injection,
           programme_id
         }
       ]),
       vaccinatedIntranasal: getSessionActivityCount(this, [
         {
-          report: ProgrammeOutcome.Vaccinated,
+          report: PatientStatus.Vaccinated,
           'vaccine.criteria': VaccineCriteria.Intranasal,
           programme_id
         }
       ]),
       vaccinatedAlternativeInjection: getSessionActivityCount(this, [
         {
-          report: ProgrammeOutcome.Vaccinated,
+          report: PatientStatus.Vaccinated,
           'vaccine.criteria': VaccineCriteria.AlternativeInjection,
           programme_id
         }
@@ -698,7 +698,7 @@ export class Session {
         ({ consent }) => consent === ConsentOutcome.NoResponse
       ),
       couldNotVaccinate: this.patients.filter(
-        ({ report }) => report !== ProgrammeOutcome.Vaccinated
+        ({ report }) => report !== PatientStatus.Vaccinated
       )
     }
   }
@@ -709,7 +709,7 @@ export class Session {
    * @returns {Array<PatientSession>} Patient sessions
    */
   get patientSessionsForClinic() {
-    return this.patients.filter(({ report }) => report === ProgrammeOutcome.Due)
+    return this.patients.filter(({ report }) => report === PatientStatus.Due)
   }
 
   /**

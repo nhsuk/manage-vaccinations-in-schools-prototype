@@ -4,11 +4,9 @@ import _ from 'lodash'
 import {
   AcademicYear,
   Activity,
-  ConsentOutcome,
   InstructionOutcome,
-  ProgrammeOutcome,
+  PatientStatus,
   RegistrationOutcome,
-  ScreenOutcome,
   SessionType,
   VaccineCriteria,
   VaccineMethod
@@ -47,16 +45,7 @@ export const sessionController = {
   show(request, response) {
     let { view } = request.params
 
-    if (
-      [
-        'consent',
-        'screen',
-        'instruct',
-        'register',
-        'record',
-        'report'
-      ].includes(view)
-    ) {
+    if (['instruct', 'register', 'record', 'report'].includes(view)) {
       view = 'activity'
     } else if (!view) {
       view = 'show'
@@ -243,7 +232,6 @@ export const sessionController = {
     let {
       options,
       q,
-      consent,
       instruct,
       programme_ids,
       nextActivity,
@@ -307,39 +295,19 @@ export const sessionController = {
       )
     }
 
-    // Filter by exact consent status
-    if (consent) {
-      consent = Array.isArray(consent) ? consent : [consent]
-
-      results = results.filter((patientSession) =>
-        consent.some(
-          (consentOutcome) => consentOutcome === patientSession.consent
-        )
-      )
-    }
-
     // Filter by screen/instruct/register status
     const filters = {
-      screen: request.query.screen || 'none',
       instruct: request.query.instruct || 'none',
       register: request.query.register || 'none',
       report: request.query.report || 'none'
     }
 
-    for (const activity of ['screen', 'instruct', 'register', 'report']) {
+    for (const activity of ['instruct', 'register', 'report']) {
       if (activity === view && filters[view] !== 'none') {
         results = results.filter(
           (patientSession) => patientSession[view] === filters[view]
         )
       }
-    }
-
-    // Don’t show screen outcome for children who have already been vaccinated
-    if (view === 'screen') {
-      results = results.filter(
-        (patientSession) =>
-          patientSession.outcome !== ProgrammeOutcome.Vaccinated
-      )
     }
 
     // Filter by year group
@@ -400,30 +368,8 @@ export const sessionController = {
       }))
     }
 
-    // Checkbox filter options (select many)
-    const checkboxFilters = {
-      consent: {
-        consent: session.offersIntranasalVaccine
-          ? Object.values(ConsentOutcome).filter(
-              (outcome) => outcome !== ConsentOutcome.Given
-            )
-          : Object.values(ConsentOutcome).filter(
-              (outcome) => outcome !== ConsentOutcome.GivenForIntranasal
-            )
-      }
-    }
-
-    response.locals.checkboxFilters = checkboxFilters[view]
-
     // Radio filter options (select one)
     const radioFilters = {
-      screen: {
-        screen: session.offersAlternativeVaccine
-          ? Object.values(ScreenOutcome).filter(
-              (value) => value !== ScreenOutcome.Vaccinate
-            )
-          : ScreenOutcome
-      },
       instruct: {
         instruct: InstructionOutcome
       },
@@ -431,13 +377,13 @@ export const sessionController = {
         register: RegistrationOutcome,
         vaccineCriteria: session.offersAlternativeVaccine && VaccineCriteria,
         instruct: session.psdProtocol && InstructionOutcome,
-        report: ProgrammeOutcome
+        report: PatientStatus
       },
       record: {
         vaccineCriteria: session.offersAlternativeVaccine && VaccineCriteria
       },
       report: {
-        report: ProgrammeOutcome
+        report: PatientStatus
       }
     }
 
@@ -458,8 +404,6 @@ export const sessionController = {
     delete data.q
     delete data.programme_ids
     delete data.vaccineCriteria
-    delete data.consent
-    delete data.screen
     delete data.instruct
     delete data.register
     delete data.report
@@ -475,8 +419,6 @@ export const sessionController = {
     // Radios
     for (const key of [
       'q',
-      'triage',
-      'screen',
       'instruct',
       'register',
       'report',
@@ -490,7 +432,7 @@ export const sessionController = {
     }
 
     // Checkboxes
-    for (const key of ['options', 'consent', 'programme_ids', 'yearGroup']) {
+    for (const key of ['options', 'programme_ids', 'yearGroup']) {
       const value = request.body[key]
       const values = Array.isArray(value) ? value : [value]
       if (value) {

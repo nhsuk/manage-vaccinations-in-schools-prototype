@@ -5,11 +5,10 @@ import {
   Activity,
   AuditEventType,
   ConsentOutcome,
-  ProgrammeOutcome,
+  PatientStatus,
   RecordVaccineCriteria,
   ReplyDecision,
-  ScreenOutcome,
-  TriageOutcome
+  ScreenOutcome
 } from '../enums.js'
 import { getDateValueDifference, getYearGroup, today } from '../utils/date.js'
 import {
@@ -406,7 +405,7 @@ export class PatientSession {
    * @returns {boolean} Patient still needs vaccination
    */
   get stillToVaccinate() {
-    return this.report === ProgrammeOutcome.Due
+    return this.report === PatientStatus.Due
   }
 
   /**
@@ -535,7 +534,7 @@ export class PatientSession {
   /**
    * Get triage outcome
    *
-   * @returns {TriageOutcome} Triage outcome
+   * @returns {import('../enums.js').TriageOutcome} Triage outcome
    */
   get triage() {
     return getTriageOutcome(this)
@@ -589,9 +588,9 @@ export class PatientSession {
   }
 
   /**
-   * Get programme outcome
+   * Get patient status
    *
-   * @returns {ProgrammeOutcome} Programme outcome
+   * @returns {PatientStatus} Patient status
    */
   get report() {
     return getReportOutcome(this)
@@ -625,25 +624,20 @@ export class PatientSession {
     }
   }
 
-  get reason() {
-    let consent
-    if (this.consent === ConsentOutcome.NoResponse) {
-      consent = this.patient.formatted.lastReminderDate
-    } else if (
-      [ConsentOutcome.Refused, ConsentOutcome.FinalRefusal].includes(
-        this.consent
-      )
-    ) {
-      consent = this.consentRefusalReasons.join('<br>')
-    }
-
-    return {
-      consent,
-      triage:
-        this.triage === TriageOutcome.Completed && this.status.screen.reason,
-      report:
-        this.report === ProgrammeOutcome.Eligible &&
-        this.couldNotVaccinateReason
+  get reportReason() {
+    switch (this.report) {
+      case PatientStatus.Vaccinated:
+        return `${this.outcome} on ${this.lastRecordedVaccination.formatted.createdAt_dateShort}`
+      case PatientStatus.Due:
+        return this.vaccineCriteria
+      case PatientStatus.Deferred:
+        return this.lastRecordedVaccination
+          ? `${this.outcome} on ${this.lastRecordedVaccination.formatted.createdAt_dateShort}`
+          : this.outcome
+      case PatientStatus.Refused:
+        return this.consent
+      case PatientStatus.Consent:
+        return this.consent
     }
   }
 
@@ -673,25 +667,17 @@ export class PatientSession {
     return {
       programme: this.programme.nameTag,
       status: {
-        consent: formatProgrammeStatus(
-          this.programme,
-          this.status.consent,
-          this.reason.consent
-        ),
+        consent: formatProgrammeStatus(this.programme, this.status.consent),
         screen:
           this.screen &&
-          formatProgrammeStatus(
-            this.programme,
-            this.status.screen,
-            this.reason.screen
-          ),
+          formatProgrammeStatus(this.programme, this.status.screen),
         instruct: this.session.psdProtocol && formatTag(this.status.instruct),
         register: formatTag(this.status.register),
         outcome: formatProgrammeStatus(this.programme, this.status.outcome),
         report: formatProgrammeStatus(
           this.programme,
           this.status.report,
-          this.reason.report
+          this.reportReason
         )
       },
       nextActivityPerProgramme: formatList(nextActivityPerProgramme),
