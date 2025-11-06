@@ -21,7 +21,7 @@
     } if session.registration and params.patientSession.register != RegistrationOutcome.Complete, {
       text: __("patientSession.record.title"),
       href: "#"
-    } if not params.patientSession.session.isActive and params.patientSession.report != ProgrammeOutcome.Vaccinated]
+    } if not params.patientSession.session.isActive and params.patientSession.report != PatientStatus.Vaccinated]
   }) if params.patientSession.session.isActive }}
 
   {{ appActionList({
@@ -29,7 +29,7 @@
       text: __("patientSession.vaccination.title"),
       href: params.patientSession.uri + "/new/vaccination"
     }]
-  }) if not params.patientSession.session.isActive and params.patientSession.report != ProgrammeOutcome.Vaccinated }}
+  }) if not params.patientSession.session.isActive and params.patientSession.report != PatientStatus.Vaccinated }}
 
   <div class="app-sticky-navigation" data-module="app-sticky">
     <div class="nhsuk-width-container">

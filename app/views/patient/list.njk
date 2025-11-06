@@ -19,9 +19,7 @@
       {{ appPatientSearch({
         clear: "/patients",
         radioFilters: {
-          consent: ConsentOutcome,
-          screen: ScreenOutcome,
-          report: ProgrammeOutcome
+          report: PatientStatus
         }
       }) }}
     </app-auto-submit>
@@ -52,26 +50,6 @@
           {% set reportStatusHtml = false %}
 
           {% if data.programme_ids %}
-            {% set consentStatusHtml -%}
-              {%- for patientSession in patient.patientSessions -%}
-                {%- if data.programme_ids | includes(patientSession.programme_id) -%}
-                  {%- if patientSession.consent -%}
-                    <p>{{ patientSession.formatted.status.consent | safe }}</p>
-                  {%- endif -%}
-                {%- endif -%}
-              {%- endfor %}
-            {%- endset %}
-
-            {% set screenStatusHtml -%}
-              {%- for patientSession in patient.patientSessions -%}
-                {%- if data.programme_ids | includes(patientSession.programme_id) -%}
-                  {%- if patientSession.screen -%}
-                    <p>{{ patientSession.formatted.status.screen | safe }}</p>
-                  {%- endif -%}
-                {%- endif -%}
-              {%- endfor -%}
-            {%- endset %}
-
             {% set reportStatusHtml -%}
               {%- for patientSession in patient.patientSessions -%}
                 {%- if data.programme_ids | includes(patientSession.programme_id) -%}
@@ -94,15 +72,7 @@
                 dob: {},
                 school: {},
                 yearGroup: {},
-                consent: {
-                  label: __("patientSession.consent.label"),
-                  value: consentStatusHtml
-                } if data.programme_ids and consentStatusHtml,
-                screen: {
-                  label: __("patientSession.screen.label"),
-                  value: screenStatusHtml
-                } if data.programme_ids and screenStatusHtml,
-                status: {
+                report: {
                   label: __("patientSession.report.label"),
                   value: reportStatusHtml
                 } if data.programme_ids and reportStatusHtml

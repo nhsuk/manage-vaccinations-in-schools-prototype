@@ -214,15 +214,13 @@ export class Programme {
   }
 
   /**
-   * Get patient session programme outcomes
+   * Get patient session programme statuses
    *
-   * @param {import('../enums.js').ProgrammeOutcome} programmeOutcome - Programme outcome
-   * @returns {Array<PatientSession>} Patient session programme outcomes
+   * @param {import('../enums.js').PatientStatus} patientStatus - Patient status
+   * @returns {Array<PatientSession>} Patient session programme statuses
    */
-  report(programmeOutcome) {
-    return this.patientSessions.filter(
-      ({ report }) => report === programmeOutcome
-    )
+  report(patientStatus) {
+    return this.patientSessions.filter(({ report }) => report === patientStatus)
   }
 
   /**

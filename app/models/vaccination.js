@@ -413,6 +413,11 @@ export class Vaccination {
       createdAt_date: formatDate(this.createdAt, {
         dateStyle: 'long'
       }),
+      createdAt_dateShort: formatDate(this.createdAt, {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      }),
       createdBy: this.createdBy?.fullName || '',
       suppliedBy: this.suppliedBy?.fullName || '',
       updatedAt: formatDate(this.updatedAt, {

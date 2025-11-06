@@ -70,7 +70,7 @@ export const patientController = {
     }
 
     // Filter by outcome
-    for (const name of ['consent', 'screen', 'report']) {
+    for (const name of ['report']) {
       const outcome = request.query[name]
       if (outcome && outcome !== 'none' && programme_ids) {
         results = results.filter((patient) =>
@@ -121,8 +121,6 @@ export const patientController = {
     }))
 
     // Clean up session data
-    delete data.consent
-    delete data.screen
     delete data.report
     delete data.options
     delete data.programme_ids
@@ -146,7 +144,7 @@ export const patientController = {
     const params = new URLSearchParams()
 
     // Radios and text inputs
-    for (const key of ['consent', 'q', 'report', 'screen']) {
+    for (const key of ['q', 'report']) {
       const value = request.body[key]
       if (value) {
         params.append(key, String(value))

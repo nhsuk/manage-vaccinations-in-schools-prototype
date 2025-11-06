@@ -113,19 +113,13 @@
         }) if view == "instruct" and session.activity.instruct and account.canPrescribe }}
 
         {% for patientSession in results.page %}
-          {% set statusHtml %}
-            {% if view == "register" %}
-              {{ patientSession.formatted.status.register | safe }}
-            {% else %}
-              {% set ids = data.programme_ids or session.programme_ids %}
-              {% for patientSession in patientSession.siblingPatientSessions %}
-                {% if ids | includes(patientSession.programme_id) %}
-                  {% if patientSession.formatted.status[view] %}
-                    <p>{{ patientSession.formatted.status[view] | safe }}</p>
-                  {% endif %}
-                {% endif %}
-              {% endfor %}
-            {% endif %}
+          {% set reportStatusHtml %}
+            {% set ids = data.programme_ids or session.programme_ids %}
+            {% for patientSession in patientSession.siblingPatientSessions %}
+              {% if ids | includes(patientSession.programme_id) %}
+                <p>{{ patientSession.formatted.status.report | safe }}</p>
+              {% endif %}
+            {% endfor %}
           {% endset %}
 
           {% set cardDescriptionHtml %}
@@ -138,7 +132,7 @@
                 nextActivityPerProgramme: {
                   label: __("patientSession.nextActivityPerProgramme.label"),
                   value: patientSession.formatted.nextActivityPerProgramme
-                } if (view == "register" and patientSession.register != RegistrationOutcome.Absent) or view == "record" or view == "outcome" and patientSession.outcome != ProgrammeOutcome.Vaccinated,
+                } if (view == "register" and patientSession.register != RegistrationOutcome.Absent) or view == "record" or view == "outcome" and patientSession.outcome != PatientStatus.Vaccinated,
                 vaccineCriteria: {
                   label: __("patientSession.vaccineCriteria.label"),
                   value: patientSession.formatted.vaccineCriteria
@@ -147,15 +141,15 @@
                   label: __("patientSession.instruct.label"),
                   value: patientSession.formatted.status.instruct
                 } if patientSession.instruct and view != "instruct",
-                status: {
-                  label: __("patientSession." + view + ".label"),
-                  value: statusHtml,
+                register: {
+                  label: __("patientSession.register.label"),
+                  value: patientSession.formatted.status.register,
                   href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.register != RegistrationOutcome.Pending
-                } if view != "record",
+                } if view == "register",
                 report: {
                   label: __("patientSession.report.label"),
-                  value: patientSession.formatted.status.report
-                } if view == "register",
+                  value: reportStatusHtml
+                },
                 notes: {
                   label: __("patientSession.pinnedNote.label"),
                   value: appEvent({

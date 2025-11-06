@@ -1,4 +1,4 @@
-{% set isVaccinated = patientSession.report == ProgrammeOutcome.Vaccinated %}
+{% set isVaccinated = patientSession.report == PatientStatus.Vaccinated %}
 
 {{ appHeading({
   level: 3,
