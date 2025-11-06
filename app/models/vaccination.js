@@ -477,7 +477,7 @@ export class Vaccination {
    * @returns {string} URI
    */
   get uri() {
-    return `/programmes/${this.programme_id}/vaccinations/${this.uuid}`
+    return `/reports/${this.programme_id}/vaccinations/${this.uuid}`
   }
 
   /**
