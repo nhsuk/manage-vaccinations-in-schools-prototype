@@ -4,10 +4,10 @@
   size: "m",
   title: __("patientSession.record.titleWithMethod", {
     session: session,
-    method: patientSession.vaccine.method | lower
+    method: patientSession.vaccineCriteria | lower
   }),
   attributes: {
-    "data-value": patientSession.vaccine.criteria
+    "data-value": patientSession.vaccineCriteria
   }
 } if patientSession.programme.alternativeVaccine else {
   level: 3,

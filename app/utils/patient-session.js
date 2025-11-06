@@ -175,7 +175,7 @@ export const getScreenStatus = (patientSession) => {
       colour = 'green'
       description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate.`
       break
-    case ScreenOutcome.VaccinateInjection:
+    case ScreenOutcome.VaccinateAlternativeInjection:
       colour = 'green'
       description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the injected vaccine only.`
       break

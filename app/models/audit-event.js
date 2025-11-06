@@ -94,7 +94,7 @@ export class AuditEvent {
           colour = 'red'
           break
         case ScreenOutcome.Vaccinate:
-        case ScreenOutcome.VaccinateInjection:
+        case ScreenOutcome.VaccinateAlternativeInjection:
         case ScreenOutcome.VaccinateIntranasal:
           colour = 'green'
           break

@@ -19,17 +19,17 @@ export const getScreenOutcomesForConsentMethod = (programme, replies) => {
     ({ hasConsentForInjection }) => hasConsentForInjection
   )
 
-  const hasConsentForInjectionOnly = replies?.every(
-    ({ decision }) => decision === ReplyDecision.OnlyFluInjection
+  const hasConsentForAlternativeInjectionOnly = replies?.every(
+    ({ decision }) => decision === ReplyDecision.OnlyAlternativeInjection
   )
 
   return [
     ...(!programme?.alternativeVaccine ? [ScreenOutcome.Vaccinate] : []),
-    ...(programme?.alternativeVaccine && !hasConsentForInjectionOnly
+    ...(programme?.alternativeVaccine && !hasConsentForAlternativeInjectionOnly
       ? [ScreenOutcome.VaccinateIntranasal]
       : []),
     ...(programme?.alternativeVaccine && hasConsentForInjection
-      ? [ScreenOutcome.VaccinateInjection]
+      ? [ScreenOutcome.VaccinateAlternativeInjection]
       : []),
     'or',
     ScreenOutcome.NeedsTriage,
@@ -50,12 +50,12 @@ export const getScreenVaccineCriteria = (programme, replies) => {
     ({ hasConsentForInjection }) => hasConsentForInjection
   )
 
-  const hasConsentForInjectionOnly = replies?.every(
-    ({ decision }) => decision === ReplyDecision.OnlyFluInjection
+  const hasConsentForAlternativeInjectionOnly = replies?.every(
+    ({ decision }) => decision === ReplyDecision.OnlyAlternativeInjection
   )
 
   if (programme?.alternativeVaccine) {
-    if (hasConsentForInjectionOnly) {
+    if (hasConsentForAlternativeInjectionOnly) {
       return ScreenVaccineCriteria.AlternativeInjection
     } else if (!hasConsentForInjection) {
       return ScreenVaccineCriteria.Intranasal

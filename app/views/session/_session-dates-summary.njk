@@ -17,32 +17,32 @@
         header: __("session.date.label"),
         html: dateShort
       }] %}
-      {% if session.offersAlternativeVaccine %}
-        {% set programme = session.programmes[0] %}
-        {% set dateRow = dateRow.concat([{
-          header: __("session.tally.vaccinatedNasal.label", {
-            programme: programme
-          }) | safe,
-          text: session.tally(programme.id).vaccinatedNasal if loop.first else 0,
-          format: "numeric"
-        }, {
-          header: __("session.tally.vaccinatedInjection.label", {
-            programme: programme
-          }) | safe,
-          text: session.tally(programme.id).vaccinatedInjection if loop.first else 0,
-          format: "numeric"
-        }]) %}
-      {% else %}
-        {% for programme in session.programmes %}
+      {% for programme in session.programmes %}
+        {% if programme.standardVaccine.criteria == VaccineCriteria.Intranasal %}
           {% set dateRow = dateRow.concat([{
-            header: __("session.tally.vaccinated.label", {
+            header: __("session.tally.vaccinatedIntranasal.label", {
               programme: programme
             }) | safe,
+            text: session.tally(programme.id).vaccinatedIntranasal if loop.first else 0,
+            format: "numeric"
+          }]) %}
+        {% else %}
+          {% set dateRow = dateRow.concat([{
+            header: programme.name,
             text: session.tally(programme.id).vaccinated if loop.first else 0,
             format: "numeric"
           }]) %}
-        {% endfor %}
-      {% endif %}
+        {% endif %}
+        {% if programme.alternativeVaccine %}
+          {% set dateRow = dateRow.concat([{
+            header: __("session.tally.vaccinatedAlternativeInjection.label", {
+              programme: programme
+            }) | safe,
+            text: session.tally(programme.id).vaccinatedAlternativeInjection if loop.first else 0,
+            format: "numeric"
+          }]) %}
+        {% endif %}
+      {% endfor %}
       {% set rows = rows | push(dateRow) %}
     {% endfor %}
 
@@ -51,59 +51,61 @@
       header: "All dates",
       text: "Total"
     }] %}
-    {% if session.offersAlternativeVaccine %}
-      {% set programme = session.programmes[0] %}
-      {% set totalRow = totalRow.concat([{
-        header: __("session.tally.vaccinatedNasal.label", {
-          programme: programme
-        }) | safe,
-        html: "<strong>" + session.tally(programme.id).vaccinatedNasal   + "</strong>",
-        format: "numeric"
-      }, {
-        header: __("session.tally.vaccinatedInjection.label", {
-          programme: programme
-        }) | safe,
-        html: "<strong>" + session.tally(programme.id).vaccinatedInjection + "</strong>",
-        format: "numeric"
-      }]) %}
-    {% else %}
-      {% for programme in session.programmes %}
+    {% for programme in session.programmes %}
+      {% if programme.standardVaccine.criteria == VaccineCriteria.Intranasal %}
         {% set totalRow = totalRow.concat([{
-          header: __("session.tally.vaccinated.label", {
+          header: __("session.tally.vaccinatedIntranasal.label", {
             programme: programme
           }) | safe,
+          html: "<strong>" + session.tally(programme.id).vaccinatedIntranasal   + "</strong>",
+          format: "numeric"
+        }]) %}
+      {% else %}
+        {% set totalRow = totalRow.concat([{
+          header: programme.name,
           html: "<strong>" + session.tally(programme.id).vaccinated + "</strong>",
           format: "numeric"
         }]) %}
-      {% endfor %}
-    {% endif %}
+      {% endif %}
+      {% if programme.alternativeVaccine %}
+        {% set totalRow = totalRow.concat([{
+          header: __("session.tally.vaccinatedAlternativeInjection.label", {
+            programme: programme
+          }) | safe,
+          html: "<strong>" + session.tally(programme.id).vaccinatedAlternativeInjection + "</strong>",
+          format: "numeric"
+        }]) %}
+      {% endif %}
+    {% endfor %}
     {% set rows = rows | push(totalRow) %}
 
     {# Head row #}
     {% set head = [{
       text: __("session.date.label")
     }] %}
-    {% if session.offersAlternativeVaccine %}
-      {% set programme = session.programmes[0] %}
-      {% set head = head.concat([{
-        text: __("session.tally.vaccinatedNasal.label", {
-          programme: programme
-        }),
-        format: "numeric"
-      }, {
-        text: __("session.tally.vaccinatedInjection.label", {
-          programme: programme
-        }),
-        format: "numeric"
-      }]) %}
-    {% else %}
-      {% for programme in session.programmes %}
+    {% for programme in session.programmes %}
+      {% if programme.standardVaccine.criteria == VaccineCriteria.Intranasal %}
+        {% set head = head.concat([{
+          text: __("session.tally.vaccinatedIntranasal.label", {
+            programme: programme
+          }),
+          format: "numeric"
+        }]) %}
+      {% else %}
         {% set head = head.concat([{
           text: programme.name,
           format: "numeric"
         }]) %}
-      {% endfor %}
-    {% endif %}
+      {% endif %}
+      {% if programme.alternativeVaccine %}
+        {% set head = head.concat([{
+          text: __("session.tally.vaccinatedAlternativeInjection.label", {
+            programme: programme
+          }),
+          format: "numeric"
+        }]) %}
+      {% endif %}
+    {% endfor %}
 
     {{ table({
       id: "dates",

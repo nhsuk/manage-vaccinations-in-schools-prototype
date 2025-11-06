@@ -231,7 +231,7 @@ export const parentController = {
         {
           text: __('consent.decision.injection.label'),
           hint: { text: __('consent.decision.injection.hint') },
-          value: ReplyDecision.OnlyFluInjection
+          value: ReplyDecision.OnlyAlternativeInjection
         },
         {
           text: __('consent.decision.no.label'),

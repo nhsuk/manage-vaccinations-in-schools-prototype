@@ -6,6 +6,7 @@ import {
   AuditEventType,
   ConsentOutcome,
   ProgrammeOutcome,
+  RecordVaccineCriteria,
   ReplyDecision,
   ScreenOutcome,
   TriageOutcome
@@ -230,9 +231,9 @@ export class PatientSession {
    *
    * @returns {boolean} Consent given for an injected vaccine
    */
-  get hasConsentForInjectionOnly() {
+  get hasConsentForAlternativeInjectionOnly() {
     return this.responses.every(
-      ({ decision }) => decision === ReplyDecision.OnlyFluInjection
+      ({ decision }) => decision === ReplyDecision.OnlyAlternativeInjection
     )
   }
 
@@ -326,11 +327,44 @@ export class PatientSession {
 
     // Return vaccine based on consent (and triage) outcomes
     const hasScreenedForInjection =
-      this.screen === ScreenOutcome.VaccinateInjection
+      this.screen === ScreenOutcome.VaccinateAlternativeInjection
 
-    return this.hasConsentForInjectionOnly || hasScreenedForInjection
+    return this.hasConsentForAlternativeInjectionOnly || hasScreenedForInjection
       ? alternativeVaccine // Injection
       : standardVaccine // Nasal
+  }
+
+  /**
+   * Get vaccine to administer (or was administered) in this patient session
+   *
+   * For all programmes besides flu, this will be an injection.
+   * For the flu programme, this depends on consent responses
+   *
+   * @returns {import('../enums.js').RecordVaccineCriteria|undefined} Vaccination method
+   */
+  get vaccineCriteria() {
+    // If no programme does not offer alternatives, don’t return a method
+    if (!this.programme.alternativeVaccine) {
+      return
+    }
+
+    // Need consent response(s) before we can determine the chosen method
+    if (!this.consentGiven) {
+      return
+    }
+
+    if (this.screen === ScreenOutcome.VaccinateIntranasal) {
+      return RecordVaccineCriteria.IntranasalOnly
+    }
+
+    if (
+      this.consent === ConsentOutcome.GivenForAlternativeInjection ||
+      this.screen === ScreenOutcome.VaccinateAlternativeInjection
+    ) {
+      return RecordVaccineCriteria.AlternativeInjectionOnly
+    }
+
+    return RecordVaccineCriteria.Any
   }
 
   /**
@@ -344,7 +378,7 @@ export class PatientSession {
 
     return (
       this.hasConsentForInjection &&
-      !this.hasConsentForInjectionOnly &&
+      !this.hasConsentForAlternativeInjectionOnly &&
       !hasScreenedForNasal
     )
   }
@@ -662,8 +696,7 @@ export class PatientSession {
       },
       nextActivityPerProgramme: formatList(nextActivityPerProgramme),
       outstandingVaccinations: filters.formatList(outstandingVaccinations),
-      vaccineCriteria:
-        this.vaccine?.criteria && formatVaccineCriteria(this.vaccine.criteria),
+      vaccineCriteria: formatVaccineCriteria(this.vaccineCriteria),
       yearGroup: formattedYearGroup
     }
   }

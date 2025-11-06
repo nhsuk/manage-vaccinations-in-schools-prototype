@@ -465,6 +465,21 @@ export class Session {
   }
 
   /**
+   * Check if session offers an intranasal vaccine
+   * For example, the standard vaccine for the flu programme is a nasal spray
+   *
+   * @returns {boolean} Has alternative vaccines
+   */
+  get offersIntranasalVaccine() {
+    const programmesWithIntranasalVaccine = this.programmes.filter(
+      ({ standardVaccine }) =>
+        standardVaccine.criteria === VaccineCriteria.Intranasal
+    )
+
+    return programmesWithIntranasalVaccine.length > 0
+  }
+
+  /**
    * Get programme name(s)
    *
    * @returns {object} Programme name(s)
@@ -620,17 +635,18 @@ export class Session {
       vaccinated: getSessionActivityCount(this, [
         {
           report: ProgrammeOutcome.Vaccinated,
+          'vaccine.criteria': VaccineCriteria.Injection,
           programme_id
         }
       ]),
-      vaccinatedNasal: getSessionActivityCount(this, [
+      vaccinatedIntranasal: getSessionActivityCount(this, [
         {
           report: ProgrammeOutcome.Vaccinated,
           'vaccine.criteria': VaccineCriteria.Intranasal,
           programme_id
         }
       ]),
-      vaccinatedInjection: getSessionActivityCount(this, [
+      vaccinatedAlternativeInjection: getSessionActivityCount(this, [
         {
           report: ProgrammeOutcome.Vaccinated,
           'vaccine.criteria': VaccineCriteria.AlternativeInjection,

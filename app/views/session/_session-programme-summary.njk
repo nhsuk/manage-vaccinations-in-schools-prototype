@@ -21,7 +21,7 @@
         href: session.uri + "/consent?consent=" + ConsentOutcome.NoResponse + "&programme_id=" + programme.id
       }) }}
     </div>
-{% if session.offersAlternativeVaccine %}
+{% if programme.standardVaccine.criteria == VaccineCriteria.Intranasal %}
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: __("session.tally.consentGivenForVaccineCriteria.label", {
@@ -29,19 +29,8 @@
         }),
         colour: "green",
         compact: true,
-        data: session.tally(programme.id).consentGivenForIntranasal,
+        data: session.tally(programme.id).consentGiven,
         href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForIntranasal
-      }) }}
-    </div>
-    <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
-      {{ appDataCard({
-        heading: __("session.tally.consentGivenForVaccineCriteria.label", {
-          vaccineCriteria: programme.alternativeVaccine.criteria | lower
-        }),
-        colour: "green",
-        compact: true,
-        data: session.tally(programme.id).consentGivenForAlternativeInjection,
-        href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForAlternativeInjection
       }) }}
     </div>
 {% else %}
@@ -52,6 +41,19 @@
         compact: true,
         data: session.tally(programme.id).consentGiven,
         href: session.uri + "/consent?consent=" + ConsentOutcome.Given
+      }) }}
+    </div>
+{% endif %}
+{% if programme.alternativeVaccine %}
+    <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
+      {{ appDataCard({
+        heading: __("session.tally.consentGivenForVaccineCriteria.label", {
+          vaccineCriteria: programme.alternativeVaccine.criteria | lower
+        }),
+        colour: "green",
+        compact: true,
+        data: session.tally(programme.id).consentGivenForAlternativeInjection,
+        href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForAlternativeInjection
       }) }}
     </div>
 {% endif %}

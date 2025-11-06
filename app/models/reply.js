@@ -76,7 +76,7 @@ export class Reply {
     this.declined = this.decision === ReplyDecision.Declined
     this.given = [
       ReplyDecision.Given,
-      ReplyDecision.OnlyFluInjection,
+      ReplyDecision.OnlyAlternativeInjection,
       ReplyDecision.OnlyMenACWY,
       ReplyDecision.OnlyTdIPV
     ].includes(this.decision)
@@ -190,8 +190,7 @@ export class Reply {
           this.decision === ReplyDecision.Given &&
           !this.alternative:
           return ConsentVaccineCriteria.IntranasalOnly
-        case this.decision === ReplyDecision.OnlyFluInjection:
-        case this.decision === ReplyDecision.OnlyGelatineFreeInjection:
+        case this.decision === ReplyDecision.OnlyAlternativeInjection:
           return ConsentVaccineCriteria.AlternativeInjectionOnly
         default:
           return ConsentVaccineCriteria.Either
@@ -205,7 +204,10 @@ export class Reply {
    * @returns {boolean} Consent given for an injected vaccine
    */
   get hasConsentForInjection() {
-    return this.decision === ReplyDecision.OnlyFluInjection || this.alternative
+    return (
+      this.decision === ReplyDecision.OnlyAlternativeInjection ||
+      this.alternative
+    )
   }
 
   /**
@@ -230,7 +232,7 @@ export class Reply {
       // If no consent for alternative injection or only consent for injection
       if (!this.alternative) {
         consentedMethod =
-          this.decision === ReplyDecision.OnlyFluInjection
+          this.decision === ReplyDecision.OnlyAlternativeInjection
             ? VaccineCriteria.AlternativeInjection
             : VaccineCriteria.Intranasal
         consentedVaccine = Object.values(vaccines).find(
@@ -338,7 +340,7 @@ export class Reply {
       case ReplyDecision.Given:
         colour = 'green'
         break
-      case ReplyDecision.OnlyFluInjection:
+      case ReplyDecision.OnlyAlternativeInjection:
         colour = 'green'
         text = ReplyDecision.Given
         break

@@ -506,7 +506,7 @@ export const en = {
     confirmation: {
       title: {
         [ReplyDecision.Given]: 'Consent confirmed',
-        [ReplyDecision.OnlyFluInjection]:
+        [ReplyDecision.OnlyAlternativeInjection]:
           'Consent for the flu injection vaccination confirmed',
         [ReplyDecision.OnlyMenACWY]:
           'Consent for the MenACWY vaccination confirmed',
@@ -518,7 +518,7 @@ export const en = {
       text: {
         [ReplyDecision.Given]:
           '{{consent.child.fullName}} is due to get the {{session.vaccinationNames.sentenceCase}} at school on {{session.summary.datesDisjunction}}',
-        [ReplyDecision.OnlyFluInjection]:
+        [ReplyDecision.OnlyAlternativeInjection]:
           '{{consent.child.fullName}} is due to get the flu injection at school on {{session.summary.datesDisjunction}}',
         [ReplyDecision.OnlyMenACWY]:
           '{{consent.child.fullName}} is due to get the MenACWY vaccination at school on {{session.summary.datesDisjunction}}',
@@ -534,7 +534,7 @@ export const en = {
         // so text should say either ‘vaccination is’ or ‘vaccinations are’
         [ReplyDecision.Given]:
           'As you answered ‘yes’ to one or more of the health questions, we need to check the {{session.vaccinationNames.sentenceCase}} is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
-        [ReplyDecision.OnlyFluInjection]:
+        [ReplyDecision.OnlyAlternativeInjection]:
           'As you answered ‘yes’ to one or more of the health questions, we need to check the {{session.vaccinationNames.sentenceCase}} is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
         [ReplyDecision.OnlyMenACWY]:
           'As you answered ‘yes’ to one or more of the health questions, we need to check the MenACWY vaccination is suitable for {{consent.child.fullName}}. We’ll review your answers and get in touch again soon.',
@@ -1663,11 +1663,11 @@ export const en = {
         label: 'Vaccinated',
         caption: 'Vaccinations given in this session'
       },
-      vaccinatedNasal: {
+      vaccinatedIntranasal: {
         label: '{{programme.name}} (Nasal spray)'
       },
-      vaccinatedInjection: {
-        label: '{{programme.name}} (Injection)'
+      vaccinatedAlternativeInjection: {
+        label: '{{programme.name}} (Gelatine-free injection)'
       }
     },
     date: {
@@ -1855,7 +1855,7 @@ export const en = {
     outcome: {
       label: 'Outcome',
       [ScreenOutcome.Vaccinate]: 'Yes, it’s safe to vaccinate',
-      [ScreenOutcome.VaccinateInjection]:
+      [ScreenOutcome.VaccinateAlternativeInjection]:
         'Yes, it’s safe to vaccinate with injected vaccine',
       [ScreenOutcome.VaccinateIntranasal]:
         'Yes, it’s safe to vaccinate with nasal spray',

@@ -405,11 +405,13 @@ export const sessionController = {
     // Checkbox filter options (select many)
     const checkboxFilters = {
       consent: {
-        consent: session.offersAlternativeVaccine
+        consent: session.offersIntranasalVaccine
           ? Object.values(ConsentOutcome).filter(
               (outcome) => outcome !== ConsentOutcome.Given
             )
-          : ConsentOutcome
+          : Object.values(ConsentOutcome).filter(
+              (outcome) => outcome !== ConsentOutcome.GivenForIntranasal
+            )
       }
     }
 

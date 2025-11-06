@@ -282,6 +282,16 @@ export const ProgrammePreset = {
  * @readonly
  * @enum {string}
  */
+export const RecordVaccineCriteria = {
+  Any: 'Either injection',
+  AlternativeInjectionOnly: 'Gelatine-free injection',
+  IntranasalOnly: 'Nasal spray'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const RegistrationOutcome = {
   Pending: 'Not registered yet',
   Present: 'Attending session',
@@ -296,8 +306,7 @@ export const RegistrationOutcome = {
 export const ReplyDecision = {
   NoResponse: 'No response',
   Given: 'Consent given',
-  OnlyGelatineFreeInjection: 'Consent given for the alternative MMR vaccine',
-  OnlyFluInjection: 'Consent given for flu injection',
+  OnlyAlternativeInjection: 'Consent given for flu injection',
   OnlyMenACWY: 'Consent given for MenACWY only',
   OnlyTdIPV: 'Consent given for Td/IPV only',
   Declined: 'Follow up requested',
@@ -355,7 +364,8 @@ export const ScreenVaccineCriteria = {
  */
 export const ScreenOutcome = {
   Vaccinate: 'Safe to vaccinate',
-  VaccinateInjection: 'Safe to vaccinate with injected vaccine',
+  VaccinateAlternativeInjection:
+    'Safe to vaccinate with gelatine-free injection',
   VaccinateIntranasal: 'Safe to vaccinate with nasal spray',
   NeedsTriage: 'Needs triage',
   DelayVaccination: 'Delay vaccination',

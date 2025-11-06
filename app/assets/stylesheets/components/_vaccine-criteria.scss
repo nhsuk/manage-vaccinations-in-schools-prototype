@@ -6,7 +6,8 @@
   column-gap: nhsuk-spacing(2);
   display: inline-flex;
 
-  &::before {
+  &[data-value="Gelatine-free injection"]::before,
+  &[data-value="Nasal spray"]::before {
     content: "";
     height: 1em;
     width: 1em;
