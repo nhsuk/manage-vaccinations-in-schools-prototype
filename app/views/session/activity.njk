@@ -82,7 +82,7 @@
           }) if view == "record"
         }) if view == "record" and session.isActive }}
 
-        {% if data[view] and data[view] != "none" and data[view] != Activity.Record %}
+        {% if data[view] and data[view] != "none" %}
           {% set title = __("patientSession." + view + ".label") + ": " + data[view] %}
         {% else %}
           {% set title = __("session." + view + ".title") %}

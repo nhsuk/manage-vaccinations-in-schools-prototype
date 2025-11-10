@@ -3,7 +3,6 @@ import _ from 'lodash'
 
 import {
   AcademicYear,
-  Activity,
   InstructionOutcome,
   PatientStatus,
   RegistrationOutcome,
@@ -229,15 +228,8 @@ export const sessionController = {
   readPatientSessions(request, response, next) {
     const { account } = request.app.locals
     const { view } = request.params
-    let {
-      options,
-      q,
-      instruct,
-      programme_ids,
-      nextActivity,
-      vaccineCriteria,
-      yearGroup
-    } = request.query
+    let { options, q, instruct, programme_ids, vaccineCriteria, yearGroup } =
+      request.query
     const { data } = request.session
     const { session } = response.locals
 
@@ -271,13 +263,6 @@ export const sessionController = {
         : [programme_ids]
       results = results.filter((patientSession) =>
         programme_ids.includes(patientSession.programme_id)
-      )
-    }
-
-    // Filter by next activity
-    if (nextActivity && nextActivity !== 'none') {
-      results = results.filter(
-        (patientSession) => patientSession.nextActivity === nextActivity
       )
     }
 
@@ -337,8 +322,8 @@ export const sessionController = {
     // Only show patients ready to vaccinate, and that a user can vaccinate
     if (view === 'record') {
       results = results.filter(
-        ({ nextActivity, register, vaccine }) =>
-          nextActivity === Activity.Record &&
+        ({ register, report, vaccine }) =>
+          report === PatientStatus.Due &&
           register !== RegistrationOutcome.Pending &&
           account.vaccineMethods?.includes(vaccine?.method)
       )
@@ -407,7 +392,6 @@ export const sessionController = {
     delete data.instruct
     delete data.register
     delete data.report
-    delete data.nextActivity
 
     next()
   },
@@ -422,8 +406,7 @@ export const sessionController = {
       'instruct',
       'register',
       'report',
-      'vaccineCriteria',
-      'nextActivity'
+      'vaccineCriteria'
     ]) {
       const value = request.body[key]
       if (value) {
@@ -594,7 +577,7 @@ export const sessionController = {
     const { data } = request.session
 
     const patientsToInstruct = session.patientSessions
-      .filter(({ nextActivity }) => nextActivity === Activity.Record)
+      .filter(({ report }) => report === PatientStatus.Due)
       .filter(({ instruct }) => instruct === InstructionOutcome.Needed)
 
     for (const patientSession of patientsToInstruct) {

@@ -1041,9 +1041,6 @@ export const en = {
     report: {
       label: 'Programme status'
     },
-    nextActivity: {
-      label: 'Action required'
-    },
     information: {
       label: 'Notes'
     },
