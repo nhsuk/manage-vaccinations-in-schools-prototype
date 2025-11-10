@@ -194,6 +194,9 @@ export const en = {
     gender: {
       label: 'Gender'
     },
+    ethnicity: {
+      label: 'Ethnicity'
+    },
     address: {
       label: 'Home address'
     },
@@ -327,6 +330,20 @@ export const en = {
         title: 'What is your child’s date of birth?',
         label: 'Child’s date of birth',
         hint: 'For example, 27 3 2012'
+      },
+      ethnicGroup: {
+        label: 'Ethnic group',
+        title: 'What is your child’s ethnic group?'
+      },
+      ethnicBackground: {
+        label: 'Ethnic group',
+        title:
+          'Which of the following best describes your child’s %s background?',
+        other: 'Any other %s background',
+        preferNotToSay: 'Prefer not to say'
+      },
+      ethnicBackgroundOther: {
+        label: 'How would you describe your child’s background? (optional)'
       },
       'confirm-school': {
         title: 'Confirm your child’s school',

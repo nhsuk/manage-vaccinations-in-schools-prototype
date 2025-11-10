@@ -1,0 +1,26 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("consent.child.ethnicGroup.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: appHeading({
+          classes: "nhsuk-fieldset__legend--l",
+          title: title
+        })
+      }
+    },
+    items: [
+      { text: EthnicGroup.White },
+      { text: EthnicGroup.Mixed },
+      { text: EthnicGroup.Asian },
+      { text: EthnicGroup.Black },
+      { text: EthnicGroup.Other },
+      { divider: "or" },
+      { text: EthnicGroup.Withheld }
+    ],
+    decorate: "consent.child.ethnicGroup"
+  }) }}
+{% endblock %}
