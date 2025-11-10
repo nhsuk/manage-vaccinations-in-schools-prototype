@@ -54,7 +54,6 @@ export const sessionController = {
         'instruct',
         'register',
         'record',
-        'outcome',
         'report'
       ].includes(view)
     ) {
@@ -319,12 +318,11 @@ export const sessionController = {
       )
     }
 
-    // Filter by screen/instruct/register/outcome status
+    // Filter by screen/instruct/register status
     const filters = {
       screen: request.query.screen || 'none',
       instruct: request.query.instruct || 'none',
       register: request.query.register || 'none',
-      outcome: request.query.outcome || 'none',
       report: request.query.report || 'none'
     }
 
@@ -481,7 +479,6 @@ export const sessionController = {
       'screen',
       'instruct',
       'register',
-      'outcome',
       'report',
       'vaccineCriteria',
       'nextActivity'
