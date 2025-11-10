@@ -454,6 +454,23 @@ export class Session {
   }
 
   /**
+   * Get all vaccine criteria used in session (if more than one)
+   *
+   * @returns {Array<VaccineCriteria>} Vaccine criteria
+   */
+  get vaccineCriteria() {
+    const vaccineCriteria = new Set()
+
+    for (const vaccine of this.vaccines) {
+      vaccineCriteria.add(vaccine.criteria)
+    }
+
+    if (vaccineCriteria.size > 1) {
+      return [...vaccineCriteria]
+    }
+  }
+
+  /**
    * Check if session offers an alternative vaccine
    * For example, the flu programme offer both nasal and injection vaccines
    *

@@ -78,6 +78,73 @@
       }) if enums }}
     {% endfor %}
 
+    {{ radios({
+      classes: "nhsuk-radios--small",
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("patientSession.report.label")
+        }
+      },
+      items: [{
+        text: "Any",
+        value: "none",
+        checked: data.report or data.report == "none"
+      }, {
+        text: PatientStatus.Ineligible
+      }, {
+        text: PatientStatus.Consent,
+        conditional: {
+          html: checkboxes({
+            classes: "nhsuk-checkboxes--small",
+            items: enumItems(PatientConsentStatus),
+            decorate: "patientConsent"
+          })
+        } if data.report == PatientStatus.Consent
+      }, {
+        text: PatientStatus.Refused,
+        conditional: {
+          html: checkboxes({
+            classes: "nhsuk-checkboxes--small",
+            items: enumItems(PatientRefusedStatus),
+            decorate: "patientRefused"
+          })
+        } if data.report == PatientStatus.Refused
+      }, {
+        text: PatientStatus.Triage
+      }, {
+        text: PatientStatus.Due,
+        conditional: {
+          html: checkboxes({
+            classes: "nhsuk-checkboxes--small",
+            items: enumItems(session.vaccineCriteria),
+            decorate: "patientRefused"
+          }) if session.vaccineCriteria
+        } if data.report == PatientStatus.Due
+      }, {
+        text: PatientStatus.Deferred,
+        conditional: {
+          html: checkboxes({
+            classes: "nhsuk-checkboxes--small",
+            items: enumItems(PatientDeferredStatus),
+            decorate: "patientDeferred"
+          })
+        } if data.report == PatientStatus.Deferred
+      }, {
+        text: PatientStatus.PartiallyVaccinated
+      }, {
+        text: PatientStatus.Vaccinated,
+        conditional: {
+          html: checkboxes({
+            classes: "nhsuk-checkboxes--small",
+            items: enumItems(PatientVaccinatedStatus),
+            decorate: "patientVaccinated"
+          })
+        } if data.report == PatientStatus.Vaccinated
+      }],
+      decorate: "report"
+    }) }}
+
     {{ checkboxes({
       classes: "nhsuk-checkboxes--small",
       fieldset: {

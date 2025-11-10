@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { AcademicYear, ArchiveRecordReason } from '../enums.js'
+import { AcademicYear, ArchiveRecordReason, PatientStatus } from '../enums.js'
 import { Patient } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
 import { getResults, getPagination } from '../utils/pagination.js'
@@ -69,14 +69,40 @@ export const patientController = {
       )
     }
 
-    // Filter by outcome
-    for (const name of ['report']) {
-      const outcome = request.query[name]
-      if (outcome && outcome !== 'none' && programme_ids) {
-        results = results.filter((patient) =>
-          patient.patientSessions.some(
+    // Filter by instruct/register/report/sub status
+    const filters = {
+      report: request.query.report || 'none',
+      patientConsent: request.query.patientConsent || 'none',
+      patientDeferred: request.query.patientDeferred || 'none',
+      patientRefused: request.query.patientRefused || 'none',
+      patientVaccinated: request.query.patientVaccinated || 'none'
+    }
+
+    // Filter by status
+    if (filters.report && filters.report !== 'none' && programme_ids) {
+      results = results.filter((patient) =>
+        patient.patientSessions.some(
+          (patientSession) =>
+            patientSession.report === filters.report &&
+            programme_ids.includes(patientSession.programme_id)
+        )
+      )
+    }
+
+    // Filter by sub-status(es)
+    for (const [patientStatus, status] of Object.entries({
+      [PatientStatus.Consent]: 'patientConsent',
+      [PatientStatus.Deferred]: 'patientDeferred',
+      [PatientStatus.Refused]: 'patientRefused',
+      [PatientStatus.Vaccinated]: 'patientVaccinated'
+    })) {
+      if (filters.report === patientStatus && filters[status] !== 'none') {
+        let statuses = filters[status]
+        statuses = Array.isArray(statuses) ? statuses : [statuses]
+        results.filter((patient) =>
+          patient.patientSessions.filter(
             (patientSession) =>
-              patientSession[name] === outcome &&
+              statuses.includes(patientSession[status]) &&
               programme_ids.includes(patientSession.programme_id)
           )
         )
@@ -123,7 +149,12 @@ export const patientController = {
     // Clean up session data
     delete data.report
     delete data.options
+    delete data.patientConsent
+    delete data.patientDeferred
+    delete data.patientRefused
+    delete data.patientVaccinated
     delete data.programme_ids
+    delete data.report
     delete data.q
     delete data.yearGroup
 
@@ -152,7 +183,15 @@ export const patientController = {
     }
 
     // Checkboxes
-    for (const key of ['options', 'programme_ids', 'yearGroup']) {
+    for (const key of [
+      'options',
+      'patientConsent',
+      'patientDeferred',
+      'patientRefused',
+      'patientVaccinated',
+      'programme_ids',
+      'yearGroup'
+    ]) {
       const value = request.body[key]
       const values = Array.isArray(value) ? value : [value]
       if (value) {

@@ -4,10 +4,16 @@ import filters from '@x-govuk/govuk-prototype-filters'
 import {
   AuditEventType,
   ConsentOutcome,
+  ConsentWindow,
   PatientStatus,
+  PatientConsentStatus,
+  PatientDeferredStatus,
+  PatientRefusedStatus,
+  PatientVaccinatedStatus,
   RecordVaccineCriteria,
   ReplyDecision,
-  ScreenOutcome
+  ScreenOutcome,
+  VaccinationOutcome
 } from '../enums.js'
 import { getDateValueDifference, getYearGroup, today } from '../utils/date.js'
 import {
@@ -432,6 +438,82 @@ export class PatientSession {
   }
 
   /**
+   * Get patient consent status
+   *
+   * @returns {PatientConsentStatus} Patient consent status
+   */
+  get patientConsent() {
+    if (this.session.consentWindow === ConsentWindow.None) {
+      return PatientConsentStatus.NotScheduled
+    } else if (this.session.consentWindow === ConsentWindow.Opening) {
+      return PatientConsentStatus.Scheduled
+    }
+
+    switch (this.consent) {
+      case ConsentOutcome.NoRequest:
+        return PatientConsentStatus.Failed
+      case ConsentOutcome.NoResponse:
+        return PatientConsentStatus.NoResponse
+      case ConsentOutcome.Declined:
+        return PatientConsentStatus.FollowUp
+    }
+  }
+
+  /**
+   * Get patient deferred status
+   *
+   * @returns {PatientDeferredStatus} Patient deferred status
+   */
+  get patientDeferred() {
+    if (this.screen === ScreenOutcome.DoNotVaccinate) {
+      return PatientDeferredStatus.Contraindicated
+    } else if (this.screen === ScreenOutcome.DelayVaccination) {
+      return PatientDeferredStatus.DelayVaccination
+    }
+
+    switch (this.outcome) {
+      case VaccinationOutcome.Absent:
+        return PatientDeferredStatus.ChildAbsent
+      case VaccinationOutcome.Contraindications:
+        return PatientDeferredStatus.ChildContraindicated
+      case VaccinationOutcome.Refused:
+        return PatientDeferredStatus.ChildRefused
+      case VaccinationOutcome.Unwell:
+        return PatientDeferredStatus.ChildUnwell
+    }
+  }
+
+  /**
+   * Get patient refused status
+   *
+   * @returns {PatientRefusedStatus} Patient refused status
+   */
+  get patientRefused() {
+    switch (this.consent) {
+      case ConsentOutcome.Inconsistent:
+        return PatientRefusedStatus.Conflict
+      case ConsentOutcome.Refused:
+      case ConsentOutcome.FinalRefusal:
+        return PatientRefusedStatus.Refusal
+    }
+  }
+
+  /**
+   * Get patient vaccinated status
+   *
+   * @returns {PatientVaccinatedStatus} Patient vaccinated status
+   */
+  get patientVaccinated() {
+    switch (this.outcome) {
+      case VaccinationOutcome.Vaccinated:
+      case VaccinationOutcome.PartVaccinated:
+        return PatientVaccinatedStatus.Vaccinated
+      case VaccinationOutcome.AlreadyVaccinated:
+        return PatientVaccinatedStatus.AlreadyVaccinated
+    }
+  }
+
+  /**
    * Consent has been given
    *
    * @returns {boolean} Consent has been given
@@ -566,17 +648,17 @@ export class PatientSession {
   get reportReason() {
     switch (this.report) {
       case PatientStatus.Vaccinated:
-        return `${this.outcome} on ${this.lastRecordedVaccination.formatted.createdAt_dateShort}`
+        return `${this.patientVaccinated} on ${this.lastRecordedVaccination.formatted.createdAt_dateShort}`
       case PatientStatus.Due:
         return this.vaccineCriteria
       case PatientStatus.Deferred:
         return this.lastRecordedVaccination
-          ? `${this.outcome} on ${this.lastRecordedVaccination.formatted.createdAt_dateShort}`
-          : this.outcome
+          ? `${this.patientDeferred} on ${this.lastRecordedVaccination.formatted.createdAt_dateShort}`
+          : this.patientDeferred
       case PatientStatus.Refused:
-        return this.consent
+        return this.patientRefused
       case PatientStatus.Consent:
-        return this.consent
+        return this.patientConsent
     }
   }
 
