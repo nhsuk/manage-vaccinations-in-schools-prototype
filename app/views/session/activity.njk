@@ -129,10 +129,6 @@
                 yearGroup: {
                   value: patientSession.formatted.yearGroup
                 },
-                nextActivityPerProgramme: {
-                  label: __("patientSession.nextActivityPerProgramme.label"),
-                  value: patientSession.formatted.nextActivityPerProgramme
-                } if (view == "register" and patientSession.register != RegistrationOutcome.Absent) or view == "record" or view == "outcome" and patientSession.outcome != PatientStatus.Vaccinated,
                 vaccineCriteria: {
                   label: __("patientSession.vaccineCriteria.label"),
                   value: patientSession.formatted.vaccineCriteria

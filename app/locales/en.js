@@ -1047,9 +1047,6 @@ export const en = {
     information: {
       label: 'Notes'
     },
-    nextActivityPerProgramme: {
-      label: 'Action required'
-    },
     yearGroup: {
       label: 'Year group'
     },
