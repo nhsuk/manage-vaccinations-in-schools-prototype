@@ -263,6 +263,49 @@ export const PatientStatus = {
  * @readonly
  * @enum {string}
  */
+export const PatientConsentStatus = {
+  NotScheduled: 'No request',
+  Scheduled: 'Request scheduled',
+  Failed: 'Request failed',
+  NoResponse: 'No response',
+  FollowUp: 'Follow-up requested'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const PatientRefusedStatus = {
+  Conflict: 'Consent conflict',
+  Refusal: 'Consent refused'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const PatientDeferredStatus = {
+  Contraindicated: 'Contraindicated',
+  DelayVaccination: 'Vaccination delayed',
+  ChildAbsent: 'Child absent',
+  ChildContraindicated: 'Child contraindicated',
+  ChildRefused: 'Child refused',
+  ChildUnwell: 'Child unwell'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const PatientVaccinatedStatus = {
+  Vaccinated: 'Vaccinated',
+  AlreadyVaccinated: 'Already vaccinated'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const PreScreenQuestion = {
   IsWell: 'is not acutely unwell',
   IsPregnant: 'is not pregnant',

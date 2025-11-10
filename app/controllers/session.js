@@ -280,17 +280,38 @@ export const sessionController = {
       )
     }
 
-    // Filter by screen/instruct/register status
+    // Filter by instruct/register/report/sub status
     const filters = {
       instruct: request.query.instruct || 'none',
       register: request.query.register || 'none',
-      report: request.query.report || 'none'
+      report: request.query.report || 'none',
+      patientConsent: request.query.patientConsent || 'none',
+      patientDeferred: request.query.patientDeferred || 'none',
+      patientRefused: request.query.patientRefused || 'none',
+      patientVaccinated: request.query.patientVaccinated || 'none'
     }
 
+    // Filter by status
     for (const activity of ['instruct', 'register', 'report']) {
       if (activity === view && filters[view] !== 'none') {
         results = results.filter(
           (patientSession) => patientSession[view] === filters[view]
+        )
+      }
+    }
+
+    // Filter by sub-status(es)
+    for (const [programmeOutcome, status] of Object.entries({
+      [PatientStatus.Consent]: 'patientConsent',
+      [PatientStatus.Deferred]: 'patientDeferred',
+      [PatientStatus.Refused]: 'patientRefused',
+      [PatientStatus.Vaccinated]: 'patientVaccinated'
+    })) {
+      if (filters.report === programmeOutcome && filters[status] !== 'none') {
+        let statuses = filters[status]
+        statuses = Array.isArray(statuses) ? statuses : [statuses]
+        results = results.filter((patientSession) =>
+          statuses.includes(patientSession[status])
         )
       }
     }
@@ -354,14 +375,10 @@ export const sessionController = {
       register: {
         register: RegistrationOutcome,
         vaccineCriteria: session.offersAlternativeVaccine && VaccineCriteria,
-        instruct: session.psdProtocol && InstructionOutcome,
-        report: PatientStatus
+        instruct: session.psdProtocol && InstructionOutcome
       },
       record: {
         vaccineCriteria: session.offersAlternativeVaccine && VaccineCriteria
-      },
-      report: {
-        report: PatientStatus
       }
     }
 
@@ -380,6 +397,10 @@ export const sessionController = {
     // Clean up session data
     delete data.options
     delete data.q
+    delete data.patientConsent
+    delete data.patientDeferred
+    delete data.patientRefused
+    delete data.patientVaccinated
     delete data.programme_ids
     delete data.vaccineCriteria
     delete data.instruct
@@ -408,7 +429,15 @@ export const sessionController = {
     }
 
     // Checkboxes
-    for (const key of ['options', 'programme_ids', 'yearGroup']) {
+    for (const key of [
+      'options',
+      'patientConsent',
+      'patientDeferred',
+      'patientRefused',
+      'patientVaccinated',
+      'programme_ids',
+      'yearGroup'
+    ]) {
       const value = request.body[key]
       const values = Array.isArray(value) ? value : [value]
       if (value) {
