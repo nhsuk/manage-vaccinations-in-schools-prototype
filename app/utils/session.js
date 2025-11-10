@@ -65,9 +65,11 @@ export const getSessionActivityCount = (session, filters) => {
 
   for (const filter of filters) {
     for (const [key, value] of Object.entries(filter)) {
-      patientSessions = patientSessions.filter(
-        (patientSession) => _.get(patientSession, key) === value
-      )
+      if (value) {
+        patientSessions = patientSessions.filter(
+          (patientSession) => _.get(patientSession, key) === value
+        )
+      }
     }
   }
 
