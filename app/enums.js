@@ -447,16 +447,6 @@ export const SessionType = {
  * @readonly
  * @enum {string}
  */
-export const TriageOutcome = {
-  Needed: 'Triage needed',
-  Completed: 'Triage completed',
-  NotNeeded: 'No triage needed'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
 export const UploadType = {
   Cohort: 'Child records',
   School: 'Class list records',

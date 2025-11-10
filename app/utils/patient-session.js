@@ -6,7 +6,6 @@ import {
   PatientStatus,
   RegistrationOutcome,
   ScreenOutcome,
-  TriageOutcome,
   VaccinationOutcome,
   VaccineCriteria
 } from '../enums.js'
@@ -75,35 +74,6 @@ export const getConsentStatus = (patientSession) => {
 }
 
 /**
- * Get triage status properties
- *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {object} Triage status properties
- */
-export const getTriageStatus = (patientSession) => {
-  const { triage } = patientSession
-
-  let colour
-  switch (triage) {
-    case TriageOutcome.Needed:
-      colour = 'blue'
-      break
-    case TriageOutcome.NotNeeded:
-      colour = 'green'
-      break
-    case TriageOutcome.Completed:
-      colour = false
-      break
-    default:
-  }
-
-  return {
-    colour,
-    text: triage
-  }
-}
-
-/**
  * Get screen status properties
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
@@ -147,7 +117,7 @@ export const getScreenStatus = (patientSession) => {
       description = `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the nasal spray only.`
       break
     default:
-      text = TriageOutcome.NotNeeded
+      text = 'No triage needed'
       colour = 'green'
       description = `No triage is needed for ${patient.fullName}.`
   }
@@ -413,7 +383,7 @@ export const getReportOutcome = (patientSession) => {
   }
 
   // Has triage outcome
-  if (patientSession.triage === TriageOutcome.Needed) {
+  if (patientSession.screen === ScreenOutcome.NeedsTriage) {
     return PatientStatus.Triage
   }
 

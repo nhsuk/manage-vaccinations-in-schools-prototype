@@ -1,8 +1,7 @@
 import {
   ReplyDecision,
   ScreenOutcome,
-  ScreenVaccineCriteria,
-  TriageOutcome
+  ScreenVaccineCriteria
 } from '../enums.js'
 
 import { getRepliesWithHealthAnswers } from './reply.js'
@@ -103,19 +102,4 @@ export const getScreenOutcome = (patientSession) => {
   }
 
   return false
-}
-
-/**
- * Get triage outcome (has triage taken place)
- *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {TriageOutcome} Outcome key and value
- */
-export const getTriageOutcome = (patientSession) => {
-  if (patientSession.screen === ScreenOutcome.NeedsTriage) {
-    return TriageOutcome.Needed
-  } else if (patientSession.screen) {
-    return TriageOutcome.Completed
-  }
-  return TriageOutcome.NotNeeded
 }

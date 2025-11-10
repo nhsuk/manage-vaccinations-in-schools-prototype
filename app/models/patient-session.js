@@ -21,8 +21,7 @@ import {
   getRegistrationStatus,
   getReportStatus,
   getSessionOutcome,
-  getScreenStatus,
-  getTriageStatus
+  getScreenStatus
 } from '../utils/patient-session.js'
 import {
   getConsentOutcome,
@@ -39,8 +38,7 @@ import {
 import {
   getScreenOutcome,
   getScreenOutcomesForConsentMethod,
-  getScreenVaccineCriteria,
-  getTriageOutcome
+  getScreenVaccineCriteria
 } from '../utils/triage.js'
 
 import { Gillick } from './gillick.js'
@@ -483,15 +481,6 @@ export class PatientSession {
   }
 
   /**
-   * Get triage outcome
-   *
-   * @returns {import('../enums.js').TriageOutcome} Triage outcome
-   */
-  get triage() {
-    return getTriageOutcome(this)
-  }
-
-  /**
    * Get instruction outcome
    *
    * @returns {import('../enums.js').InstructionOutcome|boolean} Instruction outcome
@@ -566,7 +555,6 @@ export class PatientSession {
   get status() {
     return {
       consent: getConsentStatus(this),
-      triage: getTriageStatus(this),
       screen: getScreenStatus(this),
       instruct: getInstructionStatus(this),
       register: getRegistrationStatus(this),
