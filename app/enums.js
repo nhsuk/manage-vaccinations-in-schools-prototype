@@ -12,19 +12,6 @@ export const AcademicYear = {
  * @readonly
  * @enum {string}
  */
-export const Activity = {
-  Consent: 'Get consent',
-  Triage: 'Triage health questions',
-  Register: 'Register attendance',
-  Record: 'Record vaccination',
-  DoNotRecord: 'Do not vaccinate',
-  Report: 'Report vaccination'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
 export const ArchiveRecordReason = {
   Deceased: 'The child was reported as deceased',
   Duplicate: 'It’s a duplicate',

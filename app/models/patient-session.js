@@ -2,7 +2,6 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import filters from '@x-govuk/govuk-prototype-filters'
 
 import {
-  Activity,
   AuditEventType,
   ConsentOutcome,
   PatientStatus,
@@ -14,7 +13,6 @@ import { getDateValueDifference, getYearGroup, today } from '../utils/date.js'
 import {
   getInstructionOutcome,
   getInstructionStatus,
-  getNextActivity,
   getRegistrationOutcome,
   getReportOutcome,
   getConsentStatus,
@@ -408,22 +406,13 @@ export class PatientSession {
   }
 
   /**
-   * Get next activity
-   *
-   * @returns {Activity} Activity
-   */
-  get nextActivity() {
-    return getNextActivity(this)
-  }
-
-  /**
    * Get next activity, per programme
    *
    * @returns {Array<PatientSession>} Patient sessions per programme
    */
   get outstandingVaccinations() {
     return this.siblingPatientSessions.filter(
-      ({ nextActivity }) => nextActivity === Activity.Record
+      ({ report }) => report === PatientStatus.Due
     )
   }
 
@@ -545,7 +534,7 @@ export class PatientSession {
   /**
    * Get ready to record outcome
    *
-   * @returns {import('../enums.js').Activity} Ready to record outcome
+   * @returns {boolean} Ready to record outcome
    */
   get record() {
     return getRecordOutcome(this)

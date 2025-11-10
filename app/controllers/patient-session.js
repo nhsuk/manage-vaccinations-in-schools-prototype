@@ -1,5 +1,4 @@
 import {
-  Activity,
   AuditEventType,
   ConsentOutcome,
   ConsentWindow,
@@ -108,7 +107,7 @@ export const patientSessionController = {
       hasSupplier: userIsHCA && userHasSupplier,
       canRecord:
         account.vaccineMethods?.includes(patientSession.vaccine?.method) &&
-        record === Activity.Record,
+        record,
       canReport:
         report === PatientStatus.Vaccinated &&
         patientSession.lastRecordedVaccination

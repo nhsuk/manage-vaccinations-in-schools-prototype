@@ -1,7 +1,6 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import {
-  Activity,
   ConsentOutcome,
   InstructionOutcome,
   PatientStatus,
@@ -11,42 +10,6 @@ import {
   VaccinationOutcome,
   VaccineCriteria
 } from '../enums.js'
-
-/**
- * Get next activity
- *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {Activity} Activity
- */
-export const getNextActivity = ({
-  consent,
-  consentGiven,
-  triage,
-  screen,
-  report
-}) => {
-  if ([ConsentOutcome.Refused, ConsentOutcome.FinalRefusal].includes(consent)) {
-    return Activity.DoNotRecord
-  }
-
-  if (!consentGiven) {
-    return Activity.Consent
-  }
-
-  if (triage === TriageOutcome.Needed) {
-    return Activity.Triage
-  }
-
-  if (screen === ScreenOutcome.DoNotVaccinate) {
-    return Activity.DoNotRecord
-  }
-
-  if (report === PatientStatus.Vaccinated) {
-    return Activity.Report
-  }
-
-  return Activity.Record
-}
 
 /**
  * Get consent status properties
@@ -368,17 +331,17 @@ export const getRegistrationOutcome = (patientSession) => {
  * Check if registration is needed prior to recording vaccination
  *
  * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {RegistrationOutcome} Ready to record outcome
+ * @returns {boolean} Ready to record outcome
  */
 export const getRecordOutcome = (patientSession) => {
-  const { nextActivity, register, session } = patientSession
+  const { register, report, session } = patientSession
 
-  if (nextActivity === Activity.Record) {
+  if (report === PatientStatus.Due) {
     if (session.registration && register === RegistrationOutcome.Pending) {
-      return Activity.Register
+      return false
     }
 
-    return Activity.Record
+    return true
   }
 }
 

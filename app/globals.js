@@ -2,12 +2,7 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
 import { healthQuestions } from './datasets/health-questions.js'
-import {
-  Activity,
-  ConsentOutcome,
-  InstructionOutcome,
-  ScreenOutcome
-} from './enums.js'
+import { ConsentOutcome, InstructionOutcome, ScreenOutcome } from './enums.js'
 import { School } from './models/school.js'
 import { User } from './models/user.js'
 import { getSessionActivityCount } from './utils/session.js'
@@ -343,7 +338,7 @@ export default () => {
       },
       record: {
         key: 'record',
-        value: Activity.Record,
+        value: true,
         showProgrammes: true
       }
     }
