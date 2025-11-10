@@ -33,10 +33,6 @@
   {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("resolveConsent")) %}
 {% endif %}
 
-{% if sessionActivityRow("triage") %}
-  {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("triage")) %}
-{% endif %}
-
 {% if sessionActivityRow("instruct") and session.psdProtocol %}
   {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("instruct")) %}
 {% endif %}

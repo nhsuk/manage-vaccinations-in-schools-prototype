@@ -2,7 +2,7 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
 import { healthQuestions } from './datasets/health-questions.js'
-import { ConsentOutcome, InstructionOutcome, ScreenOutcome } from './enums.js'
+import { ConsentOutcome, InstructionOutcome } from './enums.js'
 import { School } from './models/school.js'
 import { User } from './models/user.js'
 import { getSessionActivityCount } from './utils/session.js'
@@ -326,10 +326,6 @@ export default () => {
       resolveConsent: {
         key: 'consent',
         value: ConsentOutcome.Inconsistent
-      },
-      triage: {
-        key: 'screen',
-        value: ScreenOutcome.NeedsTriage
       },
       instruct: {
         key: 'instruct',
