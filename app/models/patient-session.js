@@ -397,15 +397,6 @@ export class PatientSession {
   }
 
   /**
-   * Still to vaccinate
-   *
-   * @returns {boolean} Patient still needs vaccination
-   */
-  get stillToVaccinate() {
-    return this.report === PatientStatus.Due
-  }
-
-  /**
    * Get next activity, per programme
    *
    * @returns {Array<PatientSession>} Patient sessions per programme
