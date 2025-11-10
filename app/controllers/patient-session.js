@@ -8,7 +8,6 @@ import {
   ProgrammeType,
   RegistrationOutcome,
   ScreenOutcome,
-  TriageOutcome,
   UserRole,
   VaccinationOutcome,
   VaccinationSite,
@@ -41,7 +40,6 @@ export const patientSessionController = {
       record,
       report,
       session,
-      triage,
       triageNotes,
       vaccine
     } = patientSession
@@ -101,7 +99,7 @@ export const patientSessionController = {
       // Patient can be triaged
       canTriage: consentGiven,
       // Patient needs triage
-      needsTriage: triage === TriageOutcome.Needed,
+      needsTriage: report === PatientStatus.Triage,
       // Patient already triaged
       hasTriage: triageNotes.length > 0,
       hasSupplier: userIsHCA && userHasSupplier,
