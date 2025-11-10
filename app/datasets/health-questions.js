@@ -87,11 +87,9 @@ export const healthQuestions = {
   },
   immunisations: {
     label:
-      'Has your child recently had, or are they soon due to have, any of the following?',
-    labelWithOptions:
-      'Has your child recently had, or are they soon due to have a TB skin test, chickenpox vaccine or yellow fever vaccine?',
-    options: ['TB skin test', 'chickenpox vaccine', 'yellow fever vaccine'],
+      'Has your child had any of the following in the last 4 weeks, or are they due to have them in the next 4 weeks: TB skin test, chickenpox vaccine, or yellow fever vaccine?',
     hint: false,
+    options: false,
     detailsHint: false
   },
   medicalConditions: {

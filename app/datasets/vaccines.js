@@ -226,7 +226,6 @@ export default {
       'previousReactionMmr': {},
       'previousReactionNeomycinGelatine': {},
       'immuneSystem': {},
-      'immuneSystemCloseContact': {},
       'immunisations': {},
       'medicalConditions': {}
     },
@@ -262,7 +261,6 @@ export default {
       'previousReactionMmr': {},
       'previousReactionNeomycinGelatine': {},
       'immuneSystem': {},
-      'immuneSystemCloseContact': {},
       'immunisations': {},
       'medicalConditions': {}
     },
