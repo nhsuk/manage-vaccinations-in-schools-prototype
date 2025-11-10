@@ -95,6 +95,76 @@ export const DownloadFormat = {
  * @readonly
  * @enum {string}
  */
+export const EthnicGroup = {
+  White: 'White',
+  Mixed: 'Mixed or multiple ethnic groups',
+  Asian: 'Asian or Asian British',
+  Black: 'Black, African, Caribbean or Black British',
+  Other: 'Other ethnic group',
+  Withheld: 'Prefer not to say'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const EthnicBackgroundWhite = {
+  British: 'English, Welsh, Scottish, Northern Irish or British',
+  Irish: 'Irish',
+  GRT: 'Gypsy or Irish Traveller',
+  Other: 'Any other White background'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const EthnicBackgroundMixed = {
+  WhiteBlack: 'White and Black Caribbean',
+  WhiteAfrican: 'White and Black African',
+  WhiteAsian: 'White and Asian',
+  Other: 'Any other mixed or multiple ethnic background'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const EthnicBackgroundAsian = {
+  Indian: 'Indian',
+  Pakistani: 'Pakistani',
+  Bangladeshi: 'Bangladeshi',
+  Chinese: 'Chinese',
+  Other: 'Any other Asian background'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const EthnicBackgroundBlack = {
+  African: 'African',
+  Caribbean: 'Caribbean',
+  Other: 'Any other Black, African or Caribbean background'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const EthnicBackgroundOther = {
+  Arab: 'Arab',
+  Other: 'Any other ethnic group'
+}
+
+/**
+ * @typedef {EthnicBackgroundWhite | EthnicBackgroundMixed | EthnicBackgroundAsian | EthnicBackgroundBlack | EthnicBackgroundOther} EthnicBackground
+ */
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const Gender = {
   Female: 'Female',
   Male: 'Male',

@@ -1,6 +1,7 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import {
+  EthnicGroup,
   ParentalRelationship,
   ProgrammeType,
   ReplyDecision,
@@ -126,6 +127,14 @@ export const parentController = {
       [`/${session_id}`]: {},
       [`/${session_id}/${consent_uuid}/new/child`]: {},
       [`/${session_id}/${consent_uuid}/new/dob`]: {},
+      [`/${session_id}/${consent_uuid}/new/ethnic-group`]: {
+        [`/${session_id}/${consent_uuid}/new/confirm-school`]: {
+          data: 'consent.child.ethnicGroup',
+          value: EthnicGroup.Withheld
+        },
+        [`/${session_id}/${consent_uuid}/new/ethnic-background`]: {}
+      },
+      [`/${session_id}/${consent_uuid}/new/ethnic-background`]: {},
       ...(session?.type === SessionType.School
         ? { [`/${session_id}/${consent_uuid}/new/confirm-school`]: {} }
         : {}),

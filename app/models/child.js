@@ -1,5 +1,13 @@
 import schools from '../datasets/schools.js'
 import {
+  EthnicBackgroundAsian,
+  EthnicBackgroundBlack,
+  EthnicBackgroundMixed,
+  EthnicBackgroundOther,
+  EthnicBackgroundWhite,
+  EthnicGroup
+} from '../enums.js'
+import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
@@ -23,6 +31,10 @@ import { Address } from './address.js'
  * @property {object} [dob_] - Date of birth (from `dateInput`)
  * @property {Date} [dod] - Date of death
  * @property {import('../enums.js).Gender} gender - Gender
+ * @property {EthnicGroup')} [ethnicGroup] - Ethnic group
+ * @property {string} [ethnicGroupOther] - Other ethnic group
+ * @property {import('../enums.js).EthnicBackground')} [ethnicBackground] - Ethnic background
+ * @property {string} [ethnicBackgroundOther] - Other ethnic background
  * @property {import('./address.js').Address} [address] - Address
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} [registrationGroup] - Registration group
@@ -39,10 +51,28 @@ export class Child {
     this.dob_ = options?.dob_
     this.dod = options?.dod ? new Date(options.dod) : undefined
     this.gender = options?.gender
+    this.ethnicGroup = options?.ethnicGroup
+    this.ethnicBackground = options?.ethnicBackground
     this.address = options?.address
     this.gpSurgery = options?.gpSurgery
     this.registrationGroup = options?.registrationGroup
     this.school_urn = options?.school_urn
+
+    if (this.ethnicGroup === EthnicGroup.Other) {
+      this.ethnicGroupOther = options?.ethnicGroupOther
+    }
+
+    if (
+      [
+        EthnicBackgroundWhite.Other,
+        EthnicBackgroundMixed.Other,
+        EthnicBackgroundAsian.Other,
+        EthnicBackgroundBlack.Other,
+        EthnicBackgroundOther.Other
+      ].includes(this.ethnicBackground)
+    ) {
+      this.ethnicBackgroundOther = options?.ethnicBackgroundOther
+    }
   }
 
   /**
@@ -101,6 +131,22 @@ export class Child {
    */
   get dobWithAge() {
     return `${this.formatted.dob} (aged ${this.age})`
+  }
+
+  /**
+   * Get formatted ethnicity (ethnic group and background)
+   *
+   * @returns {string} Date of birth and age in years
+   */
+  get ethnicity() {
+    if (this.ethnicGroup && this.ethnicBackground !== 'false') {
+      const group = this.ethnicGroupOther || this.ethnicGroup
+      const background = this.ethnicBackgroundOther || this.ethnicBackground
+
+      return `${group} (${background})`
+    } else if (this.ethnicGroup) {
+      return this.ethnicGroupOther || this.ethnicGroup
+    }
   }
 
   /**

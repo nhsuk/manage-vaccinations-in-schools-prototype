@@ -1,0 +1,29 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("consent.child.ethnicGroup.title") %}
+
+{% block form %}
+  {% call fieldset({
+    legend: {
+        html: appHeading({
+          classes: "nhsuk-fieldset__legend--l",
+          title: title
+        })
+      }
+  }) %}
+    {{ __("consent.child.ethnicGroup.description") | nhsukMarkdown }}
+
+    {{ radios({
+      items: [
+        { text: EthnicGroup.White },
+        { text: EthnicGroup.Mixed },
+        { text: EthnicGroup.Asian },
+        { text: EthnicGroup.Black },
+        { text: EthnicGroup.Other },
+        { divider: "or" },
+        { text: EthnicGroup.Withheld }
+      ],
+      decorate: "consent.child.ethnicGroup"
+    }) }}
+  {% endcall %}
+{% endblock %}
