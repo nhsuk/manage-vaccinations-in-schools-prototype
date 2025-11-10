@@ -33,7 +33,6 @@ import {
 } from '../utils/reply.js'
 import {
   formatLink,
-  formatList,
   formatProgrammeStatus,
   formatTag,
   formatVaccineCriteria,
@@ -420,21 +419,6 @@ export class PatientSession {
   /**
    * Get next activity, per programme
    *
-   * @returns {object} Patient sessions per programme
-   */
-  get nextActivityPerProgramme() {
-    const programmes = {}
-    for (const patientSession of this.siblingPatientSessions) {
-      programmes[patientSession.programme.name] =
-        getNextActivity(patientSession)
-    }
-
-    return programmes
-  }
-
-  /**
-   * Get next activity, per programme
-   *
    * @returns {Array<PatientSession>} Patient sessions per programme
    */
   get outstandingVaccinations() {
@@ -647,13 +631,6 @@ export class PatientSession {
    * @returns {object} Formatted values
    */
   get formatted() {
-    const nextActivityPerProgramme = this.siblingPatientSessions
-      .filter(({ nextActivity }) => nextActivity !== Activity.Report)
-      .map(
-        ({ nextActivity, programme }) =>
-          `${nextActivity} for ${programme.nameSentenceCase}`
-      )
-
     const outstandingVaccinations = this.outstandingVaccinations.map(
       ({ programme }) => programme.name
     )
@@ -680,7 +657,6 @@ export class PatientSession {
           this.reportReason
         )
       },
-      nextActivityPerProgramme: formatList(nextActivityPerProgramme),
       outstandingVaccinations: filters.formatList(outstandingVaccinations),
       vaccineCriteria: formatVaccineCriteria(this.vaccineCriteria),
       yearGroup: formattedYearGroup
