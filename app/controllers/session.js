@@ -309,13 +309,6 @@ export const sessionController = {
       }
     }
 
-    // Filter patient session by display option
-    for (const option of ['stillToVaccinate']) {
-      if (options?.includes(option)) {
-        results = results.filter((patientSession) => patientSession[option])
-      }
-    }
-
     // Remove patient sessions where outcome returns false
     results = results.filter((patientSession) => patientSession[view] !== false)
 
