@@ -12,6 +12,16 @@
     }
   }
 
+  &--dark-orange {
+    background-color: nhsuk-tint(app.$dark-orange-colour, 80%);
+    border-color: nhsuk-tint(app.$dark-orange-colour, 50%);
+    color: nhsuk-shade(app.$dark-orange-colour, 50%);
+
+    &.nhsuk-card--clickable:active {
+      border-color: nhsuk-shade(app.$dark-orange-colour, 30%);
+    }
+  }
+
   &--green {
     background-color: nhsuk-tint(nhsuk-colour("green"), 80%);
     border-color: nhsuk-tint(nhsuk-colour("green"), 40%);
@@ -19,16 +29,6 @@
 
     &.nhsuk-card--clickable:active {
       border-color: nhsuk-shade(nhsuk-colour("green"), 40%);
-    }
-  }
-
-  &--grey {
-    background-color: nhsuk-tint(nhsuk-colour("grey-1"), 80%);
-    border-color: nhsuk-tint(nhsuk-colour("grey-1"), 30%);
-    color: nhsuk-shade(nhsuk-colour("grey-1"), 30%);
-
-    &.nhsuk-card--clickable:active {
-      border-color: nhsuk-shade(nhsuk-colour("grey-1"), 30%);
     }
   }
 
@@ -57,8 +57,8 @@
   }
 
   &--blue,
+  &--dark-orange,
   &--green,
-  &--grey,
   &--red,
   &--yellow {
     .nhsuk-card__link,

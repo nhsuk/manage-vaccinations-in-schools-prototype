@@ -1593,6 +1593,12 @@ export const en = {
       count:
         '{count, plural, =0 {No children} one {# child} other {# children}}'
     },
+    eligible: {
+      label: 'Eligible for vaccination',
+      hint: 'Due vaccination, not vaccinated elsewhere',
+      count:
+        '{count, plural, =0 {No children are} one {# child is} other {# children are}} eligible for vaccination this academic year and have not been vaccinated elsewhere'
+    },
     activity: {
       label: 'Action required',
       addNhsNumber: {
@@ -1654,33 +1660,14 @@ export const en = {
       }
     },
     tally: {
-      eligible: {
-        label: 'Eligible for vaccination',
-        hint: 'Due vaccination, not vaccinated elsewhere',
-        count:
-          '{count, plural, =0 {No children are} one {# child is} other {# children are}} eligible for vaccination this academic year and have not been vaccinated elsewhere'
-      },
-      noResponse: {
-        label: 'No response'
-      },
-      consentGiven: {
-        label: 'Consent given'
-      },
-      consentGivenForVaccineCriteria: {
-        label: 'Consent given for {{vaccineCriteria}}'
-      },
-      didNotConsent: {
-        label: 'Did not consent'
-      },
       vaccinated: {
-        label: 'Vaccinated',
-        caption: 'Vaccinations given in this session'
+        label: 'Vaccinations given in this session'
       },
-      vaccinatedIntranasal: {
-        label: '{{programme.name}} (Nasal spray)'
+      dueForVaccineCriteria: {
+        label: 'Due {{vaccineCriteria}}'
       },
-      vaccinatedAlternativeInjection: {
-        label: '{{programme.name}} (Gelatine-free injection)'
+      vaccinatedWithVaccineCriteria: {
+        label: '{{programme.name}} ({{vaccineCriteria}})'
       }
     },
     date: {

@@ -1,78 +1,110 @@
-{% set columnWidth = "fifth" if session.offersAlternativeVaccine else "quarter" %}
-
 {% for programme in session.programmes %}
+  {% set columnWidth = "quarter" if session.offersAlternativeVaccine or programme.type == ProgrammeType.MMR else "third" %}
+
   {{ appHeading({
     title: programme.name,
-    summary: __mf("session.tally.eligible.count", {
-      count: session.tally(programme.id).eligible
+    summary: __mf("session.eligible.count", {
+      count: session.patients.length
     }),
     level: 3,
     size: "m"
   }) }}
+
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
-        heading: ConsentOutcome.NoResponse,
-        heading: __("session.tally.noResponse.label"),
+        heading: PatientStatus.Consent,
         headingLevel: 3,
-        colour: "grey",
+        colour: "blue",
         compact: true,
-        data: session.tally(programme.id).noResponse,
-        href: session.uri + "/consent?consent=" + ConsentOutcome.NoResponse + "&programme_id=" + programme.id
+        data: session.tally(programme.id, PatientStatus.Consent),
+        href: session.uri + "/report?report=" + PatientStatus.Consent + "&programme_id=" + programme.id
       }) }}
     </div>
-{% if programme.standardVaccine.criteria == VaccineCriteria.Intranasal %}
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
-        heading: __("session.tally.consentGivenForVaccineCriteria.label", {
+        heading: PatientStatus.Triage,
+        headingLevel: 3,
+        colour: "blue",
+        compact: true,
+        data: session.tally(programme.id, PatientStatus.Triage),
+        href: session.uri + "/report?report=" + PatientStatus.Triage + "&programme_id=" + programme.id
+      }) }}
+    </div>
+  {% if programme.standardVaccine.criteria == VaccineCriteria.Intranasal %}
+    <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
+      {{ appDataCard({
+        heading: __("session.tally.dueForVaccineCriteria.label", {
           vaccineCriteria: programme.standardVaccine.criteria | lower
         }),
         colour: "green",
         compact: true,
-        data: session.tally(programme.id).consentGiven,
-        href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForIntranasal
+        data: session.tally(programme.id, PatientStatus.Due, programme.standardVaccine.criteria),
+        href: session.uri + "/report?report=" + PatientStatus.Due + "&programme_id=" + programme.id + "&vaccineCriteria=" + programme.standardVaccine.criteria
       }) }}
     </div>
-{% else %}
+  {% else %}
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
-        heading: __("session.tally.consentGiven.label"),
+        heading: PatientStatus.Due,
+        headingLevel: 3,
         colour: "green",
         compact: true,
-        data: session.tally(programme.id).consentGiven,
-        href: session.uri + "/consent?consent=" + ConsentOutcome.Given
+        data: session.tally(programme.id, PatientStatus.Due),
+        href: session.uri + "/report?report=" + PatientStatus.Due + "&programme_id=" + programme.id
       }) }}
     </div>
-{% endif %}
-{% if programme.alternativeVaccine %}
+  {% endif %}
+  {% if programme.alternativeVaccine %}
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
-        heading: __("session.tally.consentGivenForVaccineCriteria.label", {
+        heading: __("session.tally.dueForVaccineCriteria.label", {
           vaccineCriteria: programme.alternativeVaccine.criteria | lower
         }),
         colour: "green",
         compact: true,
-        data: session.tally(programme.id).consentGivenForAlternativeInjection,
-        href: session.uri + "/consent?consent=" + ConsentOutcome.GivenForAlternativeInjection
+        data: session.tally(programme.id, PatientStatus.Due, programme.alternativeVaccine.criteria),
+        href: session.uri + "/report?report=" + PatientStatus.Due + "&programme_id=" + programme.id + "&vaccineCriteria=" + programme.alternativeVaccine.criteria
       }) }}
     </div>
-{% endif %}
+  {% endif %}
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
-        heading: __("session.tally.didNotConsent.label"),
+        heading: PatientStatus.Refused,
+        headingLevel: 3,
+        colour: "dark-orange",
+        compact: true,
+        data: session.tally(programme.id, PatientStatus.Refused),
+        href: session.uri + "/report?report=" + PatientStatus.Refused + "&programme_id=" + programme.id
+      }) }}
+    </div>
+    <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
+      {{ appDataCard({
+        heading: PatientStatus.Deferred,
         headingLevel: 3,
         colour: "red",
         compact: true,
-        data: session.tally(programme.id).didNotConsent,
-        href: session.uri + "/consent?consent=" + ConsentOutcome.Refused + "&programme_id=" + programme.id
+        data: session.tally(programme.id, PatientStatus.Deferred),
+        href: session.uri + "/report?report=" + PatientStatus.Deferred + "&programme_id=" + programme.id
       }) }}
     </div>
+  {% if programme.type == ProgrammeType.MMR or programme.type == ProgrammeType.Flu %}
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
-        heading: __("session.tally.vaccinated.label"),
+        heading: PatientStatus.PartiallyVaccinated,
         headingLevel: 3,
         compact: true,
-        data: session.tally(programme.id).vaccinated,
+        data: session.tally(programme.id, PatientStatus.PartiallyVaccinated),
+        href: session.uri + "/report?report=" + PatientStatus.PartiallyVaccinated + "&programme_id=" + programme.id
+      }) }}
+    </div>
+  {% endif %}
+    <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
+      {{ appDataCard({
+        heading: PatientStatus.Vaccinated,
+        headingLevel: 3,
+        compact: true,
+        data: session.tally(programme.id, PatientStatus.Vaccinated),
         href: session.uri + "/report?report=" + PatientStatus.Vaccinated + "&programme_id=" + programme.id
       }) }}
     </div>

@@ -18,27 +18,21 @@
         html: dateShort
       }] %}
       {% for programme in session.programmes %}
-        {% if programme.standardVaccine.criteria == VaccineCriteria.Intranasal %}
-          {% set dateRow = dateRow.concat([{
-            header: __("session.tally.vaccinatedIntranasal.label", {
-              programme: programme
-            }) | safe,
-            text: session.tally(programme.id).vaccinatedIntranasal if loop.first else 0,
-            format: "numeric"
-          }]) %}
-        {% else %}
-          {% set dateRow = dateRow.concat([{
-            header: programme.name,
-            text: session.tally(programme.id).vaccinated if loop.first else 0,
-            format: "numeric"
-          }]) %}
-        {% endif %}
+        {% set dateRow = dateRow.concat([{
+          header: __("session.tally.vaccinatedWithVaccineCriteria.label", {
+            programme: programme,
+            vaccineCriteria: programme.standardVaccine.criteria
+          }),
+          text: session.tally(programme.id, PatientStatus.Vaccinated, programme.standardVaccine.criteria) if loop.first else 0,
+          format: "numeric"
+        }]) %}
         {% if programme.alternativeVaccine %}
           {% set dateRow = dateRow.concat([{
-            header: __("session.tally.vaccinatedAlternativeInjection.label", {
-              programme: programme
-            }) | safe,
-            text: session.tally(programme.id).vaccinatedAlternativeInjection if loop.first else 0,
+            header: __("session.tally.vaccinatedWithVaccineCriteria.label", {
+              programme: programme,
+              vaccineCriteria: programme.alternativeVaccine.criteria
+            }),
+            text: session.tally(programme.id, PatientStatus.Vaccinated, programme.alternativeVaccine.criteria) if loop.first else 0,
             format: "numeric"
           }]) %}
         {% endif %}
@@ -52,27 +46,21 @@
       text: "Total"
     }] %}
     {% for programme in session.programmes %}
-      {% if programme.standardVaccine.criteria == VaccineCriteria.Intranasal %}
-        {% set totalRow = totalRow.concat([{
-          header: __("session.tally.vaccinatedIntranasal.label", {
-            programme: programme
-          }) | safe,
-          html: "<strong>" + session.tally(programme.id).vaccinatedIntranasal   + "</strong>",
-          format: "numeric"
-        }]) %}
-      {% else %}
-        {% set totalRow = totalRow.concat([{
-          header: programme.name,
-          html: "<strong>" + session.tally(programme.id).vaccinated + "</strong>",
-          format: "numeric"
-        }]) %}
-      {% endif %}
+      {% set totalRow = totalRow.concat([{
+        header: __("session.tally.vaccinatedWithVaccineCriteria.label", {
+          programme: programme,
+          vaccineCriteria: programme.standardVaccine.criteria
+        }),
+        html: "<strong>" + session.tally(programme.id, PatientStatus.Vaccinated, programme.standardVaccine.criteria) if loop.first else 0 + "</strong>",
+        format: "numeric"
+      }]) %}
       {% if programme.alternativeVaccine %}
         {% set totalRow = totalRow.concat([{
-          header: __("session.tally.vaccinatedAlternativeInjection.label", {
-            programme: programme
-          }) | safe,
-          html: "<strong>" + session.tally(programme.id).vaccinatedAlternativeInjection + "</strong>",
+          header: __("session.tally.vaccinatedWithVaccineCriteria.label", {
+            programme: programme,
+            vaccineCriteria: programme.alternativeVaccine.criteria
+          }),
+          html: "<strong>" + session.tally(programme.id, PatientStatus.Vaccinated,programme.alternativeVaccine.criteria) if loop.first else 0 + "</strong>",
           format: "numeric"
         }]) %}
       {% endif %}
@@ -84,23 +72,18 @@
       text: __("session.date.label")
     }] %}
     {% for programme in session.programmes %}
-      {% if programme.standardVaccine.criteria == VaccineCriteria.Intranasal %}
-        {% set head = head.concat([{
-          text: __("session.tally.vaccinatedIntranasal.label", {
-            programme: programme
-          }),
-          format: "numeric"
-        }]) %}
-      {% else %}
-        {% set head = head.concat([{
-          text: programme.name,
-          format: "numeric"
-        }]) %}
-      {% endif %}
+      {% set head = head.concat([{
+        text: __("session.tally.vaccinatedWithVaccineCriteria.label", {
+          programme: programme,
+          vaccineCriteria: programme.standardVaccine.criteria
+        }),
+        format: "numeric"
+      }]) %}
       {% if programme.alternativeVaccine %}
         {% set head = head.concat([{
-          text: __("session.tally.vaccinatedAlternativeInjection.label", {
-            programme: programme
+          text: __("session.tally.vaccinatedWithVaccineCriteria.label", {
+            programme: programme,
+            vaccineCriteria: programme.alternativeVaccine.criteria
           }),
           format: "numeric"
         }]) %}
@@ -109,7 +92,7 @@
 
     {{ table({
       id: "dates",
-      caption: __("session.tally.vaccinated.caption"),
+      caption: __("session.tally.vaccinated.label"),
       responsive: true,
       head: head,
       rows: rows
