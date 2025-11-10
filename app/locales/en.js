@@ -1626,11 +1626,6 @@ export const en = {
         count:
           '{count, plural, =0 {No children} one {# child} other {# children}} with conflicting consent'
       },
-      triage: {
-        label: 'Triage needed',
-        count:
-          '{count, plural, =0 {No children} one {# child} other {# children}} to triage'
-      },
       instruct: {
         label: 'PSD review needed',
         count:
