@@ -287,16 +287,6 @@ export const ProgrammeOutcome = {
  * @readonly
  * @enum {string}
  */
-export const ProgrammeStatus = {
-  Planned: 'Planned',
-  Current: 'Current',
-  Completed: 'Completed'
-}
-
-/**
- * @readonly
- * @enum {string}
- */
 export const ProgrammeType = {
   Flu: 'Flu',
   HPV: 'HPV',

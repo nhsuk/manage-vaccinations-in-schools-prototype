@@ -1,10 +1,8 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
-import { isAfter } from 'date-fns'
 
 import programmes from '../datasets/programmes.js'
 import vaccines from '../datasets/vaccines.js'
-import { ProgrammeStatus, VaccineCriteria } from '../enums.js'
-import { isBetweenDates, today } from '../utils/date.js'
+import { VaccineCriteria } from '../enums.js'
 import {
   formatLink,
   formatTag,
@@ -29,7 +27,6 @@ import { Vaccine } from './vaccine.js'
  * @property {string} title - Title
  * @property {object} information - NHS.UK programme information
  * @property {object} guidance - GOV.UK guidance
- * @property {ProgrammeStatus} status - Status
  * @property {ProgrammeType} type - Programme type
  * @property {AcademicYear} year - Academic year
  * @property {Array<string>} sequence - Vaccine dose sequence
@@ -96,22 +93,6 @@ export class Programme {
       text: this.name,
       colour: 'transparent'
     })
-  }
-
-  /**
-   * Get status
-   *
-   * @returns {string} Status
-   */
-  get status() {
-    const { from, to } = programmes[this.type].schedule
-
-    if (isBetweenDates(today(), from, to)) {
-      return ProgrammeStatus.Current
-    } else if (isAfter(today(), to)) {
-      return ProgrammeStatus.Completed
-    }
-    return ProgrammeStatus.Planned
   }
 
   /**
