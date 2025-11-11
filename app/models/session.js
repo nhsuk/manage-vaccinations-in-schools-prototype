@@ -245,6 +245,11 @@ export class Session {
     return `/give-or-refuse-consent/${this.id}`
   }
 
+  /**
+   * Get consent form HTML list
+   *
+   * @returns {string} Consent form HTML list
+   */
   get consentForms() {
     if (!this.isUnplanned) {
       let forms = [this.formatted.consentUrl]
@@ -256,7 +261,7 @@ export class Session {
       return formatList(forms).replace(' nhsuk-list--bullet', '')
     }
 
-    return []
+    return ''
   }
 
   /**
@@ -517,6 +522,12 @@ export class Session {
     }
   }
 
+  /**
+   * Get vaccination name to use in subject for email invitation
+   *
+   * @returns {string} Vaccination name(s)
+   * @example ‘MMR catch-up’ or ‘MMR (measles, mumps and rubella) catch-up’
+   */
   get vaccinationInviteNames() {
     if (this.programmes[0].type === ProgrammeType.MMR) {
       return this.programmes[0].emailName('invite')
@@ -656,6 +667,11 @@ export class Session {
     }
   }
 
+  /**
+   * Get date summary
+   *
+   * @returns {string} Date summary
+   */
   get dateSummary() {
     if (this.dates.length > 0) {
       const range = formatDateRange(this.firstDate, this.lastDate, {
