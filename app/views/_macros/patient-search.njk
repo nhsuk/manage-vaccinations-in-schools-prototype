@@ -50,22 +50,6 @@
       items: programmeItems
     }) if programmeItems }}
 
-    {{ checkboxes({
-      classes: "nhsuk-checkboxes--small",
-      fieldset: {
-        legend: {
-          classes: "nhsuk-fieldset__legend--s",
-          text: __("patient.search.showOnly")
-        }
-      },
-      items: [{
-        text: __("session.eligible.label"),
-        hint: { text: __("session.eligible.hint") },
-        checked: true
-      }],
-      decorate: "options"
-    }) if view == "report" }}
-
     {% for name, enums in params.checkboxFilters %}
       {{ checkboxes({
         classes: "nhsuk-checkboxes--small",
