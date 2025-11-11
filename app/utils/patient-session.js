@@ -4,6 +4,7 @@ import {
   ConsentOutcome,
   InstructionOutcome,
   PatientStatus,
+  ProgrammeType,
   RegistrationOutcome,
   ScreenOutcome,
   VaccinationOutcome,
@@ -223,9 +224,18 @@ export const getOutcomeStatus = (patientSession) => {
  * @returns {object} Patient (programme) outcome status properties
  */
 export const getReportStatus = (patientSession) => {
-  const { report } = patientSession
+  const { report, programme, vaccinations } = patientSession
+
+  let doseText
+  if (programme.type === ProgrammeType.MMR) {
+    doseText =
+      vaccinations.filter(({ given }) => given).length === 1
+        ? 'Due 2nd dose'
+        : 'Due 1st dose'
+  }
 
   let colour
+  let text = report
   switch (report) {
     case PatientStatus.Ineligible:
       colour = 'grey'
@@ -242,6 +252,7 @@ export const getReportStatus = (patientSession) => {
       break
     case PatientStatus.Due:
       colour = 'green'
+      text = doseText || text
       break
     default:
       colour = 'white'
@@ -250,7 +261,7 @@ export const getReportStatus = (patientSession) => {
 
   return {
     colour,
-    text: report
+    text
   }
 }
 
