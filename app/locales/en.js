@@ -1737,9 +1737,6 @@ export const en = {
     consentUrl: {
       label: 'Online consent form'
     },
-    details: {
-      label: 'Details'
-    },
     openAt: {
       title: 'When should parents get a request to give consent?',
       label: 'Consent requests',

@@ -32,7 +32,6 @@ import { tokenize } from '../utils/object.js'
 import { getConsentWindow, getSessionActivityCount } from '../utils/session.js'
 import {
   formatLink,
-  formatLinkWithSecondaryText,
   formatList,
   formatProgrammeId,
   formatTag,
@@ -713,13 +712,6 @@ export class Session {
     return this.patients.filter(({ report }) => report === ProgrammeOutcome.Due)
   }
 
-  get details() {
-    return `<div>
-      <p>${this.link.nameAndAddress}</p>
-      <p>${this.dateSummary}</p>
-    </div>`
-  }
-
   /**
    * Get tokenised values (to use in search queries)
    *
@@ -824,21 +816,6 @@ export class Session {
       school: this.school && this.school.name,
       school_urn: this.school && this.school.formatted.urn,
       status: formatTag(this.sessionStatus)
-    }
-  }
-
-  /**
-   * Get formatted links
-   *
-   * @returns {object} Formatted links
-   */
-  get link() {
-    return {
-      nameAndAddress: formatLinkWithSecondaryText(
-        this.uri,
-        this.location.name,
-        this.address?.formatted.singleline
-      )
     }
   }
 
