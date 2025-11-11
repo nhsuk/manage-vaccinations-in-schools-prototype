@@ -224,7 +224,7 @@ export class Reply {
     let consentedVaccine
 
     // Consent given for flu programme with method of vaccination
-    if (programme.type === Flu) {
+    if (programme?.type === Flu) {
       consentedVaccine = Object.values(vaccines).filter(
         (programme) => programme.type === Flu
       )
@@ -242,7 +242,7 @@ export class Reply {
     }
 
     // Consent given for HPV programme
-    if (programme.type === HPV) {
+    if (programme?.type === HPV) {
       consentedVaccine = Object.values(vaccines).find(
         (programme) => programme.type === HPV
       )
