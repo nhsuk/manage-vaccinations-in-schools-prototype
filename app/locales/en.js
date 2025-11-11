@@ -1595,7 +1595,6 @@ export const en = {
     },
     eligible: {
       label: 'Eligible for vaccination',
-      hint: 'Due vaccination, not vaccinated elsewhere',
       count:
         '{count, plural, =0 {No children are} one {# child is} other {# children are}} eligible for vaccination this academic year and have not been vaccinated elsewhere'
     },
