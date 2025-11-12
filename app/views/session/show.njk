@@ -43,11 +43,5 @@
         consentForms: {}
       })
     }) }}
-
-    {{ button({
-      classes: "nhsuk-button--secondary",
-      href: "/uploads/new?type=" + UploadType.School + "&urn=" + session.school.urn,
-      text: __("session.upload-class-list.title")
-    }) if session.type == SessionType.School }}
   {% endcall %}
 {% endblock %}
