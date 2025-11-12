@@ -41,6 +41,12 @@
         }) | safe
       }) }}
 
+      {{ button({
+        classes: "nhsuk-button--secondary",
+        href: "/uploads/new?type=" + UploadType.School + "&urn=" + school.urn,
+        text: __("session.upload-class-list.title")
+      }) }}
+
       {% for patient in results.page %}
         {% set reportStatusHtml = false %}
 
