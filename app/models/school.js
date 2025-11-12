@@ -53,19 +53,6 @@ export class School {
     return []
   }
 
-  /**
-   * Get school pupils
-   *
-   * @returns {object} Patients by year group
-   */
-  get patientsByYearGroup() {
-    if (this.context?.patients && this.patients) {
-      return Object.groupBy(this.patients, ({ yearGroup }) => yearGroup)
-    }
-
-    return []
-  }
-
   /** Get year groups
    *
    * @returns {Array} Year groups

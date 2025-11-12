@@ -1,4 +1,4 @@
-{% extends "_layouts/meta.njk" %}
+{% extends "_layouts/default.njk" %}
 
 {% set title = __("school.list.title") %}
 
@@ -6,49 +6,47 @@
   {{ super() }}
 
   {{ appHeading({
-    caption: __("school.list.caption"),
     size: "xl",
     title: title
   }) }}
 
-  {% for phase, schools in schools | selectattr("phase") | groupby("phase") %}
-    {% set schoolRows = [] %}
-    {% for school in schools | sort(false, false, "name") %}
-      {% set schoolRows = schoolRows | push([
-        {
-          header: __("school.name.label"),
-          html: school.link.name or "Not provided"
-        },
-        {
-          header: __("school.urn.label"),
-          html: school.formatted.urn or "Not provided"
-        },
-        {
-          header: __("school.address.label"),
-          html: school.address.formatted.singleline or "Not provided"
-        }
-      ]) %}
-    {% endfor %}
-
-    {{ table({
-      classes: "nhsuk-u-margin-bottom-6",
-      id: "schools",
-      caption: __mf("school.count", {
-        count: schools.length,
-        phase: phase | lower
-      }),
-      responsive: true,
-      head: [
-        {
-          text: __("school.name.label"),
-          attributes: {
-            style: "width: 40%"
-          }
-        },
-        { text: __("school.urn.label") },
-        { text: __("school.address.label") }
-      ],
-      rows: schoolRows
-    }) }}
+  {% set schoolRows = [] %}
+  {% for school in schools | sort(false, false, "name") %}
+    {% set schoolRows = schoolRows | push([
+      {
+        header: __("school.name.label"),
+        html: school.link.name or "Not provided"
+      },
+      {
+        header: __("school.urn.label"),
+        html: school.formatted.urn or "Not provided"
+      },
+      {
+        header: __("school.address.label"),
+        html: school.address.formatted.singleline or "Not provided"
+      }
+    ]) %}
   {% endfor %}
+
+  {{ table({
+    classes: "nhsuk-u-margin-bottom-6",
+    id: "schools",
+    heading: __mf("school.count", {
+      count: schools.length,
+      phase: phase | lower
+    }),
+    responsive: true,
+    panel: true,
+    head: [
+      {
+        text: __("school.name.label"),
+        attributes: {
+          style: "width: 40%"
+        }
+      },
+      { text: __("school.urn.label") },
+      { text: __("school.address.label") }
+    ],
+    rows: schoolRows
+  }) }}
 {% endblock %}

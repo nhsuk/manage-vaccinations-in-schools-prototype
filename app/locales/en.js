@@ -1402,8 +1402,8 @@ export const en = {
   },
   school: {
     list: {
-      title: 'Schools',
-      caption: 'Local authority'
+      label: 'Schools',
+      title: 'Schools'
     },
     show: {
       summary: 'School details'
