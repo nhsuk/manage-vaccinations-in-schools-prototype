@@ -42,8 +42,6 @@
         }) }}
 
         {% for patient in results.page %}
-          {% set consentStatusHtml = false %}
-          {% set screenStatusHtml = false %}
           {% set reportStatusHtml = false %}
 
           {% if data.programme_ids %}
