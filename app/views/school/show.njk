@@ -23,6 +23,12 @@
     summary: school.address.formatted.singleline
   }) }}
 
+  {{ button({
+    classes: "nhsuk-button--secondary",
+    href: "/uploads/new?type=" + UploadType.School + "&urn=" + school.urn,
+    text: __("session.upload-class-list.title")
+  }) }}
+
   <div class="nhsuk-grid-row">
     <app-auto-submit class="app-grid-column-filters">
       {{ appPatientSearch({
