@@ -34,6 +34,11 @@
     navigation: {
       items: [
         {
+          href: "/schools",
+          text: __("school.list.label"),
+          active: navigation.activeSection == "schools"
+        },
+        {
           href: "/patients",
           text: __("patient.list.label"),
           active: navigation.activeSection == "patients"
@@ -42,6 +47,11 @@
           href: "/sessions",
           text: __("session.list.label"),
           active: navigation.activeSection == "sessions"
+        },
+        {
+          href: "/vaccines",
+          text: __("vaccine.list.label"),
+          active: navigation.activeSection == "vaccines"
         },
         {
           classes: "app-header__navigation-item--with-count",
@@ -54,11 +64,6 @@
           href: "/moves",
           html: __("move.list.label") + appCount(data.counts.moves),
           active: navigation.activeSection == "moves"
-        },
-        {
-          href: "/vaccines",
-          text: __("vaccine.list.label"),
-          active: navigation.activeSection == "vaccines"
         },
         {
           classes: 'app-header__navigation-item--with-count',
@@ -118,9 +123,6 @@
       items: [{
         text: "Homepage",
         href: "/"
-      }, {
-        text: "Schools",
-        href: "/schools"
       }, {
         text: "CIS2 users",
         href: "/users"
