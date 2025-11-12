@@ -280,7 +280,7 @@ export const sessionController = {
       )
     }
 
-    // Filter by instruct/register/report/sub status
+    // Filter by instruct/register/programme status
     const filters = {
       instruct: request.query.instruct || 'none',
       register: request.query.register || 'none',
@@ -291,13 +291,20 @@ export const sessionController = {
       patientVaccinated: request.query.patientVaccinated || 'none'
     }
 
-    // Filter by status
-    for (const activity of ['instruct', 'register', 'report']) {
-      if (activity === view && filters[view] !== 'none') {
+    // Filter by instruct/registration status
+    for (const activity of ['instruct', 'register']) {
+      if (view === activity && filters[view] !== 'none') {
         results = results.filter(
           (patientSession) => patientSession[view] === filters[view]
         )
       }
+    }
+
+    // Filter by programme status
+    if (filters.report !== 'none') {
+      results = results.filter(
+        (patientSession) => patientSession.report === filters.report
+      )
     }
 
     // Filter by sub-status(es)
