@@ -1,65 +1,78 @@
-{% extends "_layouts/meta.njk" %}
+{% from "_macros/patient-search.njk" import appPatientSearch with context %}
 
+{% extends "_layouts/form.njk" %}
+
+{% set gridColumns = "full" %}
+{% set hideConfirmButton = true %}
 {% set title = school.name %}
-{% set paths = { back: "/schools" } %}
 
-{% block content %}
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }],
+    text: __("school.list.title"),
+    href: "/schools"
+  }) }}
+{% endblock %}
+
+{% block form %}
   {{ appHeading({
-    title: title
+    title: title,
+    summary: school.address.formatted.singleline
   }) }}
 
-  {{ card({
-    heading: __("school.show.summary"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(school, {
-        urn: {},
-        name: {},
-        phase: {},
-        address: {}
-      })
-    })
-  }) }}
+  <div class="nhsuk-grid-row">
+    <app-auto-submit class="app-grid-column-filters">
+      {{ appPatientSearch({
+        clear: school.uri
+      }) }}
+    </app-auto-submit>
 
-  {% for yearGroup, patients in school.patientsByYearGroup %}
-    {% set patientRows = [] %}
-    {% for patient in patients | sort(false, false, "firstName") %}
-      {% set patientRows = patientRows | push([
-        {
-          header: __("patient.fullName.label"),
-          text: patient.fullName
-        },
-        {
-          header: __("patient.dob.label"),
-          text: patient.formatted.dob
-        },
-        {
-          header: __("patient.postalCode.label"),
-          text: patient.postalCode
-        }
-      ]) %}
-    {% endfor %}
+    <div class="app-grid-column-results">
+      {{ appHeading({
+        level: 2,
+        size: "m",
+        title: __("search.results"),
+        summary: __mf("patient.results", {
+          from: results.from,
+          to: results.to,
+          count: results.count
+        }) | safe
+      }) }}
 
-    {{ details({
-      classes: "nhsuk-expander",
-      summaryText: yearGroup | yearGroup + " (" + __mf("patient.count", {
-        count: patients.length
-      }) + ")",
-      html: table({
-        tableClasses: "nhsuk-u-margin-0",
-        id: "patients",
-        head: [
-          {
-            text: __("patient.fullName.label"),
-            attributes: {
-              style: "width: 50%"
-            }
-          },
-          { text: __("patient.dob.label") },
-          { text: __("patient.postalCode.label") }
-        ],
-        rows: patientRows
-      })
-    }) }}
-  {% endfor %}
+      {% for patient in results.page %}
+        {% set reportStatusHtml -%}
+          {%- for id, patientProgramme in patient.programmes -%}
+            {%- if data.programme_id | includes(id) -%}
+              {{ patientProgramme.formatted.programmeStatus | nhsukMarkdown }}
+            {%- endif -%}
+          {%- endfor %}
+        {%- endset %}
+
+        {{ card({
+          classes: "app-card--compact",
+          heading: patient.fullAndPreferredNames | highlightQuery(data.q),
+          headingClasses: "nhsuk-heading-s",
+          headingLevel: 4,
+          href: patient.uri,
+          clickable: true,
+          descriptionHtml: summaryList({
+            rows: summaryRows(patient, {
+              nhsn: {},
+              dob: {},
+              yearGroup: {},
+              report: {
+                label: __("patientSession.report.label"),
+                value: reportStatusHtml
+              } if data.programme_id
+            })
+          })
+        }) }}
+      {% endfor %}
+
+      {{ pagination(pages) }}
+    </div>
+  </div>
 {% endblock %}

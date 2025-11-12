@@ -1420,11 +1420,14 @@ export const en = {
   },
   school: {
     list: {
+      label: 'Schools',
       title: 'Schools',
-      caption: 'Local authority'
+      description:
+        'Browse schools and view their pupils and vaccination sessions'
     },
-    show: {
-      summary: 'School details'
+    patients: {
+      label: 'Children',
+      title: 'Children'
     },
     count:
       '{count, plural, =0 {no {phase} school} one {# no {phase} schools} other{# {phase} schools}}',
@@ -1439,9 +1442,6 @@ export const en = {
     },
     address: {
       label: 'Address'
-    },
-    patients: {
-      label: 'Children'
     }
   },
   search: {
@@ -1567,7 +1567,7 @@ export const en = {
       label: 'Sessions',
       title: 'Sessions',
       description:
-        'Review consent responses, triage answers to health questions and record vaccinations'
+        'Review consent responses, triage health questions and record vaccinations'
     },
     notices: {
       label: 'Needs review'

@@ -6,6 +6,7 @@ import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Address } from './address.js'
 import { Patient } from './patient.js'
+import { Programme } from './programme.js'
 
 /**
  * @class School
@@ -47,20 +48,7 @@ export class School {
     if (this.context?.patients && this.urn) {
       return Object.values(this.context?.patients)
         .filter(({ school_urn }) => school_urn === this.urn)
-        .map((patient) => new Patient(patient))
-    }
-
-    return []
-  }
-
-  /**
-   * Get school pupils
-   *
-   * @returns {object} Patients by year group
-   */
-  get patientsByYearGroup() {
-    if (this.context?.patients && this.patients) {
-      return Object.groupBy(this.patients, ({ yearGroup }) => yearGroup)
+        .map((patient) => new Patient(patient, this.context))
     }
 
     return []
@@ -76,6 +64,19 @@ export class School {
     }
 
     return [...range(7, 11)]
+  }
+
+  /**
+   * Get programmes that run at this school
+   *
+   * @returns {Array<Programme>} Programmes
+   */
+  get programmes() {
+    return Programme.findAll(this.context).filter((programme) =>
+      programme.yearGroups.some((yearGroup) =>
+        this.yearGroups.includes(yearGroup)
+      )
+    )
   }
 
   /**
