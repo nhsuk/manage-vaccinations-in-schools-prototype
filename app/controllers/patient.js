@@ -147,7 +147,6 @@ export const patientController = {
     }))
 
     // Clean up session data
-    delete data.report
     delete data.options
     delete data.patientConsent
     delete data.patientDeferred
