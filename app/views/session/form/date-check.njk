@@ -1,6 +1,6 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("session.dates.check.title", session.programmeNames.sentenceCase) %}
+{% set title = __("session.date.check.title", session.programmeNames.sentenceCase) %}
 {% set hideConfirmButton = true %}
 
 
@@ -9,18 +9,18 @@
     classes: "app-panel--interruption",
     titleText: title
   }) %}
-    {{ __("session.dates.check.description", {
-      firstDate: session.summary.firstDate,
+    {{ __("session.date.check.description", {
+      date: session.formatted.date,
       yearGroups: session.programmes[0].formatted.yearGroups
     }) | nhsukMarkdown }}
 
     {{ appButtonGroup({
       buttons: [{
         classes: "nhsuk-button--reverse",
-        text: __("session.dates.check.confirm")
+        text: __("session.date.check.confirm")
       }],
       links: [{
-        text: __("session.dates.check.cancel")
+        text: __("session.date.check.cancel")
       }]
     }) }}
   {% endcall %}

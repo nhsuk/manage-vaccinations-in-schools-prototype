@@ -114,9 +114,7 @@ export const sessionController = {
     }
 
     // Sort
-    results = results.sort((a, b) =>
-      getDateValueDifference(b.firstDate, a.firstDate)
-    )
+    results = results.sort((a, b) => getDateValueDifference(a.date, b.date))
 
     // Results
     response.locals.results = getResults(results, request.query, 40)
@@ -532,13 +530,13 @@ export const sessionController = {
         ...(session.type === SessionType.School
           ? {
               [`/${session_id}/${type}/school`]: {},
-              [`/${session_id}/${type}/dates`]: {}
+              [`/${session_id}/${type}/date`]: {}
             }
           : {
               [`/${session_id}/${type}/clinic`]: {},
-              [`/${session_id}/${type}/dates`]: {}
+              [`/${session_id}/${type}/date`]: {}
             }),
-        [`/${session_id}/${type}/dates-check`]: {},
+        [`/${session_id}/${type}/date-check`]: {},
         [`/${session_id}/${type}/check-answers`]: {},
         [`/${session_id}`]: {}
       }

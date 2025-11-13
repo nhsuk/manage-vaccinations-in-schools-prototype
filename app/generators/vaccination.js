@@ -45,10 +45,10 @@ export function generateVaccination(patientSession, programme, batch, users) {
 
   // Sync date is between 1 minute and 2 hours after the session first date
   const syncDateLowerBound = new Date(
-    patientSession.session.firstDate.getTime() + 1000 * 60
+    patientSession.session.date.getTime() + 1000 * 60
   )
   const syncDateUpperBound = new Date(
-    patientSession.session.firstDate.getTime() + 1000 * 60 * 60 * 2
+    patientSession.session.date.getTime() + 1000 * 60 * 60 * 2
   )
 
   // Only populate sync date if the patient was vaccinated
@@ -64,7 +64,7 @@ export function generateVaccination(patientSession, programme, batch, users) {
     : undefined
 
   return new Vaccination({
-    createdAt: patientSession.session.firstDate,
+    createdAt: patientSession.session.date,
     createdBy_uid: user.uid,
     nhseSyncedAt,
     outcome,

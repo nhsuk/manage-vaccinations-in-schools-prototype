@@ -29,19 +29,19 @@
     classes: "nhsuk-u-margin-bottom-2",
     level: 2,
     size: "m",
-    title: __("session.dates.label")
+    title: __("session.date.label")
   }) }}
 
-  {{ session.formatted.dates | safe }}
+  {{ session.formatted.date | safe }}
 
   {% set detailsHtml %}
-    {{ __("session.reminderDates.description") | nhsukMarkdown }}
+    {{ __("session.reminderDate.description") | nhsukMarkdown }}
 
-    {{ session.formatted.reminderDates | safe }}
+    {{ session.formatted.reminderDate | safe }}
   {% endset %}
 
   {{ details({
-    summaryText: __("session.reminderDates.label"),
+    summaryText: __("session.reminderDate.label"),
     html: detailsHtml
   }) }}
 

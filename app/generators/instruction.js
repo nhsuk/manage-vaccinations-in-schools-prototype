@@ -16,7 +16,7 @@ export function generateInstruction(patientSession, programme, session, users) {
   const user = faker.helpers.arrayElement(users)
 
   return new Instruction({
-    createdAt: removeDays(session.firstDate, 7),
+    createdAt: removeDays(session.date, 7),
     createdBy_uid: user.uid,
     programme_id: programme?.id,
     patientSession_uuid: patientSession.uuid

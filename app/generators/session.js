@@ -27,51 +27,36 @@ export function generateSession(programmePreset, academicYear, user, options) {
 
   const { clinic_id, school_urn } = options
   const term = schoolTerms[academicYear][preset.term]
-  const dates = []
 
-  let firstSessionDate = faker.date.between({
+  let date = faker.date.between({
     from: term.from,
     to: term.to
   })
 
   let openAt
-  if (firstSessionDate) {
+  if (date) {
     // Clinic sessions happen after the school term has finished
     if (clinic_id) {
-      firstSessionDate = faker.date.between({
+      date = faker.date.between({
         from: term.to,
         to: addDays(term.to, 30)
       })
     }
 
-    firstSessionDate = setMidday(firstSessionDate)
+    date = setMidday(date)
 
     // Don’t create sessions during weekends
-    if ([0, 6].includes(firstSessionDate.getDay())) {
-      firstSessionDate = removeDays(firstSessionDate, 2)
+    if ([0, 6].includes(date.getDay())) {
+      date = removeDays(date, 2)
     }
 
-    dates.push(firstSessionDate)
-
-    // Add additional session dates
-    for (const _index of [1, 2]) {
-      if (_index !== 0) {
-        const previousDate = dates[_index - 1]
-        const subsequentDate = setMidday(addDays(previousDate, 7))
-        dates.push(subsequentDate)
-      }
-    }
-
-    openAt = removeDays(
-      firstSessionDate,
-      OrganisationDefaults.SessionOpenWeeks * 7
-    )
+    openAt = removeDays(date, OrganisationDefaults.SessionOpenWeeks * 7)
   }
 
   return new Session({
     createdAt: removeDays(term.from, 60),
     createdBy_uid: user.uid,
-    dates,
+    date,
     openAt,
     registration: true,
     academicYear,
