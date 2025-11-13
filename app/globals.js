@@ -1,4 +1,3 @@
-import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
 import { healthQuestions } from './datasets/health-questions.js'
@@ -549,30 +548,6 @@ export default () => {
     summaryRows.at(-1).classes = 'nhsuk-summary-list__row--no-border'
 
     return summaryRows
-  }
-
-  globals.vaccinationCount = function (vaccinations) {
-    const { __mf } = this.ctx
-
-    if (!vaccinations) {
-      return
-    }
-
-    const counts = []
-    for (const [programme, count] of Object.entries(vaccinations)) {
-      if (count !== 0) {
-        counts.push(
-          __mf('session.record.count', {
-            programme: programme.replace('Flu', 'flu'),
-            count
-          })
-        )
-      }
-    }
-
-    return counts.length > 0
-      ? `You have vaccinated ${prototypeFilters.formatList(counts)} in today’s session so far.`
-      : ''
   }
 
   return globals
