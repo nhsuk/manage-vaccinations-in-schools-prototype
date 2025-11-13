@@ -254,7 +254,7 @@ export const PatientStatus = {
   Refused: 'Has refusal',
   Triage: 'Needs triage',
   Due: 'Due vaccination',
-  Deferred: 'Could not vaccinate',
+  Deferred: 'Unable to vaccinate',
   PartiallyVaccinated: 'Partially vaccinated',
   Vaccinated: 'Fully vaccinated'
 }
