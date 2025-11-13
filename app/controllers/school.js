@@ -140,7 +140,9 @@ export const schoolController = {
   },
 
   show(request, response) {
-    response.render(`school/show`)
+    const view = request.params.view || 'show'
+
+    response.render(`school/${view}`)
   },
 
   list(request, response) {
@@ -182,5 +184,13 @@ export const schoolController = {
     }
 
     response.redirect(`${school.uri}?${params}`)
+  },
+
+  readSessions(request, response) {
+    const { school } = response.locals
+
+    response.locals.sessions = school.sessions
+
+    response.render('school/sessions')
   }
 }
