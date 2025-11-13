@@ -30,24 +30,6 @@ export default (env) => {
   }
 
   /**
-   * Convert div.nhsuk-card to button.nhsuk-card
-   *
-   * @param {string} string - HTML
-   * @returns {string} Formatted HTML
-   */
-  filters.buttonCard = function (string) {
-    const { filters } = this.ctx.settings.nunjucksEnv
-    const html = string
-      .replace(
-        /^\n\n\n\n<div class="nhsuk-card/,
-        '<button class="nhsuk-card app-card--button'
-      )
-      .replace(/<\/div>\n$/, '</button>')
-
-    return filters.safe(html)
-  }
-
-  /**
    * Remove border from last summary row
    *
    * @param {Array} array - Summary rows
