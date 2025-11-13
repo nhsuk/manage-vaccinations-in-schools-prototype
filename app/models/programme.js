@@ -162,6 +162,15 @@ export class Programme {
   }
 
   /**
+   * Get all eligible year groups
+   *
+   * @returns {Array<number>} Eligible year groups
+   */
+  get eligibleYearGroups() {
+    return [...(this?.yearGroups || []), ...(this?.catchupYearGroups || [])]
+  }
+
+  /**
    * Get cohorts
    *
    * @returns {Array<Cohort>} Cohorts
