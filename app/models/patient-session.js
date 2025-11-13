@@ -412,23 +412,6 @@ export class PatientSession {
   }
 
   /**
-   * Get reason could not vaccinate
-   *
-   * @returns {string|undefined} Reason could not vaccinate
-   */
-  get couldNotVaccinateReason() {
-    // Vaccination attempted, but not given
-    if (this.lastRecordedVaccination) {
-      return this.lastRecordedVaccination.outcome
-      // Patient was screened, and could not be vaccinated
-    } else if (this.screen && this.screen !== ScreenOutcome.Vaccinate) {
-      return this.status.screen.reason
-    }
-
-    return this.status.consent.reason
-  }
-
-  /**
    * Get consent outcome
    *
    * @returns {ConsentOutcome} Consent outcome
