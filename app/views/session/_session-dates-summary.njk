@@ -44,7 +44,7 @@
   {% else %}
     {{ session.formatted.date | nhsukMarkdown }}
 
-    {{ session.formatted.consentWindow | nhsukMarkdown if session.type == SessionType.School }}
+    {{ ("Consent window: " + session.formatted.consentWindow) | nhsukMarkdown if session.type == SessionType.School }}
   {% endif %}
 
   {{ appButtonGroup({

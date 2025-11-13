@@ -1,3 +1,5 @@
+{% from "school/_navigation.njk" import schoolNavigation with context %}
+
 {% from "_macros/patient-search.njk" import appPatientSearch with context %}
 
 {% extends "_layouts/form.njk" %}
@@ -18,9 +20,11 @@
 {% endblock %}
 
 {% block form %}
-  {{ appHeading({
-    title: title,
-    summary: school.address.formatted.singleline
+  {{ super() }}
+
+  {{ schoolNavigation({
+    school: school,
+    view: "show"
   }) }}
 
   {{ button({

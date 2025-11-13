@@ -1,12 +1,13 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { SchoolPhase } from '../enums.js'
+import { SchoolPhase, SessionType } from '../enums.js'
 import { range } from '../utils/number.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Address } from './address.js'
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
+import { Session } from './session.js'
 
 /**
  * @class School
@@ -52,6 +53,23 @@ export class School {
     }
 
     return []
+  }
+
+  /**
+   * Get sessions run at this school
+   *
+   * @returns {Array<Session>} Sessions
+   */
+  get sessions() {
+    if (['888888', '999999'].includes(this.urn)) {
+      return Session.findAll(this.context).filter(
+        (session) => session.type === SessionType.Clinic
+      )
+    }
+
+    return Session.findAll(this.context).filter(
+      (session) => session.school_urn === this.urn
+    )
   }
 
   /** Get year groups

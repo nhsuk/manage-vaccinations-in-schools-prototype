@@ -1425,9 +1425,16 @@ export const en = {
       description:
         'Browse schools and view their pupils and vaccination sessions'
     },
-    patients: {
+    show: {
       label: 'Children',
       title: 'Children'
+    },
+    sessions: {
+      label: 'Sessions',
+      title: 'Sessions',
+      isActive: 'Session in progress',
+      isPlanned: 'Scheduled sessions',
+      isCompleted: 'Completed sessions'
     },
     count:
       '{count, plural, =0 {no {phase} school} one {# no {phase} schools} other{# {phase} schools}}',
