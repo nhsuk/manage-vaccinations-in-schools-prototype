@@ -1,3 +1,5 @@
+{% from "school/_navigation.njk" import schoolNavigation with context %}
+
 {% from "_macros/patient-search.njk" import appPatientSearch with context %}
 
 {% extends "_layouts/form.njk" %}
@@ -18,8 +20,11 @@
 {% endblock %}
 
 {% block form %}
-  {{ appHeading({
-    title: title
+  {{ super() }}
+
+  {{ schoolNavigation({
+    school: school,
+    view: "show"
   }) }}
 
   <div class="nhsuk-grid-row">

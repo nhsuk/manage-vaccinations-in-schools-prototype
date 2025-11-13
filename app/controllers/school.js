@@ -4,6 +4,8 @@ import { AcademicYear, PatientStatus } from '../enums.js'
 import { Patient } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
 import { School } from '../models/school.js'
+import { Session } from '../models/session.js'
+import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
@@ -148,7 +150,9 @@ export const schoolController = {
   },
 
   show(request, response) {
-    response.render(`school/show`)
+    const view = request.params.view || 'show'
+
+    response.render(`school/${view}`)
   },
 
   list(request, response) {
@@ -190,5 +194,20 @@ export const schoolController = {
     }
 
     response.redirect(`${school.uri}?${params}`)
+  },
+
+  listSessions(request, response) {
+    const { data } = request.session
+    const { school } = response.locals
+
+    const latestAcademicYear = Object.values(AcademicYear).at(-1)
+    const sessions = Session.findAll(data)
+      .filter((session) => session.school_urn === school.urn)
+      .filter((session) => session.academicYear === latestAcademicYear)
+      .sort((a, b) => getDateValueDifference(a.date, b.date))
+
+    response.locals.sessions = sessions
+
+    response.render('school/sessions')
   }
 }

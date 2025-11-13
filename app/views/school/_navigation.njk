@@ -1,0 +1,23 @@
+{% from "_macros/heading.njk" import appHeading %}
+{% from "_macros/secondary-navigation.njk" import appSecondaryNavigation %}
+
+{% macro schoolNavigation(params) %}
+  {{ appHeading({
+    title: params.school.location.name
+  }) }}
+
+  {{ appSecondaryNavigation({
+    items: [
+      {
+        text: __("school.patients.label"),
+        href: params.school.uri,
+        current: params.view == "show"
+      },
+      {
+        text: __("school.sessions.label"),
+        href: params.school.uri + "/sessions",
+        current: params.view == "sessions"
+      }
+    ]
+  }) }}
+{% endmacro %}

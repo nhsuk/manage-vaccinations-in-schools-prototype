@@ -1408,6 +1408,13 @@ export const en = {
     show: {
       summary: 'School details'
     },
+    sessions: {
+      label: 'Sessions',
+      title: 'Sessions',
+      isActive: 'Session in progress',
+      isPlanned: 'Scheduled sessions',
+      isCompleted: 'Completed sessions'
+    },
     count:
       '{count, plural, =0 {no {phase} school} one {# no {phase} schools} other{# {phase} schools}}',
     name: {
