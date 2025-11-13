@@ -4,94 +4,45 @@
 }) %}
   {% if session.isActive or session.isCompleted %}
     {% set rows = [] %}
-    {# Add a row for each session date #}
-    {% for dateShort in session.formatted.datesShort %}
-      {% set dateRow = [{
-        header: __("session.date.label"),
-        html: dateShort
-      }] %}
-      {% for programme in session.programmes %}
-        {% set dateRow = dateRow.concat([{
-          header: __("session.tally.vaccinatedWithVaccineCriteria.label", {
-            programme: programme,
-            vaccineCriteria: programme.standardVaccine.criteria
-          }),
-          text: session.tally(programme.id, PatientStatus.Vaccinated, programme.standardVaccine.criteria) if loop.first else 0,
-          format: "numeric"
-        }]) %}
-        {% if programme.alternativeVaccine %}
-          {% set dateRow = dateRow.concat([{
-            header: __("session.tally.vaccinatedWithVaccineCriteria.label", {
-              programme: programme,
-              vaccineCriteria: programme.alternativeVaccine.criteria
-            }),
-            text: session.tally(programme.id, PatientStatus.Vaccinated, programme.alternativeVaccine.criteria) if loop.first else 0,
-            format: "numeric"
-          }]) %}
-        {% endif %}
-      {% endfor %}
-      {% set rows = rows | push(dateRow) %}
-    {% endfor %}
-
-    {# Add a row for total across all session dates #}
-    {% set totalRow = [{
-      header: "All dates",
-      text: "Total"
-    }] %}
     {% for programme in session.programmes %}
-      {% set totalRow = totalRow.concat([{
-        header: __("session.tally.vaccinatedWithVaccineCriteria.label", {
-          programme: programme,
-          vaccineCriteria: programme.standardVaccine.criteria
-        }),
-        html: "<strong>" + session.tally(programme.id, PatientStatus.Vaccinated, programme.standardVaccine.criteria) if loop.first else 0 + "</strong>",
-        format: "numeric"
-      }]) %}
-      {% if programme.alternativeVaccine %}
-        {% set totalRow = totalRow.concat([{
-          header: __("session.tally.vaccinatedWithVaccineCriteria.label", {
-            programme: programme,
-            vaccineCriteria: programme.alternativeVaccine.criteria
-          }),
-          html: "<strong>" + session.tally(programme.id, PatientStatus.Vaccinated,programme.alternativeVaccine.criteria) if loop.first else 0 + "</strong>",
-          format: "numeric"
-        }]) %}
-      {% endif %}
-    {% endfor %}
-    {% set rows = rows | push(totalRow) %}
-
-    {# Head row #}
-    {% set head = [{
-      text: __("session.date.label")
-    }] %}
-    {% for programme in session.programmes %}
-      {% set head = head.concat([{
-        text: __("session.tally.vaccinatedWithVaccineCriteria.label", {
-          programme: programme,
-          vaccineCriteria: programme.standardVaccine.criteria
-        }),
-        format: "numeric"
-      }]) %}
-      {% if programme.alternativeVaccine %}
-        {% set head = head.concat([{
+      {% set rows = rows.concat([{
+        key: {
           text: __("session.tally.vaccinatedWithVaccineCriteria.label", {
             programme: programme,
-            vaccineCriteria: programme.alternativeVaccine.criteria
-          }),
-          format: "numeric"
+            vaccineCriteria: programme.standardVaccine.criteria
+          })
+        },
+        value: {
+          text: session.tally(programme.id, PatientStatus.Vaccinated, programme.standardVaccine.criteria)
+        }
+      }]) %}
+      {% if programme.alternativeVaccine %}
+        {% set rows = rows.concat([{
+          key: {
+            text: __("session.tally.vaccinatedWithVaccineCriteria.label", {
+              programme: programme,
+              vaccineCriteria: programme.alternativeVaccine.criteria
+            })
+          },
+          value: {
+            text: session.tally(programme.id, PatientStatus.Vaccinated, programme.alternativeVaccine.criteria)
+          }
         }]) %}
       {% endif %}
     {% endfor %}
 
-    {{ table({
-      id: "dates",
-      caption: __("session.tally.vaccinated.label"),
-      responsive: true,
-      head: head,
+    {{ appHeading({
+      classes: "nhsuk-u-margin-bottom-2",
+      title: __("session.tally.vaccinated.label"),
+      level: 4,
+      size: "s"
+    }) }}
+
+    {{ summaryList({
       rows: rows
     }) }}
   {% else %}
-    {{ session.formatted.dates | safe }}
+    {{ session.formatted.date | nhsukMarkdown }}
 
     {{ session.formatted.consentWindow | nhsukMarkdown if session.type == SessionType.School }}
   {% endif %}

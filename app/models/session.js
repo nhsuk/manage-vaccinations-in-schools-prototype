@@ -1,6 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { default as filters } from '@x-govuk/govuk-prototype-filters'
-import { isAfter } from 'date-fns'
+import { isAfter, isSameDay } from 'date-fns'
 import _ from 'lodash'
 
 import {
@@ -21,9 +21,7 @@ import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
-  formatDateRange,
   getAcademicYear,
-  includesDate,
   setMidday,
   today
 } from '../utils/date.js'
@@ -56,8 +54,8 @@ import { Vaccine } from './vaccine.js'
  * @property {string} [createdBy_uid] - User who created session
  * @property {string} [clinic_id] - Clinic ID
  * @property {string} [school_urn] - School URN
- * @property {Array<Date>} [dates] - Dates
- * @property {Array<object>} [dates_] - Dates (from `dateInput`s)
+ * @property {Date} [date] - Dates
+ * @property {object} [date_] - Dates (from `dateInput`s)
  * @property {Date} [openAt] - Date consent window opens
  * @property {object} [openAt_] - Date consent window opens (from `dateInput`)
  * @property {boolean} [closed] - Session closed
@@ -80,14 +78,12 @@ export class Session {
     this.type = options?.type || SessionType.School
     this.clinic_id = options?.clinic_id
     this.school_urn = options?.school_urn
-    this.dates = options?.dates
-      ? options.dates.map((date) => new Date(date))
-      : []
-    this.dates_ = options?.dates_
+    this.date = options?.date && new Date(options.date)
+    this.date_ = options?.date_
     this.openAt = options?.openAt
       ? new Date(options.openAt)
-      : this.firstDate
-        ? removeDays(this.firstDate, OrganisationDefaults.SessionOpenWeeks * 7)
+      : this.date
+        ? removeDays(this.date, OrganisationDefaults.SessionOpenWeeks * 7)
         : undefined
     this.openAt_ = options?.openAt_
     this.closed = options?.closed || false
@@ -106,24 +102,22 @@ export class Session {
   }
 
   /**
-   * Get session dates for `dateInput`s
+   * Get session date for `dateInput`s
    *
    * @returns {Array<object|undefined>} `dateInput` objects
    */
-  get dates_() {
-    return this.dates.map((date) => convertIsoDateToObject(date))
+  get date_() {
+    return convertIsoDateToObject(this.date)
   }
 
   /**
-   * Set session dates from `dateInput`s
+   * Set session date from `dateInput`s
    *
    * @param {object} object - dateInput object
    */
-  set dates_(object) {
+  set date_(object) {
     if (object) {
-      this.dates = Object.values(object).map((date) =>
-        convertObjectToIsoDate(date)
-      )
+      this.date = convertObjectToIsoDate(object)
     }
   }
 
@@ -148,56 +142,14 @@ export class Session {
   }
 
   /**
-   * Get first session date
+   * Get date reminders to give consent are sent
    *
-   * @returns {Date} First session date
+   * @returns {Date|undefined} Reminder dates
    */
-  get firstDate() {
-    return this.dates[0]
-  }
-
-  /**
-   * Get last session date
-   *
-   * @returns {Date} Last session date
-   */
-  get lastDate() {
-    return this.dates.at(-1)
-  }
-
-  /**
-   * Get remaining session dates
-   *
-   * @returns {Array<Date>} Remaining session dates
-   */
-  get remainingDates() {
-    const remainingDates = [...this.dates]
-    remainingDates.shift()
-
-    return remainingDates
-  }
-
-  /**
-   * Get next session date
-   *
-   * @returns {Date} Next session dates
-   */
-  get nextDate() {
-    return this.remainingDates[0]
-  }
-
-  /**
-   * Get dates reminders to give consent are sent
-   *
-   * @returns {Array<Date>|undefined} Reminder dates
-   */
-  get reminderDates() {
-    const reminderDates = []
-    for (const date of this.dates) {
-      reminderDates.push(removeDays(date, 7))
+  get reminderDate() {
+    if (this.date) {
+      return removeDays(this.date, 7)
     }
-
-    return reminderDates
   }
 
   /**
@@ -206,8 +158,8 @@ export class Session {
    * @returns {Date|undefined} Next reminder date
    */
   get nextReminderDate() {
-    if (this.dates.length > 0) {
-      return removeDays(this.dates[0], this.reminderWeeks * 7)
+    if (this.date) {
+      return removeDays(this.date, this.reminderWeeks * 7)
     }
   }
 
@@ -218,8 +170,8 @@ export class Session {
    */
   get closeAt() {
     // Always close consent for school sessions one day before final session
-    if (this.lastDate) {
-      return removeDays(this.lastDate, 1)
+    if (this.date) {
+      return removeDays(this.date, 1)
     }
   }
 
@@ -295,7 +247,7 @@ export class Session {
    * @returns {boolean} Is active session
    */
   get isActive() {
-    return includesDate(this.dates, setMidday(today()))
+    return isSameDay(this.date, setMidday(today()))
   }
 
   /**
@@ -337,9 +289,9 @@ export class Session {
     switch (true) {
       case this.closed:
         return SessionStatus.Closed
-      case this.dates.length === 0:
+      case !this.date:
         return SessionStatus.Unplanned
-      case isAfter(setMidday(today()), this.lastDate):
+      case isAfter(setMidday(today()), this.date):
         return SessionStatus.Completed
       default:
         return SessionStatus.Planned
@@ -626,24 +578,6 @@ export class Session {
   }
 
   /**
-   * Get date summary
-   *
-   * @returns {string} Date summary
-   */
-  get dateSummary() {
-    if (this.dates.length > 0) {
-      const range = formatDateRange(this.firstDate, this.lastDate, {
-        dateStyle: 'long'
-      })
-      return `${range} (${this.dates.length} sessions)`
-    } else if (this.dates.length === 1) {
-      return this.formatted.lastDate
-    }
-
-    return 'No sessions scheduled'
-  }
-
-  /**
    * Get closing summary
    *
    * @returns {object} Closing summary
@@ -704,26 +638,7 @@ export class Session {
         consentWindow = ''
     }
 
-    const formattedDates =
-      this.dates.length > 0
-        ? this.dates.map((date) => formatDate(date, { dateStyle: 'full' }))
-        : ''
-
-    const formattedShortDates =
-      this.dates.length > 0
-        ? this.dates.map((date) =>
-            formatDate(date, { dateStyle: 'long' }).replaceAll(' ', '&nbsp;')
-          )
-        : ''
-
-    const formattedReminderDates =
-      this.reminderDates.length > 0
-        ? this.reminderDates.map((date) =>
-            formatDate(date, { dateStyle: 'full' })
-          )
-        : []
-
-    const formattedNextReminderDate = formatDate(this.nextReminderDate, {
+    const nextReminderDate = formatDate(this.nextReminderDate, {
       dateStyle: 'full'
     })
 
@@ -731,24 +646,28 @@ export class Session {
 
     return {
       address: this.address?.formatted.multiline,
-      dates: formatList(formattedDates).replace(' nhsuk-list--bullet', ''),
-      datesShort: formattedShortDates,
-      firstDate: formatDate(this.firstDate, { dateStyle: 'full' }),
-      nextDate: formatDate(this.nextDate, {
+      dateShort: formatDate(this.date, {
+        dateStyle: 'long'
+      }),
+      date: formatDate(this.date, {
+        dateStyle: 'full'
+      }),
+      nextDate: formatDate(this.date, {
         weekday: 'long',
         month: 'long',
         day: 'numeric'
       }),
-      openAt: formatDate(this.openAt, { dateStyle: 'full' }),
-      reminderDates: formatList(formattedReminderDates).replace(
-        ' nhsuk-list--bullet',
-        ''
-      ),
-      nextReminderDate: formattedNextReminderDate,
-      reminderWeeks: formattedNextReminderDate
+      openAt: formatDate(this.openAt, {
+        dateStyle: 'full'
+      }),
+      reminderDate: formatDate(this.reminderDate, {
+        dateStyle: 'full'
+      }),
+      nextReminderDate,
+      reminderWeeks: nextReminderDate
         ? formatWithSecondaryText(
             `Send ${reminderWeeks} before each session`,
-            `First: ${formattedNextReminderDate}`
+            `First: ${nextReminderDate}`
           )
         : `Send ${reminderWeeks} before each session`,
       closeAt: formatDate(this.closeAt, { dateStyle: 'full' }),
@@ -775,49 +694,6 @@ export class Session {
       school: this.school && this.school.name,
       school_urn: this.school && this.school.formatted.urn,
       status: formatTag(this.sessionStatus)
-    }
-  }
-
-  /**
-   * Get formatted summary
-   *
-   * @returns {object} Formatted summaries
-   */
-  get summary() {
-    const dates =
-      this.dates.length > 0
-        ? this.dates.map((date) =>
-            formatDate(date, { weekday: 'long', month: 'long', day: 'numeric' })
-          )
-        : ''
-
-    const firstDate =
-      this.dates.length > 0
-        ? formatDate(this.firstDate, {
-            weekday: 'long',
-            month: 'long',
-            day: 'numeric'
-          })
-        : ''
-
-    const remainingDates =
-      this.remainingDates && this.remainingDates.length > 0
-        ? this.remainingDates.map((date) =>
-            formatDate(date, { weekday: 'long', month: 'long', day: 'numeric' })
-          )
-        : []
-
-    return {
-      dates: filters.formatList(dates),
-      datesDisjunction: filters.formatList(dates, 'disjunction'),
-      firstDate,
-      remainingDates: filters.formatList(remainingDates),
-      location: `${this.location.name}</br>
-      <span class="nhsuk-u-secondary-text-colour">
-        ${this.location.addressLine1},
-        ${this.location.addressLevel1},
-        ${this.location.postalCode}
-      </span>`
     }
   }
 

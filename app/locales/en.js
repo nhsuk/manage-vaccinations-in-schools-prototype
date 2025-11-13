@@ -536,13 +536,13 @@ export const en = {
       },
       text: {
         [ReplyDecision.Given]:
-          '{{consent.child.fullName}} is due to get the {{session.vaccinationNames.sentenceCase}} at school on {{session.summary.datesDisjunction}}',
+          '{{consent.child.fullName}} is due to get the {{session.vaccinationNames.sentenceCase}} at school on {{session.formatted.nextDate}}',
         [ReplyDecision.OnlyAlternativeInjection]:
-          '{{consent.child.fullName}} is due to get the flu injection at school on {{session.summary.datesDisjunction}}',
+          '{{consent.child.fullName}} is due to get the flu injection at school on {{session.formatted.nextDate}}',
         [ReplyDecision.OnlyMenACWY]:
-          '{{consent.child.fullName}} is due to get the MenACWY vaccination at school on {{session.summary.datesDisjunction}}',
+          '{{consent.child.fullName}} is due to get the MenACWY vaccination at school on {{session.formatted.nextDate}}',
         [ReplyDecision.OnlyTdIPV]:
-          '{{consent.child.fullName}} is due to get the Td/IPV vaccination at school on {{session.summary.datesDisjunction}}',
+          '{{consent.child.fullName}} is due to get the Td/IPV vaccination at school on {{session.formatted.nextDate}}',
         [ReplyDecision.Declined]:
           'A member of the team will contact you soon to discuss your options.',
         [ReplyDecision.Refused]:
@@ -602,15 +602,15 @@ export const en = {
     consent: {
       invite: {
         label: 'Invitation',
-        name: '{{session.vaccinationInviteNames}} on {{session.summary.dates}}'
+        name: '{{session.vaccinationInviteNames}} on {{session.formatted.nextDate}}'
       },
       'invite-catch-up': {
         label: 'Invitation (catch-up)',
-        name: '{{session.vaccinationNames.titleCase}} on {{session.summary.dates}}'
+        name: '{{session.vaccinationNames.titleCase}} on {{session.formatted.nextDate}}'
       },
       'invite-reminder': {
         label: 'Reminder',
-        name: 'Please respond to our request for consent by {{session.formatted.firstDate}}'
+        name: 'Please respond to our request for consent by {{session.formatted.nextDate}}'
       },
       'invite-subsequent-reminder': {
         label: 'Subsequent reminder',
@@ -630,7 +630,7 @@ export const en = {
       },
       'consent-given': {
         label: 'Consent given',
-        name: '{{session.vaccinationNames.titleCase}} on {{session.summary.dates}}'
+        name: '{{session.vaccinationNames.titleCase}} on {{session.formatted.nextDate}}'
       },
       'consent-given-changed-school': {
         label: 'Consent given (changed school)',
@@ -642,15 +642,15 @@ export const en = {
       },
       'consent-refused': {
         label: 'Consent refused',
-        name: '{{session.vaccinationNames.titleCase}} on {{session.summary.dates}}'
+        name: '{{session.vaccinationNames.titleCase}} on {{session.formatted.nextDate}}'
       },
       'consent-needs-triage': {
         label: 'Consent needs triage',
-        name: '{{session.vaccinationNames.titleCase}} on {{session.summary.dates}}'
+        name: '{{session.vaccinationNames.titleCase}} on {{session.formatted.nextDate}}'
       },
       'triage-vaccinate': {
         label: 'Vaccinate',
-        name: 'Your child can have the {{session.vaccinationNames.sentenceCase}} on {{session.summary.dates}}'
+        name: 'Your child can have the {{session.vaccinationNames.sentenceCase}} on {{session.formatted.nextDate}}'
       },
       'triage-delay-vaccination': {
         label: 'Delay vaccination',
@@ -662,7 +662,7 @@ export const en = {
       },
       'record-reminder': {
         label: 'Reminder',
-        name: '{{consent.child.fullName}} will get their {{session.vaccinationNames.sentenceCase}} on {{session.summary.dates}}'
+        name: '{{consent.child.fullName}} will get their {{session.vaccinationNames.sentenceCase}} on {{session.formatted.nextDate}}'
       },
       'record-vaccinated': {
         label: 'Vaccinated',
@@ -678,7 +678,7 @@ export const en = {
       },
       'information-child': {
         label: 'Information for students',
-        name: 'You can get an {{session.vaccinationNames.sentenceCase}} on {{session.summary.dates}}'
+        name: 'You can get an {{session.vaccinationNames.sentenceCase}} on {{session.formatted.nextDate}}'
       }
     }
   },
@@ -1657,21 +1657,15 @@ export const en = {
     },
     date: {
       label: 'Session date',
-      hint: 'For example, 27 3 2025'
-    },
-    dates: {
-      label: 'Session dates',
-      title: 'When will sessions be held?',
+      title: 'When will this session be held?',
+      hint: 'For example, 27 3 2025',
       check: {
         title: 'Have you imported historical vaccination records for %s?',
         description:
-          '1% of children in {{yearGroups}} in this session have vaccination records. This is unusually low coverage for catch-up year groups.\n\nCheck and confirm that vaccination records have been imported for all children in this school before you continue.\n\nScheduling this session now will send consent requests to 40 parents of children in {{yearGroups}} on {{firstDate}}. Many of them may be parents of already vaccinated children.',
+          '1% of children in {{yearGroups}} in this session have vaccination records. This is unusually low coverage for catch-up year groups.\n\nCheck and confirm that vaccination records have been imported for all children in this school before you continue.\n\nScheduling this session now will send consent requests to 40 parents of children in {{yearGroups}} on {{date}}. Many of them may be parents of already vaccinated children.',
         confirm: 'Keep session dates',
         cancel: 'Remove session dates'
       }
-    },
-    dateSummary: {
-      label: 'Session dates'
     },
     school: {
       label: 'School',
@@ -1708,9 +1702,9 @@ export const en = {
       label: 'Consent requests',
       hint: 'For example, 27 3 2025'
     },
-    reminderDates: {
+    reminderDate: {
       label: 'Automatic consent reminder schedule',
-      description: 'Reminders will be sent automatically on these dates:'
+      description: 'Reminders will be sent automatically on this date:'
     },
     nextReminderDate: {
       label: 'Next reminder',
@@ -1789,12 +1783,12 @@ export const en = {
       'consent-given': {
         label: 'Consent given',
         name: 'Confirmation that consent has been given',
-        text: 'You’ve given consent for {{consent.child.firstName}} to get their {{session.vaccinationNames.sentenceCase}} at school on {{session.summary.remainingDates}}. Please let them know what to expect.\n\nIf anything changes, phone {{organisation.tel}}.'
+        text: 'You’ve given consent for {{consent.child.firstName}} to get their {{session.vaccinationNames.sentenceCase}} at school on {{session.formatted.nextDate}}. Please let them know what to expect.\n\nIf anything changes, phone {{organisation.tel}}.'
       },
       'consent-given-child': {
         label: 'Consent given (child)',
         name: 'Confirmation that consent has been given',
-        text: 'Your parent or guardian has agreed for you to have the {{session.vaccinationNames.sentenceCase}} at school on {{session.summary.remainingDates}}.'
+        text: 'Your parent or guardian has agreed for you to have the {{session.vaccinationNames.sentenceCase}} at school on {{session.formatted.nextDate}}.'
       },
       'consent-refused': {
         label: 'Consent refused',

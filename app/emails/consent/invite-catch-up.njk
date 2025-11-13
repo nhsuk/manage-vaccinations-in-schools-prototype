@@ -1,4 +1,4 @@
-We’re coming to {{ session.location.name }} on {{ session.summary.dates }} to give the human papillomavirus (HPV) vaccine.
+We’re coming to {{ session.location.name }} on {{ session.formatted.nextDate }} to give the human papillomavirus (HPV) vaccine.
 
 Our records show your child has not had their HPV vaccination. Pupils usually have this when they’re in Year 8.
 
@@ -18,7 +18,7 @@ Our records show your child has not had their HPV vaccination. Pupils usually ha
 
 {% include "emails/consent/_how-to-respond.njk" %}
 
-You need to respond by {{ session.formatted.firstDate }}.
+You need to respond by {{ session.formatted.nextDate }}.
 
 If you do not respond, you’ll get automatic reminders. Responding will stop reminders.
 

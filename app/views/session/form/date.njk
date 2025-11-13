@@ -1,0 +1,19 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("session.date.title") %}
+
+{% block form %}
+  {{ dateInput({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--l",
+        html: appHeading({
+          caption: session.location.name,
+          title: title
+        })
+      }
+    },
+    hint: { text: __("session.date.hint") },
+    decorate: "session.date_"
+  }) }}
+{% endblock %}
