@@ -229,6 +229,15 @@ export class PatientProgramme {
   }
 
   /**
+   * Get vaccine to administer (or was administered) in this patient session
+   *
+   * @returns {import('../enums.js').RecordVaccineCriteria} Vaccine criteria
+   */
+  get vaccineCriteria() {
+    return this.lastPatientSession.vaccineCriteria
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} Formatted values

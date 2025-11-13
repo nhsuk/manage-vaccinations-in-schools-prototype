@@ -8,10 +8,34 @@ import { formatYearGroup } from '../utils/string.js'
 
 export const schoolController = {
   read(request, response, next, school_urn) {
-    const { option, programme_id, q, yearGroup } = request.query
     const { data } = request.session
 
-    const school = School.findOne(school_urn, request.session.data)
+    const school = School.findOne(school_urn, data)
+    response.locals.school = school
+
+    next()
+  },
+
+  readAll(request, response, next) {
+    response.locals.schools = School.findAll(request.session.data)
+
+    next()
+  },
+
+  show(request, response) {
+    const view = request.params.view || 'show'
+
+    response.render(`school/${view}`)
+  },
+
+  list(request, response) {
+    response.render('school/list')
+  },
+
+  readPatients(request, response, next) {
+    const { option, programme_id, q, yearGroup } = request.query
+    const { data } = request.session
+    const { school } = response.locals
 
     const patients = Patient.findAll(data).filter(
       (patient) => patient.school_urn === school.urn
@@ -133,22 +157,6 @@ export const schoolController = {
     next()
   },
 
-  readAll(request, response, next) {
-    response.locals.schools = School.findAll(request.session.data)
-
-    next()
-  },
-
-  show(request, response) {
-    const view = request.params.view || 'show'
-
-    response.render(`school/${view}`)
-  },
-
-  list(request, response) {
-    response.render('school/list')
-  },
-
   filterPatients(request, response) {
     const { school } = response.locals
 
@@ -183,7 +191,7 @@ export const schoolController = {
       }
     }
 
-    response.redirect(`${school.uri}?${params}`)
+    response.redirect(`${school.uri}/patients?${params}`)
   },
 
   readSessions(request, response) {
