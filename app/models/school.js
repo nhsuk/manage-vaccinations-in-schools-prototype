@@ -1,11 +1,12 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { SchoolPhase } from '../enums.js'
+import { AcademicYear, SchoolPhase } from '../enums.js'
 import { range } from '../utils/number.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Address } from './address.js'
 import { Patient } from './patient.js'
+import { Programme } from './programme.js'
 
 /**
  * @class School
@@ -63,6 +64,23 @@ export class School {
     }
 
     return [...range(7, 11)]
+  }
+
+  /**
+   * Get programmes that run at this school
+   *
+   * @returns {Array<Programme>} Programmes
+   */
+  get programmes() {
+    const currentAcademicYear = Object.values(AcademicYear).at(-1)
+
+    return Programme.findAll(this.context)
+      .filter((programme) => programme.year === currentAcademicYear)
+      .filter((programme) =>
+        programme.eligibleYearGroups.some((yearGroup) =>
+          this.yearGroups.includes(yearGroup)
+        )
+      )
   }
 
   /**

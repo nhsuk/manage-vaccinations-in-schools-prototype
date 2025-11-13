@@ -1408,6 +1408,10 @@ export const en = {
     show: {
       summary: 'School details'
     },
+    programmes: {
+      label: 'Programmes',
+      title: 'Programmes'
+    },
     sessions: {
       label: 'Sessions',
       title: 'Sessions',
