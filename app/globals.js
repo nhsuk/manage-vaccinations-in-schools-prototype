@@ -459,18 +459,6 @@ export default () => {
   }
 
   /**
-   * Get percentage of two numbers
-   *
-   * @param {number} total - Total
-   * @param {number} number - Number of total
-   * @returns {number} Formatted HTML
-   */
-  globals.percentage = function (total, number) {
-    const percentage = (total / number) * 100
-    return Math.round(percentage)
-  }
-
-  /**
    * Get tag parameters
    *
    * @param {object} status - Status
