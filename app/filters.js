@@ -1,7 +1,6 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
-import { formatDate } from './utils/date.js'
 import {
   formatHighlight,
   formatList,
@@ -17,17 +16,6 @@ import {
  */
 export default (env) => {
   const filters = {}
-
-  /**
-   * Format date
-   *
-   * @param {string} string - ISO date, for example 07-12-2021
-   * @param {Intl.DateTimeFormatOptions} options - Options
-   * @returns {string} Formatted date, for example Sunday, 7 December 2021
-   */
-  filters.date = (string, options) => {
-    return formatDate(new Date(string), options)
-  }
 
   /**
    * Remove border from last summary row
