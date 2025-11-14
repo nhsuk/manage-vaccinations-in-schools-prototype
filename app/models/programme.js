@@ -2,7 +2,7 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import programmes from '../datasets/programmes.js'
 import vaccines from '../datasets/vaccines.js'
-import { VaccineCriteria } from '../enums.js'
+import { ProgrammeType, VaccineCriteria } from '../enums.js'
 import {
   formatLink,
   formatTag,
@@ -153,7 +153,10 @@ export class Programme {
    * @example Td/IPV vaccine (3-in-1 teenage booster)
    */
   get vaccineName() {
-    const vaccineName = programmes[this.type].vaccineName
+    const vaccineName =
+      this.type === ProgrammeType.Flu
+        ? `${this.title} vaccine`
+        : `${this.name} vaccine`
 
     return {
       sentenceCase: sentenceCaseProgrammeName(vaccineName),

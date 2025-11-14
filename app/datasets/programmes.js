@@ -5,7 +5,6 @@ export default {
     type: ProgrammeType.Flu,
     name: 'Flu',
     title: 'Children’s flu',
-    vaccineName: 'Children’s flu vaccine',
     information: {
       startPage:
         'Use this service to give or refuse consent for your child to have a flu vaccination.\n\nThis vaccination is recommended for school age children every year.\n\n## About the children’s flu vaccine\n\nThe children’s flu vaccine helps protect children against flu. Vaccinating children also protects others who are vulnerable to flu, such as babies and older people.\n\nThe vaccine is given as a nasal spray. This gives the most effective protection.\n\nSome children can have an injection instead, for example if they:\n\n- have had a serious allergic reaction to a previous dose of the nasal spray vaccine\n- have a severe egg allergy\n- have asthma that’s being treated with long-term steroid tablets\n- do not use gelatine or other animal products',
@@ -25,7 +24,6 @@ export default {
     type: ProgrammeType.HPV,
     name: 'HPV',
     title: 'Human papillomavirus (HPV)',
-    vaccineName: 'HPV vaccine',
     information: {
       startPage:
         'The HPV vaccine helps to prevent HPV related cancers from developing in boys and girls.\n\nThe number of doses you need depends on your age and how well your immune system works. Young people usually only need 1 dose.',
@@ -48,7 +46,6 @@ export default {
     type: ProgrammeType.TdIPV,
     name: 'Td/IPV',
     title: 'Td/IPV (3-in-1 teenage booster)',
-    vaccineName: 'Td/IPV vaccine',
     information: {
       startPage:
         'The Td/IPV vaccine (also called the 3-in-1 teenage booster) helps protect against tetanus, diphtheria and polio.\n\nIt boosts the protection provided by the [6-in-1 vaccine](https://www.nhs.uk/vaccinations/6-in-1-vaccine/) and [4-in-1 pre-school booster vaccine](https://www.nhs.uk/vaccinations/4-in-1-preschool-booster-vaccine/).',
@@ -71,7 +68,6 @@ export default {
     type: ProgrammeType.MenACWY,
     name: 'MenACWY',
     title: 'MenACWY',
-    vaccineName: 'MenACWY vaccine',
     information: {
       startPage:
         'The MenACWY vaccine helps protect against meningitis and sepsis. It is recommended for all teenagers. Most people only need one dose of the vaccine.',
@@ -92,7 +88,6 @@ export default {
     type: ProgrammeType.MMR,
     name: 'MMR',
     title: 'Measles, mumps and rubella (MMR)',
-    vaccineName: 'MMR vaccine',
     emailNames: {
       default: 'MMR catch-up',
       invite: 'MMR (measles, mumps and rubella) catch-up'
