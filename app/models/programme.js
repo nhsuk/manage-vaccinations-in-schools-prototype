@@ -2,6 +2,7 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import vaccines from '../datasets/vaccines.js'
 import { ProgrammeType, VaccineCriteria } from '../enums.js'
+import { range } from '../utils/number.js'
 import {
   formatLink,
   formatTag,
@@ -9,7 +10,6 @@ import {
   sentenceCaseProgrammeName
 } from '../utils/string.js'
 
-import { Cohort } from './cohort.js'
 import { PatientSession } from './patient-session.js'
 import { Session } from './session.js'
 import { Vaccination } from './vaccination.js'
@@ -27,13 +27,10 @@ import { Vaccine } from './vaccine.js'
  * @property {object} [emailNames] - Email names
  * @property {object} information - NHS.UK programme information
  * @property {object} guidance - GOV.UK guidance
- * @property {number} year - Academic year
  * @property {Array<string>} sequence - Vaccine dose sequence
  * @property {string} sequenceDefault - Default vaccine dose sequence
- * @property {Array<number>} yearGroups - Year groups for routine vaccinations
- * @property {Array<number>} catchupYearGroups - Year groups for catch-ups
+ * @property {number} [targetYearGroup] - Year group for routine vaccination
  * @property {boolean} nhseSyncable - Vaccination records can be synced
- * @property {Array<string>} cohort_uids - Cohort UIDs
  * @property {Array<string>} vaccine_smomeds - Vaccines administered
  */
 export class Programme {
@@ -46,13 +43,10 @@ export class Programme {
     this.emailNames = options?.emailNames
     this.information = options?.information
     this.guidance = options?.guidance
-    this.year = options?.year
     this.sequence = options?.sequence
     this.sequenceDefault = options?.sequenceDefault
-    this.yearGroups = options?.yearGroups || []
-    this.catchupYearGroups = options?.catchupYearGroups || []
+    this.targetYearGroup = options?.targetYearGroup
     this.nhseSyncable = options?.nhseSyncable
-    this.cohort_uids = options?.cohort_uids || []
     this.vaccine_smomeds = options?.vaccine_smomeds
   }
 
@@ -161,17 +155,11 @@ export class Programme {
    *
    * @returns {Array<number>} Eligible year groups
    */
-  get eligibleYearGroups() {
-    return [...(this?.yearGroups || []), ...(this?.catchupYearGroups || [])]
-  }
+  get yearGroups() {
+    // If no target year group, programme is offered to _all_ year groups
+    const targetYearGroup = this.targetYearGroup || 0
 
-  /**
-   * Get cohorts
-   *
-   * @returns {Array<Cohort>} Cohorts
-   */
-  get cohorts() {
-    return this.cohort_uids.map((uid) => Cohort.findOne(uid, this.context))
+    return [...range(targetYearGroup, 11)]
   }
 
   /**

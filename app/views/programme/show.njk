@@ -2,7 +2,7 @@
 
 {% set isDataConsumer = account.role == UserRole.DataConsumer %}
 {% set paths = { back: "/home" } if isDataConsumer %}
-{% set title = programme.name + " (" + programme.year + ")" %}
+{% set title = programme.name + " (" + academicYear + ")" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -20,7 +20,7 @@
   {{ super() }}
 
   {{ appHeading({
-    summary: programme.year,
+    summary: academicYear,
     title: programme.name
   }) }}
 
