@@ -152,11 +152,6 @@ export const consentController = {
     // Create patient
     const patient = Patient.create(consent.child, data)
 
-    // TODO: Select for cohort
-    // Get programmes from session
-    // Get cohorts for programmes
-    // Find cohort that matches child’s year group
-
     // Create and add patient session
     const patientSession = PatientSession.create(
       {

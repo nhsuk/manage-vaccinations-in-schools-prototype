@@ -336,19 +336,6 @@ export function formatParent(parent, includeTelephone = true) {
 }
 
 /**
- * Format programme ID
- *
- * @param {string} type - Programme type
- * @param {number} year - Academic year
- * @returns {string} Programme ID
- */
-export function formatProgrammeId(type, year) {
-  type = camelToKebabCase(type).replace('/', '-')
-
-  return `${type}-${year}`
-}
-
-/**
  * Format identifier
  *
  * @param {object} identifiedBy - Identifier
