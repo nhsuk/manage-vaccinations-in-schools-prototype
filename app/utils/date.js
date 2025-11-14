@@ -2,8 +2,6 @@ import process from 'node:process'
 
 import { getDayOfYear, isAfter, isBefore, isEqual } from 'date-fns'
 
-import { AcademicYear } from '../enums.js'
-
 const ALLOWED_VALUES_FOR_MONTHS = [
   ['1', '01', 'jan', 'january'],
   ['2', '02', 'feb', 'february'],
@@ -175,14 +173,23 @@ export function getDateValueDifference(a, b) {
  * Get the academic year a date sits within
  *
  * @param {Date} date - Date
- * @returns {AcademicYear} Academic year a date sits within
+ * @returns {number} Academic year a date sits within
  */
 export function getAcademicYear(date) {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const startYear = month >= 9 ? year : year - 1
 
-  return AcademicYear[`Y${startYear}`]
+  return startYear
+}
+
+/**
+ * Get the current academic year for today’s date
+ *
+ * @returns {number} Academic year a date sits within
+ */
+export function getCurrentAcademicYear() {
+  return getAcademicYear(today())
 }
 
 /**
@@ -239,7 +246,7 @@ export function today(secondsToAdd) {
  * Get school year group
  *
  * @param {Date} date - Date
- * @param {AcademicYear} [academicYear] - AcademicYear
+ * @param {number} [academicYear] - Academic year
  * @returns {number} School year group
  */
 export function getYearGroup(date, academicYear) {
@@ -248,7 +255,7 @@ export function getYearGroup(date, academicYear) {
   // Determine which academic year to use
   let targetYear
   if (academicYear !== undefined) {
-    targetYear = Number(academicYear.split(' ')[0])
+    targetYear = academicYear
   } else {
     // Use current academic year
     const currentDate = today()

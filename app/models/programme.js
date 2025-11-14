@@ -28,7 +28,7 @@ import { Vaccine } from './vaccine.js'
  * @property {object} information - NHS.UK programme information
  * @property {object} guidance - GOV.UK guidance
  * @property {ProgrammeType} type - Programme type
- * @property {AcademicYear} year - Academic year
+ * @property {number} year - Academic year
  * @property {Array<string>} sequence - Vaccine dose sequence
  * @property {string} sequenceDefault - Default vaccine dose sequence
  * @property {Array<number>} yearGroups - Year groups for routine vaccinations

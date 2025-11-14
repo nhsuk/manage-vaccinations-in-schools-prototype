@@ -93,7 +93,7 @@ export const sessionController = {
 
     // Filter by academic year
     results = results.filter(
-      ({ academicYear }) => academicYear === filters.academicYear
+      ({ academicYear }) => academicYear === Number(filters.academicYear)
     )
 
     // Filter by programme
@@ -123,10 +123,10 @@ export const sessionController = {
     // Academic year options
     response.locals.academicYearItems =
       isRollover &&
-      Object.values(AcademicYear)
+      Object.entries(AcademicYear)
         .slice(-2)
-        .map((value) => ({
-          text: value,
+        .map(([value, text]) => ({
+          text,
           value,
           checked: filters.academicYear === value
         }))

@@ -1,4 +1,5 @@
-import { AcademicYear, ProgrammeType } from '../enums.js'
+import { ProgrammeType } from '../enums.js'
+import { getCurrentAcademicYear } from '../utils/date.js'
 
 /**
  * Determines if a patient should be added to a specific cohort
@@ -8,14 +9,8 @@ import { AcademicYear, ProgrammeType } from '../enums.js'
  * @returns {boolean} Patient eligible for cohort
  */
 export function getCohortEligibility(cohort, patient) {
-  const academicYears = Object.keys(AcademicYear).map((key) =>
-    parseInt(key.substring(1))
-  )
-  const cohortAcademicYear = parseInt(cohort.year.split(' ')[0])
-  const currentAcademicYear = academicYears.at(-1)
-
   // Calculate year group patient was in during the cohort’s academic year
-  const yearDifference = currentAcademicYear - cohortAcademicYear
+  const yearDifference = getCurrentAcademicYear() - cohort.year
   const patientYearGroupInCohortYear = patient.yearGroup - yearDifference
 
   // Check if the patient was in the correct year group for this cohort

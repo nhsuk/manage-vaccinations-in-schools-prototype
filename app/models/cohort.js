@@ -1,3 +1,4 @@
+import { AcademicYear } from '../enums.js'
 import { getCohortEligibility } from '../utils/cohort.js'
 import { formatYearGroup, sentenceCaseProgrammeName } from '../utils/string.js'
 
@@ -13,7 +14,7 @@ import { Programme } from './programme.js'
  * @property {string} uid - UID
  * @property {string} createdAt - Created date
  * @property {string} [createdBy_uid] - User who created cohort
- * @property {AcademicYear} year - Academic year
+ * @property {number} year - Academic year
  * @property {number} yearGroup - Year group
  * @property {string} [programme_id] - Programme ID
  * @function ns - Namespace
@@ -24,7 +25,7 @@ export class Cohort {
     const year = options?.year
 
     this.context = context
-    this.createdAt = options?.createdAt || `${year.split(' ')[0]}-07-01`
+    this.createdAt = options?.createdAt || `${year}-07-01`
     this.createdBy_uid = options?.createdBy_uid
     this.year = year
     this.yearGroup = options?.yearGroup
@@ -64,7 +65,7 @@ export class Cohort {
    * @returns {object} Name
    */
   get name() {
-    return `${formatYearGroup(this.yearGroup)} (${this.year}) ${sentenceCaseProgrammeName(this.programme.name)} cohort`
+    return `${formatYearGroup(this.yearGroup)} (${AcademicYear[this.year]}) ${sentenceCaseProgrammeName(this.programme.name)} cohort`
   }
 
   /**

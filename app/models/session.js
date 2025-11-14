@@ -4,7 +4,6 @@ import { isAfter, isSameDay } from 'date-fns'
 import _ from 'lodash'
 
 import {
-  AcademicYear,
   ConsentOutcome,
   ConsentWindow,
   InstructionOutcome,
@@ -21,7 +20,7 @@ import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
-  getAcademicYear,
+  getCurrentAcademicYear,
   setMidday,
   today
 } from '../utils/date.js'
@@ -63,14 +62,12 @@ import { Vaccine } from './vaccine.js'
  * @property {boolean} [registration] - Does session have registration?
  * @property {object} [register] - Patient register
  * @property {string} [programmePreset] - Programme preset name
- * @property {AcademicYear} [academicYear] - Programme year
+ * @property {number} [academicYear] - Programme year
  * @property {boolean} [nationalProtocol] - Enable national protocol
  * @property {boolean} [psdProtocol] - Enable PSD protocol
  */
 export class Session {
   constructor(options, context) {
-    const latestAcademicYear = Object.values(AcademicYear).at(-1)
-
     this.context = context
     this.id = options?.id || faker.helpers.replaceSymbols('###')
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
@@ -91,7 +88,7 @@ export class Session {
       options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
     this.registration = stringToBoolean(options?.registration)
     this.register = options?.register || {}
-    this.academicYear = options?.academicYear || latestAcademicYear
+    this.academicYear = options?.academicYear || getCurrentAcademicYear()
     this.programmePreset = options?.programmePreset
     this.psdProtocol = stringToBoolean(options?.psdProtocol) || false
 
@@ -274,10 +271,7 @@ export class Session {
    * @returns {boolean} Session occurs in current academic year
    */
   get isPastSession() {
-    const academicYear = Number(this.academicYear.split(' ')[0])
-    const currentYear = Number(getAcademicYear(today()).split(' ')[0])
-
-    return academicYear < currentYear
+    return this.academicYear < getCurrentAcademicYear()
   }
 
   /**

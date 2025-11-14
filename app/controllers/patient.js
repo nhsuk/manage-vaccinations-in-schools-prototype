@@ -1,8 +1,9 @@
 import _ from 'lodash'
 
-import { AcademicYear, ArchiveRecordReason, PatientStatus } from '../enums.js'
+import { ArchiveRecordReason, PatientStatus } from '../enums.js'
 import { Patient } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
+import { getCurrentAcademicYear } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
@@ -35,9 +36,8 @@ export const patientController = {
     let { options, programme_ids, q, yearGroup } = request.query
     const { data } = request.session
 
-    const latestAcademicYear = Object.values(AcademicYear).at(-1)
     const programmes = Programme.findAll(data)
-      .filter((programme) => programme.year === latestAcademicYear)
+      .filter((programme) => programme.year === getCurrentAcademicYear())
       .sort((a, b) => a.name.localeCompare(b.name))
 
     const patients = Patient.findAll(data)

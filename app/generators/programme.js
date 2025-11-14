@@ -6,7 +6,7 @@ import { formatProgrammeId } from '../utils/string.js'
  * Generate fake programme
  *
  * @param {string} type - Programme type
- * @param {import('../enums.js').AcademicYear} year - Academic year
+ * @param {number} year - Academic year
  * @returns {Programme} Programme
  */
 export function generateProgramme(type, year) {

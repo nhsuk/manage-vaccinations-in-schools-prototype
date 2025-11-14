@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import filters from '@x-govuk/govuk-prototype-filters'
 
 import {
+  AcademicYear,
   AuditEventType,
   ConsentOutcome,
   ConsentWindow,
@@ -659,7 +660,7 @@ export class PatientSession {
     formattedYearGroup += this.patient.registrationGroup
       ? `, ${this.patient.registrationGroup}`
       : ''
-    formattedYearGroup += ` (${this.session.academicYear} academic year)`
+    formattedYearGroup += ` (${AcademicYear[this.session.academicYear]} academic year)`
 
     return {
       programme: this.programme.nameTag,

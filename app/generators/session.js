@@ -10,7 +10,7 @@ import { addDays, removeDays, setMidday } from '../utils/date.js'
  *
  * @param {string} programmePreset - Programme preset
  * @param {import('../models/user.js').User} user - User
- * @param {import('../enums.js').AcademicYear} academicYear - Academic year
+ * @param {number} academicYear - Academic year
  * @param {object} options - Options
  * @param {string} [options.clinic_id] - Clinic ID
  * @param {string} [options.school_urn] - School URN
