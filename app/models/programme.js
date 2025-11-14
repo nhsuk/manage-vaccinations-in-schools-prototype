@@ -1,6 +1,5 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
-import programmes from '../datasets/programmes.js'
 import vaccines from '../datasets/vaccines.js'
 import { ProgrammeType, VaccineCriteria } from '../enums.js'
 import {
@@ -21,31 +20,33 @@ import { Vaccine } from './vaccine.js'
  * @param {object} options - Options
  * @param {object} [context] - Context
  * @property {object} [context] - Context
+ * @property {ProgrammeType} type - Programme type
  * @property {string} id - ID
  * @property {string} name - Name
- * @property {string} emailName - Email name
  * @property {string} title - Title
+ * @property {object} [emailNames] - Email names
  * @property {object} information - NHS.UK programme information
  * @property {object} guidance - GOV.UK guidance
- * @property {ProgrammeType} type - Programme type
  * @property {number} year - Academic year
  * @property {Array<string>} sequence - Vaccine dose sequence
  * @property {string} sequenceDefault - Default vaccine dose sequence
  * @property {Array<number>} yearGroups - Year groups for routine vaccinations
  * @property {Array<number>} catchupYearGroups - Year groups for catch-ups
- * @property {boolean} nhseSyncable- Vaccination records can be synced
+ * @property {boolean} nhseSyncable - Vaccination records can be synced
  * @property {Array<string>} cohort_uids - Cohort UIDs
  * @property {Array<string>} vaccine_smomeds - Vaccines administered
  */
 export class Programme {
   constructor(options, context) {
     this.context = context
+    this.type = options.type
     this.id = options?.id
+    this.name = options?.name
     this.title = options?.title
+    this.emailNames = options?.emailNames
     this.information = options?.information
     this.guidance = options?.guidance
     this.year = options?.year
-    this.type = options?.type
     this.sequence = options?.sequence
     this.sequenceDefault = options?.sequenceDefault
     this.yearGroups = options?.yearGroups || []
@@ -56,22 +57,13 @@ export class Programme {
   }
 
   /**
-   * Get programme name
-   *
-   * @returns {string} Programme name
-   */
-  get name() {
-    return this.type
-  }
-
-  /**
    * Get programme name for use in emails
    *
    * @returns {string} Programme email name
    * @param {string} template - Email template the name is for
    */
   emailName(template = 'default') {
-    return programmes[this.type].emailNames?.[template] || this.name
+    return this.emailNames?.[template] || this.name
   }
 
   /**
