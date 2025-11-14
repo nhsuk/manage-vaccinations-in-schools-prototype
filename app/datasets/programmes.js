@@ -3,6 +3,7 @@ import { ProgrammeType } from '../enums.js'
 export default {
   [ProgrammeType.Flu]: {
     type: ProgrammeType.Flu,
+    id: 'flu',
     name: 'Flu',
     title: 'Children’s flu',
     information: {
@@ -16,12 +17,12 @@ export default {
       url: 'https://www.gov.uk/government/publications/flu-vaccination-leaflets-and-posters',
       hint: 'including in other languages and alternative formats, including BSL and Braille'
     },
-    yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
     vaccine_smomeds: ['43208811000001106', '40085011000001101'],
     nhseSyncable: true
   },
   [ProgrammeType.HPV]: {
     type: ProgrammeType.HPV,
+    id: 'hpv',
     name: 'HPV',
     title: 'Human papillomavirus (HPV)',
     information: {
@@ -37,13 +38,13 @@ export default {
     },
     sequence: ['1P', '2P', '3P'],
     sequenceDefault: '1P',
-    yearGroups: [8],
-    catchupYearGroups: [9, 10, 11],
+    targetYearGroup: 8,
     vaccine_smomeds: ['33493111000001108'],
     nhseSyncable: true
   },
   [ProgrammeType.TdIPV]: {
     type: ProgrammeType.TdIPV,
+    id: 'td-ipv',
     name: 'Td/IPV',
     title: 'Td/IPV (3-in-1 teenage booster)',
     information: {
@@ -59,13 +60,13 @@ export default {
     },
     sequence: ['1P', '2P', '3P', '1B', '2B'],
     sequenceDefault: '2B',
-    yearGroups: [9],
-    catchupYearGroups: [10, 11],
+    targetYearGroup: 9,
     vaccine_smomeds: ['7374311000001101'],
     nhseSyncable: false
   },
   [ProgrammeType.MenACWY]: {
     type: ProgrammeType.MenACWY,
+    id: 'menacwy',
     name: 'MenACWY',
     title: 'MenACWY',
     information: {
@@ -79,13 +80,13 @@ export default {
       url: 'https://www.gov.uk/government/publications/menacwy-vaccine-information-for-young-people',
       hint: 'with links to information in other languages'
     },
-    yearGroups: [9],
-    catchupYearGroups: [10, 11],
+    targetYearGroup: 9,
     vaccine_smomeds: ['39779611000001104'],
     nhseSyncable: false
   },
   [ProgrammeType.MMR]: {
     type: ProgrammeType.MMR,
+    id: 'mmr',
     name: 'MMR',
     title: 'Measles, mumps and rubella (MMR)',
     emailNames: {
@@ -105,7 +106,7 @@ export default {
     },
     sequence: ['1P', '2P'],
     sequenceDefault: '1P',
-    catchupYearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    targetYearGroup: -3,
     vaccine_smomeds: ['13968211000001108', '34925111000001104'],
     nhseSyncable: true
   }

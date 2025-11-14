@@ -1,10 +1,17 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import _ from 'lodash'
 
+import programmes from '../datasets/programmes.js'
 import schools from '../datasets/schools.js'
 import { AuditEventType, NoticeType } from '../enums.js'
-import { getDateValueDifference, removeDays, today } from '../utils/date.js'
+import {
+  getCurrentAcademicYear,
+  getDateValueDifference,
+  removeDays,
+  today
+} from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
+import { getProgrammeYear } from '../utils/patient.js'
 import { getPreferredNames } from '../utils/reply.js'
 import {
   formatLink,
@@ -20,7 +27,6 @@ import {
 
 import { AuditEvent } from './audit-event.js'
 import { Child } from './child.js'
-import { Cohort } from './cohort.js'
 import { Parent } from './parent.js'
 import { PatientSession } from './patient-session.js'
 import { Reply } from './reply.js'
@@ -43,7 +49,6 @@ import { Vaccination } from './vaccination.js'
  * @property {import('../enums.js').ArchiveRecordReason} [archiveReason] - Archival reason
  * @property {string} [archiveReasonOther] - Other archival reason
  * @property {Array<import('./audit-event.js').AuditEvent>} events - Events
- * @property {Array<string>} [cohort_uids] - Cohort UIDs
  * @property {Array<string>} [reply_uuids] - Reply IDs
  * @property {Array<string>} [patientSession_uuids] - Patient session IDs
  * @property {Array<string>} [vaccination_uuids] - Vaccination UUIDs
@@ -70,7 +75,6 @@ export class Patient extends Child {
     this.pendingChanges = options?.pendingChanges || {}
 
     this.events = options?.events || []
-    this.cohort_uids = options?.cohort_uids || []
     this.reply_uuids = options?.reply_uuids || []
     this.patientSession_uuids = options?.patientSession_uuids || []
     this.vaccination_uuids = options?.vaccination_uuids || []
@@ -216,16 +220,17 @@ export class Patient extends Child {
   }
 
   /**
-   * Get cohorts
-   *
-   * @returns {Array<Cohort>} Cohorts
+   * Get year patient becomes eligible for each programme
    */
-  get cohorts() {
-    if (this.context?.cohorts && this.cohort_uids) {
-      return this.cohort_uids.map((uid) => Cohort.findOne(uid, this.context))
+  get eligibilityYears() {
+    const eligibilityYears = {}
+
+    for (const programme of Object.values(programmes)) {
+      /* @ts-ignore */
+      eligibilityYears[programme.id] = getProgrammeYear(this, programme)
     }
 
-    return []
+    return eligibilityYears
   }
 
   /**
@@ -234,9 +239,15 @@ export class Patient extends Child {
    * @returns {Array<string>} Programme IDs
    */
   get programme_ids() {
-    if (this.cohorts) {
-      return this.cohorts.flatMap(({ programme_id }) => programme_id)
+    const programme_ids = []
+
+    for (const [id, academicYear] of Object.entries(this.eligibilityYears)) {
+      if (academicYear === getCurrentAcademicYear()) {
+        programme_ids.push(id)
+      }
     }
+
+    return programme_ids
   }
 
   /**
@@ -471,21 +482,6 @@ export class Patient extends Child {
    */
   addEvent(event) {
     this.events.push(new AuditEvent(event))
-  }
-
-  /**
-   * Select patient for cohort
-   *
-   * @param {import('./cohort.js').Cohort} cohort - Cohort
-   */
-  selectForCohort(cohort) {
-    this.cohort_uids.push(cohort.uid)
-    this.addEvent({
-      name: `Selected for the ${cohort.name}`,
-      createdAt: cohort.createdAt,
-      createdBy_uid: cohort.createdBy_uid,
-      programme_ids: [cohort.programme_id]
-    })
   }
 
   /**

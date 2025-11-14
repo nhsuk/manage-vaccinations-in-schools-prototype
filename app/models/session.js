@@ -3,6 +3,7 @@ import { default as filters } from '@x-govuk/govuk-prototype-filters'
 import { isAfter, isSameDay } from 'date-fns'
 import _ from 'lodash'
 
+import programmesData from '../datasets/programmes.js'
 import {
   ConsentOutcome,
   ConsentWindow,
@@ -30,7 +31,6 @@ import { getSessionStatus } from '../utils/status.js'
 import {
   formatLink,
   formatList,
-  formatProgrammeId,
   formatTag,
   formatWithSecondaryText,
   sentenceCaseProgrammeName,
@@ -360,8 +360,8 @@ export class Session {
     if (this.programmePreset) {
       const preset = ProgrammePreset[this.programmePreset]
       for (const programmeType of preset.programmeTypes) {
-        const id = formatProgrammeId(programmeType, this.academicYear)
-        programme_ids.add(id)
+        const programme = programmesData[programmeType]
+        programme_ids.add(programme.id)
       }
     }
 

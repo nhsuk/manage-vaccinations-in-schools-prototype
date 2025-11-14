@@ -3,7 +3,6 @@ import _ from 'lodash'
 import { ArchiveRecordReason, PatientStatus } from '../enums.js'
 import { Patient } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
-import { getCurrentAcademicYear } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
@@ -36,9 +35,9 @@ export const patientController = {
     const { option, programme_id, q, yearGroup } = request.query
     const { data } = request.session
 
-    const programmes = Programme.findAll(data)
-      .filter((programme) => programme.year === getCurrentAcademicYear())
-      .sort((a, b) => a.name.localeCompare(b.name))
+    const programmes = Programme.findAll(data).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    )
 
     const patients = Patient.findAll(data)
 
