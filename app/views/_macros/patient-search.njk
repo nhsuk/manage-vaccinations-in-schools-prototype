@@ -45,9 +45,8 @@
           text: __("programme.label")
         }
       },
-      id: "programme_ids",
-      name: "programme_ids",
-      items: programmeItems
+      items: programmeItems,
+      decorate: "programme_ids"
     }) if programmeItems }}
 
     {% for name, enums in params.checkboxFilters %}
@@ -118,7 +117,7 @@
           html: checkboxes({
             classes: "nhsuk-checkboxes--small",
             items: enumItems(session.vaccineCriteria),
-            decorate: "patientRefused"
+            decorate: "patientDue"
           }) if session.vaccineCriteria
         } if data.report == PatientStatus.Due
       }, {
@@ -153,9 +152,8 @@
           text: __("patient.yearGroup.label")
         }
       },
-      id: "year-group",
-      name: "yearGroup",
-      items: yearGroupItems
+      items: yearGroupItems,
+      decorate: "yearGroup"
     }) if yearGroupItems }}
 
     {% set searchDetailsHtml %}

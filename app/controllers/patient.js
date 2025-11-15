@@ -103,7 +103,7 @@ export const patientController = {
           patient.patientSessions.filter(
             (patientSession) =>
               statuses.includes(patientSession[status]) &&
-              programme_ids.includes(patientSession.programme_id)
+              programme_ids?.includes(patientSession.programme_id)
           )
         )
       }
@@ -143,7 +143,8 @@ export const patientController = {
     // Year group filter options
     response.locals.yearGroupItems = [...Array(12).keys()].map((yearGroup) => ({
       text: formatYearGroup(yearGroup),
-      value: yearGroup
+      value: yearGroup,
+      checked: yearGroups?.includes(yearGroup)
     }))
 
     // Clean up session data
