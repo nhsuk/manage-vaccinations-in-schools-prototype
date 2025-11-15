@@ -1,6 +1,15 @@
 import process from 'node:process'
 
-import { getDayOfYear, isAfter, isBefore, isEqual } from 'date-fns'
+import {
+  getDayOfYear,
+  isAfter,
+  isBefore,
+  isEqual,
+  previousMonday,
+  nextMonday
+} from 'date-fns'
+
+import { SchoolTerm } from '../enums.js'
 
 const ALLOWED_VALUES_FOR_MONTHS = [
   ['1', '01', 'jan', 'january'],
@@ -193,6 +202,118 @@ export function getCurrentAcademicYear() {
 }
 
 /**
+ * Calculate Easter Sunday for a given year (Gregorian calendar, 1583+)
+ *
+ * @param {number} year - Year
+ * @returns {Date} Easter Sunday
+ */
+export function getEasterSunday(year) {
+  // Century number and year within that century
+  const century = ~~(year / 100)
+  const yearInCentury = year % 100
+
+  // Year quarter and remainder for leap year calculations
+  const yearQuarter = ~~(yearInCentury / 4)
+  const yearRemainder = yearInCentury % 4
+
+  // Leap day adjustment for the Gregorian calendar
+  const leapDayCorrection = ~~(century / 4)
+
+  // Gregorian calendar’s Easter calculation adjustment
+  const easterCorrection = ~~((century - ~~((century + 8) / 25) + 1) / 3)
+
+  // Lunar orbit correction
+  const lunarCorrection = century % 4
+
+  // Position in the 19-year Metonic lunar cycle
+  const lunarCycle = year % 19
+
+  // Epact: age of the moon on 1 January (in days)
+  const epact =
+    (19 * lunarCycle + century - leapDayCorrection - easterCorrection + 15) % 30
+
+  // Calculate days until the next Sunday
+  const daysToSunday =
+    (32 + 2 * lunarCorrection + 2 * yearQuarter - epact - yearRemainder) % 7
+
+  // Final lunar phase offset adjustment
+  const lunarAdjustment = ~~(
+    (lunarCycle + 11 * epact + 22 * daysToSunday) /
+    451
+  )
+
+  // Combined day offset to calculate the final Easter date
+  const dayOffset = epact + daysToSunday - 7 * lunarAdjustment + 114
+
+  // Convert offset to month (0-indexed) and day
+  return new Date(year, ~~(dayOffset / 31) - 1, (dayOffset % 31) + 1)
+}
+
+/**
+ *
+ * @param {number} year - Year academic year commences
+ * @param {SchoolTerm} term - School term
+ * @returns {object} Term start and end dates
+ */
+export function getTermDates(year, term) {
+  const nextYear = year + 1
+
+  switch (term) {
+    case SchoolTerm.Autumn: {
+      // First Monday of September (or Sept 1st if it’s a Monday)
+      const sep1st = new Date(year, 8, 1)
+      const autumnStart = sep1st.getDay() === 1 ? sep1st : nextMonday(sep1st)
+
+      // Friday closest to December 20th
+      const dec20th = new Date(year, 11, 20)
+      const autumnEnd =
+        dec20th.getDay() === 5 ? dec20th : previousMonday(addDays(dec20th, 5)) // Get to the Friday before/after
+
+      return {
+        from: autumnStart.toISOString().split('T')[0],
+        to: autumnEnd.toISOString().split('T')[0]
+      }
+    }
+
+    case SchoolTerm.Spring: {
+      // First Monday of January (or Jan 1st if it’s a Monday)
+      const jan1st = new Date(nextYear, 0, 1)
+      const springStart = jan1st.getDay() === 1 ? jan1st : nextMonday(jan1st)
+
+      // Friday 2 weeks before Easter (Good Friday is the Friday before Easter)
+      const easterSunday = getEasterSunday(nextYear)
+      const goodFriday = addDays(easterSunday, -2)
+      const springEnd = addDays(goodFriday, -14) // 2 weeks before Good Friday
+
+      return {
+        from: springStart.toISOString().split('T')[0],
+        to: springEnd.toISOString().split('T')[0]
+      }
+    }
+
+    case SchoolTerm.Summer: {
+      // Monday 2 weeks after Easter Monday
+      const easterSunday = getEasterSunday(nextYear)
+      const easterMonday = addDays(easterSunday, 1)
+      const summerStart = addDays(easterMonday, 14) // 2 weeks after Easter Monday
+
+      // Friday closest to July 20th
+      const jul20th = new Date(nextYear, 6, 20)
+      const summerEnd =
+        jul20th.getDay() === 5 ? jul20th : previousMonday(addDays(jul20th, 5))
+
+      return {
+        from: summerStart.toISOString().split('T')[0],
+        to: summerEnd.toISOString().split('T')[0]
+      }
+    }
+
+    default:
+      return null
+  }
+}
+
+/**
  * Set time to midday
  *
  * @param {Date} date - Date
@@ -262,7 +383,7 @@ export function getYearGroup(date, academicYear) {
     const currentYear = currentDate.getFullYear()
     const currentMonth = currentDate.getMonth()
 
-    // If we're before September 1, we're still in the previous academic year
+    // If we’re before September 1, we’re still in the previous academic year
     if (currentMonth < 8) {
       targetYear = currentYear - 1
     } else {
