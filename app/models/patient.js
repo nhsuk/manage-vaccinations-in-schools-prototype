@@ -1,17 +1,11 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import _ from 'lodash'
 
-import programmes from '../datasets/programmes.js'
+import programmesData from '../datasets/programmes.js'
 import schools from '../datasets/schools.js'
 import { AuditEventType, NoticeType } from '../enums.js'
-import {
-  getCurrentAcademicYear,
-  getDateValueDifference,
-  removeDays,
-  today
-} from '../utils/date.js'
+import { getDateValueDifference, removeDays, today } from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
-import { getProgrammeYear } from '../utils/patient.js'
 import { getPreferredNames } from '../utils/reply.js'
 import {
   formatLink,
@@ -28,6 +22,7 @@ import {
 import { AuditEvent } from './audit-event.js'
 import { Child } from './child.js'
 import { Parent } from './parent.js'
+import { PatientProgramme } from './patient-programme.js'
 import { PatientSession } from './patient-session.js'
 import { Reply } from './reply.js'
 import { Vaccination } from './vaccination.js'
@@ -220,34 +215,25 @@ export class Patient extends Child {
   }
 
   /**
-   * Get year patient becomes eligible for each programme
-   */
-  get eligibilityYears() {
-    const eligibilityYears = {}
-
-    for (const programme of Object.values(programmes)) {
-      /* @ts-ignore */
-      eligibilityYears[programme.id] = getProgrammeYear(this, programme)
-    }
-
-    return eligibilityYears
-  }
-
-  /**
-   * Get programme IDs
+   * Get patient programmes
    *
-   * @returns {Array<string>} Programme IDs
+   * @returns {Record<string, PatientProgramme>}
    */
-  get programme_ids() {
-    const programme_ids = []
+  get programmes() {
+    /** @type {Record<string, PatientProgramme>} */
+    const programmes = {}
 
-    for (const [id, academicYear] of Object.entries(this.eligibilityYears)) {
-      if (academicYear === getCurrentAcademicYear()) {
-        programme_ids.push(id)
-      }
+    for (const programme of Object.values(programmesData)) {
+      programmes[programme.id] = new PatientProgramme(
+        {
+          patient_uuid: this.uuid,
+          programme_id: programme.id
+        },
+        this.context
+      )
     }
 
-    return programme_ids
+    return programmes
   }
 
   /**
