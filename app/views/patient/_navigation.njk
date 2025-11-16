@@ -17,15 +17,7 @@
   }) if patient.archived }}
 
   {{ appSecondaryNavigation({
-    items: [{
-      text: recordTitle,
-      href: params.patient.uri,
-      current: params.view == "show"
-    }, {
-      text: __("patient.events.title"),
-      href: params.patient.uri + "/events",
-      current: params.view == "events"
-    }]
+    items: secondaryNavigationItems
   }) }}
 
   <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">

@@ -42,17 +42,13 @@
         }) }}
 
         {% for patient in results.page %}
-          {% set reportStatusHtml = false %}
-
-          {% if data.programme_id %}
-            {% set reportStatusHtml -%}
-              {%- for patientSession in patient.patientSessions -%}
-                {%- if data.programme_id | includes(patientSession.programme_id) -%}
-                  {{ patientSession.formatted.report | nhsukMarkdown }}
-                {%- endif -%}
-              {%- endfor %}
-            {%- endset %}
-          {% endif %}
+          {% set reportStatusHtml -%}
+            {%- for id, patientProgramme in patient.programmes -%}
+              {%- if data.programme_id | includes(id) -%}
+                {{ patientProgramme.formatted.programmeStatus | nhsukMarkdown }}
+              {%- endif -%}
+            {%- endfor %}
+          {%- endset %}
 
           {{ card({
             classes: "app-card--compact",
@@ -70,7 +66,7 @@
                 report: {
                   label: __("patientSession.report.label"),
                   value: reportStatusHtml
-                } if data.programme_id and reportStatusHtml
+                } if data.programme_id
               })
             })
           }) }}

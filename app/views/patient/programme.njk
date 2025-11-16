@@ -1,0 +1,122 @@
+{% from "patient/_navigation.njk" import patientNavigation with context %}
+
+{% extends "_layouts/default.njk" %}
+
+{% set title = patient.fullName + " – " + patient.programmes[programme.slug].name %}
+
+{% block beforeContent %}
+  {{ breadcrumb({
+    items: [{
+      text: __("home.show.title"),
+      href: "/"
+    }, {
+      text: __("patient.list.title"),
+      href: "/patients"
+    }]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ patientNavigation({
+    patient: patient
+  }) }}
+
+  {{ appHeading({
+    title: patientProgramme.status,
+    level: 3,
+    size: "m",
+    summary: patientProgramme.statusNotes
+  }) }}
+
+  {% if patientProgramme.vaccinationsGiven.length %}
+    {% for vaccination in patientProgramme.vaccinationsGiven %}
+      {% call card({
+        heading: __("vaccination.label"),
+        headingClasses: "nhsuk-heading-m",
+        descriptionHtml: vaccinationDescriptionHtml
+      }) %}
+        {{ summaryList({
+          rows: summaryRows(vaccination, {
+            outcome: {},
+            vaccine_snomed: {},
+            method: {},
+            site: {},
+            dose: {},
+            sequence: {},
+            batch: {},
+            identifiedBy: {},
+            suppliedBy: {},
+            createdBy: {},
+            createdAt: {},
+            updatedAt: {},
+            location: {},
+            protocol: {},
+            note: {},
+            syncStatus: {}
+          })
+        }) }}
+
+        {{ button({
+          classes: "nhsuk-button--secondary nhsuk-u-margin-0",
+          text: __("vaccination.edit.title"),
+          href: vaccination.uri + "/edit"
+        }) }}
+      {% endcall %}
+    {% endfor %}
+  {% endif %}
+
+  {% if patientProgramme.patientSessions.length %}
+    {% call card({
+      heading: __("session.label"),
+      headingLevel: 3
+    }) %}
+      {% set patientSessionRows = [] %}
+      {% for patientSession in patientProgramme.patientSessions %}
+        {% set patientSessionRows = patientSessionRows | push([
+          {
+            header: __("session.location.label"),
+            html: link(patientSession.uri, patientSession.session.location.name)
+          },
+          {
+            header: __("session.date.label"),
+            html: patientSession.session.formatted.date if patientSession.session.date else patientSession.session.status
+          },
+          {
+            header: "Status",
+            html: patientSession.formatted.report
+          }
+        ]) %}
+      {% endfor %}
+
+      {{ table({
+        id: "patient-sessions",
+        sort: "name",
+        responsive: true,
+        head: [
+          {
+            text: __("session.location.label"),
+            attributes: {
+              style: "width: 33%"
+            }
+          },
+          { text: __("session.date.label") },
+          { text: "Status" }
+        ],
+        rows: patientSessionRows
+      }) }}
+    {% endcall %}
+  {% endif %}
+
+  {% if patientProgramme.auditEvents.length %}
+    {% call card({
+      heading: __("patient.auditEvents.label"),
+      headingLevel: 3
+    }) %}
+      {{ appTimeline({
+        items: timelineItems(patientProgramme.auditEvents)
+      }) }}
+    {% endcall %}
+  {% endif %}
+{% endblock %}

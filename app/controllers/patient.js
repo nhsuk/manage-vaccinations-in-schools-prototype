@@ -1,6 +1,7 @@
 import _ from 'lodash'
 
 import { ArchiveRecordReason, PatientStatus } from '../enums.js'
+import { PatientProgramme } from '../models/patient-programme.js'
 import { Patient } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
 import { getResults, getPagination } from '../utils/pagination.js'
@@ -11,13 +12,32 @@ export const patientController = {
     const { data } = request.session
     const { __ } = response.locals
 
+    const currentPath = request.baseUrl + request.path
+
     const patient = Patient.findOne(patient_uuid, data)
+
+    const recordTitle = patient.post16
+      ? __('patient.label').replace('Child', 'Patient')
+      : __('patient.label')
 
     response.locals.patient = patient
 
-    response.locals.recordTitle = patient.post16
-      ? __('patient.label').replace('Child', 'Patient')
-      : __('patient.label')
+    response.locals.recordTitle = recordTitle
+
+    response.locals.secondaryNavigationItems = [
+      {
+        text: recordTitle,
+        href: patient.uri,
+        current: currentPath === patient.uri
+      },
+      ...Object.values(patient.programmes).map((patientProgramme) => {
+        return {
+          text: patientProgramme.programme.name,
+          href: patientProgramme.uri,
+          current: currentPath === patientProgramme.uri
+        }
+      })
+    ]
 
     response.locals.archiveRecordReasonItems = Object.values(
       ArchiveRecordReason
@@ -66,13 +86,6 @@ export const patientController = {
         : [programme_id]
     }
 
-    // Filter by programme
-    if (programme_id) {
-      results = results.filter((patient) =>
-        programme_ids.some((id) => patient.programmes[id].inviteToSession)
-      )
-    }
-
     // Filter by instruct/register/report/sub status
     const filters = {
       report: request.query.report || 'none',
@@ -85,10 +98,9 @@ export const patientController = {
     // Filter by status
     if (filters.report && filters.report !== 'none' && programme_ids) {
       results = results.filter((patient) =>
-        patient.patientSessions.some(
-          (patientSession) =>
-            patientSession.report === filters.report &&
-            programme_ids.includes(patientSession.programme_id)
+        programme_ids.some(
+          (programme_id) =>
+            patient.programmes[programme_id].status === filters.report
         )
       )
     }
@@ -103,11 +115,11 @@ export const patientController = {
       if (filters.report === patientStatus && filters[status] !== 'none') {
         let statuses = filters[status]
         statuses = Array.isArray(statuses) ? statuses : [statuses]
-        results.filter((patient) =>
-          patient.patientSessions.filter(
-            (patientSession) =>
-              statuses.includes(patientSession[status]) &&
-              programme_ids?.includes(patientSession.programme_id)
+        results = results.filter((patient) =>
+          programme_ids.some((programme_id) =>
+            statuses.includes(
+              patient.programmes[programme_id].lastPatientSession?.[status]
+            )
           )
         )
       }
@@ -289,6 +301,27 @@ export const patientController = {
     Patient.update(patient_uuid, request.body.patient, data.wizard)
 
     response.redirect(paths.next)
+  },
+
+  readProgramme(request, response, next) {
+    const { programme_id } = request.params
+    const { data } = request.session
+    const { patient } = response.locals
+
+    if (!programme_id) {
+      return response.redirect(patient.uri)
+    }
+
+    response.locals.patientProgramme = new PatientProgramme(
+      patient.programmes[programme_id],
+      data
+    )
+
+    next()
+  },
+
+  showProgramme(request, response) {
+    response.render(`patient/programme`)
   },
 
   archive(request, response) {

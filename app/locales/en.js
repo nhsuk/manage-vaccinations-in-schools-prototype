@@ -997,8 +997,26 @@ export const en = {
       label: 'Second parent or guardian',
       title: 'Details for second parent or guardian'
     },
+    auditEvents: {
+      label: 'Programme activity'
+    },
+    programmes: {
+      label: 'Vaccination programmes'
+    },
     status: {
       label: 'Status'
+    }
+  },
+  patientProgramme: {
+    label: 'Vaccination programme',
+    name: {
+      label: 'Programme'
+    },
+    status: {
+      label: 'Status'
+    },
+    statusNotes: {
+      label: 'Notes'
     }
   },
   patientSession: {
