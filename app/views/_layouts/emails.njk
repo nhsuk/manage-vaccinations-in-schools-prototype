@@ -19,21 +19,6 @@
   {% endfor %}
 {% endfor %}
 
-{% set cardDescriptionHtml %}
-  <article class="prototype-email">
-    <footer class="prototype-email__header">
-      From: <span class="nhsuk-u-secondary-text-colour">{{ placeholders.from.name }} &lt;{{ placeholders.from.email }}&gt;</span><br>
-      To: <span class="nhsuk-u-secondary-text-colour">{{ placeholders.to.name }} &lt;{{ placeholders.to.email }}&gt;</span>
-    </footer>
-    {{ header({
-      classes: "nhsuk-header--white"
-    }) }}
-    {% filter nhsukMarkdown %}
-      {%- include "emails/" + dir + "/" + template + ".njk" %}
-    {% endfilter %}
-  </article>
-{% endset %}
-
 {% block content %}
   {{ appHeading({
     caption: caption,
@@ -48,11 +33,23 @@
     </div>
 
     <div class="nhsuk-grid-column-three-quarters">
-      {{ card({
+      {% call card({
         heading: __("emails." + dir + "." + template + ".name", placeholders) | safe,
-        headingClasses: "nhsuk-heading-s",
-        descriptionHtml: cardDescriptionHtml
-      }) }}
+        headingClasses: "nhsuk-heading-s"
+      }) %}
+        <article class="prototype-email">
+          <footer class="prototype-email__header">
+            From: <span class="nhsuk-u-secondary-text-colour">{{ placeholders.from.name }} &lt;{{ placeholders.from.email }}&gt;</span><br>
+            To: <span class="nhsuk-u-secondary-text-colour">{{ placeholders.to.name }} &lt;{{ placeholders.to.email }}&gt;</span>
+          </footer>
+          {{ header({
+            classes: "nhsuk-header--white"
+          }) }}
+          {% filter nhsukMarkdown %}
+            {%- include "emails/" + dir + "/" + template + ".njk" %}
+          {% endfilter %}
+        </article>
+      {% endcall %}
     <div>
   </div>
 {% endblock %}

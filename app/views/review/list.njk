@@ -37,7 +37,11 @@
         ]) %}
       {% endfor %}
 
-      {% set cardDescriptionHtml %}
+      {% call card({
+        id: upload.id,
+        heading: upload.formatted.createdAt,
+        feature: true
+      }) %}
         {{ summaryList({
           rows: summaryRows(upload, {
             createdBy: {},
@@ -72,14 +76,7 @@
           ],
           rows: reviewRows
         }) }}
-      {% endset %}
-
-      {{ card({
-        id: upload.id,
-        heading: upload.formatted.createdAt,
-        feature: true,
-        descriptionHtml: cardDescriptionHtml
-      }) }}
+      {% endcall %}
     {% endfor %}
   {% else %}
     {{ __mf("review.count", { count: 0 }) | nhsukMarkdown }}

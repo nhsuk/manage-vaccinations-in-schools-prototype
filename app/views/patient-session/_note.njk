@@ -1,4 +1,7 @@
-{% set cardDescriptionHtml %}
+{% call details({
+  classes: "nhsuk-expander",
+  summaryText: __("patientSession.notes.new.title")
+}) %}
   {{ textarea({
     label: {
       text: __("event.note.label")
@@ -26,10 +29,4 @@
       formaction: patientSession.uri + "/new/note?referrer=" + patientSession.uri + "/events?activity=" + activity
     }
   }) }}
-{% endset %}
-
-{{ details({
-  classes: "nhsuk-expander",
-  summaryText: __("patientSession.notes.new.title"),
-  html: cardDescriptionHtml
-}) }}
+{% endcall %}

@@ -122,7 +122,14 @@
             {% endfor %}
           {% endset %}
 
-          {% set cardDescriptionHtml %}
+          {% call card({
+            classes: "app-card--compact",
+            heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
+            headingClasses: "nhsuk-heading-s",
+            headingLevel: 4,
+            clickable: true if view != "register",
+            href: patientSession.uri + "?activity=" + view
+          }) %}
             {{ summaryList({
               rows: summaryRows(patientSession.patient, {
                 dob: {},
@@ -181,17 +188,7 @@
                 }
               }]
             }) if view == "register" and patientSession.register == RegistrationOutcome.Pending }}
-          {% endset %}
-
-          {{ card({
-            classes: "app-card--compact",
-            heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
-            headingClasses: "nhsuk-heading-s",
-            headingLevel: 4,
-            clickable: true if view != "register",
-            href: patientSession.uri + "?activity=" + view,
-            descriptionHtml: cardDescriptionHtml
-          }) }}
+          {% endcall %}
         {% endfor %}
 
         {{ pagination(pages) }}

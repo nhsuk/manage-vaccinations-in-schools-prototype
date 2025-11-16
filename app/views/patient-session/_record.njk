@@ -17,7 +17,13 @@
   })
 }) }}
 
-{% set preScreenDescriptionHtml %}
+{% call card({
+  heading: __("patientSession.preScreen.label", {
+    patient: patient
+  }),
+  headingClasses: "nhsuk-heading-m",
+  headingLevel: 4
+}) %}
   {{ radios({
     fieldset: {
       legend: {
@@ -163,13 +169,4 @@
       formaction: patientSession.uri + "/new/pre-screen?referrer=" + referrer
     }
   }) }}
-{% endset %}
-
-{{ card({
-  heading: __("patientSession.preScreen.label", {
-    patient: patient
-  }),
-  headingClasses: "nhsuk-heading-m",
-  headingLevel: 4,
-  descriptionHtml: preScreenDescriptionHtml
-}) }}
+{% endcall %}

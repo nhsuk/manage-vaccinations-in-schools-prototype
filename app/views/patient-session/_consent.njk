@@ -6,7 +6,12 @@
   title: __("session.consent.label")
 }) }}
 
-{% set cardDescriptionHtml %}
+{% call card({
+  feature: true,
+  heading: programme.name + ": " + (patientSession.status.consent.text | lower),
+  headingClasses: "app-card__heading--" + patientSession.status.consent.colour,
+  headingLevel: 4
+}) %}
   {# Description #}
   {% if not isVaccinated %}
     {% if session.consentWindow == ConsentWindow.Opening %}
@@ -105,12 +110,4 @@
       rows: healthAnswerRows(patientSession.consentHealthAnswers)
     }) }}
   {% endif %}
-{% endset %}
-
-{{ card({
-  feature: true,
-  heading: programme.name + ": " + (patientSession.status.consent.text | lower),
-  headingClasses: "app-card__heading--" + patientSession.status.consent.colour,
-  headingLevel: 4,
-  descriptionHtml: cardDescriptionHtml
-}) }}
+{% endcall %}

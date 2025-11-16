@@ -11,7 +11,12 @@
   }) }}
 
   {% for vaccine in vaccines %}
-    {% set descriptionHtml %}
+    {% call card({
+      heading: vaccine.brandWithType,
+      feature: true,
+      headingClasses: "nhsuk-heading-m nhsuk-u-margin-bottom-1",
+      href: vaccine.uri
+    }) %}
       {{ summaryList({
         rows: summaryRows(vaccine, {
           manufacturer: {},
@@ -66,14 +71,6 @@
         ],
         rows: batchRows
       }) if batchRows.length }}
-    {% endset %}
-
-    {{ card({
-      heading: vaccine.brandWithType,
-      feature: true,
-      headingClasses: "nhsuk-heading-m nhsuk-u-margin-bottom-1",
-      href: vaccine.uri,
-      descriptionHtml: descriptionHtml
-    }) }}
+    {% endcall %}
   {% endfor %}
 {% endblock %}

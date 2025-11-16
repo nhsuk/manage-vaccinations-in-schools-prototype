@@ -17,12 +17,6 @@
   {% endfor %}
 {% endfor %}
 
-{% set cardDescriptionHtml %}
-  <article class="prototype-text">
-    {{ __("texts." + dir + "." + template + ".text", placeholders) | nhsukMarkdown }}
-  </article>
-{% endset %}
-
 {% block content %}
   {{ appHeading({
     caption: caption,
@@ -37,11 +31,14 @@
     </div>
 
     <div class="nhsuk-grid-column-three-quarters">
-      {{ card({
+      {% call card({
         heading: __("texts." + dir + "." + template + ".name"),
-        headingClasses: "nhsuk-heading-s",
-        descriptionHtml: cardDescriptionHtml
-      }) }}
+        headingClasses: "nhsuk-heading-s"
+      }) %}
+        <article class="prototype-text">
+          {{ __("texts." + dir + "." + template + ".text", placeholders) | nhsukMarkdown }}
+        </article>
+      {% endcall %}
     <div>
   </div>
 {% endblock %}

@@ -18,7 +18,10 @@
     </div>
 
     <div class="nhsuk-grid-column-three-quarters">
-      {% set cardDescriptionHtml %}
+      {% call card({
+        heading: __("organisation.schools.summary"),
+        headingClasses: "nhsuk-heading-m"
+      }) %}
         {% set schoolRows = [] %}
         {% for school in organisation.schools %}
           {% set schoolRows = schoolRows | push([
@@ -53,13 +56,7 @@
           ],
           rows: schoolRows
         }) }}
-      {% endset %}
-
-      {{ card({
-        heading: __("organisation.schools.summary"),
-        headingClasses: "nhsuk-heading-m",
-        descriptionHtml: cardDescriptionHtml
-      }) }}
+      {% endcall %}
     <div>
   </div>
 {% endblock %}

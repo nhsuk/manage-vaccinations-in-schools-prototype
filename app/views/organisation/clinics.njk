@@ -18,7 +18,10 @@
     </div>
 
     <div class="nhsuk-grid-column-three-quarters">
-      {% set cardDescriptionHtml %}
+      {% call card({
+        heading: __("organisation.clinics.summary"),
+        headingClasses: "nhsuk-heading-m"
+      }) %}
         {% set clinicRows = [] %}
         {% for clinic in organisation.clinics %}
           {% set clinicRows = clinicRows | push([
@@ -59,13 +62,7 @@
         {% else %}
           {{ __mf("clinic.count", { count: 0 }) | nhsukMarkdown }}
         {% endif %}
-      {% endset %}
-
-      {{ card({
-        heading: __("organisation.clinics.summary"),
-        headingClasses: "nhsuk-heading-m",
-        descriptionHtml: cardDescriptionHtml
-      }) }}
+      {% endcall %}
     <div>
   </div>
 {% endblock %}

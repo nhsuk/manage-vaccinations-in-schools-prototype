@@ -27,7 +27,12 @@
     }) }}
   {% endset %}
 
-  {% set searchCardHtml %}
+  {% call card({
+    classes: "app-filters",
+    feature: true,
+    heading: __("patient.search.label") ,
+    headingLevel: 3
+  }) %}
     {{ appSearchInput({
       label: { text: __("search.label") },
       attributes: {
@@ -202,13 +207,5 @@
     }) }}
 
     {{ filterButtonGroup | safe if programmeItems or statusItems }}
-  {% endset %}
-
-  {{ card({
-    classes: "app-filters",
-    feature: true,
-    heading: __("patient.search.label") ,
-    headingLevel: 3,
-    descriptionHtml: searchCardHtml
-  }) }}
+  {% endcall %}
 {% endmacro %}

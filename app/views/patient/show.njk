@@ -26,7 +26,10 @@
     view: "show"
   }) }}
 
-  {% set recordDescriptionHtml %}
+  {% call card({
+    heading: recordTitle,
+    headingLevel: 3
+  }) %}
     {{ appStatus({
       text: patient.notice.name,
       icon: "warning",
@@ -76,15 +79,12 @@
         href: patient.uri + "/archive"
       }]
     }) if not patient.archived }}
-  {% endset %}
+  {% endcall %}
 
-  {{ card({
-    heading: recordTitle,
-    headingLevel: 3,
-    descriptionHtml: recordDescriptionHtml
-  }) }}
-
-  {% set sessionsDescriptionHtml %}
+  {% call card({
+    heading: __("session.label"),
+    headingLevel: 3
+  }) %}
     {% if patient.patientSessions.length %}
       {% set patientSessionRows = [] %}
       {% for patientSession in patient.patientSessions %}
@@ -117,15 +117,12 @@
     {% else %}
       {{ __mf("session.count", { count: 0 }) | nhsukMarkdown }}
     {% endif %}
-  {% endset %}
+  {% endcall %}
 
-  {{ card({
-    heading: __("session.label"),
-    headingLevel: 3,
-    descriptionHtml: sessionsDescriptionHtml
-  }) }}
-
-  {% set vaccinationsDescriptionHtml %}
+  {% call card({
+    heading: __("patient.vaccinations.label"),
+    headingLevel: 3
+  }) %}
     {% if patient.vaccinations.length %}
       {% set vaccinationRows = [] %}
       {% for vaccination in patient.vaccinations | sort(false, false, "createdAt") %}
@@ -163,11 +160,5 @@
     {% else %}
       {{ __mf("vaccination.count", { count: 0 }) | nhsukMarkdown }}
     {% endif %}
-  {% endset %}
-
-  {{ card({
-    heading: __("patient.vaccinations.label"),
-    headingLevel: 3,
-    descriptionHtml: vaccinationsDescriptionHtml
-  }) }}
+  {% endcall %}
 {% endblock %}

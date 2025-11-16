@@ -48,8 +48,7 @@
 
   {% call card({
     heading: __("upload.show.summary"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: cardDescriptionHtml
+    headingClasses: "nhsuk-heading-m"
   }) %}
     {{ summaryList({
       rows: summaryRows(upload, {
@@ -105,7 +104,12 @@
   }) if upload.status == UploadStatus.Devoid }}
 
   {% if upload.status == UploadStatus.Invalid %}
-    {% set cardDescriptionHtml %}
+    {% call card({
+      heading: __("upload.invalid.title"),
+      headingClasses: "nhsuk-heading-m app-card__heading--red",
+      headingLevel: 2,
+      feature: true
+    }) %}
       <div class="nhsuk-u-reading-width">
         {{ __("upload.invalid.description") | nhsukMarkdown }}
       </div>
@@ -127,17 +131,15 @@
         {% endfor %}
         </ul>
       {% endfor %}
-    {% endset %}
-
-    {{ card({
-      heading: __("upload.invalid.title"),
+    {% endcall %}
+  {% elif upload.status == UploadStatus.Failed %}
+    {% call card({
+      classes: "nhsuk-u-margin-bottom-6",
+      heading: __("upload.failed.title"),
       headingClasses: "nhsuk-heading-m app-card__heading--red",
       headingLevel: 2,
-      descriptionHtml: cardDescriptionHtml,
       feature: true
-    }) }}
-  {% elif upload.status == UploadStatus.Failed %}
-    {% set cardDescriptionHtml %}
+    }) %}
       <div class="nhsuk-u-reading-width">
         {{ __("upload.failed.description") | nhsukMarkdown }}
       </div>
@@ -146,16 +148,7 @@
         summaryText: __("upload.file.format", { type: upload.type | lower }),
         html: templateFormat
       }) }}
-    {% endset %}
-
-    {{ card({
-      classes: "nhsuk-u-margin-bottom-6",
-      heading: __("upload.failed.title"),
-      headingClasses: "nhsuk-heading-m app-card__heading--red",
-      headingLevel: 2,
-      descriptionHtml: cardDescriptionHtml,
-      feature: true
-    }) }}
+    {% endcall %}
 
     {% include "upload/_failed-records.njk" %}
   {% endif %}

@@ -29,7 +29,10 @@
       title: title
     }) }}
 
-    {% set recordDescriptionHtml %}
+    {% call card({
+      heading: __("patient.label"),
+      headingClasses: "nhsuk-heading-m"
+    }) %}
       {{ summaryList({
         rows: summaryRows(vaccination.patientSession.patient, {
           nhsn: {
@@ -51,15 +54,12 @@
           href: vaccination.patient.uri + "/edit?referrer=" + vaccination.uri
         }) }}
       </p>
-    {% endset %}
+    {% endcall %}
 
-    {{ card({
-      heading: __("patient.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: recordDescriptionHtml
-    }) }}
-
-    {% set vaccinationDescriptionHtml %}
+    {% call card({
+      heading: __("vaccination.show.summary"),
+      headingClasses: "nhsuk-heading-m"
+    }) %}
       {{ summaryList({
         rows: summaryRows(vaccination, {
           programme: {},
@@ -88,12 +88,6 @@
           href: vaccination.uri + "/edit"
         }) }}
       </p>
-    {% endset %}
-
-    {{ card({
-      heading: __("vaccination.show.summary"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: vaccinationDescriptionHtml
-    }) }}
+    {% endcall %}
   </div>
 {% endblock %}

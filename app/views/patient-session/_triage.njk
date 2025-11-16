@@ -6,7 +6,12 @@
   title: __("session.screen.label")
 }) }}
 
-{% set cardDescriptionHtml %}
+{% call card({
+  feature: true,
+  heading: programme.name + ": " + (patientSession.status.screen.text | lower),
+  headingClasses: "app-card__heading--" + patientSession.status.screen.colour,
+  headingLevel: 4
+}) %}
   {# Description #}
   {{ patientSession.status.screen.description | nhsukMarkdown }}
 
@@ -103,12 +108,4 @@
       }
     }) }}
   {% endif %}
-{% endset %}
-
-{{ card({
-  feature: true,
-  heading: programme.name + ": " + (patientSession.status.screen.text | lower),
-  headingClasses: "app-card__heading--" + patientSession.status.screen.colour,
-  headingLevel: 4,
-  descriptionHtml: cardDescriptionHtml
-}) }}
+{% endcall %}

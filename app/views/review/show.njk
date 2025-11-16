@@ -13,7 +13,11 @@
 
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
-      {% set descriptionHtml %}
+      {% call card({
+        feature: true,
+        heading: __("review.duplicate.label"),
+        headingClasses: "nhsuk-heading-m"
+      }) %}
         {% if upload.type == UploadType.Report %}
           {{ summaryList({
             rows: summaryRows(duplicatePatient.vaccinations[0], {
@@ -47,17 +51,14 @@
             })
           }) }}
         {% endif %}
-      {% endset %}
-
-      {{ card({
-        feature: true,
-        heading: __("review.duplicate.label"),
-        headingClasses: "nhsuk-heading-m",
-        descriptionHtml: descriptionHtml
-      }) }}
+      {% endcall %}
     </div>
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
-      {% set descriptionHtml %}
+      {% call card({
+        feature: true,
+        heading: __("review.original.label"),
+        headingClasses: "nhsuk-heading-m"
+      }) %}
         {% if upload.type == UploadType.Report %}
           {{ summaryList({
             rows: summaryRows(patient.vaccinations[0], {
@@ -87,14 +88,7 @@
             })
           }) }}
         {% endif %}
-      {% endset %}
-
-      {{ card({
-        feature: true,
-        heading: __("review.original.label"),
-        headingClasses: "nhsuk-heading-m",
-        descriptionHtml: descriptionHtml
-      }) }}
+      {% endcall %}
     </div>
   </div>
 
