@@ -69,7 +69,7 @@ export const patientController = {
     // Filter by programme
     if (programme_id) {
       results = results.filter((patient) =>
-        programme_ids.some((id) => patient.programme_ids.includes(id))
+        programme_ids.some((id) => patient.programmes[id].inviteToSession)
       )
     }
 
