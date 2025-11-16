@@ -82,83 +82,36 @@
   {% endcall %}
 
   {% call card({
-    heading: __("session.label"),
+    heading: __("patient.programmes.label"),
     headingLevel: 3
   }) %}
-    {% if patient.patientSessions.length %}
-      {% set patientSessionRows = [] %}
-      {% for patientSession in patient.patientSessions %}
-        {% set patientSessionRows = patientSessionRows | push([
-          {
-            header: __("session.location.label"),
-            html: link(patientSession.session.uri, patientSession.session.location.name)
-          },
-          {
-            header: __("session.dates.label"),
-            html: patientSession.session.formatted.date if patientSession.session.date else patientSession.session.status
-          },
-          {
-            header: __("programme.label"),
-            html: patientSession.formatted.programme
-          }
-        ]) %}
-      {% endfor %}
+    {% set patientProgrammeRows = [] %}
+    {% for id, patientProgramme in patient.programmes %}
+      {% set patientProgrammeRows = patientProgrammeRows | push([
+        {
+          header: __("patientProgramme.name.label"),
+          html: link(patientProgramme.uri, patientProgramme.programme.name)
+        },
+        {
+          header: __("patientProgramme.status.label"),
+          html: patientProgramme.formatted.status
+        },
+        {
+          header: __("patientProgramme.statusNotes.label"),
+          html: patientProgramme.statusNotes
+        }
+      ]) %}
+    {% endfor %}
 
-      {{ table({
-        id: "patient-sessions",
-        responsive: true,
-        head: [
-          { text: __("session.location.label") },
-          { text: __("session.date.label") },
-          { text: __("programme.label") }
-        ],
-        rows: patientSessionRows
-      }) }}
-    {% else %}
-      {{ __mf("session.count", { count: 0 }) | nhsukMarkdown }}
-    {% endif %}
-  {% endcall %}
-
-  {% call card({
-    heading: __("patient.vaccinations.label"),
-    headingLevel: 3
-  }) %}
-    {% if patient.vaccinations.length %}
-      {% set vaccinationRows = [] %}
-      {% for vaccination in patient.vaccinations | sort(false, false, "createdAt") %}
-        {% set vaccinationRows = vaccinationRows | push([
-          {
-            header: __("vaccination.createdAt.label"),
-            html: vaccination.link.createdAt_date
-          },
-          {
-            header: __("vaccination.location.label"),
-            text: vaccination.location
-          },
-          {
-            header: __("vaccination.programme.label"),
-            html: vaccination.formatted.programme
-          },
-          {
-            header: __("vaccination.outcome.label"),
-            html: vaccination.formatted.outcome
-          }
-        ]) %}
-      {% endfor %}
-
-      {{ table({
-        id: "vaccinations",
-        responsive: true,
-        head: [
-          { text: __("vaccination.createdAt.label") },
-          { text: __("vaccination.location.label") },
-          { text: __("vaccination.programme.label") },
-          { text: __("vaccination.outcome.label") }
-        ],
-        rows: vaccinationRows
-      }) }}
-    {% else %}
-      {{ __mf("vaccination.count", { count: 0 }) | nhsukMarkdown }}
-    {% endif %}
+    {{ table({
+      id: "programmes",
+      responsive: true,
+      head: [
+        { text: __("patientProgramme.name.label") },
+        { text: __("patientProgramme.status.label") },
+        { text: __("patientProgramme.statusNotes.label") }
+      ],
+      rows: patientProgrammeRows
+    }) }}
   {% endcall %}
 {% endblock %}
