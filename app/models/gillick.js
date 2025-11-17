@@ -1,5 +1,6 @@
 import { GillickCompetent } from '../enums.js'
 import { today } from '../utils/date.js'
+import { getGillickCompetenceStatus } from '../utils/status.js'
 import { stringToBoolean } from '../utils/string.js'
 
 /**
@@ -42,16 +43,13 @@ export class Gillick {
   }
 
   /**
-   * Get status properties
+   * Get formatted values
    *
-   * @returns {object} Status properties
+   * @returns {object} Formatted values
    */
-  get status() {
+  get formatted() {
     return {
-      colour: this.competent === GillickCompetent.True ? 'green' : 'red',
-      description: `${this.updatedAt ? 'Updated' : 'Created'} Gillick assessment`,
-      icon: this.competent === GillickCompetent.True ? 'tick' : 'cross',
-      text: this.competent
+      competent: this.competent && getGillickCompetenceStatus(this.competent)
     }
   }
 

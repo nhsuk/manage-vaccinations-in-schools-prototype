@@ -1,5 +1,6 @@
 import {
   ConsentOutcome,
+  GillickCompetent,
   InstructionOutcome,
   PatientStatus,
   RegistrationOutcome,
@@ -56,6 +57,20 @@ export function getConsentOutcomeStatus(consent) {
     colour,
     icon,
     text: consent
+  }
+}
+
+/**
+ * Get Gillick competency status properties
+ *
+ * @param {GillickCompetent} competent - Gillick competency
+ * @returns {object} Status properties
+ */
+export function getGillickCompetenceStatus(competent) {
+  return {
+    colour: competent === GillickCompetent.True ? 'green' : 'red',
+    icon: competent === GillickCompetent.True ? 'tick' : 'cross',
+    text: competent
   }
 }
 
