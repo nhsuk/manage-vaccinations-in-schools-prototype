@@ -1,7 +1,7 @@
 import { isBefore } from 'date-fns'
 
-import { ScreenOutcome } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
+import { getScreenOutcomeStatus } from '../utils/status.js'
 import {
   formatTag,
   formatMarkdown,
@@ -75,39 +75,6 @@ export class AuditEvent {
     return []
   }
 
-  /**
-   * Get status properties for outcome
-   *
-   * @returns {object} Status properties
-   */
-  get status() {
-    if (this.outcome) {
-      let colour
-      switch (this.outcome) {
-        case ScreenOutcome.NeedsTriage:
-          colour = 'blue'
-          break
-        case ScreenOutcome.DelayVaccination:
-          colour = 'dark-orange'
-          break
-        case ScreenOutcome.DoNotVaccinate:
-          colour = 'red'
-          break
-        case ScreenOutcome.Vaccinate:
-        case ScreenOutcome.VaccinateAlternativeInjection:
-        case ScreenOutcome.VaccinateIntranasal:
-          colour = 'green'
-          break
-        default:
-      }
-
-      return {
-        colour,
-        text: this.outcome
-      }
-    }
-  }
-
   get summary() {
     return {
       createdAtAndBy: this.createdBy
@@ -142,7 +109,7 @@ export class AuditEvent {
       datetime,
       note:
         this.note && `<blockquote>${formatMarkdown(this.note)}</blockquote>`,
-      outcomeStatus: this.status && formatTag(this.status),
+      outcome: this.outcome && formatTag(getScreenOutcomeStatus(this.outcome)),
       programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' ')
     }
   }
