@@ -374,22 +374,7 @@ export function getYearGroup(date, academicYear) {
   if (!date || isNaN(date.valueOf())) return 0
 
   // Determine which academic year to use
-  let targetYear
-  if (academicYear !== undefined) {
-    targetYear = academicYear
-  } else {
-    // Use current academic year
-    const currentDate = today()
-    const currentYear = currentDate.getFullYear()
-    const currentMonth = currentDate.getMonth()
-
-    // If we’re before September 1, we’re still in the previous academic year
-    if (currentMonth < 8) {
-      targetYear = currentYear - 1
-    } else {
-      targetYear = currentYear
-    }
-  }
+  const targetYear = academicYear || getCurrentAcademicYear()
 
   const birthYear = date.getFullYear()
   const birthMonth = date.getMonth()

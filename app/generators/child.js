@@ -6,7 +6,7 @@ import schools from '../datasets/schools.js'
 import { Gender } from '../enums.js'
 import { generateAddress } from '../generators/address.js'
 import { Child } from '../models/child.js'
-import { getYearGroup } from '../utils/date.js'
+import { getCurrentAcademicYear, getYearGroup } from '../utils/date.js'
 
 /**
  * Generate fake child
@@ -47,19 +47,39 @@ export function generateChild() {
   const phase = faker.helpers.arrayElement(['Primary', 'Secondary'])
   let dob, school_urn
   if (phase === 'Primary') {
-    dob = faker.date.birthdate({ min: 4, max: 11, mode: 'age' })
+    // Primary: Reception (age 4) to Year 6 (age 10)
+    const ageOnCutOff = faker.number.int({ min: 4, max: 10 })
+
+    // Calculate birth year
+    const birthYear = getCurrentAcademicYear() - ageOnCutOff
+
+    // Born between 1 September (previous year) and 31 August
+    dob = faker.date.between({
+      from: new Date(birthYear - 1, 8, 1), // 1 September previous year
+      to: new Date(birthYear, 7, 31) // 31 August birth year
+    })
+
     school_urn = faker.helpers.arrayElement(primarySchools).urn
   } else {
     // Children generally receive adolescent vaccinations when younger
     // Note: This means flu cohorts will skew more towards younger children
-    const max = faker.helpers.weightedArrayElement([
-      { value: 12, weight: 12 },
-      { value: 13, weight: 8 },
-      { value: 14, weight: 4 },
-      { value: 15, weight: 2 },
-      { value: 16, weight: 1 }
+    const ageOnCutOff = faker.helpers.weightedArrayElement([
+      { value: 11, weight: 12 },
+      { value: 12, weight: 8 },
+      { value: 13, weight: 4 },
+      { value: 14, weight: 2 },
+      { value: 15, weight: 1 }
     ])
-    dob = faker.date.birthdate({ min: 11, max, mode: 'age' })
+
+    // Calculate birth year
+    const birthYear = getCurrentAcademicYear() - ageOnCutOff
+
+    // Born between 1 September (previous year) and 31 August
+    dob = faker.date.between({
+      from: new Date(birthYear - 1, 8, 1), // 1 September previous year
+      to: new Date(birthYear, 7, 31) // 31 August birth year
+    })
+
     school_urn = faker.helpers.arrayElement(secondarySchools).urn
   }
 
