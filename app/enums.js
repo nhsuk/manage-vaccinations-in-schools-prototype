@@ -471,6 +471,7 @@ export const ScreenOutcome = {
  * @enum {string}
  */
 export const SessionStatus = {
+  Active: 'In progress',
   Unplanned: 'No sessions scheduled',
   Planned: 'Session scheduled',
   Completed: 'Session completed',

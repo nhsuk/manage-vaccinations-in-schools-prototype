@@ -1,8 +1,37 @@
 import {
+  SessionStatus,
   UploadStatus,
   VaccinationOutcome,
   VaccinationSyncStatus
 } from '../enums.js'
+
+/**
+ * Get session status properties
+ *
+ * @param {SessionStatus} status - Session status
+ * @returns {object} Status properties
+ */
+export function getSessionStatus(status) {
+  let colour
+  switch (status) {
+    case SessionStatus.Closed:
+      colour = 'red'
+      break
+    case SessionStatus.Completed:
+      colour = 'green'
+      break
+    case SessionStatus.Unplanned:
+      colour = 'purple'
+      break
+    default:
+      colour = 'blue'
+  }
+
+  return {
+    colour,
+    text: status
+  }
+}
 
 /**
  * Get upload status properties

@@ -26,6 +26,7 @@ import {
 } from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
 import { getConsentWindow, getSessionActivityCount } from '../utils/session.js'
+import { getSessionStatus } from '../utils/status.js'
 import {
   formatLink,
   formatList,
@@ -244,7 +245,7 @@ export class Session {
    * @returns {boolean} Is active session
    */
   get isActive() {
-    return isSameDay(this.date, setMidday(today()))
+    return this.status === SessionStatus.Active
   }
 
   /**
@@ -281,6 +282,8 @@ export class Session {
    */
   get status() {
     switch (true) {
+      case isSameDay(this.date, setMidday(today())):
+        return SessionStatus.Active
       case this.closed:
         return SessionStatus.Closed
       case !this.date:
@@ -687,34 +690,7 @@ export class Session {
       clinic: this.clinic && this.clinic.name,
       school: this.school && this.school.name,
       school_urn: this.school && this.school.formatted.urn,
-      status: formatTag(this.sessionStatus)
-    }
-  }
-
-  /**
-   * Get status properties
-   *
-   * @returns {object} Status properties
-   */
-  get sessionStatus() {
-    let colour
-    switch (this.status) {
-      case SessionStatus.Closed:
-        colour = 'red'
-        break
-      case SessionStatus.Completed:
-        colour = 'green'
-        break
-      case SessionStatus.Unplanned:
-        colour = 'purple'
-        break
-      default:
-        colour = 'blue'
-    }
-
-    return {
-      colour,
-      text: this.isActive ? 'Session in progress' : this.status
+      status: formatTag(getSessionStatus(this.status))
     }
   }
 
