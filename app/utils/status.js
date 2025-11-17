@@ -1,4 +1,40 @@
-import { VaccinationOutcome, VaccinationSyncStatus } from '../enums.js'
+import {
+  UploadStatus,
+  VaccinationOutcome,
+  VaccinationSyncStatus
+} from '../enums.js'
+
+/**
+ * Get upload status properties
+ *
+ * @param {UploadStatus} status - Upload status
+ * @returns {object} Status properties
+ */
+export function getUploadStatus(status) {
+  let colour
+  switch (status) {
+    case UploadStatus.Approved:
+      colour = 'green'
+      break
+    case UploadStatus.Review:
+      colour = 'blue'
+      break
+    case UploadStatus.Devoid:
+      colour = 'grey'
+      break
+    case UploadStatus.Failed:
+    case UploadStatus.Invalid:
+      colour = 'red'
+      break
+    default:
+      colour = 'white'
+  }
+
+  return {
+    colour,
+    text: status
+  }
+}
 
 /**
  * Get vaccination sync status properties

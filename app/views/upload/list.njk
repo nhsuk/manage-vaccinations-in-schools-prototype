@@ -30,7 +30,7 @@
         },
         {
           header: __("upload.status.label"),
-          html: progressHtml if upload.status == UploadStatus.Processing else tag(statusTag(upload.uploadStatus))
+          html: progressHtml if upload.status == UploadStatus.Processing else upload.formatted.status
         },
         {
           header: __("upload.patients.label"),

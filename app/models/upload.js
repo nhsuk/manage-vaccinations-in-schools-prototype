@@ -3,8 +3,10 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { UploadStatus, UploadType } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
+import { getUploadStatus } from '../utils/status.js'
 import {
   formatLink,
+  formatTag,
   formatWithSecondaryText,
   formatYearGroup
 } from '../utils/string.js'
@@ -249,38 +251,8 @@ export class Upload {
         school: this.school?.name,
         yearGroups: prototypeFilters.formatList(yearGroups)
       }),
-      patients: this.patients.length
-    }
-  }
-
-  /**
-   * Get status properties
-   *
-   * @returns {object} Status properties
-   */
-  get uploadStatus() {
-    let colour
-    switch (this.status) {
-      case UploadStatus.Approved:
-        colour = 'green'
-        break
-      case UploadStatus.Review:
-        colour = 'blue'
-        break
-      case UploadStatus.Devoid:
-        colour = 'grey'
-        break
-      case UploadStatus.Failed:
-      case UploadStatus.Invalid:
-        colour = 'red'
-        break
-      default:
-        colour = 'white'
-    }
-
-    return {
-      colour,
-      text: this.status
+      patients: this.patients.length,
+      status: formatTag(getUploadStatus(this.status))
     }
   }
 
