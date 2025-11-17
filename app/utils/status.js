@@ -1,9 +1,46 @@
 import {
+  ReplyDecision,
   SessionStatus,
   UploadStatus,
   VaccinationOutcome,
   VaccinationSyncStatus
 } from '../enums.js'
+
+/**
+ * Get reply decision status properties
+ *
+ * @param {ReplyDecision} decision - Reply decision
+ * @returns {object} Status properties
+ */
+export function getReplyDecisionStatus(decision) {
+  let colour
+  let text = decision
+  switch (decision) {
+    case ReplyDecision.Given:
+      colour = 'green'
+      break
+    case ReplyDecision.OnlyAlternativeInjection:
+      colour = 'green'
+      text = ReplyDecision.Given
+      break
+    case ReplyDecision.Declined:
+      colour = 'warm-yellow'
+      break
+    case ReplyDecision.Refused:
+      colour = 'red'
+      break
+    case ReplyDecision.NoResponse:
+      colour = 'grey'
+      break
+    default:
+      colour = 'blue'
+  }
+
+  return {
+    colour,
+    text
+  }
+}
 
 /**
  * Get session status properties

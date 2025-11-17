@@ -13,6 +13,7 @@ import {
   VaccineCriteria
 } from '../enums.js'
 import { formatDate, today } from '../utils/date.js'
+import { getReplyDecisionStatus } from '../utils/status.js'
 import {
   formatMarkdown,
   formatOther,
@@ -329,56 +330,24 @@ export class Reply {
   }
 
   /**
-   * Get status properties
-   *
-   * @returns {object} Status properties
-   */
-  get status() {
-    let colour
-    let text = this.decision
-    switch (this.decision) {
-      case ReplyDecision.Given:
-        colour = 'green'
-        break
-      case ReplyDecision.OnlyAlternativeInjection:
-        colour = 'green'
-        text = ReplyDecision.Given
-        break
-      case ReplyDecision.Declined:
-        colour = 'warm-yellow'
-        break
-      case ReplyDecision.Refused:
-        colour = 'red'
-        break
-      case ReplyDecision.NoResponse:
-        colour = 'grey'
-        break
-      default:
-        colour = 'blue'
-    }
-
-    return {
-      colour: this.invalid ? 'grey' : colour,
-      html: this.invalid ? `<s>${text}</s>` : text
-    }
-  }
-
-  /**
    * Get formatted values
    *
    * @returns {object} Formatted values
    */
   get formatted() {
-    let decisionStatus = formatTag(this.status)
+    let decisionStatus = formatTag(getReplyDecisionStatus(this.decision))
     if (this.invalid) {
       decisionStatus = formatWithSecondaryText(
-        formatTag(this.status),
+        formatTag({
+          colour: 'grey',
+          html: `<s>${this.decision}</s>`
+        }),
         'Invalid',
         false
       )
     } else if (this.confirmed) {
       decisionStatus = formatWithSecondaryText(
-        formatTag(this.status),
+        decisionStatus,
         'Confirmed',
         false
       )
