@@ -20,6 +20,10 @@ import {
   today
 } from '../utils/date.js'
 import {
+  getVaccinationOutcomeStatus,
+  getVaccinationSyncStatus
+} from '../utils/status.js'
+import {
   formatIdentifier,
   formatLink,
   formatLinkWithSecondaryText,
@@ -304,37 +308,35 @@ export class Vaccination {
   }
 
   /**
-   * Get outcome status properties
-   *
-   * @returns {object} Status properties
-   */
-  get outcomeStatus() {
-    let colour
-    switch (this.outcome) {
-      case VaccinationOutcome.Vaccinated:
-      case VaccinationOutcome.PartVaccinated:
-      case VaccinationOutcome.AlreadyVaccinated:
-        colour = 'green'
-        break
-      default:
-        colour = 'dark-orange'
-    }
-
-    return {
-      colour,
-      text: this.outcome
-    }
-  }
-
-  /**
    * Get status of sync with NHS England API
    *
-   * @returns {object} Sync status properties
+   * @returns {VaccinationSyncStatus} Sync status
    */
   get syncStatus() {
     const updatedAt = this.updatedAt || this.createdAt
     const oneMinuteAgo = new Date(new Date().getTime() - 1000 * 60)
 
+    switch (true) {
+      case !this.programme?.nhseSyncable:
+      case this.patient.hasMissingNhsNumber:
+        return VaccinationSyncStatus.CannotSync
+      case !this.given:
+        return VaccinationSyncStatus.NotSynced
+      case this.nhseSyncedAt > updatedAt:
+        return VaccinationSyncStatus.Synced
+      case isBefore(updatedAt, oneMinuteAgo):
+        return VaccinationSyncStatus.Failed
+      default:
+        return VaccinationSyncStatus.Pending
+    }
+  }
+
+  /**
+   * Get explanatory notes about sync with NHS England API
+   *
+   * @returns {string} Explanatory notes
+   */
+  get syncStatusNotes() {
     const nhseSyncedAt = formatDate(this.nhseSyncedAt, {
       day: 'numeric',
       month: 'long',
@@ -346,43 +348,17 @@ export class Vaccination {
 
     const lastSynced = this.nhseSyncedAt ? `Last synced: ${nhseSyncedAt}` : ''
 
-    switch (true) {
-      case !this.programme?.nhseSyncable:
-        return {
-          colour: 'orange',
-          text: VaccinationSyncStatus.CannotSync,
-          description: `Records are currently not synced for this programme<br>${lastSynced}`
-        }
-      case !this.given:
-        return {
-          colour: 'grey',
-          text: VaccinationSyncStatus.NotSynced,
-          description: `Records are not synced if the vaccination was not given<br>${lastSynced}`
-        }
-      case this.patient.hasMissingNhsNumber:
-        return {
-          colour: 'orange',
-          text: VaccinationSyncStatus.CannotSync,
-          description: `You must add an NHS number to the child's record before this record will sync<br>${lastSynced}`
-        }
-      case this.nhseSyncedAt > updatedAt:
-        return {
-          colour: 'green',
-          text: VaccinationSyncStatus.Synced,
-          description: lastSynced
-        }
-      case isBefore(updatedAt, oneMinuteAgo):
-        return {
-          colour: 'red',
-          text: VaccinationSyncStatus.Failed,
-          description: `The Mavis team is aware of the issue and is working to resolve it<br>${lastSynced}`
-        }
+    switch (this.syncStatus) {
+      case VaccinationSyncStatus.CannotSync:
+        return this.patient.hasMissingNhsNumber
+          ? `You must add an NHS number to the child's record before this record will sync<br>${lastSynced}`
+          : `Records are currently not synced for this programme<br>${lastSynced}`
+      case VaccinationSyncStatus.NotSynced:
+        return `Records are not synced if the vaccination was not given<br>${lastSynced}`
+      case VaccinationSyncStatus.Failed:
+        return `The Mavis team is aware of the issue and is working to resolve it<br>${lastSynced}`
       default:
-        return {
-          colour: 'blue',
-          text: VaccinationSyncStatus.Pending,
-          description: lastSynced
-        }
+        return lastSynced
     }
   }
 
@@ -398,8 +374,6 @@ export class Vaccination {
       sequence = prototypeFilters.ordinal(Number(sequence) + 1)
       sequence = `${_.startCase(sequence)} dose`
     }
-
-    const syncStatus = this.syncStatus
 
     return {
       createdAt: formatDate(this.createdAt, {
@@ -429,8 +403,8 @@ export class Vaccination {
         hour12: true
       }),
       syncStatus: formatWithSecondaryText(
-        formatTag(syncStatus),
-        syncStatus.description,
+        formatTag(getVaccinationSyncStatus(this.syncStatus)),
+        this.syncStatusNotes,
         true
       ),
       batch: this.batch?.summary,
@@ -439,7 +413,7 @@ export class Vaccination {
       sequence,
       vaccine_snomed: this.vaccine_snomed && this.vaccine?.brand,
       note: formatMarkdown(this.note),
-      outcomeStatus: formatTag(this.outcomeStatus),
+      outcome: formatTag(getVaccinationOutcomeStatus(this.outcome)),
       programme: this.programme && this.programme.nameTag,
       school: this.school && this.school.name,
       identifiedBy: this.selfId
