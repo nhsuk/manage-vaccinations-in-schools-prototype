@@ -114,10 +114,10 @@
 
         {% for patientSession in results.page %}
           {% set reportStatusHtml %}
-            {% set ids = data.programme_ids or session.programme_ids %}
+            {% set ids = data.programme_id or session.programme_ids %}
             {% for patientSession in patientSession.siblingPatientSessions %}
               {% if ids | includes(patientSession.programme_id) %}
-                <p>{{ patientSession.formatted.report | safe }}</p>
+                {{ patientSession.formatted.report | nhsukMarkdown }}
               {% endif %}
             {% endfor %}
           {% endset %}

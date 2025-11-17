@@ -51,7 +51,7 @@
         }
       },
       items: programmeItems,
-      decorate: "programme_ids"
+      decorate: "programme_id"
     }) if programmeItems }}
 
     {% for name, enums in params.checkboxFilters %}
@@ -194,7 +194,7 @@
             text: __("patient.search.post16")
           }
         ],
-        decorate: "options"
+        decorate: "option"
       }) }}
 
       {{ filterButtonGroup | safe if not (programmeItems or statusItems) }}

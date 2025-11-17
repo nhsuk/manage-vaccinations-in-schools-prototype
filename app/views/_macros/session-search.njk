@@ -50,9 +50,8 @@
           text: __("session.academicYear.label")
         }
       },
-      id: "academicYear",
-      name: "academicYear",
-      items: academicYearItems
+      items: academicYearItems,
+      decorate: "academicYear"
     }) if academicYearItems }}
 
     {{ checkboxes({
@@ -63,9 +62,8 @@
           text: __("programme.label")
         }
       },
-      id: "programme_ids",
-      name: "programme_ids",
-      items: programmeItems
+      items: programmeItems,
+      decorate: "programme_id"
     }) if programmeItems }}
 
     {{ radios({

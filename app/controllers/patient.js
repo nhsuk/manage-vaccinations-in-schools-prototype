@@ -33,7 +33,7 @@ export const patientController = {
   },
 
   readAll(request, response, next) {
-    let { options, programme_ids, q, yearGroup } = request.query
+    const { option, programme_id, q, yearGroup } = request.query
     const { data } = request.session
 
     const programmes = Programme.findAll(data)
@@ -45,13 +45,6 @@ export const patientController = {
     // Sort
     let results = _.sortBy(patients, 'lastName')
 
-    // Convert year groups query into an array of numbers
-    let yearGroups
-    if (yearGroup) {
-      yearGroups = Array.isArray(yearGroup) ? yearGroup : [yearGroup]
-      yearGroups = yearGroups.map((year) => Number(year))
-    }
-
     // Query
     if (q) {
       results = results.filter((patient) =>
@@ -59,11 +52,23 @@ export const patientController = {
       )
     }
 
+    // Convert year groups query into an array of numbers
+    let yearGroups
+    if (yearGroup) {
+      yearGroups = Array.isArray(yearGroup) ? yearGroup : [yearGroup]
+      yearGroups = yearGroups.map((year) => Number(year))
+    }
+
+    // Convert programme IDs into an array of IDs
+    let programme_ids
+    if (programme_id) {
+      programme_ids = Array.isArray(programme_id)
+        ? programme_id
+        : [programme_id]
+    }
+
     // Filter by programme
-    if (programme_ids) {
-      programme_ids = Array.isArray(programme_ids)
-        ? programme_ids
-        : [programme_ids]
+    if (programme_id) {
       results = results.filter((patient) =>
         programme_ids.some((id) => patient.programme_ids.includes(id))
       )
@@ -117,9 +122,9 @@ export const patientController = {
     }
 
     // Filter by display option
-    for (const option of ['archived', 'hasMissingNhsNumber', 'post16']) {
-      if (options?.includes(option)) {
-        results = results.filter((patient) => patient[option])
+    for (const key of ['archived', 'hasMissingNhsNumber', 'post16']) {
+      if (option?.includes(key)) {
+        results = results.filter((patient) => patient[key])
       }
     }
 
@@ -148,14 +153,14 @@ export const patientController = {
     }))
 
     // Clean up session data
-    delete data.options
+    delete data.option
     delete data.patientConsent
     delete data.patientDeferred
     delete data.patientRefused
     delete data.patientVaccinated
-    delete data.programme_ids
-    delete data.report
+    delete data.programme_id
     delete data.q
+    delete data.report
     delete data.yearGroup
 
     next()
@@ -184,12 +189,12 @@ export const patientController = {
 
     // Checkboxes
     for (const key of [
-      'options',
+      'option',
       'patientConsent',
       'patientDeferred',
       'patientRefused',
       'patientVaccinated',
-      'programme_ids',
+      'programme_id',
       'yearGroup'
     ]) {
       const value = request.body[key]
