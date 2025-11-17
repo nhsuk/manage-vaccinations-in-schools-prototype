@@ -1,10 +1,146 @@
 import {
+  ConsentOutcome,
+  InstructionOutcome,
+  PatientStatus,
+  RegistrationOutcome,
   ReplyDecision,
+  ScreenOutcome,
   SessionStatus,
   UploadStatus,
   VaccinationOutcome,
   VaccinationSyncStatus
 } from '../enums.js'
+
+/**
+ * Get consent outcome status properties
+ *
+ * @param {ConsentOutcome} consent - Consent outcome
+ * @returns {object} Status properties
+ */
+export function getConsentOutcomeStatus(consent) {
+  let colour
+  let icon
+  switch (consent) {
+    case ConsentOutcome.NoResponse:
+      colour = 'grey'
+      break
+    case ConsentOutcome.NoRequest:
+      colour = 'dark-orange'
+      break
+    case ConsentOutcome.Inconsistent:
+      colour = 'dark-orange'
+      icon = 'cross'
+      break
+    case ConsentOutcome.Given:
+    case ConsentOutcome.GivenForAlternativeInjection:
+    case ConsentOutcome.GivenForIntranasal:
+      colour = 'green'
+      icon = 'tick'
+      break
+    case ConsentOutcome.Declined:
+      colour = 'warm-yellow'
+      icon = 'info'
+      break
+    case ConsentOutcome.Refused:
+      colour = 'red'
+      icon = 'cross'
+      break
+    case ConsentOutcome.FinalRefusal:
+      colour = 'red'
+      icon = 'cross'
+      break
+    default:
+  }
+
+  return {
+    colour,
+    icon,
+    text: consent
+  }
+}
+
+/**
+ * Get instruction outcome status properties
+ *
+ * @param {InstructionOutcome|boolean} instruct - Instruction outcome
+ * @returns {object|undefined} Status properties
+ */
+export function getInstructionOutcomeStatus(instruct) {
+  if (!instruct) {
+    return
+  }
+
+  return {
+    colour: instruct === InstructionOutcome.Given ? 'green' : 'grey',
+    text: instruct
+  }
+}
+
+/**
+ * Get patient status properties
+ *
+ * @param {PatientStatus|string} report - Patient status
+ * @returns {object} Status properties
+ */
+export function getPatientStatus(report) {
+  let colour
+  switch (report) {
+    case PatientStatus.Ineligible:
+      colour = 'grey'
+      break
+    case PatientStatus.Consent:
+    case PatientStatus.Triage:
+      colour = 'blue'
+      break
+    case PatientStatus.Refused:
+      colour = 'dark-orange'
+      break
+    case PatientStatus.Deferred:
+      colour = 'red'
+      break
+    case PatientStatus.Due:
+    case 'Due 1st dose':
+    case 'Due 2nd dose':
+      colour = 'green'
+      break
+    default:
+      colour = 'white'
+      break
+  }
+
+  return {
+    colour,
+    text: report
+  }
+}
+
+/**
+ * Get registration outcome status properties
+ *
+ * @param {RegistrationOutcome} register - Registration outcome
+ * @returns {object} Status properties
+ */
+export function getRegistrationStatus(register) {
+  let colour
+  switch (register) {
+    case RegistrationOutcome.Present:
+      colour = 'green'
+      break
+    case RegistrationOutcome.Absent:
+      colour = 'red'
+      break
+    case RegistrationOutcome.Complete:
+      colour = 'white'
+      break
+    default:
+      colour = 'grey'
+  }
+
+  return {
+    colour,
+    text: register
+  }
+}
 
 /**
  * Get reply decision status properties
@@ -34,6 +170,36 @@ export function getReplyDecisionStatus(decision) {
       break
     default:
       colour = 'blue'
+  }
+
+  return {
+    colour,
+    text
+  }
+}
+
+/**
+ * Get screen outcome status properties
+ *
+ * @param {ScreenOutcome|boolean} screen - Screen outcome
+ * @returns {object} Status properties
+ */
+export function getScreenOutcomeStatus(screen) {
+  let colour
+  let text = screen
+  switch (screen) {
+    case ScreenOutcome.NeedsTriage:
+      colour = 'blue'
+      break
+    case ScreenOutcome.DelayVaccination:
+      colour = 'dark-orange'
+      break
+    case ScreenOutcome.DoNotVaccinate:
+      colour = 'red'
+      break
+    default:
+      text = 'No triage needed'
+      colour = 'green'
   }
 
   return {
@@ -142,13 +308,14 @@ export function getVaccinationSyncStatus(syncStatus) {
 export function getVaccinationOutcomeStatus(outcome) {
   let colour
   switch (outcome) {
-    case VaccinationOutcome.Vaccinated:
-    case VaccinationOutcome.PartVaccinated:
-    case VaccinationOutcome.AlreadyVaccinated:
-      colour = 'green'
+    case VaccinationOutcome.Contraindications:
+    case VaccinationOutcome.Refused:
+    case VaccinationOutcome.Absent:
+    case VaccinationOutcome.Unwell:
+      colour = 'dark-orange'
       break
     default:
-      colour = 'dark-orange'
+      colour = 'white'
   }
 
   return {

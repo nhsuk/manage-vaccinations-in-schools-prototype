@@ -17,7 +17,7 @@
     {% if session.consentWindow == ConsentWindow.Opening %}
       {{ session.formatted.consentWindow | nhsukMarkdown }}
     {% elif session.consentWindow != ConsentWindow.Open %}
-      {{ patientSession.status.consent.description | nhsukMarkdown }}
+      {{ patientSession.consentNotes | nhsukMarkdown }}
     {% endif %}
 
     {% if patientSession.patient.lastReminderDate %}

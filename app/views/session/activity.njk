@@ -117,7 +117,7 @@
             {% set ids = data.programme_ids or session.programme_ids %}
             {% for patientSession in patientSession.siblingPatientSessions %}
               {% if ids | includes(patientSession.programme_id) %}
-                <p>{{ patientSession.formatted.status.report | safe }}</p>
+                <p>{{ patientSession.formatted.report | safe }}</p>
               {% endif %}
             {% endfor %}
           {% endset %}
@@ -142,11 +142,11 @@
                 } if session.offersAlternativeVaccine and view == "register" or view == "record",
                 instruct: {
                   label: __("patientSession.instruct.label"),
-                  value: patientSession.formatted.status.instruct
+                  value: patientSession.formatted.instruct
                 } if patientSession.instruct and view != "instruct",
                 register: {
                   label: __("patientSession.register.label"),
-                  value: patientSession.formatted.status.register,
+                  value: patientSession.formatted.register,
                   href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.register != RegistrationOutcome.Pending
                 } if view == "register",
                 report: {

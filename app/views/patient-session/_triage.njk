@@ -13,7 +13,7 @@
   headingLevel: 4
 }) %}
   {# Description #}
-  {{ patientSession.status.screen.description | nhsukMarkdown }}
+  {{ patientSession.screenNotes | nhsukMarkdown }}
 
   {# Actions #}
   {{ appButtonGroup({

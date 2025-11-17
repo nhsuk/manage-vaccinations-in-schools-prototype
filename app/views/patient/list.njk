@@ -48,7 +48,7 @@
             {% set reportStatusHtml -%}
               {%- for patientSession in patient.patientSessions -%}
                 {%- if data.programme_ids | includes(patientSession.programme_id) -%}
-                  <p>{{ patientSession.formatted.status.report | safe }}</p>
+                  <p>{{ patientSession.formatted.report | safe }}</p>
                 {%- endif -%}
               {%- endfor %}
             {%- endset %}
