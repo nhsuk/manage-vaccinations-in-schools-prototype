@@ -431,9 +431,8 @@ export class PatientSession {
    * @returns {string} Explanatory notes
    */
   get consentNotes() {
-    const { patient, parentalRelationships, parentsRequestingFollowUp } = this
-    const relationships = filters.formatList(parentalRelationships)
-    const parentNames = filters.formatList(parentsRequestingFollowUp)
+    const relationships = filters.formatList(this.parentalRelationships)
+    const parentNames = filters.formatList(this.parentsRequestingFollowUp)
 
     switch (this.consent) {
       case ConsentOutcome.NoResponse:
@@ -442,10 +441,6 @@ export class PatientSession {
         return 'Consent response could not be delivered.'
       case ConsentOutcome.Inconsistent:
         return 'You can only vaccinate if all respondents give consent.'
-      case ConsentOutcome.Given:
-      case ConsentOutcome.GivenForAlternativeInjection:
-      case ConsentOutcome.GivenForIntranasal:
-        return `${patient.fullName} is ready for the vaccinator.`
       case ConsentOutcome.Declined:
         return `${parentNames} would like to speak to a member of the team about other options for their child’s vaccination.`
       case ConsentOutcome.Refused:
