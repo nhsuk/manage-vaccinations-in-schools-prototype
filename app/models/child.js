@@ -164,7 +164,9 @@ export class Child {
    * @returns {number|undefined} Year group, for example 8
    */
   get yearGroup() {
-    return getYearGroup(this.dob)
+    if (!this.post16) {
+      return getYearGroup(this.dob)
+    }
   }
 
   /**
