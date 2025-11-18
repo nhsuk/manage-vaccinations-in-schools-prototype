@@ -1062,6 +1062,9 @@ export const en = {
     information: {
       label: 'Notes'
     },
+    session: {
+      label: 'Session'
+    },
     yearGroup: {
       label: 'Year group'
     },
