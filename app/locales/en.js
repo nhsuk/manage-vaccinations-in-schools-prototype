@@ -1704,6 +1704,9 @@ export const en = {
       label: 'School URN',
       title: 'Select a school'
     },
+    yearGroups: {
+      label: 'Year groups'
+    },
     clinic: {
       label: 'Clinic',
       title: 'Where is this community clinic taking place?'

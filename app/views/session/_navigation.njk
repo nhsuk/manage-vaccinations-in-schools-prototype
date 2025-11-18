@@ -3,7 +3,8 @@
 
 {% macro sessionNavigation(params) %}
   {{ appHeading({
-    title: params.session.location.name
+    title: params.session.name,
+    summary: params.session.formatted.yearGroups
   }) }}
 
   {{ appSecondaryNavigation({
