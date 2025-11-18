@@ -403,13 +403,11 @@ export const sessionController = {
     response.locals.radioFilters = radioFilters[view]
 
     if (session.school) {
-      response.locals.yearGroupItems = session.school.yearGroups.map(
-        (yearGroup) => ({
-          text: formatYearGroup(yearGroup),
-          value: yearGroup,
-          checked: yearGroups?.includes(yearGroup)
-        })
-      )
+      response.locals.yearGroupItems = session.yearGroups.map((yearGroup) => ({
+        text: formatYearGroup(yearGroup),
+        value: yearGroup,
+        checked: yearGroups?.includes(yearGroup)
+      }))
     }
 
     // Clean up session data

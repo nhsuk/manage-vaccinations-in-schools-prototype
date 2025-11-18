@@ -33,6 +33,7 @@ import {
   formatList,
   formatTag,
   formatWithSecondaryText,
+  formatYearGroups,
   sentenceCaseProgrammeName,
   stringToBoolean
 } from '../utils/string.js'
@@ -179,9 +180,13 @@ export class Session {
    * @returns {Array<import('./consent.js').Consent>} Consent
    */
   get consents() {
-    return Consent.findAll(this.context).filter(
-      ({ session_id }) => session_id === this.id
-    )
+    if (this.context.replies) {
+      return Consent.findAll(this.context).filter(
+        ({ session_id }) => session_id === this.id
+      )
+    }
+
+    return []
   }
 
   /**
@@ -380,6 +385,25 @@ export class Session {
   }
 
   /**
+   * Get year groups in school session
+   *
+   * @returns {Array<number>|undefined} Year groups
+   * @todo Make this an option on the constructor
+   * @todo Select year groups when creating a new session
+   */
+  get yearGroups() {
+    if (this.school) {
+      const programmeYearGroups = this.programmes.flatMap(
+        (programme) => programme.yearGroups
+      )
+
+      return this.school.yearGroups.filter((num) =>
+        programmeYearGroups.includes(num)
+      )
+    }
+  }
+
+  /**
    * Get session vaccines
    *
    * @returns {Array<Vaccine>} Vaccines
@@ -530,7 +554,7 @@ export class Session {
    */
   get name() {
     if (this.location) {
-      return `${this.programmeNames.titleCase} session at ${this.location.name}`
+      return `${this.programmeNames.titleCase} session at ${this.location.name} on ${this.formatted.dateShort}`
     }
   }
 
@@ -690,7 +714,8 @@ export class Session {
       clinic: this.clinic && this.clinic.name,
       school: this.school && this.school.name,
       school_urn: this.school && this.school.formatted.urn,
-      status: formatTag(getSessionStatus(this.status))
+      status: formatTag(getSessionStatus(this.status)),
+      yearGroups: this.yearGroups && formatYearGroups(this.yearGroups)
     }
   }
 

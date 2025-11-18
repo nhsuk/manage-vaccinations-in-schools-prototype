@@ -409,6 +409,29 @@ export function formatYearGroup(yearGroup) {
 }
 
 /**
+ * Format year groups
+ *
+ * @param {Array<number>} yearGroups - Year groups
+ * @returns {string} Formatted year groups
+ */
+export function formatYearGroups(yearGroups) {
+  if (yearGroups.length === 1) {
+    return formatYearGroup(yearGroups[0])
+  }
+
+  const yearGroupStrings = yearGroups.map((yearGroup) => String(yearGroup))
+
+  if (yearGroupStrings[0] === '0') {
+    // Remove year 0
+    yearGroupStrings.shift()
+
+    return `Reception and years ${prototypeFilters.formatList(yearGroupStrings)}`
+  }
+
+  return `Years ${prototypeFilters.formatList(yearGroupStrings)}`
+}
+
+/**
  * Lower case first letter
  *
  * @param {string} string - String to change
