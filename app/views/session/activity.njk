@@ -102,7 +102,7 @@
                 instruct: {
                   label: __("patientSession.instruct.label"),
                   value: patientSession.formatted.instruct
-                } if patientSession.instruct and view != "instruct",
+                } if patientSession.instruct,
                 register: {
                   label: __("patientSession.register.label"),
                   value: patientSession.formatted.register,
