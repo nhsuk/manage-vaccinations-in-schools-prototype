@@ -1,8 +1,6 @@
-{% from "session/_navigation.njk" import sessionNavigation with context %}
+{% extends "_layouts/session.njk" %}
 
-{% extends "_layouts/default.njk" %}
-
-{% set title = session.location.name + " (" + session.academicYear + ")" %}
+{% set title = session.name %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -18,11 +16,6 @@
 
 {% block content %}
   {{ super() }}
-
-  {{ sessionNavigation({
-    session: session,
-    view: "show"
-  }) }}
 
   {% include "session/_session-programme-summary.njk" %}
 

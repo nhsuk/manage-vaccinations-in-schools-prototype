@@ -1,0 +1,56 @@
+{% extends "_layouts/default.njk" %}
+
+{% block main %}
+  <div class="app-session-banner">
+    <div class="nhsuk-width-container">
+      <div class="nhsuk-main-wrapper nhsuk-main-wrapper--s">
+        {{ notificationBanner(success) if success }}
+        {{ notificationBanner(message) if message }}
+
+        <h1 class="nhsuk-heading-l{% if session.yearGroups %} nhsuk-u-margin-bottom-2{% endif %}">
+          {{ session.name }}
+        </h1>
+        {% if session.yearGroups %}
+        <p class="nhsuk-caption-l nhsuk-u-margin-bottom-0">
+          {{ session.formatted.yearGroups }}
+        </p>
+        {% endif %}
+      </div>
+
+      {{ appSecondaryNavigation({
+        classes: "app-secondary-navigation--reverse nhsuk-u-margin-bottom-0",
+        items: [
+          {
+            text: __("session.show.label"),
+            href: session.uri,
+            current: not view
+          },
+          {
+            text: __("session.patients.label"),
+            href: session.uri + "/report",
+            current: view == "report"
+          },
+          {
+            text: __("session.instruct.label"),
+            href: session.uri + "/instruct",
+            current: view == "instruct"
+          } if session.psdProtocol,
+          {
+            text: __("session.record.label"),
+            href: session.uri + "/record",
+            current: view == "record"
+          }
+        ]
+      }) if not session.isUnplanned }}
+    </div>
+  </div>
+
+  <div class="nhsuk-width-container">
+    <main class="nhsuk-main-wrapper" id="maincontent" role="main">
+      <form method="post" novalidate data-validate>
+        {% block content %}
+        {% endblock %}
+      </form>
+    </main>
+  </div>
+{% endblock %}
