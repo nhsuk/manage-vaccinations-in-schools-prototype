@@ -27,11 +27,9 @@ import {
 } from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
 import { getConsentWindow, getSessionActivityCount } from '../utils/session.js'
-import { getSessionStatus } from '../utils/status.js'
 import {
   formatLink,
   formatList,
-  formatTag,
   formatWithSecondaryText,
   formatYearGroups,
   sentenceCaseProgrammeName,
@@ -713,7 +711,6 @@ export class Session {
       clinic: this.clinic && this.clinic.name,
       school: this.school && this.school.name,
       school_urn: this.school && this.school.formatted.urn,
-      status: formatTag(getSessionStatus(this.status)),
       yearGroups: this.yearGroups && formatYearGroups(this.yearGroups)
     }
   }
