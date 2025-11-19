@@ -3,8 +3,33 @@
 {% set title = __("download.new.label") %}
 {% block form %}
   {{ appHeading({
-    caption: programme.name,
     title: title
+  }) }}
+  {{ radios({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-8"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: "Academic year"
+      }
+    },
+    items: academicYearItems,
+    decorate: "download.year"
+  }) }}
+  {{ radios({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-8"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: "Programme"
+      }
+    },
+    items: programmeTypeItems,
+    decorate: "download.type"
   }) }}
   {{ dateInput({
     formGroup: {
