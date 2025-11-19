@@ -569,22 +569,13 @@ export const en = {
   download: {
     new: {
       label: 'Download vaccination report',
-      'check-answers': {
-        confirm: 'Download vaccination report',
-        title: 'Check and confirm',
-        summary: 'Requested download'
-      }
-    },
-    dates: {
-      title: 'Select a vaccination date range'
+      confirm: 'Download vaccination data'
     },
     startAt: {
-      label: 'From',
-      hint: 'For example, 27 10 2025'
+      label: 'Get vaccination data from',
     },
     endAt: {
-      label: 'Until',
-      hint: 'For example, 27 10 2025'
+      label: 'Get vaccination data until',
     },
     format: {
       title: 'Select file format',
