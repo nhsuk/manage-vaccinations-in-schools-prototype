@@ -1,34 +1,11 @@
 {% from "_macros/patient-search.njk" import appPatientSearch with context %}
-{% from "session/_navigation.njk" import sessionNavigation with context %}
 
-{% extends "_layouts/form.njk" %}
+{% extends "_layouts/session.njk" %}
 
-{% set gridColumns = "full" %}
-{% set hideConfirmButton = true %}
-{% set title = session.location.name + " – " + __("session." + view + ".title") %}
+{% set title = session.name + " – " + __("session." + view + ".title") %}
 
-{% block beforeContent %}
-  {{ breadcrumb({
-    items: [{
-      text: __("home.show.title"),
-      href: "/"
-    }, {
-      text: __("session.list.title"),
-      href: "/sessions"
-    }, {
-      text: session.location.name,
-      href: session.uri
-    }]
-  }) }}
-{% endblock %}
-
-{% block form %}
+{% block content %}
   {{ super() }}
-
-  {{ sessionNavigation({
-    session: session,
-    view: view
-  }) }}
 
   {% if (view == "record") and not session.isActive %}
     {{ appHeading({
