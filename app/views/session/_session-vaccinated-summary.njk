@@ -1,0 +1,38 @@
+{% call card({
+  heading:  __("session.tally.vaccinated.label"),
+  headingLevel: 3,
+  secondary: true
+}) %}
+  {% set rows = [] %}
+  {% for programme in session.programmes %}
+    {% set rows = rows.concat([{
+      key: {
+        text: __("session.tally.vaccinatedWithVaccineCriteria.label", {
+          programme: programme,
+          vaccineCriteria: programme.standardVaccine.criteria
+        })
+      },
+      value: {
+        text: session.tally(programme.id, PatientStatus.Vaccinated, programme.standardVaccine.criteria)
+      }
+    }]) %}
+    {% if programme.alternativeVaccine %}
+      {% set rows = rows.concat([{
+        key: {
+          text: __("session.tally.vaccinatedWithVaccineCriteria.label", {
+            programme: programme,
+            vaccineCriteria: programme.alternativeVaccine.criteria
+          })
+        },
+        value: {
+          text: session.tally(programme.id, PatientStatus.Vaccinated, programme.alternativeVaccine.criteria)
+        }
+      }]) %}
+    {% endif %}
+  {% endfor %}
+
+  {{ summaryList({
+    classes: "app-summary-list--full-width2",
+    rows: rows | removeLastSummaryBorder
+  }) }}
+{% endcall %}
