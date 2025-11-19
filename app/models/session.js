@@ -553,6 +553,10 @@ export class Session {
    * @returns {string|undefined} Name
    */
   get name() {
+    if (this.clinic) {
+      return `${this.programmeNames.titleCase} community clinic on ${this.formatted.dateShort}`
+    }
+
     if (this.location) {
       return `${this.programmeNames.titleCase} session at ${this.location.name} on ${this.formatted.dateShort}`
     }
