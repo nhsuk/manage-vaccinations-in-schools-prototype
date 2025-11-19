@@ -1456,6 +1456,11 @@ export const en = {
     },
     address: {
       label: 'Address'
+    },
+    patientsMissingNhsNumber: {
+      title: 'Missing NHS numbers',
+      count:
+        '{count, plural, =0 {No children} one {# child} other {# children}} have no NHS number'
     }
   },
   search: {
@@ -1583,9 +1588,6 @@ export const en = {
       description:
         'Review consent responses, triage health questions and record vaccinations'
     },
-    notices: {
-      label: 'Needs review'
-    },
     instructions: {
       label: 'Add new PSDs',
       title:
@@ -1632,13 +1634,9 @@ export const en = {
     },
     activity: {
       label: 'Action required',
-      addNhsNumber: {
-        label: 'No NHS number',
-        count:
-          '{count, plural, =0 {No children} one {# child} other {# children}} with no NHS number'
-      },
       matchResponses: {
         label: 'Unmatched consent',
+        title: 'Unmatched consent responses',
         count:
           '{count, plural, =0 {No unmatched responses} one {# unmatched response} other {# unmatched responses}}'
       },

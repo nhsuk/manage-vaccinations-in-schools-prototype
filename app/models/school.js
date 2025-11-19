@@ -56,6 +56,15 @@ export class School {
   }
 
   /**
+   * Get school pupils missing an NHS number
+   *
+   * @returns {Array<Patient>} Patient records
+   */
+  get patientsMissingNhsNumber() {
+    return this.patients.filter((patient) => patient.hasMissingNhsNumber)
+  }
+
+  /**
    * Get sessions run at this school
    *
    * @returns {Array<Session>} Sessions
