@@ -25,11 +25,6 @@
         current: params.view == "instruct"
       } if session.psdProtocol,
       {
-        text: __("session.register.label"),
-        href: params.session.uri + "/register",
-        current: params.view == "register"
-      } if params.session.registration,
-      {
         text: __("session.record.label"),
         href: params.session.uri + "/record",
         current: params.view == "record"

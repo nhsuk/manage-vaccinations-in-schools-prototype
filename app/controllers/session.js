@@ -44,7 +44,7 @@ export const sessionController = {
   show(request, response) {
     let { view } = request.params
 
-    if (['instruct', 'register', 'record', 'report'].includes(view)) {
+    if (['instruct', 'record', 'report'].includes(view)) {
       view = 'activity'
     } else if (!view) {
       view = 'show'
@@ -234,11 +234,14 @@ export const sessionController = {
   readPatientSessions(request, response, next) {
     const { account } = request.app.locals
     const { view } = request.params
-    const { option, q, instruct, programme_id, vaccineCriteria, yearGroup } =
+    const { option, q, programme_id, vaccineCriteria, yearGroup } =
       request.query
     const { data } = request.session
     const { session } = response.locals
 
+    const showRegistration = session.registration && session.isActive
+
+    response.locals.showRegistration = showRegistration
     response.locals.view = view
 
     let results = session.patientSessions
@@ -284,14 +287,7 @@ export const sessionController = {
       )
     }
 
-    // Filter by instruction outcome
-    if (instruct && instruct !== 'none') {
-      results = results.filter(
-        (patientSession) => patientSession.instruct === instruct
-      )
-    }
-
-    // Filter by instruct/register/programme status
+    // Filter by status
     const filters = {
       instruct: request.query.instruct || 'none',
       register: request.query.register || 'none',
@@ -302,20 +298,12 @@ export const sessionController = {
       patientVaccinated: request.query.patientVaccinated || 'none'
     }
 
-    // Filter by instruct/registration status
-    for (const activity of ['instruct', 'register']) {
-      if (view === activity && filters[view] !== 'none') {
+    for (const key of Object.keys(filters)) {
+      if (filters[key] !== 'none') {
         results = results.filter(
-          (patientSession) => patientSession[view] === filters[view]
+          (patientSession) => patientSession[key] === filters[key]
         )
       }
-    }
-
-    // Filter by programme status
-    if (filters.report !== 'none') {
-      results = results.filter(
-        (patientSession) => patientSession.report === filters.report
-      )
     }
 
     // Filter by sub-status(es)
@@ -387,13 +375,12 @@ export const sessionController = {
 
     // Radio filter options (select one)
     const radioFilters = {
+      report: {
+        register: showRegistration && RegistrationOutcome,
+        instruct: session.psdProtocol && InstructionOutcome
+      },
       instruct: {
         instruct: InstructionOutcome
-      },
-      register: {
-        register: RegistrationOutcome,
-        vaccineCriteria: session.offersAlternativeVaccine && VaccineCriteria,
-        instruct: session.psdProtocol && InstructionOutcome
       },
       record: {
         vaccineCriteria: session.offersAlternativeVaccine && VaccineCriteria

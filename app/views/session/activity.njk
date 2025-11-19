@@ -30,7 +30,7 @@
     view: view
   }) }}
 
-  {% if (view == "register" or view == "record") and not session.isActive %}
+  {% if (view == "record") and not session.isActive %}
     {{ appHeading({
       level: 2,
       size: "m",
@@ -127,7 +127,7 @@
             heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
             headingClasses: "nhsuk-heading-s",
             headingLevel: 4,
-            clickable: true if view != "register",
+            clickable: not showRegistration,
             href: patientSession.uri + "?activity=" + view
           }) %}
             {{ summaryList({
@@ -139,7 +139,7 @@
                 vaccineCriteria: {
                   label: __("patientSession.vaccineCriteria.label"),
                   value: patientSession.formatted.vaccineCriteria
-                } if session.offersAlternativeVaccine and view == "register" or view == "record",
+                } if session.offersAlternativeVaccine and view == "record",
                 instruct: {
                   label: __("patientSession.instruct.label"),
                   value: patientSession.formatted.instruct
@@ -148,7 +148,7 @@
                   label: __("patientSession.register.label"),
                   value: patientSession.formatted.register,
                   href: (patientSession.uri + "/edit/registration?referrer=" + session.uri + "/" + view) if view == "register" and patientSession.register != RegistrationOutcome.Pending
-                } if view == "register",
+                } if showRegistration,
                 report: {
                   label: __("patientSession.report.label"),
                   value: reportStatusHtml
@@ -187,7 +187,7 @@
                   formmethod: "post"
                 }
               }]
-            }) if view == "register" and patientSession.register == RegistrationOutcome.Pending }}
+            }) if showRegistration and patientSession.register == RegistrationOutcome.Pending }}
           {% endcall %}
         {% endfor %}
 
