@@ -1,15 +1,15 @@
 {% extends "_layouts/default.njk" %}
-
 {% set title = __("programme.list.title") %}
-
 {% block content %}
   {{ super() }}
-
   {{ appHeading({
     size: "xl",
     title: title
   }) }}
-
+  {{ actionLink({
+    text: __("download.new.label"),
+    href: "/reports/download/new"
+  }) }}
   {% for year, programmes in programmes | reverse | groupby("year") %}
     {% set programmeRows = [] %}
     {% for programme in programmes | reverse | sort(false, false, "name") %}
@@ -25,7 +25,6 @@
         }
       ]) %}
     {% endfor %}
-
     {{ table({
       id: "programmes",
       heading: AcademicYear[year],
