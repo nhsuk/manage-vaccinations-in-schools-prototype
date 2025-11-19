@@ -569,11 +569,6 @@ export class Session {
    */
   get activity() {
     return {
-      addNhsNumber: getSessionActivityCount(this, [
-        {
-          'patient.hasMissingNhsNumber': true
-        }
-      ]),
       getConsent: getSessionActivityCount(this, [
         {
           consent: ConsentOutcome.NoResponse

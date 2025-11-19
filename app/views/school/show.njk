@@ -43,6 +43,13 @@
     </app-auto-submit>
 
     <div class="app-grid-column-results">
+      {{ warningCallout({
+        heading: __("school.patientsMissingNhsNumber.title"),
+        html: link(school.uri + "?option=hasMissingNhsNumber", __mf("school.patientsMissingNhsNumber.count", {
+          count: school.patientsMissingNhsNumber.length
+        })) | nhsukMarkdown
+      }) if school.patientsMissingNhsNumber }}
+
       {{ appHeading({
         level: 2,
         size: "m",

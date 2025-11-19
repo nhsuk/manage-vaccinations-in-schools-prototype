@@ -26,22 +26,11 @@
       </app-auto-submit>
 
       <div class="app-grid-column-results">
-        {% set notices = [] %}
-        {% if session.activity.addNhsNumber %}
-          {% set notices = notices | push(link(session.uri + "/consent?options=hasMissingNhsNumber", __mf("session.activity.addNhsNumber.count", {
-            count: session.activity.addNhsNumber
-          }))) %}
-        {% endif %}
-
-        {% if session.consents.length %}
-          {% set notices = notices | push(link(session.uri + "/consents", __mf("session.activity.matchResponses.count", {
-            count: session.consents.length
-          }))) %}
-        {% endif %}
-
         {{ warningCallout({
-          heading: __("session.notices.label"),
-          html: notices | nhsukList
+          heading: __("session.activity.matchResponses.title"),
+          html: link(session.uri + "/consents", __mf("session.activity.matchResponses.count", {
+            count: session.consents.length
+          })) | nhsukMarkdown
         }) if session.consents.length }}
 
         {{ details({
