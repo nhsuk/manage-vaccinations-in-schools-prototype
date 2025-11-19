@@ -1429,8 +1429,8 @@ export const en = {
         'Browse schools and view their pupils and vaccination sessions'
     },
     show: {
-      label: 'Overview',
-      title: 'Overview'
+      label: 'Children',
+      title: 'Children'
     },
     patients: {
       label: 'Children',

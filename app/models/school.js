@@ -98,31 +98,6 @@ export class School {
   }
 
   /**
-   * Get programme tally
-   *
-   * @param {string} programme_id - Programme ID
-   * @param {object} filters - Filters
-   * @returns {number} Programme tally
-   */
-  tally(programme_id, filters) {
-    let patients = this.patients.filter(
-      (patient) => patient.programmes[programme_id].inviteToSession
-    )
-
-    if (filters) {
-      for (const [key, value] of Object.entries(filters)) {
-        if (value) {
-          patients = patients.filter(
-            (patient) => patient.programmes[programme_id][key] === value
-          )
-        }
-      }
-    }
-
-    return patients.length
-  }
-
-  /**
    * Get formatted values
    *
    * @returns {object} Formatted values

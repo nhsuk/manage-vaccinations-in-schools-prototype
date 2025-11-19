@@ -213,7 +213,7 @@ export const schoolController = {
       }
     }
 
-    response.redirect(`${school.uri}/patients?${params}`)
+    response.redirect(`${school.uri}?${params}`)
   },
 
   readSessions(request, response) {
