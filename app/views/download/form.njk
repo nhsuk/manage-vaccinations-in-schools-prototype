@@ -1,0 +1,61 @@
+{% extends "_layouts/form.njk" %}
+{% set confirmButtonText = __("download.new.confirm") %}
+{% set title = __("download.new.label") %}
+{% block form %}
+  {{ appHeading({
+    caption: programme.name,
+    title: title
+  }) }}
+  {{ dateInput({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-8"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("download.startAt.label") + " (optional)"
+      }
+    },
+    decorate: "download.startAt_"
+  }) }}
+  {{ dateInput({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-8"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("download.endAt.label") + " (optional)"
+      }
+    },
+    decorate: "download.endAt_"
+  }) }}
+  {% if account.role == UserRole.DataConsumer %}
+    {{ checkboxes({
+      formGroup: {
+        classes: "nhsuk-u-margin-bottom-8"
+      },
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--m",
+          text: __("download.organisations.title")
+        }
+      },
+      items: organisationItems,
+      decorate: "download.organisation_codes"
+    }) }}
+  {% endif %}
+  {{ radios({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-8"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--m",
+        text: __("download.format.title")
+      }
+    },
+    items: enumItems(DownloadFormat),
+    decorate: "download.format"
+  }) }}
+{% endblock %}
