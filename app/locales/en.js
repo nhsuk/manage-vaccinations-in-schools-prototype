@@ -1478,6 +1478,7 @@ export const en = {
       '{count, plural, =0 {No sessions matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> sessions}}',
     count:
       '{count, plural, =0 {No sessions} one {1 session} other {# sessions}}',
+    summary: 'Session details',
     search: {
       label: 'Find session'
     },
@@ -1488,14 +1489,12 @@ export const en = {
       label: 'Add a new session',
       'check-answers': {
         confirm: 'Add session',
-        title: 'Check and confirm',
-        summary: 'Session details'
+        title: 'Check and confirm'
       },
       success: '{{session.name}} created'
     },
     edit: {
       title: 'Edit session',
-      summary: 'Session details',
       success: '{{session.name}} updated'
     },
     isActive: {

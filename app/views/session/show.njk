@@ -26,22 +26,49 @@
 
   {% include "session/_session-programme-summary.njk" %}
 
-  {% include "session/_session-dates-summary.njk" %}
+  {% if session.isActive or session.isCompleted %}
+    {% include "session/_session-vaccinated-summary.njk" %}
+  {% endif %}
 
   {% if not session.isUnplanned %}
     {% include "session/_session-activity-summary.njk" %}
   {% endif %}
 
   {% call card({
-    heading: __("session.location.title"),
-    headingLevel: 3
+    heading: __("session.summary"),
+    headingLevel: 3,
+    secondary: true
   }) %}
     {{ summaryList({
       rows: summaryRows(session, {
-        location: {},
+        location: {} if session.type == SessionType.School,
         school_urn: {},
+        status: {},
+        patients: {},
+        programmes: {},
+        yearGroups: {},
+        consentWindow: {},
         consentForms: {}
       })
     }) }}
   {% endcall %}
+
+  {{ appButtonGroup({
+    buttons: [
+      {
+        classes: "nhsuk-button--secondary",
+        text: __("session.schedule.title") if session.isUnplanned else __("session.edit.title"),
+        href: session.uri + "/edit"
+      },
+      {
+        classes: "nhsuk-button--secondary",
+        text: __("session.close.title"),
+        href: session.uri + "/close"
+      } if session.isCompleted
+    ],
+    links: [{
+      text: __("session.offline.title"),
+      href: session.uri + "/offline"
+    }] if session.isPlanned or session.isActive
+  }) }}
 {% endblock %}
