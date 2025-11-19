@@ -54,7 +54,7 @@
 .app-secondary-navigation__current {
   align-items: center;
   display: flex;
-  gap: nhsuk-spacing(1);
+  gap: 6px;
 
   .nhsuk-icon {
     height: 1.5rem;
@@ -96,6 +96,16 @@
 
       @include nhsuk-media-query($from: tablet) {
         box-shadow: inset 0 ($nhsuk-border-width * -1) $nhsuk-reverse-text-colour;
+      }
+    }
+
+    &:link,
+    &:visited,
+    &:hover,
+    &:visited:hover,
+    &:active {
+      .nhsuk-icon--alert {
+        fill: nhsuk-colour("yellow");
       }
     }
   }

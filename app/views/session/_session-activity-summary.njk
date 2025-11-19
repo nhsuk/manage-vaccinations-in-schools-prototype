@@ -1,16 +1,5 @@
 {% set sessionActivityRows = [] %}
 
-{% if session.consents.length %}
-  {% set sessionActivityRows = sessionActivityRows | push({
-    key: {
-      text: __("session.activity.matchResponses.label")
-    },
-    value: {
-      html: link(session.uri + "/consents", __mf("consent.count", { count: session.consents.length }))
-    }
-  }) %}
-{% endif %}
-
 {% if sessionActivityRow("getConsent") %}
   {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("getConsent")) %}
 {% endif %}

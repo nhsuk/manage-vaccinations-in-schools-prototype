@@ -26,13 +26,6 @@
       </app-auto-submit>
 
       <div class="app-grid-column-results">
-        {{ warningCallout({
-          heading: __("session.activity.matchResponses.title"),
-          html: link(session.uri + "/consents", __mf("session.activity.matchResponses.count", {
-            count: session.consents.length
-          })) | nhsukMarkdown
-        }) if session.consents.length }}
-
         {{ details({
           classes: "nhsuk-expander app-expander--compact nhsuk-u-margin-top-3",
           summaryText: "Your vaccinations today",
