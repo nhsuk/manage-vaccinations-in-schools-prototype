@@ -17,6 +17,13 @@
 {% block content %}
   {{ super() }}
 
+  {{ warningCallout({
+    heading: __("session.consent.title"),
+    html: link(session.uri + "/consents", __mf("session.consent.count", {
+      count: session.consents.length
+    })) | nhsukMarkdown
+  }) if session.consents.length }}
+
   {% include "session/_session-programme-summary.njk" %}
 
   {% include "session/_session-dates-summary.njk" %}

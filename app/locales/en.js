@@ -1517,8 +1517,10 @@ export const en = {
       label: 'Academic year'
     },
     consent: {
-      label: 'Consent',
-      title: 'Review consent responses'
+      label: 'Unmatched consent',
+      title: 'Unmatched consent responses',
+      count:
+        '{count, plural, =0 {No unmatched consent responses} one {1 unmatched consent response} other {# unmatched consent responses}}'
     },
     screen: {
       label: 'Triage',
@@ -1634,12 +1636,6 @@ export const en = {
     },
     activity: {
       label: 'Action required',
-      matchResponses: {
-        label: 'Unmatched consent',
-        title: 'Unmatched consent responses',
-        count:
-          '{count, plural, =0 {No unmatched responses} one {# unmatched response} other {# unmatched responses}}'
-      },
       getConsent: {
         label: 'No consent response',
         count:

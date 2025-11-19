@@ -23,6 +23,7 @@
           {
             text: __("session.show.label"),
             href: session.uri,
+            icon: "alert" if session.consents.length,
             current: not view
           },
           {
