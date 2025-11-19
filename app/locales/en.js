@@ -1621,7 +1621,7 @@ export const en = {
       description: 'Add dates for this school.'
     },
     patients: {
-      label: 'Children',
+      label: 'Invited to session',
       count:
         '{count, plural, =0 {No children} one {# child} other {# children}}'
     },
@@ -1716,7 +1716,7 @@ export const en = {
     },
     location: {
       label: 'Location',
-      title: 'About this %s'
+      title: 'About this location'
     },
     programmes: {
       label: 'Programmes',
