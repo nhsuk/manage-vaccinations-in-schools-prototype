@@ -48,11 +48,6 @@
     </div>
   </div>
 
-  {{ actionLink({
-    text: __("download.new.label"),
-    href: "/reports/download/new"
-  }) if programme.vaccinations.length }}
-
 {% if programme.sessions.length %}
   {{ appHeading({
     level: 3,
