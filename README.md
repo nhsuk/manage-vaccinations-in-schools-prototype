@@ -8,7 +8,7 @@ Point of Care Systems record data when someone is vaccinated, including product 
 
 ## Requirements
 
-Node.js v22
+Node.js v22.21
 
 ## Installation
 
