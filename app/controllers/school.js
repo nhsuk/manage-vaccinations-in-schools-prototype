@@ -29,7 +29,50 @@ export const schoolController = {
   },
 
   list(request, response) {
+    const { phase, q } = request.query
+    const { data } = request.session
+    const { schools } = response.locals
+
+    let results = schools
+
+    // Query
+    if (q) {
+      results = results.filter((school) =>
+        school.tokenized.includes(String(q).toLowerCase())
+      )
+    }
+
+    // Filter by phase
+    if (phase) {
+      results = results.filter((school) => school.phase === phase)
+    }
+
+    // Sort
+    results = results.sort((a, b) => a.name.localeCompare(b.name))
+
+    // Results
+    response.locals.results = getResults(results, request.query, 40)
+    response.locals.pages = getPagination(results, request.query, 40)
+
+    // Clean up session data
+    delete data.q
+    delete data.phase
+
     response.render('school/list')
+  },
+
+  filterList(request, response) {
+    const params = new URLSearchParams()
+
+    // Radios and text inputs
+    for (const key of ['phase', 'q']) {
+      const value = request.body[key]
+      if (value) {
+        params.append(key, String(value))
+      }
+    }
+
+    response.redirect(`/schools?${params}`)
   },
 
   readPatients(request, response, next) {

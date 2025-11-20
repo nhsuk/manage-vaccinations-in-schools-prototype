@@ -1443,8 +1443,13 @@ export const en = {
       isPlanned: 'Scheduled sessions',
       isCompleted: 'Completed sessions'
     },
+    results:
+      '{count, plural, =0 {No schools matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> schools}}',
     count:
       '{count, plural, =0 {no {phase} school} one {# no {phase} schools} other{# {phase} schools}}',
+    search: {
+      label: 'Find school'
+    },
     name: {
       label: 'Name'
     },

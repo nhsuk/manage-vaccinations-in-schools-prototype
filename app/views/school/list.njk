@@ -1,8 +1,10 @@
-{% extends "_layouts/default.njk" %}
+{% extends "_layouts/form.njk" %}
 
+{% set gridColumns = "full" %}
+{% set hideConfirmButton = true %}
 {% set title = __("school.list.title") %}
 
-{% block content %}
+{% block form %}
   {{ super() }}
 
   {{ appHeading({
@@ -10,43 +12,106 @@
     title: title
   }) }}
 
-  {% set schoolRows = [] %}
-  {% for school in schools | sort(false, false, "name") %}
-    {% set schoolRows = schoolRows | push([
-      {
-        header: __("school.name.label"),
-        html: school.link.name or "Not provided"
-      },
-      {
-        header: __("school.urn.label"),
-        html: school.formatted.urn or "Not provided"
-      },
-      {
-        header: __("school.address.label"),
-        html: school.address.formatted.singleline or "Not provided"
-      }
-    ]) %}
-  {% endfor %}
+  <div class="nhsuk-grid-row">
+    <app-auto-submit class="app-grid-column-filters">
+      {% set filterButtonGroup %}
+        {{ appButtonGroup({
+          buttons: [{
+            classes: "nhsuk-button--secondary app-button--small",
+            text: __("search.confirm"),
+            attributes: {
+              formaction: params.formaction,
+              formmethod: "post",
+              role: "search"
+            }
+          }, {
+            classes: "nhsuk-button--secondary app-button--small",
+            text: __("search.clear"),
+            href: "/schools"
+          } if data.q or data.phase]
+        }) }}
+      {% endset %}
 
-  {{ table({
-    classes: "nhsuk-u-margin-bottom-6",
-    id: "schools",
-    heading: __mf("school.count", {
-      count: schools.length,
-      phase: phase | lower
-    }),
-    responsive: true,
-    panel: true,
-    head: [
-      {
-        text: __("school.name.label"),
-        attributes: {
-          style: "width: 40%"
-        }
-      },
-      { text: __("school.urn.label") },
-      { text: __("school.address.label") }
-    ],
-    rows: schoolRows
-  }) }}
+      {% call card({
+        classes: "app-filters",
+        feature: true,
+        heading: __("school.search.label") ,
+        headingLevel: 3
+      }) %}
+        {{ appSearchInput({
+          label: { text: __("search.label") },
+          attributes: {
+            formaction: params.formaction,
+            formmethod: "post"
+          },
+          decorate: "q"
+        }) }}
+
+        {{ radios({
+          classes: "nhsuk-radios--small",
+          fieldset: {
+            legend: {
+              classes: "nhsuk-fieldset__legend--s",
+              text: __("school.phase.label")
+            }
+          },
+          items: enumItems(SchoolPhase),
+          decorate: "phase"
+        }) }}
+
+        {{ checkboxes({
+          classes: "nhsuk-checkboxes--small",
+          fieldset: {
+            legend: {
+              classes: "nhsuk-fieldset__legend--s",
+              text: __("programme.label")
+            }
+          },
+          items: programmeItems,
+          decorate: "programme_id"
+        }) if programmeItems }}
+
+        {{ filterButtonGroup | safe }}
+      {% endcall %}
+    </app-auto-submit>
+
+    <div class="app-grid-column-results">
+      {% if data.type and data.type != "none" %}
+        {% set title = data.type + "s" %}
+      {% else %}
+        {% set title = "All schools" %}
+      {% endif %}
+
+      {{ appHeading({
+        level: 3,
+        size: "m",
+        title: title,
+        summary: __mf("school.results", {
+          from: results.from,
+          to: results.to,
+          count: results.count
+        }) | safe
+      }) }}
+
+      {% for school in results.page %}
+        {{ card({
+          classes: "app-card--compact",
+          heading: school.name | highlightQuery(data.q),
+          headingClasses: "nhsuk-heading-s",
+          headingLevel: 4,
+          href: school.uri,
+          clickable: true,
+          descriptionHtml: summaryList({
+            rows: summaryRows(school, {
+              urn: {},
+              phase: {},
+              address: {}
+            })
+          })
+        }) }}
+      {% endfor %}
+
+      {{ pagination(pages) }}
+    </div>
+  </div>
 {% endblock %}

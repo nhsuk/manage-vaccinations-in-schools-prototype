@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { SchoolPhase, SessionType } from '../enums.js'
 import { range } from '../utils/number.js'
+import { tokenize } from '../utils/object.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
 import { Address } from './address.js'
@@ -104,6 +105,17 @@ export class School {
         this.yearGroups.includes(yearGroup)
       )
     )
+  }
+
+  /**
+   * Get tokenised values (to use in search queries)
+   *
+   * @returns {string} Tokens
+   */
+  get tokenized() {
+    const tokens = tokenize(this, ['location.postalCode', 'location.name'])
+
+    return [tokens].join(' ')
   }
 
   /**

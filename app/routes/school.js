@@ -5,6 +5,7 @@ import { schoolController as school } from '../controllers/school.js'
 const router = express.Router({ strict: true })
 
 router.get('/', school.readAll, school.list)
+router.post('/', school.filterList)
 
 router.param('school_urn', school.read)
 
