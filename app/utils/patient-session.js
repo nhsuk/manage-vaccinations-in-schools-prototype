@@ -145,8 +145,9 @@ export const getReportOutcome = (patientSession) => {
     } else if (
       [
         ScreenOutcome.Vaccinate,
-        ScreenOutcome.VaccinateAlternativeInjection,
-        ScreenOutcome.VaccinateIntranasal
+        ScreenOutcome.VaccinateAlternativeFluInjectionOnly,
+        ScreenOutcome.VaccinateAlternativeMMRInjectionOnly,
+        ScreenOutcome.VaccinateIntranasalOnly
       ].includes(String(patientSession.screen))
     ) {
       return PatientStatus.Due

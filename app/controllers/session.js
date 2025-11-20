@@ -234,8 +234,7 @@ export const sessionController = {
   readPatientSessions(request, response, next) {
     const { account } = request.app.locals
     const { view } = request.params
-    const { option, q, programme_id, vaccineCriteria, yearGroup } =
-      request.query
+    const { option, q, programme_id, yearGroup } = request.query
     const { data } = request.session
     const { session } = response.locals
 
@@ -280,13 +279,6 @@ export const sessionController = {
       )
     }
 
-    // Filter by vaccine criteria
-    if (vaccineCriteria && vaccineCriteria !== 'none') {
-      results = results.filter(
-        (patientSession) => patientSession.vaccine?.criteria === vaccineCriteria
-      )
-    }
-
     // Filter by status
     const filters = {
       instruct: request.query.instruct || 'none',
@@ -295,7 +287,8 @@ export const sessionController = {
       patientConsent: request.query.patientConsent || 'none',
       patientDeferred: request.query.patientDeferred || 'none',
       patientRefused: request.query.patientRefused || 'none',
-      patientVaccinated: request.query.patientVaccinated || 'none'
+      patientVaccinated: request.query.patientVaccinated || 'none',
+      vaccineCriteria: request.query.vaccineCriteria || 'none'
     }
 
     for (const key of Object.keys(filters)) {
@@ -405,10 +398,10 @@ export const sessionController = {
     delete data.patientVaccinated
     delete data.programme_id
     delete data.q
-    delete data.vaccineCriteria
     delete data.instruct
     delete data.register
     delete data.report
+    delete data.vaccineCriteria
     delete data.yearGroup
 
     next()

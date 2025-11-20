@@ -52,9 +52,10 @@ export const ConsentOutcome = {
  * @enum {string}
  */
 export const ConsentVaccineCriteria = {
-  AlternativeInjectionOnly: 'Gelatine-free injected vaccine only',
-  Either: 'No preference',
-  IntranasalOnly: 'Nasal spray only'
+  AlternativeFluInjectionOnly: 'Injection only',
+  AlternativeMMRInjectionOnly: 'Gelatine-free injection only',
+  IntranasalOnly: 'Nasal spray only',
+  IntranasalPreferred: 'Nasal spray preferred'
 }
 
 /**
@@ -377,9 +378,10 @@ export const ProgrammePreset = {
  * @enum {string}
  */
 export const RecordVaccineCriteria = {
-  Any: 'Either',
-  AlternativeInjectionOnly: 'Alternative injection',
-  IntranasalOnly: 'Nasal spray'
+  AlternativeFluInjectionOnly: 'Injected vaccine only',
+  AlternativeMMRInjectionOnly: 'Gelatine-free injection only',
+  IntranasalOnly: 'Nasal spray only',
+  IntranasalPreferred: 'Nasal spray preferred'
 }
 
 /**
@@ -446,10 +448,13 @@ export const SchoolPhase = {
  * @enum {string}
  */
 export const ScreenVaccineCriteria = {
-  AlternativeInjection: 'The parent has consented to the injected vaccine only',
-  Either:
-    'The parent has consented to the injected vaccine being offered if the nasal spray is not suitable',
-  Intranasal: 'The parent has consented to the nasal spray only'
+  AlternativeFluInjectionOnly:
+    'The parent has consented to the injected vaccine only',
+  AlternativeMMRInjectionOnly:
+    'The parent has consented to the injected vaccine only',
+  IntranasalOnly: 'The parent has consented to the nasal spray only',
+  IntranasalPreferred:
+    'The parent has consented to the injected vaccine being offered if the nasal spray is not suitable'
 }
 
 /**
@@ -458,9 +463,10 @@ export const ScreenVaccineCriteria = {
  */
 export const ScreenOutcome = {
   Vaccinate: 'Safe to vaccinate',
-  VaccinateAlternativeInjection:
+  VaccinateAlternativeFluInjectionOnly: 'Safe to vaccinate with injection',
+  VaccinateAlternativeMMRInjectionOnly:
     'Safe to vaccinate with gelatine-free injection',
-  VaccinateIntranasal: 'Safe to vaccinate with nasal spray',
+  VaccinateIntranasalOnly: 'Safe to vaccinate with nasal spray',
   NeedsTriage: 'Needs triage',
   DelayVaccination: 'Delay vaccination',
   DoNotVaccinate: 'Do not vaccinate'

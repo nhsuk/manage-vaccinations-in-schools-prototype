@@ -185,16 +185,20 @@ export class Reply {
    * @returns {ConsentVaccineCriteria|undefined} Chosen vaccination method
    */
   get vaccineCriteria() {
-    if (this.given) {
+    if (this.given && this.programme.type === ProgrammeType.Flu) {
       switch (true) {
-        case this.programme.type === ProgrammeType.Flu &&
-          this.decision === ReplyDecision.Given &&
-          !this.alternative:
+        case this.decision === ReplyDecision.Given && !this.alternative:
           return ConsentVaccineCriteria.IntranasalOnly
         case this.decision === ReplyDecision.OnlyAlternativeInjection:
-          return ConsentVaccineCriteria.AlternativeInjectionOnly
+          return ConsentVaccineCriteria.AlternativeFluInjectionOnly
         default:
-          return ConsentVaccineCriteria.Either
+          return ConsentVaccineCriteria.IntranasalPreferred
+      }
+    }
+
+    if (this.given && this.programme.type === ProgrammeType.MMR) {
+      if (this.decision === ReplyDecision.OnlyAlternativeInjection) {
+        return ConsentVaccineCriteria.AlternativeMMRInjectionOnly
       }
     }
   }

@@ -6,21 +6,25 @@
   column-gap: nhsuk-spacing(2);
   display: inline-flex;
 
-  &[data-value="Gelatine-free injection"]::before,
-  &[data-value="Nasal spray"]::before {
+  &[data-value="Gelatine-free injection only"]::before,
+  &[data-value="Injected vaccine only"]::before,
+  &[data-value="Nasal spray only"]::before,
+  &[data-value="Nasal spray preferred"]::before {
     content: "";
     height: 1em;
     width: 1em;
   }
 
-  &[data-value="Gelatine-free injection"]::before {
+  &[data-value="Gelatine-free injection only"]::before,
+  &[data-value="Injected vaccine only"]::before {
     background-color: currentcolor;
     rotate: 45deg;
     scale: 0.75;
     transform-origin: center;
   }
 
-  &[data-value="Nasal spray"]::before {
+  &[data-value="Nasal spray only"]::before,
+  &[data-value="Nasal spray preferred"]::before {
     border: 0.25em solid currentcolor;
     border-radius: 100%;
     height: 1em;

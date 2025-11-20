@@ -122,7 +122,7 @@
           html: checkboxes({
             classes: "nhsuk-checkboxes--small",
             items: enumItems(session.vaccineCriteria),
-            decorate: "patientDue"
+            decorate: "vaccineCriteria"
           }) if session.vaccineCriteria
         } if data.report == PatientStatus.Due
       }, {

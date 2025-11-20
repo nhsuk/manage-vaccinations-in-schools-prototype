@@ -12,6 +12,7 @@ import {
   PatientStatus,
   ProgrammePreset,
   ProgrammeType,
+  RecordVaccineCriteria,
   SessionStatus,
   SessionType,
   VaccineCriteria
@@ -427,17 +428,26 @@ export class Session {
   /**
    * Get all vaccine criteria used in session (if more than one)
    *
-   * @returns {Array<VaccineCriteria>} Vaccine criteria
+   * @returns {Array<RecordVaccineCriteria>} Vaccine criteria
    */
   get vaccineCriteria() {
-    const vaccineCriteria = new Set()
+    const programmeTypes = this.programmes.map((programme) => programme.type)
+    const vaccineCriteria = []
 
-    for (const vaccine of this.vaccines) {
-      vaccineCriteria.add(vaccine.criteria)
+    if (programmeTypes.includes(ProgrammeType.Flu)) {
+      return [
+        ...vaccineCriteria,
+        RecordVaccineCriteria.AlternativeFluInjectionOnly,
+        RecordVaccineCriteria.IntranasalOnly,
+        RecordVaccineCriteria.IntranasalPreferred
+      ]
     }
 
-    if (vaccineCriteria.size > 1) {
-      return [...vaccineCriteria]
+    if (programmeTypes.includes(ProgrammeType.MMR)) {
+      return [
+        ...vaccineCriteria,
+        RecordVaccineCriteria.AlternativeMMRInjectionOnly
+      ]
     }
   }
 

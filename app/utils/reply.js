@@ -145,7 +145,8 @@ export const getConfirmedConsentOutcome = (reply, session) => {
 
     if (
       session.offersIntranasalVaccine &&
-      reply.decision !== ReplyDecision.OnlyAlternativeInjection
+      reply.decision !== ReplyDecision.OnlyAlternativeInjection &&
+      !reply.alternative
     ) {
       return ConsentOutcome.GivenForIntranasal
     }

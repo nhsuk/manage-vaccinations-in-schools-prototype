@@ -1,4 +1,5 @@
 import {
+  ProgrammeType,
   ReplyDecision,
   ScreenOutcome,
   ScreenVaccineCriteria
@@ -24,11 +25,18 @@ export const getScreenOutcomesForConsentMethod = (programme, replies) => {
 
   return [
     ...(!programme?.alternativeVaccine ? [ScreenOutcome.Vaccinate] : []),
-    ...(programme?.alternativeVaccine && !hasConsentForAlternativeInjectionOnly
-      ? [ScreenOutcome.VaccinateIntranasal]
+    ...(programme?.alternativeVaccine &&
+    programme.type === ProgrammeType.Flu &&
+    !hasConsentForAlternativeInjectionOnly
+      ? [ScreenOutcome.VaccinateIntranasalOnly]
       : []),
-    ...(programme?.alternativeVaccine && hasConsentForInjection
-      ? [ScreenOutcome.VaccinateAlternativeInjection]
+    ...(programme?.alternativeVaccine &&
+    programme.type === ProgrammeType.Flu &&
+    hasConsentForInjection
+      ? [ScreenOutcome.VaccinateAlternativeFluInjectionOnly]
+      : []),
+    ...(programme?.alternativeVaccine && programme.type === ProgrammeType.MMR
+      ? [ScreenOutcome.VaccinateAlternativeFluInjectionOnly]
       : []),
     'or',
     ScreenOutcome.NeedsTriage,
@@ -54,13 +62,18 @@ export const getScreenVaccineCriteria = (programme, replies) => {
   )
 
   if (programme?.alternativeVaccine) {
-    if (hasConsentForAlternativeInjectionOnly) {
-      return ScreenVaccineCriteria.AlternativeInjection
-    } else if (!hasConsentForInjection) {
-      return ScreenVaccineCriteria.Intranasal
+    switch (true) {
+      case hasConsentForAlternativeInjectionOnly &&
+        programme.type === ProgrammeType.Flu:
+        return ScreenVaccineCriteria.AlternativeFluInjectionOnly
+      case hasConsentForAlternativeInjectionOnly &&
+        programme.type === ProgrammeType.MMR:
+        return ScreenVaccineCriteria.AlternativeMMRInjectionOnly
+      case !hasConsentForInjection:
+        return ScreenVaccineCriteria.IntranasalOnly
+      default:
+        return false
     }
-
-    return ScreenVaccineCriteria.Either
   }
 
   return false

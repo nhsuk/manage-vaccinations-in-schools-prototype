@@ -15,7 +15,8 @@ import {
   ReplyDecision,
   RegistrationOutcome,
   ScreenOutcome,
-  VaccinationOutcome
+  VaccinationOutcome,
+  ProgrammeType
 } from '../enums.js'
 import { getDateValueDifference, getYearGroup, today } from '../utils/date.js'
 import {
@@ -332,7 +333,11 @@ export class PatientSession {
 
     // Return vaccine based on consent (and triage) outcomes
     const hasScreenedForInjection =
-      this.screen === ScreenOutcome.VaccinateAlternativeInjection
+      this.screen &&
+      [
+        ScreenOutcome.VaccinateAlternativeFluInjectionOnly,
+        ScreenOutcome.VaccinateAlternativeMMRInjectionOnly
+      ].includes(String(this.screen))
 
     return this.hasConsentForAlternativeInjectionOnly || hasScreenedForInjection
       ? alternativeVaccine // Injection
@@ -358,18 +363,32 @@ export class PatientSession {
       return
     }
 
-    if (this.screen === ScreenOutcome.VaccinateIntranasal) {
-      return RecordVaccineCriteria.IntranasalOnly
+    if (this.programme.type === ProgrammeType.Flu) {
+      if (
+        this.consent === ConsentOutcome.GivenForIntranasal ||
+        this.screen === ScreenOutcome.VaccinateIntranasalOnly
+      ) {
+        return RecordVaccineCriteria.IntranasalOnly
+      }
+
+      if (
+        this.consent === ConsentOutcome.GivenForAlternativeInjection ||
+        this.screen === ScreenOutcome.VaccinateAlternativeFluInjectionOnly
+      ) {
+        return RecordVaccineCriteria.AlternativeFluInjectionOnly
+      }
+
+      return RecordVaccineCriteria.IntranasalPreferred
     }
 
-    if (
-      this.consent === ConsentOutcome.GivenForAlternativeInjection ||
-      this.screen === ScreenOutcome.VaccinateAlternativeInjection
-    ) {
-      return RecordVaccineCriteria.AlternativeInjectionOnly
+    if (this.programme.type === ProgrammeType.MMR) {
+      if (
+        this.consent === ConsentOutcome.GivenForAlternativeInjection ||
+        this.screen === ScreenOutcome.VaccinateAlternativeMMRInjectionOnly
+      ) {
+        return RecordVaccineCriteria.AlternativeMMRInjectionOnly
+      }
     }
-
-    return RecordVaccineCriteria.Any
   }
 
   /**
@@ -379,7 +398,7 @@ export class PatientSession {
    */
   get canRecordAlternativeVaccine() {
     const hasScreenedForNasal =
-      this.screen === ScreenOutcome.VaccinateIntranasal
+      this.screen === ScreenOutcome.VaccinateIntranasalOnly
 
     return (
       this.hasConsentForInjection &&
@@ -596,9 +615,11 @@ export class PatientSession {
         return `${user.fullName} decided that ${patient.fullName} should not be vaccinated.`
       case ScreenOutcome.Vaccinate:
         return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate.`
-      case ScreenOutcome.VaccinateAlternativeInjection:
+      case ScreenOutcome.VaccinateAlternativeFluInjectionOnly:
         return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the injected vaccine only.`
-      case ScreenOutcome.VaccinateIntranasal:
+      case ScreenOutcome.VaccinateAlternativeMMRInjectionOnly:
+        return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the gelatine-free injection only.`
+      case ScreenOutcome.VaccinateIntranasalOnly:
         return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the nasal spray only.`
       default:
         return `No triage is needed for ${patient.fullName}.`

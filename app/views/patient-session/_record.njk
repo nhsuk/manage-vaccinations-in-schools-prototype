@@ -4,7 +4,7 @@
   size: "m",
   title: __("patientSession.record.titleWithMethod", {
     session: session,
-    method: patientSession.vaccineCriteria | lower
+    method: patientSession.vaccineCriteria | lower | replace("only", "") | replace("preferred", "")
   }),
   attributes: {
     "data-value": patientSession.vaccineCriteria
