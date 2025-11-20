@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { SchoolPhase, SessionType } from '../enums.js'
+import { formatDate, getDateValueDifference } from '../utils/date.js'
 import { range } from '../utils/number.js'
 import { tokenize } from '../utils/object.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
@@ -72,14 +73,25 @@ export class School {
    */
   get sessions() {
     if (['888888', '999999'].includes(this.urn)) {
-      return Session.findAll(this.context).filter(
-        (session) => session.type === SessionType.Clinic
-      )
+      return Session.findAll(this.context)
+        .filter((session) => session.type === SessionType.Clinic)
+        .sort((a, b) => getDateValueDifference(a.date, b.date))
     }
 
-    return Session.findAll(this.context).filter(
-      (session) => session.school_urn === this.urn
-    )
+    return Session.findAll(this.context)
+      .filter((session) => session.school_urn === this.urn)
+      .sort((a, b) => getDateValueDifference(a.date, b.date))
+  }
+
+  /**
+   * Get next session at this school
+   *
+   * @returns {Date|undefined} Next session
+   */
+  get nextSessionDate() {
+    if (this.sessions.length > 0) {
+      return this.sessions.at(-1).date
+    }
   }
 
   /** Get year groups
@@ -134,6 +146,9 @@ export class School {
             this.address.formatted.singleline
           }</span></span>`
         : this.name,
+      nextSessionDate: formatDate(this.nextSessionDate, {
+        dateStyle: 'full'
+      }),
       urn: formatMonospace(this.urn)
     }
   }

@@ -1462,6 +1462,9 @@ export const en = {
     address: {
       label: 'Address'
     },
+    nextSessionDate: {
+      label: 'Next session'
+    },
     patientsMissingNhsNumber: {
       title: 'Missing NHS numbers',
       count:
