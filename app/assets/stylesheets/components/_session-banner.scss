@@ -1,9 +1,9 @@
 @use "../vendor/nhsuk-frontend" as *;
 
 .app-session-banner {
+  background-color: nhsuk-shade($nhsuk-brand-colour, 20%);
   box-sizing: border-box;
   color: $nhsuk-reverse-text-colour;
-  background-color: nhsuk-shade($nhsuk-brand-colour, 20%);
 
   @include nhsuk-print-colour;
 
