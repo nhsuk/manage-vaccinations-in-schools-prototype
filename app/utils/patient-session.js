@@ -101,8 +101,12 @@ export const getSessionOutcome = (patientSession) => {
     )
   ) {
     return VaccinationOutcome.Refused
+  } else if (patientSession.screen === ScreenOutcome.InviteToClinic) {
+    return VaccinationOutcome.InviteToClinic
+  } else if (patientSession.screen === ScreenOutcome.DelayVaccination) {
+    return VaccinationOutcome.DelayVaccination
   } else if (patientSession.screen === ScreenOutcome.DoNotVaccinate) {
-    return VaccinationOutcome.Contraindications
+    return VaccinationOutcome.DoNotVaccinate
   }
 }
 
@@ -126,7 +130,6 @@ export const getReportOutcome = (patientSession) => {
       [
         VaccinationOutcome.Absent,
         VaccinationOutcome.Refused,
-        VaccinationOutcome.Contraindications,
         VaccinationOutcome.Unwell
       ].includes(patientSession.outcome)
     ) {

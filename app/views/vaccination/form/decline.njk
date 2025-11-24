@@ -13,7 +13,49 @@
         })
       }
     },
-    items: declineItems,
+    items: [
+      {
+        text: __("vaccination.outcome.absent"),
+        value: VaccinationOutcome.Absent
+      },
+      {
+        text: __("vaccination.outcome.refused"),
+        value: VaccinationOutcome.Refused
+      },
+      {
+        text: __("vaccination.outcome.unwell"),
+        value: VaccinationOutcome.Unwell
+      },
+      {
+        divider: "or"
+      },
+      {
+        text: __("vaccination.outcome.inviteToClinic"),
+        value: VaccinationOutcome.InviteToClinic
+      },
+      {
+        text: __("vaccination.outcome.delayVaccination"),
+        value: VaccinationOutcome.DelayVaccination,
+        conditional: {
+          html: dateInput({
+            fieldset: {
+              legend: {
+                classes: "nhsuk-fieldset__legend--s",
+                text: __("triage.outcomeAt.title", {
+                  patient: vaccination.patient
+                })
+              }
+            },
+            hint: { text: __("triage.outcomeAt.hint", { date: DelayDate }) },
+            decorate: "triage.outcomeAt_"
+          })
+        }
+      },
+      {
+        text: __("vaccination.outcome.doNotVaccinate"),
+        value: VaccinationOutcome.DoNotVaccinate
+      }
+    ],
     decorate: "vaccination.outcome"
   }) }}
 {% endblock %}

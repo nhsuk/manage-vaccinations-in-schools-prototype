@@ -2239,13 +2239,12 @@ export const en = {
     outcome: {
       label: 'Outcome',
       title: 'Vaccination outcome',
-      Vaccinated: 'Vaccinated',
-      PartVaccinated: 'Partially vaccinated',
-      Absent: 'They were absent from the session',
-      AlreadyVaccinated: 'They have already had the vaccine',
-      Contraindications: 'They had contraindications',
-      Refused: 'They refused it',
-      Unwell: 'They were not well enough'
+      absent: 'They were absent from the session',
+      delayVaccination: 'They had contraindications, delay vaccination',
+      doNotVaccinate: 'They had contraindications, do not vaccinate',
+      inviteToClinic: 'They had contraindications, invite to clinic',
+      refused: 'They refused it',
+      unwell: 'They were not well enough'
     },
     selfId: {
       true: 'The child',

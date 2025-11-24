@@ -232,7 +232,7 @@ export const vaccinationController = {
     return (request, response, next) => {
       const { vaccination_uuid } = request.params
       const { data, referrer } = request.session
-      const { __, programme } = response.locals
+      const { programme } = response.locals
 
       let vaccination
       if (type === 'edit') {
@@ -332,19 +332,6 @@ export const vaccinationController = {
         .map((vaccine) => ({
           text: vaccine.brandWithType,
           value: vaccine.snomed
-        }))
-
-      response.locals.declineItems = Object.entries(VaccinationOutcome)
-        .filter(
-          ([, value]) =>
-            value === VaccinationOutcome.AlreadyVaccinated ||
-            value === VaccinationOutcome.Contraindications ||
-            value === VaccinationOutcome.Refused ||
-            value === VaccinationOutcome.Unwell
-        )
-        .map(([key, value]) => ({
-          text: __(`vaccination.outcome.${key}`),
-          value
         }))
 
       next()
