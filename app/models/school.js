@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import { default as filters } from '@x-govuk/govuk-prototype-filters'
 
-import { SchoolPhase, SessionType } from '../enums.js'
+import { SchoolPhase } from '../enums.js'
 import { formatDate, getDateValueDifference } from '../utils/date.js'
 import { range } from '../utils/number.js'
 import { tokenize } from '../utils/object.js'
@@ -72,12 +73,6 @@ export class School {
    * @returns {Array<Session>} Sessions
    */
   get sessions() {
-    if (['888888', '999999'].includes(this.urn)) {
-      return Session.findAll(this.context)
-        .filter((session) => session.type === SessionType.Clinic)
-        .sort((a, b) => getDateValueDifference(a.date, b.date))
-    }
-
     return Session.findAll(this.context)
       .filter((session) => session.school_urn === this.urn)
       .sort((a, b) => getDateValueDifference(a.date, b.date))
@@ -149,6 +144,7 @@ export class School {
       nextSessionDate: formatDate(this.nextSessionDate, {
         dateStyle: 'full'
       }),
+      patients: filters.plural(this.patients.length, 'child'),
       urn: formatMonospace(this.urn)
     }
   }

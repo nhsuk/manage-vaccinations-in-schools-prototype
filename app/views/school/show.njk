@@ -32,7 +32,7 @@
     classes: "nhsuk-button--secondary",
     href: "/uploads/new?type=" + UploadType.School + "&urn=" + school.urn,
     text: __("session.upload-class-list.title")
-  }) }}
+  }) if school.urn != "888888" and school.urn != "999999" }}
 
   <div class="nhsuk-grid-row">
     <app-auto-submit class="app-grid-column-filters">
