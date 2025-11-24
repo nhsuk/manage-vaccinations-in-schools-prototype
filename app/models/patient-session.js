@@ -425,6 +425,17 @@ export class PatientSession {
   }
 
   /**
+   * Get last recorded vaccination
+   *
+   * @returns {import('./vaccination.js').Vaccination} Vaccination
+   */
+  get lastRecordedVaccination() {
+    if (this.vaccinations?.length > 0) {
+      return this.vaccinations.at(-1)
+    }
+  }
+
+  /**
    * Get next activity, per programme
    *
    * @returns {Array<PatientSession>} Patient sessions per programme
@@ -655,17 +666,6 @@ export class PatientSession {
    */
   get record() {
     return getRecordOutcome(this)
-  }
-
-  /**
-   * Get last recorded vaccination
-   *
-   * @returns {import('./vaccination.js').Vaccination} Vaccination
-   */
-  get lastRecordedVaccination() {
-    if (this.vaccinations?.length > 0) {
-      return this.vaccinations.at(-1)
-    }
   }
 
   /**
