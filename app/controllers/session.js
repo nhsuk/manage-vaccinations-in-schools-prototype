@@ -155,7 +155,7 @@ export const sessionController = {
         .map((programme) => ({
           text: programme.name,
           value: programme.id,
-          checked: programme_ids?.includes(programme.id)
+          checked: programme_ids?.includes(programme.id) ?? false
         }))
         .sort((a, b) => a.text.localeCompare(b.text))
     }
@@ -279,7 +279,7 @@ export const sessionController = {
       )
     }
 
-    // Filter by status
+    // Filter defaults
     const filters = {
       instruct: request.query.instruct || 'none',
       register: request.query.register || 'none',
@@ -362,7 +362,7 @@ export const sessionController = {
       response.locals.programmeItems = session.programmes.map((programme) => ({
         text: programme.name,
         value: programme.id,
-        checked: programme_ids?.includes(programme.id)
+        checked: programme_ids?.includes(programme.id) ?? false
       }))
     }
 
@@ -386,7 +386,7 @@ export const sessionController = {
       response.locals.yearGroupItems = session.yearGroups.map((yearGroup) => ({
         text: formatYearGroup(yearGroup),
         value: yearGroup,
-        checked: yearGroups?.includes(yearGroup)
+        checked: yearGroups?.includes(yearGroup) || false
       }))
     }
 

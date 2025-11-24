@@ -43,11 +43,17 @@
 
         {% for patient in results.page %}
           {% set reportStatusHtml -%}
-            {%- for id, patientProgramme in patient.programmes -%}
-              {%- if data.programme_id | includes(id) -%}
+            {%- if data.programme_id %}
+              {%- for id, patientProgramme in patient.programmes -%}
+                {%- if data.programme_id | includes(id) -%}
+                  {{ patientProgramme.formatted.programmeStatus | nhsukMarkdown }}
+                {%- endif -%}
+              {%- endfor %}
+            {% else %}
+              {%- for id, patientProgramme in patient.programmes -%}
                 {{ patientProgramme.formatted.programmeStatus | nhsukMarkdown }}
-              {%- endif -%}
-            {%- endfor %}
+              {%- endfor %}
+            {% endif %}
           {%- endset %}
 
           {{ card({
@@ -66,7 +72,7 @@
                 report: {
                   label: __("patientSession.report.label"),
                   value: reportStatusHtml
-                } if data.programme_id
+                }
               })
             })
           }) }}

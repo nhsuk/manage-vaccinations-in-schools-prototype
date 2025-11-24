@@ -109,17 +109,7 @@ export const schoolController = {
         : [programme_id]
     }
 
-    // Filter by programme eligibility
-    if (programme_id) {
-      results = results.filter((patient) =>
-        programme_ids.some(
-          (programme_id) =>
-            patient.programmes[programme_id].status !== PatientStatus.Ineligible
-        )
-      )
-    }
-
-    // Filter by instruct/register/report/sub status
+    // Filter defaults
     const filters = {
       report: request.query.report || 'none',
       patientConsent: request.query.patientConsent || 'none',
@@ -129,13 +119,23 @@ export const schoolController = {
       session: request.query.session || 'none'
     }
 
-    // Filter by status
-    if (filters.report && filters.report !== 'none' && programme_ids) {
+    // Filter by programme eligibility (if programme(s) selected)
+    if (programme_id && filters.report !== PatientStatus.Ineligible) {
       results = results.filter((patient) =>
         programme_ids.some(
           (programme_id) =>
-            patient.programmes[programme_id].status === filters.report
+            patient.programmes[programme_id].status !== PatientStatus.Ineligible
         )
+      )
+    }
+
+    // Filter by status
+    if (filters.report && filters.report !== 'none') {
+      const ids =
+        programme_ids || school.programmes.map((programme) => programme.id)
+
+      results = results.filter((patient) =>
+        ids.some((id) => patient.programmes[id].status === filters.report)
       )
     }
 
@@ -198,7 +198,7 @@ export const schoolController = {
     response.locals.programmeItems = school.programmes.map((programme) => ({
       text: programme.name,
       value: programme.id,
-      checked: programme_ids?.includes(programme.id)
+      checked: programme_ids?.includes(programme.id) ?? false
     }))
 
     // Session date filter options
