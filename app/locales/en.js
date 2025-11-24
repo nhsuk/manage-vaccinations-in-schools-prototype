@@ -1632,7 +1632,7 @@ export const en = {
       description: 'Add dates for this school.'
     },
     patients: {
-      label: 'Invited to session',
+      label: 'Added to session',
       count:
         '{count, plural, =0 {No children} one {# child} other {# children}}'
     },
