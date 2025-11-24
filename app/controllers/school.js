@@ -115,8 +115,7 @@ export const schoolController = {
       patientConsent: request.query.patientConsent || 'none',
       patientDeferred: request.query.patientDeferred || 'none',
       patientRefused: request.query.patientRefused || 'none',
-      patientVaccinated: request.query.patientVaccinated || 'none',
-      session: request.query.session || 'none'
+      patientVaccinated: request.query.patientVaccinated || 'none'
     }
 
     // Filter by programme eligibility (if programme(s) selected)
@@ -159,16 +158,6 @@ export const schoolController = {
       }
     }
 
-    // Filter by session date
-    if (filters.session && filters.session !== 'none') {
-      results = results.filter((patient) =>
-        patient.patientSessions.some(
-          (patientSession) =>
-            patientSession.session.formatted.dateShort === filters.session
-        )
-      )
-    }
-
     // Filter by year group
     if (yearGroup) {
       results = results.filter((patient) =>
@@ -201,16 +190,6 @@ export const schoolController = {
       checked: programme_ids?.includes(programme.id) ?? false
     }))
 
-    // Session date filter options
-    response.locals.radioFilters = {
-      session: Object.fromEntries(
-        school.sessions.map((session) => [
-          session.id,
-          session.formatted.dateShort
-        ])
-      )
-    }
-
     // Year group filter options
     response.locals.yearGroupItems = school.yearGroups.map((yearGroup) => ({
       text: formatYearGroup(yearGroup),
@@ -226,7 +205,6 @@ export const schoolController = {
     delete data.programme_id
     delete data.q
     delete data.report
-    delete data.session
     delete data.yearGroup
 
     next()
@@ -238,7 +216,7 @@ export const schoolController = {
     const params = new URLSearchParams()
 
     // Radios and text inputs
-    for (const key of ['q', 'report', 'session']) {
+    for (const key of ['q', 'report']) {
       const value = request.body[key]
       if (value) {
         params.append(key, String(value))
