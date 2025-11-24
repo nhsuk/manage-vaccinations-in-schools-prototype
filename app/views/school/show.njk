@@ -47,7 +47,7 @@
         html: link(school.uri + "?option=hasMissingNhsNumber", __mf("school.patientsMissingNhsNumber.count", {
           count: school.patientsMissingNhsNumber.length
         })) | nhsukMarkdown
-      }) if school.patientsMissingNhsNumber }}
+      }) if school.patientsMissingNhsNumber.length }}
 
       {{ appHeading({
         level: 2,
