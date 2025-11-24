@@ -7,22 +7,24 @@
     summary: school.address.formatted.singleline
   }) }}
 
-  {{ appSecondaryNavigation({
-    items: [
-      {
-        text: __("school.show.label"),
-        href: params.school.uri,
-        current: params.view == "show"
-      },
-      {
-        text: __("school.sessions.label"),
-        href: params.school.uri + "/sessions",
-        current: params.view == "sessions"
-      }
-    ]
-  }) }}
+  {% if params.school.urn != "888888" and params.school.urn != "999999" %}
+    {{ appSecondaryNavigation({
+      items: [
+        {
+          text: __("school.show.label"),
+          href: params.school.uri,
+          current: params.view == "show"
+        },
+        {
+          text: __("school.sessions.label"),
+          href: params.school.uri + "/sessions",
+          current: params.view == "sessions"
+        }
+      ]
+    }) }}
 
-  <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
-    {{ __("school." + params.view + ".title") }}
-  </h2>
+    <h2 class="nhsuk-heading-m nhsuk-u-visually-hidden">
+      {{ __("school." + params.view + ".title") }}
+    </h2>
+  {% endif %}
 {% endmacro %}
