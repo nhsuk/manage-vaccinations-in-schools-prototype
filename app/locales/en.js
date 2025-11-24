@@ -572,10 +572,10 @@ export const en = {
       confirm: 'Download vaccination data'
     },
     startAt: {
-      label: 'Get vaccination data from',
+      label: 'Get vaccination data from'
     },
     endAt: {
-      label: 'Get vaccination data until',
+      label: 'Get vaccination data until'
     },
     format: {
       title: 'Select file format',
@@ -2117,6 +2117,11 @@ export const en = {
     },
     source: {
       label: 'Updated in'
+    },
+    from_code: {
+      label: 'This child is moving in from another SAIS team’s area',
+      description:
+        'Confirming this school move will bring {{move.patient.firstName}} into your area from {{move.formatted.from_code}}'
     },
     from_urn: {
       label: 'School joined from'
