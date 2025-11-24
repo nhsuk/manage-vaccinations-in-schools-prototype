@@ -109,6 +109,16 @@ export const schoolController = {
         : [programme_id]
     }
 
+    // Filter by programme eligibility
+    if (programme_id) {
+      results = results.filter((patient) =>
+        programme_ids.some(
+          (programme_id) =>
+            patient.programmes[programme_id].status !== PatientStatus.Ineligible
+        )
+      )
+    }
+
     // Filter by instruct/register/report/sub status
     const filters = {
       report: request.query.report || 'none',
