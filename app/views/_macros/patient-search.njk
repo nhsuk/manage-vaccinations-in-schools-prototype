@@ -95,6 +95,8 @@
         value: "none",
         checked: data.report or data.report == "none"
       }, {
+        text: PatientStatus.Ineligible
+      }, {
         text: PatientStatus.Consent,
         conditional: {
           html: checkboxes({
