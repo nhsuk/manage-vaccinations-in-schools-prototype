@@ -1867,9 +1867,11 @@ export const en = {
     outcome: {
       label: 'Outcome',
       [ScreenOutcome.Vaccinate]: 'Yes, it’s safe to vaccinate',
-      [ScreenOutcome.VaccinateAlternativeInjection]:
+      [ScreenOutcome.VaccinateAlternativeFluInjectionOnly]:
         'Yes, it’s safe to vaccinate with injected vaccine',
-      [ScreenOutcome.VaccinateIntranasal]:
+      [ScreenOutcome.VaccinateAlternativeMMRInjectionOnly]:
+        'Yes, it’s safe to vaccinate with gelatine-free vaccine',
+      [ScreenOutcome.VaccinateIntranasalOnly]:
         'Yes, it’s safe to vaccinate with nasal spray',
       [ScreenOutcome.DoNotVaccinate]: 'No, do not vaccinate',
       [ScreenOutcome.DelayVaccination]:
