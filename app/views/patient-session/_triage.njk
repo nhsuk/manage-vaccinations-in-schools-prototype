@@ -22,7 +22,7 @@
       text: __("triage.edit.title"),
       href: patientSession.uri + "/edit/triage?referrer=" + referrer
     }]
-  }) if options.canTriage and not isVaccinated }}
+  }) if not options.needsTriage and not isVaccinated }}
 
   {# Decision table #}
   {% set triageNoteRows = [] %}
@@ -77,6 +77,17 @@
       decorate: "triage.psd"
     }) if account.canPrescribe %}
 
+    {% set delayVaccinationHtml = dateInput({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--s",
+          text: __("triage.outcomeAt.title", { patient: patient })
+        }
+      },
+      hint: { text: __("triage.outcomeAt.hint", { date: DelayDate }) },
+      decorate: "triage.outcomeAt_"
+    }) %}
+
     {% set outcomeItems = injectConditionalHtml(triageOutcomeItems(patientSession.screenOutcomesForConsentMethod), ScreenOutcome.VaccinateIntranasal, psdRadiosHtml) if patientSession.programme.alternativeVaccine else triageOutcomeItems(patientSession.screenOutcomesForConsentMethod) %}
 
     {{ radios({
@@ -89,7 +100,7 @@
       hint: {
         text: patientSession.screenVaccineCriteria
       } if patientSession.screenVaccineCriteria,
-      items: outcomeItems,
+      items: injectConditionalHtml(outcomeItems, ScreenOutcome.DelayVaccination, delayVaccinationHtml),
       decorate: "triage.outcome"
     }) }}
 

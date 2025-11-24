@@ -502,6 +502,8 @@ export class PatientSession {
       return PatientDeferredStatus.Contraindicated
     } else if (this.screen === ScreenOutcome.DelayVaccination) {
       return PatientDeferredStatus.DelayVaccination
+    } else if (this.screen === ScreenOutcome.InviteToClinic) {
+      return PatientDeferredStatus.InviteToClinic
     }
 
     switch (this.outcome) {
@@ -609,8 +611,10 @@ export class PatientSession {
     switch (this.screen) {
       case ScreenOutcome.NeedsTriage:
         return 'You need to decide if it’s safe to vaccinate.'
+      case ScreenOutcome.InviteToClinic:
+        return `${user.fullName} decided that ${patient.fullName}’s vaccination should take place at a clinic.`
       case ScreenOutcome.DelayVaccination:
-        return `${user.fullName} decided that ${patient.fullName}’s vaccination should be delayed.`
+        return `${user.fullName} decided that ${patient.fullName}’s vaccination should be delayed until ${triageNote.formatted.outcomeAt}.`
       case ScreenOutcome.DoNotVaccinate:
         return `${user.fullName} decided that ${patient.fullName} should not be vaccinated.`
       case ScreenOutcome.Vaccinate:
@@ -899,6 +903,7 @@ export class PatientSession {
       name: event.name,
       note: event.note,
       outcome: event.outcome,
+      outcomeAt_: event.outcomeAt_,
       createdAt: event.createdAt,
       createdBy_uid: event.createdBy_uid,
       programme_ids: [this.programme_id]

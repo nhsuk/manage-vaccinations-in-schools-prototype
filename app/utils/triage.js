@@ -40,6 +40,7 @@ export const getScreenOutcomesForConsentMethod = (programme, replies) => {
       : []),
     'or',
     ScreenOutcome.NeedsTriage,
+    ScreenOutcome.InviteToClinic,
     ScreenOutcome.DelayVaccination,
     ScreenOutcome.DoNotVaccinate
   ]

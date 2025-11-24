@@ -137,9 +137,11 @@ export const getReportOutcome = (patientSession) => {
   // Has screening outcome
   if (patientSession.screen) {
     if (
-      [ScreenOutcome.DelayVaccination, ScreenOutcome.DoNotVaccinate].includes(
-        String(patientSession.screen)
-      )
+      [
+        ScreenOutcome.DelayVaccination,
+        ScreenOutcome.InviteToClinic,
+        ScreenOutcome.DoNotVaccinate
+      ].includes(String(patientSession.screen))
     ) {
       return PatientStatus.Deferred
     } else if (

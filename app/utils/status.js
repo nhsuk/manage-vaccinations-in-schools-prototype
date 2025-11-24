@@ -205,6 +205,7 @@ export function getScreenOutcomeStatus(screen) {
     case ScreenOutcome.NeedsTriage:
       colour = 'blue'
       break
+    case ScreenOutcome.InviteToClinic:
     case ScreenOutcome.DelayVaccination:
       colour = 'dark-orange'
       break
@@ -294,7 +295,11 @@ export function getVaccinationSyncStatus(syncStatus) {
 export function getVaccinationOutcomeStatus(outcome) {
   let colour
   switch (outcome) {
-    case VaccinationOutcome.Contraindications:
+    case VaccinationOutcome.DoNotVaccinate:
+      colour = 'red'
+      break
+    case VaccinationOutcome.DelayVaccination:
+    case VaccinationOutcome.InviteToClinic:
     case VaccinationOutcome.Refused:
     case VaccinationOutcome.Absent:
     case VaccinationOutcome.Unwell:

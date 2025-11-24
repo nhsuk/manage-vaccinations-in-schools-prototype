@@ -1,6 +1,11 @@
 import { isBefore } from 'date-fns'
 
-import { formatDate, today } from '../utils/date.js'
+import {
+  convertIsoDateToObject,
+  convertObjectToIsoDate,
+  formatDate,
+  today
+} from '../utils/date.js'
 import { getScreenOutcomeStatus } from '../utils/status.js'
 import {
   formatTag,
@@ -22,6 +27,8 @@ import { User } from './user.js'
  * @property {string} [note] - Note
  * @property {AuditEventType} [type] - Audit event type
  * @property {string} [outcome] - Outcome for activity type
+ * @property {Date} [outcomeAt] - Date outcome invalidates
+ * @property {object} [outcomeAt_] - Date outcome invalidates (from `dateInput`)
  * @property {Array<string>} [programme_ids] - Programme IDs
  */
 export class AuditEvent {
@@ -33,6 +40,8 @@ export class AuditEvent {
     this.note = options.note
     this.type = options?.type
     this.outcome = options?.outcome
+    this.outcomeAt = options?.outcomeAt && new Date(options.outcomeAt)
+    this.outcomeAt_ = options?.outcomeAt_
     this.programme_ids = options?.programme_ids
   }
 
@@ -48,6 +57,26 @@ export class AuditEvent {
       }
     } catch (error) {
       console.error('Upload.createdBy', error.message)
+    }
+  }
+
+  /**
+   * Get date outcome invalidates for `dateInput`
+   *
+   * @returns {object|undefined} `dateInput` object
+   */
+  get outcomeAt_() {
+    return convertIsoDateToObject(this.outcomeAt)
+  }
+
+  /**
+   * Set date outcome invalidates from `dateInput`
+   *
+   * @param {object} object - dateInput object
+   */
+  set outcomeAt_(object) {
+    if (object) {
+      this.outcomeAt = convertObjectToIsoDate(object)
     }
   }
 
@@ -110,6 +139,8 @@ export class AuditEvent {
       note:
         this.note && `<blockquote>${formatMarkdown(this.note)}</blockquote>`,
       outcome: this.outcome && formatTag(getScreenOutcomeStatus(this.outcome)),
+      outcomeAt:
+        this.outcomeAt && formatDate(this.outcomeAt, { dateStyle: 'long' }),
       programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' ')
     }
   }
