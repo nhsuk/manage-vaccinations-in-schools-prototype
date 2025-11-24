@@ -384,6 +384,7 @@ export const patientSessionController = {
 
     patientSession.recordTriage({
       outcome: triage.outcome,
+      outcomeAt_: triage.outcomeAt_,
       name:
         triage.outcome === ScreenOutcome.NeedsTriage
           ? 'Triaged decision: Keep in triage'

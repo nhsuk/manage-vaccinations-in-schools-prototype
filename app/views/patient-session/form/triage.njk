@@ -15,6 +15,20 @@
     decorate: "triage.psd"
   }) if account.canPrescribe %}
 
+  {% set delayVaccinationHtml = dateInput({
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-6"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--s",
+        text: __("triage.outcomeAt.title", { patient: patient })
+      }
+    },
+    hint: { text: __("triage.outcomeAt.hint", { date: DelayDate }) },
+    decorate: "triage.outcomeAt_"
+  }) %}
+
   {% set outcomeItems = injectConditionalHtml(triageOutcomeItems(patientSession.screenOutcomesForConsentMethod), ScreenOutcome.VaccinateIntranasal, psdRadiosHtml) if patientSession.programme.alternativeVaccine else triageOutcomeItems(patientSession.screenOutcomesForConsentMethod) %}
 
   {{ radios({
@@ -27,7 +41,7 @@
     hint: {
       text: patientSession.screenVaccineCriteria
     } if patientSession.screenVaccineCriteria,
-    items: outcomeItems,
+    items: injectConditionalHtml(outcomeItems, ScreenOutcome.DelayVaccination, delayVaccinationHtml),
     decorate: "triage.outcome"
   }) }}
 

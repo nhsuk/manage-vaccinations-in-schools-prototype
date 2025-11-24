@@ -205,6 +205,9 @@ export function getScreenOutcomeStatus(screen) {
     case ScreenOutcome.NeedsTriage:
       colour = 'blue'
       break
+    case ScreenOutcome.InviteToClinic:
+      colour = 'yellow'
+      break
     case ScreenOutcome.DelayVaccination:
       colour = 'dark-orange'
       break

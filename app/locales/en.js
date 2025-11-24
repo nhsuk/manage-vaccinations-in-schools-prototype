@@ -1861,6 +1861,12 @@ export const en = {
       title: 'Update triage outcome',
       success: 'Triage outcome updated'
     },
+    outcomeAt: {
+      label: 'Delayed until',
+      title:
+        'What is the earliest date {{patient.firstName}} can be vaccinated?',
+      hint: 'For example, {{date}}'
+    },
     note: {
       label: 'Triage notes'
     },
@@ -1874,8 +1880,8 @@ export const en = {
       [ScreenOutcome.VaccinateIntranasalOnly]:
         'Yes, it’s safe to vaccinate with nasal spray',
       [ScreenOutcome.DoNotVaccinate]: 'No, do not vaccinate',
-      [ScreenOutcome.DelayVaccination]:
-        'No, delay vaccination (and invite to clinic)',
+      [ScreenOutcome.InviteToClinic]: 'No, invite to clinic',
+      [ScreenOutcome.DelayVaccination]: 'No, delay vaccination',
       [ScreenOutcome.NeedsTriage]: 'No, keep in triage'
     },
     psd: {

@@ -286,12 +286,13 @@ export const PatientRefusedStatus = {
  * @enum {string}
  */
 export const PatientDeferredStatus = {
-  Contraindicated: 'Contraindicated',
-  DelayVaccination: 'Vaccination delayed',
   ChildAbsent: 'Child absent',
   ChildContraindicated: 'Child contraindicated',
   ChildRefused: 'Child refused',
-  ChildUnwell: 'Child unwell'
+  ChildUnwell: 'Child unwell',
+  Contraindicated: 'Contraindicated',
+  DelayVaccination: 'Delay vaccination',
+  InviteToClinic: 'Invited to clinic'
 }
 
 /**
@@ -468,6 +469,7 @@ export const ScreenOutcome = {
     'Safe to vaccinate with gelatine-free injection',
   VaccinateIntranasalOnly: 'Safe to vaccinate with nasal spray',
   NeedsTriage: 'Needs triage',
+  InviteToClinic: 'Invited to clinic',
   DelayVaccination: 'Delay vaccination',
   DoNotVaccinate: 'Do not vaccinate'
 }
