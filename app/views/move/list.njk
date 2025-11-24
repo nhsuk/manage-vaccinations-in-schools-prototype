@@ -33,7 +33,12 @@
       },
       {
         header: __("move.label"),
-        html: move.movement
+        html: move.movement + (appStatus({
+          classes: "app-status--small nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-0",
+          text: __("move.from_code.label"),
+          icon: "warning",
+          colour: "blue"
+        }) if move.from_code)
       },
       {
         header: __("actions.label"),

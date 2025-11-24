@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import schools from '../datasets/schools.js'
+import { Organisation } from '../models/organisation.js'
 import { Patient } from '../models/patient.js'
 import { formatDate, getDateValueDifference, today } from '../utils/date.js'
 
@@ -14,6 +15,7 @@ import { formatDate, getDateValueDifference, today } from '../utils/date.js'
  * @property {Date} [updatedAt] - Updated date
  * @property {boolean} ignored - Reported move is ignored
  * @property {import('../enums.js').MoveSource} source - Reporting source
+ * @property {string} from_code - Organisation ODS code (moving from)
  * @property {string} from_urn - Current school URN (moving from)
  * @property {string} to_urn - Proposed school URN (moving to)
  * @property {string} patient_uuid - Patient UUID
@@ -28,6 +30,7 @@ export class Move {
       : undefined
     this.ignored = options?.ignored || false
     this.source = options?.source
+    this.from_code = options?.from_code
     this.from_urn = options?.from_urn
     this.to_urn = options?.to_urn
     this.patient_uuid = options?.patient_uuid
@@ -58,8 +61,11 @@ export class Move {
    * @returns {object} Formatted values
    */
   get formatted() {
+    const organisation = Organisation.findOne(this.from_code, this.context)
+
     return {
       createdAt: formatDate(this.createdAt, { dateStyle: 'long' }),
+      from_code: this.from_code ? organisation.name : 'Unknown team',
       from_urn: schools[this.from_urn]?.name || 'Unknown school',
       to_urn: schools[this.to_urn]?.name || 'Unknown school'
     }

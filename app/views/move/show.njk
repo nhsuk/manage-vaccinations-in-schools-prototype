@@ -26,11 +26,18 @@
 
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
-      {{ card({
+      {% call card({
         feature: true,
         heading: move.source,
-        headingClasses: "nhsuk-heading-m",
-        descriptionHtml: summaryList({
+        headingClasses: "nhsuk-heading-m"
+      }) %}
+        {{ appStatus({
+          text: __("move.from_code.description", { move: move }),
+          icon: "warning",
+          colour: "blue"
+        }) if move.from_code }}
+
+        {{ summaryList({
           rows: summaryRows(move.patient, {
             nhsn: {},
             fullName: {},
@@ -41,8 +48,8 @@
               value: move.formatted.to | highlightDifference(move.formatted.from_urn)
             }
           })
-        })
-      }) }}
+        }) }}
+      {% endcall %}
     </div>
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
       {{ card({
