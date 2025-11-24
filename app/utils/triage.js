@@ -2,7 +2,8 @@ import {
   ProgrammeType,
   ReplyDecision,
   ScreenOutcome,
-  ScreenVaccineCriteria
+  ScreenVaccineCriteria,
+  VaccinationOutcome
 } from '../enums.js'
 
 import { getRepliesWithHealthAnswers } from './reply.js'
@@ -87,8 +88,33 @@ export const getScreenVaccineCriteria = (programme, replies) => {
  * @returns {ScreenOutcome|boolean} Screen outcome
  */
 export const getScreenOutcome = (patientSession) => {
+  // No consent given, so cannot triage yet
   if (!patientSession.consentGiven) {
     return false
+  }
+
+  // Triage occurred during a previous vaccination session
+  if (patientSession.lastRecordedVaccination) {
+    if (
+      patientSession.lastRecordedVaccination.outcome ===
+      VaccinationOutcome.InviteToClinic
+    ) {
+      return ScreenOutcome.InviteToClinic
+    }
+
+    if (
+      patientSession.lastRecordedVaccination.outcome ===
+      VaccinationOutcome.DelayVaccination
+    ) {
+      return ScreenOutcome.DelayVaccination
+    }
+
+    if (
+      patientSession.lastRecordedVaccination.outcome ===
+      VaccinationOutcome.DoNotVaccinate
+    ) {
+      return ScreenOutcome.DoNotVaccinate
+    }
   }
 
   const responses = Object.values(patientSession.responses)

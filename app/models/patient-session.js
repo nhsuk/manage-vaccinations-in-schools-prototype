@@ -510,7 +510,7 @@ export class PatientSession {
    */
   get patientDeferred() {
     if (this.screen === ScreenOutcome.DoNotVaccinate) {
-      return PatientDeferredStatus.Contraindicated
+      return PatientDeferredStatus.DoNotVaccinate
     } else if (this.screen === ScreenOutcome.DelayVaccination) {
       return PatientDeferredStatus.DelayVaccination
     } else if (this.screen === ScreenOutcome.InviteToClinic) {
@@ -520,12 +520,16 @@ export class PatientSession {
     switch (this.outcome) {
       case VaccinationOutcome.Absent:
         return PatientDeferredStatus.ChildAbsent
-      case VaccinationOutcome.Contraindications:
-        return PatientDeferredStatus.ChildContraindicated
       case VaccinationOutcome.Refused:
         return PatientDeferredStatus.ChildRefused
       case VaccinationOutcome.Unwell:
         return PatientDeferredStatus.ChildUnwell
+      case VaccinationOutcome.InviteToClinic:
+        return PatientDeferredStatus.InviteToClinic
+      case VaccinationOutcome.DelayVaccination:
+        return PatientDeferredStatus.DelayVaccination
+      case VaccinationOutcome.DoNotVaccinate:
+        return PatientDeferredStatus.DoNotVaccinate
     }
   }
 

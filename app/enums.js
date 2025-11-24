@@ -287,12 +287,11 @@ export const PatientRefusedStatus = {
  */
 export const PatientDeferredStatus = {
   ChildAbsent: 'Child absent',
-  ChildContraindicated: 'Child contraindicated',
   ChildRefused: 'Child refused',
   ChildUnwell: 'Child unwell',
-  Contraindicated: 'Contraindicated',
   InviteToClinic: 'Invited to clinic',
-  DelayVaccination: 'Delay vaccination'
+  DelayVaccination: 'Delay vaccination',
+  DoNotVaccinate: 'Contraindicated'
 }
 
 /**
@@ -539,10 +538,12 @@ export const VaccinationOutcome = {
   Vaccinated: 'Vaccinated',
   PartVaccinated: 'Partially vaccinated',
   AlreadyVaccinated: 'Already had the vaccine',
-  Contraindications: 'Child contraindicated',
   Refused: 'Child refused',
   Absent: 'Child absent',
-  Unwell: 'Child unwell'
+  Unwell: 'Child unwell',
+  InviteToClinic: 'Invited to clinic',
+  DelayVaccination: 'Delay vaccination',
+  DoNotVaccinate: 'Do not vaccinate'
 }
 
 /**
