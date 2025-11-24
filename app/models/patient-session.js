@@ -749,13 +749,11 @@ export class PatientSession {
 
     return {
       programme: this.programme.nameTag,
-      consent: formatProgrammeStatus(this.programme, this.status.consent),
-      screen:
-        this.screen &&
-        formatProgrammeStatus(this.programme, this.status.screen),
+      consent: formatTag(this.status.consent),
+      screen: this.screen && formatTag(this.status.screen),
       instruct: this.session.psdProtocol && formatTag(this.status.instruct),
       register: formatTag(this.status.register),
-      outcome: formatProgrammeStatus(this.programme, this.status.outcome),
+      outcome: this.outcome && formatTag(this.status.outcome),
       report: formatProgrammeStatus(
         this.programme,
         this.status.report,

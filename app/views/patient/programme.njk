@@ -84,8 +84,8 @@
             html: patientSession.session.formatted.date if patientSession.session.date else patientSession.session.status
           },
           {
-            header: "Status",
-            html: patientSession.formatted.report
+            header: __("patientSession.outcome.label"),
+            html: patientSession.formatted.outcome or "No outcome"
           }
         ]) %}
       {% endfor %}
@@ -102,7 +102,7 @@
             }
           },
           { text: __("session.date.label") },
-          { text: "Status" }
+          { text: __("patientSession.outcome.label") }
         ],
         rows: patientSessionRows
       }) }}
