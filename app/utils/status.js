@@ -93,11 +93,13 @@ export function getInstructionOutcomeStatus(instruct) {
 /**
  * Get patient status properties
  *
- * @param {PatientStatus|string} report - Patient status
+ * @param {PatientStatus} report - Patient status
+ * @param {import('../enums.js').PatientDueStatus} [vaccinationDue] - Patient due status
  * @returns {object} Status properties
  */
-export function getPatientStatus(report) {
+export function getPatientStatus(report, vaccinationDue) {
   let colour
+  let text = report
   switch (report) {
     case PatientStatus.Ineligible:
       colour = 'grey'
@@ -113,9 +115,8 @@ export function getPatientStatus(report) {
       colour = 'red'
       break
     case PatientStatus.Due:
-    case 'Due 1st dose':
-    case 'Due 2nd dose':
       colour = 'green'
+      text = vaccinationDue ?? report
       break
     default:
       colour = 'white'
@@ -124,7 +125,7 @@ export function getPatientStatus(report) {
 
   return {
     colour,
-    text: report
+    text
   }
 }
 

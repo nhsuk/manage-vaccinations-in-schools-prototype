@@ -2,28 +2,11 @@ import {
   ConsentOutcome,
   InstructionOutcome,
   PatientStatus,
-  ProgrammeType,
   RegistrationOutcome,
   ScreenOutcome,
   VaccinationOutcome,
   VaccineCriteria
 } from '../enums.js'
-
-/**
- * Get status text to show for which vaccination/dose is due
- *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @returns {PatientStatus|string} Patient status or dose due text
- */
-export const getReportStatusText = ({ report, programme, vaccinations }) => {
-  if (report === PatientStatus.Due && programme.type === ProgrammeType.MMR) {
-    return vaccinations.filter(({ given }) => given).length === 1
-      ? 'Due 2nd dose'
-      : 'Due 1st dose'
-  }
-
-  return report
-}
 
 /**
  * Get instruction outcome for nasal spray

@@ -24,7 +24,6 @@ import {
   getRegistrationOutcome,
   getReportOutcome,
   getRecordOutcome,
-  getReportStatusText,
   getSessionOutcome
 } from '../utils/patient-session.js'
 import {
@@ -735,7 +734,7 @@ export class PatientSession {
       instruct: getInstructionOutcomeStatus(this.instruct),
       register: getRegistrationStatus(this.register),
       outcome: getVaccinationOutcomeStatus(this.outcome),
-      report: getPatientStatus(getReportStatusText(this))
+      report: getPatientStatus(this.report)
     }
   }
 

@@ -27,7 +27,8 @@ import { Vaccine } from './vaccine.js'
  * @property {object} [emailNames] - Email names
  * @property {object} information - NHS.UK programme information
  * @property {object} guidance - GOV.UK guidance
- * @property {Array<string>} sequence - Vaccine dose sequence
+ * @property {Array<string>} [sequence] - Vaccine dose sequence
+ * @property {Array<string>} [immunocompromisedSequence] - Vaccine dose sequence for immunocompromised patients
  * @property {string} sequenceDefault - Default vaccine dose sequence
  * @property {number} [targetYearGroup] - Year group for routine vaccination
  * @property {boolean} nhseSyncable - Vaccination records can be synced
@@ -44,6 +45,7 @@ export class Programme {
     this.information = options?.information
     this.guidance = options?.guidance
     this.sequence = options?.sequence
+    this.immunocompromisedSequence = options?.immunocompromisedSequence
     this.sequenceDefault = options?.sequenceDefault
     this.targetYearGroup = options?.targetYearGroup
     this.nhseSyncable = options?.nhseSyncable
