@@ -26,7 +26,7 @@ export function generateVaccination(patientSession, programme, batch, users) {
       { value: VaccinationOutcome.Vaccinated, weight: 7 },
       { value: VaccinationOutcome.PartVaccinated, weight: 1 },
       { value: VaccinationOutcome.Absent, weight: 1 },
-      { value: VaccinationOutcome.Contraindications, weight: 1 },
+      { value: VaccinationOutcome.DoNotVaccinate, weight: 1 },
       { value: VaccinationOutcome.Refused, weight: 1 },
       { value: VaccinationOutcome.Unwell, weight: 1 }
     ])
