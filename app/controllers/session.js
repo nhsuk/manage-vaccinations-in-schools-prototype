@@ -5,9 +5,10 @@ import {
   AcademicYear,
   InstructionOutcome,
   PatientStatus,
+  ProgrammeType,
+  RecordVaccineCriteria,
   RegistrationOutcome,
   SessionType,
-  VaccineCriteria,
   VaccineMethod
 } from '../enums.js'
 import { Clinic } from '../models/clinic.js'
@@ -368,6 +369,20 @@ export const sessionController = {
     }
 
     // Radio filter options (select one)
+    let vaccineCriteria
+    const programmeTypes = session.programmes.map((programme) => programme.type)
+    if (programmeTypes.includes(ProgrammeType.Flu)) {
+      vaccineCriteria = Object.values(RecordVaccineCriteria).filter(
+        (outcome) =>
+          outcome !== RecordVaccineCriteria.AlternativeMMRInjectionOnly
+      )
+    } else if (programmeTypes.includes(ProgrammeType.MMR)) {
+      vaccineCriteria = Object.values(RecordVaccineCriteria).filter(
+        (outcome) =>
+          outcome === RecordVaccineCriteria.AlternativeMMRInjectionOnly
+      )
+    }
+
     const radioFilters = {
       report: {
         register: showRegistration && RegistrationOutcome,
@@ -377,7 +392,7 @@ export const sessionController = {
         instruct: InstructionOutcome
       },
       record: {
-        vaccineCriteria: session.offersAlternativeVaccine && VaccineCriteria
+        vaccineCriteria: session.offersAlternativeVaccine && vaccineCriteria
       }
     }
 
