@@ -252,7 +252,7 @@ export const ParentalRelationship = {
 export const PatientStatus = {
   Ineligible: 'Not eligible',
   Consent: 'Needs consent',
-  Refused: 'Has refusal',
+  Refused: 'Has a refusal',
   Triage: 'Needs triage',
   Due: 'Due vaccination',
   Deferred: 'Unable to vaccinate',
