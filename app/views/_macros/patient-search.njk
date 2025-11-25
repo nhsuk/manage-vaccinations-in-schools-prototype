@@ -10,8 +10,8 @@
 
 {% macro appPatientSearch(params) %}
   {% if session %}
-    {% set showFluVaccineCriteria = session.programme_ids | includes("flu") %}
-    {% set showMMRVaccineCriteria = session.programme_ids | includes("mmr") %}
+    {% set showFluVaccineCriteria = session.programme_ids | includes("flu") and not view == "record" %}
+    {% set showMMRVaccineCriteria = session.programme_ids | includes("mmr") and not view == "record" %}
   {% else %}
     {% set showFluVaccineCriteria = data.programme_id | includes("flu") or not data.programme_id %}
     {% set showMMRVaccineCriteria = data.programme_id | includes("mmr") or not data.programme_id %}
