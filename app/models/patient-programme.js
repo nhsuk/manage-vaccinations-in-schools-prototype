@@ -1,4 +1,9 @@
-import { PatientConsentStatus, PatientStatus, ProgrammeType } from '../enums.js'
+import {
+  PatientConsentStatus,
+  PatientDueStatus,
+  PatientStatus,
+  ProgrammeType
+} from '../enums.js'
 import { getCurrentAcademicYear } from '../utils/date.js'
 import { getReportOutcome } from '../utils/patient-session.js'
 import { getPatientStatus } from '../utils/status.js'
@@ -116,11 +121,20 @@ export class PatientProgramme {
   }
 
   /**
-   * Get vaccinations for patient session
+   * Eligible for programme in the current academic year
+   *
+   * @returns {boolean} Eligible for programme
+   */
+  get eligible() {
+    return getCurrentAcademicYear() >= this.year
+  }
+
+  /**
+   * Get vaccination outcomes for patient session
    *
    * @returns {Array<import('./vaccination.js').Vaccination>|undefined} Vaccinations
    */
-  get vaccinations() {
+  get vaccinationOutcomes() {
     return this.patient?.vaccinations.filter(
       ({ programme }) => programme.id === this.programme_id
     )
@@ -132,8 +146,8 @@ export class PatientProgramme {
    * @returns {import('./vaccination.js').Vaccination} Vaccination
    */
   get lastRecordedVaccination() {
-    if (this.vaccinations?.length > 0) {
-      return this.vaccinations.at(-1)
+    if (this.vaccinationOutcomes?.length > 0) {
+      return this.vaccinationOutcomes.at(-1)
     }
   }
 
@@ -143,37 +157,56 @@ export class PatientProgramme {
    * @returns {Array<import('./vaccination.js').Vaccination>|undefined} Vaccinations
    */
   get vaccinationsGiven() {
-    return this.vaccinations.filter((vaccination) => vaccination.given)
+    return this.vaccinationOutcomes.filter((vaccination) => vaccination.given)
   }
 
   /**
-   * Get vaccinations doses remaining
+   * Get doses needed
    *
-   * @returns {number|undefined} Doses remaining
+   * @returns {number} Doses needed
    */
-  get vaccinationsRemaining() {
-    if (this.vaccinations?.length > 0) {
-      return this.programme?.type === ProgrammeType.MMR
-        ? 2 - this.vaccinationsGiven.length
-        : 1 - this.vaccinationsGiven.length
+  get dosesNeeded() {
+    if (
+      this.patient.immunocompromised &&
+      this.programme.immunocompromisedSequence
+    ) {
+      return this.programme.immunocompromisedSequence.length
     }
+
+    return this.programme.sequence.length
+  }
+
+  /**
+   * Get doses remaining
+   *
+   * @returns {number} Doses remaining
+   */
+  get dosesRemaining() {
+    if (this.vaccinationsGiven?.length > 0) {
+      return this.dosesNeeded - this.vaccinationsGiven?.length
+    }
+
+    return this.dosesNeeded
   }
 
   /**
    * Get vaccination due
    *
-   * @returns {string} Vaccination due
+   * @returns {PatientDueStatus} Vaccination due
    */
   get vaccinationDue() {
     switch (true) {
-      case this.vaccinationsRemaining === 2:
-        return 'Due 1st dose'
-      case this.vaccinationsRemaining === 1:
-        return this.programme.type === ProgrammeType.MMR
-          ? 'Due 2nd dose'
-          : PatientStatus.Due
+      case this.dosesNeeded === 3 && this.dosesRemaining === 1:
+        return PatientDueStatus.Third
+      case this.dosesNeeded === 3 && this.dosesRemaining === 2:
+      case this.dosesNeeded === 2 && this.dosesRemaining === 1:
+        return PatientDueStatus.Second
+      case this.dosesNeeded === 3 && this.dosesRemaining === 3:
+      case this.dosesNeeded === 2 && this.dosesRemaining === 2:
+        return PatientDueStatus.First
+      case this.dosesNeeded === 1 && this.dosesRemaining === 1:
       default:
-        return PatientStatus.Due
+        return PatientDueStatus.Only
     }
   }
 
@@ -184,12 +217,12 @@ export class PatientProgramme {
    */
   get status() {
     // Not eligible for programme yet
-    if (getCurrentAcademicYear() < this.year) {
+    if (!this.eligible) {
       return PatientStatus.Ineligible
     }
 
     // Is fully vaccinated
-    if (this.vaccinationsRemaining === 0) {
+    if (this.dosesRemaining === 0) {
       return PatientStatus.Vaccinated
     }
 
@@ -244,10 +277,10 @@ export class PatientProgramme {
    */
   get formatted() {
     return {
-      status: formatTag(getPatientStatus(this.status)),
+      status: formatTag(getPatientStatus(this.status, this.vaccinationDue)),
       programmeStatus: formatProgrammeStatus(
         this.programme,
-        getPatientStatus(this.status),
+        getPatientStatus(this.status, this.vaccinationDue),
         this.statusNotes
       )
     }

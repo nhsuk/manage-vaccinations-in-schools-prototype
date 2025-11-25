@@ -17,6 +17,9 @@ export default {
       url: 'https://www.gov.uk/government/publications/flu-vaccination-leaflets-and-posters',
       hint: 'including in other languages and alternative formats, including BSL and Braille'
     },
+    sequence: ['1P'],
+    immunocompromisedSequence: ['1P', '2P'],
+    sequenceDefault: '1P',
     vaccine_smomeds: ['43208811000001106', '40085011000001101'],
     nhseSyncable: true
   },
@@ -36,7 +39,8 @@ export default {
       url: 'https://www.gov.uk/government/publications/hpv-vaccine-vaccination-guide-leaflet',
       hint: 'including in other languages and alternative formats, including BSL and Braille'
     },
-    sequence: ['1P', '2P', '3P'],
+    sequence: ['1P'],
+    immunocompromisedSequence: ['1P', '2P', '3P'],
     sequenceDefault: '1P',
     targetYearGroup: 8,
     vaccine_smomeds: ['33493111000001108'],
@@ -80,6 +84,8 @@ export default {
       url: 'https://www.gov.uk/government/publications/menacwy-vaccine-information-for-young-people',
       hint: 'with links to information in other languages'
     },
+    sequence: ['1P'],
+    sequenceDefault: '1P',
     targetYearGroup: 9,
     vaccine_smomeds: ['39779611000001104'],
     nhseSyncable: false

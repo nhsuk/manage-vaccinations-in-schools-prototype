@@ -123,6 +123,7 @@ export function generateChild() {
     lastName,
     dob,
     gender,
+    immunocompromised: faker.datatype.boolean(0.1),
     address: generateAddress(),
     gpSurgery,
     registrationGroup,

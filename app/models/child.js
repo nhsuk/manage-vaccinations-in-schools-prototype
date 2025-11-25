@@ -35,6 +35,7 @@ import { Address } from './address.js'
  * @property {string} [ethnicGroupOther] - Other ethnic group
  * @property {import('../enums.js).EthnicBackground')} [ethnicBackground] - Ethnic background
  * @property {string} [ethnicBackgroundOther] - Other ethnic background
+ * @property {boolean} [immunocompromised] - Immunocompromised
  * @property {import('./address.js').Address} [address] - Address
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} [registrationGroup] - Registration group
@@ -53,6 +54,7 @@ export class Child {
     this.gender = options?.gender
     this.ethnicGroup = options?.ethnicGroup
     this.ethnicBackground = options?.ethnicBackground
+    this.immunocompromised = options?.immunocompromised
     this.address = options?.address
     this.gpSurgery = options?.gpSurgery
     this.registrationGroup = options?.registrationGroup

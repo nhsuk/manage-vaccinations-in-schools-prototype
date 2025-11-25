@@ -276,6 +276,17 @@ export const PatientConsentStatus = {
  * @readonly
  * @enum {string}
  */
+export const PatientDueStatus = {
+  Only: 'Due vaccination',
+  First: 'Due 1st dose',
+  Second: 'Due 2nd dose',
+  Third: 'Due 3rd dose'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const PatientRefusedStatus = {
   Conflict: 'Consent conflict',
   Refusal: 'Consent refused'
