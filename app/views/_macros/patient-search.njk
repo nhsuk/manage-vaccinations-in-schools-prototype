@@ -9,6 +9,14 @@
 {%- from "_macros/search-input.njk" import appSearchInput with context -%}
 
 {% macro appPatientSearch(params) %}
+  {% if session %}
+    {% set showFluVaccineCriteria = session.programme_ids | includes("flu") %}
+    {% set showMMRVaccineCriteria = session.programme_ids | includes("mmr") %}
+  {% else %}
+    {% set showFluVaccineCriteria = data.programme_id | includes("flu") or not data.programme_id %}
+    {% set showMMRVaccineCriteria = data.programme_id | includes("mmr") or not data.programme_id %}
+  {% endif %}
+
   {% set filterButtonGroup %}
     {{ appButtonGroup({
       buttons: [{
@@ -119,11 +127,36 @@
       }, {
         text: PatientStatus.Due,
         conditional: {
-          html: checkboxes({
+          html: (checkboxes({
+            fieldset: {
+              legend: {
+                classes: "nhsuk-fieldset__legend--s nhsuk-u-margin-bottom-0",
+                text: ProgrammeType.Flu + " vaccine type"
+              }
+            } if not session,
             classes: "nhsuk-checkboxes--small",
-            items: enumItems(session.vaccineCriteria),
+            items: enumItems(RecordVaccineCriteria),
+            items: [{
+              text: RecordVaccineCriteria.AlternativeFluInjectionOnly
+            }, {
+              text: RecordVaccineCriteria.IntranasalOnly
+            }, {
+              text: RecordVaccineCriteria.IntranasalPreferred
+            }],
             decorate: "vaccineCriteria"
-          }) if session.vaccineCriteria
+          }) if showFluVaccineCriteria) + (checkboxes({
+            fieldset: {
+              legend: {
+                classes: "nhsuk-fieldset__legend--s nhsuk-u-margin-bottom-0",
+                text: ProgrammeType.MMR + " vaccine type"
+              }
+            } if not session,
+            classes: "nhsuk-checkboxes--small",
+            items: [{
+              text: RecordVaccineCriteria.AlternativeMMRInjectionOnly
+            }],
+            decorate: "vaccineCriteria"
+          }) if showMMRVaccineCriteria)
         } if data.report == PatientStatus.Due
       }, {
         text: PatientStatus.Deferred,

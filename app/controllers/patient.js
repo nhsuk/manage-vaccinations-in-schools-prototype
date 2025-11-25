@@ -92,7 +92,8 @@ export const patientController = {
       patientConsent: request.query.patientConsent || 'none',
       patientDeferred: request.query.patientDeferred || 'none',
       patientRefused: request.query.patientRefused || 'none',
-      patientVaccinated: request.query.patientVaccinated || 'none'
+      patientVaccinated: request.query.patientVaccinated || 'none',
+      vaccineCriteria: request.query.vaccineCriteria || 'none'
     }
 
     // Filter by programme eligibility (if programme(s) selected)
@@ -118,16 +119,18 @@ export const patientController = {
     for (const [patientStatus, status] of Object.entries({
       [PatientStatus.Consent]: 'patientConsent',
       [PatientStatus.Deferred]: 'patientDeferred',
+      [PatientStatus.Due]: 'vaccineCriteria',
       [PatientStatus.Refused]: 'patientRefused',
       [PatientStatus.Vaccinated]: 'patientVaccinated'
     })) {
       if (filters.report === patientStatus && filters[status] !== 'none') {
+        const ids = programme_ids || programmes.map((programme) => programme.id)
         let statuses = filters[status]
         statuses = Array.isArray(statuses) ? statuses : [statuses]
         results = results.filter((patient) =>
-          programme_ids.some((programme_id) =>
+          ids.some((id) =>
             statuses.includes(
-              patient.programmes[programme_id].lastPatientSession?.[status]
+              patient.programmes[id].lastPatientSession?.[status]
             )
           )
         )
@@ -181,6 +184,7 @@ export const patientController = {
     delete data.programme_id
     delete data.q
     delete data.report
+    delete data.vaccineCriteria
     delete data.yearGroup
 
     next()
@@ -215,6 +219,7 @@ export const patientController = {
       'patientRefused',
       'patientVaccinated',
       'programme_id',
+      'vaccineCriteria',
       'yearGroup'
     ]) {
       const value = request.body[key]
