@@ -303,6 +303,7 @@ export const sessionController = {
     for (const [programmeOutcome, status] of Object.entries({
       [PatientStatus.Consent]: 'patientConsent',
       [PatientStatus.Deferred]: 'patientDeferred',
+      [PatientStatus.Due]: 'vaccineCriteria',
       [PatientStatus.Refused]: 'patientRefused',
       [PatientStatus.Vaccinated]: 'patientVaccinated'
     })) {
