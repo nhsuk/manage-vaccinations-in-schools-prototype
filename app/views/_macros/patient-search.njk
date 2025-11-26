@@ -101,7 +101,7 @@
       items: [{
         text: "Any",
         value: "none",
-        checked: data.report or data.report == "none"
+        checked: not data.report or data.report == "none"
       }, {
         text: PatientStatus.Ineligible
       }, {
@@ -180,7 +180,7 @@
         } if data.report == PatientStatus.Vaccinated
       }],
       decorate: "report"
-    }) }}
+    }) if not params.hideProgrammeStatuses }}
 
     {{ checkboxes({
       classes: "nhsuk-checkboxes--small",

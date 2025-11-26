@@ -48,6 +48,7 @@
     </div>
     <div class="nhsuk-grid-column-two-thirds">
       {{ appPatientSearch({
+        hideProgrammeStatuses: true,
         clear: "/consents/" + consent.uuid + "/match"
       }) }}
 
