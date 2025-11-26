@@ -8,7 +8,6 @@ import { getSessionActivityCount } from './utils/session.js'
 import {
   formatHealthAnswer,
   formatLink,
-  formatParent,
   camelToKebabCase
 } from './utils/string.js'
 
@@ -445,16 +444,6 @@ export default () => {
     }
 
     return tableRows
-  }
-
-  /**
-   * Format parent
-   *
-   * @param {import('./models/parent.js').Parent} parent - Parent
-   * @returns {string} Formatted HTML
-   */
-  globals.parent = function (parent) {
-    return formatParent(parent)
   }
 
   /**
