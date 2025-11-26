@@ -1603,7 +1603,7 @@ export const en = {
       description:
         'Mavis automatically sends email and text reminders to parents who have not responded to the initial consent request.\n\nAutomatic reminders are sent 14, 7 and 3 days before a session.\n\nYou can also send reminders manually. Mavis will then skip the next automatic reminder if it’s due to be sent within 3 days.',
       activity:
-        '{{activities.patientsToGetConsent}} parents out of {{session.patients.length}} have not responded yet',
+        '{{parents}} parents out of {{patients}} have not responded yet',
       preConfirm:
         'Mavis will skip the next automatic reminder if it’s scheduled to be sent within 3 days.',
       confirm: 'Send manual consent reminders',

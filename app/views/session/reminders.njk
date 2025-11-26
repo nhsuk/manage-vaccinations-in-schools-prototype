@@ -32,12 +32,12 @@
     title: __("session.date.label")
   }) }}
 
-  {{ session.formatted.date | safe }}
+  {{ session.formatted.date | nhsukMarkdown }}
 
   {% set detailsHtml %}
     {{ __("session.reminderDate.description") | nhsukMarkdown }}
 
-    {{ session.formatted.reminderDate | safe }}
+    {{ session.formatted.reminderDate | nhsukMarkdown }}
   {% endset %}
 
   {{ details({
@@ -51,8 +51,8 @@
       level: 3,
       size: "s",
       title: __("session.reminders.activity", {
-        activity: activity,
-        session: session
+        parents: session.tally(session.programmes[0].id, PatientStatus.Consent),
+        patients: session.tally(session.programmes[0].id)
       })
     }) }}
 
