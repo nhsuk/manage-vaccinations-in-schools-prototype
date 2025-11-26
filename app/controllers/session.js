@@ -383,6 +383,12 @@ export const sessionController = {
       )
     }
 
+    const checkboxFilters = {
+      record: {
+        vaccineCriteria: session.offersAlternativeVaccine && vaccineCriteria
+      }
+    }
+
     const radioFilters = {
       report: {
         register: showRegistration && RegistrationOutcome,
@@ -390,12 +396,10 @@ export const sessionController = {
       },
       instruct: {
         instruct: InstructionOutcome
-      },
-      record: {
-        vaccineCriteria: session.offersAlternativeVaccine && vaccineCriteria
       }
     }
 
+    response.locals.checkboxFilters = checkboxFilters[view]
     response.locals.radioFilters = radioFilters[view]
 
     if (session.school) {
