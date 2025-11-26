@@ -160,7 +160,8 @@ export const getReportOutcome = (patientSession) => {
     return PatientStatus.Refused
   } else if (
     [
-      ConsentOutcome.NoRequest,
+      ConsentOutcome.NotDelivered,
+      ConsentOutcome.NoResponse,
       ConsentOutcome.NoResponse,
       ConsentOutcome.Declined
     ].includes(patientSession.consent)

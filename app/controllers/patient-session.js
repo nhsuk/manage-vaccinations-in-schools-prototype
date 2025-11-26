@@ -83,7 +83,7 @@ export const patientSessionController = {
       // Show outstanding vaccinations
       showOutstandingVaccinations: vaccinated.length > 0 && due.length > 0,
       // Invite to session
-      canInvite: consent === ConsentOutcome.NoRequest,
+      canInvite: consent === ConsentOutcome.NotDelivered,
       // Send a reminder to give consent
       canRemind:
         session.consentWindow === ConsentWindow.Open &&

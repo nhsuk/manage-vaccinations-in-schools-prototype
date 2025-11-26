@@ -294,8 +294,9 @@ export const sessionController = {
 
     for (const key of Object.keys(filters)) {
       if (filters[key] !== 'none') {
-        results = results.filter(
-          (patientSession) => patientSession[key] === filters[key]
+        const keys = Array.isArray(filters[key]) ? filters[key] : [filters[key]]
+        results = results.filter((patientSession) =>
+          keys.includes(patientSession[key])
         )
       }
     }
@@ -368,18 +369,23 @@ export const sessionController = {
       }))
     }
 
-    // Radio filter options (select one)
+    // Checkbox filter options (select one)
     let vaccineCriteria
     const programmeTypes = session.programmes.map((programme) => programme.type)
     if (programmeTypes.includes(ProgrammeType.Flu)) {
       vaccineCriteria = Object.values(RecordVaccineCriteria).filter(
         (outcome) =>
-          outcome !== RecordVaccineCriteria.AlternativeMMRInjectionOnly
+          ![
+            RecordVaccineCriteria.NoMMRPreference,
+            RecordVaccineCriteria.AlternativeMMRInjectionOnly
+          ].includes(outcome)
       )
     } else if (programmeTypes.includes(ProgrammeType.MMR)) {
-      vaccineCriteria = Object.values(RecordVaccineCriteria).filter(
-        (outcome) =>
-          outcome === RecordVaccineCriteria.AlternativeMMRInjectionOnly
+      vaccineCriteria = Object.values(RecordVaccineCriteria).filter((outcome) =>
+        [
+          RecordVaccineCriteria.NoMMRPreference,
+          RecordVaccineCriteria.AlternativeMMRInjectionOnly
+        ].includes(outcome)
       )
     }
 
@@ -432,13 +438,7 @@ export const sessionController = {
     const params = new URLSearchParams()
 
     // Radios
-    for (const key of [
-      'q',
-      'instruct',
-      'register',
-      'report',
-      'vaccineCriteria'
-    ]) {
+    for (const key of ['q', 'instruct', 'register', 'report']) {
       const value = request.body[key]
       if (value) {
         params.append(key, String(value))
@@ -453,6 +453,7 @@ export const sessionController = {
       'patientRefused',
       'patientVaccinated',
       'programme_id',
+      'vaccineCriteria',
       'yearGroup'
     ]) {
       const value = request.body[key]

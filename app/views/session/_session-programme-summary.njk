@@ -31,7 +31,7 @@
         href: session.uri + "/report?report=" + PatientStatus.Triage + "&programme_id=" + programme.id
       }) }}
     </div>
-  {% if programme.standardVaccine.criteria == VaccineCriteria.Intranasal %}
+  {% if programme.type == ProgrammeType.Flu %}
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: __("session.tally.dueForVaccineCriteria.label", {
@@ -39,8 +39,20 @@
         }),
         colour: "green",
         compact: true,
-        data: session.tally(programme.id, PatientStatus.Due, programme.standardVaccine.criteria),
-        href: session.uri + "/report?report=" + PatientStatus.Due + "&programme_id=" + programme.id + "&vaccineCriteria=" + programme.standardVaccine.criteria
+        data: session.tally(programme.id, PatientStatus.Due, RecordVaccineCriteria.IntranasalOnly) + session.tally(programme.id, PatientStatus.Due, RecordVaccineCriteria.IntranasalPreferred),
+        href: session.uri + "/report?report=" + PatientStatus.Due + "&programme_id=" + programme.id + "&vaccineCriteria=" + RecordVaccineCriteria.IntranasalOnly + "&vaccineCriteria=" + RecordVaccineCriteria.IntranasalPreferred
+      }) }}
+    </div>
+  {% elif programme.type == ProgrammeType.MMR %}
+    <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
+      {{ appDataCard({
+        heading: __("session.tally.dueForVaccineCriteria.label", {
+          vaccineCriteria: "vaccination (no preference)"
+        }),
+        colour: "green",
+        compact: true,
+        data: session.tally(programme.id, PatientStatus.Due, RecordVaccineCriteria.NoMMRPreference),
+        href: session.uri + "/report?report=" + PatientStatus.Due + "&programme_id=" + programme.id + "&vaccineCriteria=" + RecordVaccineCriteria.NoMMRPreference
       }) }}
     </div>
   {% else %}
@@ -56,15 +68,16 @@
     </div>
   {% endif %}
   {% if programme.alternativeVaccine %}
+    {% set vaccineCriteria = RecordVaccineCriteria.AlternativeFluInjectionOnly if programme.type == ProgrammeType.Flu else RecordVaccineCriteria.AlternativeMMRInjectionOnly %}
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: __("session.tally.dueForVaccineCriteria.label", {
-          vaccineCriteria: programme.alternativeVaccine.criteria | lower
+          vaccineCriteria: vaccineCriteria | lower
         }),
         colour: "green",
         compact: true,
-        data: session.tally(programme.id, PatientStatus.Due, programme.alternativeVaccine.criteria),
-        href: session.uri + "/report?report=" + PatientStatus.Due + "&programme_id=" + programme.id + "&vaccineCriteria=" + programme.alternativeVaccine.criteria
+        data: session.tally(programme.id, PatientStatus.Due, vaccineCriteria),
+        href: session.uri + "/report?report=" + PatientStatus.Due + "&programme_id=" + programme.id + "&vaccineCriteria=" + vaccineCriteria
       }) }}
     </div>
   {% endif %}

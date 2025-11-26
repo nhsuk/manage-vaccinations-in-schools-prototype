@@ -24,9 +24,7 @@ export function getConsentOutcomeStatus(consent) {
     case ConsentOutcome.NoResponse:
       colour = 'grey'
       break
-    case ConsentOutcome.NoRequest:
-      colour = 'dark-orange'
-      break
+    case ConsentOutcome.NotDelivered:
     case ConsentOutcome.Inconsistent:
       colour = 'dark-orange'
       icon = 'cross'

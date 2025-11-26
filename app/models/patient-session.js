@@ -387,6 +387,8 @@ export class PatientSession {
       ) {
         return RecordVaccineCriteria.AlternativeMMRInjectionOnly
       }
+
+      return RecordVaccineCriteria.NoMMRPreference
     }
   }
 
@@ -466,7 +468,7 @@ export class PatientSession {
     switch (this.consent) {
       case ConsentOutcome.NoResponse:
         return 'No-one responded to our requests for consent.'
-      case ConsentOutcome.NoRequest:
+      case ConsentOutcome.NotDelivered:
         return 'Consent response could not be delivered.'
       case ConsentOutcome.Inconsistent:
         return 'You can only vaccinate if all respondents give consent.'
@@ -492,9 +494,13 @@ export class PatientSession {
       return PatientConsentStatus.Scheduled
     }
 
+    if (this.patient.hasNoContactDetails) {
+      return PatientConsentStatus.NoDetails
+    }
+
     switch (this.consent) {
-      case ConsentOutcome.NoRequest:
-        return PatientConsentStatus.Failed
+      case ConsentOutcome.NotDelivered:
+        return PatientConsentStatus.NotDelivered
       case ConsentOutcome.NoResponse:
         return PatientConsentStatus.NoResponse
       case ConsentOutcome.Declined:

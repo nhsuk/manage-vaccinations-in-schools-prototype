@@ -167,7 +167,7 @@ export const getConsentOutcome = (patientSession) => {
   const parentalRelationships = Object.values(ParentalRelationship)
 
   // Get valid replies
-  // Include undelivered replies so can return ConsentOutcome.NoRequest
+  // Include undelivered replies so can return ConsentOutcome.NotDelivered
   let replies = Object.values(patientSession.replies).filter(
     (reply) => !reply.invalid
   )
@@ -175,18 +175,18 @@ export const getConsentOutcome = (patientSession) => {
   if (replies.length === 1) {
     // Check if request was delivered
     if (!replies[0].delivered) {
-      return ConsentOutcome.NoRequest
+      return ConsentOutcome.NotDelivered
     }
 
     // Reply decision value matches consent outcome key
     return getConfirmedConsentOutcome(replies[0], patientSession.session)
   } else if (replies.length > 1) {
-    // Exclude undelivered replies so can return ConsentOutcome.NoRequest
+    // Exclude undelivered replies so can return ConsentOutcome.NotDelivered
     replies = replies.filter((reply) => reply.delivered)
 
     // If no replies, no requests were delivered
     if (replies.length === 0) {
-      return ConsentOutcome.NoRequest
+      return ConsentOutcome.NotDelivered
     }
 
     const decisions = _.uniqBy(replies, 'decision')

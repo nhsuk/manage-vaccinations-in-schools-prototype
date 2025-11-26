@@ -45,7 +45,7 @@ export function generateParent(childLastName, isMum) {
   const phoneNumber = '07### ######'.replace(/#+/g, (m) =>
     faker.string.numeric(m.length)
   )
-  const tel = faker.helpers.maybe(() => phoneNumber, { probability: 0.9 })
+  const tel = faker.helpers.maybe(() => phoneNumber, { probability: 0.4 })
 
   const sms = faker.datatype.boolean(0.5)
   const smsStatus = faker.helpers.weightedArrayElement([
@@ -55,7 +55,10 @@ export function generateParent(childLastName, isMum) {
     { value: NotifySmsStatus.Technical, weight: 1 }
   ])
 
-  const email = faker.internet.email({ firstName, lastName }).toLowerCase()
+  const emailAddress = faker.internet
+    .email({ firstName, lastName })
+    .toLowerCase()
+  const email = faker.helpers.maybe(() => emailAddress, { probability: 0.8 })
   const emailStatus = faker.helpers.weightedArrayElement([
     { value: NotifyEmailStatus.Delivered, weight: 100 },
     { value: NotifyEmailStatus.Permanent, weight: 10 },
@@ -71,8 +74,7 @@ export function generateParent(childLastName, isMum) {
     ...(relationship === ParentalRelationship.Other && {
       relationshipOther: 'Foster parent'
     }),
-    email,
-    emailStatus,
+    ...(email && { email, emailStatus }),
     ...(tel && {
       tel,
       sms,

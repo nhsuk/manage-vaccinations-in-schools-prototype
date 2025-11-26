@@ -36,7 +36,7 @@ export const AuditEventType = {
  * @enum {string}
  */
 export const ConsentOutcome = {
-  NoRequest: 'Request failed',
+  NotDelivered: 'Request failed',
   NoResponse: 'No response',
   Inconsistent: 'Conflicting consent',
   Given: 'Consent given',
@@ -265,9 +265,10 @@ export const PatientStatus = {
  * @enum {string}
  */
 export const PatientConsentStatus = {
-  NotScheduled: 'No request',
+  NotScheduled: 'No request scheduled',
   Scheduled: 'Request scheduled',
-  Failed: 'Request failed',
+  NoDetails: 'No contact details',
+  NotDelivered: 'Request failed',
   NoResponse: 'No response',
   FollowUp: 'Follow-up requested'
 }
@@ -288,8 +289,8 @@ export const PatientDueStatus = {
  * @enum {string}
  */
 export const PatientRefusedStatus = {
-  Conflict: 'Consent conflict',
-  Refusal: 'Consent refused'
+  Conflict: 'Conflicting consent',
+  Refusal: 'Parent refused'
 }
 
 /**
@@ -300,9 +301,9 @@ export const PatientDeferredStatus = {
   ChildAbsent: 'Child absent',
   ChildRefused: 'Child refused',
   ChildUnwell: 'Child unwell',
-  InviteToClinic: 'Invited to clinic',
+  DoNotVaccinate: 'Contraindicated',
   DelayVaccination: 'Delay vaccination',
-  DoNotVaccinate: 'Contraindicated'
+  InviteToClinic: 'Invited to clinic'
 }
 
 /**
@@ -310,7 +311,7 @@ export const PatientDeferredStatus = {
  * @enum {string}
  */
 export const PatientVaccinatedStatus = {
-  Vaccinated: 'Vaccinated',
+  Vaccinated: 'Vaccinated by team',
   AlreadyVaccinated: 'Already vaccinated'
 }
 
@@ -389,6 +390,7 @@ export const ProgrammePreset = {
  * @enum {string}
  */
 export const RecordVaccineCriteria = {
+  NoMMRPreference: 'No preference',
   AlternativeFluInjectionOnly: 'Injected vaccine only',
   AlternativeMMRInjectionOnly: 'Gelatine-free injection only',
   IntranasalOnly: 'Nasal spray only',

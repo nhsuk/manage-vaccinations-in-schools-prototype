@@ -613,7 +613,7 @@ export class Session {
   get closingSummary() {
     return {
       noConsentRequest: this.patients.filter(
-        ({ consent }) => consent === ConsentOutcome.NoRequest
+        ({ consent }) => consent === ConsentOutcome.NotDelivered
       ),
       noConsentResponse: this.patients.filter(
         ({ consent }) => consent === ConsentOutcome.NoResponse
