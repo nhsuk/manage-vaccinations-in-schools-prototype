@@ -64,7 +64,7 @@
       },
       items: programmeItems,
       decorate: "programme_id"
-    }) if programmeItems }}
+    })}}
 
     {{ radios({
       classes: "nhsuk-radios--small",
@@ -74,9 +74,9 @@
           text: __("session.status.label")
         }
       },
-      items: statusItems,
+      items: enumItems(SessionStatus),
       decorate: "status"
-    }) if statusItems }}
+    }) }}
 
     {{ radios({
       classes: "nhsuk-radios--small",
@@ -88,7 +88,7 @@
       },
       items: typeItems,
       decorate: "type"
-    }) if typeItems }}
+    }) }}
 
     {{ filterButtonGroup | safe if programmeItems or statusItems or typeItems }}
   {% endcall %}
