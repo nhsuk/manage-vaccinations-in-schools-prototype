@@ -8,6 +8,7 @@ import {
   ProgrammeType,
   RecordVaccineCriteria,
   RegistrationOutcome,
+  SessionStatus,
   SessionType,
   VaccineMethod
 } from '../enums.js'
@@ -73,7 +74,7 @@ export const sessionController = {
   list(request, response) {
     const { programme_id, q } = request.query
     const { data } = request.session
-    const { __, sessions } = response.locals
+    const { sessions } = response.locals
     const { currentAcademicYear, isRollover } = response.app.locals
 
     let results = sessions
@@ -114,7 +115,7 @@ export const sessionController = {
 
     // Filter by status
     if (filters.status !== 'none') {
-      results = results.filter((session) => session[filters.status])
+      results = results.filter(({ status }) => status === filters.status)
     }
 
     // Filter by type
@@ -168,14 +169,8 @@ export const sessionController = {
         value: 'none',
         checked: !filters.status || filters.status === 'none'
       },
-      ...Object.values([
-        'isActive',
-        'isUnplanned',
-        'isPlanned',
-        'isCompleted',
-        'isClosed'
-      ]).map((value) => ({
-        text: __(`session.${value}.label`),
+      ...Object.values(SessionStatus).map((value) => ({
+        text: value,
         value,
         checked: filters.status === value
       }))

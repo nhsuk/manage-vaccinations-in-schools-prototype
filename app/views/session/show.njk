@@ -18,8 +18,8 @@
   {{ super() }}
 
   {{ warningCallout({
-    heading: __("session.consent.title"),
-    html: link(session.uri + "/consents", __mf("session.consent.count", {
+    heading: __("consent.title"),
+    html: link(session.uri + "/consents", __mf("consent.count", {
       count: session.consents.length
     })) | nhsukMarkdown
   }) if session.consents.length }}

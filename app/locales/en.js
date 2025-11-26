@@ -215,6 +215,7 @@ export const en = {
   },
   consent: {
     label: 'Consent response',
+    title: 'Review consent responses',
     count:
       '{count, plural, =0 {No unmatched consent responses} one {1 unmatched consent response} other {# unmatched consent responses}}',
     results:
@@ -1496,29 +1497,15 @@ export const en = {
       title: 'Edit session',
       success: '{{session.name}} updated'
     },
-    isActive: {
-      label: 'In progress'
-    },
-    isCompleted: {
-      label: 'Completed'
-    },
-    isPlanned: {
-      label: 'Scheduled'
-    },
-    isUnplanned: {
-      label: 'Unscheduled'
-    },
-    isClosed: {
-      label: 'Closed'
-    },
     academicYear: {
       label: 'Academic year'
     },
+    report: {
+      label: 'Added to session'
+    },
     consent: {
-      label: 'Unmatched consent',
-      title: 'Unmatched consent responses',
-      count:
-        '{count, plural, =0 {No unmatched consent responses} one {1 unmatched consent response} other {# unmatched consent responses}}'
+      label: 'Consent',
+      title: 'Review consent responses'
     },
     screen: {
       label: 'Triage',
@@ -1541,14 +1528,6 @@ export const en = {
       information: 'You can record vaccinations when a session is in progress.',
       count:
         '{count, plural, =0 {no children for {programme}} one {# child for {programme}} other {# children for {programme}}}'
-    },
-    outcome: {
-      label: 'Session outcomes',
-      title: 'Review session outcomes'
-    },
-    report: {
-      label: 'Programme status',
-      title: 'Programme status'
     },
     delegation: {
       title: 'Delegation'
@@ -1623,7 +1602,7 @@ export const en = {
       description: 'Add dates for this school.'
     },
     patients: {
-      label: 'Added to session',
+      label: 'Children',
       count:
         '{count, plural, =0 {No children} one {# child} other {# children}}'
     },

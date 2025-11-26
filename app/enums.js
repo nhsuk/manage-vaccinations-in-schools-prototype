@@ -492,9 +492,9 @@ export const ScreenOutcome = {
  */
 export const SessionStatus = {
   Active: 'In progress',
-  Unplanned: 'No sessions scheduled',
-  Planned: 'Session scheduled',
-  Completed: 'Session completed',
+  Unplanned: 'Not scheduled',
+  Planned: 'Scheduled',
+  Completed: 'Completed',
   Closed: 'Closed'
 }
 
