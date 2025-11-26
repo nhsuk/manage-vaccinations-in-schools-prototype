@@ -1,7 +1,11 @@
 import _ from 'lodash'
 
 import { healthQuestions } from './datasets/health-questions.js'
-import { ConsentOutcome, InstructionOutcome } from './enums.js'
+import {
+  InstructionOutcome,
+  PatientConsentStatus,
+  PatientRefusedStatus
+} from './enums.js'
 import { School } from './models/school.js'
 import { User } from './models/user.js'
 import { getSessionActivityCount } from './utils/session.js'
@@ -313,31 +317,36 @@ export default () => {
 
     const activities = {
       getConsent: {
-        key: 'consent',
-        value: ConsentOutcome.NoResponse,
+        view: 'report',
+        key: 'patientConsent',
+        value: PatientConsentStatus.NoResponse,
         ...(!session.isCompleted && { action: 'reminders' })
       },
       followUp: {
-        key: 'consent',
-        value: ConsentOutcome.Declined
+        view: 'report',
+        key: 'patientConsent',
+        value: PatientConsentStatus.FollowUp
       },
       resolveConsent: {
-        key: 'consent',
-        value: ConsentOutcome.Inconsistent
+        view: 'report',
+        key: 'patientRefused',
+        value: PatientRefusedStatus.Conflict
       },
       instruct: {
+        view: 'instruct',
         key: 'instruct',
         value: InstructionOutcome.Needed,
         ...(account.canPrescribe && { action: 'instructions' })
       },
       record: {
+        view: 'record',
         key: 'record',
         value: true,
         showProgrammes: true
       }
     }
 
-    const { key, value, action, showProgrammes } = activities[activity]
+    const { key, value, view, action, showProgrammes } = activities[activity]
 
     let totalCount = 0
     const links = []
@@ -361,7 +370,7 @@ export default () => {
         if (count === 0) {
           links.push(label)
         } else if (count > 0) {
-          links.push(formatLink(`${session.uri}/${key}?${params}`, label))
+          links.push(formatLink(`${session.uri}/${view}?${params}`, label))
         }
       }
     } else {
@@ -378,7 +387,7 @@ export default () => {
       if (count === 0) {
         links.push(label)
       } else if (count > 0) {
-        links.push(formatLink(`${session.uri}/${key}?${params}`, label))
+        links.push(formatLink(`${session.uri}/${view}?${params}`, label))
       }
     }
 
