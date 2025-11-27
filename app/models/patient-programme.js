@@ -7,7 +7,11 @@ import {
 import { getCurrentAcademicYear } from '../utils/date.js'
 import { getReportOutcome } from '../utils/patient-session.js'
 import { getPatientStatus } from '../utils/status.js'
-import { formatProgrammeStatus, formatTag } from '../utils/string.js'
+import {
+  formatProgrammeStatus,
+  formatTag,
+  formatWithSecondaryText
+} from '../utils/string.js'
 
 import { Patient } from './patient.js'
 import { Programme } from './programme.js'
@@ -130,7 +134,7 @@ export class PatientProgramme {
   }
 
   /**
-   * Get vaccination outcomes for patient session
+   * Get vaccination outcomes
    *
    * @returns {Array<import('./vaccination.js').Vaccination>|undefined} Vaccinations
    */
@@ -141,23 +145,34 @@ export class PatientProgramme {
   }
 
   /**
-   * Get last recorded vaccination
+   * Get last vaccination outcome
    *
    * @returns {import('./vaccination.js').Vaccination} Vaccination
    */
-  get lastRecordedVaccination() {
+  get lastVaccinationOutcome() {
     if (this.vaccinationOutcomes?.length > 0) {
       return this.vaccinationOutcomes.at(-1)
     }
   }
 
   /**
-   * Get vaccinations given for patient session
+   * Get vaccinations given
    *
    * @returns {Array<import('./vaccination.js').Vaccination>|undefined} Vaccinations
    */
   get vaccinationsGiven() {
     return this.vaccinationOutcomes.filter((vaccination) => vaccination.given)
+  }
+
+  /**
+   * Get last vaccination outcome
+   *
+   * @returns {import('./vaccination.js').Vaccination} Vaccination
+   */
+  get lastVaccinationGiven() {
+    if (this.vaccinationsGiven?.length > 0) {
+      return this.vaccinationsGiven.at(-1)
+    }
   }
 
   /**
@@ -187,6 +202,43 @@ export class PatientProgramme {
     }
 
     return this.dosesNeeded
+  }
+
+  /**
+   * Get dose due (ordinal)
+   *
+   * @returns {number} Dose due (ordinal)
+   */
+  get doseDue() {
+    switch (true) {
+      case this.dosesNeeded === 3 && this.dosesRemaining === 1:
+        return 3
+      case this.dosesNeeded === 3 && this.dosesRemaining === 2:
+      case this.dosesNeeded === 2 && this.dosesRemaining === 1:
+        return 2
+      case this.dosesNeeded === 3 && this.dosesRemaining === 3:
+      case this.dosesNeeded === 2 && this.dosesRemaining === 2:
+        return 1
+      case this.dosesNeeded === 1 && this.dosesRemaining === 1:
+      default:
+        return 0
+    }
+  }
+
+  /**
+   * Get dose sequence code
+   *
+   * @returns {number} Dose sequence code
+   */
+  get sequence() {
+    if (
+      this.patient.immunocompromised &&
+      this.programme.immunocompromisedSequence
+    ) {
+      return this.programme.immunocompromisedSequence[this.doseDue - 1]
+    }
+
+    return this.programme.sequence[this.doseDue - 1]
   }
 
   /**
@@ -245,12 +297,12 @@ export class PatientProgramme {
       case PatientStatus.Ineligible:
         return `Eligible from 1 September ${this.year}`
       case PatientStatus.Vaccinated:
-        return `${this.lastPatientSession.patientVaccinated} on ${this.lastRecordedVaccination.formatted.createdAt_dateShort}`
+        return `Vaccinated on ${this.lastVaccinationGiven.formatted.createdAt_dateShort}`
       case PatientStatus.Due:
         return this.lastPatientSession.vaccineCriteria
       case PatientStatus.Deferred:
-        return this.lastRecordedVaccination
-          ? `${this.lastPatientSession.patientDeferred} on ${this.lastRecordedVaccination.formatted.createdAt_dateShort}`
+        return this.lastVaccinationOutcome
+          ? `${this.lastPatientSession.patientDeferred} on ${this.lastVaccinationOutcome.formatted.createdAt_dateShort}`
           : this.lastPatientSession.patientDeferred
       case PatientStatus.Refused:
         return this.lastPatientSession.patientRefused
@@ -276,8 +328,25 @@ export class PatientProgramme {
    * @returns {object} Formatted values
    */
   get formatted() {
+    const status = formatTag(getPatientStatus(this.status, this.vaccinationDue))
+
+    const rule = new Intl.PluralRules('en-GB', {
+      type: 'ordinal'
+    }).select(this.doseDue)
+
+    const suffixes = new Map([
+      ['one', 'st'],
+      ['two', 'nd'],
+      ['few', 'rd'],
+      ['other', 'th']
+    ])
+
+    const doseDue = `${this.doseDue}${suffixes.get(rule)}`
+
     return {
-      status: formatTag(getPatientStatus(this.status, this.vaccinationDue)),
+      doseDue,
+      status,
+      statusWithNotes: formatWithSecondaryText(status, this.statusNotes, false),
       programmeStatus: formatProgrammeStatus(
         this.programme,
         getPatientStatus(this.status, this.vaccinationDue),

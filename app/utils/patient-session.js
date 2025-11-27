@@ -76,8 +76,8 @@ export const getRecordOutcome = (patientSession) => {
  * @returns {VaccinationOutcome} Vaccination (session) outcome
  */
 export const getSessionOutcome = (patientSession) => {
-  if (patientSession.lastRecordedVaccination) {
-    return patientSession.lastRecordedVaccination.outcome
+  if (patientSession.lastVaccinationOutcome) {
+    return patientSession.lastVaccinationOutcome.outcome
   } else if (
     [ConsentOutcome.Refused, ConsentOutcome.FinalRefusal].includes(
       patientSession.consent
@@ -101,7 +101,7 @@ export const getSessionOutcome = (patientSession) => {
  */
 export const getReportOutcome = (patientSession) => {
   // Has vaccination outcome
-  if (patientSession.vaccinations?.length > 0) {
+  if (patientSession.vaccinationOutcomes?.length > 0) {
     if (
       [
         VaccinationOutcome.Vaccinated,

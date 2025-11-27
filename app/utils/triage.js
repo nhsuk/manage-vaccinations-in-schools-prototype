@@ -94,23 +94,23 @@ export const getScreenOutcome = (patientSession) => {
   }
 
   // Triage occurred during a previous vaccination session
-  if (patientSession.lastRecordedVaccination) {
+  if (patientSession.lastVaccinationOutcome) {
     if (
-      patientSession.lastRecordedVaccination.outcome ===
+      patientSession.lastVaccinationOutcome.outcome ===
       VaccinationOutcome.InviteToClinic
     ) {
       return ScreenOutcome.InviteToClinic
     }
 
     if (
-      patientSession.lastRecordedVaccination.outcome ===
+      patientSession.lastVaccinationOutcome.outcome ===
       VaccinationOutcome.DelayVaccination
     ) {
       return ScreenOutcome.DelayVaccination
     }
 
     if (
-      patientSession.lastRecordedVaccination.outcome ===
+      patientSession.lastVaccinationOutcome.outcome ===
       VaccinationOutcome.DoNotVaccinate
     ) {
       return ScreenOutcome.DoNotVaccinate

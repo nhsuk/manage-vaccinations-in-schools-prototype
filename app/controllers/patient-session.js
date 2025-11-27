@@ -109,7 +109,7 @@ export const patientSessionController = {
         record,
       canReport:
         report === PatientStatus.Vaccinated &&
-        patientSession.lastRecordedVaccination
+        patientSession.lastVaccinationOutcome
     }
 
     response.locals.vaccinationSiteItems = Object.entries(VaccinationSite)
@@ -305,31 +305,6 @@ export const patientSessionController = {
 
     response.redirect(
       `${programme.uri}/vaccinations/new?patientSession_uuid=${patientSession.uuid}`
-    )
-  },
-
-  vaccination(request, response) {
-    const { account } = request.app.locals
-    const { data } = request.session
-    const { patientSession, session, programme } = response.locals
-
-    // Vaccination
-    const vaccination = Vaccination.create(
-      {
-        outcome: VaccinationOutcome.AlreadyVaccinated,
-        patientSession_uuid: patientSession.uuid,
-        programme_id: programme.id,
-        session_id: session.id,
-        createdAt: today(),
-        createdBy_uid: account.uid
-      },
-      data.wizard
-    )
-
-    patientSession.patient.recordVaccination(vaccination)
-
-    response.redirect(
-      `${programme.uri}/vaccinations/${vaccination.uuid}/new/check-answers?referrer=${patientSession.uri}`
     )
   },
 

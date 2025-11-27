@@ -989,9 +989,6 @@ export const en = {
       label: 'Second parent or guardian',
       title: 'Details for second parent or guardian'
     },
-    auditEvents: {
-      label: 'Programme activity'
-    },
     programmes: {
       label: 'Vaccination programmes'
     },
@@ -1003,6 +1000,16 @@ export const en = {
     label: 'Vaccination programme',
     name: {
       label: 'Programme'
+    },
+    auditEvents: {
+      label: 'Programme activity'
+    },
+    patientSessions: {
+      label: 'Sessions'
+    },
+    vaccinationsGiven: {
+      count:
+        '{count, plural, =0 {No vaccination record} one {Vaccination record} other {# vaccination records}}'
     },
     status: {
       label: 'Status'
@@ -1165,9 +1172,6 @@ export const en = {
       title: 'Record {{session.programmeNames.sentenceCase}} vaccination',
       titleWithMethod:
         'Record {{session.programmeNames.sentenceCase}} vaccination with {{method}}'
-    },
-    vaccination: {
-      title: 'Record as already vaccinated'
     },
     registration: {
       label: 'Is {{patient.fullName}} attending today’s session?',
@@ -2170,12 +2174,16 @@ export const en = {
         description:
           'The vaccine selected does not match the consent or triage outcome.'
       },
+      alreadyVaccinated: {
+        title: 'Record as already vaccinated',
+        dose: 'Record %s dose as already given'
+      },
       notGiven: {
         title: 'Vaccination was not given'
       },
       confirm: 'Save',
       success:
-        'Vaccination outcome recorded for {{session.programmeNames.sentenceCase}}'
+        'Vaccination outcome recorded for {{vaccination.programme.nameSentenceCase}}'
     },
     edit: {
       title: 'Edit vaccination record',

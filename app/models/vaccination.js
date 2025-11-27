@@ -37,6 +37,7 @@ import {
 
 import { Batch } from './batch.js'
 import { PatientSession } from './patient-session.js'
+import { Patient } from './patient.js'
 import { Programme } from './programme.js'
 import { School } from './school.js'
 import { User } from './user.js'
@@ -67,6 +68,7 @@ import { Vaccine } from './vaccine.js'
  * @property {string} [protocol] - Protocol
  * @property {string} [note] - Note
  * @property {string} [school_urn] - School URN
+ * @property {string} [patient_uuid] - Patient UUID (used outside of a session)
  * @property {string} [patientSession_uuid] - Patient session UUID
  * @property {string} [programme_id] - Programme ID
  * @property {string} [batch_id] - Batch ID
@@ -102,6 +104,7 @@ export class Vaccination {
       : undefined
     this.note = options?.note || ''
     this.school_urn = options?.school_urn
+    this.patient_uuid = options?.patient_uuid
     this.patientSession_uuid = options?.patientSession_uuid
     this.programme_id = options?.programme_id
     this.batch_id = this.given ? options?.batch_id || '' : undefined
@@ -241,6 +244,10 @@ export class Vaccination {
    * @returns {import('../models/patient.js').Patient} Patient
    */
   get patient() {
+    if (this.patient_uuid) {
+      return Patient.findOne(this.patient_uuid, this.context)
+    }
+
     return this.patientSession.patient
   }
 
@@ -250,7 +257,9 @@ export class Vaccination {
    * @returns {import('../models/session.js').Session} Session
    */
   get session() {
-    return this.patientSession.session
+    if (this.patientSession) {
+      return this.patientSession.session
+    }
   }
 
   /**
@@ -350,7 +359,7 @@ export class Vaccination {
 
     switch (this.syncStatus) {
       case VaccinationSyncStatus.CannotSync:
-        return this.patient.hasMissingNhsNumber
+        return this.patient?.hasMissingNhsNumber
           ? `You must add an NHS number to the child's record before this record will sync<br>${lastSynced}`
           : `Records are currently not synced for this programme<br>${lastSynced}`
       case VaccinationSyncStatus.NotSynced:
@@ -411,7 +420,9 @@ export class Vaccination {
       batch_id: formatMonospace(this.batch_id),
       dose: formatMillilitres(this.dose),
       sequence,
-      vaccine_snomed: this.vaccine_snomed && this.vaccine?.brand,
+      vaccine_snomed: this.vaccine_snomed
+        ? this.vaccine?.brand
+        : 'Unknown vaccine',
       note: formatMarkdown(this.note),
       outcome: formatTag(getVaccinationOutcomeStatus(this.outcome)),
       programme: this.programme && this.programme.nameTag,

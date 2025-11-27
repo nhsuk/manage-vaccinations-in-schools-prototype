@@ -1,9 +1,15 @@
 import _ from 'lodash'
 
-import { ArchiveRecordReason, PatientStatus } from '../enums.js'
+import {
+  ArchiveRecordReason,
+  PatientStatus,
+  VaccinationOutcome
+} from '../enums.js'
 import { PatientProgramme } from '../models/patient-programme.js'
 import { Patient } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
+import { Vaccination } from '../models/vaccination.js'
+import { today } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
@@ -356,5 +362,34 @@ export const patientController = {
     request.flash('success', __(`patient.archive.success`))
 
     response.redirect(patient.uri)
+  },
+
+  vaccination(request, response) {
+    const { account } = request.app.locals
+    const { programme_id } = request.params
+    const { data } = request.session
+    const { patient } = response.locals
+
+    const patientProgramme = new PatientProgramme(
+      patient.programmes[programme_id],
+      data
+    )
+
+    // Vaccination
+    const vaccination = Vaccination.create(
+      {
+        outcome: VaccinationOutcome.AlreadyVaccinated,
+        sequence: patientProgramme.sequence,
+        patient_uuid: patient.uuid,
+        programme_id: patientProgramme.programme_id,
+        createdAt: today(),
+        createdBy_uid: account.uid
+      },
+      data.wizard
+    )
+
+    response.redirect(
+      `${patientProgramme.programme.uri}/vaccinations/${vaccination.uuid}/new/check-answers?referrer=${patientProgramme.uri}`
+    )
   }
 }
