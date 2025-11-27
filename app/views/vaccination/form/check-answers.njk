@@ -3,7 +3,6 @@
 {% set confirmButtonText = __("vaccination.new.confirm") %}
 {% set title = __("vaccination.new.check-answers.title") %}
 {% set mismatchedMethods = vaccination.vaccine.method != vaccination.patientSession.vaccine.method and not patientSession.canRecordAlternativeVaccine %}
-{% set given = vaccination.outcome == VaccinationOutcome.Vaccinated or vaccination.outcome == VaccinationOutcome.PartVaccinated %}
 
 {% block form %}
   {{ appHeading({
@@ -17,6 +16,7 @@
       vaccine_snomed: {
         href: vaccination.uri + "/new/vaccine" if programme.alternativeVaccine
       },
+      outcome: {},
       method: {
         href: vaccination.uri + "/new/method" if vaccination.method != VaccinationMethod.Intranasal
       },
@@ -60,7 +60,7 @@
       {{ vaccinationSummaryListHtml }}
     {% endcall %}
 
-  {% elif not given %}
+  {% elif not vaccination.given %}
     {{ warningCallout({
       heading: __("vaccination.new.notGiven.title"),
       html: summaryList({
@@ -91,6 +91,7 @@
   {{ card({
     headingHtml: " ",
     descriptionHtml: textarea({
+      classes: "nhsuk-u-margin-bottom-0",
       label: {
         classes: "nhsuk-label--m nhsuk-u-margin-bottom-2",
         text: __("vaccination.note.label") + " (optional)"

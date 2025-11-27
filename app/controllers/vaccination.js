@@ -192,8 +192,8 @@ export const vaccinationController = {
         data
       )
 
-      // Update number of vaccinations given
-      if (type === 'new') {
+      // Update number of vaccinations given during session
+      if (type === 'new' && vaccination.patientSession_uuid) {
         if (data?.token?.vaccinations?.[vaccination.vaccine.snomed]) {
           data.token.vaccinations[vaccination.vaccine.snomed] += 1
         } else {
@@ -203,7 +203,10 @@ export const vaccinationController = {
         }
       }
 
-      request.flash('success', __(`vaccination.${type}.success`, { session }))
+      request.flash(
+        'success',
+        __(`vaccination.${type}.success`, { vaccination })
+      )
 
       // Clean up session data
       delete data.batch_id
@@ -214,10 +217,10 @@ export const vaccinationController = {
       delete data.wizard
 
       // Update session data
-      patientSession.patient.recordVaccination(vaccination)
+      vaccination.patient.recordVaccination(vaccination)
 
       let next = referrer || vaccination.uri
-      if (type === 'new') {
+      if (type === 'new' && patientSession) {
         next =
           patientSession.outstandingVaccinations.length === 0
             ? `${session.uri}/record`

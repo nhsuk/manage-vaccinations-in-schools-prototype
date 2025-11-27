@@ -7,7 +7,6 @@ const router = express.Router({ strict: true, mergeParams: true })
 router.param('nhsn', patientSession.read)
 
 router.all('/:nhsn/:programme_id/new/:view', patientSession.readForm)
-router.get('/:nhsn/:programme_id/new/vaccination', patientSession.vaccination)
 router.get('/:nhsn/:programme_id/new/:view', patientSession.showForm('new'))
 
 router.post('/:nhsn/:programme_id/new/gillick', patientSession.gillick('new'))

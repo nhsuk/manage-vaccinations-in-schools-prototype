@@ -23,53 +23,56 @@
     patient: patient
   }) }}
 
-  {{ appHeading({
-    title: patientProgramme.formatted.status,
-    level: 3,
-    size: "m",
-    summary: patientProgramme.statusNotes
-  }) }}
+  {% call card({
+    heading: __mf("patientProgramme.vaccinationsGiven.count", {
+      count: patientProgramme.vaccinationsGiven.length
+    }),
+    headingLevel: 3
+  }) %}
+    {{ patientProgramme.formatted.statusWithNotes | nhsukMarkdown }}
 
-  {% if patientProgramme.vaccinationsGiven.length %}
-    {% for vaccination in patientProgramme.vaccinationsGiven %}
-      {% call card({
-        heading: __("vaccination.label"),
-        headingClasses: "nhsuk-heading-m",
-        descriptionHtml: vaccinationDescriptionHtml
-      }) %}
-        {{ summaryList({
+    {% if patientProgramme.vaccinationsGiven.length %}
+      {% for vaccination in patientProgramme.vaccinationsGiven %}
+        {{ card({
+          classes: "app-card--compact app-card--offset",
+          heading: vaccination.formatted.vaccine_snomed,
+          headingLevel: 4,
+          href: vaccination.uri,
+          clickable: true,
+          descriptionHtml: summaryList({
           rows: summaryRows(vaccination, {
-            outcome: {},
-            vaccine_snomed: {},
-            method: {},
-            site: {},
-            dose: {},
-            sequence: {},
-            batch: {},
-            identifiedBy: {},
-            suppliedBy: {},
-            createdBy: {},
-            createdAt: {},
-            updatedAt: {},
-            location: {},
-            protocol: {},
-            note: {},
-            syncStatus: {}
+              outcome: {},
+              vaccine_snomed: {},
+              method: {},
+              site: {},
+              dose: {},
+              sequence: {},
+              batch: {},
+              identifiedBy: {},
+              suppliedBy: {},
+              createdBy: {},
+              createdAt: {},
+              updatedAt: {},
+              location: {},
+              protocol: {},
+              note: {},
+              syncStatus: {}
+            })
           })
         }) }}
+      {% endfor %}
+    {% endif %}
 
-        {{ button({
-          classes: "nhsuk-button--secondary nhsuk-u-margin-0",
-          text: __("vaccination.edit.title"),
-          href: vaccination.uri + "/edit"
-        }) }}
-      {% endcall %}
-    {% endfor %}
-  {% endif %}
+    {{ button({
+      classes: "nhsuk-button--secondary nhsuk-u-margin-0",
+      text: __("vaccination.new.alreadyVaccinated.dose", patientProgramme.formatted.doseDue) if patientProgramme.doseDue else __("vaccination.new.alreadyVaccinated.title"),
+      href: patientProgramme.uri + "/new/vaccination"
+    }) if patientProgramme.status != PatientStatus.Vaccinated }}
+  {% endcall %}
 
   {% if patientProgramme.patientSessions.length %}
     {% call card({
-      heading: __("session.label"),
+      heading: __("patientProgramme.patientSessions.label"),
       headingLevel: 3
     }) %}
       {% set patientSessionRows = [] %}
@@ -111,7 +114,7 @@
 
   {% if patientProgramme.auditEvents.length %}
     {% call card({
-      heading: __("patient.auditEvents.label"),
+      heading: __("patientProgramme.auditEvents.label"),
       headingLevel: 3
     }) %}
       {{ appTimeline({

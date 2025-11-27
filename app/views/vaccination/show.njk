@@ -1,7 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
 {% set title = vaccination.patient.fullName %}
-{% set paths = { back: vaccination.patientSession.uri } %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -9,14 +8,14 @@
       text: __("home.show.title"),
       href: "/"
     }, {
-      text: __("programme.list.title"),
-      href: "/reports"
+      text: __("patient.list.title"),
+      href: "/patients"
     }, {
-      text: vaccination.patientSession.programme.name,
-      href: "/reports/" + vaccination.patientSession.programme_id
+      text: vaccination.patient.fullName,
+      href: vaccination.patient.uri
     }, {
-      text: vaccination.patientSession.patient.fullName,
-      href: vaccination.patientSession.uri
+      text: vaccination.patient.programmes[vaccination.programme_id].programme.name,
+      href: vaccination.patient.programmes[vaccination.programme_id].uri
     }]
   }) }}
 {% endblock %}
@@ -34,7 +33,7 @@
       headingClasses: "nhsuk-heading-m"
     }) %}
       {{ summaryList({
-        rows: summaryRows(vaccination.patientSession.patient, {
+        rows: summaryRows(vaccination.patient, {
           nhsn: {
             changeLabel: "the child’s NHS number",
             href: vaccination.uri + "/patients/" + vaccination.patient.nhsn + "/edit/nhsn" if vaccination.patient.hasMissingNhsNumber

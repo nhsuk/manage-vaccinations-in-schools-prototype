@@ -414,12 +414,14 @@ export class PatientSession {
    *
    * @returns {Array<import('./vaccination.js').Vaccination>|undefined} Vaccinations
    */
-  get vaccinations() {
+  get vaccinationOutcomes() {
     try {
       if (this.patient.vaccinations && this.programme_id) {
-        return this.patient.vaccinations.filter(
-          ({ programme }) => programme.id === this.programme_id
-        )
+        return this.patient.vaccinations
+          .filter(({ programme }) => programme.id === this.programme_id)
+          .filter(
+            ({ patientSession_uuid }) => patientSession_uuid === this.uuid
+          )
       }
     } catch (error) {
       console.error('PatientSession.vaccinations', error.message)
@@ -431,9 +433,9 @@ export class PatientSession {
    *
    * @returns {import('./vaccination.js').Vaccination} Vaccination
    */
-  get lastRecordedVaccination() {
-    if (this.vaccinations?.length > 0) {
-      return this.vaccinations.at(-1)
+  get lastVaccinationOutcome() {
+    if (this.vaccinationOutcomes?.length > 0) {
+      return this.vaccinationOutcomes.at(-1)
     }
   }
 
@@ -704,12 +706,12 @@ export class PatientSession {
   get reportNotes() {
     switch (this.report) {
       case PatientStatus.Vaccinated:
-        return `${this.patientVaccinated} on ${this.lastRecordedVaccination.formatted.createdAt_dateShort}`
+        return `${this.patientVaccinated} on ${this.lastVaccinationOutcome.formatted.createdAt_dateShort}`
       case PatientStatus.Due:
         return this.vaccineCriteria
       case PatientStatus.Deferred:
-        return this.lastRecordedVaccination
-          ? `${this.patientDeferred} on ${this.lastRecordedVaccination.formatted.createdAt_dateShort}`
+        return this.lastVaccinationOutcome
+          ? `${this.patientDeferred} on ${this.lastVaccinationOutcome.formatted.createdAt_dateShort}`
           : this.patientDeferred
       case PatientStatus.Refused:
         return this.patientRefused

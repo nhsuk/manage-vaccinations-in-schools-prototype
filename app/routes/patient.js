@@ -21,6 +21,11 @@ router.post('/:patient_uuid/archive', patient.archive)
 router.all('/:patient_uuid/programmes{/:programme_id}', patient.readProgramme)
 router.get('/:patient_uuid/programmes{/:programme_id}', patient.showProgramme)
 
+router.get(
+  '/:patient_uuid/programmes/:programme_id/new/vaccination',
+  patient.vaccination
+)
+
 router.get('/:patient_uuid{/:view}', patient.show)
 
 export const patientRoutes = router
