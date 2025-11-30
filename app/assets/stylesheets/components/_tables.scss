@@ -14,11 +14,11 @@
   }
 
   i {
+    padding: 2px;
     color: nhsuk-shade(nhsuk-colour("red"), 50%);
     font-family: ui-monospace, monospace;
     font-style: normal;
     font-weight: 500;
-    padding: 2px;
   }
 }
 
@@ -27,16 +27,16 @@
 }
 
 .app-table__cell--muted {
-  background-color: nhsuk-colour("grey-5");
   color: $nhsuk-secondary-text-colour;
+  background-color: nhsuk-colour("grey-5");
 }
 
 .app-table__cell--summary-list {
   padding-right: 0;
 
   .nhsuk-summary-list {
-    margin-bottom: 0;
     margin-top: nhsuk-spacing(-2);
+    margin-bottom: 0;
     table-layout: auto;
   }
 }

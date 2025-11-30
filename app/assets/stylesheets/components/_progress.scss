@@ -1,17 +1,17 @@
 @use "../vendor/nhsuk-frontend" as *;
 
 .app-progress {
-  appearance: none;
-  background-color: nhsuk-tint(nhsuk-colour("grey-1"), 80%);
   border: 0;
+  background-color: nhsuk-tint(nhsuk-colour("grey-1"), 80%);
   vertical-align: middle;
+  appearance: none;
 
   @include nhsuk-font(19);
 
   &::-webkit-progress-bar {
-    background-color: nhsuk-tint(nhsuk-colour("grey-1"), 80%);
     border-color: nhsuk-shade(nhsuk-colour("grey-1"), 30%);
     color: nhsuk-shade(nhsuk-colour("grey-1"), 30%);
+    background-color: nhsuk-tint(nhsuk-colour("grey-1"), 80%);
   }
 
   &::-webkit-progress-value {

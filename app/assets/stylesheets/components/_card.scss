@@ -3,9 +3,9 @@
 
 .app-card {
   &--blue {
-    background-color: nhsuk-tint(nhsuk-colour("blue"), 80%);
     border-color: nhsuk-tint(nhsuk-colour("blue"), 30%);
     color: nhsuk-shade(nhsuk-colour("blue"), 30%);
+    background-color: nhsuk-tint(nhsuk-colour("blue"), 80%);
 
     &.nhsuk-card--clickable:active {
       border-color: nhsuk-shade(nhsuk-colour("blue"), 30%);
@@ -13,9 +13,9 @@
   }
 
   &--dark-orange {
-    background-color: nhsuk-tint(app.$dark-orange-colour, 80%);
     border-color: nhsuk-tint(app.$dark-orange-colour, 50%);
     color: nhsuk-shade(app.$dark-orange-colour, 50%);
+    background-color: nhsuk-tint(app.$dark-orange-colour, 80%);
 
     &.nhsuk-card--clickable:active {
       border-color: nhsuk-shade(app.$dark-orange-colour, 30%);
@@ -23,9 +23,9 @@
   }
 
   &--green {
-    background-color: nhsuk-tint(nhsuk-colour("green"), 80%);
     border-color: nhsuk-tint(nhsuk-colour("green"), 40%);
     color: nhsuk-shade(nhsuk-colour("green"), 40%);
+    background-color: nhsuk-tint(nhsuk-colour("green"), 80%);
 
     &.nhsuk-card--clickable:active {
       border-color: nhsuk-shade(nhsuk-colour("green"), 40%);
@@ -33,9 +33,9 @@
   }
 
   &--red {
-    background-color: nhsuk-tint(nhsuk-colour("red"), 80%);
     border-color: nhsuk-tint(nhsuk-colour("red"), 50%);
     color: nhsuk-shade(nhsuk-colour("red"), 50%);
+    background-color: nhsuk-tint(nhsuk-colour("red"), 80%);
 
     &.nhsuk-card--clickable:active {
       border-color: nhsuk-shade(nhsuk-colour("red"), 50%);
@@ -43,12 +43,12 @@
   }
 
   &--yellow {
-    background-color: nhsuk-tint(nhsuk-colour("warm-yellow"), 80%);
     border-color: nhsuk-colour("warm-yellow");
+    background-color: nhsuk-tint(nhsuk-colour("warm-yellow"), 80%);
 
     .nhsuk-card__heading--feature {
-      background-color: nhsuk-colour("warm-yellow");
       color: $nhsuk-text-colour;
+      background-color: nhsuk-colour("warm-yellow");
     }
 
     blockquote {
@@ -132,7 +132,7 @@
   }
 
   &--warm-yellow {
-    background-color: nhsuk-colour("warm-yellow");
     color: $nhsuk-text-colour;
+    background-color: nhsuk-colour("warm-yellow");
   }
 }

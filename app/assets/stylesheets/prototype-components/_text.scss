@@ -3,39 +3,51 @@
 $_text-message-background-colour: nhsuk-tint(nhsuk-colour("grey-4"), 50%);
 
 .prototype-text {
-  background-color: $_text-message-background-colour;
-  border-radius: nhsuk-spacing(3);
-  font-family: Helvetica, Arial, sans-serif;
+  position: relative;
+
   max-width: 400px;
   padding: nhsuk-spacing(3);
-  position: relative;
+
+  border-radius: nhsuk-spacing(3);
+
+  background-color: $_text-message-background-colour;
+
+  font-family: Helvetica, Arial, sans-serif;
 
   a {
     word-break: break-all;
   }
 
   &::before {
-    background: $_text-message-background-colour;
-    border-bottom-right-radius: nhsuk-spacing(3);
-    bottom: 0;
     content: "";
-    height: nhsuk-spacing(3);
-    left: nhsuk-spacing(-2);
+
     position: absolute;
-    width: nhsuk-spacing(4);
     z-index: 0;
+    bottom: 0;
+    left: nhsuk-spacing(-2);
+
+    width: nhsuk-spacing(4);
+    height: nhsuk-spacing(3);
+
+    border-bottom-right-radius: nhsuk-spacing(3);
+
+    background: $_text-message-background-colour;
   }
 
   &::after {
-    background: nhsuk-colour("white");
-    border-bottom-right-radius: nhsuk-spacing(2);
-    bottom: 0;
     content: "";
-    height: nhsuk-spacing(3);
-    left: nhsuk-spacing(-2);
+
     position: absolute;
-    width: nhsuk-spacing(2);
     z-index: 1;
+    bottom: 0;
+    left: nhsuk-spacing(-2);
+
+    width: nhsuk-spacing(2);
+    height: nhsuk-spacing(3);
+
+    border-bottom-right-radius: nhsuk-spacing(2);
+
+    background: nhsuk-colour("white");
   }
 
   *:last-child {

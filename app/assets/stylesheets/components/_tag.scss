@@ -3,21 +3,21 @@
 
 .nhsuk-tag {
   &--dark-orange {
-    background-color: nhsuk-tint(app.$dark-orange-colour, 80%);
     border-color: nhsuk-shade(app.$dark-orange-colour, 50%);
     color: nhsuk-shade(app.$dark-orange-colour, 50%);
+    background-color: nhsuk-tint(app.$dark-orange-colour, 80%);
   }
 
   &--warm-yellow {
-    background-color: nhsuk-tint(nhsuk-colour("warm-yellow"), 80%);
     border-color: nhsuk-shade(nhsuk-colour("warm-yellow"), 50%);
     color: nhsuk-shade(nhsuk-colour("warm-yellow"), 50%);
+    background-color: nhsuk-tint(nhsuk-colour("warm-yellow"), 80%);
   }
 
   &--transparent {
-    background-color: transparent;
     border-color: currentcolor;
     color: currentcolor;
+    background-color: transparent;
   }
 }
 
