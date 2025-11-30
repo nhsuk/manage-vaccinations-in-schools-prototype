@@ -15,11 +15,12 @@
 {% from "_macros/timeline.njk" import appTimeline %}
 {% from "_macros/sub-navigation.njk" import appSubNavigation %}
 
+{% set assetsName = assetsName | default("application") %}
+
 {% block head %}
   {# Prevent NHS numbers from being treated as phone numbers #}
   <meta name="format-detection" content="telephone=no">
 
-  {% set assetsName = assetsName | default("application") %}
   <link rel="stylesheet" href="/assets/{{ assetsName }}.css" media="all">
   <script src="/assets/{{ assetsName }}.js" type="module"></script>
 {% endblock %}
@@ -118,6 +119,7 @@
 
 {% block footer %}
   {{ footer({
+    classes: "app-footer--christmas" if assetsName == "application",
     meta: {
       text: "Today is " + today,
       items: [{

@@ -1,0 +1,24 @@
+.app-footer--christmas {
+  $_mavis-height: 180px;
+  $_mavis-width: 320px;
+  position: relative;
+  margin-top: $_mavis-height;
+
+  &::before {
+    content: "";
+
+    display: block;
+
+    position: absolute;
+    top: -$_mavis-height;
+    right: 0;
+
+    width: 100%;
+    height: $_mavis-height;
+
+    background-image: url("/public/images/mavis.png");
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: $_mavis-width $_mavis-height;
+  }
+}
