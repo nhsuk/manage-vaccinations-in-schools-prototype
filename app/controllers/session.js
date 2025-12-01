@@ -21,6 +21,7 @@ import { Patient } from '../models/patient.js'
 import { Session } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
+import { getSessionYearGroups } from '../utils/session.js'
 import { formatYearGroup } from '../utils/string.js'
 
 export const sessionController = {
@@ -538,6 +539,7 @@ export const sessionController = {
         ...(session.type === SessionType.School
           ? {
               [`/${session_id}/${type}/school`]: {},
+              [`/${session_id}/${type}/year-groups`]: {},
               [`/${session_id}/${type}/date`]: {}
             }
           : {
@@ -573,6 +575,16 @@ export const sessionController = {
             }
           })
         }))
+
+      if (session.school_urn) {
+        response.locals.yearGroupItems = getSessionYearGroups(
+          session.school_urn,
+          session.programmePreset
+        ).map((year) => ({
+          text: formatYearGroup(year),
+          value: year
+        }))
+      }
 
       next()
     }

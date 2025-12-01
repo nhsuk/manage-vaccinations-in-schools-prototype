@@ -1688,7 +1688,8 @@ export const en = {
       title: 'Select a school'
     },
     yearGroups: {
-      label: 'Year groups'
+      label: 'Year groups',
+      title: 'Which year groups do you want to invite to this session?'
     },
     clinic: {
       label: 'Clinic',

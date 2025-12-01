@@ -1,8 +1,18 @@
 import { isAfter, isBefore } from 'date-fns'
 import _ from 'lodash'
 
-import { ConsentWindow, SessionStatus, SessionType } from '../enums.js'
-import { today } from '../utils/date.js'
+import programmesData from '../datasets/programmes.js'
+import schoolsData from '../datasets/schools.js'
+import {
+  ConsentWindow,
+  ProgrammePreset,
+  SchoolPhase,
+  SessionStatus,
+  SessionType
+} from '../enums.js'
+
+import { today } from './date.js'
+import { range } from './number.js'
 
 /**
  * Get consent window (is it open, opening or closed)
@@ -79,4 +89,26 @@ export const getSessionActivityCount = (session, filters) => {
   }
 
   return 0
+}
+
+/**
+ * Get year groups based on intersection of school phase and programme
+ *
+ * @param {string} school_urn - School URN
+ * @param {ProgrammePreset} programmePreset - Programme preset
+ * @returns {Array<number>} Year groups
+ */
+export const getSessionYearGroups = (school_urn, programmePreset) => {
+  const preset = ProgrammePreset[programmePreset]
+  const allYearGroups = preset.programmeTypes.flatMap(
+    (programmeType) => programmesData[programmeType].yearGroups
+  )
+
+  const school = schoolsData[school_urn]
+  const schoolYearGroups =
+    school.phase === SchoolPhase.Primary ? [...range(0, 6)] : [...range(7, 11)]
+
+  return schoolYearGroups.filter((yearGroup) =>
+    allYearGroups.includes(yearGroup)
+  )
 }
