@@ -6,7 +6,7 @@
     background-color: color.scale(nhsuk-colour("grey-4"), $alpha: -50%);
   }
 
-  .nhsuk-card__heading--feature {
+  .nhsuk-card__heading {
     background-color: nhsuk-colour("grey-1");
   }
 
@@ -40,7 +40,6 @@
   }
 
   .nhsuk-details__text {
-
     // Remove once https://github.com/nhsuk/nhsuk-frontend/pull/1633 released
     box-sizing: border-box;
     border-left: 0;
