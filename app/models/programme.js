@@ -2,7 +2,6 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import vaccines from '../datasets/vaccines.js'
 import { ProgrammeType, VaccineCriteria } from '../enums.js'
-import { range } from '../utils/number.js'
 import {
   formatLink,
   formatTag,
@@ -47,6 +46,7 @@ export class Programme {
     this.sequence = options?.sequence
     this.immunocompromisedSequence = options?.immunocompromisedSequence
     this.sequenceDefault = options?.sequenceDefault
+    this.yearGroups = options?.yearGroups
     this.targetYearGroup = options?.targetYearGroup
     this.nhseSyncable = options?.nhseSyncable
     this.vaccine_smomeds = options?.vaccine_smomeds
@@ -150,18 +150,6 @@ export class Programme {
       sentenceCase: sentenceCaseProgrammeName(vaccineName),
       titleCase: vaccineName
     }
-  }
-
-  /**
-   * Get all eligible year groups
-   *
-   * @returns {Array<number>} Eligible year groups
-   */
-  get yearGroups() {
-    // If no target year group, programme is offered to _all_ year groups
-    const targetYearGroup = this.targetYearGroup || 0
-
-    return [...range(targetYearGroup, 11)]
   }
 
   /**

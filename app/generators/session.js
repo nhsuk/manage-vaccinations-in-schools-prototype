@@ -3,6 +3,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { OrganisationDefaults, ProgrammePreset, SessionType } from '../enums.js'
 import { Session } from '../models/session.js'
 import { addDays, getTermDates, removeDays, setMidday } from '../utils/date.js'
+import { getSessionYearGroups } from '../utils/session.js'
 
 /**
  * Generate fake session
@@ -52,6 +53,11 @@ export function generateSession(programmePreset, academicYear, user, options) {
     openAt = removeDays(date, OrganisationDefaults.SessionOpenWeeks * 7)
   }
 
+  let yearGroups
+  if (options.school_urn) {
+    yearGroups = getSessionYearGroups(options.school_urn, programmePreset)
+  }
+
   return new Session({
     createdAt: removeDays(term.from, 60),
     createdBy_uid: user.uid,
@@ -61,6 +67,6 @@ export function generateSession(programmePreset, academicYear, user, options) {
     academicYear,
     programmePreset,
     ...(clinic_id && { type: SessionType.Clinic, clinic_id }),
-    ...(school_urn && { type: SessionType.School, school_urn })
+    ...(school_urn && { type: SessionType.School, school_urn, yearGroups })
   })
 }
