@@ -35,9 +35,3 @@ $_secondary-warning-button-hover-colour: color.change($nhsuk-warning-button-colo
     box-shadow: 0 $_button-shadow-size 0 $nhsuk-warning-button-colour;
   }
 }
-
-.app-button--small {
-  padding: nhsuk-spacing(2) 12px nhsuk-spacing(1);
-
-  @include nhsuk-font-size(16);
-}

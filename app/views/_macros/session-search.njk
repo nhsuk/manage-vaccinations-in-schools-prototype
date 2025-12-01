@@ -12,7 +12,7 @@
   {% set filterButtonGroup %}
     {{ appButtonGroup({
       buttons: [{
-        classes: "nhsuk-button--secondary app-button--small",
+        classes: "nhsuk-button--secondary nhsuk-button--small",
         text: __("search.confirm"),
         attributes: {
           formaction: params.formaction,
@@ -20,7 +20,7 @@
           role: "search"
         }
       }, {
-        classes: "nhsuk-button--secondary app-button--small",
+        classes: "nhsuk-button--secondary nhsuk-button--small",
         text: __("search.clear"),
         href: params.clear or "/sessions"
       } if data.q or data.programme or data.status]
