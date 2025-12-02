@@ -238,7 +238,8 @@ export const sessionController = {
     const { data } = request.session
     const { session } = response.locals
 
-    const showRegistration = session.registration && session.isActive
+    const showRegistration =
+      session.registration && session.isActive && view === 'report'
 
     response.locals.showRegistration = showRegistration
     response.locals.view = view
