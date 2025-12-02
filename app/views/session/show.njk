@@ -1,22 +1,10 @@
 {% extends "_layouts/session.njk" %}
 
 {% set title = session.name %}
-
-{% block beforeContent %}
-  {{ breadcrumb({
-    items: [{
-      text: __("home.show.title"),
-      href: "/"
-    }, {
-      text: __("session.list.title"),
-      href: "/sessions"
-    }]
-  }) }}
-{% endblock %}
+{% set heading = title %}
+{% set caption = session.formatted.yearGroups %}
 
 {% block content %}
-  {{ super() }}
-
   {{ warningCallout({
     heading: __("consent.title"),
     html: link(session.uri + "/consents", __mf("consent.count", {
