@@ -452,8 +452,10 @@ export const ReplyRefusal = {
  * @enum {string}
  */
 export const SchoolPhase = {
+  Nursery: 'Nursery',
   Primary: 'Primary',
-  Secondary: 'Secondary'
+  Secondary: 'Secondary',
+  Other: 'Other'
 }
 
 /**
