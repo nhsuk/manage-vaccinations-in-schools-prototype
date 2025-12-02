@@ -66,9 +66,36 @@
       color: inherit;
     }
   }
+}
 
-  &--offset {
-    background-color: rgba(nhsuk-colour("grey-5"), 0.5);
+.app-card--offset {
+  background-color: rgba(nhsuk-colour("grey-5"), 0.5);
+
+  // Fix nested offset cards inheriting feature card styles
+  /// @link https://github.com/nhsuk/nhsuk-frontend/issues/1724
+  .nhsuk-card__heading {
+    display: block;
+
+    position: initial;
+    top: initial;
+
+    margin: initial;
+    margin-top: 0;
+    padding: initial;
+
+    outline: initial;
+    outline-offset: initial;
+
+    color: initial;
+    background-color: initial;
+
+    @include nhsuk-font(22, $weight: bold);
+    @include nhsuk-responsive-margin(2, "bottom");
+  }
+
+  .nhsuk-card__content {
+    @include nhsuk-top-and-bottom;
+    @include nhsuk-responsive-padding(5);
   }
 }
 
@@ -106,33 +133,31 @@
   @include nhsuk-typography-weight-bold;
 }
 
-.app-card__heading--xxs {
-  @include nhsuk-font(16, $weight: bold);
-}
+.nhsuk-card--feature {
+  .app-card__heading {
+    &--dark-orange {
+      background-color: app.$dark-orange-colour;
+    }
 
-.app-card__heading {
-  &--dark-orange {
-    background-color: app.$dark-orange-colour;
-  }
+    &--green {
+      background-color: nhsuk-colour("green");
+    }
 
-  &--green {
-    background-color: nhsuk-colour("green");
-  }
+    &--grey {
+      background-color: nhsuk-colour("grey-1");
+    }
 
-  &--grey {
-    background-color: nhsuk-colour("grey-1");
-  }
+    &--purple {
+      background-color: nhsuk-colour("purple");
+    }
 
-  &--purple {
-    background-color: nhsuk-colour("purple");
-  }
+    &--red {
+      background-color: nhsuk-colour("red");
+    }
 
-  &--red {
-    background-color: nhsuk-colour("red");
-  }
-
-  &--warm-yellow {
-    color: $nhsuk-text-colour;
-    background-color: nhsuk-colour("warm-yellow");
+    &--warm-yellow {
+      color: $nhsuk-text-colour;
+      background-color: nhsuk-colour("warm-yellow");
+    }
   }
 }
