@@ -23,7 +23,7 @@ $_timeline-border-width: 2px;
 @mixin _badge($size) {
   $mt: 4px;
   $mt-small: 6px;
-  width: dot-size($size);
+  width: _dot-size($size);
 
   height: _dot-size($size);
   margin-top: if($size == "default", $mt, $mt-small);
