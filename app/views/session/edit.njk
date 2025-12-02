@@ -18,17 +18,19 @@
     descriptionHtml: summaryList({
       rows: summaryRows(session, {
         type: {
-          href: session.uri + "/edit/type"
+          href: session.uri + "/edit/type" if session.consentWindow == ConsentWindow.Opening
         },
         clinic: {
           href: session.uri + "/edit/clinic"
         },
         school: {
-          href: session.uri + "/edit/school"
+          href: session.uri + "/edit/school" if session.consentWindow == ConsentWindow.Opening
         },
-        programmes: {},
+        programmes: {
+          href: session.uri + "/edit/programmes" if session.consentWindow == ConsentWindow.Opening
+        },
         yearGroups: {
-          href: session.uri + "/edit/year-groups"
+          href: session.uri + "/edit/year-groups" if session.consentWindow == ConsentWindow.Opening
         },
         dates: {
           href: session.uri + "/edit/dates"
