@@ -1670,7 +1670,7 @@ export const en = {
     date: {
       label: 'Session date',
       title: 'When will this session be held?',
-      hint: 'For example, 27 3 2025',
+      hint: 'For example, 27 3 2026',
       check: {
         title: 'Have you imported historical vaccination records for %s?',
         description:
@@ -1716,7 +1716,7 @@ export const en = {
     openAt: {
       title: 'When should parents get a request to give consent?',
       label: 'Consent requests',
-      hint: 'For example, 27 3 2025'
+      hint: 'For example, 27 3 2026'
     },
     reminderDate: {
       label: 'Automatic consent reminder schedule',
