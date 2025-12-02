@@ -81,7 +81,7 @@ export const patientSessionController = {
 
     response.locals.options = {
       // Show outstanding vaccinations
-      showOutstandingVaccinations: vaccinated.length > 0 && due.length > 0,
+      showOutstandingVaccinations: vaccinated.length > 0 && due.length > 1,
       // Invite to session
       canInvite: consent === ConsentOutcome.NotDelivered,
       // Send a reminder to give consent
