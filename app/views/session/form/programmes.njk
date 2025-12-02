@@ -15,7 +15,10 @@
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--l",
-        text: title
+        html: appHeading({
+          caption: session.location.name if type == "edit",
+          title: title
+        })
       }
     },
     items: presetNameItems,

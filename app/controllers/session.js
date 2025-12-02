@@ -563,6 +563,8 @@ export const sessionController = {
         ...(referrer && { back: referrer })
       }
 
+      response.locals.type = type
+
       // Some questions are not asked during journey, so need explicit next path
       response.locals.paths.next =
         response.locals.paths.next || `${session.uri}/new/check-answers`
