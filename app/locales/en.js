@@ -1906,9 +1906,6 @@ export const en = {
       count:
         '{count, plural, =0 {No imported records} one {1 imported record} other {# imported records}}'
     },
-    notices: {
-      label: 'Important notices'
-    },
     show: {
       title: 'Upload ({{upload.formatted.createdAt}})',
       summary: 'Details',
