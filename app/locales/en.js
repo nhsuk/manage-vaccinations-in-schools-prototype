@@ -1071,6 +1071,8 @@ export const en = {
       label: 'Vaccine type'
     },
     outstandingVaccinations: {
+      label:
+        '{count, plural, one{Outstanding vaccination} other{Outstanding vaccinations}}',
       message:
         '{count, plural, one{You still need to record an outcome for {names}} other{You still need to record outcomes for {names}}}'
     },
