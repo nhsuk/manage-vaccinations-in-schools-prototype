@@ -3,46 +3,30 @@
 {% block main %}
   <div class="app-session-banner">
     <div class="nhsuk-width-container">
+      {% block beforeContent %}{% endblock %}
+
       <div class="nhsuk-main-wrapper nhsuk-main-wrapper--s">
         {{ notificationBanner(success) if success }}
         {{ notificationBanner(message) if message }}
 
-        <h1 class="nhsuk-heading-l{% if session.yearGroups %} nhsuk-u-margin-bottom-2{% endif %}">
-          {{ session.name }}
+        <h1 class="nhsuk-heading-l{% if caption %} nhsuk-u-margin-bottom-2{% endif %}">
+          {{ heading }}
         </h1>
-        {% if session.yearGroups %}
-        <p class="nhsuk-caption-l nhsuk-u-margin-bottom-0">
-          {{ session.formatted.yearGroups }}
+        {% if caption %}
+        <p class="nhsuk-caption-l nhsuk-caption--bottom">
+          {{ caption }}
         </p>
         {% endif %}
       </div>
+    </div>
+  </div>
 
+  <div class="app-sticky-navigation app-sticky-navigation--reverse" data-module="app-sticky">
+    <div class="nhsuk-width-container">
       {{ appSecondaryNavigation({
-        classes: "app-secondary-navigation--reverse nhsuk-u-margin-bottom-0",
-        items: [
-          {
-            text: __("session.show.label"),
-            href: session.uri,
-            icon: "alert" if session.consents.length,
-            current: not view
-          },
-          {
-            text: __("session.report.label"),
-            href: session.uri + "/report",
-            current: view == "report"
-          },
-          {
-            text: __("session.instruct.label"),
-            href: session.uri + "/instruct",
-            current: view == "instruct"
-          } if session.psdProtocol,
-          {
-            text: __("session.record.label"),
-            href: session.uri + "/record",
-            current: view == "record"
-          }
-        ]
-      }) if not session.isUnplanned }}
+        classes: "app-secondary-navigation--reverse",
+        items: navigationItems
+      }) if navigationItems }}
     </div>
   </div>
 

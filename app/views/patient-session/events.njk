@@ -1,22 +1,15 @@
-{% from "patient-session/_navigation.njk" import patientSessionNavigation with context %}
-
-{% extends "_layouts/form.njk" %}
+{% extends "_layouts/session.njk" %}
 
 {% set title = patient.fullName + " – " + __("patient.events.title") %}
-{% set gridColumns = "three-quarters" %}
-{% set hideConfirmButton = true %}
+{% set heading = patientSession.patient.fullName %}
+{% set caption = patientSession.formatted.yearGroup %}
 {% set view = "events" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
+    classes: "nhsuk-breadcrumb--reverse",
     items: [{
-      text: __("home.show.title"),
-      href: "/"
-    }, {
-      text: __("session.list.title"),
-      href: "/sessions"
-    }, {
-      text: session.location.name,
+      text: session.name,
       href: session.uri
     }, {
       text: __("session." + activity + ".label"),
@@ -25,13 +18,8 @@
   }) }}
 {% endblock %}
 
-{% block form %}
+{% block content %}
   {{ super() }}
-
-  {{ patientSessionNavigation({
-    patientSession: patientSession,
-    view: "events"
-  }) }}
 
   {% include "patient-session/_note.njk" %}
 
