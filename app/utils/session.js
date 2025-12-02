@@ -5,8 +5,8 @@ import programmesData from '../datasets/programmes.js'
 import schoolsData from '../datasets/schools.js'
 import {
   ConsentWindow,
-  ProgrammePreset,
   SchoolPhase,
+  SessionPresetName,
   SessionStatus,
   SessionType
 } from '../enums.js'
@@ -42,19 +42,19 @@ export const getConsentWindow = (session) => {
  * Get consent URL
  *
  * @param {import('../models/session.js').Session[]} sessions - Sessions
- * @param {string} [programmePreset] - Programme preset name
+ * @param {string} [presetName] - Session preset name
  * @param {boolean} [isSchool] - Get school session
  * @returns {object} Consent window key and value
  */
 export const getSessionConsentUrl = (
   sessions,
-  programmePreset = 'SeasonalFlu',
+  presetName = SessionPresetName.Flu,
   isSchool = true
 ) => {
   const sessionType = isSchool ? SessionType.School : SessionType.Clinic
 
   const session = Object.values(sessions)
-    .filter((session) => session?.programmePreset === programmePreset)
+    .filter((session) => session?.presetNames.includes(presetName))
     .filter((session) => session.type === sessionType)
     .find((session) => session.status !== SessionStatus.Unplanned)
 
@@ -95,20 +95,26 @@ export const getSessionActivityCount = (session, filters) => {
  * Get year groups based on intersection of school phase and programme
  *
  * @param {string} school_urn - School URN
- * @param {ProgrammePreset} programmePreset - Programme preset
+ * @param {Array<import('../enums.js').SessionPreset>} sessionPresets - Session presets
  * @returns {Array<number>} Year groups
  */
-export const getSessionYearGroups = (school_urn, programmePreset) => {
-  const preset = ProgrammePreset[programmePreset]
-  const allYearGroups = preset.programmeTypes.flatMap(
-    (programmeType) => programmesData[programmeType].yearGroups
-  )
+export const getSessionYearGroups = (school_urn, sessionPresets) => {
+  const programmeYearGroups = new Set()
+
+  for (const preset of sessionPresets) {
+    for (const programmeType of preset.programmeTypes) {
+      const programme = programmesData[programmeType]
+      for (const yearGroup of programme.yearGroups) {
+        programmeYearGroups.add(yearGroup)
+      }
+    }
+  }
 
   const school = schoolsData[school_urn]
   const schoolYearGroups =
     school.phase === SchoolPhase.Primary ? [...range(0, 6)] : [...range(7, 11)]
 
   return schoolYearGroups.filter((yearGroup) =>
-    allYearGroups.includes(yearGroup)
+    [...programmeYearGroups].includes(yearGroup)
   )
 }

@@ -11,8 +11,8 @@
       })
     },
     hint: {
-      text: __("consent.refusalReasonDetails.MMR.hint")
-     } if session.programmePreset == "MMR" and consent.refusalReason == ReplyRefusal.AlreadyGiven,
+      text: __("consent.refusalReasonDetails.mmr.hint")
+     } if "MMR" in session.presetNames and consent.refusalReason == ReplyRefusal.AlreadyGiven,
     decorate: "consent.refusalReasonDetails"
   }) }}
 {% endblock %}

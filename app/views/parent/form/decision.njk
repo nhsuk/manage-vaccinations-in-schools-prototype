@@ -1,6 +1,8 @@
 {% extends "_layouts/form.njk" %}
-{% set type = "mmr" if session.programmePreset == "MMR" else null %}
+
 {% set title = __("consent.decision.title", { session: session }) %}
+{% set programme_id = "mmr" if "MMR" in session.presetNames else null %}
+
 {% block form %}
   {% set programmeRadiosHtml = radios({
     fieldset: {
@@ -21,7 +23,7 @@
       }
     },
     hint: {
-      text: __("consent.decision." + type + ".hint") if type else null
+      text: __("consent.decision." + programme_id + ".hint") if type else null
     },
     items: injectConditionalHtml(decisionItems, "_one", programmeRadiosHtml) if programmeItems else decisionItems,
     decorate: "consent.decision"
