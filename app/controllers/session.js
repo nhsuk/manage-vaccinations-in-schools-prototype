@@ -8,6 +8,8 @@ import {
   ProgrammeType,
   RecordVaccineCriteria,
   RegistrationOutcome,
+  SchoolPhase,
+  SessionPresetName,
   SessionStatus,
   SessionType,
   VaccineMethod
@@ -18,6 +20,7 @@ import { Instruction } from '../models/instruction.js'
 import { Organisation } from '../models/organisation.js'
 import { PatientSession } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
+import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
@@ -575,6 +578,23 @@ export const sessionController = {
             }
           })
         }))
+
+      if (session.type === SessionType.School) {
+        const schools = School.findAll(data)
+
+        response.locals.schools = schools
+
+        // Only show primary schools if session is administering flu or MMR
+        if (
+          ![SessionPresetName.Flu, SessionPresetName.MMR].some((presetName) =>
+            session.presetNames?.includes(presetName)
+          )
+        ) {
+          response.locals.schools = schools.filter(
+            (school) => school.phase === SchoolPhase.Secondary
+          )
+        }
+      }
 
       if (session.school_urn) {
         response.locals.yearGroupItems = getSessionYearGroups(
