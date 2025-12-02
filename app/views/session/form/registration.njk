@@ -6,9 +6,9 @@
   {{ radios({
     fieldset: {
       legend: {
-        classes: "nhsuk-label--l",
+        classes: "nhsuk-fieldset__legend--l",
         html: appHeading({
-          caption: session.location.name,
+          caption: session.location.name if type == "edit",
           title: title
         })
       }

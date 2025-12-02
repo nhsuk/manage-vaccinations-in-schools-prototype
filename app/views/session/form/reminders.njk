@@ -8,7 +8,7 @@
     label: {
       classes: "nhsuk-label--l",
       html: appHeading({
-        caption: session.location.name,
+        caption: session.location.name if type == "edit",
         title: title
       })
     },
