@@ -451,7 +451,7 @@ export const en = {
       label: 'Response'
     },
     alternative: {
-      SeasonalFlu: {
+      flu: {
         label: 'Consent also given for injected vaccine?',
         title:
           'If your child cannot have the nasal spray, do you agree to them having the injected vaccine instead?',
@@ -463,7 +463,7 @@ export const en = {
           label: 'No'
         }
       },
-      MMR: {
+      mmr: {
         label: 'Consent given for gelatine-free vaccine only?',
         title: 'Do you want your child to have a vaccine without gelatine?',
         hint: 'One type of MMR vaccine contains gelatine from pigs. An alternative MMR vaccine is available that does not contain gelatine.',
@@ -499,7 +499,7 @@ export const en = {
     },
     refusalReasonDetails: {
       label: 'Refusal details',
-      MMR: {
+      mmr: {
         hint: 'Children need 2 doses of the MMR vaccine to be fully protected. If your child has had more than 1 dose, give details about both doses.'
       },
       title: {

@@ -10,7 +10,8 @@ import {
   InstructionOutcome,
   OrganisationDefaults,
   PatientStatus,
-  ProgrammePreset,
+  SessionPresets,
+  SessionPresetName,
   ProgrammeType,
   RecordVaccineCriteria,
   SessionStatus,
@@ -55,7 +56,7 @@ import { Vaccine } from './vaccine.js'
  * @property {Date} [date] - Dates
  * @property {object} [date_] - Dates (from `dateInput`s)
  * @property {number} [academicYear] - Programme year
- * @property {string} [programmePreset] - Programme preset name
+ * @property {Array<SessionPresetName>} [presetNames] - Session preset names
  * @property {boolean} [registration] - Does session have registration?
  *
  *   Clinics only
@@ -82,7 +83,7 @@ export class Session {
     this.date = options?.date && new Date(options.date)
     this.date_ = options?.date_
     this.academicYear = options?.academicYear || getCurrentAcademicYear()
-    this.programmePreset = options?.programmePreset
+    this.presetNames = options?.presetNames
 
     if (this.type === SessionType.Clinic) {
       this.clinic_id = options?.clinic_id
@@ -109,7 +110,7 @@ export class Session {
 
     if (
       this.type === SessionType.School &&
-      this.programmePreset === 'SeasonalFlu'
+      this.presetNames?.includes(SessionPresetName.Flu)
     ) {
       this.nationalProtocol =
         stringToBoolean(options?.nationalProtocol) || false
@@ -393,15 +394,24 @@ export class Session {
   }
 
   /**
+   * Get session presets
+   *
+   * @returns {Array<import('../enums.js').SessionPreset>} Patient sessions
+   */
+  get presets() {
+    return SessionPresets.filter((sessionPreset) =>
+      this.presetNames.includes(sessionPreset.name)
+    )
+  }
+
+  /**
    * Get primary programme ids
    *
    * @returns {Array<string>} Programme IDs
    */
   get programme_ids() {
     const programme_ids = new Set()
-
-    if (this.programmePreset) {
-      const preset = ProgrammePreset[this.programmePreset]
+    for (const preset of this.presets) {
       for (const programmeType of preset.programmeTypes) {
         const programme = programmesData[programmeType]
         programme_ids.add(programme.id)

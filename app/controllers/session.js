@@ -579,7 +579,7 @@ export const sessionController = {
       if (session.school_urn) {
         response.locals.yearGroupItems = getSessionYearGroups(
           session.school_urn,
-          session.programmePreset
+          session.presets
         ).map((year) => ({
           text: formatYearGroup(year),
           value: year

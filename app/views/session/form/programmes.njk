@@ -3,22 +3,22 @@
 {% set title = __("session.programmes.title") %}
 
 {% block form %}
-  {% set presetItems = [] %}
-  {% for key, value in ProgrammePreset %}
-    {% set presetItems = presetItems | push({
-      text: value.programmeTypes | formatList,
-      value: key
+  {% set presetNameItems = [] %}
+  {% for preset in SessionPresets %}
+    {% set presetNameItems = presetNameItems | push({
+      text: preset.programmeTypes | formatList,
+      value: preset.name
     }) %}
   {% endfor %}
 
-  {{ radios({
+  {{ checkboxes({
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--l",
         text: title
       }
     },
-    items: presetItems,
-    decorate: "session.programmePreset"
+    items: presetNameItems,
+    decorate: "session.presetNames"
   }) }}
 {% endblock %}
