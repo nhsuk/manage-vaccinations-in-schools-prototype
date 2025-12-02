@@ -53,7 +53,13 @@ export class PatientProgramme {
    */
   get programme() {
     try {
-      return Programme.findOne(this.programme_id, this.context)
+      const programme = Programme.findOne(this.programme_id, this.context)
+
+      if (this.programme_id === 'mmr' && this.patient?.age <= 6) {
+        programme.name = 'MMRV'
+      }
+
+      return programme
     } catch (error) {
       console.error('PatientProgramme.programme', error.message)
     }
