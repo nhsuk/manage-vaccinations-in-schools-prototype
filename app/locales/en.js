@@ -1510,7 +1510,8 @@ export const en = {
       label: 'Academic year'
     },
     report: {
-      label: 'Added to session'
+      label: 'Added to session',
+      title: 'Added to session'
     },
     consent: {
       label: 'Consent',
