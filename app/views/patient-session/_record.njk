@@ -1,35 +1,30 @@
-{{ appHeading({
-  classes: "app-vaccine-criteria",
-  level: 3,
-  size: "m",
-  title: __("patientSession.record.titleWithMethod", {
-    session: session,
-    method: patientSession.vaccineCriteria | lower | replace("only", "") | replace("preferred", "")
-  }),
-  attributes: {
-    "data-value": patientSession.vaccineCriteria
-  }
-} if patientSession.programme.alternativeVaccine else {
-  level: 3,
-  size: "m",
-  title: __("patientSession.record.title", {
-    session: session
-  })
-}) }}
+{% set heading -%}
+  {%- if patientSession.programme.alternativeVaccine %}
+    <span class="app-vaccine-criteria" data-value="{{ patientSession.vaccineCriteria }}">
+      {{- __("patientSession.record.titleWithMethod", {
+        session: session,
+        method: patientSession.vaccineCriteria | lower | replace("only", "") | replace("preferred", "")
+      }) -}}
+    </span>
+  {%- else -%}
+    {{- __("patientSession.record.title", {
+      session: session
+    }) -}}
+  {%- endif -%}
+{% endset %}
 
 {% call card({
-  heading: __("patientSession.preScreen.label", {
-    patient: patient
-  }),
+  heading: heading | safe,
   headingClasses: "nhsuk-heading-m",
-  headingLevel: 4
+  headingLevel: 3
 }) %}
   {{ radios({
     fieldset: {
       legend: {
         text: __("patientSession.preScreen.selfId.label", {
           patient: patient
-        })
+        }),
+        size: "s"
       }
     },
     items: [{
@@ -58,6 +53,17 @@
       }
     }],
     decorate: "patientSession.preScreen.selfId"
+  }) }}
+
+  <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--m">
+
+  {{ appHeading({
+    classes: "nhsuk-u-margin-bottom-2",
+    level: 4,
+    size: "s",
+    title: __("patientSession.preScreen.label", {
+      patient: patient
+    })
   }) }}
 
 {% filter nhsukMarkdown %}
@@ -94,7 +100,7 @@
     }
   }) if options.hasSupplier }}
 
-  <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+  <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--m">
 
   {% set vaccinationSiteHtml = radios({
     fieldset: {

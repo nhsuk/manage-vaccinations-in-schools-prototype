@@ -573,12 +573,13 @@ export const VaccinationOutcome = {
   Vaccinated: 'Vaccinated',
   PartVaccinated: 'Partially vaccinated',
   AlreadyVaccinated: 'Already had the vaccine',
+  ConsentRefused: 'Parent refused',
   Refused: 'Child refused',
   Absent: 'Child absent',
   Unwell: 'Child unwell',
   InviteToClinic: 'Invited to clinic',
   DelayVaccination: 'Delay vaccination',
-  DoNotVaccinate: 'Do not vaccinate'
+  DoNotVaccinate: 'Contraindicated'
 }
 
 /**

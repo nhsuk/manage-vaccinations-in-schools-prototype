@@ -28,7 +28,7 @@
         } if upload.type == UploadType.School,
         {
           header: __("vaccination.createdAt.label"),
-          text: patient.vaccination.formatted.createdAt_date
+          text: patient.vaccination.formatted.createdAt_dateShort
         } if upload.type == UploadType.Report
       ]) %}
     {% endfor %}

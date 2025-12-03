@@ -1,0 +1,18 @@
+{% set isVaccinated = patientSession.report == PatientStatus.Vaccinated %}
+
+{% call card({
+  heading: __("patientSession.gillick.title"),
+  headingLevel: 3
+}) %}
+  {# Description #}
+  {% if patientSession.gillick %}
+    {{ appStatus(patientSession.gillick.formatted.competent) }}
+  {% endif %}
+
+  {# Actions #}
+  {% set type = "edit" if patientSession.gillick.competent else "new" %}
+  {{ actionLink({
+    text: __("patientSession.gillick." + type + ".title"),
+    href: patientSession.uri + "/" + type + "/gillick?referrer=" + referrer
+  }) if not isVaccinated }}
+{% endcall %}
