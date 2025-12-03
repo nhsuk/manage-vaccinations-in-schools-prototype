@@ -56,10 +56,9 @@
 
       {% for auditEvent in patientSession.pinnedNotes %}
         {{ card({
-          classes: "nhsuk-u-margin-top-2 app-card--yellow",
+          classes: "nhsuk-u-margin-top-2 app-card--orange",
           heading: auditEvent.name,
-          headingLevel: 4,
-          feature: true,
+          headingLevel: 3,
           descriptionHtml: appEvent({ auditEvent: auditEvent, showProgrammes: true })
         }) }}
       {% endfor %}
