@@ -27,7 +27,7 @@ export function getConsentOutcomeStatus(consent) {
       break
     case ConsentOutcome.NotDelivered:
     case ConsentOutcome.Inconsistent:
-      colour = 'dark-orange'
+      colour = 'orange'
       icon = 'cross'
       break
     case ConsentOutcome.Given:
@@ -37,7 +37,7 @@ export function getConsentOutcomeStatus(consent) {
       icon = 'tick'
       break
     case ConsentOutcome.Declined:
-      colour = 'warm-yellow'
+      colour = 'yellow'
       icon = 'info'
       break
     case ConsentOutcome.Refused:
@@ -75,10 +75,10 @@ export function getPatientConsentStatus(patientConsent) {
       break
     case PatientConsentStatus.NoDetails:
     case PatientConsentStatus.NotDelivered:
-      colour = 'dark-orange'
+      colour = 'orange'
       break
     case PatientConsentStatus.FollowUp:
-      colour = 'warm-yellow'
+      colour = 'yellow'
       break
     case ConsentOutcome.Refused:
       colour = 'red'
@@ -144,7 +144,7 @@ export function getPatientStatus(report, vaccinationDue) {
       colour = 'blue'
       break
     case PatientStatus.Refused:
-      colour = 'dark-orange'
+      colour = 'orange'
       break
     case PatientStatus.Deferred:
       colour = 'red'
@@ -210,7 +210,7 @@ export function getReplyDecisionStatus(decision) {
       text = ReplyDecision.Given
       break
     case ReplyDecision.Declined:
-      colour = 'warm-yellow'
+      colour = 'yellow'
       break
     case ReplyDecision.Refused:
       colour = 'red'
@@ -243,7 +243,7 @@ export function getScreenOutcomeStatus(screen) {
       break
     case ScreenOutcome.InviteToClinic:
     case ScreenOutcome.DelayVaccination:
-      colour = 'dark-orange'
+      colour = 'orange'
       break
     case ScreenOutcome.DoNotVaccinate:
       colour = 'red'
@@ -332,14 +332,15 @@ export function getVaccinationOutcomeStatus(outcome) {
   let colour
   switch (outcome) {
     case VaccinationOutcome.DoNotVaccinate:
-      colour = 'red'
-      break
-    case VaccinationOutcome.DelayVaccination:
-    case VaccinationOutcome.InviteToClinic:
     case VaccinationOutcome.Refused:
     case VaccinationOutcome.Absent:
     case VaccinationOutcome.Unwell:
-      colour = 'dark-orange'
+      colour = 'red'
+      break
+    case VaccinationOutcome.ConsentRefused:
+    case VaccinationOutcome.DelayVaccination:
+    case VaccinationOutcome.InviteToClinic:
+      colour = 'orange'
       break
     default:
       colour = 'white'

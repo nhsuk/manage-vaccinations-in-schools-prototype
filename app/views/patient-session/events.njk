@@ -25,10 +25,9 @@
   {% if patientSession.pinnedNotes.length %}
     {% for auditEvent in patientSession.pinnedNotes %}
       {{ card({
-        classes: "app-card--yellow",
+        classes: "app-card--orange",
         heading: auditEvent.name,
-        headingLevel: 4,
-        feature: true,
+        headingLevel: 3,
         descriptionHtml: appEvent({ auditEvent: auditEvent, showProgrammes: true })
       }) }}
     {% endfor %}
