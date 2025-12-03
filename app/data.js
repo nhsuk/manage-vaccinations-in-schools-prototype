@@ -62,10 +62,6 @@ data.counts.moves = Move.findAll(data).length
 data.counts.notices = Notice.findAll(data).filter(
   ({ archivedAt }) => !archivedAt
 ).length
-data.counts.reviews = Upload.findAll(data).flatMap(
-  (upload) => upload.duplicates
-).length
 data.counts.sessions = Session.findAll(data).length
-data.counts.uploads = data.counts.notices + data.counts.reviews
 
 export default data
