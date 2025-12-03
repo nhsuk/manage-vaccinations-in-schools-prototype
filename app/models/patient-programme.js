@@ -295,6 +295,15 @@ export class PatientProgramme {
   }
 
   /**
+   * Get status colour name
+   *
+   * @returns {string} Colour name
+   */
+  get statusColour() {
+    return getPatientStatus(this.status, this.vaccinationDue).colour
+  }
+
+  /**
    * Get explanatory notes
    *
    * @returns {string} Explanatory notes
@@ -302,7 +311,9 @@ export class PatientProgramme {
   get statusNotes() {
     switch (this.status) {
       case PatientStatus.Ineligible:
-        return `Eligible from 1 September ${this.year}`
+        return this.patient.post16
+          ? 'Not eligible for school age immunisation'
+          : `Eligible from 1 September ${this.year}`
       case PatientStatus.Vaccinated:
         return `Vaccinated on ${this.lastVaccinationGiven.formatted.createdAt_dateShort}`
       case PatientStatus.Due:

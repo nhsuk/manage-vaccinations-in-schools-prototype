@@ -1,0 +1,7 @@
+{% call card({
+  heading: __("patientSession.instruct.title"),
+  headingLevel: 3
+}) %}
+  {# Description #}
+  {{ patientSession.status.instruct.text | nhsukMarkdown }}
+{% endcall %}

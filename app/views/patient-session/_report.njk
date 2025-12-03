@@ -1,26 +1,20 @@
-{{ appHeading({
-  level: 3,
-  size: "m",
-  title: __("session.report.label")
-}) }}
-
 {% call card({
+  classes: "nhsuk-u-margin-top-3",
   feature: true,
-  heading: programme.name + ": " + (patientSession.status.report.text),
-  headingClasses: "app-card__heading--" + patientSession.status.report.colour,
-  headingLevel: 4
+  heading: programme.name + ": " + (patientSession.patientProgramme.status),
+  headingClasses: "app-card__heading--" + patientSession.patientProgramme.statusColour,
+  headingLevel: 3
 }) %}
+  {# Description #}
+  {{ patientSession.reportNotes | nhsukMarkdown }}
+
   {# Decision table #}
   {% set vaccinationRows = [] %}
-  {% for vaccination in patientSession.vaccinations | reverse %}
+  {% for vaccination in patientSession.vaccinationOutcomes | reverse %}
     {% set vaccinationRows = vaccinationRows | push([
       {
         header: __("vaccination.createdAt_date.label"),
-        html: vaccination.link.createdAt_date
-      },
-      {
-        header: __("vaccination.location.label"),
-        text: vaccination.location
+        html: vaccination.link.createdAt
       },
       {
         header: __("vaccination.outcome.label"),
@@ -31,13 +25,12 @@
 
   {{ table({
     id: "vaccinations",
-    caption: __("patient.vaccinations.label"),
+    caption: __("patientSession.vaccinationOutcomes.label"),
     responsive: true,
     head: [
       { text: __("vaccination.createdAt_date.label") },
-      { text: __("vaccination.location.label") },
       { text: __("vaccination.outcome.label") }
     ],
     rows: vaccinationRows
-  }) if patientSession.vaccinations | length }}
+  }) if patientSession.vaccinationOutcomes | length }}
 {% endcall %}
