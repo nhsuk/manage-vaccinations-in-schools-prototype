@@ -32,11 +32,19 @@
 }
 
 .app-table__cell--summary-list {
-  padding-right: 0;
-
   .nhsuk-summary-list {
     margin-top: nhsuk-spacing(-2);
     margin-bottom: 0;
     table-layout: auto;
+  }
+}
+
+.app-table--review {
+  .nhsuk-table__row:has(:checked) {
+    background-color: nhsuk-tint(nhsuk-colour("green"), 90%);
+
+    .nhsuk-table__cell {
+      border-bottom-color: nhsuk-tint(nhsuk-colour("green"), 40%);
+    }
   }
 }
