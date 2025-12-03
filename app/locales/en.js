@@ -1931,11 +1931,28 @@ export const en = {
           '{count, plural, =0 {No imported records} one {1 imported record} other {# imported records}}'
       },
       moves: {
-        title: 'School moves – will need review after import',
+        title: {
+          [UploadStatus.Review]: 'School moves – need review',
+          [UploadStatus.Approved]: 'School moves resolved for this import'
+        },
         count:
           '{count, plural, =0 {No school moves} one {1 school move} other {# school moves}}',
-        summary:
-          'This upload includes {count, plural, =0 {No children} one {1 child} other {# children}} with a different school to the one in their Mavis record. If you approve the upload, these will be flagged as school moves needing review.'
+        decision: {
+          label: 'Decision',
+          title: 'Accept school move for {{patient.fullName}}?',
+          accept: {
+            label: 'Accept move'
+          },
+          ignore: {
+            label: 'Ignore move'
+          }
+        },
+        summary: {
+          [UploadStatus.Review]:
+            'This upload includes {count, plural, =0 {No children} one {1 child} other {# children}} with a different school to the one in their Mavis record. You need to review these records before you can approve this upload.',
+          [UploadStatus.Approved]:
+            '{count, plural, =0 {No school moves} one {1 school move} other {# school moves}} reviewed'
+        }
       }
     },
     new: {
