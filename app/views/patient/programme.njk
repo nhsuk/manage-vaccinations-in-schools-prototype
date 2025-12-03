@@ -67,7 +67,7 @@
       classes: "nhsuk-button--secondary nhsuk-u-margin-0",
       text: __("vaccination.new.alreadyVaccinated.dose", patientProgramme.formatted.doseDue) if patientProgramme.doseDue else __("vaccination.new.alreadyVaccinated.title"),
       href: patientProgramme.uri + "/new/vaccination"
-    }) if patientProgramme.status != PatientStatus.Vaccinated }}
+    }) if patientProgramme.status != PatientStatus.Vaccinated and patientProgramme.eligible }}
   {% endcall %}
 
   {% if patientProgramme.patientSessions.length %}
