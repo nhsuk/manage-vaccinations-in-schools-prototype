@@ -89,6 +89,10 @@
       {% include "upload/_pending-records.njk" %}
     {% endif %}
 
+    {% if upload.type != UploadType.Report and upload.moves.length %}
+      {% include "upload/_school-moves.njk" %}
+    {% endif %}
+
     {{ patientRecords({
       key: "imported",
       patients: upload.patients | rejectattr("hasPendingChanges")
