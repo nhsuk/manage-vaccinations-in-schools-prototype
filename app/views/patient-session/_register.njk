@@ -1,0 +1,41 @@
+{% call card({
+  heading: __("patientSession.register.title"),
+  headingLevel: 3
+}) %}
+  {# Description #}
+  {{ patientSession.registerNotes | nhsukMarkdown }}
+
+  {# Actions #}
+  {% if patientSession.register == RegistrationOutcome.Pending %}
+    <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--m">
+
+    {{ radios({
+      fieldset: {
+        legend: {
+          classes: "nhsuk-fieldset__legend--m nhsuk-u-font-size-22",
+          text: __("patientSession.registration.label", { patient: patient })
+        }
+      },
+      items: [{
+        text: __("patientSession.registration.present"),
+        value: RegistrationOutcome.Present
+      }, {
+        text: __("patientSession.registration.absent"),
+        value: RegistrationOutcome.Absent
+      }],
+      decorate: "patientSession.register"
+    }) }}
+
+    {{ button({
+      text: __("patientSession.registration.confirm"),
+      attributes: {
+        formaction: patientSession.uri + "/edit/registration?referrer=" + referrer
+      }
+    }) }}
+  {% elif patientSession.register != RegistrationOutcome.Complete %}
+    {{ actionLink({
+      text: __("patientSession.registration.title"),
+      href: patientSession.uri + "/edit/registration?referrer=" + referrer
+    }) }}
+  {% endif %}
+{% endcall %}

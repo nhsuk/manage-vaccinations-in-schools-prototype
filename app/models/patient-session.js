@@ -477,6 +477,8 @@ export class PatientSession {
         return 'You can only vaccinate if all respondents give consent.'
       case ConsentOutcome.Declined:
         return `${parentNames} would like to speak to a member of the team about other options for their child’s vaccination.`
+      case ConsentOutcome.Given:
+        return `${relationships} gave consent.`
       case ConsentOutcome.Refused:
         return `${relationships} refused to give consent.`
       case ConsentOutcome.FinalRefusal:
@@ -635,21 +637,21 @@ export class PatientSession {
       case ScreenOutcome.NeedsTriage:
         return 'You need to decide if it’s safe to vaccinate.'
       case ScreenOutcome.InviteToClinic:
-        return `${user.fullName} decided that ${patient.fullName}’s vaccination should take place at a clinic.`
+        return `${user.fullName} decided that ${patient.firstName}’s vaccination should take place at a clinic.`
       case ScreenOutcome.DelayVaccination:
-        return `${user.fullName} decided that ${patient.fullName}’s vaccination should be delayed until ${triageNote.formatted.outcomeAt}.`
+        return `${user.fullName} decided that ${patient.firstName}’s vaccination should be delayed until ${triageNote.formatted.outcomeAt}.`
       case ScreenOutcome.DoNotVaccinate:
-        return `${user.fullName} decided that ${patient.fullName} should not be vaccinated.`
+        return `${user.fullName} decided that ${patient.firstName} should not be vaccinated.`
       case ScreenOutcome.Vaccinate:
-        return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate.`
+        return `${user.fullName} decided that ${patient.firstName} is safe to vaccinate.`
       case ScreenOutcome.VaccinateAlternativeFluInjectionOnly:
-        return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the injected vaccine only.`
+        return `${user.fullName} decided that ${patient.firstName} is safe to vaccinate using the injected vaccine only.`
       case ScreenOutcome.VaccinateAlternativeMMRInjectionOnly:
-        return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the gelatine-free injection only.`
+        return `${user.fullName} decided that ${patient.firstName} is safe to vaccinate using the gelatine-free injection only.`
       case ScreenOutcome.VaccinateIntranasalOnly:
-        return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the nasal spray only.`
+        return `${user.fullName} decided that ${patient.firstName} is safe to vaccinate using the nasal spray only.`
       default:
-        return `No triage is needed for ${patient.fullName}.`
+        return `No triage is needed for ${patient.firstName}.`
     }
   }
 
@@ -669,6 +671,26 @@ export class PatientSession {
    */
   get register() {
     return getRegistrationOutcome(this)
+  }
+
+  /**
+   * Get explanatory notes about registration outcome
+   *
+   * @returns {string} Explanatory notes
+   */
+  get registerNotes() {
+    const { patient } = this
+
+    switch (this.register) {
+      case RegistrationOutcome.Present:
+        return `${patient.firstName} is attending this session.`
+      case RegistrationOutcome.Absent:
+        return `${patient.firstName} is absent from this session.`
+      case RegistrationOutcome.Pending:
+        return `${patient.firstName} has not been registered as attending yet.`
+      case RegistrationOutcome.Complete:
+        return `${patient.firstName} has completed this session.`
+    }
   }
 
   /**
@@ -706,9 +728,11 @@ export class PatientSession {
   get reportNotes() {
     switch (this.report) {
       case PatientStatus.Vaccinated:
-        return `${this.patientVaccinated} on ${this.lastVaccinationOutcome.formatted.createdAt_dateShort}`
+        return `${this.patient.firstName} was vaccinated by ${this.lastVaccinationOutcome.createdBy.fullName} on ${this.lastVaccinationOutcome.formatted.createdAt}.`
       case PatientStatus.Due:
         return this.vaccineCriteria
+          ? `${this.patient.firstName} is ready to vaccinate (${this.vaccineCriteria}).`
+          : `${this.patient.firstName} is ready to vaccinate.`
       case PatientStatus.Deferred:
         return this.lastVaccinationOutcome
           ? `${this.patientDeferred} on ${this.lastVaccinationOutcome.formatted.createdAt_dateShort}`
@@ -775,7 +799,7 @@ export class PatientSession {
       report: formatProgrammeStatus(
         this.programme,
         this.status.report,
-        this.reportNotes
+        this.patientVaccinated
       ),
       outstandingVaccinations: filters.formatList(outstandingVaccinations),
       vaccineCriteria: formatVaccineCriteria(this.vaccineCriteria),

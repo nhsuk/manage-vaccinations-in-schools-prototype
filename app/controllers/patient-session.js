@@ -103,13 +103,15 @@ export const patientSessionController = {
       needsTriage: report === PatientStatus.Triage,
       // Patient already triaged
       hasTriage: triageNotes.length > 0,
+      hasInstruct:
+        session.psdProtocol &&
+        patientSession.instruct &&
+        patientSession.session.isActive,
       hasSupplier: userIsHCA && userHasSupplier,
+      canRegister: session.register && session.isActive,
       canRecord:
         account.vaccineMethods?.includes(patientSession.vaccine?.method) &&
-        record,
-      canReport:
-        report === PatientStatus.Vaccinated &&
-        patientSession.lastVaccinationOutcome
+        record
     }
 
     response.locals.vaccinationSiteItems = Object.entries(VaccinationSite)

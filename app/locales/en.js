@@ -1040,17 +1040,20 @@ export const en = {
       label: 'Session note'
     },
     consent: {
-      title: 'Consent for %s',
-      label: 'Consent status'
+      label: 'Consent status',
+      title: 'Consent for %s vaccination'
     },
     screen: {
-      label: 'Triage status'
+      label: 'Triage status',
+      title: 'Triage for %s vaccination'
     },
     instruct: {
-      label: 'PSD status'
+      label: 'PSD status',
+      title: 'Patient Specific Directions (PSD)'
     },
     register: {
-      label: 'Registration status'
+      label: 'Registration status',
+      title: 'Register attendance'
     },
     outcome: {
       label: 'Session outcome'
@@ -1078,6 +1081,7 @@ export const en = {
     },
     gillick: {
       label: 'Gillick assessment',
+      title: 'Gillick assessment',
       text: 'Before you make your assessment, you should give {{patient.firstName}} a chance to ask questions.',
       new: {
         title: 'Assess Gillick competence',
@@ -1181,6 +1185,7 @@ export const en = {
       present: 'Yes, they are attending today’s session',
       absent: 'No, they are absent from today’s session',
       pending: 'They have not been registered yet',
+      confirm: 'Update attendance',
       actions: {
         label: 'Attending?',
         present: {
@@ -1530,7 +1535,7 @@ export const en = {
         'There are %s children with consent for the nasal flu vaccine who do not require triage and do not yet have a PSD in place.'
     },
     register: {
-      label: 'Register',
+      label: 'Register attendance',
       title: 'Register attendance',
       information: 'You can register attendance when a session is in progress.'
     },
