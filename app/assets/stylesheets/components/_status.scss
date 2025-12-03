@@ -1,5 +1,4 @@
 @use "../vendor/nhsuk-frontend" as *;
-@use "../core" as app;
 
 .app-status {
   display: flex;
@@ -15,10 +14,6 @@
 
   &--blue {
     color: nhsuk-colour("blue");
-  }
-
-  &--dark-orange {
-    color: app.$dark-orange-colour;
   }
 
   &--green {

@@ -87,7 +87,7 @@
       {{ appDataCard({
         heading: PatientStatus.Refused,
         headingLevel: 3,
-        colour: "dark-orange",
+        colour: "orange",
         compact: true,
         data: session.tally(programme.id, PatientStatus.Refused),
         href: session.uri + "/report?report=" + PatientStatus.Refused + "&programme_id=" + programme.id
