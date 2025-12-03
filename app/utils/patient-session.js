@@ -60,7 +60,7 @@ export const getRegistrationOutcome = (patientSession) => {
 export const getRecordOutcome = (patientSession) => {
   const { register, report, session } = patientSession
 
-  if (report === PatientStatus.Due) {
+  if (report !== PatientStatus.Vaccinated) {
     if (session.registration && register === RegistrationOutcome.Pending) {
       return false
     }
@@ -83,7 +83,7 @@ export const getSessionOutcome = (patientSession) => {
       patientSession.consent
     )
   ) {
-    return VaccinationOutcome.Refused
+    return VaccinationOutcome.ConsentRefused
   } else if (patientSession.screen === ScreenOutcome.InviteToClinic) {
     return VaccinationOutcome.InviteToClinic
   } else if (patientSession.screen === ScreenOutcome.DelayVaccination) {

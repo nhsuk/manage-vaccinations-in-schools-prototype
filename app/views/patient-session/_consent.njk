@@ -2,27 +2,13 @@
 {% from "../_macros/parent-sms.njk" import appParentSms with context %}
 {% set isVaccinated = patientSession.report == PatientStatus.Vaccinated %}
 
-{{ appHeading({
-  level: 3,
-  size: "m",
-  title: __("session.consent.label")
-}) }}
-
 {% call card({
-  feature: true,
-  heading: programme.name + ": " + (patientSession.status.patientConsent.text),
-  headingClasses: "app-card__heading--" + patientSession.status.patientConsent.colour,
-  headingLevel: 4
+  heading: __("patientSession.consent.title", programme.nameSentenceCase),
+  headingLevel: 3
 }) %}
   {# Description #}
   {% if not isVaccinated %}
-    {% if patientSession.patient.hasNoContactDetails %}
-      {{ __("patientSession.hasNoContactDetails.description") | nhsukMarkdown }}
-    {% elif session.consentWindow == ConsentWindow.Opening %}
-      {{ session.formatted.consentWindowSentence | nhsukMarkdown }}
-    {% else %}
-      {{ patientSession.consentNotes | nhsukMarkdown }}
-    {% endif %}
+    {{ patientSession.consentNotes | nhsukMarkdown }}
 
     {% if patientSession.patient.lastReminderDate %}
       {{ patientSession.patient.formatted.lastReminderDate | nhsukMarkdown }}
@@ -45,36 +31,18 @@
         formaction: patientSession.uri + "/new/invite",
         formmethod: "post"
       }
-    } if options.canInvite, {
-      classes: "nhsuk-button--secondary",
-      text: __("reply.new.title"),
-      href: patientSession.uri + "/replies/new?referrer=" + referrer
-    } if options.canRespond]
+    } if options.canInvite]
   }) if not isVaccinated }}
 
-  {# Gillick #}
-  {% if options.canGillick or patientSession.gillick %}
-    {{ appHeading({
-      level: 4,
-      size: "s",
-      title: __("patientSession.gillick.label")
-    }) }}
-    {{ appStatus(patientSession.gillick.formatted.competent) }}
-  {% endif %}
-
-  {% if options.canGillick and not isVaccinated %}
-    {% set type = "edit" if patientSession.gillick.competent else "new" %}
-    {{ button({
-      classes: "nhsuk-button--secondary",
-      text: __("patientSession.gillick." + type + ".title"),
-      href: patientSession.uri + "/" + type + "/gillick?referrer=" + referrer
-    }) }}
-  {% endif %}
+  {{ actionLink({
+    text: __("reply.new.title"),
+    href: patientSession.uri + "/replies/new?referrer=" + referrer
+  }) if options.canRespond and not isVaccinated }}
 
   {% if patientSession.replies | length %}
     {# Requests with responses or requests that couldn’t be delivered #}
     {{ appHeading({
-      level: 4,
+      level: 3,
       size: "s",
       title: __("patientSession.replies.responses") if patientSession.responses.length > 0 else __("patientSession.replies.requests")
     }) }}
@@ -106,7 +74,7 @@
     {# We don’t create replies so use parent details instead #}
 
     {{ appHeading({
-      level: 4,
+      level: 3,
       size: "s",
       title: __("patientSession.replies.pending")
     }) }}
@@ -136,7 +104,7 @@
 
   {# Health answers #}
   {% if patientSession.consentHealthAnswers %}
-    <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+    <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--m">
 
     {{ appHeading({
       classes: "nhsuk-u-margin-bottom-2",

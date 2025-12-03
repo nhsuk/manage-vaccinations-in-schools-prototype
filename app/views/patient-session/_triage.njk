@@ -1,27 +1,16 @@
 {% set isVaccinated = patientSession.report == PatientStatus.Vaccinated %}
 
-{{ appHeading({
-  level: 3,
-  size: "m",
-  title: __("session.screen.label")
-}) }}
-
 {% call card({
-  feature: true,
-  heading: programme.name + ": " + (patientSession.status.screen.text),
-  headingClasses: "app-card__heading--" + patientSession.status.screen.colour,
-  headingLevel: 4
+  heading: __("patientSession.screen.title", programme.nameSentenceCase),
+  headingLevel: 3
 }) %}
   {# Description #}
   {{ patientSession.screenNotes | nhsukMarkdown }}
 
   {# Actions #}
-  {{ appButtonGroup({
-    buttons: [{
-      classes: "nhsuk-button--secondary",
-      text: __("triage.edit.title"),
-      href: patientSession.uri + "/edit/triage?referrer=" + referrer
-    }]
+  {{ actionLink({
+    text: __("triage.edit.title"),
+    href: patientSession.uri + "/edit/triage?referrer=" + referrer
   }) if not options.needsTriage and not isVaccinated }}
 
   {# Decision table #}
@@ -68,7 +57,7 @@
   {% endif %}
 
   {% if options.needsTriage %}
-    <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+    <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--m">
 
     {% set psdRadiosHtml = radios({
       classes: "nhsuk-radios--inline",

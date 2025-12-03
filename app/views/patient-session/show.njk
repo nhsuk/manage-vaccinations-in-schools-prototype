@@ -2,7 +2,6 @@
 
 {% set title = patient.initials + " – " + session.location.name %}
 {% set heading = patientSession.patient.fullName %}
-{% set caption = patientSession.formatted.yearGroup %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -23,7 +22,6 @@
   <div class="nhsuk-grid-row">
     <div class="app-grid-column-patient-record" data-module="app-sticky">
       {{ appHeading({
-        classes: "nhsuk-u-margin-top-1",
         level: 3,
         size: "s",
         title: patientSession.patient.fullName
@@ -43,20 +41,6 @@
     </div>
 
     <div class="app-grid-column-patient-session">
-      {{ appActionList({
-        items: [{
-          tag: statusTag(patientSession.status.instruct)
-        } if session.psdProtocol and patientSession.instruct, {
-          tag: statusTag(patientSession.status.register)
-        } if session.registration, {
-          text: __("patientSession.registration.title"),
-          href: patientSession.uri + "/edit/registration?referrer=" + referrer
-        } if session.registration and patientSession.register != RegistrationOutcome.Complete, {
-          text: __("patientSession.record.title"),
-          href: "#"
-        } if not patientSession.session.isActive and patientSession.report != PatientStatus.Vaccinated]
-      }) if patientSession.session.isActive }}
-
       {{ warningCallout({
         classes: "nhsuk-u-margin-top-3",
         heading: __mf("patientSession.outstandingVaccinations.label", {
@@ -68,6 +52,8 @@
         })
       }) if options.showOutstandingVaccinations }}
 
+      {% include "patient-session/_report.njk" %}
+
       {% for auditEvent in patientSession.pinnedNotes %}
         {{ card({
           classes: "nhsuk-u-margin-top-2 app-card--yellow",
@@ -78,15 +64,23 @@
         }) }}
       {% endfor %}
 
+      {% if options.canGillick or patientSession.gillick %}
+        {% include "patient-session/_gillick.njk" %}
+      {% endif %}
+
       {% include "patient-session/_consent.njk" %}
 
       {% if options.canTriage %}
         {% include "patient-session/_triage.njk" %}
       {% endif %}
 
-      {# if options.canReport#}
-        {% include "patient-session/_report.njk" %}
-      {# endif #}
+      {% if options.hasInstruct %}
+        {% include "patient-session/_instruct.njk" %}
+      {% endif %}
+
+      {% if options.canRegister %}
+        {% include "patient-session/_register.njk" %}
+      {% endif %}
 
       {% if options.canRecord %}
         {% include "patient-session/_record.njk" %}

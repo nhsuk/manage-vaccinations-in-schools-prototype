@@ -383,8 +383,8 @@ export class Reply {
         ? this.relationship
         : formatParent(this.parent, false),
       parent: formatParent(this.parent, true),
-      tel: this.parent.tel,
-      email: this.parent.email,
+      tel: this.parent && this.parent.tel,
+      email: this.parent && this.parent.email,
       programme: this.programme?.nameTag,
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
       refusalReasonDetails: formatMarkdown(this.refusalReasonDetails),

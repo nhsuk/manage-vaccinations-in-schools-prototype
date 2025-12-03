@@ -19,6 +19,8 @@
 .app-grid-column-patient-record {
   @include nhsuk-grid-column(one-quarter, $float: right, $at: large-desktop);
 
+  padding-top: 12px;
+
   &[data-app-sticky-init] {
     @include nhsuk-media-query($from: desktop) {
       top: #{nhsuk-spacing(9) + nhsuk-spacing(3)};

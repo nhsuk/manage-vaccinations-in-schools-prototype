@@ -393,9 +393,6 @@ export class Vaccination {
         minute: '2-digit',
         hour12: true
       }),
-      createdAt_date: formatDate(this.createdAt, {
-        dateStyle: 'long'
-      }),
       createdAt_dateShort: formatDate(this.createdAt, {
         day: 'numeric',
         month: 'short',
@@ -440,7 +437,7 @@ export class Vaccination {
    */
   get link() {
     return {
-      createdAt_date: formatLink(this.uri, this.formatted.createdAt_date),
+      createdAt: formatLink(this.uri, this.formatted.createdAt),
       fullName: this.patient && formatLink(this.uri, this.patient.fullName),
       fullNameAndNhsn:
         this.patient &&
