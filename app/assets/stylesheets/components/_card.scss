@@ -81,7 +81,6 @@
 
   .nhsuk-card__content {
     @include nhsuk-responsive-padding(4);
-    @include nhsuk-responsive-padding(3, "bottom");
   }
 }
 
