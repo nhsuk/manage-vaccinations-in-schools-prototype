@@ -1,6 +1,64 @@
 {% set patientRows = [] %}
 {% for patient in pendingRecords %}
   {% set type = "vaccination" if upload.type == UploadType.Report else "child" %}
+  {% set archiveChangeset = __("upload.show.partial.decision.archived.label", ArchiveRecordReason.Error) %}
+  {% set archiveRadios = radios({
+    classes: "nhsuk-radios--small",
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-2"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-u-visually-hidden",
+        text: __("upload.show.partial.decision.title", { patient: patient })
+      }
+    },
+    items: [{
+      text: __("upload.show.partial.decision.restore.label", type),
+      value: "restore"
+    }, {
+      text: __("upload.show.partial.decision.ignore.label", type),
+      value: "ignore"
+    }],
+    decorate: "pending-record-" + loop.index0
+  }) %}
+  {% set archiveDecision = __("upload.show.partial.decision.restore.label", type) %}
+
+  {% set duplicateChangeset = summaryList({
+    rows: summaryRows(patient, {
+      dob: {
+        value: patient.formatted.dob + " → " + ("1 January 2021" | highlightDifference(patient.formatted.dob))
+      },
+      yearGroup: {
+        value: patient.formatted.yearGroup + " → " + ("Reception" | highlightDifference(patient.formatted.yearGroup))
+      }
+    })
+  }) %}
+  {% set duplicateRadios = radios({
+    classes: "nhsuk-radios--small",
+    formGroup: {
+      classes: "nhsuk-u-margin-bottom-2"
+    },
+    fieldset: {
+      legend: {
+        classes: "nhsuk-u-visually-hidden",
+        text: __("upload.show.partial.decision.title", { patient: patient })
+      }
+    },
+    items: [{
+      text: __("upload.show.partial.decision.duplicate.label", type),
+      value: "duplicate"
+    }, {
+      text: __("upload.show.partial.decision.original.label", type),
+      value: "original"
+    }, {
+      text: __("upload.show.partial.decision.both.label", type),
+      value: "both"
+    }],
+    decorate: "decision-" + loop.index0
+  }) %}
+  {% set duplicateDecision = __("upload.show.partial.decision.duplicate.label", type) %}
+
   {% set patientRows = patientRows | push([
     {
       header: __("patient.fullNameAndNhsn.label"),
@@ -8,27 +66,17 @@
     },
     {
       classes: "app-table__cell--summary-list",
-      header: __("review.label"),
-      html: summaryList({
-        rows: summaryRows(patient, {
-          dob: {
-            value: patient.formatted.dob + " → " + ("1 January 2021" | highlightDifference(patient.formatted.dob))
-          },
-          yearGroup: {
-            value: patient.formatted.yearGroup + " → " + ("Reception" | highlightDifference(patient.formatted.yearGroup))
-          }
-        })
-      }) if upload.status == UploadStatus.Review else __("review.duplicate.description", type)
+      header: __("upload.show.partial.label." + upload.status),
+      html: archiveChangeset if loop.first else duplicateChangeset
     },
     {
-      header: __("actions.label"),
-      html: appActionList({
-        items: [{
-          text: __("actions.review"),
-          href: "/uploads/reviews/" + upload.id + "/" + patient.nhsn
-        }]
-      })
-    } if upload.status == UploadStatus.Approved
+      header: __("upload.show.partial.decision.label"),
+      html: archiveRadios if upload.status == UploadStatus.Review else archiveDecision
+    } if loop.first,
+    {
+      header: __("upload.show.partial.decision.label"),
+      html: duplicateRadios if upload.status == UploadStatus.Review else duplicateDecision
+    } if not loop.first
   ]) %}
 {% endfor %}
 
@@ -41,20 +89,22 @@
   })
 }) }}
 
-{{ details({
-  classes: "nhsuk-expander",
-  summaryText: __mf("upload.show.partial.count." + upload.status, {
+{{ card({
+  heading: __mf("upload.show.partial.count." + upload.status, {
     count: patientRows.length
   }),
-  html: table({
+  headingClasses: "nhsuk-heading-s",
+  headingLevel: 3,
+  descriptionHtml: table({
+    tableClasses: "app-table--review",
     id: "partial",
     headingLevel: 2,
     responsive: true,
     head: [
       { text: __("patient.fullNameAndNhsn.label") },
-      { text: __("review.label") },
-      { text: __("actions.label") } if upload.status == UploadStatus.Approved
+      { text: __("upload.show.partial.label." + upload.status) },
+      { html: __("upload.show.partial.decision.label") }
     ],
     rows: patientRows
   })
-}) | replace('class="nhsuk-details__summary"', 'class="nhsuk-details__summary" data-module="app-sticky"') }}
+}) }}

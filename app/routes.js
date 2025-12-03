@@ -26,7 +26,6 @@ import { patientSessionRoutes } from './routes/patient-session.js'
 import { patientRoutes } from './routes/patient.js'
 import { programmeRoutes } from './routes/programme.js'
 import { replyRoutes } from './routes/reply.js'
-import { reviewRoutes } from './routes/review.js'
 import { schoolRoutes } from './routes/school.js'
 import { sessionRoutes } from './routes/session.js'
 import { uploadRoutes } from './routes/upload.js'
@@ -75,7 +74,6 @@ router.use(
   replyRoutes
 )
 router.use('/sessions', sessionRoutes)
-router.use('/uploads/reviews', reviewRoutes)
 router.use('/uploads', uploadRoutes)
 router.use('/uploads/:upload_id/vaccinations', vaccinationRoutes)
 router.use('/uploads/:upload_id/patients', patientRoutes)

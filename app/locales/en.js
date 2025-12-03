@@ -1380,48 +1380,6 @@ export const en = {
       label: 'Confirm consent refusal?'
     }
   },
-  review: {
-    label: 'Changes to review',
-    count:
-      '{count, plural, =0 {No imported records need} one {1 imported record needs} other {# imported records need}} review',
-    archived: {
-      label: 'Archived record',
-      title: 'Do you want to restore this previously archived record?',
-      hint: 'This record was previously archived. %s.',
-      description: 'Uploaded %s record was previously archived',
-      confirm: 'Resolve archived record',
-      success: 'Previously archived record restored'
-    },
-    duplicate: {
-      label: 'Uploaded record',
-      title: 'Uploaded %s record duplicates an existing record',
-      description: 'Uploaded %s record duplicates an existing record',
-      confirm: 'Resolve duplicate record',
-      success: 'Record updated with values from duplicate record'
-    },
-    original: {
-      label: 'Existing record',
-      record: 'Existing child record',
-      vaccination: 'Existing vaccination record'
-    },
-    decision: {
-      label: 'Which record do you want to keep?',
-      duplicate: {
-        label: 'Use uploaded %s record',
-        hint: 'The uploaded record will replace the existing record'
-      },
-      original: {
-        label: 'Keep existing %s record',
-        hint: 'The existing record will be kept and the uploaded record will be discarded'
-      },
-      restore: {
-        label: 'Yes, restore this record'
-      },
-      ignore: {
-        label: 'No, keep this record archived'
-      }
-    }
-  },
   school: {
     list: {
       label: 'Schools',
@@ -1891,18 +1849,13 @@ export const en = {
       description:
         'Import child, cohort and vaccination records and see important notices',
       introduction:
-        'Use this page to upload and import child, class list and vaccination records.\n\nAfter import, files move to the **Completed imports** tab. Any close matches to resolve will appear in the **Issues** tab.\n\nUpload times can vary. Refresh the page to see the latest status.'
+        'Use this page to upload and import child, class list and vaccination records.\n\nAfter import, files move to the **Completed imports** tab.\n\nUpload times can vary. Refresh the page to see the latest status.'
     },
     recent: {
       label: 'Uploaded files',
       title: 'Uploaded files',
       count:
         '{count, plural, =0 {No uploaded files} one {1 uploaded file} other {# uploaded files}}'
-    },
-    reviews: {
-      label: 'Issues',
-      title: 'Issues',
-      count: '{count, plural, =0 {No uploads} one {1 upload} other {# uploads}}'
     },
     imported: {
       label: 'Completed imports',
@@ -1921,10 +1874,14 @@ export const en = {
           'This upload includes {count, plural, =0 {no new records that are} one {1 new record this is} other {# new records  that are}} not currently in Mavis. If you approve the upload, these records will be added to Mavis.'
       },
       partial: {
+        label: {
+          [UploadStatus.Review]: 'Changes to review',
+          [UploadStatus.Approved]: 'Changes reviewed'
+        },
         title: {
           [UploadStatus.Review]:
-            'Close matches to existing records – will need review after import',
-          [UploadStatus.Approved]: 'Upload issues in this import – need review'
+            'Close matches to existing records – need review',
+          [UploadStatus.Approved]: 'Upload issues resolved for this import'
         },
         count: {
           [UploadStatus.Review]:
@@ -1932,11 +1889,33 @@ export const en = {
           [UploadStatus.Approved]:
             '{count, plural, =0 {No upload issues} one {1 upload issue} other {# upload issues}}'
         },
+        decision: {
+          label: 'Decision',
+          title: 'Which changes do you want to keep for {{patient.fullName}}?',
+          duplicate: {
+            label: 'Use uploaded'
+          },
+          archived: {
+            label: 'This record was previously archived. %s.'
+          },
+          original: {
+            label: 'Keep existing'
+          },
+          both: {
+            label: 'Keep both'
+          },
+          restore: {
+            label: 'Restore record'
+          },
+          ignore: {
+            label: 'Keep archived'
+          }
+        },
         summary: {
           [UploadStatus.Review]:
-            'This upload includes {count, plural, =0 {no records} one {1 record} other {# records}} that are close matches to existing records in Mavis. If you approve the upload, any differences will be flagged as import issues needing review.',
+            'This upload includes {count, plural, =0 {no records} one {1 record} other {# records}} that are close matches to existing records in Mavis. You need to review these records before you can approve this upload.',
           [UploadStatus.Approved]:
-            '{count, plural, =0 {No records} one {1 record} other {# records}} flagged with import issues for review'
+            '{count, plural, =0 {No records} one {1 import issue} other {# import issues}} reviewed'
         }
       },
       matched: {
