@@ -95,7 +95,7 @@
 
     {{ patientRecords({
       key: "imported",
-      patients: upload.patients | rejectattr("hasPendingChanges")
+      patients: upload.patients
     }) }}
   {% endif %}
 
