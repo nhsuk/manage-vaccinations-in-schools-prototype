@@ -1889,7 +1889,9 @@ export const en = {
       label: 'Imports',
       title: 'Imports',
       description:
-        'Import child, cohort and vaccination records and see important notices'
+        'Import child, cohort and vaccination records and see important notices',
+      introduction:
+        'Use this page to upload and import child, class list and vaccination records.\n\nAfter import, files move to the **Completed imports** tab. Any close matches to resolve will appear in the **Issues** tab.\n\nUpload times can vary. Refresh the page to see the latest status.'
     },
     recent: {
       label: 'Uploaded files',
@@ -1898,15 +1900,15 @@ export const en = {
         '{count, plural, =0 {No uploaded files} one {1 uploaded file} other {# uploaded files}}'
     },
     reviews: {
-      label: 'Upload issues',
-      title: 'Upload issues',
+      label: 'Issues',
+      title: 'Issues',
       count: '{count, plural, =0 {No uploads} one {1 upload} other {# uploads}}'
     },
     imported: {
-      label: 'Imported records',
-      title: 'Imported records',
+      label: 'Completed imports',
+      title: 'Completed imports',
       count:
-        '{count, plural, =0 {No imported records} one {1 imported record} other {# imported records}}'
+        '{count, plural, =0 {No completed imports} one {1 completed import} other {# completed imports}}'
     },
     show: {
       title: 'Upload ({{upload.formatted.createdAt}})',

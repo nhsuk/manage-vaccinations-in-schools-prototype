@@ -9,11 +9,15 @@
     title: __("upload.list.title")
   }) }}
 
-  {{ button({
-    classes: "nhsuk-button--secondary",
-    text: __("upload.new.label"),
-    href: "/uploads/new"
-  }) }}
+  <div class="nhsuk-u-reading-width">
+    {{ __("upload.list.introduction") | nhsukMarkdown }}
+
+    {{ button({
+      classes: "nhsuk-button--secondary",
+      text: __("upload.new.label"),
+      href: "/uploads/new"
+    }) }}
+  </div>
 
   {{ appSecondaryNavigation({
     items: [{
@@ -21,13 +25,13 @@
       href: "/uploads",
       current: params.view == "recent"
     }, {
-      text: (__("upload.reviews.label") + appCount(reviews.length)) | safe,
-      href: "/uploads/reviews",
-      current: params.view == "reviews"
-    }, {
       text: __("upload.imported.label"),
       href: "/uploads/imported",
       current: params.view == "imported"
+    }, {
+      text: (__("upload.reviews.label") + appCount(reviews.length)) | safe,
+      href: "/uploads/reviews",
+      current: params.view == "reviews"
     }]
   }) }}
 
