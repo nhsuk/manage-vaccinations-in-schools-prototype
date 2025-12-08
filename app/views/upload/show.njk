@@ -5,7 +5,11 @@
 {% set gridColumns = "full" %}
 {% set hideConfirmButton = true %}
 {% set programme = data.programmes[upload.programme_id] %}
-{% set title = __("upload.show.title", { upload: upload }) %}
+{% if upload.needsReview %}
+  {% set title = __("upload.show.needsReviewTitle", { upload: upload }) %}
+{% else %}
+  {% set title = __("upload.show.title", { upload: upload }) %}
+{% endif %}
 
 {% set templateFormat %}
   {% if upload.type == UploadType.Cohort %}
@@ -156,7 +160,7 @@
 
     {{ appButtonGroup({
       buttons: [{
-        text: "Approve upload and import records",
+        text: __("upload.approve.confirm"),
         attributes: {
           formaction: upload.uri + "/approve"
         }
