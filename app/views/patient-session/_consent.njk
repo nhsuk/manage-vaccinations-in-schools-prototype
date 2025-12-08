@@ -42,7 +42,7 @@
   {% if patientSession.replies | length %}
     {# Requests with responses or requests that couldn’t be delivered #}
     {{ appHeading({
-      level: 3,
+      level: 4,
       size: "s",
       title: __("patientSession.replies.responses") if patientSession.responses.length > 0 else __("patientSession.replies.requests")
     }) }}
@@ -51,7 +51,7 @@
       {{ card({
         classes: "app-card--compact app-card--offset",
         heading: reply.formatted.fullNameAndRelationship,
-        headingLevel: 4,
+        headingLevel: 5,
         href: reply.uri if reply.delivered,
         clickable: true if reply.delivered,
         descriptionHtml: summaryList({
@@ -74,7 +74,7 @@
     {# We don’t create replies so use parent details instead #}
 
     {{ appHeading({
-      level: 3,
+      level: 4,
       size: "s",
       title: __("patientSession.replies.pending")
     }) }}
@@ -83,7 +83,7 @@
       {{ card({
         classes: "app-card--compact app-card--offset",
         heading: parent.formatted.fullNameAndRelationship,
-        headingLevel: 4,
+        headingLevel: 5,
         descriptionHtml: summaryList({
           rows: summaryRows(parent, {
             tel: {},

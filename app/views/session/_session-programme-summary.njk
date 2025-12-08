@@ -16,7 +16,7 @@
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: PatientStatus.Consent,
-        headingLevel: 3,
+        headingLevel: 4,
         colour: "blue",
         compact: true,
         data: session.tally(programme.id, PatientStatus.Consent),
@@ -26,7 +26,7 @@
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: PatientStatus.Triage,
-        headingLevel: 3,
+        headingLevel: 4,
         colour: "blue",
         compact: true,
         data: session.tally(programme.id, PatientStatus.Triage),
@@ -39,6 +39,7 @@
         heading: __("session.tally.dueForVaccineCriteria.label", {
           vaccineCriteria: programme.standardVaccine.criteria | lower
         }),
+        headingLevel: 4,
         colour: "green",
         compact: true,
         data: session.tally(programme.id, PatientStatus.Due, RecordVaccineCriteria.IntranasalOnly) + session.tally(programme.id, PatientStatus.Due, RecordVaccineCriteria.IntranasalPreferred),
@@ -51,6 +52,7 @@
         heading: __("session.tally.dueForVaccineCriteria.label", {
           vaccineCriteria: "vaccination (no preference)"
         }),
+        headingLevel: 4,
         colour: "green",
         compact: true,
         data: session.tally(programme.id, PatientStatus.Due, RecordVaccineCriteria.NoMMRPreference),
@@ -61,7 +63,7 @@
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: PatientStatus.Due,
-        headingLevel: 3,
+        headingLevel: 4,
         colour: "green",
         compact: true,
         data: session.tally(programme.id, PatientStatus.Due),
@@ -76,6 +78,7 @@
         heading: __("session.tally.dueForVaccineCriteria.label", {
           vaccineCriteria: vaccineCriteria | lower
         }),
+        headingLevel: 4,
         colour: "green",
         compact: true,
         data: session.tally(programme.id, PatientStatus.Due, vaccineCriteria),
@@ -86,7 +89,7 @@
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: PatientStatus.Refused,
-        headingLevel: 3,
+        headingLevel: 4,
         colour: "orange",
         compact: true,
         data: session.tally(programme.id, PatientStatus.Refused),
@@ -96,7 +99,7 @@
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: PatientStatus.Deferred,
-        headingLevel: 3,
+        headingLevel: 4,
         colour: "red",
         compact: true,
         data: session.tally(programme.id, PatientStatus.Deferred),
@@ -107,7 +110,7 @@
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: PatientStatus.PartiallyVaccinated,
-        headingLevel: 3,
+        headingLevel: 4,
         compact: true,
         data: session.tally(programme.id, PatientStatus.PartiallyVaccinated),
         href: session.uri + "/report?report=" + PatientStatus.PartiallyVaccinated + "&programme_id=" + programme.id
@@ -117,7 +120,7 @@
     <div class="nhsuk-grid-column-one-{{ columnWidth }} nhsuk-card-group__item">
       {{ appDataCard({
         heading: PatientStatus.Vaccinated,
-        headingLevel: 3,
+        headingLevel: 4,
         compact: true,
         data: session.tally(programme.id, PatientStatus.Vaccinated),
         href: session.uri + "/report?report=" + PatientStatus.Vaccinated + "&programme_id=" + programme.id
