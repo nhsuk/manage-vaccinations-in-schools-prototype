@@ -1855,7 +1855,7 @@ export const en = {
       label: 'Uploaded files',
       title: 'Uploaded files',
       count:
-        '{count, plural, =0 {No uploaded files} one {1 uploaded file} other {# uploaded files}}'
+        '{count, plural, =0 {No uploaded files} one {1 uploaded file} other {# uploaded files}} ({needsReview, plural, =0 {none need} one {1 needs} other {# need}} review)'
     },
     imported: {
       label: 'Completed imports',

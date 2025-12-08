@@ -3,6 +3,7 @@
 {% extends "_layouts/default.njk" %}
 
 {% set title = __("upload.list.title") %}
+{% set needsReview = uploads | selectattr("needsReview") %}
 
 {% block content %}
   {{ super() }}
@@ -42,7 +43,10 @@
 
     {{ table({
       id: "uploads",
-      heading: __mf("upload.recent.count", { count: uploads.length }) ,
+      heading: __mf("upload.recent.count", {
+        count: uploads.length,
+        needsReview: needsReview.length
+      }),
       panel: true,
       responsive: true,
       head: [

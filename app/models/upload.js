@@ -139,6 +139,15 @@ export class Upload {
   }
 
   /**
+   * Upload needs review
+   *
+   * @returns {boolean} Upload needs review
+   */
+  get needsReview() {
+    return this.status === UploadStatus.Review
+  }
+
+  /**
    * Get duplicate patient records in upload that need review
    *
    * @returns {Array<Patient>|undefined} Patient records with pending changes
