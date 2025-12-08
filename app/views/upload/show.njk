@@ -38,13 +38,6 @@
   {{ appHeading({
     title: title
   }) }}
-  <p class="nhsuk-body">
-    {%- if upload.status == UploadStatus.Processing -%}
-      <progress class="app-progress" value="{{ upload.progress }}" max="100"></progress><br><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">Processing: {{ upload.progress }}% complete</span>
-    {%- else -%}
-      {{ upload.formatted.status | safe -}}
-    {%- endif -%}
-  </p>
 
   {% call card({
     heading: __("upload.show.summary"),
@@ -56,6 +49,7 @@
         updated: {},
         fileName: {},
         type: {},
+        status: {},
         school: {},
         yearGroups: {},
         patients: {}

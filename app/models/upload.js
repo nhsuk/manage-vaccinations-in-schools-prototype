@@ -6,6 +6,7 @@ import { formatDate, today } from '../utils/date.js'
 import { getUploadStatus } from '../utils/status.js'
 import {
   formatLink,
+  formatProgress,
   formatTag,
   formatWithSecondaryText,
   formatYearGroup
@@ -261,7 +262,10 @@ export class Upload {
         yearGroups: prototypeFilters.formatList(yearGroups)
       }),
       patients: this.patients.length,
-      status: formatTag(getUploadStatus(this.status))
+      status:
+        this.status === UploadStatus.Processing
+          ? formatProgress(this.progress)
+          : formatTag(getUploadStatus(this.status))
     }
   }
 

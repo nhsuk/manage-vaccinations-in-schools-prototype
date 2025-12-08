@@ -15,11 +15,6 @@
   {% if uploads.length %}
     {% set uploadRows = [] %}
     {% for upload in uploads %}
-      {% set progressHtml -%}
-        <progress class="app-progress" value="{{ upload.progress }}" max="100"></progress><br>
-        <span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">Processing: {{ upload.progress }}% complete</span>
-      {%- endset %}
-
       {% set uploadRows = uploadRows | push([
         {
           header: __("upload.summary.label"),
@@ -31,7 +26,7 @@
         },
         {
           header: __("upload.status.label"),
-          html: progressHtml if upload.status == UploadStatus.Processing else upload.formatted.status
+          html: upload.formatted.status
         },
         {
           header: __("upload.patients.label"),
