@@ -19,9 +19,11 @@
     }) }}
   </div>
 
+  {% set needsReview = uploads | selectattr("needsReview") %}
+
   {{ appSecondaryNavigation({
     items: [{
-      text: __("upload.recent.label"),
+      text: __("upload.recent.label") + appCount(needsReview.length),
       href: "/uploads",
       current: params.view == "recent"
     }, {
