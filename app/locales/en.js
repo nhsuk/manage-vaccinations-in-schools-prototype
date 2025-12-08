@@ -1702,7 +1702,7 @@ export const en = {
     },
     programmes: {
       label: 'Programmes',
-      title: 'Which programmes is this session part of?'
+      title: 'Which programmes will you run in this session?'
     },
     status: {
       label: 'Status'
