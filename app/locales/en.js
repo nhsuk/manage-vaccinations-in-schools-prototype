@@ -1841,6 +1841,7 @@ export const en = {
       success: 'Upload deleted'
     },
     approve: {
+      confirm: 'Approve and import records',
       success: 'Upload approved'
     },
     list: {
@@ -1865,6 +1866,8 @@ export const en = {
     },
     show: {
       title: 'Upload ({{upload.formatted.createdAt}})',
+      needsReviewTitle:
+        'Review and approve upload ({{upload.formatted.createdAt}})',
       summary: 'Details',
       new: {
         title: 'New records',
@@ -1923,7 +1926,7 @@ export const en = {
         count:
           '{count, plural, =0 {No records} one {1 record} other {# records}} already in Mavis',
         summary:
-          'This upload includes {count, plural, =0 {no records that already exist} one {1 record that already exists} other {# records that already exist}} in Mavis. If you approve the upload, any new information will be added to the existing records.'
+          'This upload includes {count, plural, =0 {no records that already exist} one {1 record that already exists} other {# records that already exist}} in Mavis. You do not need to remove these from your CSV file. If you approve the upload, any new information will be added to the existing records.'
       },
       imported: {
         title: 'Imported records',
