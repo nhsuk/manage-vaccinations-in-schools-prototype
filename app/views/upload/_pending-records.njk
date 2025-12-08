@@ -1,7 +1,9 @@
+{%- from "_macros/change.njk" import appChange with context -%}
+
 {% set patientRows = [] %}
 {% for patient in pendingRecords %}
   {% set type = "vaccination" if upload.type == UploadType.Report else "child" %}
-  {% set archiveChangeset = __("upload.show.partial.decision.archived.label", ArchiveRecordReason.Error) %}
+  {% set archiveChangeset = __("upload.show.partial.decision.archived.label", ArchiveRecordReason.Error) | nl2br %}
   {% set archiveRadios = radios({
     classes: "nhsuk-radios--small",
     formGroup: {
@@ -14,11 +16,11 @@
       }
     },
     items: [{
-      text: __("upload.show.partial.decision.restore.label", type),
-      value: "restore"
-    }, {
       text: __("upload.show.partial.decision.ignore.label", type),
       value: "ignore"
+    }, {
+      text: __("upload.show.partial.decision.restore.label", type),
+      value: "restore"
     }],
     decorate: "pending-record-" + loop.index0
   }) %}
@@ -27,10 +29,10 @@
   {% set duplicateChangeset = summaryList({
     rows: summaryRows(patient, {
       dob: {
-        value: patient.formatted.dob + " → " + ("1 January 2021" | highlightDifference(patient.formatted.dob))
+        value: appChange(patient.formatted.dob, "1 January 2021")
       },
       yearGroup: {
-        value: patient.formatted.yearGroup + " → " + ("Reception" | highlightDifference(patient.formatted.yearGroup))
+        value: appChange(patient.formatted.yearGroup, "Reception")
       }
     })
   }) %}
@@ -46,11 +48,11 @@
       }
     },
     items: [{
-      text: __("upload.show.partial.decision.duplicate.label", type),
-      value: "duplicate"
-    }, {
       text: __("upload.show.partial.decision.original.label", type),
       value: "original"
+    }, {
+      text: __("upload.show.partial.decision.duplicate.label", type),
+      value: "duplicate"
     }, {
       text: __("upload.show.partial.decision.both.label", type),
       value: "both"
@@ -102,7 +104,7 @@
     responsive: true,
     head: [
       { text: __("patient.fullNameAndNhsn.label") },
-      { text: __("upload.show.partial.label." + upload.status) },
+      { html: appChange("Existing record", "Uploaded record") },
       { html: __("upload.show.partial.decision.label") }
     ],
     rows: patientRows
