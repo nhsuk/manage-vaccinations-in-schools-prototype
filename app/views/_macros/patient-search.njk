@@ -170,6 +170,8 @@
           })
         } if data.report == PatientStatus.Deferred
       }, {
+        text: PatientStatus.PartiallyVaccinated
+      }, {
         text: PatientStatus.Vaccinated,
         conditional: {
           html: checkboxes({
