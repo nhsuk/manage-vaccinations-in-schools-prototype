@@ -1899,7 +1899,7 @@ export const en = {
             label: 'Use uploaded'
           },
           archived: {
-            label: 'This record was previously archived. %s.'
+            label: 'This record was previously archived.\n%s.'
           },
           original: {
             label: 'Keep existing'
