@@ -1,19 +1,24 @@
 {% extends "_layouts/form.njk" %}
 
 {% set title = __("reply.healthAnswers.title") %}
+{% set vaccineName = "nasal spray flu" if "Flu" in reply.session.presetNames else "MMR" %}
 
 {% macro questions(healthQuestions) %}
   {% for key, value in healthQuestions %}
+    {% set hint = __("healthQuestions." + key + ".hint", vaccineName) %}
+    {% set detailsHint = __("healthQuestions." + key + ".detailsHint") %}
     {{ radios({
       fieldset: {
         legend: { text: __("healthQuestions." + key + ".label") }
       },
+      hint: { text: hint } if hint,
       items: [
         {
           text: __("reply.healthAnswers.yes"),
           conditional: {
             html: textarea({
               label: { text: __("reply.healthAnswers.details") },
+              hint: { text: detailsHint } if detailsHint,
               decorate: ["reply", "healthAnswers", key, "details"]
             })
           } if not value.conditional else {
