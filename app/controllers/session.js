@@ -10,7 +10,6 @@ import {
   RegistrationOutcome,
   SchoolPhase,
   SessionPresetName,
-  SessionStatus,
   SessionType,
   VaccineMethod
 } from '../enums.js'
@@ -165,34 +164,6 @@ export const sessionController = {
         }))
         .sort((a, b) => a.text.localeCompare(b.text))
     }
-
-    // Status filter options
-    response.locals.statusItems = [
-      {
-        text: 'Any',
-        value: 'none',
-        checked: !filters.status || filters.status === 'none'
-      },
-      ...Object.values(SessionStatus).map((value) => ({
-        text: value,
-        value,
-        checked: filters.status === value
-      }))
-    ]
-
-    // Type filter options
-    response.locals.typeItems = [
-      {
-        text: 'Any',
-        value: 'none',
-        checked: filters.type === 'none'
-      },
-      ...Object.values(SessionType).map((value) => ({
-        text: value,
-        value,
-        checked: filters.type === value
-      }))
-    ]
 
     // Clean up session data
     delete data.q

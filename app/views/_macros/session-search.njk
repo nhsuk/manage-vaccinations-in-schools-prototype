@@ -9,24 +9,6 @@
 {%- from "_macros/search-input.njk" import appSearchInput with context -%}
 
 {% macro appSessionSearch(params) %}
-  {% set filterButtonGroup %}
-    {{ appButtonGroup({
-      buttons: [{
-        classes: "nhsuk-button--secondary nhsuk-button--small",
-        text: __("search.confirm"),
-        attributes: {
-          formaction: params.formaction,
-          formmethod: "post",
-          role: "search"
-        }
-      }, {
-        classes: "nhsuk-button--secondary nhsuk-button--small",
-        text: __("search.clear"),
-        href: params.clear or "/sessions"
-      } if data.q or data.programme or data.status]
-    }) }}
-  {% endset %}
-
   {% call card({
     classes: "app-filters",
     feature: true,
@@ -74,7 +56,7 @@
           text: __("session.status.label")
         }
       },
-      items: enumItems(SessionStatus),
+      items: radioFilterItems(SessionStatus),
       decorate: "status"
     }) }}
 
@@ -86,10 +68,24 @@
           text: __("session.type.label")
         }
       },
-      items: typeItems,
+      items: radioFilterItems(SessionType),
       decorate: "type"
     }) }}
 
-    {{ filterButtonGroup | safe if programmeItems or statusItems or typeItems }}
+    {{ appButtonGroup({
+      buttons: [{
+        classes: "nhsuk-button--secondary nhsuk-button--small",
+        text: __("search.confirm"),
+        attributes: {
+          formaction: params.formaction,
+          formmethod: "post",
+          role: "search"
+        }
+      }, {
+        classes: "nhsuk-button--secondary nhsuk-button--small",
+        text: __("search.clear"),
+        href: params.clear or "/sessions"
+      } if data.q or data.programme_id or data.status != "none" or data.type != "none"]
+    }) }}
   {% endcall %}
 {% endmacro %}
