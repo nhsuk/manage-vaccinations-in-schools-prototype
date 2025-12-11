@@ -1,4 +1,6 @@
-{% for programme in session.programmes %}
+{%- from "nhsuk/components/tabs/macro.njk" import tabs -%}
+
+{% macro programmeHtml(programme) %}
   {% set columnWidth = "quarter" if session.offersAlternativeVaccine or programme.type == ProgrammeType.MMR else "third" %}
 
   {{ appHeading({
@@ -122,4 +124,19 @@
       }) }}
     </div>
   </div>
+{% endmacro %}
+
+{% set tabItems = [] %}
+{% for programme in session.programmes %}
+  {% set tabItems = tabItems | push({
+    label: programme.name,
+    id: programme.id,
+    panel: {
+      html: programmeHtml(programme)
+    }
+  }) %}
 {% endfor %}
+
+{{ tabs({
+  items: tabItems
+}) if session.programmes.length > 1 else programmeHtml(session.programmes[0]) }}
