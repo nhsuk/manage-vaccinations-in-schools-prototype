@@ -1,0 +1,15 @@
+@use "../core" as *;
+
+// Prevent forced bottom margin
+.nhsuk-card-group {
+  row-gap: nhsuk-spacing(5);
+  margin-bottom: nhsuk-spacing(7);
+
+  @include nhsuk-media-query($until: tablet) {
+    row-gap: nhsuk-spacing(3);
+  }
+}
+
+.nhsuk-card-group__item .nhsuk-card {
+  margin-bottom: 0;
+}

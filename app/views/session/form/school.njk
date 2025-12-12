@@ -9,7 +9,7 @@
 
   {{ select({
     label: { text: __("session.school_urn.title") },
-    items: schoolItems(data.schools, session.school_urn),
+    items: schoolItems(schools, session.school_urn),
     decorate: "session.school_urn",
     attributes: {
       "data-module": "app-autocomplete"

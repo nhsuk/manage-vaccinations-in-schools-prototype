@@ -6,6 +6,7 @@ import {
   ProgrammeType,
   ReplyDecision,
   ReplyRefusal,
+  SessionPresetName,
   SessionType
 } from '../enums.js'
 import { generateChild } from '../generators/child.js'
@@ -229,7 +230,7 @@ export const parentController = {
             ? ReplyDecision.OnlyTdIPV
             : ReplyDecision.OnlyMenACWY
       }))
-    } else if (session.programmePreset === 'SeasonalFlu') {
+    } else if (session.presetNames.includes(SessionPresetName.Flu)) {
       // Flu: Ask which vaccine the parent would prefer
       response.locals.decisionItems = [
         {

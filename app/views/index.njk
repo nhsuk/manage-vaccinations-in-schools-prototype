@@ -51,21 +51,21 @@
         size: "m"
       }) }}
 
-      {% for programmePreset, preset in ProgrammePreset %}
+      {% for preset in SessionPresets %}
         {% if preset.active %}
           {{ actionLink({
             classes: "nhsuk-u-margin-bottom-2",
             text: "Start page for parents to give or refuse consent for " + preset.name | replace("Flu", "flu"),
-            href: navigation.consentUrl[programmePreset] + "/start"
+            href: navigation.consentUrl[preset.name] + "/start"
           }) }}
 
           {{ contentsList({
             classes: "nhsuk-u-margin-left-1",
             items: [{
-              href: navigation.consentUrl[programmePreset] + "/emails",
+              href: navigation.consentUrl[preset.name] + "/emails",
               text: preset.name + " consent emails"
             }, {
-              href: navigation.consentUrl[programmePreset] + "/texts",
+              href: navigation.consentUrl[preset.name] + "/texts",
               text: preset.name + " consent text messages"
             }]
           }) }}

@@ -5,7 +5,11 @@
 {% set gridColumns = "full" %}
 {% set hideConfirmButton = true %}
 {% set programme = data.programmes[upload.programme_id] %}
-{% set title = __("upload.show.title", { upload: upload }) %}
+{% if upload.needsReview %}
+  {% set title = __("upload.show.needsReviewTitle", { upload: upload }) %}
+{% else %}
+  {% set title = __("upload.show.title", { upload: upload }) %}
+{% endif %}
 
 {% set templateFormat %}
   {% if upload.type == UploadType.Cohort %}
@@ -38,13 +42,6 @@
   {{ appHeading({
     title: title
   }) }}
-  <p class="nhsuk-body">
-    {%- if upload.status == UploadStatus.Processing -%}
-      <progress class="app-progress" value="{{ upload.progress }}" max="100"></progress><br><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">Processing: {{ upload.progress }}% complete</span>
-    {%- else -%}
-      {{ upload.formatted.status | safe -}}
-    {%- endif -%}
-  </p>
 
   {% call card({
     heading: __("upload.show.summary"),
@@ -56,6 +53,7 @@
         updated: {},
         fileName: {},
         type: {},
+        status: {},
         school: {},
         yearGroups: {},
         patients: {}
@@ -89,9 +87,13 @@
       {% include "upload/_pending-records.njk" %}
     {% endif %}
 
+    {% if upload.type != UploadType.Report and upload.moves.length %}
+      {% include "upload/_school-moves.njk" %}
+    {% endif %}
+
     {{ patientRecords({
       key: "imported",
-      patients: upload.patients | rejectattr("hasPendingChanges")
+      patients: upload.patients
     }) }}
   {% endif %}
 
@@ -158,7 +160,7 @@
 
     {{ appButtonGroup({
       buttons: [{
-        text: "Approve upload and import records",
+        text: __("upload.approve.confirm"),
         attributes: {
           formaction: upload.uri + "/approve"
         }

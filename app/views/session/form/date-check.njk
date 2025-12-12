@@ -11,7 +11,7 @@
   }) %}
     {{ __("session.date.check.description", {
       date: session.formatted.date,
-      yearGroups: session.programmes[0].formatted.yearGroups
+      yearGroups: session.formatted.yearGroups
     }) | nhsukMarkdown }}
 
     {{ appButtonGroup({

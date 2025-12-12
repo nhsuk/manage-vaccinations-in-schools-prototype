@@ -1,13 +1,14 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { OrganisationDefaults, ProgrammePreset, SessionType } from '../enums.js'
+import { OrganisationDefaults, SessionType } from '../enums.js'
 import { Session } from '../models/session.js'
 import { addDays, getTermDates, removeDays, setMidday } from '../utils/date.js'
+import { getSessionYearGroups } from '../utils/session.js'
 
 /**
  * Generate fake session
  *
- * @param {string} programmePreset - Programme preset
+ * @param {import('../enums.js').SessionPreset} preset - Session preset
  * @param {import('../models/user.js').User} user - User
  * @param {number} academicYear - Academic year
  * @param {object} options - Options
@@ -15,11 +16,8 @@ import { addDays, getTermDates, removeDays, setMidday } from '../utils/date.js'
  * @param {string} [options.school_urn] - School URN
  * @returns {Session} Session
  */
-export function generateSession(programmePreset, academicYear, user, options) {
-  // Get programme preset
-  const preset = ProgrammePreset[programmePreset]
-
-  // Don’t generate sessions for inactive programme presets
+export function generateSession(preset, academicYear, user, options) {
+  // Don’t generate sessions for inactive session preset
   if (!preset.active) {
     return
   }
@@ -52,6 +50,11 @@ export function generateSession(programmePreset, academicYear, user, options) {
     openAt = removeDays(date, OrganisationDefaults.SessionOpenWeeks * 7)
   }
 
+  let yearGroups
+  if (options.school_urn) {
+    yearGroups = getSessionYearGroups(options.school_urn, [preset])
+  }
+
   return new Session({
     createdAt: removeDays(term.from, 60),
     createdBy_uid: user.uid,
@@ -59,8 +62,8 @@ export function generateSession(programmePreset, academicYear, user, options) {
     openAt,
     registration: true,
     academicYear,
-    programmePreset,
+    presetNames: [preset.name],
     ...(clinic_id && { type: SessionType.Clinic, clinic_id }),
-    ...(school_urn && { type: SessionType.School, school_urn })
+    ...(school_urn && { type: SessionType.School, school_urn, yearGroups })
   })
 }

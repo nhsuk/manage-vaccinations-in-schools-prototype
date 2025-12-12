@@ -23,7 +23,7 @@ export const downloadController = {
       ([value, text]) => ({
         text,
         value,
-        checked: value === 'Flu'
+        checked: value === ProgrammeType.Flu
       })
     )
 

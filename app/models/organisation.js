@@ -70,7 +70,7 @@ export class Organisation {
   get schools() {
     try {
       return this?.school_urns
-        .map((urn) => new School(this.context?.schools[urn]))
+        .map((urn) => School.findOne(urn, this.context))
         .sort((a, b) => a.name.localeCompare(b.name))
     } catch (error) {
       console.error('Organisation.schools', error.message)

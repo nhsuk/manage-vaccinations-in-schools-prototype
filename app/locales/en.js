@@ -451,7 +451,7 @@ export const en = {
       label: 'Response'
     },
     alternative: {
-      SeasonalFlu: {
+      flu: {
         label: 'Consent also given for injected vaccine?',
         title:
           'If your child cannot have the nasal spray, do you agree to them having the injected vaccine instead?',
@@ -463,7 +463,7 @@ export const en = {
           label: 'No'
         }
       },
-      MMR: {
+      mmr: {
         label: 'Consent given for gelatine-free vaccine only?',
         title: 'Do you want your child to have a vaccine without gelatine?',
         hint: 'One type of MMR vaccine contains gelatine from pigs. An alternative MMR vaccine is available that does not contain gelatine.',
@@ -499,7 +499,7 @@ export const en = {
     },
     refusalReasonDetails: {
       label: 'Refusal details',
-      MMR: {
+      mmr: {
         hint: 'Children need 2 doses of the MMR vaccine to be fully protected. If your child has had more than 1 dose, give details about both doses.'
       },
       title: {
@@ -1380,48 +1380,6 @@ export const en = {
       label: 'Confirm consent refusal?'
     }
   },
-  review: {
-    label: 'Changes to review',
-    count:
-      '{count, plural, =0 {No imported records need} one {1 imported record needs} other {# imported records need}} review',
-    archived: {
-      label: 'Archived record',
-      title: 'Do you want to restore this previously archived record?',
-      hint: 'This record was previously archived. %s.',
-      description: 'Uploaded %s record was previously archived',
-      confirm: 'Resolve archived record',
-      success: 'Previously archived record restored'
-    },
-    duplicate: {
-      label: 'Uploaded record',
-      title: 'Uploaded %s record duplicates an existing record',
-      description: 'Uploaded %s record duplicates an existing record',
-      confirm: 'Resolve duplicate record',
-      success: 'Record updated with values from duplicate record'
-    },
-    original: {
-      label: 'Existing record',
-      record: 'Existing child record',
-      vaccination: 'Existing vaccination record'
-    },
-    decision: {
-      label: 'Which record do you want to keep?',
-      duplicate: {
-        label: 'Use uploaded %s record',
-        hint: 'The uploaded record will replace the existing record'
-      },
-      original: {
-        label: 'Keep existing %s record',
-        hint: 'The existing record will be kept and the uploaded record will be discarded'
-      },
-      restore: {
-        label: 'Yes, restore this record'
-      },
-      ignore: {
-        label: 'No, keep this record archived'
-      }
-    }
-  },
   school: {
     list: {
       label: 'Schools',
@@ -1510,7 +1468,8 @@ export const en = {
       label: 'Academic year'
     },
     report: {
-      label: 'Added to session'
+      label: 'Added to session',
+      title: 'Added to session'
     },
     consent: {
       label: 'Consent',
@@ -1618,7 +1577,7 @@ export const en = {
     eligible: {
       label: 'Eligible for vaccination',
       count:
-        '{count, plural, =0 {No children are} one {# child is} other {# children are}} eligible for vaccination this academic year and have not been vaccinated elsewhere'
+        '{count, plural, =0 {No children are} one {# child is} other {# children are}} eligible for vaccination in this session'
     },
     activity: {
       label: 'Action required',
@@ -1670,7 +1629,7 @@ export const en = {
     date: {
       label: 'Session date',
       title: 'When will this session be held?',
-      hint: 'For example, 27 3 2025',
+      hint: 'For example, 27 3 2026',
       check: {
         title: 'Have you imported historical vaccination records for %s?',
         description:
@@ -1688,7 +1647,8 @@ export const en = {
       title: 'Select a school'
     },
     yearGroups: {
-      label: 'Year groups'
+      label: 'Year groups',
+      title: 'Which year groups do you want to invite to this session?'
     },
     clinic: {
       label: 'Clinic',
@@ -1700,7 +1660,7 @@ export const en = {
     },
     programmes: {
       label: 'Programmes',
-      title: 'Which programmes is this session part of?'
+      title: 'Which programmes will you run in this session?'
     },
     status: {
       label: 'Status'
@@ -1715,7 +1675,7 @@ export const en = {
     openAt: {
       title: 'When should parents get a request to give consent?',
       label: 'Consent requests',
-      hint: 'For example, 27 3 2025'
+      hint: 'For example, 27 3 2026'
     },
     reminderDate: {
       label: 'Automatic consent reminder schedule',
@@ -1881,36 +1841,33 @@ export const en = {
       success: 'Upload deleted'
     },
     approve: {
+      confirm: 'Approve and import records',
       success: 'Upload approved'
     },
     list: {
       label: 'Imports',
       title: 'Imports',
       description:
-        'Import child, cohort and vaccination records and see important notices'
+        'Import child, cohort and vaccination records and see important notices',
+      introduction:
+        'Use this page to upload and import child, class list and vaccination records.\n\nAfter import, files move to the **Completed imports** tab.\n\nUpload times can vary. Refresh the page to see the latest status.'
     },
     recent: {
       label: 'Uploaded files',
       title: 'Uploaded files',
       count:
-        '{count, plural, =0 {No uploaded files} one {1 uploaded file} other {# uploaded files}}'
-    },
-    reviews: {
-      label: 'Upload issues',
-      title: 'Upload issues',
-      count: '{count, plural, =0 {No uploads} one {1 upload} other {# uploads}}'
+        '{count, plural, =0 {No uploaded files} one {1 uploaded file} other {# uploaded files}} ({needsReview, plural, =0 {none need} one {1 needs} other {# need}} review)'
     },
     imported: {
-      label: 'Imported records',
-      title: 'Imported records',
+      label: 'Completed imports',
+      title: 'Completed imports',
       count:
-        '{count, plural, =0 {No imported records} one {1 imported record} other {# imported records}}'
-    },
-    notices: {
-      label: 'Important notices'
+        '{count, plural, =0 {No completed imports} one {1 completed import} other {# completed imports}}'
     },
     show: {
       title: 'Upload ({{upload.formatted.createdAt}})',
+      needsReviewTitle:
+        'Review and approve upload ({{upload.formatted.createdAt}})',
       summary: 'Details',
       new: {
         title: 'New records',
@@ -1920,10 +1877,14 @@ export const en = {
           'This upload includes {count, plural, =0 {no new records that are} one {1 new record this is} other {# new records  that are}} not currently in Mavis. If you approve the upload, these records will be added to Mavis.'
       },
       partial: {
+        label: {
+          [UploadStatus.Review]: 'Changes to review',
+          [UploadStatus.Approved]: 'Changes reviewed'
+        },
         title: {
           [UploadStatus.Review]:
-            'Close matches to existing records – will need review after import',
-          [UploadStatus.Approved]: 'Upload issues in this import – need review'
+            'Close matches to existing records – need review',
+          [UploadStatus.Approved]: 'Upload issues resolved for this import'
         },
         count: {
           [UploadStatus.Review]:
@@ -1931,11 +1892,33 @@ export const en = {
           [UploadStatus.Approved]:
             '{count, plural, =0 {No upload issues} one {1 upload issue} other {# upload issues}}'
         },
+        decision: {
+          label: 'Decision',
+          title: 'Which changes do you want to keep for {{patient.fullName}}?',
+          duplicate: {
+            label: 'Use uploaded'
+          },
+          archived: {
+            label: 'This record was previously archived.\n%s.'
+          },
+          original: {
+            label: 'Keep existing'
+          },
+          both: {
+            label: 'Keep both'
+          },
+          restore: {
+            label: 'Restore record'
+          },
+          ignore: {
+            label: 'Keep archived'
+          }
+        },
         summary: {
           [UploadStatus.Review]:
-            'This upload includes {count, plural, =0 {no records} one {1 record} other {# records}} that are close matches to existing records in Mavis. If you approve the upload, any differences will be flagged as import issues needing review.',
+            'This upload includes {count, plural, =0 {no records} one {1 record} other {# records}} that are close matches to existing records in Mavis. You need to review these records before you can approve this upload.',
           [UploadStatus.Approved]:
-            '{count, plural, =0 {No records} one {1 record} other {# records}} flagged with import issues for review'
+            '{count, plural, =0 {No records} one {1 import issue} other {# import issues}} reviewed'
         }
       },
       matched: {
@@ -1943,7 +1926,7 @@ export const en = {
         count:
           '{count, plural, =0 {No records} one {1 record} other {# records}} already in Mavis',
         summary:
-          'This upload includes {count, plural, =0 {no records that already exist} one {1 record that already exists} other {# records that already exist}} in Mavis. If you approve the upload, any new information will be added to the existing records.'
+          'This upload includes {count, plural, =0 {no records that already exist} one {1 record that already exists} other {# records that already exist}} in Mavis. You do not need to remove these from your CSV file. If you approve the upload, any new information will be added to the existing records.'
       },
       imported: {
         title: 'Imported records',
@@ -1951,11 +1934,28 @@ export const en = {
           '{count, plural, =0 {No imported records} one {1 imported record} other {# imported records}}'
       },
       moves: {
-        title: 'School moves – will need review after import',
+        title: {
+          [UploadStatus.Review]: 'School moves – need review',
+          [UploadStatus.Approved]: 'School moves resolved for this import'
+        },
         count:
           '{count, plural, =0 {No school moves} one {1 school move} other {# school moves}}',
-        summary:
-          'This upload includes {count, plural, =0 {No children} one {1 child} other {# children}} with a different school to the one in their Mavis record. If you approve the upload, these will be flagged as school moves needing review.'
+        decision: {
+          label: 'Decision',
+          title: 'Accept school move for {{patient.fullName}}?',
+          accept: {
+            label: 'Accept move'
+          },
+          ignore: {
+            label: 'Ignore move'
+          }
+        },
+        summary: {
+          [UploadStatus.Review]:
+            'This upload includes {count, plural, =0 {No children} one {1 child} other {# children}} with a different school to the one in their Mavis record. You need to review these records before you can approve this upload.',
+          [UploadStatus.Approved]:
+            '{count, plural, =0 {No school moves} one {1 school move} other {# school moves}} reviewed'
+        }
       }
     },
     new: {

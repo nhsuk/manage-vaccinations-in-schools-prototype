@@ -8,7 +8,8 @@ import {
   ProgrammeType,
   RecordVaccineCriteria,
   RegistrationOutcome,
-  SessionStatus,
+  SchoolPhase,
+  SessionPresetName,
   SessionType,
   VaccineMethod
 } from '../enums.js'
@@ -18,9 +19,11 @@ import { Instruction } from '../models/instruction.js'
 import { Organisation } from '../models/organisation.js'
 import { PatientSession } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
+import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
+import { getSessionYearGroups } from '../utils/session.js'
 import { formatYearGroup } from '../utils/string.js'
 
 export const sessionController = {
@@ -162,34 +165,6 @@ export const sessionController = {
         .sort((a, b) => a.text.localeCompare(b.text))
     }
 
-    // Status filter options
-    response.locals.statusItems = [
-      {
-        text: 'Any',
-        value: 'none',
-        checked: !filters.status || filters.status === 'none'
-      },
-      ...Object.values(SessionStatus).map((value) => ({
-        text: value,
-        value,
-        checked: filters.status === value
-      }))
-    ]
-
-    // Type filter options
-    response.locals.typeItems = [
-      {
-        text: 'Any',
-        value: 'none',
-        checked: filters.type === 'none'
-      },
-      ...Object.values(SessionType).map((value) => ({
-        text: value,
-        value,
-        checked: filters.type === value
-      }))
-    ]
-
     // Clean up session data
     delete data.q
     delete data.academicYear
@@ -234,7 +209,8 @@ export const sessionController = {
     const { data } = request.session
     const { session } = response.locals
 
-    const showRegistration = session.registration && session.isActive
+    const showRegistration =
+      session.registration && session.isActive && view === 'report'
 
     response.locals.showRegistration = showRegistration
     response.locals.view = view
@@ -538,6 +514,7 @@ export const sessionController = {
         ...(session.type === SessionType.School
           ? {
               [`/${session_id}/${type}/school`]: {},
+              [`/${session_id}/${type}/year-groups`]: {},
               [`/${session_id}/${type}/date`]: {}
             }
           : {
@@ -558,6 +535,8 @@ export const sessionController = {
         ...(referrer && { back: referrer })
       }
 
+      response.locals.type = type
+
       // Some questions are not asked during journey, so need explicit next path
       response.locals.paths.next =
         response.locals.paths.next || `${session.uri}/new/check-answers`
@@ -573,6 +552,33 @@ export const sessionController = {
             }
           })
         }))
+
+      if (session.type === SessionType.School) {
+        const schools = School.findAll(data)
+
+        response.locals.schools = schools
+
+        // Only show primary schools if session is administering flu or MMR
+        if (
+          ![SessionPresetName.Flu, SessionPresetName.MMR].some((presetName) =>
+            session.presetNames?.includes(presetName)
+          )
+        ) {
+          response.locals.schools = schools.filter(
+            (school) => school.phase === SchoolPhase.Secondary
+          )
+        }
+      }
+
+      if (session.school_urn) {
+        response.locals.yearGroupItems = getSessionYearGroups(
+          session.school_urn,
+          session.presets
+        ).map((year) => ({
+          text: formatYearGroup(year),
+          value: year
+        }))
+      }
 
       next()
     }

@@ -1,3 +1,4 @@
+import { SessionPresetName } from '../enums.js'
 import { Session } from '../models/session.js'
 import { formatDate, today } from '../utils/date.js'
 import { getSessionConsentUrl } from '../utils/session.js'
@@ -18,10 +19,10 @@ export const navigation = (request, response, next) => {
     activeSection,
     referrer: request.originalUrl,
     consentUrl: {
-      SeasonalFlu: getSessionConsentUrl(sessions, 'SeasonalFlu'),
-      HPV: getSessionConsentUrl(sessions, 'HPV'),
-      Doubles: getSessionConsentUrl(sessions, 'Doubles'),
-      MMR: getSessionConsentUrl(sessions, 'MMR')
+      Flu: getSessionConsentUrl(sessions, SessionPresetName.Flu),
+      HPV: getSessionConsentUrl(sessions, SessionPresetName.HPV),
+      Doubles: getSessionConsentUrl(sessions, SessionPresetName.Doubles),
+      MMR: getSessionConsentUrl(sessions, SessionPresetName.MMR)
     }
   }
 

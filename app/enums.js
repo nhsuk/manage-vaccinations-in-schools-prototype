@@ -354,36 +354,56 @@ export const SchoolTerm = {
 
 /**
  * @readonly
- * @enum {object}
+ * @enum {string}
  */
-export const ProgrammePreset = {
-  SeasonalFlu: {
-    name: 'Flu',
+export const SessionPresetName = {
+  Flu: 'Flu',
+  HPV: 'HPV',
+  Doubles: 'Doubles',
+  MMR: 'MMR'
+}
+
+/**
+ * @typedef {Object} SessionPreset
+ * @property {SessionPresetName} name - Session preset name
+ * @property {boolean} active - Whether preset is active
+ * @property {boolean} [adolescent] - Adolescent programme flag
+ * @property {Array<ProgrammeType>} programmeTypes - Preset programme types
+ * @property {SchoolTerm} term - School term to schedule session
+ */
+
+/**
+ * @readonly
+ * @enum {Array<SessionPreset>}
+ */
+export const SessionPresets = [
+  {
+    name: SessionPresetName.Flu,
     active: true,
     programmeTypes: [ProgrammeType.Flu],
     term: SchoolTerm.Autumn
   },
-  HPV: {
-    name: 'HPV',
+  {
+    name: SessionPresetName.HPV,
     active: true,
     adolescent: true,
     programmeTypes: [ProgrammeType.HPV],
     term: SchoolTerm.Spring
   },
-  Doubles: {
-    name: 'MenACWY & Td/IPV',
+  {
+    name: SessionPresetName.Doubles,
     active: true,
     adolescent: true,
     programmeTypes: [ProgrammeType.MenACWY, ProgrammeType.TdIPV],
     term: SchoolTerm.Summer
   },
-  MMR: {
-    name: 'MMR',
+  {
+    name: SessionPresetName.MMR,
     active: true,
     programmeTypes: [ProgrammeType.MMR],
     term: SchoolTerm.Spring
   }
-}
+]
 
 /**
  * @readonly
@@ -452,8 +472,10 @@ export const ReplyRefusal = {
  * @enum {string}
  */
 export const SchoolPhase = {
+  Nursery: 'Nursery',
   Primary: 'Primary',
-  Secondary: 'Secondary'
+  Secondary: 'Secondary',
+  Other: 'Other'
 }
 
 /**
@@ -527,7 +549,7 @@ export const UploadStatus = {
   Failed: 'Failed',
   Invalid: 'Invalid',
   Processing: 'Processing',
-  Review: 'Needs review'
+  Review: 'Review and approve'
 }
 
 /**

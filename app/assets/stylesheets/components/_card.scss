@@ -46,7 +46,7 @@
     border-color: nhsuk-colour("warm-yellow");
     background-color: nhsuk-tint(nhsuk-colour("warm-yellow"), 80%);
 
-    .nhsuk-card__heading--feature {
+    .nhsuk-card__heading {
       color: $nhsuk-text-colour;
       background-color: nhsuk-colour("warm-yellow");
     }
@@ -81,7 +81,6 @@
 
   .nhsuk-card__content {
     @include nhsuk-responsive-padding(4);
-    @include nhsuk-responsive-padding(3, "bottom");
   }
 }
 
@@ -106,33 +105,31 @@
   @include nhsuk-typography-weight-bold;
 }
 
-.app-card__heading--xxs {
-  @include nhsuk-font(16, $weight: bold);
-}
+.nhsuk-card--feature > .nhsuk-card__content {
+  & > .app-card__heading {
+    &--dark-orange {
+      background-color: app.$dark-orange-colour;
+    }
 
-.app-card__heading {
-  &--dark-orange {
-    background-color: app.$dark-orange-colour;
-  }
+    &--green {
+      background-color: nhsuk-colour("green");
+    }
 
-  &--green {
-    background-color: nhsuk-colour("green");
-  }
+    &--grey {
+      background-color: nhsuk-colour("grey-1");
+    }
 
-  &--grey {
-    background-color: nhsuk-colour("grey-1");
-  }
+    &--purple {
+      background-color: nhsuk-colour("purple");
+    }
 
-  &--purple {
-    background-color: nhsuk-colour("purple");
-  }
+    &--red {
+      background-color: nhsuk-colour("red");
+    }
 
-  &--red {
-    background-color: nhsuk-colour("red");
-  }
-
-  &--warm-yellow {
-    color: $nhsuk-text-colour;
-    background-color: nhsuk-colour("warm-yellow");
+    &--warm-yellow {
+      color: $nhsuk-text-colour;
+      background-color: nhsuk-colour("warm-yellow");
+    }
   }
 }

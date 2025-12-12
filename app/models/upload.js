@@ -6,6 +6,7 @@ import { formatDate, today } from '../utils/date.js'
 import { getUploadStatus } from '../utils/status.js'
 import {
   formatLink,
+  formatProgress,
   formatTag,
   formatWithSecondaryText,
   formatYearGroup
@@ -139,6 +140,15 @@ export class Upload {
   }
 
   /**
+   * Upload needs review
+   *
+   * @returns {boolean} Upload needs review
+   */
+  get needsReview() {
+    return this.status === UploadStatus.Review
+  }
+
+  /**
    * Get duplicate patient records in upload that need review
    *
    * @returns {Array<Patient>|undefined} Patient records with pending changes
@@ -252,7 +262,10 @@ export class Upload {
         yearGroups: prototypeFilters.formatList(yearGroups)
       }),
       patients: this.patients.length,
-      status: formatTag(getUploadStatus(this.status))
+      status:
+        this.status === UploadStatus.Processing
+          ? formatProgress(this.progress)
+          : formatTag(getUploadStatus(this.status))
     }
   }
 

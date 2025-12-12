@@ -273,7 +273,7 @@ export function formatMillilitres(string) {
 export function formatMonospace(string, noWrap = false) {
   if (!string) return
 
-  const classes = ['app-u-monospace']
+  const classes = ['app-u-code']
 
   if (noWrap) {
     classes.push('nhsuk-u-nowrap')
@@ -338,6 +338,18 @@ export function formatParent(parent, includeContactDetails = true) {
   }
 
   return string
+}
+
+/**
+ * Format progress
+ *
+ * @param {number} number - Progress
+ * @returns {string|undefined} Formatted progress HTML
+ */
+export function formatProgress(number) {
+  if (!number) return
+
+  return `<progress class="app-progress" value="${number}" max="100"></progress><br><span class="nhsuk-u-secondary-text-colour nhsuk-u-font-size-16">Processing: ${number}% complete</span>`
 }
 
 /**
@@ -420,20 +432,38 @@ export function formatYearGroup(yearGroup) {
  * @returns {string} Formatted year groups
  */
 export function formatYearGroups(yearGroups) {
+  // Single year group
   if (yearGroups.length === 1) {
     return formatYearGroup(yearGroups[0])
   }
 
-  const yearGroupStrings = yearGroups.map((yearGroup) => String(yearGroup))
+  // Check if all year groups are consecutive
+  const isConsecutive = yearGroups.every(
+    (year, i) => i === 0 || year - yearGroups[i - 1] === 1
+  )
 
-  if (yearGroupStrings[0] === '0') {
-    // Remove year 0
-    yearGroupStrings.shift()
+  // If consecutive year groups, use range format
+  if (isConsecutive) {
+    const first = formatYearGroup(yearGroups[0])
+    const last = formatYearGroup(yearGroups.at(-1))
 
-    return `Reception and years ${prototypeFilters.formatList(yearGroupStrings)}`
+    return yearGroups.length === 2
+      ? `${first} and ${last}`
+      : `${first} to ${last}`
   }
 
-  return `Years ${prototypeFilters.formatList(yearGroupStrings)}`
+  // Non-consecutive: list them all out
+  const hasReception = yearGroups.includes(0)
+  const regularYears = yearGroups.filter((y) => y !== 0)
+
+  // Has reception year
+  if (hasReception) {
+    return regularYears.length === 1
+      ? `Reception and year ${regularYears[0]}`
+      : `Reception and years ${prototypeFilters.formatList(regularYears.map(String))}`
+  }
+
+  return `Years ${prototypeFilters.formatList(regularYears.map(String))}`
 }
 
 /**

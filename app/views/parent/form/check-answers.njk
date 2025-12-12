@@ -3,6 +3,7 @@
 {% set confirmButtonText = __("consent.new.check-answers.confirm") %}
 {% set title = __("consent.new.check-answers.title") %}
 {% set gridColumns = "three-quarters" %}
+{% set programme_id = "flu" if "Flu" in session.presetNames else "mmr" %}
 {% set refusalReasonHasDetails = consent.refusalReason != RefusalReason.PersonalChoice or consent.refusalReason != RefusalReason.Other %}
 {% macro editPath(view) -%}
   {{- view }}?referrer={{ session.consentUrl }}/{{ consent.uuid}}/new/check-answers
@@ -87,7 +88,7 @@
             href: editPath("decision")
           },
           alternative: {
-            label: __("consent.alternative." + session.programmePreset + ".label"),
+            label: __("consent.alternative." + programme_id + ".label"),
             href: editPath("alternative")
           } if session.offersAlternativeVaccine,
           refusalReason: {

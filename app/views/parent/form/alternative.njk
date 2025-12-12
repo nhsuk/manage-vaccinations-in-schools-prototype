@@ -1,6 +1,7 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("consent.alternative." + session.programmePreset + ".title") %}
+{% set programme_id = "flu" if "Flu" in session.presetNames else "mmr" %}
+{% set title = __("consent.alternative." + programme_id + ".title") %}
 
 {% block form %}
   {{ radios({
@@ -13,13 +14,13 @@
       }
     },
     hint: {
-      text: __("consent.alternative." + session.programmePreset + ".hint")
+      text: __("consent.alternative." + programme_id + ".hint")
     },
     items: [{
-      text: __("consent.alternative." + session.programmePreset + ".yes.label"),
+      text: __("consent.alternative." + programme_id + ".yes.label"),
       value: true
     }, {
-      text: __("consent.alternative." + session.programmePreset + ".no.label"),
+      text: __("consent.alternative." + programme_id + ".no.label"),
       value: false
     }],
     decorate: "consent.alternative"

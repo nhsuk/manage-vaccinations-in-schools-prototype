@@ -6,7 +6,8 @@ import {
   Header,
   NotificationBanner,
   Radios,
-  SkipLink
+  SkipLink,
+  Tabs
 } from 'nhsuk-frontend'
 
 import { Autocomplete } from './components/autocomplete.js'
@@ -29,4 +30,5 @@ document.addEventListener('DOMContentLoaded', () => {
   createAll(Radios)
   createAll(NotificationBanner)
   createAll(SkipLink)
+  createAll(Tabs)
 })

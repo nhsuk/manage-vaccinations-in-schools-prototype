@@ -10,7 +10,8 @@ import {
   InstructionOutcome,
   OrganisationDefaults,
   PatientStatus,
-  ProgrammePreset,
+  SessionPresets,
+  SessionPresetName,
   ProgrammeType,
   RecordVaccineCriteria,
   SessionStatus,
@@ -52,18 +53,23 @@ import { Vaccine } from './vaccine.js'
  * @property {string} id - ID
  * @property {Date} [createdAt] - Created date
  * @property {string} [createdBy_uid] - User who created session
- * @property {string} [clinic_id] - Clinic ID
- * @property {string} [school_urn] - School URN
  * @property {Date} [date] - Dates
  * @property {object} [date_] - Dates (from `dateInput`s)
+ * @property {number} [academicYear] - Programme year
+ * @property {Array<SessionPresetName>} [presetNames] - Session preset names
+ * @property {boolean} [registration] - Does session have registration?
+ *
+ *   Clinics only
+ * @property {string} [clinic_id] - Clinic ID
+ *
+ *   Schools only
+ * @property {string} [school_urn] - School URN
+ * @property {Array<string>} [yearGroups] - Year groups
  * @property {Date} [openAt] - Date consent window opens
  * @property {object} [openAt_] - Date consent window opens (from `dateInput`)
  * @property {boolean} [closed] - Session closed
  * @property {number} [reminderWeeks] - Weeks before session to send reminders
- * @property {boolean} [registration] - Does session have registration?
  * @property {object} [register] - Patient register
- * @property {string} [programmePreset] - Programme preset name
- * @property {number} [academicYear] - Programme year
  * @property {boolean} [nationalProtocol] - Enable national protocol
  * @property {boolean} [psdProtocol] - Enable PSD protocol
  */
@@ -74,26 +80,38 @@ export class Session {
     this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
     this.createdBy_uid = options?.createdBy_uid
     this.type = options?.type || SessionType.School
-    this.clinic_id = options?.clinic_id
-    this.school_urn = options?.school_urn
     this.date = options?.date && new Date(options.date)
     this.date_ = options?.date_
-    this.openAt = options?.openAt
-      ? new Date(options.openAt)
-      : this.date
-        ? removeDays(this.date, OrganisationDefaults.SessionOpenWeeks * 7)
-        : undefined
-    this.openAt_ = options?.openAt_
-    this.closed = options?.closed || false
-    this.reminderWeeks =
-      options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
-    this.registration = stringToBoolean(options?.registration)
-    this.register = options?.register || {}
     this.academicYear = options?.academicYear || getCurrentAcademicYear()
-    this.programmePreset = options?.programmePreset
-    this.psdProtocol = stringToBoolean(options?.psdProtocol) || false
+    this.presetNames = options?.presetNames
 
-    if (this.programmePreset === 'SeasonalFlu') {
+    if (this.type === SessionType.Clinic) {
+      this.clinic_id = options?.clinic_id
+      this.registration = false
+    }
+
+    if (this.type === SessionType.School) {
+      this.school_urn = options?.school_urn
+      this.yearGroups = options?.yearGroups || []
+      this.yearGroups_ = options?.yearGroups_
+      this.openAt = options?.openAt
+        ? new Date(options.openAt)
+        : this.date
+          ? removeDays(this.date, OrganisationDefaults.SessionOpenWeeks * 7)
+          : undefined
+      this.openAt_ = options?.openAt_
+      this.closed = options?.closed || false
+      this.reminderWeeks =
+        options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
+      this.registration = stringToBoolean(options?.registration)
+      this.register = options?.register || {}
+      this.psdProtocol = stringToBoolean(options?.psdProtocol) || false
+    }
+
+    if (
+      this.type === SessionType.School &&
+      this.presetNames?.includes(SessionPresetName.Flu)
+    ) {
       this.nationalProtocol =
         stringToBoolean(options?.nationalProtocol) || false
     }
@@ -330,6 +348,28 @@ export class Session {
   }
 
   /**
+   * Get year groups for `checkboxes`s
+   *
+   * @returns {Array<string>} `checkboxes` array values
+   */
+  get yearGroups_() {
+    return this.yearGroups.map((yearGroup) => String(yearGroup))
+  }
+
+  /**
+   * Set year groups from `checkboxes`s
+   *
+   * @param {Array<string>} array - checkboxes array values
+   */
+  set yearGroups_(array) {
+    if (array) {
+      this.yearGroups = array
+        .filter((item) => item !== '_unchecked')
+        .map((yearGroup) => Number(yearGroup))
+    }
+  }
+
+  /**
    * Get patient sessions
    *
    * @returns {Array<PatientSession>} Patient sessions
@@ -354,15 +394,24 @@ export class Session {
   }
 
   /**
+   * Get session presets
+   *
+   * @returns {Array<import('../enums.js').SessionPreset>} Patient sessions
+   */
+  get presets() {
+    return SessionPresets.filter((sessionPreset) =>
+      this.presetNames.includes(sessionPreset.name)
+    )
+  }
+
+  /**
    * Get primary programme ids
    *
    * @returns {Array<string>} Programme IDs
    */
   get programme_ids() {
     const programme_ids = new Set()
-
-    if (this.programmePreset) {
-      const preset = ProgrammePreset[this.programmePreset]
+    for (const preset of this.presets) {
       for (const programmeType of preset.programmeTypes) {
         const programme = programmesData[programmeType]
         programme_ids.add(programme.id)
@@ -381,25 +430,6 @@ export class Session {
     return this.programme_ids
       .map((id) => Programme.findOne(id, this.context))
       .sort((a, b) => a.name.localeCompare(b.name))
-  }
-
-  /**
-   * Get year groups in school session
-   *
-   * @returns {Array<number>|undefined} Year groups
-   * @todo Make this an option on the constructor
-   * @todo Select year groups when creating a new session
-   */
-  get yearGroups() {
-    if (this.school) {
-      const programmeYearGroups = this.programmes.flatMap(
-        (programme) => programme.yearGroups
-      )
-
-      return this.school.yearGroups.filter((num) =>
-        programmeYearGroups.includes(num)
-      )
-    }
   }
 
   /**
@@ -820,7 +850,16 @@ export class Session {
    * @static
    */
   static update(id, updates, context) {
-    const updatedSession = _.merge(Session.findOne(id, context), updates)
+    const updatedSession = _.mergeWith(
+      Session.findOne(id, context),
+      updates,
+      (oldValue, newValue) => {
+        // yearGroups array shouldn’t be merged but replaced entirely
+        if (Array.isArray(oldValue)) {
+          return newValue
+        }
+      }
+    )
     updatedSession.updatedAt = today()
 
     // Remove session context
