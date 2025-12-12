@@ -51,6 +51,7 @@
     "node": "^22.21"
   },
   "private": true,
+  "type": "module",
   "prototype": {
     "nunjucksPaths": [
       "./node_modules/govuk-frontend/dist",
