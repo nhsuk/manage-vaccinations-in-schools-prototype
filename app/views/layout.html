@@ -20,7 +20,7 @@
   <meta name="format-detection" content="telephone=no">
 
   {% set assetsName = assetsName | default("application") %}
-  <link rel="stylesheet" href="/assets/{{ assetsName }}.css" media="all">
+  <link rel="stylesheet" href="/{{ assetsName }}.css" media="all">
   <script src="/assets/{{ assetsName }}.js" type="module"></script>
 {% endblock %}
 

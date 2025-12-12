@@ -37,11 +37,23 @@ nunjucksConfig.express = app
 
 let nunjucksAppEnv = nunjucks.configure(appViews, nunjucksConfig)
 
+// Use public folder for static assets
+app.use(express.static(join(import.meta.dirname, 'public')))
+
+// Use assets from NHS frontend
+app.use(
+  '/nhsuk-frontend',
+  express.static(join(import.meta.dirname, 'node_modules/nhsuk-frontend/dist/nhsuk'))
+)
+
 const prototype = NHSPrototypeKit.init({
   serviceName: 'Manage vaccinations in schools',
   express: app,
   nunjucks: nunjucksAppEnv,
-  routes: routes
+  routes: routes,
+  buildOptions: {
+    entryPoints: ['app/assets/stylesheets/application.scss', 'app/assets/stylesheets/prototype.scss', 'app/assets/stylesheets/public.scss']
+  }
 })
 
 prototype.start()
