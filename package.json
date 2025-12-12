@@ -35,7 +35,7 @@
     "lodash": "^4.17.21",
     "nunjucks": "^3.2.4",
     "nhsuk-frontend": "^10.0.0-internal.3",
-    "nhsuk-prototype-kit": "8.0.0-internal.4",
+    "nhsuk-prototype-kit": "8.0.0-internal.5",
     "response-time": "^2.3.3"
   },
   "devDependencies": {
