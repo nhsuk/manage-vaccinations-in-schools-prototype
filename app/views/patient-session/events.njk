@@ -1,22 +1,14 @@
-{% from "patient-session/_navigation.njk" import patientSessionNavigation with context %}
-
-{% extends "_layouts/form.njk" %}
+{% extends "_layouts/session.njk" %}
 
 {% set title = patient.fullName + " – " + __("patient.events.title") %}
-{% set gridColumns = "three-quarters" %}
-{% set hideConfirmButton = true %}
+{% set heading = patientSession.patient.fullName %}
 {% set view = "events" %}
 
 {% block beforeContent %}
   {{ breadcrumb({
+    classes: "nhsuk-breadcrumb--reverse",
     items: [{
-      text: __("home.show.title"),
-      href: "/"
-    }, {
-      text: __("session.list.title"),
-      href: "/sessions"
-    }, {
-      text: session.location.name,
+      text: session.name,
       href: session.uri
     }, {
       text: __("session." + activity + ".label"),
@@ -25,23 +17,17 @@
   }) }}
 {% endblock %}
 
-{% block form %}
+{% block content %}
   {{ super() }}
-
-  {{ patientSessionNavigation({
-    patientSession: patientSession,
-    view: "events"
-  }) }}
 
   {% include "patient-session/_note.njk" %}
 
   {% if patientSession.pinnedNotes.length %}
     {% for auditEvent in patientSession.pinnedNotes %}
       {{ card({
-        classes: "app-card--yellow",
+        classes: "app-card--orange",
         heading: auditEvent.name,
-        headingLevel: 4,
-        feature: true,
+        headingLevel: 3,
         descriptionHtml: appEvent({ auditEvent: auditEvent, showProgrammes: true })
       }) }}
     {% endfor %}

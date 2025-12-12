@@ -5,8 +5,6 @@
   border-bottom: 1px solid $nhsuk-border-colour;
   background: nhsuk-colour("grey-5");
 
-  @include nhsuk-responsive-margin(5, "bottom");
-
   .app-secondary-navigation {
     margin: 0;
   }
@@ -34,5 +32,14 @@
   &[data-stuck="true"] {
     border-bottom-color: nhsuk-colour("grey-3");
     box-shadow: 0 $nhsuk-border-width 0 color.scale(nhsuk-colour("grey-3"), $alpha: -50%);
+  }
+}
+
+.app-sticky-navigation--reverse {
+  border-bottom: 0 none;
+  background: nhsuk-shade($nhsuk-brand-colour, 20%);
+
+  .app-secondary-navigation {
+    box-shadow: 0 -1px 0 0 $nhsuk-secondary-border-colour;
   }
 }

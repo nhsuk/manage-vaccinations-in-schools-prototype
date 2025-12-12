@@ -28,7 +28,9 @@ import { formatYearGroup } from '../utils/string.js'
 
 export const sessionController = {
   read(request, response, next, session_id) {
+    const { view } = request.params
     const { data } = request.session
+    const { __ } = response.locals
 
     const session = Session.findOne(session_id, data)
     response.locals.session = session
@@ -36,6 +38,36 @@ export const sessionController = {
     response.locals.defaultBatches = DefaultBatch.findAll(data).filter(
       (defaultBatch) => defaultBatch.session_id === session_id
     )
+
+    if (!session.isUnplanned) {
+      response.locals.navigationItems = [
+        {
+          text: __('session.show.label'),
+          href: session.uri,
+          ...(session.consents.length && { icon: 'alert' }),
+          current: view === undefined
+        },
+        {
+          text: __('session.report.label'),
+          href: `${session.uri}/report`,
+          current: view === 'report'
+        },
+        ...(session.psdProtocol
+          ? [
+              {
+                text: __('session.instruct.label'),
+                href: `${session.uri}/instruct`,
+                current: view === 'instruct'
+              }
+            ]
+          : []),
+        {
+          text: __('session.record.label'),
+          href: `${session.uri}/record`,
+          current: view === 'record'
+        }
+      ]
+    }
 
     next()
   },
