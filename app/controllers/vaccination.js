@@ -8,7 +8,8 @@ import {
   VaccinationProtocol,
   VaccinationSite,
   VaccineCriteria,
-  UserRole
+  UserRole,
+  ProgrammeType
 } from '../enums.js'
 import { Batch } from '../models/batch.js'
 import { DefaultBatch } from '../models/default-batch.js'
@@ -273,6 +274,16 @@ export const vaccinationController = {
               ...(!patientSession?.session?.address && {
                 [`/${vaccination_uuid}/${type}/location`]: {}
               }),
+              ...(vaccination?.outcome === VaccinationOutcome.AlreadyVaccinated
+                ? {
+                    ...(vaccination?.programme.type === ProgrammeType.MMR
+                      ? {
+                          [`/${vaccination_uuid}/${type}/variant`]: {}
+                        }
+                      : {}),
+                    [`/${vaccination_uuid}/${type}/created-at`]: {}
+                  }
+                : {}),
               [`/${vaccination_uuid}/${type}/check-answers`]: {}
             }),
         [`/${vaccination_uuid}`]: {}
