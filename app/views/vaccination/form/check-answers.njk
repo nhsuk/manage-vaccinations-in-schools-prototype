@@ -13,10 +13,10 @@
   {% set vaccinationSummaryListHtml = summaryList({
     rows: summaryRows(vaccination, {
       programme: {},
+      outcome: {},
       vaccine_snomed: {
         href: vaccination.uri + "/new/vaccine" if programme.alternativeVaccine
       },
-      outcome: {},
       method: {
         href: vaccination.uri + "/new/method" if vaccination.method != VaccinationMethod.Intranasal
       },
@@ -32,6 +32,9 @@
       batch_id: {
         href: vaccination.uri + "/new/batch-id"
       },
+      location: {
+        href: vaccination.uri + "/new/location"
+      },
       identifiedBy: {
         href: vaccination.uri + "/new/identified-by"
       },
@@ -41,12 +44,14 @@
       createdBy: {
         href: vaccination.uri + "/new/created-by"
       },
-      createdAt: {
+      createdAt_date: {
         href: vaccination.uri + "/new/created-at"
       },
-      location: {
-        href: vaccination.uri + "/new/location"
+      createdAt_time: {
+        href: vaccination.uri + "/new/created-at"
       },
+      reportedBy: {},
+      reportedAt: {},
       protocol: {}
     })
   }) %}
