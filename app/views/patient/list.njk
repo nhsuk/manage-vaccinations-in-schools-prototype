@@ -65,9 +65,13 @@
             clickable: true,
             descriptionHtml: summaryList({
               rows: summaryRows(patient, {
-                nhsn: {},
+                nhsn: {
+                  value: patient.formatted.nhsn | highlightQuery(data.q)
+                },
                 dob: {},
-                school: {},
+                school: {
+                  value: patient.school.name | highlightQuery(data.q)
+                },
                 yearGroup: {},
                 report: {
                   label: __("patientSession.report.label"),
