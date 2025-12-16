@@ -5,6 +5,7 @@ import {
   ProgrammeType
 } from '../enums.js'
 import { getCurrentAcademicYear } from '../utils/date.js'
+import { ordinal } from '../utils/number.js'
 import { getReportOutcome } from '../utils/patient-session.js'
 import { getPatientStatus } from '../utils/status.js'
 import {
@@ -336,21 +337,8 @@ export class PatientProgramme {
   get formatted() {
     const status = formatTag(getPatientStatus(this.status, this.vaccinationDue))
 
-    const rule = new Intl.PluralRules('en-GB', {
-      type: 'ordinal'
-    }).select(this.doseDue)
-
-    const suffixes = new Map([
-      ['one', 'st'],
-      ['two', 'nd'],
-      ['few', 'rd'],
-      ['other', 'th']
-    ])
-
-    const doseDue = `${this.doseDue}${suffixes.get(rule)}`
-
     return {
-      doseDue,
+      doseDue: ordinal(this.doseDue),
       status,
       statusWithNotes: formatWithSecondaryText(status, this.statusNotes, false),
       programmeStatus: formatProgrammeStatus(

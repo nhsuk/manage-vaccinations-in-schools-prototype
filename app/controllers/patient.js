@@ -3,13 +3,13 @@ import _ from 'lodash'
 import {
   ArchiveRecordReason,
   PatientStatus,
+  ProgrammeType,
   VaccinationOutcome
 } from '../enums.js'
 import { PatientProgramme } from '../models/patient-programme.js'
 import { Patient } from '../models/patient.js'
 import { Programme } from '../models/programme.js'
 import { Vaccination } from '../models/vaccination.js'
-import { today } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
@@ -382,14 +382,18 @@ export const patientController = {
         sequence: patientProgramme.sequence,
         patient_uuid: patient.uuid,
         programme_id: patientProgramme.programme_id,
-        createdAt: today(),
-        createdBy_uid: account.uid
+        reportedBy_uid: account.uid
       },
       data.wizard
     )
 
+    let startPage = 'created-at'
+    if (patientProgramme.programme.type === ProgrammeType.MMR) {
+      startPage = 'variant'
+    }
+
     response.redirect(
-      `${patientProgramme.programme.uri}/vaccinations/${vaccination.uuid}/new/check-answers?referrer=${patientProgramme.uri}`
+      `${patientProgramme.programme.uri}/vaccinations/${vaccination.uuid}/new/${startPage}?referrer=${patientProgramme.uri}`
     )
   }
 }

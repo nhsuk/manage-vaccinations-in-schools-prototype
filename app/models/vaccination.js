@@ -1,7 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
-import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import { isBefore } from 'date-fns'
-import _ from 'lodash'
 
 import schools from '../datasets/schools.js'
 import vaccines from '../datasets/vaccines.js'
@@ -19,6 +17,7 @@ import {
   formatDate,
   today
 } from '../utils/date.js'
+import { ordinal } from '../utils/number.js'
 import {
   getVaccinationOutcomeStatus,
   getVaccinationSyncStatus
@@ -52,8 +51,10 @@ import { Vaccine } from './vaccine.js'
  * @property {Date} [createdAt] - Created date
  * @property {object} [createdAt_] - Created date (from `dateInput`)
  * @property {string} [createdBy_uid] - User who performed vaccination
- * @property {string} [suppliedBy_uid] - Who supplied the vaccine
  * @property {Date} [updatedAt] - Updated date
+ * @property {Date} [reportedAt] - Reported date
+ * @property {string} [reportedBy_uid] - User who reported vaccination
+ * @property {string} [suppliedBy_uid] - Who supplied the vaccine
  * @property {Date} [nhseSyncedAt] - Date synced with NHS England API
  * @property {string} [location] - Location
  * @property {boolean} [selfId] - Child confirmed their identity?
@@ -72,6 +73,7 @@ import { Vaccine } from './vaccine.js'
  * @property {string} [patientSession_uuid] - Patient session UUID
  * @property {string} [programme_id] - Programme ID
  * @property {string} [batch_id] - Batch ID
+ * @property {string} [variant] - Programme variant
  * @property {string} [vaccine_snomed] - Vaccine SNOMED code
  */
 export class Vaccination {
@@ -86,7 +88,7 @@ export class Vaccination {
     this.createdBy_uid = options?.createdBy_uid
     this.suppliedBy_uid = options?.suppliedBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
-    this.location = options?.location || 'Unknown location'
+    this.location = options?.location || 'Unknown'
     this.selfId = options?.selfId && stringToBoolean(options.selfId)
     this.identifiedBy = this.selfId !== true && options?.identifiedBy
     this.outcome = options?.outcome
@@ -108,7 +110,15 @@ export class Vaccination {
     this.patientSession_uuid = options?.patientSession_uuid
     this.programme_id = options?.programme_id
     this.batch_id = this.given ? options?.batch_id || '' : undefined
+    this.variant = options?.variant
     this.vaccine_snomed = options?.vaccine_snomed
+
+    if (this.outcome === VaccinationOutcome.AlreadyVaccinated) {
+      this.createdAt = options?.createdAt && new Date(options.createdAt)
+      this.reportedAt = today()
+      this.reportedBy_uid = options?.reportedBy_uid
+      this.protocol = undefined
+    }
   }
 
   /**
@@ -278,6 +288,21 @@ export class Vaccination {
   }
 
   /**
+   * Get user who reported vaccination
+   *
+   * @returns {User} User
+   */
+  get reportedBy() {
+    try {
+      if (this.reportedBy_uid) {
+        return User.findOne(this.reportedBy_uid, this.context)
+      }
+    } catch (error) {
+      console.error('Vaccination.reportedBy', error.message)
+    }
+  }
+
+  /**
    * Get user who supplied the vaccine
    *
    * @returns {User} User
@@ -380,9 +405,15 @@ export class Vaccination {
     let sequence
     if (this.sequence && this.programme?.sequence) {
       sequence = this.programme.sequence.indexOf(this.sequence)
-      sequence = prototypeFilters.ordinal(Number(sequence) + 1)
-      sequence = `${_.startCase(sequence)} dose`
+      sequence = `${ordinal(Number(sequence) + 1)} dose`
     }
+
+    const programme = this.variant
+      ? formatTag({
+          text: 'MMRV',
+          colour: 'transparent'
+        })
+      : this.programme?.nameTag
 
     return {
       createdAt: formatDate(this.createdAt, {
@@ -396,12 +427,17 @@ export class Vaccination {
       createdAt_date: formatDate(this.createdAt, {
         dateStyle: 'long'
       }),
+      createdAt_time: formatDate(this.createdAt, {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      }),
       createdAt_dateShort: formatDate(this.createdAt, {
         day: 'numeric',
         month: 'short',
         year: 'numeric'
       }),
-      createdBy: this.createdBy?.fullName || '',
+      createdBy: this.createdBy?.fullName || 'Unknown',
       suppliedBy: this.suppliedBy?.fullName || '',
       updatedAt: formatDate(this.updatedAt, {
         day: 'numeric',
@@ -411,6 +447,17 @@ export class Vaccination {
         minute: '2-digit',
         hour12: true
       }),
+      reportedAt:
+        this.reportedAt &&
+        formatDate(this.reportedAt, {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        }),
+      reportedBy: (this.reportedBy && this.reportedBy?.fullName) || '',
       syncStatus: formatWithSecondaryText(
         formatTag(getVaccinationSyncStatus(this.syncStatus)),
         this.syncStatusNotes,
@@ -420,12 +467,10 @@ export class Vaccination {
       batch_id: formatMonospace(this.batch_id),
       dose: formatMillilitres(this.dose),
       sequence,
-      vaccine_snomed: this.vaccine_snomed
-        ? this.vaccine?.brand
-        : 'Unknown vaccine',
+      vaccine_snomed: this.vaccine_snomed ? this.vaccine?.brand : 'Unknown',
       note: formatMarkdown(this.note),
       outcome: formatTag(getVaccinationOutcomeStatus(this.outcome)),
-      programme: this.programme && this.programme.nameTag,
+      programme,
       school: this.school && this.school.name,
       identifiedBy: this.selfId
         ? 'The child'

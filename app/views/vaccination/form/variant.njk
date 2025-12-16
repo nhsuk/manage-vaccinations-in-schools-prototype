@@ -1,0 +1,22 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("vaccination.variant.title", { patient: vaccination.patient }) %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        html: appHeading({
+          classes: "nhsuk-fieldset__legend--l",
+          caption: vaccination.patient.fullName,
+          title: title
+        })
+      }
+    },
+    hint: {
+      text: __("vaccination.variant.hint", { patient: vaccination.patient })
+    },
+    items: booleanItems,
+    decorate: "vaccination.variant"
+  }) }}
+{% endblock %}

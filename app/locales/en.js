@@ -2203,6 +2203,17 @@ export const en = {
       label: 'Time',
       hint: 'For example, 13 15'
     },
+    reportedAt: {
+      label: 'Reported on'
+    },
+    reportedBy: {
+      label: 'Reported by'
+    },
+    variant: {
+      label: 'Programme variant',
+      title: 'Was {{patient.firstName}} vaccinated with the MMRV vaccine?',
+      hint: '{{patient.firstName}} is eligible for the new MMRV vaccine, but may have got the  MMR vaccine instead.'
+    },
     syncStatus: {
       label: 'Synced with NHS England?'
     },
