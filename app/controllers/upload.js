@@ -1,9 +1,9 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { UploadStatus, UploadType } from '../enums.js'
-import { Notice } from '../models/notice.js'
 import { Upload } from '../models/upload.js'
 import { getDateValueDifference } from '../utils/date.js'
+import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
 export const uploadController = {
@@ -14,28 +14,7 @@ export const uploadController = {
   },
 
   readAll(request, response, next) {
-    const { data } = request.session
-    let uploads = Upload.findAll(data)
-
-    uploads = uploads.sort((a, b) =>
-      getDateValueDifference(b.createdAt, a.createdAt)
-    )
-
-    response.locals.uploads = uploads.filter(
-      ({ status }) => status !== UploadStatus.Approved
-    )
-
-    response.locals.imported = uploads.filter(
-      ({ status }) => status === UploadStatus.Approved
-    )
-
-    // Required to show number of notices in upload section navigation
-    response.locals.notices = Notice.findAll(data).filter(
-      ({ archivedAt }) => !archivedAt
-    )
-
-    // Required to show number of reviews in upload section navigation
-    response.locals.reviews = uploads.flatMap((upload) => upload.duplicates)
+    response.locals.uploads = Upload.findAll(request.session.data)
 
     next()
   },
@@ -47,11 +26,63 @@ export const uploadController = {
   },
 
   list(request, response) {
+    const { status, type } = request.query
+    const { data } = request.session
+    const { uploads } = response.locals
+
+    let results = uploads
+
+    // Filter by status
+    if (status) {
+      results = results.filter((upload) => upload.status === status)
+    }
+
+    // Filter by type
+    if (type && type !== 'none') {
+      results = results.filter((upload) => upload.type === type)
+    }
+
+    // Sort
+    results = results.sort((a, b) =>
+      getDateValueDifference(b.createdAt, a.createdAt)
+    )
+
+    // Results
+    response.locals.results = getResults(results, request.query, 40)
+    response.locals.pages = getPagination(results, request.query, 40)
+
+    // Clean up session data
+    delete data.status
+    delete data.type
+
     response.render(`upload/list`)
   },
 
-  imported(request, response) {
-    response.render(`upload/imported`)
+  filterList(request, response) {
+    const params = new URLSearchParams()
+
+    // Radios and text inputs
+    for (const key of ['type']) {
+      const value = request.body[key]
+      if (value) {
+        params.append(key, String(value))
+      }
+    }
+
+    // Checkboxes
+    for (const key of ['status']) {
+      const value = request.body[key]
+      const values = Array.isArray(value) ? value : [value]
+      if (value) {
+        values
+          .filter((item) => item !== '_unchecked')
+          .forEach((value) => {
+            params.append(key, String(value))
+          })
+      }
+    }
+
+    response.redirect(`/uploads?${params}`)
   },
 
   action(type) {
