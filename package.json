@@ -19,7 +19,7 @@
     "lint:fix": "npm run lint:prettier:fix && npm run lint:js:fix && npm run lint:css:fix",
     "build": "bin/build.sh",
     "start": "node app.js",
-    "xxxpostinstall": "npm run create-data"
+    "postinstall": "npm run create-data"
   },
   "dependencies": {
     "@faker-js/faker": "^10.0.0",
