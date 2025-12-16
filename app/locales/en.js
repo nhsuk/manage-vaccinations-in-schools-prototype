@@ -1850,8 +1850,13 @@ export const en = {
       description:
         'Import child, cohort and vaccination records and see important notices',
       introduction:
-        'Use this page to upload and import child, class list and vaccination records.\n\nAfter import, files move to the **Completed imports** tab.\n\nUpload times can vary. Refresh the page to see the latest status.'
+        'Use this page to upload and import child, class list and vaccination records.\n\nUpload times can vary. Refresh the page to see the latest status.'
     },
+    search: {
+      label: 'Find upload'
+    },
+    results:
+      '{count, plural, =0 {No imports matching your search criteria were found} one {Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> import} other {Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> imports}}',
     recent: {
       label: 'Uploaded files',
       title: 'Uploaded files',

@@ -1,59 +1,116 @@
-{% from "upload/_navigation.njk" import uploadNavigation with context %}
+{% extends "_layouts/form.njk" %}
 
-{% extends "_layouts/default.njk" %}
-
+{% set gridColumns = "full" %}
+{% set hideConfirmButton = true %}
 {% set title = __("upload.list.title") %}
-{% set needsReview = uploads | selectattr("needsReview") %}
 
-{% block content %}
+{% block form %}
   {{ super() }}
 
-  {{ uploadNavigation({
-    view: "recent"
+  {{ appHeading({
+    size: "xl",
+    title: __("upload.list.title")
   }) }}
 
-  {% if uploads.length %}
-    {% set uploadRows = [] %}
-    {% for upload in uploads %}
-      {% set uploadRows = uploadRows | push([
-        {
-          header: __("upload.summary.label"),
-          html: upload.link.summary
-        },
-        {
-          header: __("upload.type.label"),
-          html: upload.summary.type or "None"
-        },
-        {
-          header: __("upload.status.label"),
-          html: upload.formatted.status
-        },
-        {
-          header: __("upload.patients.label"),
-          html: "…" if upload.status == UploadStatus.Processing else upload.patients.length | string,
-          format: "numeric"
-        }
-      ]) %}
-    {% endfor %}
+  <div class="nhsuk-u-reading-width">
+    {{ __("upload.list.introduction") | nhsukMarkdown }}
 
-    {{ table({
-      id: "uploads",
-      heading: __mf("upload.recent.count", {
-        count: uploads.length,
-        needsReview: needsReview.length
-      }),
-      panel: true,
-      responsive: true,
-      head: [
-        { text: __("upload.summary.label") },
-        { text: __("upload.type.label") },
-        { text: __("upload.status.label") },
-        {
-          text: __("upload.patients.label"),
-          format: "numeric"
-        }
-      ],
-      rows: uploadRows
+    {{ button({
+      classes: "nhsuk-button--secondary",
+      text: __("upload.new.label"),
+      href: "/uploads/new"
     }) }}
-  {% endif %}
+  </div>
+
+  <div class="nhsuk-grid-row">
+    <app-auto-submit class="app-grid-column-filters">
+      {% call card({
+        classes: "app-filters",
+        feature: true,
+        heading: __("upload.search.label") ,
+        headingLevel: 3
+      }) %}
+        {{ radios({
+          classes: "nhsuk-radios--small",
+          fieldset: {
+            legend: {
+              classes: "nhsuk-fieldset__legend--s",
+              text: __("upload.type.label")
+            }
+          },
+          items: radioFilterItems(UploadType),
+          decorate: "type"
+        }) }}
+
+        {{ checkboxes({
+          classes: "nhsuk-checkboxes--small",
+          fieldset: {
+            legend: {
+              classes: "nhsuk-fieldset__legend--s",
+              text: __("upload.status.label")
+            }
+          },
+          items: checkboxFilterItems(UploadStatus),
+          decorate: "status"
+        }) }}
+
+        {{ appButtonGroup({
+          buttons: [{
+            classes: "nhsuk-button--secondary nhsuk-button--small",
+            text: __("search.confirm"),
+            attributes: {
+              formaction: params.formaction,
+              formmethod: "post",
+              role: "search"
+            }
+          }, {
+            classes: "nhsuk-button--secondary nhsuk-button--small",
+            text: __("search.clear"),
+            href: "/uploads"
+          } if data.type or data.status]
+        }) }}
+      {% endcall %}
+    </app-auto-submit>
+
+    <div class="app-grid-column-results">
+      {% if data.type and data.type != "none" %}
+        {% set title = data.type | replace("records", "record imports") %}
+      {% else %}
+        {% set title = "All imports" %}
+      {% endif %}
+
+      {{ appHeading({
+        level: 3,
+        size: "m",
+        title: title,
+        summary: __mf("upload.results", {
+          from: results.from,
+          to: results.to,
+          count: results.count
+        }) | safe
+      }) }}
+
+      {% for upload in results.page %}
+        {{ card({
+          classes: "app-card--compact",
+          heading: upload.formatted.createdAt,
+          headingClasses: "nhsuk-heading-s",
+          headingLevel: 4,
+          href: upload.uri,
+          clickable: true,
+          descriptionHtml: summaryList({
+            rows: summaryRows(upload, {
+              fileName: {},
+              type: {
+                value: upload.summary.type
+              },
+              status: {}
+            })
+          })
+        }) }}
+      {% endfor %}
+
+      {{ pagination(pages) }}
+    </div>
+  </div>
 {% endblock %}
