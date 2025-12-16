@@ -14,24 +14,6 @@
 
   <div class="nhsuk-grid-row">
     <app-auto-submit class="app-grid-column-filters">
-      {% set filterButtonGroup %}
-        {{ appButtonGroup({
-          buttons: [{
-            classes: "nhsuk-button--secondary nhsuk-button--small",
-            text: __("search.confirm"),
-            attributes: {
-              formaction: params.formaction,
-              formmethod: "post",
-              role: "search"
-            }
-          }, {
-            classes: "nhsuk-button--secondary nhsuk-button--small",
-            text: __("search.clear"),
-            href: "/schools"
-          } if data.q or data.phase]
-        }) }}
-      {% endset %}
-
       {% call card({
         classes: "app-filters",
         feature: true,
@@ -71,7 +53,21 @@
           decorate: "programme_id"
         }) if programmeItems }}
 
-        {{ filterButtonGroup | safe }}
+        {{ appButtonGroup({
+          buttons: [{
+            classes: "nhsuk-button--secondary nhsuk-button--small",
+            text: __("search.confirm"),
+            attributes: {
+              formaction: params.formaction,
+              formmethod: "post",
+              role: "search"
+            }
+          }, {
+            classes: "nhsuk-button--secondary nhsuk-button--small",
+            text: __("search.clear"),
+            href: "/schools"
+          } if data.q or data.phase]
+        }) }}
       {% endcall %}
     </app-auto-submit>
 
