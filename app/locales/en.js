@@ -1468,8 +1468,8 @@ export const en = {
       label: 'Academic year'
     },
     report: {
-      label: 'Added to session',
-      title: 'Added to session'
+      label: 'Children in session',
+      title: 'Children in session'
     },
     consent: {
       label: 'Consent',
