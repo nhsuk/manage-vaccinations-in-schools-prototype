@@ -1,11 +1,15 @@
 // External dependencies
 import express from 'express'
 import nunjucks from 'nunjucks'
+import sessionInDatabase from 'connect-pg-simple'
+import session from 'express-session'
+import { Pool } from 'pg'
 
 import { join } from 'node:path'
 
 import NHSPrototypeKit from 'nhsuk-prototype-kit'
 
+const serviceName = 'Manage vaccinations in schools'
 
 // Local dependencies
 import routes from './app/routes.js'
@@ -17,6 +21,37 @@ const port = parseInt(process.env.PORT, 10) || 2000
 
 // Initialise applications
 const app = express()
+
+
+const sessionName = `manage-vaccinations-in-schools-prototype`
+const sessionOptions = {
+  secret: sessionName,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 4, // 4 hours
+    secure: process.env.NODE_ENV === 'production'
+  }
+}
+
+const PgSession = sessionInDatabase(session)
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl:
+    process.env.NODE_ENV === 'production'
+      ? {
+          rejectUnauthorized: false
+        }
+      : false
+})
+
+app.use(
+  session(
+    Object.assign(sessionOptions, {
+      store: new PgSession({ pool }),
+      resave: false,
+      saveUninitialized: false
+    })
+  )
+)
 
 // Nunjucks configuration for application
 const appViews = [
@@ -47,7 +82,7 @@ app.use(
 )
 
 const prototype = NHSPrototypeKit.init({
-  serviceName: 'Manage vaccinations in schools',
+  serviceName: serviceName,
   express: app,
   nunjucks: nunjucksAppEnv,
   routes: routes,
