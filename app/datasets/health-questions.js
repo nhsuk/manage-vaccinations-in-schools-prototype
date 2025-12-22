@@ -77,6 +77,13 @@ export const healthQuestions = {
     options: false,
     detailsHint: false
   },
+  immuneSystemHpv: {
+    label:
+      'Does the child have a disease or treatment that severely affects their immune system?',
+    hint: 'Children with a severely weakened immune system will need 3 doses of the vaccine, over a 12-month period.',
+    options: false,
+    detailsHint: false
+  },
   immuneSystemCloseContact: {
     label:
       'Is the child in regular close contact with anyone currently having treatment that severely affects their immune system?',
