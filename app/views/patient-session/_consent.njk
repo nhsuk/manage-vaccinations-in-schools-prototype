@@ -37,7 +37,7 @@
   {{ actionLink({
     text: __("reply.new.title"),
     href: patientSession.uri + "/replies/new?referrer=" + referrer
-  }) if options.canRespond and not isVaccinated }}
+  }) if not isVaccinated }}
 
   {% if patientSession.replies | length %}
     {# Requests with responses or requests that couldn’t be delivered #}
