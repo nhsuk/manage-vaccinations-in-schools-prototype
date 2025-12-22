@@ -1155,7 +1155,7 @@ export const en = {
   },
   remind: {
     new: {
-      title: 'Send reminder'
+      title: 'Re-send consent request'
     }
   },
   reply: {
