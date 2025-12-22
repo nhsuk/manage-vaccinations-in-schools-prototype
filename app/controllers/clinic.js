@@ -6,8 +6,8 @@ export const clinicController = {
 
     response.locals.clinic = clinic
     response.locals.paths = {
-      back: `/organisations/${clinic.organisation_code}/clinics`,
-      next: `/organisations/${clinic.organisation_code}/clinics`
+      back: `${clinic.team.uri}/clinics`,
+      next: `${clinic.team.uri}/clinics`
     }
 
     next()
@@ -26,21 +26,21 @@ export const clinicController = {
   },
 
   create(request, response) {
-    const { organisation_code } = request.params
+    const { team_id } = request.params
     const { data } = request.session
     const { __ } = response.locals
 
     const clinic = Clinic.create(
       {
         ...request.body.clinic,
-        organisation_code
+        team_id
       },
       data
     )
 
     request.flash('success', __(`clinic.new.success`, { clinic }))
 
-    response.redirect(`/organisations/${clinic.organisation_code}/clinics`)
+    response.redirect(`${clinic.team.uri}/clinics`)
   },
 
   update(request, response) {

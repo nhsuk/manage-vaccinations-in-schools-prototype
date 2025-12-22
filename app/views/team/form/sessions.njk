@@ -1,15 +1,15 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("organisation.sessions.title") %}
+{% set title = __("team.sessions.title") %}
 
 {% block form %}
   {{ appHeading({
-    caption: organisation.name,
+    caption: team.name,
     title: title
   }) }}
 
   {{ insetText({
-    html: __("organisation.sessions.text") | nhsukMarkdown
+    html: __("team.sessions.text") | nhsukMarkdown
   }) }}
 
   {{ input({
@@ -19,11 +19,11 @@
     classes: "nhsuk-input--width-2",
     label: {
       classes: "nhsuk-label--m",
-      text: __("organisation.sessionOpenWeeks.title")
+      text: __("team.sessionOpenWeeks.title")
     },
-    hint: { text: __("organisation.sessionOpenWeeks.hint") },
+    hint: { text: __("team.sessionOpenWeeks.hint") },
     suffix: "weeks",
-    decorate: "organisation.sessionOpenWeeks"
+    decorate: "team.sessionOpenWeeks"
   }) }}
 
   {{ input({
@@ -33,11 +33,11 @@
     classes: "nhsuk-input--width-2",
     label: {
       classes: "nhsuk-label--m",
-      text: __("organisation.sessionReminderWeeks.title")
+      text: __("team.sessionReminderWeeks.title")
     },
-    hint: { text: __("organisation.sessionReminderWeeks.hint") },
+    hint: { text: __("team.sessionReminderWeeks.hint") },
     suffix: "weeks",
-    decorate: "organisation.sessionReminderWeeks"
+    decorate: "team.sessionReminderWeeks"
   }) }}
 
   {{ radios({
@@ -45,10 +45,10 @@
     fieldset: {
       legend: {
         classes: "nhsuk-fieldset__legend--m",
-        text: __("organisation.sessionRegistration.title")
+        text: __("team.sessionRegistration.title")
       }
     },
     items: booleanItems,
-    decorate: "organisation.sessionRegistration"
+    decorate: "team.sessionRegistration"
   }) }}
 {% endblock %}

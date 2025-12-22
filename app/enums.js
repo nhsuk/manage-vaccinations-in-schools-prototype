@@ -224,16 +224,6 @@ export const NotifySmsStatus = {
 
 /**
  * @readonly
- * @enum {boolean|number}
- */
-export const OrganisationDefaults = {
-  SessionOpenWeeks: 3,
-  SessionReminderWeeks: 1,
-  SessionRegistration: true
-}
-
-/**
- * @readonly
  * @enum {string}
  */
 export const ParentalRelationship = {
@@ -527,6 +517,16 @@ export const SessionStatus = {
 export const SessionType = {
   School: 'School session',
   Clinic: 'Community clinic'
+}
+
+/**
+ * @readonly
+ * @enum {boolean|number}
+ */
+export const TeamDefaults = {
+  SessionOpenWeeks: 3,
+  SessionReminderWeeks: 1,
+  SessionRegistration: true
 }
 
 /**

@@ -1,12 +1,12 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = __("organisation.show.title") %}
+{% set title = __("team.show.title") %}
 
 {% block content %}
   {{ super() }}
 
   {{ appHeading({
-    caption: organisation.name,
+    caption: team.name,
     title: title
   }) }}
 
@@ -19,11 +19,11 @@
 
     <div class="nhsuk-grid-column-three-quarters">
       {% call card({
-        heading: __("organisation.clinics.summary"),
+        heading: __("team.clinics.summary"),
         headingClasses: "nhsuk-heading-m"
       }) %}
         {% set clinicRows = [] %}
-        {% for clinic in organisation.clinics %}
+        {% for clinic in team.clinics %}
           {% set clinicRows = clinicRows | push([
             {
               header: __("clinic.name.label"),
@@ -33,10 +33,10 @@
               html: appActionList({
                 items: [{
                   text: __("clinic.edit.label"),
-                  href: organisation.uri + "/clinics/" + clinic.id + "/edit"
+                  href: clinic.uri + "/edit"
                 }, {
                   text: __("clinic.delete.label"),
-                  href: organisation.uri + "/clinics/" + clinic.id + "/delete"
+                  href: clinic.uri + "/delete"
                 }]
               })
             }
@@ -45,11 +45,11 @@
 
         {{ button({
           classes: "nhsuk-button--secondary",
-          text: __("organisation.clinics.new.title"),
-          href: organisation.uri + "/clinics/new"
+          text: __("team.clinics.new.title"),
+          href: team.uri + "/clinics/new"
         }) }}
 
-        {% if organisation.clinics.length %}
+        {% if team.clinics.length %}
           {{ table({
             id: "clinics",
             responsive: true,

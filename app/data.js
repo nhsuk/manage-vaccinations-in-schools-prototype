@@ -4,13 +4,13 @@ import clinics from '../.data/clinics.json' with { type: 'json' }
 import instructions from '../.data/instructions.json' with { type: 'json' }
 import moves from '../.data/moves.json' with { type: 'json' }
 import notices from '../.data/notices.json' with { type: 'json' }
-import organisations from '../.data/organisations.json' with { type: 'json' }
 import patients from '../.data/patients.json' with { type: 'json' }
 import patientSessions from '../.data/patient-sessions.json' with { type: 'json' }
 import programmes from '../.data/programmes.json' with { type: 'json' }
 import replies from '../.data/replies.json' with { type: 'json' }
 import schools from '../.data/schools.json' with { type: 'json' }
 import sessions from '../.data/sessions.json' with { type: 'json' }
+import teams from '../.data/teams.json' with { type: 'json' }
 import uploads from '../.data/uploads.json' with { type: 'json' }
 import users from '../.data/users.json' with { type: 'json' }
 import vaccinations from '../.data/vaccinations.json' with { type: 'json' }
@@ -19,10 +19,9 @@ import { Consent } from './models/consent.js'
 import { Move } from './models/move.js'
 import { Notice } from './models/notice.js'
 import { Session } from './models/session.js'
-import { Upload } from './models/upload.js'
 
-// Use Coventry and Warwickshire as organisation
-const organisation = organisations.RYG
+// Use Coventry and Warwickshire as team
+const team = teams['001']
 
 /**
  * Default values for user session data
@@ -41,14 +40,14 @@ const data = {
   instructions,
   moves,
   notices,
-  organisation,
-  organisations,
   patients,
   patientSessions,
   programmes,
   replies,
   schools,
   sessions,
+  team,
+  teams,
   uploads,
   users,
   vaccinations,

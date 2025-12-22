@@ -92,7 +92,7 @@ export const en = {
     },
     permissions: {
       org: {
-        title: 'Your organisation is not using this service yet',
+        title: 'Your team is not using this service yet',
         description: '{{ra}} is not currently set up to use Mavis.'
       },
       user: {
@@ -280,12 +280,12 @@ export const en = {
     closed: {
       title: 'You can no longer submit a consent response',
       description:
-        'The deadline for responding has passed.\n\n## You can still book a clinic appointment\n\nContact {{organisation.email}} to book a clinic appointment.'
+        'The deadline for responding has passed.\n\n## You can still book a clinic appointment\n\nContact {{team.email}} to book a clinic appointment.'
     },
     'parental-responsibility': {
       title: 'You cannot give or refuse consent through this service',
       description:
-        'To give or refuse consent for a child’s vaccination, you need to have parental responsibility.\n\nIf you have any questions, please contact the local health organisation by calling {{organisation.tel}}, or email {{organisation.email}}.'
+        'To give or refuse consent for a child’s vaccination, you need to have parental responsibility.\n\nIf you have any questions, please contact the local health organisation by calling {{team.tel}}, or email {{team.email}}.'
     },
     new: {
       'check-answers': {
@@ -363,7 +363,7 @@ export const en = {
         title: 'What school does your child go to?',
         label: 'Select a school',
         description:
-          'You can only use this service if your child’s school is listed here. If it’s not, contact {{organisation.email}}. If you’ve moved recently, it’s important to mention this.'
+          'You can only use this service if your child’s school is listed here. If it’s not, contact {{team.email}}. If you’ve moved recently, it’s important to mention this.'
       },
       address: {
         title: 'Home address',
@@ -582,7 +582,7 @@ export const en = {
       title: 'Select file format',
       label: 'File format'
     },
-    organisations: {
+    teams: {
       title: 'Select providers',
       label: 'Providers'
     },
@@ -720,79 +720,6 @@ export const en = {
       description: 'This cannot be undone.',
       confirm: 'Yes, %s this notice',
       cancel: 'No, return to notices'
-    }
-  },
-  organisation: {
-    show: {
-      label: 'Your team',
-      title: 'Your team',
-      description: 'Manage your team’s settings'
-    },
-    edit: {
-      success: 'Team settings updated'
-    },
-    contact: {
-      title: 'Contact details',
-      summary: 'Contact details'
-    },
-    clinics: {
-      title: 'Clinics',
-      summary: 'Clinics',
-      new: {
-        title: 'Add a new clinic'
-      }
-    },
-    schools: {
-      title: 'Schools',
-      summary: 'Schools',
-      new: {
-        title: 'Add a new school'
-      }
-    },
-    sessions: {
-      title: 'Sessions',
-      defaults: 'Session defaults',
-      password: 'Shared password',
-      text: 'You can change these values when scheduling new sessions.'
-    },
-    reminders: {
-      title: 'Consent reminders'
-    },
-    name: {
-      label: 'Name'
-    },
-    code: {
-      label: 'ODC code'
-    },
-    tel: {
-      label: 'Phone number'
-    },
-    email: {
-      label: 'Email address'
-    },
-    privacyPolicyUrl: {
-      label: 'Privacy policy',
-      hint: 'Linked to from consent forms and consent request emails'
-    },
-    sessionOpenWeeks: {
-      title: 'When should parents get a request to give consent?',
-      label: 'Consent request',
-      hint: 'Enter the number of weeks before the first session takes place'
-    },
-    sessionReminderWeeks: {
-      title: 'When should parents get a reminder to give consent?',
-      label: 'Consent reminders',
-      hint: 'Enter the number of weeks before a session takes place'
-    },
-    sessionRegistration: {
-      title:
-        'Do you want to register children’s attendance before recording vaccinations?',
-      label: 'Register attendance'
-    },
-    password: {
-      label: 'Shared password',
-      title: 'Shared password',
-      hint: 'Use this password to unlock offline vaccination spreadsheets. Don’t share it with anyone outside your team.'
     }
   },
   parent: {
@@ -1765,7 +1692,7 @@ export const en = {
       'consent-given': {
         label: 'Consent given',
         name: 'Confirmation that consent has been given',
-        text: 'You’ve given consent for {{consent.child.firstName}} to get their {{session.vaccinationNames.sentenceCase}} at school on {{session.formatted.nextDate}}. Please let them know what to expect.\n\nIf anything changes, phone {{organisation.tel}}.'
+        text: 'You’ve given consent for {{consent.child.firstName}} to get their {{session.vaccinationNames.sentenceCase}} at school on {{session.formatted.nextDate}}. Please let them know what to expect.\n\nIf anything changes, phone {{team.tel}}.'
       },
       'consent-given-child': {
         label: 'Consent given (child)',
@@ -1795,8 +1722,81 @@ export const en = {
       'record-could-not-vaccinate': {
         label: 'Could not vaccinate',
         name: 'Child did not get their vaccination despite having consent',
-        text: '{{consent.child.firstName}} did not have their {{session.vaccinationNames.sentenceCase}} at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact our team by calling [{{organisation.tel}}](#), or email [{{organisation.email}}](#).'
+        text: '{{consent.child.firstName}} did not have their {{session.vaccinationNames.sentenceCase}} at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact our team by calling [{{team.tel}}](#), or email [{{team.email}}](#).'
       }
+    }
+  },
+  team: {
+    show: {
+      label: 'Your team',
+      title: 'Your team',
+      description: 'Manage your team’s settings'
+    },
+    edit: {
+      success: 'Team settings updated'
+    },
+    contact: {
+      title: 'Contact details',
+      summary: 'Contact details'
+    },
+    clinics: {
+      title: 'Clinics',
+      summary: 'Clinics',
+      new: {
+        title: 'Add a new clinic'
+      }
+    },
+    schools: {
+      title: 'Schools',
+      summary: 'Schools',
+      new: {
+        title: 'Add a new school'
+      }
+    },
+    sessions: {
+      title: 'Sessions',
+      defaults: 'Session defaults',
+      password: 'Shared password',
+      text: 'You can change these values when scheduling new sessions.'
+    },
+    reminders: {
+      title: 'Consent reminders'
+    },
+    name: {
+      label: 'Name'
+    },
+    code: {
+      label: 'ODC code'
+    },
+    tel: {
+      label: 'Phone number'
+    },
+    email: {
+      label: 'Email address'
+    },
+    privacyPolicyUrl: {
+      label: 'Privacy policy',
+      hint: 'Linked to from consent forms and consent request emails'
+    },
+    sessionOpenWeeks: {
+      title: 'When should parents get a request to give consent?',
+      label: 'Consent request',
+      hint: 'Enter the number of weeks before the first session takes place'
+    },
+    sessionReminderWeeks: {
+      title: 'When should parents get a reminder to give consent?',
+      label: 'Consent reminders',
+      hint: 'Enter the number of weeks before a session takes place'
+    },
+    sessionRegistration: {
+      title:
+        'Do you want to register children’s attendance before recording vaccinations?',
+      label: 'Register attendance'
+    },
+    password: {
+      label: 'Shared password',
+      title: 'Shared password',
+      hint: 'Use this password to unlock offline vaccination spreadsheets. Don’t share it with anyone outside your team.'
     }
   },
   triage: {
@@ -2118,10 +2118,10 @@ export const en = {
     source: {
       label: 'Updated in'
     },
-    from_code: {
+    team_id: {
       label: 'This child is moving in from another SAIS team’s area',
       description:
-        'Confirming this school move will bring {{move.patient.firstName}} into your area from {{move.formatted.from_code}}'
+        'Confirming this school move will bring {{move.patient.firstName}} into your area from {{move.formatted.team_id}}'
     },
     from_urn: {
       label: 'School joined from'

@@ -1,12 +1,12 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = __("organisation.show.title") %}
+{% set title = __("team.show.title") %}
 
 {% block content %}
   {{ super() }}
 
   {{ appHeading({
-    caption: organisation.name,
+    caption: team.name,
     title: title
   }) }}
 
@@ -19,30 +19,30 @@
 
     <div class="nhsuk-grid-column-three-quarters">
       {{ card({
-        heading: __("organisation.sessions.defaults"),
+        heading: __("team.sessions.defaults"),
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: summaryList({
-          rows: summaryRows(organisation, {
+          rows: summaryRows(team, {
             sessionOpenWeeks: {
-              href: organisation.uri + "/edit/sessions"
+              href: team.uri + "/edit/sessions"
             },
             sessionReminderWeeks: {
-              href: organisation.uri + "/edit/sessions"
+              href: team.uri + "/edit/sessions"
             },
             sessionRegistration: {
-              href: organisation.uri + "/edit/sessions"
+              href: team.uri + "/edit/sessions"
             }
           })
         })
       }) }}
 
       {{ card({
-        heading: __("organisation.sessions.password"),
+        heading: __("team.sessions.password"),
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: summaryList({
-          rows: summaryRows(organisation, {
+          rows: summaryRows(team, {
             password: {
-              href: organisation.uri + "/edit/password"
+              href: team.uri + "/edit/password"
             }
           })
         })

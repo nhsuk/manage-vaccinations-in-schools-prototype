@@ -1,21 +1,21 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { Organisation } from '../models/organisation.js'
+import { Team } from '../models/team.js'
 
 /**
- * Generate fake organisation
+ * Generate fake team
  *
- * @returns {Organisation} Organisation
+ * @returns {Team} Team
  */
-export function generateOrganisation() {
-  const code = faker.helpers.replaceSymbols('???')
+export function generateTeam() {
+  const ods = faker.helpers.replaceSymbols('???')
 
-  return new Organisation({
-    code,
+  return new Team({
+    ods,
     name: `${faker.location.county()} Child Immunisation Service`,
     email: faker.internet
       .email({
-        firstName: code,
+        firstName: ods,
         lastName: 'sais',
         provider: 'example.nhs.net'
       })

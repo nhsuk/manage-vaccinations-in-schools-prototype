@@ -1,8 +1,9 @@
-import schools from '../datasets/schools.js'
+import schools from './schools.js'
 
 export default [
   {
-    code: 'RYG',
+    id: '001',
+    ods: 'RYG',
     name: 'Coventry and Warwickshire Partnership NHS Trust',
     email: 'example@covwarkpt.nhs.uk',
     tel: '01632 960000',

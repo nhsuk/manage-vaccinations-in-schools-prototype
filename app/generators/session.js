@@ -1,6 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { OrganisationDefaults, SessionType } from '../enums.js'
+import { SessionType, TeamDefaults } from '../enums.js'
 import { Session } from '../models/session.js'
 import { addDays, getTermDates, removeDays, setMidday } from '../utils/date.js'
 import { getSessionYearGroups } from '../utils/session.js'
@@ -47,7 +47,7 @@ export function generateSession(preset, academicYear, user, options) {
       date = removeDays(date, 2)
     }
 
-    openAt = removeDays(date, OrganisationDefaults.SessionOpenWeeks * 7)
+    openAt = removeDays(date, TeamDefaults.SessionOpenWeeks * 7)
   }
 
   let yearGroups

@@ -1,6 +1,7 @@
+import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
-import { OrganisationDefaults } from '../enums.js'
+import { TeamDefaults } from '../enums.js'
 import { today } from '../utils/date.js'
 import { stringToBoolean } from '../utils/string.js'
 
@@ -8,11 +9,12 @@ import { Clinic } from './clinic.js'
 import { School } from './school.js'
 
 /**
- * @class Organisation
+ * @class Team
  * @param {object} options - Options
  * @param {object} [context] - Context
  * @property {object} [context] - Context
- * @property {string} [code] - ODS code
+ * @property {string} [id] - Team ID
+ * @property {string} [ods] - ODS code
  * @property {Date} [updatedAt] - Updated date
  * @property {string} [name] - Full name
  * @property {string} [email] - Email address
@@ -22,26 +24,26 @@ import { School } from './school.js'
  * @property {number} [sessionReminderWeeks] - Days before sending first reminder
  * @property {boolean} [sessionRegistration] - Should sessions have registration
  * @property {string} [password] - Shared password
- * @property {Array<string>} [clinic_ids] - Clinic organisation IDs
+ * @property {Array<string>} [clinic_ids] - Clinic IDs
  * @property {Array<string>} [school_urns] - School URNs
  */
-export class Organisation {
+export class Team {
   constructor(options, context) {
     this.context = context
-    this.code = options?.code
+    this.id = options?.id || faker.helpers.replaceSymbols('###')
+    this.ods = options?.ods || faker.helpers.replaceSymbols('???')
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.name = options?.name
     this.email = options?.email
     this.tel = options?.tel
     this.privacyPolicyUrl = options?.privacyPolicyUrl
     this.sessionOpenWeeks =
-      Number(options?.sessionOpenWeeks) || OrganisationDefaults.SessionOpenWeeks
+      Number(options?.sessionOpenWeeks) || TeamDefaults.SessionOpenWeeks
     this.sessionReminderWeeks =
-      Number(options?.sessionReminderWeeks) ||
-      OrganisationDefaults.SessionReminderWeeks
+      Number(options?.sessionReminderWeeks) || TeamDefaults.SessionReminderWeeks
     this.sessionRegistration =
       stringToBoolean(options.sessionRegistration) ||
-      OrganisationDefaults.SessionRegistration
+      TeamDefaults.SessionRegistration
     this.password = options?.password
     this.clinic_ids = options?.clinic_ids || []
     this.school_urns = options?.school_urns || []
@@ -58,7 +60,7 @@ export class Organisation {
         .map((id) => new Clinic(this.context?.clinics[id]))
         .sort((a, b) => a.name.localeCompare(b.name))
     } catch (error) {
-      console.error('Organisation.clinics', error.message)
+      console.error('Team.clinics', error.message)
     }
   }
 
@@ -73,7 +75,7 @@ export class Organisation {
         .map((urn) => School.findOne(urn, this.context))
         .sort((a, b) => a.name.localeCompare(b.name))
     } catch (error) {
-      console.error('Organisation.schools', error.message)
+      console.error('Team.schools', error.message)
     }
   }
 
@@ -104,7 +106,7 @@ export class Organisation {
    * @returns {string} Namespace
    */
   get ns() {
-    return 'organisation'
+    return 'team'
   }
 
   /**
@@ -113,61 +115,56 @@ export class Organisation {
    * @returns {string} URI
    */
   get uri() {
-    return `/organisations/${this.code}`
+    return `/teams/${this.id}`
   }
 
   /**
    * Find all
    *
    * @param {object} context - Context
-   * @returns {Array<Organisation>|undefined} Organisations
+   * @returns {Array<Team>|undefined} Teams
    * @static
    */
   static findAll(context) {
-    return Object.values(context.organisations).map(
-      (organisation) => new Organisation(organisation, context)
-    )
+    return Object.values(context.teams).map((team) => new Team(team, context))
   }
 
   /**
    * Find one
    *
-   * @param {string} code - ODS code
+   * @param {string} id - Team ID
    * @param {object} context - Context
-   * @returns {Organisation|undefined} Organisation
+   * @returns {Team|undefined} Team
    * @static
    */
-  static findOne(code, context) {
-    if (context?.organisations?.[code]) {
-      return new Organisation(context.organisations[code], context)
+  static findOne(id, context) {
+    if (context?.teams?.[id]) {
+      return new Team(context.teams[id], context)
     }
   }
 
   /**
    * Update
    *
-   * @param {string} code - ODS code
+   * @param {string} id - Team ID
    * @param {object} updates - Updates
    * @param {object} context - Context
-   * @returns {Organisation} Organisation
+   * @returns {Team} Team
    * @static
    */
-  static update(code, updates, context) {
-    const updatedOrganisation = Object.assign(
-      Organisation.findOne(code, context),
-      updates
-    )
-    updatedOrganisation.updatedAt = today()
+  static update(id, updates, context) {
+    const updatedTeam = Object.assign(Team.findOne(id, context), updates)
+    updatedTeam.updatedAt = today()
 
-    // Remove organisation context
-    delete updatedOrganisation.context
+    // Remove team context
+    delete updatedTeam.context
 
-    // Delete original organisation (with previous code)
-    delete context.organisations[code]
+    // Delete original team (with previous ID)
+    delete context.teams[id]
 
     // Update context
-    context.organisations[updatedOrganisation.code] = updatedOrganisation
+    context.teams[updatedTeam.id] = updatedTeam
 
-    return updatedOrganisation
+    return updatedTeam
   }
 }

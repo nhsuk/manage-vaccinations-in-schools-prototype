@@ -32,10 +32,10 @@
         headingClasses: "nhsuk-heading-m"
       }) %}
         {{ appStatus({
-          text: __("move.from_code.description", { move: move }),
+          text: __("move.team_id.description", { move: move }),
           icon: "warning",
           colour: "blue"
-        }) if move.from_code }}
+        }) if move.team_id }}
 
         {{ summaryList({
           rows: summaryRows(move.patient, {

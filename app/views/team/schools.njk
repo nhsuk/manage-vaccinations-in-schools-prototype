@@ -1,12 +1,12 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = __("organisation.show.title") %}
+{% set title = __("team.show.title") %}
 
 {% block content %}
   {{ super() }}
 
   {{ appHeading({
-    caption: organisation.name,
+    caption: team.name,
     title: title
   }) }}
 
@@ -19,11 +19,11 @@
 
     <div class="nhsuk-grid-column-three-quarters">
       {% call card({
-        heading: __("organisation.schools.summary"),
+        heading: __("team.schools.summary"),
         headingClasses: "nhsuk-heading-m"
       }) %}
         {% set schoolRows = [] %}
-        {% for school in organisation.schools %}
+        {% for school in team.schools %}
           {% set schoolRows = schoolRows | push([
             {
               header: __("school.name.label"),
@@ -42,7 +42,7 @@
 
         {{ button({
           classes: "nhsuk-button--secondary",
-          text: __("organisation.schools.new.title"),
+          text: __("team.schools.new.title"),
           href: "#"
         }) }}
 

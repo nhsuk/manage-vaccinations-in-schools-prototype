@@ -1,12 +1,12 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = __("organisation.show.title") %}
+{% set title = __("team.show.title") %}
 
 {% block content %}
   {{ super() }}
 
   {{ appHeading({
-    caption: organisation.name,
+    caption: team.name,
     title: title
   }) }}
 
@@ -19,18 +19,18 @@
 
     <div class="nhsuk-grid-column-three-quarters">
       {{ card({
-        heading: __("organisation.contact.summary"),
+        heading: __("team.contact.summary"),
         headingClasses: "nhsuk-heading-m",
         descriptionHtml: summaryList({
-          rows: summaryRows(organisation, {
+          rows: summaryRows(team, {
             email: {
-              href: organisation.uri + "/edit/contact"
+              href: team.uri + "/edit/contact"
             },
             tel: {
-              href: organisation.uri + "/edit/contact"
+              href: team.uri + "/edit/contact"
             },
             privacyPolicyUrl: {
-              href: organisation.uri + "/edit/contact"
+              href: team.uri + "/edit/contact"
             }
           })
         })

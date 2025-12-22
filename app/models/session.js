@@ -8,14 +8,14 @@ import {
   ConsentOutcome,
   ConsentWindow,
   InstructionOutcome,
-  OrganisationDefaults,
   PatientStatus,
-  SessionPresets,
-  SessionPresetName,
   ProgrammeType,
   RecordVaccineCriteria,
+  SessionPresets,
+  SessionPresetName,
   SessionStatus,
   SessionType,
+  TeamDefaults,
   VaccineCriteria
 } from '../enums.js'
 import {
@@ -97,12 +97,12 @@ export class Session {
       this.openAt = options?.openAt
         ? new Date(options.openAt)
         : this.date
-          ? removeDays(this.date, OrganisationDefaults.SessionOpenWeeks * 7)
+          ? removeDays(this.date, TeamDefaults.SessionOpenWeeks * 7)
           : undefined
       this.openAt_ = options?.openAt_
       this.closed = options?.closed || false
       this.reminderWeeks =
-        options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
+        options?.reminderWeeks || TeamDefaults.SessionReminderWeeks
       this.registration = stringToBoolean(options?.registration)
       this.register = options?.register || {}
       this.psdProtocol = stringToBoolean(options?.psdProtocol) || false

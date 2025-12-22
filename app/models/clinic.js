@@ -3,19 +3,19 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { today } from '../utils/date.js'
 
 import { Address } from './address.js'
-import { Organisation } from './organisation.js'
+import { Team } from './team.js'
 
 /**
  * @class Clinic
  * @param {object} options - Options
  * @param {object} [context] - Context
  * @property {object} [context] - Context
- * @property {string} id - Organisation code
+ * @property {string} id - Clinic ID
  * @property {Date} [createdAt] - Created date
  * @property {Date} [updatedAt] - Updated date
  * @property {string} [name] - Name
  * @property {Address} [address] - Address
- * @property {string} [organisation_code] - Organisation code
+ * @property {string} [team_id] - Team ID
  */
 export class Clinic {
   constructor(options, context) {
@@ -25,7 +25,7 @@ export class Clinic {
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.name = options?.name
     this.address = options?.address && new Address(options.address)
-    this.organisation_code = options?.organisation_code
+    this.team_id = options?.team_id
   }
 
   /**
@@ -41,18 +41,18 @@ export class Clinic {
   }
 
   /**
-   * Get organisation
+   * Get team
    *
-   * @returns {Organisation} Organisation
+   * @returns {Team} Team
    */
-  get organisation() {
+  get team() {
     try {
-      const organisation = this.context?.organisations[this.organisation_code]
-      if (organisation) {
-        return new Organisation(organisation)
+      const team = this.context?.teams[this.team_id]
+      if (team) {
+        return new Team(team)
       }
     } catch (error) {
-      console.error('Clinic.organisation', error.message)
+      console.error('Clinic.team', error.message)
     }
   }
 
@@ -90,7 +90,7 @@ export class Clinic {
    * @returns {string} URI
    */
   get uri() {
-    return `/organisations/${this.organisation_code}/clinics/${this.id}`
+    return `/teams/${this.team_id}/clinics/${this.id}`
   }
 
   /**
@@ -118,10 +118,8 @@ export class Clinic {
   static create(clinic, context) {
     const createdClinic = new Clinic(clinic)
 
-    // Add to organisation
-    context.organisations[createdClinic.organisation_code].clinic_ids.push(
-      createdClinic.id
-    )
+    // Add to team
+    context.teams[createdClinic.team_id].clinic_ids.push(createdClinic.id)
 
     // Update context
     context.clinics = context.clinics || {}
@@ -165,11 +163,10 @@ export class Clinic {
   static delete(id, context) {
     const clinic = Clinic.findOne(id, context)
 
-    // Remove from organisation
-    context.organisations[clinic.organisation_code].clinic_ids =
-      context.organisations[clinic.organisation_code].clinic_ids.filter(
-        (item) => item !== id
-      )
+    // Remove from team
+    context.teams[clinic.team_id].clinic_ids = context.teams[
+      clinic.team_id
+    ].clinic_ids.filter((item) => item !== id)
 
     delete context.clinics[id]
   }

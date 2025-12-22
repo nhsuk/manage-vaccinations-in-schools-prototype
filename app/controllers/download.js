@@ -1,8 +1,8 @@
 import programmesData from '../datasets/programmes.js'
 import { AcademicYear, DownloadFormat, ProgrammeType } from '../enums.js'
 import { Download } from '../models/download.js'
-import { Organisation } from '../models/organisation.js'
 import { Programme } from '../models/programme.js'
+import { Team } from '../models/team.js'
 
 export const downloadController = {
   form(request, response) {
@@ -31,12 +31,11 @@ export const downloadController = {
       format: DownloadFormat.CSV
     }
 
-    response.locals.organisationItems = Organisation.findAll(data).map(
-      (organisation) => ({
-        text: organisation.name,
-        value: organisation.code
-      })
-    )
+    response.locals.teamItems = Team.findAll(data).map((team) => ({
+      text: team.name,
+      value: team.id
+    }))
+
     response.locals.paths = {
       back: '/reports',
       next: '/reports/download/new'

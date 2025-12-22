@@ -16,11 +16,11 @@ import {
 import { Clinic } from '../models/clinic.js'
 import { DefaultBatch } from '../models/default-batch.js'
 import { Instruction } from '../models/instruction.js'
-import { Organisation } from '../models/organisation.js'
 import { PatientSession } from '../models/patient-session.js'
 import { Patient } from '../models/patient.js'
 import { School } from '../models/school.js'
 import { Session } from '../models/session.js'
+import { Team } from '../models/team.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { getSessionYearGroups } from '../utils/session.js'
@@ -96,8 +96,8 @@ export const sessionController = {
 
     const session = Session.create(
       {
-        // TODO: This needs contextual organisation data to work
-        registration: data.organisation.sessionRegistration,
+        // TODO: This needs contextual team data to work
+        registration: data.team.sessionRegistration,
         createdBy_uid: account.uid
       },
       data.wizard
@@ -518,9 +518,9 @@ export const sessionController = {
     return (request, response, next) => {
       const { session_id } = request.params
       const { data, referrer } = request.session
-      let { organisation } = response.locals
+      let { team } = response.locals
 
-      organisation = Organisation.findOne(organisation?.code || 'RYG', data)
+      team = Team.findOne(team?.code || 'RYG', data)
 
       // Setup wizard if not already setup
       let session = Session.findOne(session_id, data.wizard)
@@ -573,7 +573,7 @@ export const sessionController = {
       response.locals.paths.next =
         response.locals.paths.next || `${session.uri}/new/check-answers`
 
-      response.locals.clinicIdItems = Object.values(organisation.clinics)
+      response.locals.clinicIdItems = Object.values(team.clinics)
         .map((clinic) => new Clinic(clinic))
         .map((clinic) => ({
           text: clinic.name,
