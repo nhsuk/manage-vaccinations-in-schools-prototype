@@ -112,10 +112,11 @@ export default {
       VaccineSideEffect.PainArms
     ],
     healthQuestions: {
-      'bleeding': {},
       'allergy': {},
-      'medicalConditions': {},
-      'previousReaction': {}
+      'bleeding': {},
+      'bloodThinning': {},
+      'immuneSystemHpv': {},
+      'medicalConditions': {}
     },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
