@@ -1,7 +1,7 @@
 {% call card({
   classes: "nhsuk-u-margin-top-3",
   feature: true,
-  heading: programme.name + ": " + (patientSession.patientProgramme.status),
+  heading: programme.name + ": " + (patientSession.patientProgramme.status | lower),
   headingClasses: "app-card__heading--" + patientSession.patientProgramme.statusColour,
   headingLevel: 3
 }) %}

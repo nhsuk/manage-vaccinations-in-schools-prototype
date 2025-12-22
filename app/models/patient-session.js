@@ -496,7 +496,7 @@ export class PatientSession {
       case ConsentOutcome.GivenForIntranasal:
         return `${relationships} gave consent.`
       case ConsentOutcome.Refused:
-        return `${relationships} refused to give consent.`
+        return `${relationships} refused consent.`
       case ConsentOutcome.FinalRefusal:
         return `Refusal to give consent confirmed by ${relationships}.`
       default:
@@ -651,7 +651,7 @@ export class PatientSession {
 
     switch (this.screen) {
       case ScreenOutcome.NeedsTriage:
-        return 'You need to decide if it’s safe to vaccinate.'
+        return `You need to decide if it’s safe to vaccinate ${patient.firstName}.`
       case ScreenOutcome.InviteToClinic:
         return `${user.fullName} decided that ${patient.firstName}’s vaccination should take place at a clinic.`
       case ScreenOutcome.DelayVaccination:
@@ -747,7 +747,7 @@ export class PatientSession {
         return `${this.patient.firstName} was vaccinated by ${this.lastVaccinationOutcome.createdBy.fullName} on ${this.lastVaccinationOutcome.formatted.createdAt}.`
       case PatientStatus.Due:
         return this.vaccineCriteria
-          ? `${this.patient.firstName} is ready to vaccinate (${this.vaccineCriteria}).`
+          ? `${this.patient.firstName} is ready to vaccinate (${this.vaccineCriteria.toLowerCase()}).`
           : `${this.patient.firstName} is ready to vaccinate.`
       case PatientStatus.Deferred:
         return this.lastVaccinationOutcome

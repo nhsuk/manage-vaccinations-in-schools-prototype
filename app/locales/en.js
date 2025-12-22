@@ -1049,7 +1049,7 @@ export const en = {
     },
     instruct: {
       label: 'PSD status',
-      title: 'Patient Specific Directions (PSD)'
+      title: 'Patient specific direction (PSD)'
     },
     register: {
       label: 'Registration status',
@@ -1163,7 +1163,7 @@ export const en = {
         hint: 'Pre-screening checks must be completed for vaccination to go ahead',
         yes: 'Yes',
         no: 'No',
-        alternative: 'No — but they can have the injected flu vaccine instead'
+        alternative: 'No – but they can have the injected flu vaccine instead'
       },
       injectionSite: {
         error: 'Select an injection site',
