@@ -1,3 +1,13 @@
+import { getAllCountries } from 'countries-and-timezones'
+
+/**
+ * @readonly
+ * @enum {import('countries-and-timezones').Country}
+ */
+export const Country = Object.fromEntries(
+  Object.entries(getAllCountries()).map(([key, value]) => [key, value.name])
+)
+
 /**
  * @readonly
  * @enum {string}
@@ -423,6 +433,7 @@ export const RegistrationOutcome = {
  * @enum {string}
  */
 export const ReplyDecision = {
+  AlreadyVaccinated: 'Already vaccinated',
   NoResponse: 'No response',
   Given: 'Consent given',
   OnlyAlternativeInjection: 'Consent given for flu injection',
@@ -449,7 +460,8 @@ export const ReplyMethod = {
  */
 export const ReplyRefusal = {
   Gelatine: 'Vaccine contains gelatine',
-  AlreadyGiven: 'Vaccine already received',
+  AlreadyVaccinated: 'Vaccine already received',
+  AlreadyVaccinatedMMR: 'Already had both doses of the MMR vaccination',
   GettingElsewhere: 'Vaccine will be given elsewhere',
   Medical: 'Medical reasons',
   OutsideSchool: 'Don’t want vaccination in school',

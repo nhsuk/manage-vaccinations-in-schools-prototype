@@ -57,6 +57,8 @@ import { Vaccine } from './vaccine.js'
  * @property {string} [suppliedBy_uid] - Who supplied the vaccine
  * @property {Date} [nhseSyncedAt] - Date synced with NHS England API
  * @property {string} [location] - Location
+ * @property {string} [country] - Country (in UK)
+ * @property {string} [countryOther] - Country (outside UK)
  * @property {boolean} [selfId] - Child confirmed their identity?
  * @property {object} [identifiedBy] - Who identified child
  * @property {string} [identifiedBy.name] - Name of identifier
@@ -80,7 +82,7 @@ export class Vaccination {
   constructor(options, context) {
     this.context = context
     this.uuid = options?.uuid || faker.string.uuid()
-    this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
+    this.createdAt = options?.createdAt && new Date(options.createdAt)
     this.createdAt_ = options?.createdAt_
     this.nhseSyncedAt = options?.nhseSyncedAt
       ? new Date(options.nhseSyncedAt)
@@ -88,7 +90,9 @@ export class Vaccination {
     this.createdBy_uid = options?.createdBy_uid
     this.suppliedBy_uid = options?.suppliedBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
-    this.location = options?.location || 'Unknown'
+    this.location = options?.location
+    this.country = options?.country
+    this.countryOther = options?.countryOther
     this.selfId = options?.selfId && stringToBoolean(options.selfId)
     this.identifiedBy = this.selfId !== true && options?.identifiedBy
     this.outcome = options?.outcome
@@ -114,7 +118,6 @@ export class Vaccination {
     this.vaccine_snomed = options?.vaccine_snomed
 
     if (this.outcome === VaccinationOutcome.AlreadyVaccinated) {
-      this.createdAt = options?.createdAt && new Date(options.createdAt)
       this.reportedAt = today()
       this.reportedBy_uid = options?.reportedBy_uid
       this.protocol = undefined
@@ -256,9 +259,9 @@ export class Vaccination {
   get patient() {
     if (this.patient_uuid) {
       return Patient.findOne(this.patient_uuid, this.context)
+    } else if (this.patientSession_uuid) {
+      return this.patientSession.patient
     }
-
-    return this.patientSession.patient
   }
 
   /**
@@ -352,7 +355,7 @@ export class Vaccination {
 
     switch (true) {
       case !this.programme?.nhseSyncable:
-      case this.patient.hasMissingNhsNumber:
+      case this.patient?.hasMissingNhsNumber:
         return VaccinationSyncStatus.CannotSync
       case !this.given:
         return VaccinationSyncStatus.NotSynced
@@ -471,6 +474,8 @@ export class Vaccination {
       note: formatMarkdown(this.note),
       outcome: formatTag(getVaccinationOutcomeStatus(this.outcome)),
       programme,
+      location: this.location || 'Unknown',
+      country: this.countryOther || this.country || 'England',
       school: this.school && this.school.name,
       identifiedBy: this.selfId
         ? 'The child'

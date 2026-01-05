@@ -42,6 +42,7 @@
     "information-child" if programme.type == ProgrammeType.HPV
   ],
   "Consent": [
+    "consent-already-vaccinated" if programme.type == ProgrammeType.MMR,
     "consent-given",
     "consent-given-changed-school",
     "consent-conflicts",

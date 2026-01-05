@@ -18,6 +18,10 @@ export const getHealthQuestionPaths = (pathPrefix, consent) => {
     return
   }
 
+  if (consent.decision === ReplyDecision.AlreadyVaccinated) {
+    return
+  }
+
   const paths = {}
   const healthQuestions = Object.entries(consent.healthQuestionsForDecision)
 

@@ -175,4 +175,52 @@
       )
     })
   }) if consent.given }}
+
+  {{ card({
+    heading: __("consent.firstDose.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(consent, {
+        createdAt: {
+          label: __("consent.previousDose.createdAt.label"),
+          value: consent.firstDose.formatted.createdAt,
+          href: editPath("first-dose")
+        },
+        location: {
+          label: __("consent.previousDose.location.label"),
+          value: consent.firstDose.location,
+          href: editPath("first-dose")
+        },
+        country: {
+          label: __("consent.previousDose.country.label"),
+          value: consent.firstDose.formatted.country,
+          href: editPath("first-dose")
+        }
+      })
+    })
+  }) if consent.decision == ReplyDecision.AlreadyVaccinated }}
+
+  {{ card({
+    heading: __("consent.secondDose.label"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(consent, {
+        createdAt: {
+          label: __("consent.previousDose.createdAt.label"),
+          value: consent.secondDose.formatted.createdAt,
+          href: editPath("second-dose")
+        },
+        location: {
+          label: __("consent.previousDose.location.label"),
+          value: consent.secondDose.location,
+          href: editPath("second-dose")
+        },
+        country: {
+          label: __("consent.previousDose.country.label"),
+          value: consent.secondDose.formatted.country,
+          href: editPath("second-dose")
+        }
+      })
+    })
+  }) if consent.decision == ReplyDecision.AlreadyVaccinated }}
 {% endblock %}

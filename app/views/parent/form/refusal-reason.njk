@@ -23,8 +23,11 @@
     },
     items: [
       {
-        text: __n("consent.refusalReason.alreadyGiven", vaccinations),
-        value: ReplyRefusal.AlreadyGiven
+        text: __n("consent.refusalReason.alreadyVaccinatedMMR"),
+        value: ReplyRefusal.AlreadyVaccinatedMMR
+      } if "MMR" in session.presetNames else {
+        text: __n("consent.refusalReason.alreadyVaccinated", vaccinations),
+        value: ReplyRefusal.AlreadyVaccinated
       },
       {
         text: __n("consent.refusalReason.gettingElsewhere", vaccinations),

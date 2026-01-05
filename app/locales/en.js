@@ -439,8 +439,9 @@ export const en = {
         label: 'Yes, I agree to the alternative flu injection',
         hint: 'This is suitable for children who do not use gelatine products, or if they cannot have the nasal spray vaccine for medical reasons'
       },
-      mmr: {
-        hint: 'This is a catch-up vaccination for those who have not yet had 2 doses of the MMR vaccine. Children usually have these when they are 1 and 3 years old.'
+      alreadyVaccinated: {
+        label: 'My child has already had both doses of the MMR vaccination',
+        hint: 'Children need 2 doses of the MMR vaccine to be fully protected'
       },
       no: {
         label: 'No',
@@ -488,10 +489,12 @@ export const en = {
       title:
         'Please tell us why you do not agree to your child having the {{session.vaccinationNames.sentenceCase}} in school',
       label: 'Refusal reason',
-      alreadyGiven: {
-        one: ReplyRefusal.AlreadyGiven,
-        other: ReplyRefusal.AlreadyGiven.replace('Vaccine', 'Vaccines')
+      alreadyVaccinated: {
+        one: ReplyRefusal.AlreadyVaccinated,
+        other: ReplyRefusal.AlreadyVaccinated.replace('Vaccine', 'Vaccines')
       },
+      alreadyVaccinatedMMR:
+        'My child has already had both doses of the MMR vaccination',
       gettingElsewhere: {
         one: ReplyRefusal.GettingElsewhere,
         other: ReplyRefusal.GettingElsewhere.replace('Vaccine', 'Vaccines')
@@ -499,16 +502,57 @@ export const en = {
     },
     refusalReasonDetails: {
       label: 'Refusal details',
-      mmr: {
-        hint: 'Children need 2 doses of the MMR vaccine to be fully protected. If your child has had more than 1 dose, give details about both doses.'
-      },
       title: {
-        [ReplyRefusal.AlreadyGiven]:
+        [ReplyRefusal.AlreadyVaccinated]:
           'When and where did your child get their vaccination?',
         [ReplyRefusal.GettingElsewhere]:
           'When and where will your child get their vaccination?',
         [ReplyRefusal.Medical]:
           'What medical reasons prevent your child from being vaccinated?'
+      }
+    },
+    firstDose: {
+      label: 'Details of 1st MMR dose',
+      title: 'When and where did your child get their 1st MMR dose?',
+      description: 'The 1st dose is usually offered at 12 months',
+      createdAt: {
+        label: 'Date of vaccination'
+      },
+      location: {
+        label: 'Location'
+      },
+      country: {
+        label: 'Country'
+      }
+    },
+    secondDose: {
+      label: 'Details of 2nd MMR dose',
+      title: 'When and where did your child get their 2nd MMR dose?',
+      description:
+        'The 2nd dose is usually offered when children are 3 years old'
+    },
+    previousDose: {
+      createdAt: {
+        label: 'Date',
+        title: 'Date of vaccination',
+        hint: 'If you do not know the exact date of the vaccination, you can leave the day field empty and enter your best guess for the month'
+      },
+      location: {
+        label: 'Location',
+        title: 'Location',
+        hint: 'Give the name and address of the GP surgery if you can remember it'
+      },
+      country: {
+        label: 'Country',
+        title: 'Country',
+        england: 'England',
+        scotland: 'Scotland',
+        wales: 'Wales',
+        ni: 'Northern Ireland',
+        other: 'Another country outside the UK'
+      },
+      countryOther: {
+        title: 'Which country was the vaccination given in?'
       }
     },
     healthAnswers: {
@@ -525,6 +569,7 @@ export const en = {
     },
     confirmation: {
       title: {
+        [ReplyDecision.AlreadyVaccinated]: 'Thank you',
         [ReplyDecision.Given]: 'Consent confirmed',
         [ReplyDecision.OnlyAlternativeInjection]:
           'Consent for the flu injection vaccination confirmed',
@@ -536,6 +581,8 @@ export const en = {
         [ReplyDecision.Refused]: 'Refusal confirmed'
       },
       text: {
+        [ReplyDecision.AlreadyVaccinated]:
+          'You’ve told us that {{consent.child.fullName}} has had both doses of the MMR vaccine.\n\nWe’ll update our records so you no longer get consent requests for MMR catch-up vaccinations.',
         [ReplyDecision.Given]:
           '{{consent.child.fullName}} is due to get the {{session.vaccinationNames.sentenceCase}} at school on {{session.formatted.nextDate}}',
         [ReplyDecision.OnlyAlternativeInjection]:
@@ -619,6 +666,10 @@ export const en = {
       'invite-clinic-consent': {
         label: 'Clinic invitation',
         name: 'We still need consent for your child’s {{session.vaccinationNames.sentenceCase}}'
+      },
+      'consent-already-vaccinated': {
+        label: 'Already vaccinated',
+        name: 'You’ve told us that {{consent.child.firstName}} is fully vaccinated against MMR'
       },
       'consent-given': {
         label: 'Consent given',
@@ -1295,7 +1346,7 @@ export const en = {
     refusalReasonDetails: {
       label: 'Refusal details',
       title: {
-        [ReplyRefusal.AlreadyGiven]:
+        [ReplyRefusal.AlreadyVaccinated]:
           'Where did the child get their vaccination?',
         [ReplyRefusal.GettingElsewhere]:
           'Where will the child get their vaccination?',
@@ -1688,6 +1739,11 @@ export const en = {
         label: 'Reminder',
         name: 'Reminding parent to give or refuse consent',
         text: 'We recently asked for your consent to vaccinate your child against {{session.programmeNames.sentenceCase}}.\n\nGo to [https://give-or-refuse-consent.nhs.uk/{{session.id}}]({{session.consentUrl}}/start) to submit a response. This will take less than 5 minutes.'
+      },
+      'consent-already-vaccinated': {
+        label: 'Already vaccinated',
+        name: 'Confirmation that vaccination has already been given',
+        text: 'You’ve told us that {{consent.child.firstName}} has had both doses of the MMR vaccine.\n\nWe’ll update our records so you no longer get consent requests for MMR catch-up vaccinations.'
       },
       'consent-given': {
         label: 'Consent given',

@@ -46,6 +46,26 @@ export default () => {
     }))
   }
 
+  globals.otherCountryItems = function (countries, value) {
+    countries = Object.entries(countries).filter(
+      ([, name]) => name !== 'United Kingdom'
+    )
+
+    return [
+      {
+        value: '',
+        text: 'Select a country',
+        disabled: true,
+        ...(!value && { selected: true })
+      },
+      ...countries.map(([value, name]) => ({
+        text: name,
+        value: name,
+        ...(value && { selected: value === name })
+      }))
+    ]
+  }
+
   /**
    * Get school form field items
    *
