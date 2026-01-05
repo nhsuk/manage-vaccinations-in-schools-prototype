@@ -33,6 +33,7 @@ import { Patient } from './patient.js'
 import { Programme } from './programme.js'
 import { Session } from './session.js'
 import { User } from './user.js'
+import { Vaccination } from './vaccination.js'
 
 /**
  * @class Reply
@@ -82,7 +83,10 @@ export class Reply {
 
     // Some values only valid if the consent request was received
     if (this.delivered) {
-      this.decision = options?.decision
+      this.decision =
+        options.refusalReason === ReplyRefusal.AlreadyVaccinatedMMR
+          ? ReplyDecision.AlreadyVaccinated
+          : options?.decision
       this.alternative =
         options?.alternative && stringToBoolean(options?.alternative)
       this.confirmed = stringToBoolean(options?.confirmed)
@@ -100,6 +104,12 @@ export class Reply {
         this?.decision === ReplyDecision.NoResponse
           ? false // Don’t show non response as invalid
           : stringToBoolean(options?.invalid) || false
+    }
+
+    if (this.decision === ReplyDecision.AlreadyVaccinated) {
+      this.firstDose = options?.firstDose && new Vaccination(options.firstDose)
+      this.secondDose =
+        options?.secondDose && new Vaccination(options.secondDose)
     }
 
     if (
@@ -407,7 +417,8 @@ export class Reply {
    * @returns {string} URI
    */
   get uri() {
-    return `/sessions/${this.session_id}/patients/${this.patient.nhsn}/${this.programme_id}/replies/${this.uuid}`
+    // return `/sessions/${this.session_id}/patients/${this.patient.nhsn}/${this.programme_id}/replies/${this.uuid}`
+    return 'hi'
   }
 
   /**
@@ -429,7 +440,7 @@ export class Reply {
   static findAll(context) {
     return Object.values(context.replies)
       .map((reply) => new Reply(reply, context))
-      .filter((reply) => !reply.patient_uuid)
+      .filter((reply) => !reply?.patient_uuid)
   }
 
   /**

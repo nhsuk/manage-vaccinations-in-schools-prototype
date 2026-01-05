@@ -203,7 +203,7 @@ export const replyController = {
           [`/${reply_uuid}/${type}/refusal-reason-details`]: {
             data: 'reply.refusalReason',
             values: [
-              ReplyRefusal.AlreadyGiven,
+              ReplyRefusal.AlreadyVaccinated,
               ReplyRefusal.GettingElsewhere,
               ReplyRefusal.Medical
             ]
@@ -335,7 +335,7 @@ export const replyController = {
     }
 
     // Store vaccination if refusal reason is vaccination already given
-    if (request.body.reply?.refusalReason === ReplyRefusal.AlreadyGiven) {
+    if (request.body.reply?.refusalReason === ReplyRefusal.AlreadyVaccinated) {
       response.locals.vaccination = {
         outcome: VaccinationOutcome.AlreadyVaccinated,
         patient_uuid: patientSession.patient.uuid,
@@ -434,7 +434,7 @@ export const replyController = {
     patientSession.patient.addReply(newReply)
 
     // Add vaccination if refusal reason is already given
-    if (refusalReason === ReplyRefusal.AlreadyGiven) {
+    if (refusalReason === ReplyRefusal.AlreadyVaccinated) {
       const vaccination = Vaccination.create(
         {
           outcome: VaccinationOutcome.AlreadyVaccinated,

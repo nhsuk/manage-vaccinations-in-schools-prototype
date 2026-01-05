@@ -132,7 +132,7 @@ export function generateConsent(
     ].includes(decision) && { healthAnswers, triageNote }),
     ...(decision === ReplyDecision.Refused && {
       refusalReason,
-      ...(refusalReason === ReplyRefusal.AlreadyGiven && {
+      ...(refusalReason === ReplyRefusal.AlreadyVaccinated && {
         refusalReasonDetails: 'My child had the vaccination at our GP surgery.'
       }),
       ...(refusalReason === ReplyRefusal.GettingElsewhere && {
