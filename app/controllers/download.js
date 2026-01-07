@@ -1,8 +1,6 @@
 import programmesData from '../datasets/programmes.js'
 import { AcademicYear, DownloadFormat, ProgrammeType } from '../enums.js'
-import { Download } from '../models/download.js'
-import { Programme } from '../models/programme.js'
-import { Team } from '../models/team.js'
+import { Download, Programme, Team } from '../models.js'
 
 export const downloadController = {
   form(request, response) {

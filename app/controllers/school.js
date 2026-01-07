@@ -1,8 +1,7 @@
 import _ from 'lodash'
 
 import { PatientStatus } from '../enums.js'
-import { Patient } from '../models/patient.js'
-import { School } from '../models/school.js'
+import { Patient, School } from '../models.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 

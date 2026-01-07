@@ -1,80 +1,10 @@
-import { fakerEN_GB as faker } from '@faker-js/faker'
-
-import { today } from '../utils/date.js'
-
-import { Address } from './address.js'
-import { Team } from './team.js'
+import { Location } from '../models.js'
 
 /**
  * @class Clinic
- * @param {object} options - Options
- * @param {object} [context] - Context
- * @property {object} [context] - Context
- * @property {string} id - Clinic ID
- * @property {Date} [createdAt] - Created date
- * @property {Date} [updatedAt] - Updated date
- * @property {string} [name] - Name
- * @property {Address} [address] - Address
- * @property {string} [team_id] - Team ID
+ * @augments Location
  */
-export class Clinic {
-  constructor(options, context) {
-    this.context = context
-    this.id = options?.id || faker.helpers.replaceSymbols('?#####')
-    this.createdAt = options?.createdAt ? new Date(options.createdAt) : today()
-    this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
-    this.name = options?.name
-    this.address = options?.address && new Address(options.address)
-    this.team_id = options?.team_id
-  }
-
-  /**
-   * Get location
-   *
-   * @returns {object} Location
-   */
-  get location() {
-    return {
-      name: this.name,
-      ...this.address
-    }
-  }
-
-  /**
-   * Get team
-   *
-   * @returns {Team} Team
-   */
-  get team() {
-    try {
-      const team = this.context?.teams[this.team_id]
-      if (team) {
-        return new Team(team)
-      }
-    } catch (error) {
-      console.error('Clinic.team', error.message)
-    }
-  }
-
-  /**
-   * Get formatted values
-   *
-   * @returns {object} Formatted values
-   */
-  get formatted() {
-    return {
-      address: this.address?.formatted.multiline,
-      location: Object.values(this.location)
-        .filter((string) => string)
-        .join(', '),
-      nameAndAddress: this.address
-        ? `<span>${this.name}</br><span class="nhsuk-u-secondary-text-colour">${
-            this.address.formatted.singleline
-          }</span></span>`
-        : this.name
-    }
-  }
-
+export class Clinic extends Location {
   /**
    * Get namespace
    *
@@ -139,7 +69,6 @@ export class Clinic {
    */
   static update(id, updates, context) {
     const updatedClinic = Object.assign(Clinic.findOne(id, context), updates)
-    updatedClinic.updatedAt = today()
 
     // Remove clinic context
     delete updatedClinic.context

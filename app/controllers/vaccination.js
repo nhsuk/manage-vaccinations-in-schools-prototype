@@ -11,13 +11,15 @@ import {
   UserRole,
   ProgrammeType
 } from '../enums.js'
-import { Batch } from '../models/batch.js'
-import { DefaultBatch } from '../models/default-batch.js'
-import { PatientSession } from '../models/patient-session.js'
-import { Programme } from '../models/programme.js'
-import { User } from '../models/user.js'
-import { Vaccination } from '../models/vaccination.js'
-import { Vaccine } from '../models/vaccine.js'
+import {
+  Batch,
+  DefaultBatch,
+  PatientSession,
+  Programme,
+  User,
+  Vaccination,
+  Vaccine
+} from '../models.js'
 import { today } from '../utils/date.js'
 
 export const vaccinationController = {

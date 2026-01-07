@@ -1,4 +1,4 @@
-import { Team } from '../models/team.js'
+import { Team } from '../models.js'
 
 export const teamController = {
   read(request, response, next, team_id) {

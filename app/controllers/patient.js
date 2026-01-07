@@ -6,10 +6,7 @@ import {
   ProgrammeType,
   VaccinationOutcome
 } from '../enums.js'
-import { PatientProgramme } from '../models/patient-programme.js'
-import { Patient } from '../models/patient.js'
-import { Programme } from '../models/programme.js'
-import { Vaccination } from '../models/vaccination.js'
+import { PatientProgramme, Patient, Programme, Vaccination } from '../models.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 

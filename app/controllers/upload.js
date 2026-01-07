@@ -1,7 +1,7 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import { UploadStatus, UploadType } from '../enums.js'
-import { Upload } from '../models/upload.js'
+import { Upload } from '../models.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'

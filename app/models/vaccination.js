@@ -12,6 +12,15 @@ import {
   VaccineCriteria
 } from '../enums.js'
 import {
+  Batch,
+  PatientSession,
+  Patient,
+  Programme,
+  School,
+  User,
+  Vaccine
+} from '../models.js'
+import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
   formatDate,
@@ -33,14 +42,6 @@ import {
   stringToBoolean,
   formatWithSecondaryText
 } from '../utils/string.js'
-
-import { Batch } from './batch.js'
-import { PatientSession } from './patient-session.js'
-import { Patient } from './patient.js'
-import { Programme } from './programme.js'
-import { School } from './school.js'
-import { User } from './user.js'
-import { Vaccine } from './vaccine.js'
 
 /**
  * @class Vaccination
@@ -254,7 +255,7 @@ export class Vaccination {
   /**
    * Get patient
    *
-   * @returns {import('../models/patient.js').Patient} Patient
+   * @returns {import('../models.js').Patient} Patient
    */
   get patient() {
     if (this.patient_uuid) {
@@ -267,7 +268,7 @@ export class Vaccination {
   /**
    * Get session
    *
-   * @returns {import('../models/session.js').Session} Session
+   * @returns {import('../models.js').Session} Session
    */
   get session() {
     if (this.patientSession) {

@@ -2,15 +2,15 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import vaccines from '../datasets/vaccines.js'
 import { PatientStatus, VaccinationOutcome } from '../enums.js'
-import { Vaccination } from '../models/vaccination.js'
+import { Vaccination } from '../models.js'
 
 /**
  * Generate fake vaccination
  *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @param {import('../models/programme.js').Programme} programme - Programme
- * @param {import('../models/batch.js').Batch} batch - Batch
- * @param {Array<import('../models/user.js').User>} users - Users
+ * @param {import('../models.js').PatientSession} patientSession - Patient session
+ * @param {import('../models.js').Programme} programme - Programme
+ * @param {import('../models.js').Batch} batch - Batch
+ * @param {Array<import('../models.js').User>} users - Users
  * @returns {Vaccination} Vaccination
  */
 export function generateVaccination(patientSession, programme, batch, users) {

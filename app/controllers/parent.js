@@ -11,8 +11,7 @@ import {
 } from '../enums.js'
 import { generateChild } from '../generators/child.js'
 import { generateParent } from '../generators/parent.js'
-import { Consent } from '../models/consent.js'
-import { Session } from '../models/session.js'
+import { Consent, Session } from '../models.js'
 import { getHealthQuestionPaths } from '../utils/consent.js'
 import { formatList, kebabToCamelCase } from '../utils/string.js'
 

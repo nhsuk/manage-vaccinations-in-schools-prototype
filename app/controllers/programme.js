@@ -1,5 +1,5 @@
 import { AcademicYear } from '../enums.js'
-import { Programme } from '../models/programme.js'
+import { Programme } from '../models.js'
 import { getCurrentAcademicYear } from '../utils/date.js'
 
 export const programmeController = {

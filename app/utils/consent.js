@@ -10,7 +10,7 @@ const getHealthQuestionPath = (key, pathPrefix) => {
  * Get health question paths for given vaccines
  *
  * @param {string} pathPrefix - Path prefix
- * @param {import('../models/consent.js').Consent} consent - Consent
+ * @param {import('../models.js').Consent} consent - Consent
  * @returns {object} Health question paths
  */
 export const getHealthQuestionPaths = (pathPrefix, consent) => {

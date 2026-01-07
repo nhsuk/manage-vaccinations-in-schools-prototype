@@ -2,45 +2,26 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import { default as filters } from '@x-govuk/govuk-prototype-filters'
 
 import { SchoolPhase } from '../enums.js'
+import { Location, Patient, Programme, Session } from '../models.js'
 import { formatDate, getDateValueDifference } from '../utils/date.js'
 import { range } from '../utils/number.js'
 import { tokenize } from '../utils/object.js'
 import { formatLink, formatMonospace } from '../utils/string.js'
 
-import { Address } from './address.js'
-import { Patient } from './patient.js'
-import { Programme } from './programme.js'
-import { Session } from './session.js'
-
 /**
  * @class School
+ * @augments Location
  * @param {object} options - Options
  * @param {object} [context] - Context
- * @property {object} [context] - Context
  * @property {string} urn - URN
- * @property {string} name - Name
  * @property {SchoolPhase} [phase] - Phase
- * @property {Address} [address] - Address
  */
-export class School {
+export class School extends Location {
   constructor(options, context) {
-    this.context = context
-    this.urn = (options.urn && String(options.urn)) || faker.string.numeric(6)
-    this.name = options?.name
-    this.phase = options?.phase
-    this.address = options?.address && new Address(options.address)
-  }
+    super(options, context)
 
-  /**
-   * Get location
-   *
-   * @returns {object} Location
-   */
-  get location() {
-    return {
-      name: this.name,
-      ...this.address
-    }
+    this.urn = (options.urn && String(options.urn)) || faker.string.numeric(6)
+    this.phase = options?.phase
   }
 
   /**
@@ -73,9 +54,11 @@ export class School {
    * @returns {Array<Session>} Sessions
    */
   get sessions() {
-    return Session.findAll(this.context)
-      .filter((session) => session.school_urn === this.urn)
-      .sort((a, b) => getDateValueDifference(a.date, b.date))
+    if (this.context) {
+      return Session.findAll(this.context)
+        .filter((session) => session.school_urn === this.urn)
+        .sort((a, b) => getDateValueDifference(a.date, b.date))
+    }
   }
 
   /**
@@ -84,7 +67,7 @@ export class School {
    * @returns {Date|undefined} Next session
    */
   get nextSessionDate() {
-    if (this.sessions.length > 0) {
+    if (this.sessions?.length > 0) {
       return this.sessions.at(-1).date
     }
   }
@@ -132,15 +115,7 @@ export class School {
    */
   get formatted() {
     return {
-      address: this.address?.formatted.multiline,
-      location: Object.values(this.location)
-        .filter((string) => string)
-        .join(', '),
-      nameAndAddress: this.address
-        ? `<span>${this.name}</br><span class="nhsuk-u-secondary-text-colour">${
-            this.address.formatted.singleline
-          }</span></span>`
-        : this.name,
+      ...super.formatted,
       nextSessionDate: formatDate(this.nextSessionDate, {
         dateStyle: 'full'
       }),

@@ -2,16 +2,16 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { UploadStatus, UploadType } from '../enums.js'
-import { Upload } from '../models/upload.js'
+import { Upload } from '../models.js'
 import { today } from '../utils/date.js'
 
 /**
  * Generate fake upload
  *
  * @param {Array<string>} patient_uuids - Patients
- * @param {import('../models/user.js').User} user - User
+ * @param {import('../models.js').User} user - User
  * @param {import('../enums.js').UploadType} [type] - Upload type
- * @param {import('../models/school.js').School} [school] - School
+ * @param {import('../models.js').School} [school] - School
  * @returns {Upload} Upload
  */
 export function generateUpload(

@@ -9,7 +9,7 @@ import {
   ReplyDecision,
   ReplyRefusal
 } from '../enums.js'
-import { Child } from '../models/child.js'
+import { Child } from '../models.js'
 
 import { formatParentalRelationship } from './string.js'
 
@@ -57,7 +57,7 @@ export function getRepliesWithHealthAnswers(replies) {
 /**
  * Get combined answers to health questions
  *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {import('../models.js').PatientSession} patientSession - Patient session
  * @returns {object|boolean} Combined answers to health questions
  */
 export function getConsentHealthAnswers(patientSession) {
@@ -122,8 +122,8 @@ export function getConsentHealthAnswers(patientSession) {
 /**
  * Get consent outcome
  *
- * @param {import('../models/reply.js').Reply} reply - Reply
- * @param {import('../models/session.js').Session} session - Session
+ * @param {import('../models.js').Reply} reply - Reply
+ * @param {import('../models.js').Session} session - Session
  * @returns {ConsentOutcome} Consent outcome
  */
 export const getConfirmedConsentOutcome = (reply, session) => {
@@ -160,7 +160,7 @@ export const getConfirmedConsentOutcome = (reply, session) => {
 /**
  * Get consent outcome
  *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {import('../models.js').PatientSession} patientSession - Patient session
  * @returns {ConsentOutcome} Consent outcome
  */
 export const getConsentOutcome = (patientSession) => {
@@ -216,7 +216,7 @@ export const getConsentOutcome = (patientSession) => {
 /**
  * Get combined refusal reasons
  *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {import('../models.js').PatientSession} patientSession - Patient session
  * @returns {Array} Refusal reasons
  */
 export const getConsentRefusalReasons = (patientSession) => {
@@ -244,7 +244,7 @@ export const getConsentRefusalReasons = (patientSession) => {
 /**
  * Get faked answers for health questions needed for a vaccine
  *
- * @param {import('../models/vaccine.js').Vaccine} vaccine - Vaccine
+ * @param {import('../models.js').Vaccine} vaccine - Vaccine
  * @param {string} healthCondition - Health condition
  * @returns {object} Health answers
  */
@@ -288,7 +288,7 @@ export const getTriageNote = (healthAnswers, healthCondition) => {
 /**
  * Get child’s preferred names, based on information in consent replies
  *
- * @param {Array<import('../models/reply.js').Reply>} replies - Consent replies
+ * @param {Array<import('../models.js').Reply>} replies - Consent replies
  * @returns {string|boolean} Names(s)
  */
 export const getPreferredNames = (replies) => {

@@ -1,5 +1,6 @@
 import { isBefore } from 'date-fns'
 
+import { Programme, User } from '../models.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -12,9 +13,6 @@ import {
   formatMarkdown,
   formatWithSecondaryText
 } from '../utils/string.js'
-
-import { Programme } from './programme.js'
-import { User } from './user.js'
 
 /**
  * @class Audit event

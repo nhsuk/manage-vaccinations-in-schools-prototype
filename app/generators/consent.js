@@ -8,7 +8,7 @@ import {
   ReplyRefusal,
   VaccineCriteria
 } from '../enums.js'
-import { Consent } from '../models/consent.js'
+import { Consent } from '../models.js'
 import { today } from '../utils/date.js'
 import {
   getHealthAnswers,
@@ -19,9 +19,9 @@ import {
 /**
  * Generate fake consent
  *
- * @param {import('../models/programme.js').Programme} programme - Programme
- * @param {import('../models/session.js').Session} session - Session
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {import('../models.js').Programme} programme - Programme
+ * @param {import('../models.js').Session} session - Session
+ * @param {import('../models.js').PatientSession} patientSession - Patient session
  * @param {number} index - Reply
  * @param {Date} [lastConsentCreatedAt] - Date previous consent response created
  * @returns {Consent|undefined} Consent

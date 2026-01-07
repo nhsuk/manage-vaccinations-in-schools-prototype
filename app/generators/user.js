@@ -1,7 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { UserRole } from '../enums.js'
-import { User } from '../models/user.js'
+import { User } from '../models.js'
 
 /**
  * Generate fake user

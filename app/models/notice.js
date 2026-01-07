@@ -1,8 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import { Patient } from '../models.js'
 import { formatDate, getDateValueDifference, today } from '../utils/date.js'
-
-import { Patient } from './patient.js'
 
 /**
  * @class Notice

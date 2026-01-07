@@ -4,8 +4,7 @@ import gpSurgeries from '../datasets/clinics.js'
 import firstNames from '../datasets/first-names.js'
 import schools from '../datasets/schools.js'
 import { Gender } from '../enums.js'
-import { generateAddress } from '../generators/address.js'
-import { Child } from '../models/child.js'
+import { Child } from '../models.js'
 import { getCurrentAcademicYear, getYearGroup } from '../utils/date.js'
 
 /**
@@ -124,7 +123,11 @@ export function generateChild() {
     dob,
     gender,
     immunocompromised: faker.datatype.boolean(0.1),
-    address: generateAddress(),
+    address: {
+      addressLine1: faker.location.streetAddress(),
+      addressLevel1: faker.location.city(),
+      postalCode: faker.location.zipCode({ format: 'CV## #??' })
+    },
     gpSurgery,
     registrationGroup,
     school_urn

@@ -20,8 +20,10 @@ export const en = {
     update: 'Update',
     archive: 'Archive'
   },
-  address: {
-    label: 'Address',
+  location: {
+    name: {
+      label: 'Name'
+    },
     addressLine1: {
       label: 'Address line 1'
     },

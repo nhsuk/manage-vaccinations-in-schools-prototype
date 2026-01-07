@@ -1,5 +1,4 @@
-import { Batch } from '../models/batch.js'
-import { DefaultBatch } from '../models/default-batch.js'
+import { Batch, DefaultBatch } from '../models.js'
 
 export const batchController = {
   read(request, response, next, batch_id) {

@@ -13,11 +13,13 @@ import {
   VaccinationSite,
   VaccineMethod
 } from '../enums.js'
-import { Gillick } from '../models/gillick.js'
-import { Instruction } from '../models/instruction.js'
-import { PatientSession } from '../models/patient-session.js'
-import { Programme } from '../models/programme.js'
-import { Vaccination } from '../models/vaccination.js'
+import {
+  Gillick,
+  Instruction,
+  PatientSession,
+  Programme,
+  Vaccination
+} from '../models.js'
 import { today } from '../utils/date.js'
 import { stringToBoolean } from '../utils/string.js'
 

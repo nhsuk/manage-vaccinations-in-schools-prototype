@@ -1,5 +1,5 @@
 import { SessionPresetName } from '../enums.js'
-import { Session } from '../models/session.js'
+import { Session } from '../models.js'
 import { formatDate, today } from '../utils/date.js'
 import { getSessionConsentUrl } from '../utils/session.js'
 

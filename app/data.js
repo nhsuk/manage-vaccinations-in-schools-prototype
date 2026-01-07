@@ -15,10 +15,7 @@ import uploads from '../.data/uploads.json' with { type: 'json' }
 import users from '../.data/users.json' with { type: 'json' }
 import vaccinations from '../.data/vaccinations.json' with { type: 'json' }
 
-import { Consent } from './models/consent.js'
-import { Move } from './models/move.js'
-import { Notice } from './models/notice.js'
-import { Session } from './models/session.js'
+import { Consent, Move, Notice, Session } from './models.js'
 
 // Use Coventry and Warwickshire as team
 const team = teams['001']

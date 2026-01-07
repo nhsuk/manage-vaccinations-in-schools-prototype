@@ -1,6 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { Team } from '../models/team.js'
+import { Team } from '../models.js'
 
 /**
  * Generate fake team

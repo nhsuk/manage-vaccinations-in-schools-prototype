@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { Move } from '../models/move.js'
+import { Move } from '../models.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const moveController = {

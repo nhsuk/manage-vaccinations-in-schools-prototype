@@ -1,4 +1,4 @@
-import { Clinic } from '../models/clinic.js'
+import { Clinic } from '../models.js'
 
 export const clinicController = {
   read(request, response, next, clinic_id) {

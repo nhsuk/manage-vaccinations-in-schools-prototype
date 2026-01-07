@@ -13,6 +13,15 @@ import {
   ReplyRefusal,
   VaccineCriteria
 } from '../enums.js'
+import {
+  Child,
+  Parent,
+  Patient,
+  Programme,
+  Session,
+  User,
+  Vaccination
+} from '../models.js'
 import { formatDate, today } from '../utils/date.js'
 import {
   getConsentOutcomeStatus,
@@ -26,14 +35,6 @@ import {
   formatWithSecondaryText,
   stringToBoolean
 } from '../utils/string.js'
-
-import { Child } from './child.js'
-import { Parent } from './parent.js'
-import { Patient } from './patient.js'
-import { Programme } from './programme.js'
-import { Session } from './session.js'
-import { User } from './user.js'
-import { Vaccination } from './vaccination.js'
 
 /**
  * @class Reply

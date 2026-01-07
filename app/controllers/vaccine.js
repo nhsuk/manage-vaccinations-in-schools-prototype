@@ -1,4 +1,4 @@
-import { Vaccine } from '../models/vaccine.js'
+import { Vaccine } from '../models.js'
 
 export const vaccineController = {
   read(request, response, next, vaccine_snomed) {

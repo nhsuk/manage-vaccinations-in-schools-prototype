@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import xlsx from 'json-as-xlsx'
 
 import { DownloadFormat } from '../enums.js'
+import { Programme, Team, Vaccination } from '../models.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -9,10 +10,6 @@ import {
   today
 } from '../utils/date.js'
 import { formatList } from '../utils/string.js'
-
-import { Programme } from './programme.js'
-import { Team } from './team.js'
-import { Vaccination } from './vaccination.js'
 
 /**
  * @class Vaccination report download

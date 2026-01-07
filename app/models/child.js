@@ -16,8 +16,6 @@ import {
 } from '../utils/date.js'
 import { formatYearGroup } from '../utils/string.js'
 
-import { Address } from './address.js'
-
 /**
  * @class Child
  * @param {object} options - Options
@@ -36,7 +34,7 @@ import { Address } from './address.js'
  * @property {import('../enums.js).EthnicBackground')} [ethnicBackground] - Ethnic background
  * @property {string} [ethnicBackgroundOther] - Other ethnic background
  * @property {boolean} [immunocompromised] - Immunocompromised
- * @property {import('./address.js').Address} [address] - Address
+ * @property {object} [address] - Address
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} [registrationGroup] - Registration group
  * @property {string} [school_urn] - School
@@ -251,7 +249,11 @@ export class Child {
     return {
       dob: formatDate(this.dob, { dateStyle: 'long' }),
       dod: formatDate(this.dod, { dateStyle: 'long' }),
-      address: this?.address && new Address(this.address).formatted.multiline,
+      address:
+        this?.address &&
+        Object.values(this.address)
+          .filter((string) => string)
+          .join('<br>'),
       ...(!this.post16 && {
         yearGroup,
         yearGroupWithRegistration:

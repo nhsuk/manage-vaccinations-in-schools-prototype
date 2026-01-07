@@ -6,8 +6,7 @@ import {
   PatientConsentStatus,
   PatientRefusedStatus
 } from './enums.js'
-import { School } from './models/school.js'
-import { User } from './models/user.js'
+import { School, User } from './models.js'
 import { getSessionActivityCount } from './utils/session.js'
 import {
   formatHealthAnswer,
@@ -90,7 +89,7 @@ export default () => {
           ...(value && { selected: value === school.urn }),
           ...(school.address && {
             attributes: {
-              'data-hint': school.address.formatted.singleline
+              'data-hint': school.formatted.address
             }
           })
         }))
@@ -436,7 +435,7 @@ export default () => {
   /**
    * Get vaccinator summary table row items
    *
-   * @param {import('./models/session.js').Session} session - Session
+   * @param {import('./models.js').Session} session - Session
    * @returns {Array} Table row items
    */
   globals.vaccinationTableRows = function (session) {

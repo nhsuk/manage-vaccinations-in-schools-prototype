@@ -1,15 +1,15 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { Instruction } from '../models/instruction.js'
+import { Instruction } from '../models.js'
 import { removeDays } from '../utils/date.js'
 
 /**
  * Generate fake instruction
  *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
- * @param {import('../models/programme.js').Programme} programme - Programme
- * @param {import('../models/session.js').Session} session - Session
- * @param {Array<import('../models/user.js').User>} users - Users
+ * @param {import('../models.js').PatientSession} patientSession - Patient session
+ * @param {import('../models.js').Programme} programme - Programme
+ * @param {import('../models.js').Session} session - Session
+ * @param {Array<import('../models.js').User>} users - Users
  * @returns {Instruction} Instruction
  */
 export function generateInstruction(patientSession, programme, session, users) {

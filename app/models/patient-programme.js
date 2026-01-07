@@ -4,6 +4,7 @@ import {
   PatientStatus,
   ProgrammeType
 } from '../enums.js'
+import { Patient, Programme } from '../models.js'
 import { getCurrentAcademicYear } from '../utils/date.js'
 import { ordinal } from '../utils/number.js'
 import { getReportOutcome } from '../utils/patient-session.js'
@@ -13,9 +14,6 @@ import {
   formatTag,
   formatWithSecondaryText
 } from '../utils/string.js'
-
-import { Patient } from './patient.js'
-import { Programme } from './programme.js'
 
 /**
  * @class Patient Programme

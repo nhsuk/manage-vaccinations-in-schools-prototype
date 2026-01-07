@@ -17,7 +17,7 @@ import { range } from './number.js'
 /**
  * Get consent window (is it open, opening or closed)
  *
- * @param {import('../models/session.js').Session} session - Session
+ * @param {import('../models.js').Session} session - Session
  * @returns {object} Consent window key and value
  */
 export const getConsentWindow = (session) => {
@@ -41,7 +41,7 @@ export const getConsentWindow = (session) => {
 /**
  * Get consent URL
  *
- * @param {import('../models/session.js').Session[]} sessions - Sessions
+ * @param {import('../models.js').Session[]} sessions - Sessions
  * @param {string} [presetName] - Session preset name
  * @param {boolean} [isSchool] - Get school session
  * @returns {object} Consent window key and value
@@ -66,7 +66,7 @@ export const getSessionConsentUrl = (
 /**
  * Filter array where key has a value
  *
- * @param {import('../models/session.js').Session} session - Session
+ * @param {import('../models.js').Session} session - Session
  * @param {Array} filters - Filters
  * @returns {number} Number
  */

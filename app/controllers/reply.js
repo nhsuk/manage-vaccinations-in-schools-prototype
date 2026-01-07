@@ -7,11 +7,13 @@ import {
   ReplyRefusal,
   VaccinationOutcome
 } from '../enums.js'
-import { Parent } from '../models/parent.js'
-import { PatientSession } from '../models/patient-session.js'
-import { Programme } from '../models/programme.js'
-import { Reply } from '../models/reply.js'
-import { Vaccination } from '../models/vaccination.js'
+import {
+  Parent,
+  PatientSession,
+  Programme,
+  Reply,
+  Vaccination
+} from '../models.js'
 import { today } from '../utils/date.js'
 import { hasAnswersNeedingTriage } from '../utils/reply.js'
 import { formatParent } from '../utils/string.js'

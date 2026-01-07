@@ -1,10 +1,8 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import schools from '../datasets/schools.js'
-import { Patient } from '../models/patient.js'
+import { Patient, Team } from '../models.js'
 import { formatDate, getDateValueDifference, today } from '../utils/date.js'
-
-import { Team } from './team.js'
 
 /**
  * @class Move

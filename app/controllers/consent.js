@@ -1,9 +1,6 @@
 import _ from 'lodash'
 
-import { Consent } from '../models/consent.js'
-import { PatientSession } from '../models/patient-session.js'
-import { Patient } from '../models/patient.js'
-import { Session } from '../models/session.js'
+import { Consent, PatientSession, Patient, Session } from '../models.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 
 export const consentController = {

@@ -2,17 +2,13 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import vaccines from '../datasets/vaccines.js'
 import { ProgrammeType, VaccineCriteria } from '../enums.js'
+import { PatientSession, Session, Vaccination, Vaccine } from '../models.js'
 import {
   formatLink,
   formatTag,
   formatYearGroup,
   sentenceCaseProgrammeName
 } from '../utils/string.js'
-
-import { PatientSession } from './patient-session.js'
-import { Session } from './session.js'
-import { Vaccination } from './vaccination.js'
-import { Vaccine } from './vaccine.js'
 
 /**
  * @class Programme

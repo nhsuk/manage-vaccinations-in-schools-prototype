@@ -1,7 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import { SessionType, TeamDefaults } from '../enums.js'
-import { Session } from '../models/session.js'
+import { Session } from '../models.js'
 import { addDays, getTermDates, removeDays, setMidday } from '../utils/date.js'
 import { getSessionYearGroups } from '../utils/session.js'
 
@@ -9,7 +9,7 @@ import { getSessionYearGroups } from '../utils/session.js'
  * Generate fake session
  *
  * @param {import('../enums.js').SessionPreset} preset - Session preset
- * @param {import('../models/user.js').User} user - User
+ * @param {import('../models.js').User} user - User
  * @param {number} academicYear - Academic year
  * @param {object} options - Options
  * @param {string} [options.clinic_id] - Clinic ID

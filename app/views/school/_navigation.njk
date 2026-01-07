@@ -4,7 +4,7 @@
 {% macro schoolNavigation(params) %}
   {{ appHeading({
     title: params.school.location.name,
-    summary: school.address.formatted.singleline
+    summary: school.formatted.address
   }) }}
 
   {% if params.school.urn != "888888" and params.school.urn != "999999" %}

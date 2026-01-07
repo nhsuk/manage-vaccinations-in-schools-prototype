@@ -4,6 +4,15 @@ import _ from 'lodash'
 import programmesData from '../datasets/programmes.js'
 import schools from '../datasets/schools.js'
 import { AuditEventType, NoticeType } from '../enums.js'
+import {
+  AuditEvent,
+  Child,
+  Parent,
+  PatientProgramme,
+  PatientSession,
+  Reply,
+  Vaccination
+} from '../models.js'
 import { getDateValueDifference, removeDays, today } from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
 import { getPreferredNames } from '../utils/reply.js'
@@ -19,14 +28,6 @@ import {
   stringToBoolean
 } from '../utils/string.js'
 
-import { AuditEvent } from './audit-event.js'
-import { Child } from './child.js'
-import { Parent } from './parent.js'
-import { PatientProgramme } from './patient-programme.js'
-import { PatientSession } from './patient-session.js'
-import { Reply } from './reply.js'
-import { Vaccination } from './vaccination.js'
-
 /**
  * @class Patient record
  * @augments Child
@@ -37,7 +38,7 @@ import { Vaccination } from './vaccination.js'
  * @property {boolean} invalid - Flagged as invalid
  * @property {boolean} sensitive - Flagged as sensitive
  * @property {Date} [updatedAt] - Updated date
- * @property {import('../enums.js').Address} [address] - Address
+ * @property {object} [address] - Address
  * @property {Parent} [parent1] - Parent 1
  * @property {Parent} [parent2] - Parent 2
  * @property {Patient} [pendingChanges] - Pending changes to record values

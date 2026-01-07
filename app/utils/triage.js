@@ -11,8 +11,8 @@ import { getRepliesWithHealthAnswers } from './reply.js'
 /**
  * Get screen outcomes for vaccination method(s) consented to
  *
- * @param {import('../models/programme.js').Programme} programme - Programme
- * @param {Array<import('../models/reply.js').Reply>} replies - Replies
+ * @param {import('../models.js').Programme} programme - Programme
+ * @param {Array<import('../models.js').Reply>} replies - Replies
  * @returns {Array<ScreenOutcome>} Screen outcomes
  */
 export const getScreenOutcomesForConsentMethod = (programme, replies) => {
@@ -50,8 +50,8 @@ export const getScreenOutcomesForConsentMethod = (programme, replies) => {
 /**
  * Get vaccination criteria consented to use if safe to vaccinate
  *
- * @param {import('../models/programme.js').Programme} programme - Programme
- * @param {Array<import('../models/reply.js').Reply>} replies - Replies
+ * @param {import('../models.js').Programme} programme - Programme
+ * @param {Array<import('../models.js').Reply>} replies - Replies
  * @returns {import('../enums.js').ScreenVaccineCriteria|boolean} Criteria
  */
 export const getScreenVaccineCriteria = (programme, replies) => {
@@ -84,7 +84,7 @@ export const getScreenVaccineCriteria = (programme, replies) => {
 /**
  * Get screen outcome (what was the triage decision)
  *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {import('../models.js').PatientSession} patientSession - Patient session
  * @returns {ScreenOutcome|boolean} Screen outcome
  */
 export const getScreenOutcome = (patientSession) => {

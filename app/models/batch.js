@@ -1,6 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { isBefore } from 'date-fns'
 
+import { Vaccine } from '../models.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -8,8 +9,6 @@ import {
   today
 } from '../utils/date.js'
 import { formatMonospace } from '../utils/string.js'
-
-import { Vaccine } from './vaccine.js'
 
 /**
  * @class Batch

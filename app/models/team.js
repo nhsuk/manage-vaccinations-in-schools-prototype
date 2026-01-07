@@ -2,11 +2,9 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { TeamDefaults } from '../enums.js'
+import { Clinic, School } from '../models.js'
 import { today } from '../utils/date.js'
 import { stringToBoolean } from '../utils/string.js'
-
-import { Clinic } from './clinic.js'
-import { School } from './school.js'
 
 /**
  * @class Team

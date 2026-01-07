@@ -18,6 +18,7 @@ import {
   VaccinationOutcome,
   ProgrammeType
 } from '../enums.js'
+import { Gillick, Instruction, Patient, Programme, Session } from '../models.js'
 import { getDateValueDifference, getYearGroup, today } from '../utils/date.js'
 import {
   getInstructionOutcome,
@@ -49,12 +50,6 @@ import {
   getScreenOutcomesForConsentMethod,
   getScreenVaccineCriteria
 } from '../utils/triage.js'
-
-import { Gillick } from './gillick.js'
-import { Instruction } from './instruction.js'
-import { Patient } from './patient.js'
-import { Programme } from './programme.js'
-import { Session } from './session.js'
 
 /**
  * @class Patient Session

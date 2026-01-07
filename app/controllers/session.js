@@ -13,14 +13,16 @@ import {
   SessionType,
   VaccineMethod
 } from '../enums.js'
-import { Clinic } from '../models/clinic.js'
-import { DefaultBatch } from '../models/default-batch.js'
-import { Instruction } from '../models/instruction.js'
-import { PatientSession } from '../models/patient-session.js'
-import { Patient } from '../models/patient.js'
-import { School } from '../models/school.js'
-import { Session } from '../models/session.js'
-import { Team } from '../models/team.js'
+import {
+  Clinic,
+  DefaultBatch,
+  Instruction,
+  PatientSession,
+  Patient,
+  School,
+  Session,
+  Team
+} from '../models.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { getSessionYearGroups } from '../utils/session.js'
@@ -580,7 +582,7 @@ export const sessionController = {
           value: clinic.id,
           ...(clinic.address && {
             attributes: {
-              'data-hint': clinic.address.formatted.singleline
+              'data-hint': clinic.formatted.address
             }
           })
         }))

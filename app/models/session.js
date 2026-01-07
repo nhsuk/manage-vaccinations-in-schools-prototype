@@ -19,6 +19,14 @@ import {
   VaccineCriteria
 } from '../enums.js'
 import {
+  Clinic,
+  Consent,
+  PatientSession,
+  Programme,
+  School,
+  Vaccine
+} from '../models.js'
+import {
   removeDays,
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -37,13 +45,6 @@ import {
   sentenceCaseProgrammeName,
   stringToBoolean
 } from '../utils/string.js'
-
-import { Clinic } from './clinic.js'
-import { Consent } from './consent.js'
-import { PatientSession } from './patient-session.js'
-import { Programme } from './programme.js'
-import { School } from './school.js'
-import { Vaccine } from './vaccine.js'
 
 /**
  * @class Session
@@ -562,30 +563,6 @@ export class Session {
   }
 
   /**
-   * Get location
-   *
-   * @returns {object} Location
-   */
-  get location() {
-    const type = this.type === SessionType.School ? 'school' : 'clinic'
-
-    return this[type]?.location
-  }
-
-  /**
-   * Get address
-   *
-   * @returns {import('./address.js').Address} Address
-   */
-  get address() {
-    const type = this.type === SessionType.School ? 'school' : 'clinic'
-
-    if (this[type]) {
-      return this[type].address
-    }
-  }
-
-  /**
    * Get name
    *
    * @returns {string|undefined} Name
@@ -598,6 +575,30 @@ export class Session {
     if (this.location) {
       return `${this.programmeNames.titleCase} session at ${this.location.name} on ${this.formatted.dateShort}`
     }
+  }
+
+  /**
+   * Get address
+   *
+   * @returns {Object} Address
+   */
+  get address() {
+    const type = this.type === SessionType.School ? 'school' : 'clinic'
+
+    if (this[type]) {
+      return this[type].address
+    }
+  }
+
+  /**
+   * Get location (name and address)
+   *
+   * @returns {object} Location
+   */
+  get location() {
+    const type = this.type === SessionType.School ? 'school' : 'clinic'
+
+    return this[type]?.location
   }
 
   /**
@@ -707,7 +708,11 @@ export class Session {
     const reminderWeeks = filters.plural(this.reminderWeeks, 'week')
 
     return {
-      address: this.address?.formatted.multiline,
+      address:
+        this.address &&
+        Object.values(this.address)
+          .filter((string) => string)
+          .join('<br>'),
       dateShort: formatDate(this.date, {
         dateStyle: 'long'
       }),
@@ -786,9 +791,11 @@ export class Session {
    * @static
    */
   static findAll(context) {
-    return Object.values(context.sessions).map(
-      (session) => new Session(session, context)
-    )
+    if (context?.sessions) {
+      return Object.values(context.sessions).map(
+        (session) => new Session(session, context)
+      )
+    }
   }
 
   /**
