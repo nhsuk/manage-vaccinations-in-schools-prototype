@@ -1387,7 +1387,26 @@ export const en = {
     },
     show: {
       label: 'Children',
-      title: 'Children'
+      title: 'Children',
+      summary: 'School details',
+      delete: 'Delete school'
+    },
+    action: {
+      title: 'Are you sure you want to %s this school?',
+      description: 'This cannot be undone.',
+      confirm: 'Yes, %s this school',
+      cancel: 'No, return to school'
+    },
+    edit: {
+      label: 'Edit',
+      title: 'Edit school',
+      summary: 'School details',
+      confirm: 'Save changes',
+      success: '{{school.name}} updated'
+    },
+    delete: {
+      label: 'Delete',
+      success: 'School deleted'
     },
     patients: {
       label: 'Children',
@@ -1411,7 +1430,16 @@ export const en = {
       label: 'Name'
     },
     phase: {
-      label: 'Phase'
+      label: 'Phase',
+      title: 'Phase of education'
+    },
+    send: {
+      label: 'SEND school',
+      title: 'Is this a special educational needs (SEN) school?'
+    },
+    yearGroups: {
+      label: 'Year groups',
+      title: 'Year groups'
     },
     urn: {
       label: 'URN'

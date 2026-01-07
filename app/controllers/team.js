@@ -1,4 +1,4 @@
-import { Team } from '../models.js'
+import { School, Team } from '../models.js'
 
 export const teamController = {
   read(request, response, next, team_id) {
@@ -50,6 +50,19 @@ export const teamController = {
     }
 
     next()
+  },
+
+  readSchool(request, response, next) {
+    const { school_urn } = request.params
+
+    const school = School.findOne(school_urn, request.session.data)
+    response.locals.school = school
+
+    next()
+  },
+
+  showSchool(request, response) {
+    response.render(`team/school`)
   },
 
   showForm(request, response) {

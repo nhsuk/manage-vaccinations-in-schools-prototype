@@ -1,0 +1,36 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("form.confirm") %}
+{% set paths = { back: team.uri + "/schools" } %}
+{% set title = __("school.edit.title") %}
+
+{% block form %}
+  {{ super() }}
+
+  {{ appHeading({
+    caption: school.name,
+    title: title
+  }) }}
+
+  {{ card({
+    heading:  __("school.edit.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(school, {
+        urn: {},
+        site: {},
+        name: {},
+        address: {},
+        phase: {
+          href: "edit/phase"
+        },
+        send: {
+          href: "edit/send"
+        },
+        yearGroups: {
+          href: "edit/year-groups"
+        }
+      })
+    })
+  }) }}
+{% endblock %}

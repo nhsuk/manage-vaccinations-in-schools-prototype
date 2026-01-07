@@ -1,0 +1,19 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("school.yearGroups.title") %}
+
+{% block form %}
+  {{ checkboxes({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--l",
+        html: appHeading({
+          caption: school.name,
+          title: title
+        })
+      }
+    },
+    items: yearGroupItems,
+    decorate: "school.yearGroups"
+  }) }}
+{% endblock %}

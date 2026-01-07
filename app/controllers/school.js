@@ -75,12 +75,13 @@ export const schoolController = {
   },
 
   readPatients(request, response, next) {
+    const { school_urn } = request.params
     const { option, programme_id, q, yearGroup } = request.query
     const { data } = request.session
     const { school } = response.locals
 
     const patients = Patient.findAll(data).filter(
-      (patient) => patient.school_urn === school.urn
+      (patient) => patient.school_urn === school_urn
     )
 
     // Sort
@@ -258,5 +259,104 @@ export const schoolController = {
     response.locals.sessions = school.sessions
 
     response.render('school/sessions')
+  },
+
+  edit(request, response) {
+    const { school_urn } = request.params
+    const { data } = request.session
+
+    // Setup wizard if not already setup
+    let school = School.findOne(school_urn, data.wizard)
+    if (!school) {
+      school = School.create(response.locals.school, data.wizard)
+    }
+
+    response.locals.school = new School(school, data)
+
+    // Show back link to session page
+    response.locals.back = school.uri
+
+    response.render('school/edit')
+  },
+
+  update(type) {
+    return (request, response) => {
+      const { school_urn } = request.params
+      const { data } = request.session
+      const { __, school } = response.locals
+
+      // Update session data
+      School.update(school_urn, data.wizard.schools[school_urn], data)
+
+      // Clean up session data
+      delete data.session
+      delete data.wizard
+
+      request.flash('success', __(`school.${type}.success`, { school }))
+
+      response.redirect(`${school.team.uri}/schools`)
+    }
+  },
+
+  readForm(type) {
+    return (request, response, next) => {
+      const { school_urn } = request.params
+      const { data } = request.session
+
+      // Setup wizard if not already setup
+      let school = School.findOne(school_urn, data.wizard)
+      if (!school) {
+        school = School.create(response.locals.school, data.wizard)
+      }
+
+      response.locals.school = new School(school, data)
+
+      response.locals.type = type
+
+      response.locals.yearGroupItems = [...Array(14).keys()].map(
+        (yearGroup) => ({
+          text: formatYearGroup(yearGroup),
+          value: yearGroup
+        })
+      )
+
+      next()
+    }
+  },
+
+  showForm(request, response) {
+    const { view } = request.params
+
+    response.render(`school/form/${view}`)
+  },
+
+  updateForm(request, response) {
+    const { school_urn } = request.params
+    const { data } = request.session
+    const { school } = response.locals
+
+    School.update(school_urn, request.body.school, data.wizard)
+
+    response.redirect(`${school.uri}/edit`)
+  },
+
+  action(type) {
+    return (request, response) => {
+      response.render('school/action', { type })
+    }
+  },
+
+  delete(request, response) {
+    const { school_urn } = request.params
+    const { data } = request.session
+    const { __, school } = response.locals
+
+    const referrer = `${school.team.uri}/schools`
+
+    School.delete(school_urn, data)
+
+    request.flash('success', __(`school.delete.success`))
+
+    response.redirect(referrer)
   }
 }
