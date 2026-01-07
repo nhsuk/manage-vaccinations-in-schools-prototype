@@ -1,0 +1,19 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("school.send.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        classes: "nhsuk-fieldset__legend--l",
+        html: appHeading({
+          caption: school.name,
+          title: title
+        })
+      }
+    },
+    items: booleanItems,
+    decorate: "school.send"
+  }) }}
+{% endblock %}

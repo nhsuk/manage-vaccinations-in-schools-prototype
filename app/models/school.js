@@ -1,27 +1,34 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { default as filters } from '@x-govuk/govuk-prototype-filters'
 
-import { SchoolPhase } from '../enums.js'
 import { Location, Patient, Programme, Session } from '../models.js'
 import { formatDate, getDateValueDifference } from '../utils/date.js'
-import { range } from '../utils/number.js'
 import { tokenize } from '../utils/object.js'
-import { formatLink, formatMonospace } from '../utils/string.js'
+import {
+  formatLink,
+  formatMonospace,
+  formatYearGroups,
+  stringToBoolean
+} from '../utils/string.js'
 
 /**
  * @class School
  * @augments Location
  * @param {object} options - Options
  * @param {object} [context] - Context
+ * @property {boolean} send - SEND school
  * @property {string} urn - URN
- * @property {SchoolPhase} [phase] - Phase
+ * @property {import('../enums.js').SchoolPhase} [phase] - Phase
+ * @property {Array<number>} [yearGroups] - Year groups
  */
 export class School extends Location {
   constructor(options, context) {
     super(options, context)
 
+    this.send = stringToBoolean(options?.send) || false
     this.urn = (options.urn && String(options.urn)) || faker.string.numeric(6)
     this.phase = options?.phase
+    this.yearGroups = options?.yearGroups || []
   }
 
   /**
@@ -72,18 +79,6 @@ export class School extends Location {
     }
   }
 
-  /** Get year groups
-   *
-   * @returns {Array} Year groups
-   */
-  get yearGroups() {
-    if (this.phase === SchoolPhase.Primary) {
-      return [...range(0, 6)]
-    }
-
-    return [...range(7, 11)]
-  }
-
   /**
    * Get programmes that run at this school
    *
@@ -116,10 +111,9 @@ export class School extends Location {
   get formatted() {
     return {
       ...super.formatted,
-      nextSessionDate: formatDate(this.nextSessionDate, {
-        dateStyle: 'full'
-      }),
+      nextSessionDate: formatDate(this.nextSessionDate, { dateStyle: 'full' }),
       patients: filters.plural(this.patients.length, 'child'),
+      yearGroups: formatYearGroups(this.yearGroups),
       urn: formatMonospace(this.urn)
     }
   }
@@ -178,5 +172,70 @@ export class School extends Location {
     if (context?.schools?.[urn]) {
       return new School(context.schools[urn], context)
     }
+  }
+
+  /**
+   * Create
+   *
+   * @param {School} school - School
+   * @param {object} context - Context
+   * @returns {School} Created school
+   * @static
+   */
+  static create(school, context) {
+    const createdSchool = new School(school)
+
+    // Add to team
+    if (context.teams) {
+      context.teams[createdSchool.team_id].school_urns.push(createdSchool.urn)
+    }
+
+    // Update context
+    context.schools = context.schools || {}
+    context.schools[createdSchool.urn] = createdSchool
+
+    return createdSchool
+  }
+
+  /**
+   * Update
+   *
+   * @param {string} urn - School URN
+   * @param {object} updates - Updates
+   * @param {object} context - Context
+   * @returns {School} Updated school
+   * @static
+   */
+  static update(urn, updates, context) {
+    const updatedSchool = Object.assign(School.findOne(urn, context), updates)
+
+    // Remove school context
+    delete updatedSchool.context
+
+    // Delete original school (with previous URN)
+    delete context.schools[urn]
+
+    // Update context
+    context.schools[updatedSchool.urn] = updatedSchool
+
+    return updatedSchool
+  }
+
+  /**
+   * Delete
+   *
+   * @param {string} urn - School URN
+   * @param {object} context - Context
+   * @static
+   */
+  static delete(urn, context) {
+    const school = School.findOne(urn, context)
+
+    // Remove from team
+    context.teams[school.team_id].school_urns = context.teams[
+      school.team_id
+    ].school_urns.filter((item) => item !== urn)
+
+    delete context.schools[urn]
   }
 }
