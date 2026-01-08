@@ -1,0 +1,17 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("school.urn.title") %}
+
+{% block form %}
+  {{ appHeading({
+    title: title
+  }) }}
+
+  {{ input({
+    classes: "nhsuk-input--width-10 nhsuk-input--code",
+    label: {
+      text: __("school.urn.label")
+    },
+    decorate: "school.urn"
+  }) }}
+{% endblock %}

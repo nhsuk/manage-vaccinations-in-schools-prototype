@@ -1,4 +1,5 @@
 import { default as filters } from '@x-govuk/govuk-prototype-filters'
+import _ from 'lodash'
 
 import { Location, Patient, Programme, Session } from '../models.js'
 import { formatDate, getDateValueDifference } from '../utils/date.js'
@@ -15,9 +16,9 @@ import {
  * @augments Location
  * @param {object} options - Options
  * @param {object} [context] - Context
- * @property {boolean} send - SEND school
- * @property {string} urn - URN
- * @property {string} site - Site code
+ * @property {boolean} [send] - SEND school
+ * @property {string} [urn] - URN
+ * @property {string} [site] - Site code
  * @property {import('../enums.js').SchoolPhase} [phase] - Phase
  * @property {Array<number>} [yearGroups] - Year groups
  */
@@ -26,10 +27,32 @@ export class School extends Location {
     super(options, context)
 
     this.send = stringToBoolean(options?.send) || false
-    this.urn = options.urn && String(options.urn)
+    this.urn = options?.urn && String(options.urn)
     this.site = options?.site
     this.phase = options?.phase
     this.yearGroups = options?.yearGroups || []
+  }
+
+  /**
+   * Get year groups for `checkboxes`s
+   *
+   * @returns {Array<string>} `checkboxes` array values
+   */
+  get yearGroups_() {
+    return this.yearGroups.map((yearGroup) => String(yearGroup))
+  }
+
+  /**
+   * Set year groups from `checkboxes`s
+   *
+   * @param {Array<string>} array - checkboxes array values
+   */
+  set yearGroups_(array) {
+    if (array) {
+      this.yearGroups = array
+        .filter((item) => item !== '_unchecked')
+        .map((yearGroup) => Number(yearGroup))
+    }
   }
 
   /**
@@ -210,7 +233,21 @@ export class School extends Location {
    * @static
    */
   static update(id, updates, context) {
-    const updatedSchool = Object.assign(School.findOne(id, context), updates)
+    const updatedSchool = _.mergeWith(
+      School.findOne(id, context),
+      updates,
+      (oldValue, newValue) => {
+        // yearGroups array shouldn’t be merged but replaced entirely
+        if (Array.isArray(oldValue)) {
+          return newValue
+        }
+      }
+    )
+
+    // Update team
+    if (context.teams) {
+      context.teams[updatedSchool.team_id].school_ids.push(updatedSchool.id)
+    }
 
     // Remove school context
     delete updatedSchool.context
@@ -221,7 +258,7 @@ export class School extends Location {
     // Update context
     context.schools[updatedSchool.id] = updatedSchool
 
-    return updatedSchool
+    return new School(updatedSchool, context)
   }
 
   /**

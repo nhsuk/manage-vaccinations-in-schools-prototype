@@ -1,0 +1,33 @@
+{% extends "_layouts/form.njk" %}
+
+{% set confirmButtonText = __("school.new.check-answers.confirm") %}
+{% set title = __("school.new.check-answers.title") %}
+
+{% block form %}
+  {{ appHeading({
+    title: title
+  }) }}
+
+  {{ card({
+    heading: __("school.new.summary"),
+    headingClasses: "nhsuk-heading-m",
+    descriptionHtml: summaryList({
+      rows: summaryRows(school, {
+        urn: {
+          href: school.uri + "/new/urn"
+        },
+        name: {},
+        address: {},
+        phase: {
+          href: school.uri + "/new/programmes"
+        },
+        send: {
+          href: school.uri + "/new/send"
+        },
+        yearGroups: {
+          href: school.uri + "/new/year-groups"
+        }
+      })
+    })
+  }) }}
+{% endblock %}
