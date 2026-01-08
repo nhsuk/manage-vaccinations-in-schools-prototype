@@ -334,6 +334,7 @@ export const schoolController = {
         [`/${school_id}/${type}/phase`]: {},
         [`/${school_id}/${type}/send`]: {},
         [`/${school_id}/${type}/year-groups`]: {},
+        [`/${school_id}/${type}/programmes`]: {},
         [`/${school_id}/${type}/check-answers`]: {},
         [`/${school_id}`]: {}
       }

@@ -1,7 +1,7 @@
 import { default as filters } from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
-import { Location, Patient, Programme, Session } from '../models.js'
+import { Location, Patient, Session } from '../models.js'
 import { formatDate, getDateValueDifference } from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
 import {
@@ -101,19 +101,6 @@ export class School extends Location {
     if (this.sessions?.length > 0) {
       return this.sessions.at(-1).date
     }
-  }
-
-  /**
-   * Get programmes that run at this school
-   *
-   * @returns {Array<Programme>} Programmes
-   */
-  get programmes() {
-    return Programme.findAll(this.context).filter((programme) =>
-      programme.yearGroups.some((yearGroup) =>
-        this.yearGroups.includes(yearGroup)
-      )
-    )
   }
 
   /**

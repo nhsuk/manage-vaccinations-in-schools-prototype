@@ -1,6 +1,8 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { Team } from '../models.js'
+import programmesData from '../datasets/programmes.js'
+import { SessionPresets } from '../enums.js'
+import { Programme, Team } from '../models.js'
 
 /**
  * @class Location
@@ -12,6 +14,7 @@ import { Team } from '../models.js'
  * @property {string} [addressLevel1] - Address level 1
  * @property {string} [postalCode] - Postcode
  * @property {string} [team_id] - Team ID
+ * @property {Array<SessionPresetName>} [presetNames] - Session preset names
  */
 export class Location {
   constructor(options, context) {
@@ -23,6 +26,7 @@ export class Location {
     this.addressLevel1 = options?.addressLevel1
     this.postalCode = options?.postalCode
     this.team_id = options?.team_id
+    this.presetNames = options?.presetNames
   }
 
   /**
@@ -70,6 +74,45 @@ export class Location {
   }
 
   /**
+   * Get session presets
+   *
+   * @returns {Array<import('../enums.js').SessionPreset>} Patient sessions
+   */
+  get presets() {
+    return SessionPresets.filter((sessionPreset) =>
+      this.presetNames.includes(sessionPreset.name)
+    )
+  }
+
+  /**
+   * Get programme ids
+   *
+   * @returns {Array<string>} Programme IDs
+   */
+  get programme_ids() {
+    const programme_ids = new Set()
+    for (const preset of this.presets) {
+      for (const programmeType of preset.programmeTypes) {
+        const programme = programmesData[programmeType]
+        programme_ids.add(programme.id)
+      }
+    }
+
+    return [...programme_ids]
+  }
+
+  /**
+   * Get session programmes
+   *
+   * @returns {Array<Programme>} Programmes
+   */
+  get programmes() {
+    return this.programme_ids
+      .map((id) => Programme.findOne(id, this.context))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} Formatted values
@@ -90,7 +133,8 @@ export class Location {
         ? `<span>${this.name}</br>
             <span class="nhsuk-u-secondary-text-colour">${address}</span>
           </span>`
-        : this.name
+        : this.name,
+      programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' ')
     }
   }
 

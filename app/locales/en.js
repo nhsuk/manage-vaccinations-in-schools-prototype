@@ -1457,6 +1457,10 @@ export const en = {
       label: 'Year groups',
       title: 'Year groups'
     },
+    programmes: {
+      label: 'Programmes',
+      title: 'Which programmes will you run at this school?'
+    },
     id: {
       label: 'URN'
     },

@@ -1,15 +1,26 @@
+import { SessionPresetName } from '../enums.js'
+
+const presetNames = [
+  SessionPresetName.Doubles,
+  SessionPresetName.Flu,
+  SessionPresetName.HPV,
+  SessionPresetName.MMR
+]
+
 export default {
   '888888': {
     id: '888888',
     urn: '888888',
     name: 'Unknown school',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '999999': {
     id: '999999',
     urn: '999999',
     name: 'Home-schooled',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '135335': {
     id: '135335',
@@ -21,7 +32,8 @@ export default {
     addressLine2: '',
     addressLevel1: 'Coventry',
     postalCode: 'CV2 2RH',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '137209': {
     id: '137209',
@@ -33,7 +45,8 @@ export default {
     addressLine2: '',
     addressLevel1: 'Coventry',
     postalCode: 'CV4 9PW',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '137272': {
     id: '137272',
@@ -45,7 +58,8 @@ export default {
     addressLine2: '',
     addressLevel1: 'Coventry',
     postalCode: 'CV1 2BA',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '138023': {
     id: '138023',
@@ -57,7 +71,8 @@ export default {
     addressLine2: '',
     addressLevel1: 'Coventry',
     postalCode: 'CV6 2AJ',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '139292': {
     id: '139292',
@@ -69,7 +84,8 @@ export default {
     addressLine2: 'Wyken',
     addressLevel1: 'Coventry',
     postalCode: 'CV2 5BD',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '140248': {
     id: '140248',
@@ -81,7 +97,8 @@ export default {
     addressLine2: '',
     addressLevel1: 'Coventry',
     postalCode: 'CV6 4GL',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '141104A': {
     id: '141104A',
@@ -94,7 +111,8 @@ export default {
     addressLine2: 'Walsgrave Triangle',
     addressLevel1: 'Coventry',
     postalCode: 'CV2 2TB',
-    team_id: '001'
+    team_id: '001',
+    presetNames: [SessionPresetName.Flu, SessionPresetName.MMR]
   },
   '141104B': {
     id: '141104B',
@@ -107,7 +125,8 @@ export default {
     addressLine2: 'Walsgrave Triangle',
     addressLevel1: 'Coventry',
     postalCode: 'CV2 2TB',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '141992': {
     id: '141992',
@@ -119,7 +138,8 @@ export default {
     addressLine2: '',
     addressLevel1: 'Coventry',
     postalCode: 'CV2 2AJ',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '142205': {
     id: '142205',
@@ -131,7 +151,8 @@ export default {
     addressLine2: 'Stoke',
     addressLevel1: 'Coventry',
     postalCode: 'CV2 4DW',
-    team_id: '001'
+    team_id: '001',
+    presetNames: [SessionPresetName.Flu, SessionPresetName.MMR]
   },
   '142211': {
     id: '142211',
@@ -143,7 +164,8 @@ export default {
     addressLine2: '',
     addressLevel1: 'Coventry',
     postalCode: 'CV2 5AT',
-    team_id: '001'
+    team_id: '001',
+    presetNames: [SessionPresetName.Flu, SessionPresetName.MMR]
   },
   '142339': {
     id: '142339',
@@ -155,7 +177,8 @@ export default {
     addressLine2: '',
     addressLevel1: 'Coventry',
     postalCode: 'CV1 4BU',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '142700': {
     id: '142700',
@@ -167,7 +190,8 @@ export default {
     addressLine2: '',
     addressLevel1: 'Coventry',
     postalCode: 'CV3 6EJ',
-    team_id: '001'
+    team_id: '001',
+    presetNames: [SessionPresetName.Flu, SessionPresetName.MMR]
   },
   '142960': {
     id: '142960',
@@ -179,7 +203,8 @@ export default {
     addressLine2: '',
     addressLevel1: 'Coventry',
     postalCode: 'CV2 3JS',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '143779': {
     id: '143779',
@@ -191,7 +216,8 @@ export default {
     addressLine2: '',
     addressLevel1: 'Coventry',
     postalCode: 'CV6 4GF',
-    team_id: '001'
+    team_id: '001',
+    presetNames: [SessionPresetName.Flu, SessionPresetName.MMR]
   },
   '145179': {
     id: '145179',
@@ -203,7 +229,8 @@ export default {
     addressLine2: '',
     addressLevel1: 'Coventry',
     postalCode: 'CV2 4JW',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '147346': {
     id: '147346',
@@ -215,7 +242,8 @@ export default {
     addressLine2: 'Keresley',
     addressLevel1: 'Coventry',
     postalCode: 'CV6 2FR',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   '148429': {
     id: '148429',
@@ -227,6 +255,7 @@ export default {
     addressLine2: 'Whitley',
     addressLevel1: 'Coventry',
     postalCode: 'CV3 4BD',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   }
 }
