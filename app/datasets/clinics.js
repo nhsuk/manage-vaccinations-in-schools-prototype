@@ -1,3 +1,12 @@
+import { SessionPresetName } from '../enums.js'
+
+const presetNames = [
+  SessionPresetName.Doubles,
+  SessionPresetName.Flu,
+  SessionPresetName.HPV,
+  SessionPresetName.MMR
+]
+
 export default {
   M84008: {
     id: 'M84008',
@@ -7,7 +16,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV7 8FD',
     tel: '01676 540395',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M84012: {
     id: 'M84012',
@@ -17,7 +27,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV6 2FL',
     tel: '024 76332636',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M84016: {
     id: 'M84016',
@@ -27,7 +38,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV8 3HG',
     tel: '024 76542192',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86001: {
     id: 'M86001',
@@ -37,7 +49,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV3 3DG',
     tel: '024 76302082',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86002: {
     id: 'M86002',
@@ -47,7 +60,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV6 6DR',
     tel: '024 76646720',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86003: {
     id: 'M86003',
@@ -57,7 +71,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV3 6EA',
     tel: '024 76224640',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86004: {
     id: 'M86004',
@@ -67,7 +82,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV5 9JE',
     tel: '024 76674123',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86005: {
     id: 'M86005',
@@ -77,7 +93,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV1 4FS',
     tel: '024 76961373',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86008: {
     id: 'M86008',
@@ -87,7 +104,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV6 4DD',
     tel: '024 76688340',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86009: {
     id: 'M86009',
@@ -97,7 +115,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV6 3HZ',
     tel: '024 76592012',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86010: {
     id: 'M86010',
@@ -107,7 +126,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV4 8FT',
     tel: '024 76672277',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86012: {
     id: 'M86012',
@@ -117,7 +137,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV1 4FS',
     tel: '024 76961370',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86014: {
     id: 'M86014',
@@ -127,7 +148,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV2 5EP',
     tel: '024 76266370',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86015: {
     id: 'M86015',
@@ -137,7 +159,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV3 3AD',
     tel: '024 76307024',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86017: {
     id: 'M86017',
@@ -147,7 +170,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV3 1JB',
     tel: '024 76457551',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86018: {
     id: 'M86018',
@@ -157,7 +181,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV6 1HS',
     tel: '0247 6592201',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86019: {
     id: 'M86019',
@@ -167,7 +192,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV4 9DR',
     tel: '024 76466106',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86020: {
     id: 'M86020',
@@ -177,7 +203,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV2 1XA',
     tel: '024 76612929',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86027: {
     id: 'M86027',
@@ -187,7 +214,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV3 5PZ',
     tel: '024 76502255',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86028: {
     id: 'M86028',
@@ -197,7 +225,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV6 5DF',
     tel: '024 76681231',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86029: {
     id: 'M86029',
@@ -207,7 +236,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV1 3HQ',
     tel: '024 76228606',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86030: {
     id: 'M86030',
@@ -217,7 +247,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV5 6HY',
     tel: '024 76672466',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86034: {
     id: 'M86034',
@@ -227,7 +258,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV4 9PL',
     tel: '024 76694001',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86035: {
     id: 'M86035',
@@ -237,7 +269,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV2 1AB',
     tel: '024 76614255',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86037: {
     id: 'M86037',
@@ -247,7 +280,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV3 5PZ',
     tel: '024 76503485',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86038: {
     id: 'M86038',
@@ -257,7 +291,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV3 2FD',
     tel: '024 76458777',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86041: {
     id: 'M86041',
@@ -267,7 +302,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV2 4LJ',
     tel: '024 76437087',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86045: {
     id: 'M86045',
@@ -277,7 +313,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV6 5BG',
     tel: '024 76689343',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86046: {
     id: 'M86046',
@@ -287,7 +324,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV2 5NB',
     tel: '024 76457497',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86048: {
     id: 'M86048',
@@ -297,7 +335,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV6 6DR',
     tel: '024 76646750',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86605: {
     id: 'M86605',
@@ -307,7 +346,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV4 9PN',
     tel: '024 76460800',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86610: {
     id: 'M86610',
@@ -317,7 +357,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV1 2DL',
     tel: '024 76552531',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86622: {
     id: 'M86622',
@@ -327,7 +368,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV5 6EU',
     tel: '024 76675016',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86624: {
     id: 'M86624',
@@ -337,7 +379,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV6 3FA',
     tel: '024 76596060',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86627: {
     id: 'M86627',
@@ -347,7 +390,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV3 1EG',
     tel: '024 76636972',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   M86633: {
     id: 'M86633',
@@ -357,7 +401,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV6 5LL',
     tel: '024 76685918',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   Y00060: {
     id: 'Y00060',
@@ -367,7 +412,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV1 5FX',
     tel: '024 76527040',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   Y00996: {
     id: 'Y00996',
@@ -377,7 +423,8 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV1 4FS',
     tel: '024 75263599',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   Y00140: {
     id: 'Y00140',
@@ -387,12 +434,14 @@ export default {
     addressLevel1: 'Coventry',
     postalCode: 'CV2 3NF',
     tel: '024 76455943',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   },
   X99999: {
     id: 'X99999',
     name: 'Community clinic',
     addressLevel1: 'Coventry',
-    team_id: '001'
+    team_id: '001',
+    presetNames
   }
 }
