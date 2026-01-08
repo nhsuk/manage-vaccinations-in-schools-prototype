@@ -1,0 +1,14 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("school.name.title") %}
+
+{% block form %}
+  {{ input({
+    label: {
+      isPageHeading: true,
+      text: title,
+      size: "l"
+    },
+    decorate: "school.name"
+  }) }}
+{% endblock %}

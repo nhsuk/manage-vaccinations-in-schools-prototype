@@ -46,7 +46,7 @@ export class Upload {
 
     if (this.type === UploadType.School) {
       this.yearGroups = options?.yearGroups
-      this.school_urn = options?.school_urn
+      this.school_id = options?.school_id
     }
   }
 
@@ -180,8 +180,8 @@ export class Upload {
    * @returns {object|undefined} School
    */
   get school() {
-    if (this.type === UploadType.School && this.school_urn) {
-      return School.findOne(this.school_urn, this.context)
+    if (this.type === UploadType.School && this.school_id) {
+      return School.findOne(this.school_id, this.context)
     }
   }
 

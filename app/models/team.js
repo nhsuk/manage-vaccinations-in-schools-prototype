@@ -23,7 +23,7 @@ import { stringToBoolean } from '../utils/string.js'
  * @property {boolean} [sessionRegistration] - Should sessions have registration
  * @property {string} [password] - Shared password
  * @property {Array<string>} [clinic_ids] - Clinic IDs
- * @property {Array<string>} [school_urns] - School URNs
+ * @property {Array<string>} [school_ids] - School URNs
  */
 export class Team {
   constructor(options, context) {
@@ -44,7 +44,7 @@ export class Team {
       TeamDefaults.SessionRegistration
     this.password = options?.password
     this.clinic_ids = options?.clinic_ids || []
-    this.school_urns = options?.school_urns || []
+    this.school_ids = options?.school_ids || []
   }
 
   /**
@@ -69,8 +69,9 @@ export class Team {
    */
   get schools() {
     try {
-      return this?.school_urns
-        .map((urn) => School.findOne(urn, this.context))
+      return this?.school_ids
+        .filter((id) => !['888888', '999999'].includes(id))
+        .map((id) => School.findOne(id, this.context))
         .sort((a, b) => a.name.localeCompare(b.name))
     } catch (error) {
       console.error('Team.schools', error.message)

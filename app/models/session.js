@@ -64,7 +64,7 @@ import {
  * @property {string} [clinic_id] - Clinic ID
  *
  *   Schools only
- * @property {string} [school_urn] - School URN
+ * @property {string} [school_id] - School URN
  * @property {Array<string>} [yearGroups] - Year groups
  * @property {Date} [openAt] - Date consent window opens
  * @property {object} [openAt_] - Date consent window opens (from `dateInput`)
@@ -92,7 +92,7 @@ export class Session {
     }
 
     if (this.type === SessionType.School) {
-      this.school_urn = options?.school_urn
+      this.school_id = options?.school_id
       this.yearGroups = options?.yearGroups || []
       this.yearGroups_ = options?.yearGroups_
       this.openAt = options?.openAt
@@ -339,9 +339,9 @@ export class Session {
    * @returns {School|undefined} School
    */
   get school() {
-    if (this.school_urn) {
+    if (this.school_id) {
       try {
-        return School.findOne(this.school_urn, this.context)
+        return School.findOne(this.school_id, this.context)
       } catch (error) {
         console.error('Session.school', error.message)
       }
@@ -379,7 +379,7 @@ export class Session {
     if (this.context?.patients && this.id) {
       return PatientSession.findAll(this.context)
         .filter(({ session }) => session.id === this.id)
-        .filter(({ patient }) => !patient?.pendingChanges?.school_urn)
+        .filter(({ patient }) => !patient?.pendingChanges?.school_id)
     }
 
     return []
@@ -760,7 +760,7 @@ export class Session {
         .join(', '),
       clinic: this.clinic && this.clinic.name,
       school: this.school && this.school.name,
-      school_urn: this.school && this.school.formatted.urn,
+      school_id: this.school && this.school.formatted.id,
       yearGroups: this.yearGroups && formatYearGroups(this.yearGroups)
     }
   }

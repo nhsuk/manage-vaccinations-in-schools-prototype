@@ -45,15 +45,15 @@ export function generatePatient() {
     // Move school
     const primarySchools = Object.values(schools)
       .filter((school) => school.phase === 'Primary')
-      .filter((school) => school.urn !== child.school_urn)
+      .filter((school) => school.id !== child.school_id)
     const secondarySchools = Object.values(schools)
       .filter((school) => school.phase === 'Secondary')
-      .filter((school) => school.urn !== child.school_urn)
+      .filter((school) => school.id !== child.school_id)
     const newUrn =
-      schools[child.school_urn]?.phase === 'Primary'
-        ? faker.helpers.arrayElement(primarySchools).urn
-        : faker.helpers.arrayElement(secondarySchools).urn
-    pendingChanges.school_urn = newUrn
+      schools[child.school_id]?.phase === 'Primary'
+        ? faker.helpers.arrayElement(primarySchools).id
+        : faker.helpers.arrayElement(secondarySchools).id
+    pendingChanges.school_id = newUrn
   }
 
   return new Patient({

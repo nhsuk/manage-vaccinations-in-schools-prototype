@@ -71,7 +71,7 @@ import {
  * @property {string} [sequence] - Dose sequence
  * @property {string} [protocol] - Protocol
  * @property {string} [note] - Note
- * @property {string} [school_urn] - School URN
+ * @property {string} [school_id] - School URN
  * @property {string} [patient_uuid] - Patient UUID (used outside of a session)
  * @property {string} [patientSession_uuid] - Patient session UUID
  * @property {string} [programme_id] - Programme ID
@@ -110,7 +110,7 @@ export class Vaccination {
       ? options?.protocol || VaccinationProtocol.PGD
       : undefined
     this.note = options?.note || ''
-    this.school_urn = options?.school_urn
+    this.school_id = options?.school_id
     this.patient_uuid = options?.patient_uuid
     this.patientSession_uuid = options?.patientSession_uuid
     this.programme_id = options?.programme_id
@@ -340,8 +340,8 @@ export class Vaccination {
    * @returns {School|undefined} School
    */
   get school() {
-    if (this.school_urn) {
-      return new School(schools[this.school_urn])
+    if (this.school_id) {
+      return new School(schools[this.school_id])
     }
   }
 

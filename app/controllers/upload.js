@@ -101,7 +101,7 @@ export const uploadController = {
   new(request, response) {
     const { account } = request.app.locals
     const { programme_id } = request.params
-    const { type, urn } = request.query
+    const { type, school_id } = request.query
     const { data } = request.session
 
     const upload = Upload.create(
@@ -112,10 +112,7 @@ export const uploadController = {
         status: UploadStatus.Processing,
         progress: 1,
         fileName: 'example.csv',
-        ...(type === UploadType.School &&
-          urn && {
-            school_urn: urn
-          })
+        ...(type === UploadType.School && school_id && { school_id })
       },
       data.wizard
     )

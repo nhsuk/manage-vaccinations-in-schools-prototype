@@ -10,6 +10,6 @@ export default [
     privacyPolicyUrl: 'https://www.covwarkpt.nhs.uk/download.cfm?ver=8286',
     password: 'secret',
     clinic_ids: ['X99999'],
-    school_urns: Object.keys(schools)
+    school_ids: Object.keys(schools)
   }
 ]

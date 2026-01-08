@@ -604,9 +604,9 @@ export const sessionController = {
         }
       }
 
-      if (session.school_urn) {
+      if (session.school_id) {
         response.locals.yearGroupItems = getSessionYearGroups(
-          session.school_urn,
+          session.school_id,
           session.presets
         ).map((year) => ({
           text: formatYearGroup(year),

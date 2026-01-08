@@ -8,9 +8,9 @@
   }) }}
 
   {{ select({
-    label: { text: __("session.school_urn.title") },
-    items: schoolItems(schools, session.school_urn),
-    decorate: "session.school_urn",
+    label: { text: __("session.school_id.title") },
+    items: schoolItems(schools, session.school_id),
+    decorate: "session.school_id",
     attributes: {
       "data-module": "app-autocomplete"
     }
