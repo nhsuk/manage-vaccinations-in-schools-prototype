@@ -13,7 +13,7 @@ import { getSessionYearGroups } from '../utils/session.js'
  * @param {number} academicYear - Academic year
  * @param {object} options - Options
  * @param {string} [options.clinic_id] - Clinic ID
- * @param {string} [options.school_urn] - School URN
+ * @param {string} [options.school_id] - School URN
  * @returns {Session} Session
  */
 export function generateSession(preset, academicYear, user, options) {
@@ -22,7 +22,7 @@ export function generateSession(preset, academicYear, user, options) {
     return
   }
 
-  const { clinic_id, school_urn } = options
+  const { clinic_id, school_id } = options
   const term = getTermDates(academicYear, preset.term)
 
   let date = faker.date.between({
@@ -51,8 +51,8 @@ export function generateSession(preset, academicYear, user, options) {
   }
 
   let yearGroups
-  if (options.school_urn) {
-    yearGroups = getSessionYearGroups(options.school_urn, [preset])
+  if (options.school_id) {
+    yearGroups = getSessionYearGroups(options.school_id, [preset])
   }
 
   return new Session({
@@ -64,6 +64,6 @@ export function generateSession(preset, academicYear, user, options) {
     academicYear,
     presetNames: [preset.name],
     ...(clinic_id && { type: SessionType.Clinic, clinic_id }),
-    ...(school_urn && { type: SessionType.School, school_urn, yearGroups })
+    ...(school_id && { type: SessionType.School, school_id, yearGroups })
   })
 }

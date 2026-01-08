@@ -209,7 +209,7 @@ export class Download {
           date: vaccination.createdAt,
           time: vaccination.createdAt,
           location_type: 'SC',
-          location_urn: vaccination.school_urn,
+          location_urn: vaccination.school_id,
           user_role: '',
           user_code: '',
           attended: vaccination.given ? 'Y' : 'N',
@@ -242,7 +242,7 @@ export class Download {
       'PERSON_GENDER_CODE',
       'PERSON_POSTCODE',
       'SCHOOL_NAME',
-      'SCHOOL_URN',
+      'school_id',
       'REASON_NOT_VACCINATED',
       'DATE_OF_VACCINATION',
       'VACCINE_GIVEN',
@@ -263,7 +263,7 @@ export class Download {
             PERSON_GENDER_CODE: vaccination.patient?.gender,
             PERSON_POSTCODE: vaccination.patient?.postalCode,
             SCHOOL_NAME: vaccination.location,
-            SCHOOL_URN: vaccination.school_urn,
+            school_id: vaccination.school_id,
             REASON_NOT_VACCINATED: !vaccination.given
               ? vaccination.outcome
               : '',

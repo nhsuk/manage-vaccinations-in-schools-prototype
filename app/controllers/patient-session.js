@@ -231,7 +231,7 @@ export const patientSessionController = {
       const vaccination = Vaccination.create(
         {
           location: session.location.name,
-          school_urn: session.school_urn,
+          school_id: session.school_id,
           outcome: VaccinationOutcome.Absent,
           patientSession_uuid: patientSession.uuid,
           programme_id: programme.id,

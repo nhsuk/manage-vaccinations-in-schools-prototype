@@ -19,8 +19,12 @@
       rows: summaryRows(school, {
         urn: {},
         site: {},
-        name: {},
-        address: {},
+        name: {
+          href: "edit/name" if school.site
+        },
+        address: {
+          href: "edit/address" if school.site
+        },
         phase: {
           href: "edit/phase"
         },

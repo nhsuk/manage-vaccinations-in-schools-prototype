@@ -1427,7 +1427,8 @@ export const en = {
       label: 'Find school'
     },
     name: {
-      label: 'Name'
+      label: 'Name',
+      title: 'School name'
     },
     phase: {
       label: 'Phase',
@@ -1441,11 +1442,18 @@ export const en = {
       label: 'Year groups',
       title: 'Year groups'
     },
+    id: {
+      label: 'URN'
+    },
     urn: {
       label: 'URN'
     },
+    site: {
+      label: 'Site code'
+    },
     address: {
-      label: 'Address'
+      label: 'Address',
+      title: 'School address'
     },
     nextSessionDate: {
       label: 'Next session'
@@ -1668,7 +1676,7 @@ export const en = {
       label: 'School',
       title: 'Where is this school session taking place?'
     },
-    school_urn: {
+    school_id: {
       label: 'School URN',
       title: 'Select a school'
     },

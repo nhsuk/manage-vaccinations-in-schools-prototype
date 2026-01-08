@@ -11,8 +11,8 @@
         title: title
       })
     },
-    items: schoolItems(data.schools, patient.school_urn),
-    decorate: "patient.school_urn",
+    items: schoolItems(data.schools, patient.school_id),
+    decorate: "patient.school_id",
     attributes: {
       "data-module": "app-autocomplete"
     }

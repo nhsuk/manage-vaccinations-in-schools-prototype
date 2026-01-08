@@ -1,4 +1,3 @@
-import { fakerEN_GB as faker } from '@faker-js/faker'
 import { default as filters } from '@x-govuk/govuk-prototype-filters'
 
 import { Location, Patient, Programme, Session } from '../models.js'
@@ -18,6 +17,7 @@ import {
  * @param {object} [context] - Context
  * @property {boolean} send - SEND school
  * @property {string} urn - URN
+ * @property {string} site - Site code
  * @property {import('../enums.js').SchoolPhase} [phase] - Phase
  * @property {Array<number>} [yearGroups] - Year groups
  */
@@ -26,7 +26,8 @@ export class School extends Location {
     super(options, context)
 
     this.send = stringToBoolean(options?.send) || false
-    this.urn = (options.urn && String(options.urn)) || faker.string.numeric(6)
+    this.urn = options.urn && String(options.urn)
+    this.site = options?.site
     this.phase = options?.phase
     this.yearGroups = options?.yearGroups || []
   }
@@ -37,9 +38,9 @@ export class School extends Location {
    * @returns {Array<Patient>} Patient records
    */
   get patients() {
-    if (this.context?.patients && this.urn) {
+    if (this.context?.patients && this.id) {
       return Object.values(this.context?.patients)
-        .filter(({ school_urn }) => school_urn === this.urn)
+        .filter(({ school_id }) => school_id === this.id)
         .map((patient) => new Patient(patient, this.context))
     }
 
@@ -63,7 +64,7 @@ export class School extends Location {
   get sessions() {
     if (this.context) {
       return Session.findAll(this.context)
-        .filter((session) => session.school_urn === this.urn)
+        .filter((session) => session.school_id === this.id)
         .sort((a, b) => getDateValueDifference(a.date, b.date))
     }
   }
@@ -114,6 +115,8 @@ export class School extends Location {
       nextSessionDate: formatDate(this.nextSessionDate, { dateStyle: 'full' }),
       patients: filters.plural(this.patients.length, 'child'),
       yearGroups: formatYearGroups(this.yearGroups),
+      id: formatMonospace(this.id),
+      site: formatMonospace(this.site),
       urn: formatMonospace(this.urn)
     }
   }
@@ -144,7 +147,7 @@ export class School extends Location {
    * @returns {string} URI
    */
   get uri() {
-    return `/schools/${this.urn}`
+    return `/schools/${this.id}`
   }
 
   /**
@@ -163,14 +166,14 @@ export class School extends Location {
   /**
    * Find one
    *
-   * @param {string} urn - URN
+   * @param {string} id - School ID
    * @param {object} context - Context
    * @returns {School|undefined} School
    * @static
    */
-  static findOne(urn, context) {
-    if (context?.schools?.[urn]) {
-      return new School(context.schools[urn], context)
+  static findOne(id, context) {
+    if (context?.schools?.[id]) {
+      return new School(context.schools[id], context)
     }
   }
 
@@ -187,12 +190,12 @@ export class School extends Location {
 
     // Add to team
     if (context.teams) {
-      context.teams[createdSchool.team_id].school_urns.push(createdSchool.urn)
+      context.teams[createdSchool.team_id].school_ids.push(createdSchool.id)
     }
 
     // Update context
     context.schools = context.schools || {}
-    context.schools[createdSchool.urn] = createdSchool
+    context.schools[createdSchool.id] = createdSchool
 
     return createdSchool
   }
@@ -200,23 +203,23 @@ export class School extends Location {
   /**
    * Update
    *
-   * @param {string} urn - School URN
+   * @param {string} id - School ID
    * @param {object} updates - Updates
    * @param {object} context - Context
    * @returns {School} Updated school
    * @static
    */
-  static update(urn, updates, context) {
-    const updatedSchool = Object.assign(School.findOne(urn, context), updates)
+  static update(id, updates, context) {
+    const updatedSchool = Object.assign(School.findOne(id, context), updates)
 
     // Remove school context
     delete updatedSchool.context
 
-    // Delete original school (with previous URN)
-    delete context.schools[urn]
+    // Delete original school (with previous ID)
+    delete context.schools[id]
 
     // Update context
-    context.schools[updatedSchool.urn] = updatedSchool
+    context.schools[updatedSchool.id] = updatedSchool
 
     return updatedSchool
   }
@@ -224,18 +227,18 @@ export class School extends Location {
   /**
    * Delete
    *
-   * @param {string} urn - School URN
+   * @param {string} id - School ID
    * @param {object} context - Context
    * @static
    */
-  static delete(urn, context) {
-    const school = School.findOne(urn, context)
+  static delete(id, context) {
+    const school = School.findOne(id, context)
 
     // Remove from team
-    context.teams[school.team_id].school_urns = context.teams[
+    context.teams[school.team_id].school_ids = context.teams[
       school.team_id
-    ].school_urns.filter((item) => item !== urn)
+    ].school_ids.filter((item) => item !== id)
 
-    delete context.schools[urn]
+    delete context.schools[id]
   }
 }

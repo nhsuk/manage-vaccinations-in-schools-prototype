@@ -6,10 +6,10 @@ import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
 export const schoolController = {
-  read(request, response, next, school_urn) {
+  read(request, response, next, school_id) {
     const { data } = request.session
 
-    const school = School.findOne(school_urn, data)
+    const school = School.findOne(school_id, data)
     response.locals.school = school
 
     next()
@@ -75,13 +75,13 @@ export const schoolController = {
   },
 
   readPatients(request, response, next) {
-    const { school_urn } = request.params
+    const { school_id } = request.params
     const { option, programme_id, q, yearGroup } = request.query
     const { data } = request.session
     const { school } = response.locals
 
     const patients = Patient.findAll(data).filter(
-      (patient) => patient.school_urn === school_urn
+      (patient) => patient.school_id === school_id
     )
 
     // Sort
@@ -262,11 +262,11 @@ export const schoolController = {
   },
 
   edit(request, response) {
-    const { school_urn } = request.params
+    const { school_id } = request.params
     const { data } = request.session
 
     // Setup wizard if not already setup
-    let school = School.findOne(school_urn, data.wizard)
+    let school = School.findOne(school_id, data.wizard)
     if (!school) {
       school = School.create(response.locals.school, data.wizard)
     }
@@ -281,12 +281,12 @@ export const schoolController = {
 
   update(type) {
     return (request, response) => {
-      const { school_urn } = request.params
+      const { school_id } = request.params
       const { data } = request.session
       const { __, school } = response.locals
 
       // Update session data
-      School.update(school_urn, data.wizard.schools[school_urn], data)
+      School.update(school_id, data.wizard.schools[school_id], data)
 
       // Clean up session data
       delete data.session
@@ -300,11 +300,11 @@ export const schoolController = {
 
   readForm(type) {
     return (request, response, next) => {
-      const { school_urn } = request.params
+      const { school_id } = request.params
       const { data } = request.session
 
       // Setup wizard if not already setup
-      let school = School.findOne(school_urn, data.wizard)
+      let school = School.findOne(school_id, data.wizard)
       if (!school) {
         school = School.create(response.locals.school, data.wizard)
       }
@@ -331,11 +331,11 @@ export const schoolController = {
   },
 
   updateForm(request, response) {
-    const { school_urn } = request.params
+    const { school_id } = request.params
     const { data } = request.session
     const { school } = response.locals
 
-    School.update(school_urn, request.body.school, data.wizard)
+    School.update(school_id, request.body.school, data.wizard)
 
     response.redirect(`${school.uri}/edit`)
   },
@@ -347,13 +347,13 @@ export const schoolController = {
   },
 
   delete(request, response) {
-    const { school_urn } = request.params
+    const { school_id } = request.params
     const { data } = request.session
     const { __, school } = response.locals
 
     const referrer = `${school.team.uri}/schools`
 
-    School.delete(school_urn, data)
+    School.delete(school_id, data)
 
     request.flash('success', __(`school.delete.success`))
 

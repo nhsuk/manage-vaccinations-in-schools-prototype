@@ -85,8 +85,8 @@ export default () => {
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((school) => ({
           text: school.name,
-          value: school.urn,
-          ...(value && { selected: value === school.urn }),
+          value: school.id,
+          ...(value && { selected: value === school.id }),
           ...(school.address && {
             attributes: {
               'data-hint': school.formatted.address

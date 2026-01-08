@@ -135,7 +135,7 @@ export const vaccinationController = {
         identifiedBy,
         location: session.formatted.location,
         programme_id: programme.id,
-        school_urn: session.school_urn,
+        school_id: session.school_id,
         patientSession_uuid: patientSession.uuid,
         vaccine_snomed: vaccine.snomed,
         createdAt: today(),

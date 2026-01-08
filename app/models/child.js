@@ -37,7 +37,7 @@ import { formatYearGroup } from '../utils/string.js'
  * @property {object} [address] - Address
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} [registrationGroup] - Registration group
- * @property {string} [school_urn] - School
+ * @property {string} [school_id] - School
  */
 export class Child {
   constructor(options, context) {
@@ -56,7 +56,7 @@ export class Child {
     this.address = options?.address
     this.gpSurgery = options?.gpSurgery
     this.registrationGroup = options?.registrationGroup
-    this.school_urn = options?.school_urn
+    this.school_id = options?.school_id
 
     if (this.ethnicGroup === EthnicGroup.Other) {
       this.ethnicGroupOther = options?.ethnicGroupOther
@@ -222,8 +222,8 @@ export class Child {
    * @returns {object|undefined} School
    */
   get school() {
-    if (this.school_urn) {
-      return schools[this.school_urn]
+    if (this.school_id) {
+      return schools[this.school_id]
     }
   }
 

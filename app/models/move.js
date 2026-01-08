@@ -175,7 +175,7 @@ export class Move {
   switch(uuid, context) {
     const move = Move.findOne(uuid, context)
 
-    context.patients[move.patient_uuid].school_urn = move.to_urn
+    context.patients[move.patient_uuid].school_id = move.to_urn
 
     Move.delete(uuid, context)
   }

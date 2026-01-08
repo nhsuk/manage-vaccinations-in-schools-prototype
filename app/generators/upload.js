@@ -80,7 +80,7 @@ export function generateUpload(
     patient_uuids,
     ...(school && {
       yearGroups: school.yearGroups,
-      school_urn: school.urn
+      school_id: school.id
     })
   })
 }

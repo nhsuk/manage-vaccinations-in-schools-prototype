@@ -53,9 +53,9 @@ export const teamController = {
   },
 
   readSchool(request, response, next) {
-    const { school_urn } = request.params
+    const { school_id } = request.params
 
-    const school = School.findOne(school_urn, request.session.data)
+    const school = School.findOne(school_id, request.session.data)
     response.locals.school = school
 
     next()

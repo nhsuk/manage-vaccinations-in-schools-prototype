@@ -376,8 +376,8 @@ export class Patient extends Child {
       fullNameAndNhsn: formatWithSecondaryText(this.fullName, formattedNhsn),
       nhsn: formattedNhsn,
       newUrn:
-        this.pendingChanges?.school_urn &&
-        schools[this.pendingChanges.school_urn].name,
+        this.pendingChanges?.school_id &&
+        schools[this.pendingChanges.school_id].name,
       parent1: this.parent1 && formatParent(this.parent1),
       parent2: this.parent2 && formatParent(this.parent2),
       parents: formatList(formattedParents),

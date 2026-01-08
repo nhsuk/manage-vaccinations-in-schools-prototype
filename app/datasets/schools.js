@@ -1,15 +1,18 @@
 export default {
   '888888': {
+    id: '888888',
     urn: '888888',
     name: 'Unknown school',
     team_id: '001'
   },
   '999999': {
+    id: '999999',
     urn: '999999',
     name: 'Home-schooled',
     team_id: '001'
   },
   '135335': {
+    id: '135335',
     urn: '135335',
     name: 'Grace Academy Coventry',
     phase: 'Secondary',
@@ -21,6 +24,7 @@ export default {
     team_id: '001'
   },
   '137209': {
+    id: '137209',
     urn: '137209',
     name: 'West Coventry Academy',
     phase: 'Secondary',
@@ -32,6 +36,7 @@ export default {
     team_id: '001'
   },
   '137272': {
+    id: '137272',
     urn: '137272',
     name: 'Blue Coat Church of England School and Music College',
     phase: 'Secondary',
@@ -43,6 +48,7 @@ export default {
     team_id: '001'
   },
   '138023': {
+    id: '138023',
     urn: '138023',
     name: 'Coundon Court',
     phase: 'Secondary',
@@ -54,6 +60,7 @@ export default {
     team_id: '001'
   },
   '139292': {
+    id: '139292',
     urn: '139292',
     name: 'Caludon Castle School',
     phase: 'Secondary',
@@ -65,6 +72,7 @@ export default {
     team_id: '001'
   },
   '140248': {
+    id: '140248',
     urn: '140248',
     name: 'President Kennedy School Academy',
     phase: 'Secondary',
@@ -75,7 +83,34 @@ export default {
     postalCode: 'CV6 4GL',
     team_id: '001'
   },
+  '141104A': {
+    id: '141104A',
+    urn: '141104',
+    site: 'A',
+    name: 'Seva School - Primary',
+    phase: 'Primary',
+    yearGroups: [1, 2, 3, 4, 5, 6],
+    addressLine1: 'Eden Road',
+    addressLine2: 'Walsgrave Triangle',
+    addressLevel1: 'Coventry',
+    postalCode: 'CV2 2TB',
+    team_id: '001'
+  },
+  '141104B': {
+    id: '141104B',
+    urn: '141104',
+    site: 'B',
+    name: 'Seva School - Secondary',
+    phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11],
+    addressLine1: 'Eden Road',
+    addressLine2: 'Walsgrave Triangle',
+    addressLevel1: 'Coventry',
+    postalCode: 'CV2 2TB',
+    team_id: '001'
+  },
   '141992': {
+    id: '141992',
     urn: '141992',
     name: 'Cardinal Wiseman Catholic School',
     phase: 'Secondary',
@@ -87,6 +122,7 @@ export default {
     team_id: '001'
   },
   '142205': {
+    id: '142205',
     urn: '142205',
     name: 'Sacred Heart Catholic Primary School',
     phase: 'Primary',
@@ -98,6 +134,7 @@ export default {
     team_id: '001'
   },
   '142211': {
+    id: '142211',
     urn: '142211',
     name: 'St Gregory’s Catholic Primary School',
     phase: 'Primary',
@@ -109,6 +146,7 @@ export default {
     team_id: '001'
   },
   '142339': {
+    id: '142339',
     urn: '142339',
     name: 'Barr’s Hill School',
     phase: 'Secondary',
@@ -120,6 +158,7 @@ export default {
     team_id: '001'
   },
   '142700': {
+    id: '142700',
     urn: '142700',
     name: 'Finham Primary School',
     phase: 'Primary',
@@ -131,6 +170,7 @@ export default {
     team_id: '001'
   },
   '142960': {
+    id: '142960',
     urn: '142960',
     name: 'Lyng Hall School',
     phase: 'Secondary',
@@ -142,6 +182,7 @@ export default {
     team_id: '001'
   },
   '143779': {
+    id: '143779',
     urn: '143779',
     name: 'Parkgate Primary School',
     phase: 'Primary',
@@ -153,6 +194,7 @@ export default {
     team_id: '001'
   },
   '145179': {
+    id: '145179',
     urn: '145179',
     name: 'Stoke Park School',
     phase: 'Secondary',
@@ -164,6 +206,7 @@ export default {
     team_id: '001'
   },
   '147346': {
+    id: '147346',
     urn: '147346',
     name: 'Cardinal Newman Catholic School',
     phase: 'Secondary',
@@ -175,6 +218,7 @@ export default {
     team_id: '001'
   },
   '148429': {
+    id: '148429',
     urn: '148429',
     name: 'Meadow Park School',
     phase: 'Secondary',
