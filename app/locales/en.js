@@ -1397,6 +1397,15 @@ export const en = {
       confirm: 'Yes, %s this school',
       cancel: 'No, return to school'
     },
+    new: {
+      label: 'Add a new school',
+      'check-answers': {
+        confirm: 'Add school',
+        title: 'Check and confirm'
+      },
+      summary: 'School details',
+      success: '{{school.name}} created'
+    },
     edit: {
       label: 'Edit',
       title: 'Edit school',
@@ -1407,6 +1416,12 @@ export const en = {
     delete: {
       label: 'Delete',
       success: 'School deleted'
+    },
+    'confirm-school': {
+      title: 'Confirm school',
+      label: 'Is this the correct school?',
+      yes: 'Yes, I want to add this school',
+      no: 'No, I want to add a different school'
     },
     patients: {
       label: 'Children',
@@ -1446,7 +1461,8 @@ export const en = {
       label: 'URN'
     },
     urn: {
-      label: 'URN'
+      label: 'School URN',
+      title: 'Find a school to add to your team'
     },
     site: {
       label: 'Site code'
@@ -1853,10 +1869,7 @@ export const en = {
     },
     schools: {
       title: 'Schools',
-      summary: 'Schools',
-      new: {
-        title: 'Add a new school'
-      }
+      summary: 'Schools'
     },
     sessions: {
       title: 'Sessions',

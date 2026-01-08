@@ -1,0 +1,31 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("school.confirm-school.title") %}
+
+{% block form %}
+  {{ appHeading({
+    title: title
+  }) }}
+
+  {% call insetText({
+    html: schoolName,
+    classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4"
+  }) %}
+    <p>
+      <span class="nhsuk-heading-m nhsuk-u-margin-bottom-0">
+        {{- school.name -}}
+      </span>
+      {{ school.addressLine1 }},
+      {{ school.addressLevel1 }},
+      {{ school.postalCode }}
+    </p>
+  {% endcall %}
+
+  {{ radios({
+    fieldset: {
+      legend: { text: __("school.confirm-school.label") }
+    },
+    items: booleanItems,
+    decorate: "confirmSchool"
+  }) }}
+{% endblock %}

@@ -1,3 +1,4 @@
+import wizard from '@x-govuk/govuk-prototype-wizard'
 import _ from 'lodash'
 
 import { PatientStatus } from '../enums.js'
@@ -25,6 +26,15 @@ export const schoolController = {
     const view = request.params.view || 'show'
 
     response.render(`school/${view}`)
+  },
+
+  new(request, response) {
+    const { data } = request.session
+
+    // @ts-ignore
+    const school = School.create({ team_id: data.team?.id }, data.wizard)
+
+    response.redirect(`${school.uri}/new/urn`)
   },
 
   list(request, response) {
@@ -283,13 +293,17 @@ export const schoolController = {
     return (request, response) => {
       const { school_id } = request.params
       const { data } = request.session
-      const { __, school } = response.locals
+      const { __ } = response.locals
 
       // Update session data
-      School.update(school_id, data.wizard.schools[school_id], data)
+      const school = School.update(
+        school_id,
+        data.wizard.schools[school_id],
+        data
+      )
 
       // Clean up session data
-      delete data.session
+      delete data.school
       delete data.wizard
 
       request.flash('success', __(`school.${type}.success`, { school }))
@@ -301,7 +315,7 @@ export const schoolController = {
   readForm(type) {
     return (request, response, next) => {
       const { school_id } = request.params
-      const { data } = request.session
+      const { data, referrer } = request.session
 
       // Setup wizard if not already setup
       let school = School.findOne(school_id, data.wizard)
@@ -312,6 +326,26 @@ export const schoolController = {
       response.locals.school = new School(school, data)
 
       response.locals.type = type
+
+      const journey = {
+        [`/`]: {},
+        [`/${school_id}/${type}/urn`]: {},
+        [`/${school_id}/${type}/confirm-school`]: {},
+        [`/${school_id}/${type}/phase`]: {},
+        [`/${school_id}/${type}/send`]: {},
+        [`/${school_id}/${type}/year-groups`]: {},
+        [`/${school_id}/${type}/check-answers`]: {},
+        [`/${school_id}`]: {}
+      }
+
+      response.locals.paths = {
+        ...wizard(journey, request),
+        ...(type === 'edit' && {
+          back: `${school.uri}/edit`,
+          next: `${school.uri}/edit`
+        }),
+        ...(referrer && { back: referrer })
+      }
 
       response.locals.yearGroupItems = [...Array(14).keys()].map(
         (yearGroup) => ({
@@ -331,13 +365,26 @@ export const schoolController = {
   },
 
   updateForm(request, response) {
-    const { school_id } = request.params
+    const { school_id, view } = request.params
     const { data } = request.session
-    const { school } = response.locals
+    const { paths } = response.locals
+
+    if (view === 'urn') {
+      request.body.school = {
+        urn: request.body.school.urn || '131442',
+        name: 'Southfields Primary School',
+        addressLine1: 'East Street',
+        addressLevel1: 'Coventry',
+        postalCode: 'CV1 5LS',
+        phase: 'Primary',
+        send: false,
+        yearGroups: [0, 1, 2, 3, 4, 5, 6]
+      }
+    }
 
     School.update(school_id, request.body.school, data.wizard)
 
-    response.redirect(`${school.uri}/edit`)
+    response.redirect(paths.next)
   },
 
   action(type) {

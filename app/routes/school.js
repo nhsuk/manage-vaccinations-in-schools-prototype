@@ -7,7 +7,14 @@ const router = express.Router({ strict: true })
 router.get('/', school.readAll, school.list)
 router.post('/', school.filterList)
 
+router.get('/new', school.new)
+
 router.param('school_id', school.read)
+
+router.all('/:school_id/new/:view', school.readForm('new'))
+router.get('/:school_id/new/:view', school.showForm)
+router.post('/:school_id/new/check-answers', school.update('new'))
+router.post('/:school_id/new/:view', school.updateForm)
 
 router.get('/:school_id/edit', school.edit)
 router.post('/:school_id/edit', school.update('edit'))
