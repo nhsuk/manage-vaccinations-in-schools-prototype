@@ -33,7 +33,7 @@
     "i18n": "^0.15.1",
     "json-as-xlsx": "^2.5.6",
     "lodash": "^4.17.21",
-    "nhsuk-prototype-rig": "^0.7.0",
+    "nhsuk-prototype-rig": "^0.8.0",
     "response-time": "^2.3.3"
   },
   "devDependencies": {
