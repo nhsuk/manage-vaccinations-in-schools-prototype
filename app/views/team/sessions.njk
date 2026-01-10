@@ -18,33 +18,33 @@
     </div>
 
     <div class="nhsuk-grid-column-three-quarters">
-      {{ card({
-        heading: __("team.sessions.defaults"),
-        headingClasses: "nhsuk-heading-m",
-        descriptionHtml: summaryList({
-          rows: summaryRows(team, {
-            sessionOpenWeeks: {
-              href: team.uri + "/edit/sessions"
-            },
-            sessionReminderWeeks: {
-              href: team.uri + "/edit/sessions"
-            },
-            sessionRegistration: {
-              href: team.uri + "/edit/sessions"
-            }
-          })
+      {{ summaryList({
+        card: {
+          heading: __("team.sessions.defaults"),
+          headingSize: "m"
+        },
+        rows: summaryRows(team, {
+          sessionOpenWeeks: {
+            href: team.uri + "/edit/sessions"
+          },
+          sessionReminderWeeks: {
+            href: team.uri + "/edit/sessions"
+          },
+          sessionRegistration: {
+            href: team.uri + "/edit/sessions"
+          }
         })
       }) }}
 
-      {{ card({
-        heading: __("team.sessions.password"),
-        headingClasses: "nhsuk-heading-m",
-        descriptionHtml: summaryList({
-          rows: summaryRows(team, {
-            password: {
-              href: team.uri + "/edit/password"
-            }
-          })
+      {{ summaryList({
+        card: {
+          heading: __("team.sessions.password"),
+          headingSize: "m"
+        },
+        rows: summaryRows(team, {
+          password: {
+            href: team.uri + "/edit/password"
+          }
         })
       }) }}
     <div>

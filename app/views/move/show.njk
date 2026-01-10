@@ -29,7 +29,7 @@
       {% call card({
         feature: true,
         heading: move.source,
-        headingClasses: "nhsuk-heading-m"
+        headingSize: "m"
       }) %}
         {{ appStatus({
           text: __("move.team_id.description", { move: move }),
@@ -52,19 +52,19 @@
       {% endcall %}
     </div>
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
-      {{ card({
-        feature: true,
-        heading: __("patient.label"),
-        headingClasses: "nhsuk-heading-m",
-        descriptionHtml: summaryList({
-          rows: summaryRows(move.patient, {
-            nhsn: {},
-            fullName: {},
-            dob: {},
-            gender: {},
-            postalCode: {},
-            school: {}
-          })
+      {{ summaryList({
+        card: {
+          feature: true,
+          heading: __("patient.label"),
+          headingSize: "m"
+        },
+        rows: summaryRows(move.patient, {
+          nhsn: {},
+          fullName: {},
+          dob: {},
+          gender: {},
+          postalCode: {},
+          school: {}
         })
       }) }}
     </div>

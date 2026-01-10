@@ -46,6 +46,7 @@
         }) }}
       {% endcall %}
     </div>
+
     <div class="nhsuk-grid-column-two-thirds">
       {{ appPatientSearch({
         hideProgrammeStatuses: true,
@@ -72,25 +73,25 @@
         }) }}
 
         {% for patient in results.page %}
-          {{ card({
-            classes: "app-card--compact",
-            heading: patient.fullName | highlightQuery(data.q),
-            headingLevel: 4,
-            clickable: true,
-            href: consentPath + "/link?patient_uuid=" + patient.uuid,
-            descriptionHtml: summaryList({
-              rows: summaryRows(patient, {
-                dob: {},
-                postalCode: {
-                  value: patient.postalCode | highlightQuery(data.q)
-                },
-                school: {
-                  value: patient.school.name | highlightQuery(data.q)
-                },
-                parents: {
-                  value: patient.formatted.parents | highlightQuery(data.q)
-                }
-              })
+          {{ summaryList({
+            card: {
+              classes: "app-card--compact",
+              heading: patient.fullName | highlightQuery(data.q),
+              headingLevel: 4,
+              clickable: true,
+              href: consentPath + "/link?patient_uuid=" + patient.uuid
+            },
+            rows: summaryRows(patient, {
+              dob: {},
+              postalCode: {
+                value: patient.postalCode | highlightQuery(data.q)
+              },
+              school: {
+                value: patient.school.name | highlightQuery(data.q)
+              },
+              parents: {
+                value: patient.formatted.parents | highlightQuery(data.q)
+              }
             })
           }) }}
         {% endfor %}

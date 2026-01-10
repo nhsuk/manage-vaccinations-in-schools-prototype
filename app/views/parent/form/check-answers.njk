@@ -15,212 +15,212 @@
   }) }}
 
   {% if consent.decision == ReplyDecision.OnlyMenACWY %}
-    {{ card({
-      heading: "Consent for the MenACWY vaccination",
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(consent, {
-          decision: {
-            value: ReplyDecision.Given,
-            href: editPath("decision")
-          }
-        })
+    {{ summaryList({
+      card: {
+        heading: "Consent for the MenACWY vaccination",
+        headingSize: "m"
+      },
+      rows: summaryRows(consent, {
+        decision: {
+          value: ReplyDecision.Given,
+          href: editPath("decision")
+        }
       })
     }) }}
 
-    {{ card({
-      heading: "Consent for the Td/IPV vaccination",
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(consent, {
-          decision: {
-            value: ReplyDecision.Refused,
-            href: editPath("decision")
-          },
-          refusalReason: {
-            href: editPath("refusal-reason")
-          },
-          refusalReasonDetails: {
-            href: editPath("refusal-reason-details")
-          }
-        })
+    {{ summaryList({
+      card: {
+        heading: "Consent for the Td/IPV vaccination",
+        headingSize: "m"
+      },
+      rows: summaryRows(consent, {
+        decision: {
+          value: ReplyDecision.Refused,
+          href: editPath("decision")
+        },
+        refusalReason: {
+          href: editPath("refusal-reason")
+        },
+        refusalReasonDetails: {
+          href: editPath("refusal-reason-details")
+        }
       })
     }) }}
   {% elif consent.decision == ReplyDecision.OnlyTdIPV %}
-    {{ card({
-      heading: "Consent for the MenACWY vaccination",
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(consent, {
-          decision: {
-            value: ReplyDecision.Refused,
-            href: editPath("decision")
-          },
-          refusalReason: {
-            href: editPath("refusal-reason")
-          },
-          refusalReasonDetails: {
-            href: editPath("refusal-reason-details")
-          }
-        })
+    {{ summaryList({
+      card: {
+        heading: "Consent for the MenACWY vaccination",
+        headingSize: "m"
+      },
+      rows: summaryRows(consent, {
+        decision: {
+          value: ReplyDecision.Refused,
+          href: editPath("decision")
+        },
+        refusalReason: {
+          href: editPath("refusal-reason")
+        },
+        refusalReasonDetails: {
+          href: editPath("refusal-reason-details")
+        }
       })
     }) }}
 
-    {{ card({
-      heading: "Consent for the Td/IPV vaccination",
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(consent, {
-          decision: {
-            value: ReplyDecision.Given,
-            href: editPath("decision")
-          }
-        })
+    {{ summaryList({
+      card: {
+        heading: "Consent for the Td/IPV vaccination",
+        headingSize: "m"
+      },
+      rows: summaryRows(consent, {
+        decision: {
+          value: ReplyDecision.Given,
+          href: editPath("decision")
+        }
       })
     }) }}
   {% else %}
-    {{ card({
-      heading: __("consent.decision.summary", { session: session }) | safe,
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(consent, {
-          decision: {
-            href: editPath("decision")
-          },
-          alternative: {
-            label: __("consent.alternative." + programme_id + ".label"),
-            href: editPath("alternative")
-          } if session.offersAlternativeVaccine,
-          refusalReason: {
-            href: editPath("refusal-reason")
-          },
-          refusalReasonDetails: {
-            href: editPath("refusal-reason-details")
-          },
-          consultation: {
-            href: editPath("consultation")
-          }
-        })
+    {{ summaryList({
+      card: {
+        heading: __("consent.decision.summary", { session: session }) | safe,
+        headingSize: "m"
+      },
+      rows: summaryRows(consent, {
+        decision: {
+          href: editPath("decision")
+        },
+        alternative: {
+          label: __("consent.alternative." + programme_id + ".label"),
+          href: editPath("alternative")
+        } if session.offersAlternativeVaccine,
+        refusalReason: {
+          href: editPath("refusal-reason")
+        },
+        refusalReasonDetails: {
+          href: editPath("refusal-reason-details")
+        },
+        consultation: {
+          href: editPath("consultation")
+        }
       })
     }) }}
   {% endif %}
 
-  {{ card({
-    heading: __("consent.child.summary"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(consent.child, {
-        fullName: {
-          href: editPath("child")
-        },
-        preferredName: {
-          href: editPath("child")
-        },
-        dob: {
-          href: editPath("dob")
-        },
-        ethnicity: {
-          href: editPath("ethnic-group")
-        },
-        address: {
-          href: editPath("address")
-        } if consent.given,
-        school: {
-          value: consent.child.formatted.school or session.location.name,
-          href: editPath("school")
-        } if session.type === SessionType.School
-      })
+  {{ summaryList({
+    card: {
+      heading: __("consent.child.summary"),
+      headingSize: "m"
+    },
+    rows: summaryRows(consent.child, {
+      fullName: {
+        href: editPath("child")
+      },
+      preferredName: {
+        href: editPath("child")
+      },
+      dob: {
+        href: editPath("dob")
+      },
+      ethnicity: {
+        href: editPath("ethnic-group")
+      },
+      address: {
+        href: editPath("address")
+      } if consent.given,
+      school: {
+        value: consent.child.formatted.school or session.location.name,
+        href: editPath("school")
+      } if session.type === SessionType.School
     })
   }) }}
 
-  {{ card({
-    heading: __("consent.parent.summary"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(consent.parent, {
-        fullName: {
-          href: editPath("parent")
-        },
-        relationship: {
-          href: editPath("parent")
-        },
-        hasParentalResponsibility: {
-          href: editPath("parent")
-        },
-        email: {
-          href: editPath("parent")
-        },
-        tel: {
-          href: editPath("parent")
-        },
-        sms: {
-          href: editPath("parent")
-        },
-        contactPreference: {
-          href: editPath("contact-preference")
-        }
-      })
+  {{ summaryList({
+    card: {
+      heading: __("consent.parent.summary"),
+      headingSize: "m"
+    },
+    rows: summaryRows(consent.parent, {
+      fullName: {
+        href: editPath("parent")
+      },
+      relationship: {
+        href: editPath("parent")
+      },
+      hasParentalResponsibility: {
+        href: editPath("parent")
+      },
+      email: {
+        href: editPath("parent")
+      },
+      tel: {
+        href: editPath("parent")
+      },
+      sms: {
+        href: editPath("parent")
+      },
+      contactPreference: {
+        href: editPath("contact-preference")
+      }
     })
   }) }}
 
-  {{ card({
-    heading: __("consent.healthAnswers.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      classes: "app-summary-list--full-width",
-      rows: healthAnswerRows(
-        consent.healthAnswers,
-        editPath("health-question-{{key}}"),
-        true
-      )
-    })
+  {{ summaryList({
+    classes: "app-summary-list--full-width",
+    card: {
+      heading: __("consent.healthAnswers.label"),
+      headingSize: "m"
+    },
+    rows: healthAnswerRows(
+      consent.healthAnswers,
+      editPath("health-question-{{key}}"),
+      true
+    )
   }) if consent.given }}
 
-  {{ card({
-    heading: __("consent.firstDose.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(consent, {
-        createdAt: {
-          label: __("consent.previousDose.createdAt.label"),
-          value: consent.firstDose.formatted.createdAt,
-          href: editPath("first-dose")
-        },
-        location: {
-          label: __("consent.previousDose.location.label"),
-          value: consent.firstDose.location,
-          href: editPath("first-dose")
-        },
-        country: {
-          label: __("consent.previousDose.country.label"),
-          value: consent.firstDose.formatted.country,
-          href: editPath("first-dose")
-        }
-      })
+  {{ summaryList({
+    card: {
+      heading: __("consent.firstDose.label"),
+      headingSize: "m"
+    },
+    rows: summaryRows(consent, {
+      createdAt: {
+        label: __("consent.previousDose.createdAt.label"),
+        value: consent.firstDose.formatted.createdAt,
+        href: editPath("first-dose")
+      },
+      location: {
+        label: __("consent.previousDose.location.label"),
+        value: consent.firstDose.location,
+        href: editPath("first-dose")
+      },
+      country: {
+        label: __("consent.previousDose.country.label"),
+        value: consent.firstDose.formatted.country,
+        href: editPath("first-dose")
+      }
     })
   }) if consent.decision == ReplyDecision.AlreadyVaccinated }}
 
-  {{ card({
-    heading: __("consent.secondDose.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(consent, {
-        createdAt: {
-          label: __("consent.previousDose.createdAt.label"),
-          value: consent.secondDose.formatted.createdAt,
-          href: editPath("second-dose")
-        },
-        location: {
-          label: __("consent.previousDose.location.label"),
-          value: consent.secondDose.location,
-          href: editPath("second-dose")
-        },
-        country: {
-          label: __("consent.previousDose.country.label"),
-          value: consent.secondDose.formatted.country,
-          href: editPath("second-dose")
-        }
-      })
+  {{ summaryList({
+    card: {
+      heading: __("consent.secondDose.label"),
+      headingSize: "m"
+    },
+    rows: summaryRows(consent, {
+      createdAt: {
+        label: __("consent.previousDose.createdAt.label"),
+        value: consent.secondDose.formatted.createdAt,
+        href: editPath("second-dose")
+      },
+      location: {
+        label: __("consent.previousDose.location.label"),
+        value: consent.secondDose.location,
+        href: editPath("second-dose")
+      },
+      country: {
+        label: __("consent.previousDose.country.label"),
+        value: consent.secondDose.formatted.country,
+        href: editPath("second-dose")
+      }
     })
   }) if consent.decision == ReplyDecision.AlreadyVaccinated }}
 {% endblock %}

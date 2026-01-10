@@ -46,9 +46,11 @@
 
     {{ table({
       id: "notices",
-      heading: __mf("notice.count", { count: notices.length }),
-      panel: true,
       responsive: true,
+      card: {
+        feature: true,
+        heading: __mf("notice.count", { count: notices.length })
+      },
       head: [
         { text: __("patient.label") },
         { text: __("notice.createdAt.label") },

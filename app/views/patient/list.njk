@@ -56,28 +56,28 @@
             {% endif %}
           {%- endset %}
 
-          {{ card({
-            classes: "app-card--compact",
-            heading: patient.fullAndPreferredNames | highlightQuery(data.q),
-            headingClasses: "nhsuk-heading-s",
-            headingLevel: 4,
-            href: patient.uri,
-            clickable: true,
-            descriptionHtml: summaryList({
-              rows: summaryRows(patient, {
-                nhsn: {
-                  value: patient.formatted.nhsn | highlightQuery(data.q)
-                },
-                dob: {},
-                school: {
-                  value: patient.school.name | highlightQuery(data.q)
-                },
-                yearGroup: {},
-                report: {
-                  label: __("patientSession.report.label"),
-                  value: reportStatusHtml
-                }
-              })
+          {{ summaryList({
+            card: {
+              classes: "app-card--compact",
+              heading: patient.fullAndPreferredNames | highlightQuery(data.q),
+              headingSize: "s",
+              headingLevel: 4,
+              href: patient.uri,
+              clickable: true
+            },
+            rows: summaryRows(patient, {
+              nhsn: {
+                value: patient.formatted.nhsn | highlightQuery(data.q)
+              },
+              dob: {},
+              school: {
+                value: patient.school.name | highlightQuery(data.q)
+              },
+              yearGroup: {},
+              report: {
+                label: __("patientSession.report.label"),
+                value: reportStatusHtml
+              }
             })
           }) }}
         {% endfor %}

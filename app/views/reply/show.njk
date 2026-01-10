@@ -48,72 +48,72 @@
       ]
     }) }}
 
-    {{ card({
-      heading: __("reply.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(reply, {
-          programme: {},
-          createdAt: {},
-          method: {},
-          decisionStatus: {},
-          vaccineCriteria: {},
-          refusalReason: {},
-          refusalReasonDetails: {},
-          note: {
-            href: reply.uri + "/edit/note"
-          }
-        })
+    {{ summaryList({
+      card: {
+        heading: __("reply.label"),
+        headingSize: "m"
+      },
+      rows: summaryRows(reply, {
+        programme: {},
+        createdAt: {},
+        method: {},
+        decisionStatus: {},
+        vaccineCriteria: {},
+        refusalReason: {},
+        refusalReasonDetails: {},
+        note: {
+          href: reply.uri + "/edit/note"
+        }
       })
     }) }}
 
-    {{ card({
-      heading: __("parent.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(reply.parent, {
-          fullName: {
-            href: reply.uri + "/edit/parent"
-          },
-          relationship: {
-            href: reply.uri + "/edit/parent"
-          },
-          hasParentalResponsibility: {},
-          email: {
-            href: reply.uri + "/edit/parent"
-          },
-          tel: {
-            href: reply.uri + "/edit/parent"
-          },
-          sms: {},
-          contactPreference: {}
-        })
+    {{ summaryList({
+      card: {
+        heading: __("parent.label"),
+        headingSize: "m"
+      },
+      rows: summaryRows(reply.parent, {
+        fullName: {
+          href: reply.uri + "/edit/parent"
+        },
+        relationship: {
+          href: reply.uri + "/edit/parent"
+        },
+        hasParentalResponsibility: {},
+        email: {
+          href: reply.uri + "/edit/parent"
+        },
+        tel: {
+          href: reply.uri + "/edit/parent"
+        },
+        sms: {},
+        contactPreference: {}
       })
     }) if reply.parent }}
 
-    {{ card({
-      heading: __("child.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(reply.child, {
-          fullName: {},
-          preferredFirstName: {},
-          preferredLastName: {},
-          dob: {},
-          address: {},
-          gpSurgery: {},
-          school: {}
-        })
+    {{ summaryList({
+      card: {
+        heading: __("child.label"),
+        headingSize: "m"
+      },
+      rows: summaryRows(reply.child, {
+        fullName: {},
+        preferredFirstName: {},
+        preferredLastName: {},
+        dob: {},
+        address: {},
+        gpSurgery: {},
+        school: {}
       })
     }) if reply.child }}
 
-    {{ card({
-      heading: __("reply.healthAnswers.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        classes: "app-summary-list--full-width",
-        rows: healthAnswerRows(reply.healthAnswers)
-      })
+    {{ summaryList({
+      classes: "app-summary-list--full-width",
+      card: {
+        heading: __("reply.healthAnswers.label"),
+        headingSize: "m"
+      },
+      rows: healthAnswerRows(reply.healthAnswers)
     }) if reply.healthAnswers }}
   </div>
 {% endblock %}

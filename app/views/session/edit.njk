@@ -12,45 +12,45 @@
     title: title
   }) }}
 
-  {{ card({
-    heading: __("session.summary"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(session, {
-        type: {
-          href: session.uri + "/edit/type" if session.consentWindow == ConsentWindow.Opening
-        },
-        clinic: {
-          href: session.uri + "/edit/clinic"
-        },
-        school: {
-          href: session.uri + "/edit/school" if session.consentWindow == ConsentWindow.Opening
-        },
-        programmes: {
-          href: session.uri + "/edit/programmes" if session.consentWindow == ConsentWindow.Opening
-        },
-        yearGroups: {
-          href: session.uri + "/edit/year-groups" if session.consentWindow == ConsentWindow.Opening
-        },
-        dates: {
-          href: session.uri + "/edit/dates"
-        },
-        openAt: {
-          href: session.uri + "/edit/open-at"
-        },
-        reminderWeeks: {
-          href: session.uri + "/edit/reminders"
-        },
-        registration: {
-          href: session.uri + "/edit/registration"
-        },
-        psdProtocol: {
-          href: session.uri + "/edit/delegation"
-        },
-        nationalProtocol: {
-          href: session.uri + "/edit/delegation"
-        }
-      })
+  {{ summaryList({
+    card: {
+      heading: __("session.summary"),
+      headingSize: "m"
+    },
+    rows: summaryRows(session, {
+      type: {
+        href: session.uri + "/edit/type" if session.consentWindow == ConsentWindow.Opening
+      },
+      clinic: {
+        href: session.uri + "/edit/clinic"
+      },
+      school: {
+        href: session.uri + "/edit/school" if session.consentWindow == ConsentWindow.Opening
+      },
+      programmes: {
+        href: session.uri + "/edit/programmes" if session.consentWindow == ConsentWindow.Opening
+      },
+      yearGroups: {
+        href: session.uri + "/edit/year-groups" if session.consentWindow == ConsentWindow.Opening
+      },
+      dates: {
+        href: session.uri + "/edit/dates"
+      },
+      openAt: {
+        href: session.uri + "/edit/open-at"
+      },
+      reminderWeeks: {
+        href: session.uri + "/edit/reminders"
+      },
+      registration: {
+        href: session.uri + "/edit/registration"
+      },
+      psdProtocol: {
+        href: session.uri + "/edit/delegation"
+      },
+      nationalProtocol: {
+        href: session.uri + "/edit/delegation"
+      }
     })
   }) }}
 {% endblock %}

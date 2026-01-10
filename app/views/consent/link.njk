@@ -15,48 +15,48 @@
 
   <div class="nhsuk-grid-row nhsuk-card-group">
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
-      {{ card({
-        feature: true,
-        heading: __("consent.label"),
-        headingClasses: "nhsuk-heading-m",
-        descriptionHtml: summaryList({
-          rows: summaryRows(consent.child, {
-            fullName: {
-              value: consent.child.fullName | highlightDifference(patient.fullName)
-            },
-            dob: {
-              value: consent.child.formatted.dob | highlightDifference(patient.formatted.dob)
-            },
-            address: {
-              value: consent.child.formatted.address | highlightDifference(patient.formatted.address)
-            },
-            school: {
-              value: consent.child.formatted.school | highlightDifference(patient.formatted.school)
-            },
-            gpSurgery: {
-              value: consent.child.formatted.gpSurgery | highlightDifference(patient.formatted.gpSurgery)
-            },
-            parent: {
-              value: parent(consent.parent)
-            }
-          })
+      {{ summaryList({
+        card: {
+          feature: true,
+          heading: __("consent.label"),
+          headingSize: "m"
+        },
+        rows: summaryRows(consent.child, {
+          fullName: {
+            value: consent.child.fullName | highlightDifference(patient.fullName)
+          },
+          dob: {
+            value: consent.child.formatted.dob | highlightDifference(patient.formatted.dob)
+          },
+          address: {
+            value: consent.child.formatted.address | highlightDifference(patient.formatted.address)
+          },
+          school: {
+            value: consent.child.formatted.school | highlightDifference(patient.formatted.school)
+          },
+          gpSurgery: {
+            value: consent.child.formatted.gpSurgery | highlightDifference(patient.formatted.gpSurgery)
+          },
+          parent: {
+            value: parent(consent.parent)
+          }
         })
       }) }}
     </div>
     <div class="nhsuk-grid-column-one-half nhsuk-card-group__item">
-      {{ card({
-        feature: true,
-        heading: __("patient.label"),
-        headingClasses: "nhsuk-heading-m",
-        descriptionHtml: summaryList({
-          rows: summaryRows(patient, {
-            fullName: {},
-            dob: {},
-            address: {},
-            school: {},
-            gpSurgery: {},
-            parents: {}
-          })
+      {{ summaryList({
+        card: {
+          feature: true,
+          heading: __("patient.label"),
+          headingSize: "m"
+        },
+        rows: summaryRows(patient, {
+          fullName: {},
+          dob: {},
+          address: {},
+          school: {},
+          gpSurgery: {},
+          parents: {}
         })
       }) }}
     </div>

@@ -91,22 +91,21 @@
   })
 }) }}
 
-{{ card({
-  heading: __mf("upload.show.partial.count." + upload.status, {
-    count: patientRows.length
-  }),
-  headingClasses: "nhsuk-heading-s",
-  headingLevel: 3,
-  descriptionHtml: table({
-    tableClasses: "app-table--review",
-    id: "partial",
-    headingLevel: 2,
-    responsive: true,
-    head: [
-      { text: __("patient.fullNameAndNhsn.label") },
-      { html: appChange("Existing record", "Uploaded record") },
-      { html: __("upload.show.partial.decision.label") }
-    ],
-    rows: patientRows
-  })
+{{ table({
+  classes: "app-table--review",
+  id: "partial",
+  responsive: true,
+  card: {
+    heading: __mf("upload.show.partial.count." + upload.status, {
+      count: patientRows.length
+    }),
+    headingLevel: 3,
+    headingSize: "s"
+  },
+  head: [
+    { text: __("patient.fullNameAndNhsn.label") },
+    { html: appChange("Existing record", "Uploaded record") },
+    { html: __("upload.show.partial.decision.label") }
+  ],
+  rows: patientRows
 }) }}

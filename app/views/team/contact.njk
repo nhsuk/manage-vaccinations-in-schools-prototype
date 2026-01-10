@@ -18,21 +18,21 @@
     </div>
 
     <div class="nhsuk-grid-column-three-quarters">
-      {{ card({
-        heading: __("team.contact.summary"),
-        headingClasses: "nhsuk-heading-m",
-        descriptionHtml: summaryList({
-          rows: summaryRows(team, {
-            email: {
-              href: team.uri + "/edit/contact"
-            },
-            tel: {
-              href: team.uri + "/edit/contact"
-            },
-            privacyPolicyUrl: {
-              href: team.uri + "/edit/contact"
-            }
-          })
+      {{ summaryList({
+        card: {
+          heading: __("team.contact.summary"),
+          headingSize: "m"
+        },
+        rows: summaryRows(team, {
+          email: {
+            href: team.uri + "/edit/contact"
+          },
+          tel: {
+            href: team.uri + "/edit/contact"
+          },
+          privacyPolicyUrl: {
+            href: team.uri + "/edit/contact"
+          }
         })
       }) }}
     <div>

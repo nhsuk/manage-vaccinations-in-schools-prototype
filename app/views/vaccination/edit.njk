@@ -11,53 +11,53 @@
     title: title
   }) }}
 
-  {{ card({
-    heading: __("vaccination.edit.summary"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(vaccination, {
-        programme: {},
-        outcome: {
-          href: "edit/outcome"
-        },
-        vaccine_snomed: {
-          href: "edit/vaccine" if programme.alternativeVaccine
-        },
-        method: {
-          href: "edit/method" if vaccination.method != VaccinationMethod.Intranasal
-        },
-        site: {
-          href: "edit/site" if vaccination.method != VaccinationMethod.Intranasal
-        },
-        dose: {
-          href: "edit/dose"
-        },
-        sequence: {
-          href: "edit/sequence"
-        },
-        batch: {
-          href: "edit/batch"
-        },
-        identifiedBy: {
-          href: "edit/identified-by"
-        },
-        suppliedBy: {
-          href: "edit/supplied-by"
-        },
-        createdBy: {
-          href: "edit/created-by"
-        },
-        createdAt: {
-          href: "edit/created-at"
-        },
-        location: {
-          href: "edit/location"
-        },
-        protocol: {},
-        note: {
-          href: "edit/note"
-        }
-      })
+  {{ summaryList({
+    card: {
+      heading: __("vaccination.edit.summary"),
+      headingSize: "m"
+    },
+    rows: summaryRows(vaccination, {
+      programme: {},
+      outcome: {
+        href: "edit/outcome"
+      },
+      vaccine_snomed: {
+        href: "edit/vaccine" if programme.alternativeVaccine
+      },
+      method: {
+        href: "edit/method" if vaccination.method != VaccinationMethod.Intranasal
+      },
+      site: {
+        href: "edit/site" if vaccination.method != VaccinationMethod.Intranasal
+      },
+      dose: {
+        href: "edit/dose"
+      },
+      sequence: {
+        href: "edit/sequence"
+      },
+      batch: {
+        href: "edit/batch"
+      },
+      identifiedBy: {
+        href: "edit/identified-by"
+      },
+      suppliedBy: {
+        href: "edit/supplied-by"
+      },
+      createdBy: {
+        href: "edit/created-by"
+      },
+      createdAt: {
+        href: "edit/created-at"
+      },
+      location: {
+        href: "edit/location"
+      },
+      protocol: {},
+      note: {
+        href: "edit/note"
+      }
     })
   }) }}
 {% endblock %}

@@ -23,59 +23,59 @@
       }]
     }) }}
 
-    {{ card({
-      heading: __("consent.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(consent, {
-          programme: {},
-          createdAt: {},
-          decisionStatus: {},
-          refusalReason: {},
-          refusalReasonDetails: {}
-        })
+    {{ summaryList({
+      card: {
+        heading: __("consent.label"),
+        headingSize: "m"
+      },
+      rows: summaryRows(consent, {
+        programme: {},
+        createdAt: {},
+        decisionStatus: {},
+        refusalReason: {},
+        refusalReasonDetails: {}
       })
     }) }}
 
-    {{ card({
-      heading: __("parent.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(consent.parent, {
-          fullName: {},
-          relationship: {},
-          hasParentalResponsibility: {},
-          email: {},
-          tel: {},
-          contactPreference: {},
-          sms: {}
-        })
+    {{ summaryList({
+      card: {
+        heading: __("parent.label"),
+        headingSize: "m"
+      },
+      rows: summaryRows(consent.parent, {
+        fullName: {},
+        relationship: {},
+        hasParentalResponsibility: {},
+        email: {},
+        tel: {},
+        contactPreference: {},
+        sms: {}
       })
     }) if consent.parent }}
 
-    {{ card({
-      heading: __("child.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(consent.child, {
-          fullName: {},
-          preferredFirstName: {},
-          preferredLastName: {},
-          dob: {},
-          address: {},
-          gpSurgery: {},
-          school: {}
-        })
+    {{ summaryList({
+      card: {
+        heading: __("child.label"),
+        headingSize: "m"
+      },
+      rows: summaryRows(consent.child, {
+        fullName: {},
+        preferredFirstName: {},
+        preferredLastName: {},
+        dob: {},
+        address: {},
+        gpSurgery: {},
+        school: {}
       })
     }) if consent.child }}
 
-    {{ card({
-      heading: __("consent.healthAnswers.label"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        classes: "app-summary-list--full-width",
-        rows: healthAnswerRows(consent.healthAnswers)
-      })
+    {{ summaryList({
+      classes: "app-summary-list--full-width",
+      card: {
+        heading: __("consent.healthAnswers.label"),
+        headingSize: "m"
+      },
+      rows: healthAnswerRows(consent.healthAnswers)
     }) if consent.healthAnswers }}
   </div>
 {% endblock %}

@@ -28,7 +28,19 @@
 
   {% call card({
     heading: recordTitle,
-    headingLevel: 3
+    headingLevel: 3,
+    actions: {
+      items: [
+        {
+          text: __("patient.edit.label"),
+          href: patient.uri + "/edit"
+        },
+        {
+          text: __("patient.archive.label"),
+          href: patient.uri + "/archive"
+        } if not patient.archived
+      ]
+    }
   }) %}
     {{ appStatus({
       text: patient.notice.name,
@@ -67,51 +79,38 @@
         parents: {}
       })
     }) }}
-
-    {{ appButtonGroup({
-      buttons: [{
-        classes: "nhsuk-button--secondary",
-        text: __("patient.edit.label"),
-        href: patient.uri + "/edit"
-      }, {
-        classes: "app-button--secondary-warning",
-        text: __("patient.archive.label"),
-        href: patient.uri + "/archive"
-      }]
-    }) if not patient.archived }}
   {% endcall %}
 
-  {% call card({
-    heading: __("patient.programmes.label"),
-    headingLevel: 3
-  }) %}
-    {% set patientProgrammeRows = [] %}
-    {% for id, patientProgramme in patient.programmes %}
-      {% set patientProgrammeRows = patientProgrammeRows | push([
-        {
-          header: __("patientProgramme.name.label"),
-          html: link(patientProgramme.uri, patientProgramme.programme.name)
-        },
-        {
-          header: __("patientProgramme.status.label"),
-          html: patientProgramme.formatted.status
-        },
-        {
-          header: __("patientProgramme.statusNotes.label"),
-          html: patientProgramme.statusNotes
-        }
-      ]) %}
-    {% endfor %}
+  {% set patientProgrammeRows = [] %}
+  {% for id, patientProgramme in patient.programmes %}
+    {% set patientProgrammeRows = patientProgrammeRows | push([
+      {
+        header: __("patientProgramme.name.label"),
+        html: link(patientProgramme.uri, patientProgramme.programme.name)
+      },
+      {
+        header: __("patientProgramme.status.label"),
+        html: patientProgramme.formatted.status
+      },
+      {
+        header: __("patientProgramme.statusNotes.label"),
+        html: patientProgramme.statusNotes
+      }
+    ]) %}
+  {% endfor %}
 
-    {{ table({
-      id: "programmes",
-      responsive: true,
-      head: [
-        { text: __("patientProgramme.name.label") },
-        { text: __("patientProgramme.status.label") },
-        { text: __("patientProgramme.statusNotes.label") }
-      ],
-      rows: patientProgrammeRows
-    }) }}
-  {% endcall %}
+  {{ table({
+    id: "programmes",
+    responsive: true,
+    card: {
+      heading: __("patient.programmes.label"),
+      headingLevel: 3
+    },
+    head: [
+      { text: __("patientProgramme.name.label") },
+      { text: __("patientProgramme.status.label") },
+      { text: __("patientProgramme.statusNotes.label") }
+    ],
+    rows: patientProgrammeRows
+  }) }}
 {% endblock %}
