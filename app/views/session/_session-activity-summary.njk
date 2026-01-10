@@ -20,10 +20,10 @@
   {% set sessionActivityRows = sessionActivityRows | push(sessionActivityRow("record")) %}
 {% endif %}
 
-{{ card({
-  heading: __("session.activity.label"),
-  headingLevel: 3,
-  descriptionHtml: summaryList({
-    rows: sessionActivityRows | removeLastSummaryBorder
-  })
+{{ summaryList({
+  card: {
+    heading: __("session.activity.label"),
+    headingLevel: 3
+  },
+  rows: sessionActivityRows | removeLastSummaryBorder
 }) if sessionActivityRows.length > 0 }}

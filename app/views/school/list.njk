@@ -90,21 +90,21 @@
       }) }}
 
       {% for school in results.page %}
-        {{ card({
-          classes: "app-card--compact",
-          heading: school.name | highlightQuery(data.q),
-          headingClasses: "nhsuk-heading-s",
-          headingLevel: 4,
-          href: school.uri,
-          clickable: true,
-          descriptionHtml: summaryList({
-            rows: summaryRows(school, {
-              patients: {},
-              id: {},
-              phase: {},
-              address: {},
-              nextSessionDate: {}
-            })
+        {{ summaryList({
+          card: {
+            classes: "app-card--compact",
+            heading: school.name | highlightQuery(data.q),
+            headingSize: "s",
+            headingLevel: 4,
+            href: school.uri,
+            clickable: true
+          },
+          rows: summaryRows(school, {
+            patients: {},
+            id: {},
+            phase: {},
+            address: {},
+            nextSessionDate: {}
           })
         }) }}
       {% endfor %}

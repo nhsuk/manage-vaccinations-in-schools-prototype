@@ -18,50 +18,48 @@
     </div>
 
     <div class="nhsuk-grid-column-three-quarters">
-      {% call card({
-        heading: __("team.schools.summary"),
-        headingClasses: "nhsuk-heading-m"
-      }) %}
-        {% set schoolRows = [] %}
-        {% for school in team.schools %}
-          {% set schoolRows = schoolRows | push([
-            {
-              header: __("school.name.label"),
-              html: school.formatted.nameAndAddress or "Not provided"
-            }, {
-              header: __("actions.label"),
-              html: appActionList({
-                items: [{
-                  text: __("school.edit.label"),
-                  href: school.uri + "/edit"
-                }]
-              })
-            }
-          ]) %}
-        {% endfor %}
-
-        {{ appButtonGroup({
-          buttons: [{
-            classes: "nhsuk-button--secondary",
-            text: __("school.new.label"),
-            href: "/schools/new"
+      {% set schoolRows = [] %}
+      {% for school in team.schools %}
+        {% set schoolRows = schoolRows | push([
+          {
+            header: __("school.name.label"),
+            html: school.formatted.nameAndAddress or "Not provided"
           }, {
-            classes: "nhsuk-button--secondary",
-            text: __("school.new-site.label"),
-            href: "/schools/new-site"
-          }]
-        }) }}
+            header: __("actions.label"),
+            html: appActionList({
+              items: [{
+                text: __("school.edit.label"),
+                href: school.uri + "/edit"
+              }]
+            })
+          }
+        ]) %}
+      {% endfor %}
 
-        {{ table({
-          id: "schools",
-          responsive: true,
-          head: [
-            { text: __("school.name.label") },
-            { text: __("actions.label") }
-          ],
-          rows: schoolRows
-        }) }}
-      {% endcall %}
+      {{ table({
+        id: "schools",
+        responsive: true,
+        card: {
+          heading: __("team.schools.summary"),
+          headingSize: "m",
+          actions: {
+            items: [
+              {
+                text: __("school.new.label"),
+                href: "/schools/new"
+              }, {
+                text: __("school.new-site.label"),
+                href: "/schools/new-site"
+              }
+            ]
+          }
+        },
+        head: [
+          { text: __("school.name.label") },
+          { text: __("actions.label") }
+        ],
+        rows: schoolRows
+      }) }}
     <div>
   </div>
 {% endblock %}

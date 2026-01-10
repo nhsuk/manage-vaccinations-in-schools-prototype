@@ -91,21 +91,21 @@
       }) }}
 
       {% for upload in results.page %}
-        {{ card({
-          classes: "app-card--compact",
-          heading: upload.formatted.createdAt,
-          headingClasses: "nhsuk-heading-s",
-          headingLevel: 4,
-          href: upload.uri,
-          clickable: true,
-          descriptionHtml: summaryList({
-            rows: summaryRows(upload, {
-              fileName: {},
-              type: {
-                value: upload.summary.type
-              },
-              status: {}
-            })
+        {{ summaryList({
+          card: {
+            classes: "app-card--compact",
+            heading: upload.formatted.createdAt,
+            headingSize: "s",
+            headingLevel: 4,
+            href: upload.uri,
+            clickable: true
+          },
+          rows: summaryRows(upload, {
+            fileName: {},
+            type: {
+              value: upload.summary.type
+            },
+            status: {}
           })
         }) }}
       {% endfor %}

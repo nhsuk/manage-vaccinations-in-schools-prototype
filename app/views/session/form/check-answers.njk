@@ -8,45 +8,45 @@
     title: title
   }) }}
 
-  {{ card({
-    heading: __("session.summary"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(session, {
-        type: {
-          href: session.uri + "/new/type"
-        },
-        clinic: {
-          href: session.uri + "/new/clinic"
-        },
-        school: {
-          href: session.uri + "/new/school"
-        },
-        programmes: {
-          href: session.uri + "/new/programmes"
-        },
-        yearGroups: {
-          href: session.uri + "/new/year-groups"
-        },
-        dates: {
-          href: session.uri + "/new/dates"
-        },
-        openAt: {
-          href: session.uri + "/new/open-at"
-        },
-        reminderWeeks: {
-          href: session.uri + "/new/reminders"
-        },
-        registration: {
-          href: session.uri + "/new/registration"
-        },
-        psdProtocol: {
-          href: session.uri + "/new/delegation"
-        },
-        nationalProtocol: {
-          href: session.uri + "/new/delegation"
-        }
-      })
+  {{ summaryList({
+    card: {
+      heading: __("session.summary"),
+      headingSize: "m"
+    },
+    rows: summaryRows(session, {
+      type: {
+        href: session.uri + "/new/type"
+      },
+      clinic: {
+        href: session.uri + "/new/clinic"
+      },
+      school: {
+        href: session.uri + "/new/school"
+      },
+      programmes: {
+        href: session.uri + "/new/programmes"
+      },
+      yearGroups: {
+        href: session.uri + "/new/year-groups"
+      },
+      dates: {
+        href: session.uri + "/new/dates"
+      },
+      openAt: {
+        href: session.uri + "/new/open-at"
+      },
+      reminderWeeks: {
+        href: session.uri + "/new/reminders"
+      },
+      registration: {
+        href: session.uri + "/new/registration"
+      },
+      psdProtocol: {
+        href: session.uri + "/new/delegation"
+      },
+      nationalProtocol: {
+        href: session.uri + "/new/delegation"
+      }
     })
   }) }}
 {% endblock %}

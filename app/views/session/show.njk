@@ -22,23 +22,22 @@
     {% include "session/_session-activity-summary.njk" %}
   {% endif %}
 
-  {% call card({
-    heading: __("session.summary"),
-    headingLevel: 3
-  }) %}
-    {{ summaryList({
-      rows: summaryRows(session, {
-        location: {} if session.type == SessionType.School,
-        school_id: {},
-        status: {},
-        patients: {},
-        programmes: {},
-        yearGroups: {},
-        consentWindow: {},
-        consentForms: {}
-      })
-    }) }}
-  {% endcall %}
+  {{ summaryList({
+    card: {
+      heading: __("session.summary"),
+      headingLevel: 3
+    },
+    rows: summaryRows(session, {
+      location: {} if session.type == SessionType.School,
+      school_id: {},
+      status: {},
+      patients: {},
+      programmes: {},
+      yearGroups: {},
+      consentWindow: {},
+      consentForms: {}
+    })
+  }) }}
 
   {{ appButtonGroup({
     buttons: [

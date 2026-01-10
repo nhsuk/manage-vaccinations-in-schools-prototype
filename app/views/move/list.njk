@@ -55,10 +55,12 @@
   {% if moves.length %}
     {{ table({
       id: "moves",
-      heading: __mf("move.count", { count: moves.length }),
-      headingLevel: 2,
-      panel: true,
       responsive: true,
+      card: {
+        feature: true,
+        heading: __mf("move.count", { count: moves.length }),
+        headingLevel: 2
+      },
       head: [
         { text: __("move.createdAt.label") },
         { text: __("child.label") },

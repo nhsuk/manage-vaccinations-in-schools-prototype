@@ -18,51 +18,52 @@
     </div>
 
     <div class="nhsuk-grid-column-three-quarters">
-      {% call card({
-        heading: __("team.clinics.summary"),
-        headingClasses: "nhsuk-heading-m"
-      }) %}
-        {% set clinicRows = [] %}
-        {% for clinic in team.clinics %}
-          {% set clinicRows = clinicRows | push([
-            {
-              header: __("clinic.name.label"),
-              html: clinic.formatted.nameAndAddress or "Not provided"
-            }, {
-              header: __("actions.label"),
-              html: appActionList({
-                items: [{
-                  text: __("clinic.edit.label"),
-                  href: clinic.uri + "/edit"
-                }, {
-                  text: __("clinic.delete.label"),
-                  href: clinic.uri + "/delete"
-                }]
-              })
+      {% set clinicRows = [] %}
+      {% for clinic in team.clinics %}
+        {% set clinicRows = clinicRows | push([
+          {
+            header: __("clinic.name.label"),
+            html: clinic.formatted.nameAndAddress or "Not provided"
+          }, {
+            header: __("actions.label"),
+            html: appActionList({
+              items: [{
+                text: __("clinic.edit.label"),
+                href: clinic.uri + "/edit"
+              }, {
+                text: __("clinic.delete.label"),
+                href: clinic.uri + "/delete"
+              }]
+            })
+          }
+        ]) %}
+      {% endfor %}
+
+      {% if team.clinics.length %}
+        {{ table({
+          id: "clinics",
+          responsive: true,
+          card: {
+            heading: __("team.clinics.summary"),
+            headingSize: "m",
+            actions: {
+              items: [
+                {
+                  text: __("team.clinics.new.title"),
+                  href: team.uri + "/clinics/new"
+                }
+              ]
             }
-          ]) %}
-        {% endfor %}
-
-        {{ button({
-          classes: "nhsuk-button--secondary",
-          text: __("team.clinics.new.title"),
-          href: team.uri + "/clinics/new"
+          },
+          head: [
+            { text: __("clinic.name.label") },
+            { text: __("actions.label") }
+          ],
+          rows: clinicRows
         }) }}
-
-        {% if team.clinics.length %}
-          {{ table({
-            id: "clinics",
-            responsive: true,
-            head: [
-              { text: __("clinic.name.label") },
-              { text: __("actions.label") }
-            ],
-            rows: clinicRows
-          }) }}
-        {% else %}
-          {{ __mf("clinic.count", { count: 0 }) | nhsukMarkdown }}
-        {% endif %}
-      {% endcall %}
+      {% else %}
+        {{ __mf("clinic.count", { count: 0 }) | nhsukMarkdown }}
+      {% endif %}
     <div>
   </div>
 {% endblock %}

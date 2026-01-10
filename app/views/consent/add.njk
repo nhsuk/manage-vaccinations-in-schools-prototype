@@ -11,41 +11,41 @@
     title: title
   }) }}
 
-  {{ card({
-    heading: __("patient.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(consent.child, {
-        nhsn: {},
-        fullName: {},
-        preferredNames: {},
-        dob: {},
-        gender: {},
-        address: {},
-        school: {},
-        gpSurgery: {}
-      })
+  {{ summaryList({
+    card: {
+      heading: __("patient.label"),
+      headingSize: "m"
+    },
+    rows: summaryRows(consent.child, {
+      nhsn: {},
+      fullName: {},
+      preferredNames: {},
+      dob: {},
+      gender: {},
+      address: {},
+      school: {},
+      gpSurgery: {}
     })
   }) }}
 
-  {{ card({
-    heading: __("consent.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(consent, {
-        decision: {},
-        refusalReason: {},
-        refusalReasonDetails: {}
-      })
+  {{ summaryList({
+    card: {
+      heading: __("consent.label"),
+      headingSize: "m"
+    },
+    rows: summaryRows(consent, {
+      decision: {},
+      refusalReason: {},
+      refusalReasonDetails: {}
     })
   }) }}
 
-  {{ card({
-    heading: __("consent.healthAnswers.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      classes: "app-summary-list--full-width",
-      rows: healthAnswerRows(consent.healthAnswers)
-    })
+  {{ summaryList({
+    card: {
+      heading: __("consent.healthAnswers.label"),
+      headingSize: "m"
+    },
+    classes: "app-summary-list--full-width",
+    rows: healthAnswerRows(consent.healthAnswers)
   }) if consent.given }}
 {% endblock %}

@@ -82,7 +82,7 @@
           {% call card({
             classes: "app-card--compact",
             heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
-            headingClasses: "nhsuk-heading-s",
+            headingSize: "s",
             headingLevel: 4,
             clickable: not showRegistration,
             href: patientSession.uri + "?activity=" + view

@@ -48,24 +48,24 @@
     }) }}
 
     {% for reply in patientSession.replies %}
-      {{ card({
-        classes: "app-card--compact app-card--offset",
-        heading: reply.formatted.fullNameAndRelationship,
-        headingLevel: 5,
-        href: reply.uri if reply.delivered,
-        clickable: true if reply.delivered,
-        descriptionHtml: summaryList({
-          rows: summaryRows(reply, {
-            tel: {
-              value: appParentSms(reply.parent, reply.given)
-            } if reply.parent.tel,
-            email: {
-              value: appParentEmail(reply.parent, reply.given)
-            } if reply.parent.email,
-            createdAt: {},
-            decisionStatus: {},
-            vaccineCriteria: {}
-          })
+      {{ summaryList({
+        card: {
+          classes: "app-card--compact app-card--offset",
+          heading: reply.formatted.fullNameAndRelationship,
+          headingLevel: 5,
+          href: reply.uri if reply.delivered,
+          clickable: true if reply.delivered
+        },
+        rows: summaryRows(reply, {
+          tel: {
+            value: appParentSms(reply.parent, reply.given)
+          } if reply.parent.tel,
+          email: {
+            value: appParentEmail(reply.parent, reply.given)
+          } if reply.parent.email,
+          createdAt: {},
+          decisionStatus: {},
+          vaccineCriteria: {}
         })
       }) }}
     {% endfor %}
@@ -80,23 +80,23 @@
     }) }}
 
     {% for parent in patientSession.patient.parents %}
-      {{ card({
-        classes: "app-card--compact app-card--offset",
-        heading: parent.formatted.fullNameAndRelationship,
-        headingLevel: 5,
-        descriptionHtml: summaryList({
-          rows: summaryRows(parent, {
-            tel: {},
-            email: {},
-            createdAt: {},
-            decisionStatus: {
-              label: __("reply.decisionStatus.label"),
-              value: tag({
-                classes: "nhsuk-tag--grey",
-                text: PatientConsentStatus.Scheduled if session.consentWindow == ConsentWindow.Opening else PatientConsentStatus.NoResponse
-              })
-            }
-          })
+      {{ summaryList({
+        card: {
+          classes: "app-card--compact app-card--offset",
+          heading: parent.formatted.fullNameAndRelationship,
+          headingLevel: 5
+        },
+        rows: summaryRows(parent, {
+          tel: {},
+          email: {},
+          createdAt: {},
+          decisionStatus: {
+            label: __("reply.decisionStatus.label"),
+            value: tag({
+              classes: "nhsuk-tag--grey",
+              text: PatientConsentStatus.Scheduled if session.consentWindow == ConsentWindow.Opening else PatientConsentStatus.NoResponse
+            })
+          }
         })
       }) if parent.email or parent.tel }}
     {% endfor %}
