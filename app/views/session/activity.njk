@@ -58,18 +58,16 @@
           }) | safe
         }) }}
 
-        {% set instructHtml %}
-          {{ __("session.instruct.description", session.activity.instruct) | nhsukMarkdown }}
+        {% if view == "instruct" and session.activity.instruct and account.canPrescribe %}
+          {% call insetText() %}
+            {{ __("session.instruct.description", session.activity.instruct) | nhsukMarkdown }}
 
-          {{ actionLink({
-            text: __("session.instructions.label"),
-            href: session.uri + "/instructions"
-          }) }}
-        {% endset %}
-
-        {{ insetText({
-          html: instructHtml
-        }) if view == "instruct" and session.activity.instruct and account.canPrescribe }}
+            {{ actionLink({
+              text: __("session.instructions.label"),
+              href: session.uri + "/instructions"
+            }) }}
+          {% endcall %}
+        {% endif %}
 
         {% for patientSession in results.page %}
           {% set reportStatusHtml %}

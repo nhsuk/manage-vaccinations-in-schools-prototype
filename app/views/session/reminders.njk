@@ -45,7 +45,7 @@
     html: detailsHtml
   }) }}
 
-  {% set insetTextHtml %}
+  {% call insetText() %}
     {{ appHeading({
       classes: "nhsuk-u-margin-bottom-2",
       level: 3,
@@ -57,11 +57,7 @@
     }) }}
 
     {{ __("session.nextReminderDate.text", session.formatted.nextReminderDate) | nhsukMarkdown }}
-  {% endset %}
-
-  {{ insetText({
-    html: insetTextHtml
-  }) }}
+  {% endcall %}
 
   {{ appHeading({
     classes: "nhsuk-u-margin-bottom-2",
