@@ -12,8 +12,5 @@
   )
 );
 
-// Import GOV.UK Frontend components
-@forward "vendor/govuk-frontend";
-
 // App-specific components
 @forward "components";
