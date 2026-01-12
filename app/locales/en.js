@@ -336,9 +336,7 @@ export const en = {
       },
       ethnicGroup: {
         label: 'Ethnic group',
-        title: 'What is your child’s ethnic group?',
-        description:
-          'We ask about ethnicity so we can better understand the challenges faced by specific communities.'
+        title: 'What is your child’s ethnic group?'
       },
       ethnicBackground: {
         label: 'Ethnic group',
@@ -371,6 +369,19 @@ export const en = {
         title: 'Home address',
         label: 'Child’s home address',
         hint: 'Give the child’s primary address. We use this to confirm their identity.'
+      }
+    },
+    ethnicity: {
+      label: 'Do you want to answer the ethnicity questions?',
+      hint: 'These questions are optional. Your answers will not affect your consent response.',
+      title: 'We have received your consent response',
+      description:
+        'Before you finish using the service, we’d like to ask some questions about your child’s ethnicity.\n\nWe ask about ethnicity so that when we look at the number of vaccinations received, we can better understand the challenges faced by specific groups. We can then target the support we offer.',
+      yes: {
+        label: 'Yes, answer the ethnicity questions (takes less than a minute)'
+      },
+      no: {
+        label: 'No, skip the ethnicity questions'
       }
     },
     parent: {

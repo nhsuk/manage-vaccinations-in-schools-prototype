@@ -52,6 +52,7 @@ import {
  * @property {boolean} [confirmed] - Decision confirmed
  * @property {boolean} [consultation] - Consultation requested
  * @property {boolean} declined - Reply declines consent
+ * @property {boolean} ethnicity - Answered ethnicity questions
  * @property {boolean} given - Reply gives consent
  * @property {boolean} invalid - Reply is invalid
  * @property {ReplyMethod} [method] - Reply method
@@ -74,6 +75,7 @@ export class Reply {
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.child = options?.child && new Child(options.child)
+    this.ethnicity = stringToBoolean(options?.ethnicity)
     this.parent = options?.parent && new Parent(options.parent)
     this.method = options?.method
     this.selfConsent = options?.selfConsent
