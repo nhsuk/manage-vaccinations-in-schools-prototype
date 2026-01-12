@@ -125,16 +125,9 @@ export const parentController = {
 
     const journey = {
       [`/${session_id}`]: {},
+      // Child journey
       [`/${session_id}/${consent_uuid}/new/child`]: {},
       [`/${session_id}/${consent_uuid}/new/dob`]: {},
-      [`/${session_id}/${consent_uuid}/new/ethnic-group`]: {
-        [`/${session_id}/${consent_uuid}/new/confirm-school`]: {
-          data: 'consent.child.ethnicGroup',
-          value: EthnicGroup.Withheld
-        },
-        [`/${session_id}/${consent_uuid}/new/ethnic-background`]: {}
-      },
-      [`/${session_id}/${consent_uuid}/new/ethnic-background`]: {},
       ...(session?.type === SessionType.School
         ? { [`/${session_id}/${consent_uuid}/new/confirm-school`]: {} }
         : {}),
@@ -143,6 +136,7 @@ export const parentController = {
             [`/${session_id}/${consent_uuid}/new/school`]: {}
           }
         : {}),
+      // Parent journey
       [`/${session_id}/${consent_uuid}/new/parent`]: {
         [`/${session_id}/parental-responsibility`]: {
           data: 'consent.parent.hasParentalResponsibility',
@@ -162,13 +156,21 @@ export const parentController = {
           value: ReplyDecision.AlreadyVaccinated
         }
       },
+      // Give consent journey
       [`/${session_id}/${consent_uuid}/new/address`]: {},
       ...(getConsentForAlternativeVaccine && {
         [`/${session_id}/${consent_uuid}/new/alternative`]: {}
       }),
       ...getHealthQuestionPaths(`/${session_id}/${consent_uuid}/new/`, consent),
       [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
+      [`/${session_id}/${consent_uuid}/new/ethnicity`]: {
+        [`/${session_id}/${consent_uuid}/new/ethnic-group`]: {
+          data: 'consent.ethnicity',
+          value: true
+        }
+      },
       [`/${session_id}/${consent_uuid}/new/confirmation`]: {},
+      // Refusal journey
       [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
         [`/${session_id}/${consent_uuid}/new/refusal-reason-details`]: {
           data: 'consent.refusalReason',
@@ -187,13 +189,23 @@ export const parentController = {
       [`/${session_id}/${consent_uuid}/new/refusal-reason-details`]: {
         [`/${session_id}/${consent_uuid}/new/${consent.refusalReason === ReplyRefusal.Medical ? 'consultation' : 'check-answers'}`]: true
       },
+      // Consultation journey
       [`/${session_id}/${consent_uuid}/new/consultation`]: {
         [`/${session_id}/${consent_uuid}/new/check-answers`]: true
       },
-      [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
-      [`/${session_id}/${consent_uuid}/new/confirmation`]: {},
+      // First and second dose journey
       [`/${session_id}/${consent_uuid}/new/first-dose`]: {},
       [`/${session_id}/${consent_uuid}/new/second-dose`]: {
+        [`/${session_id}/${consent_uuid}/new/check-answers`]: true
+      },
+      // Ethnicity journey
+      [`/${session_id}/${consent_uuid}/new/ethnic-group`]: {
+        [`/${session_id}/${consent_uuid}/new/confirmation`]: {
+          data: 'consent.child.ethnicGroup',
+          value: EthnicGroup.Withheld
+        }
+      },
+      [`/${session_id}/${consent_uuid}/new/ethnic-background`]: {
         [`/${session_id}/${consent_uuid}/new/check-answers`]: true
       }
     }
