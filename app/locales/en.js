@@ -1406,6 +1406,9 @@ export const en = {
       summary: 'School details',
       success: '{{school.name}} created'
     },
+    'new-site': {
+      label: 'Add a new school site'
+    },
     edit: {
       label: 'Edit',
       title: 'Edit school',
@@ -1468,7 +1471,12 @@ export const en = {
       label: 'School URN',
       title: 'Find a school to add to your team'
     },
+    'site-urn': {
+      title: 'Which school do you want to add a site to?',
+      label: 'Select a school'
+    },
     site: {
+      title: 'Site details',
       label: 'Site code'
     },
     address: {

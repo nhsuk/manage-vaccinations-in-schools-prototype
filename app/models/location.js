@@ -134,7 +134,9 @@ export class Location {
             <span class="nhsuk-u-secondary-text-colour">${address}</span>
           </span>`
         : this.name,
-      programmes: this.programmes.flatMap(({ nameTag }) => nameTag).join(' ')
+      programmes: this.programmes
+        .flatMap((programme) => programme?.nameTag)
+        .join(' ')
     }
   }
 
