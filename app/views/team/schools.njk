@@ -43,10 +43,16 @@
           ]) %}
         {% endfor %}
 
-        {{ button({
-          classes: "nhsuk-button--secondary",
-          text: __("school.new.label"),
-          href: "/schools/new"
+        {{ appButtonGroup({
+          buttons: [{
+            classes: "nhsuk-button--secondary",
+            text: __("school.new.label"),
+            href: "/schools/new"
+          }, {
+            classes: "nhsuk-button--secondary",
+            text: __("school.new-site.label"),
+            href: "/schools/new-site"
+          }]
         }) }}
 
         {{ table({

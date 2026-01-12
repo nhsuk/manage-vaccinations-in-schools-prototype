@@ -3,6 +3,7 @@ import _ from 'lodash'
 
 import { PatientStatus } from '../enums.js'
 import { Patient, School } from '../models.js'
+import { generateNewSiteCode } from '../utils/location.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
@@ -28,13 +29,20 @@ export const schoolController = {
     response.render(`school/${view}`)
   },
 
-  new(request, response) {
-    const { data } = request.session
+  new(type) {
+    return (request, response, next) => {
+      const { data } = request.session
 
-    // @ts-ignore
-    const school = School.create({ team_id: data.team?.id }, data.wizard)
+      // @ts-ignore
+      const school = School.create({ team_id: data.team?.id }, data.wizard)
 
-    response.redirect(`${school.uri}/new/urn`)
+      if (type === 'site') {
+        data.startPath = 'new-site'
+        response.redirect(`${school.uri}/new/site-urn`)
+      } else {
+        response.redirect(`${school.uri}/new/urn`)
+      }
+    }
   },
 
   list(request, response) {
@@ -306,6 +314,7 @@ export const schoolController = {
       delete data.school
       delete data.wizard
 
+      // TODO: Add note about site codes if adding a new site
       request.flash('success', __(`school.${type}.success`, { school }))
 
       response.redirect(`${school.team.uri}/schools`)
@@ -329,8 +338,12 @@ export const schoolController = {
 
       const journey = {
         [`/`]: {},
-        [`/${school_id}/${type}/urn`]: {},
-        [`/${school_id}/${type}/confirm-school`]: {},
+        ...(data.startPath === 'new-site'
+          ? { [`/${school_id}/${type}/site-urn`]: {} }
+          : { [`/${school_id}/${type}/urn`]: {} }),
+        ...(data.startPath === 'new-site'
+          ? { [`/${school_id}/${type}/site`]: {} }
+          : { [`/${school_id}/${type}/confirm-school`]: {} }),
         [`/${school_id}/${type}/phase`]: {},
         [`/${school_id}/${type}/send`]: {},
         [`/${school_id}/${type}/year-groups`]: {},
@@ -368,7 +381,7 @@ export const schoolController = {
   updateForm(request, response) {
     const { school_id, view } = request.params
     const { data } = request.session
-    const { paths } = response.locals
+    const { paths, originalSchool } = response.locals
 
     if (view === 'urn') {
       request.body.school = {
@@ -380,6 +393,25 @@ export const schoolController = {
         phase: 'Primary',
         send: false,
         yearGroups: [0, 1, 2, 3, 4, 5, 6]
+      }
+    }
+
+    if (view === 'site-urn') {
+      const id = request.body.school.id || '131442'
+      const originalSchool = School.findOne(id, data)
+
+      response.locals.originalSchool = originalSchool
+
+      request.body.school = {
+        urn: originalSchool.urn,
+        site: generateNewSiteCode(originalSchool.site)
+      }
+    }
+
+    // Add `A` to original school, if it doesn’t have a site code already
+    if (view === 'site-codes') {
+      if (!originalSchool.code) {
+        School.update(originalSchool.id, { site: 'A' }, data)
       }
     }
 
