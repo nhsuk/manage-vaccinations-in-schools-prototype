@@ -55,7 +55,7 @@ export class Team {
   get clinics() {
     try {
       return this?.clinic_ids
-        .map((id) => new Clinic(this.context?.clinics[id]))
+        .map((id) => Clinic.findOne(id, this.context))
         .sort((a, b) => a.name.localeCompare(b.name))
     } catch (error) {
       console.error('Team.clinics', error.message)
