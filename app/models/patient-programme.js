@@ -282,7 +282,8 @@ export class PatientProgramme {
             sequence: '1B'
           },
           this.context
-        )
+        ),
+        ...this.vaccinationsGiven
       ]
     }
   }
