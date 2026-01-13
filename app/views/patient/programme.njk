@@ -23,6 +23,44 @@
     patient: patient
   }) }}
 
+  {% set ttcvRows = [] %}
+  {% for vaccination in patientProgramme.ttcv %}
+    {% set ttcvRows = ttcvRows | push([
+      {
+        header: __("vaccination.createdAt.label"),
+        text: vaccination.formatted.createdAt_date
+      },
+      {
+        header: __("vaccination.age.label"),
+        text: patient.dob | age(at=vaccination.createdAt)
+      },
+      {
+        header: __("vaccination.programme.label"),
+        html: vaccination.formatted.programmeWithSequence
+      },
+      {
+        header: __("vaccination.ttcv.label"),
+        html: loop.index | ordinal
+      }
+    ]) %}
+  {% endfor %}
+
+  {{ table({
+    id: "ttcv",
+    responsive: true,
+    card: {
+      heading: __("patientProgramme.ttcv.label"),
+      headingLevel: 3
+    },
+    head: [
+      { text: __("vaccination.createdAt.label") },
+      { text: __("vaccination.age.label") },
+      { text: __("vaccination.programme.label") },
+      { text: __("vaccination.ttcv.label") }
+    ],
+    rows: ttcvRows
+  }) if patientProgramme.ttcv }}
+
   {% call card({
     heading: __mf("patientProgramme.vaccinationsGiven.count", {
       count: patientProgramme.vaccinationsGiven.length

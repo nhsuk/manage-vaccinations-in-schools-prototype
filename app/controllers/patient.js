@@ -58,9 +58,9 @@ export const patientController = {
     const { option, programme_id, q, yearGroup } = request.query
     const { data } = request.session
 
-    const programmes = Programme.findAll(data).sort((a, b) =>
-      a.name.localeCompare(b.name)
-    )
+    const programmes = Programme.findAll(data)
+      .filter((programme) => !programme.hidden)
+      .sort((a, b) => a.name.localeCompare(b.name))
 
     const patients = Patient.findAll(data)
 

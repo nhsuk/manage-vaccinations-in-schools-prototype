@@ -238,7 +238,9 @@ export class Patient extends Child {
     /** @type {Record<string, PatientProgramme>} */
     const programmes = {}
 
-    for (const programme of Object.values(programmesData)) {
+    for (const programme of Object.values(programmesData).filter(
+      (programme) => !programme.hidden
+    )) {
       programmes[programme.id] = new PatientProgramme(
         {
           patient_uuid: this.uuid,

@@ -1,6 +1,20 @@
 import { ProgrammeType } from '../enums.js'
 
 export default {
+  [ProgrammeType._4in1]: {
+    type: ProgrammeType._4in1,
+    id: '4in1',
+    name: '4-in-1',
+    title: '4-in-1 pre-school booster',
+    hidden: true
+  },
+  [ProgrammeType._5in1]: {
+    type: ProgrammeType._5in1,
+    id: '5in1',
+    name: '5-in-1',
+    title: '5-in-1',
+    hidden: true
+  },
   [ProgrammeType.Flu]: {
     type: ProgrammeType.Flu,
     id: 'flu',

@@ -17,6 +17,7 @@ import {
  * @property {object} [context] - Context
  * @property {ProgrammeType} type - Programme type
  * @property {string} id - ID
+ * @property {boolean} hidden - Hidden
  * @property {string} name - Name
  * @property {string} title - Title
  * @property {object} [emailNames] - Email names
@@ -34,6 +35,7 @@ export class Programme {
     this.context = context
     this.type = options.type
     this.id = options?.id
+    this.hidden = options?.hidden || false
     this.name = options?.name
     this.title = options?.title
     this.emailNames = options?.emailNames

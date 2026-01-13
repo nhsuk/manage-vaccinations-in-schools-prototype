@@ -1,10 +1,12 @@
+import { addMonths, addWeeks } from 'date-fns'
+
 import {
   PatientConsentStatus,
   PatientDueStatus,
   PatientStatus,
   ProgrammeType
 } from '../enums.js'
-import { Patient, Programme } from '../models.js'
+import { Patient, Programme, Vaccination } from '../models.js'
 import { getCurrentAcademicYear } from '../utils/date.js'
 import { ordinal } from '../utils/number.js'
 import { getReportOutcome } from '../utils/patient-session.js'
@@ -244,6 +246,45 @@ export class PatientProgramme {
     }
 
     return this.programme.sequence[this.doseDue - 1]
+  }
+
+  get ttcv() {
+    if (this.programme.type === ProgrammeType.TdIPV) {
+      return [
+        new Vaccination(
+          {
+            createdAt: addWeeks(this.patient.dob, 8),
+            programme_id: '5in1',
+            sequence: '1P'
+          },
+          this.context
+        ),
+        new Vaccination(
+          {
+            createdAt: addWeeks(this.patient.dob, 12),
+            programme_id: '5in1',
+            sequence: '2P'
+          },
+          this.context
+        ),
+        new Vaccination(
+          {
+            createdAt: addWeeks(this.patient.dob, 16),
+            programme_id: '5in1',
+            sequence: '3P'
+          },
+          this.context
+        ),
+        new Vaccination(
+          {
+            createdAt: addMonths(this.patient.dob, 40),
+            programme_id: '4in1',
+            sequence: '1B'
+          },
+          this.context
+        )
+      ]
+    }
   }
 
   /**

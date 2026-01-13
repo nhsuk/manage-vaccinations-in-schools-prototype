@@ -1013,6 +1013,10 @@ export const en = {
     },
     statusNotes: {
       label: 'Notes'
+    },
+    ttcv: {
+      label:
+        'Previous vaccinations with tetanus-toxoid containing vaccines (TTCV)'
     }
   },
   patientSession: {
@@ -2359,6 +2363,9 @@ export const en = {
     reportedBy: {
       label: 'Reported by'
     },
+    age: {
+      label: 'Age'
+    },
     variant: {
       label: 'Programme variant',
       title: 'Was {{patient.firstName}} vaccinated with the MMRV vaccine?',
@@ -2424,6 +2431,9 @@ export const en = {
     site: {
       label: 'Site',
       title: 'Which injection site was used?'
+    },
+    ttcv: {
+      label: 'TTCV dose'
     },
     programme: {
       label: 'Programme'

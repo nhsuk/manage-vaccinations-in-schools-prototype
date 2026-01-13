@@ -419,6 +419,9 @@ export class Vaccination {
         })
       : this.programme?.nameTag
 
+    const sequenceText =
+      this.sequence && `${ordinal(Number(this.sequence.charAt(0)))} dose`
+
     return {
       createdAt: formatDate(this.createdAt, {
         day: 'numeric',
@@ -475,6 +478,11 @@ export class Vaccination {
       note: formatMarkdown(this.note),
       outcome: formatTag(getVaccinationOutcomeStatus(this.outcome)),
       programme,
+      programmeWithSequence: formatWithSecondaryText(
+        programme,
+        sequenceText,
+        false
+      ),
       location: this.location || 'Unknown',
       country: this.countryOther || this.country || 'England',
       school: this.school && this.school.name,
