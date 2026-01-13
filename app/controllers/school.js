@@ -334,6 +334,10 @@ export const schoolController = {
 
       response.locals.school = new School(school, data)
 
+      const originalSchool = School.findOne(school.urn, data)
+
+      response.locals.originalSchool = originalSchool
+
       response.locals.type = type
 
       const journey = {
@@ -345,7 +349,7 @@ export const schoolController = {
           ? { [`/${school_id}/${type}/site`]: {} }
           : { [`/${school_id}/${type}/confirm-school`]: {} }),
         [`/${school_id}/${type}/phase`]: {},
-        [`/${school_id}/${type}/send`]: {},
+        [`/${school_id}/${type}/sen`]: {},
         [`/${school_id}/${type}/year-groups`]: {},
         [`/${school_id}/${type}/programmes`]: {},
         [`/${school_id}/${type}/check-answers`]: {},
@@ -391,7 +395,7 @@ export const schoolController = {
         addressLevel1: 'Coventry',
         postalCode: 'CV1 5LS',
         phase: 'Primary',
-        send: false,
+        sen: false,
         yearGroups: [0, 1, 2, 3, 4, 5, 6]
       }
     }
@@ -404,7 +408,11 @@ export const schoolController = {
 
       request.body.school = {
         urn: originalSchool.urn,
-        site: generateNewSiteCode(originalSchool.site)
+        site: generateNewSiteCode(originalSchool.site),
+        addressLine1: originalSchool.addressLine1,
+        addressLine2: originalSchool.addressLine2,
+        addressLevel31: originalSchool.addressLevel1,
+        postalCode: originalSchool.postalCode
       }
     }
 

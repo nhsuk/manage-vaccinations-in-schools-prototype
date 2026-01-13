@@ -22,7 +22,8 @@ export const en = {
   },
   location: {
     name: {
-      label: 'Name'
+      label: 'Name',
+      hint: 'The site name must be unique. It is shown to parents on the consent form and related emails. Existing sites for this school are: %s.'
     },
     addressLine1: {
       label: 'Address line 1'
@@ -1404,7 +1405,7 @@ export const en = {
         title: 'Check and confirm'
       },
       summary: 'School details',
-      success: '{{school.name}} created'
+      success: '{{school.name}} has been added to your team'
     },
     'new-site': {
       label: 'Add a new school site'
@@ -1452,8 +1453,8 @@ export const en = {
       label: 'Phase',
       title: 'Phase of education'
     },
-    send: {
-      label: 'SEND school',
+    sen: {
+      label: 'SEN school',
       title: 'Is this a special educational needs (SEN) school?'
     },
     yearGroups: {
@@ -1469,7 +1470,9 @@ export const en = {
     },
     urn: {
       label: 'School URN',
-      title: 'Find a school to add to your team'
+      title: 'Find a school to add to your team',
+      error:
+        'URN must be for a school that is not already assigned to another team'
     },
     'site-urn': {
       title: 'Which school do you want to add a site to?',
