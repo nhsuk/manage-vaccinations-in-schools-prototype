@@ -17,7 +17,9 @@ export const programmeController = {
   readAll(request, response, next) {
     response.locals.academicYear = AcademicYear[getCurrentAcademicYear()]
 
-    response.locals.programmes = Programme.findAll(request.session.data)
+    response.locals.programmes = Programme.findAll(request.session.data).filter(
+      (programme) => !programme.hidden
+    )
 
     next()
   },

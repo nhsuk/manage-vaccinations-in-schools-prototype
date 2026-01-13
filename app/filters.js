@@ -1,6 +1,7 @@
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import _ from 'lodash'
 
+import { ordinal } from './utils/number.js'
 import {
   formatHighlight,
   formatList,
@@ -64,6 +65,16 @@ export default (env) => {
         (match) => formatHighlight(match)
       )
     })
+  }
+
+  /**
+   * Ordinal
+   *
+   * @param {string} number - Number to get ordinal for
+   * @returns {string} Ordinal
+   */
+  filters.ordinal = (number) => {
+    return ordinal(number)
   }
 
   /**

@@ -335,6 +335,8 @@ export const PreScreenQuestion = {
  * @enum {string}
  */
 export const ProgrammeType = {
+  _4in1: '4-in-1',
+  _5in1: '5-in-1',
   Flu: 'Flu',
   HPV: 'HPV',
   TdIPV: 'Td/IPV',
