@@ -3,6 +3,16 @@
 {% set title = __("school.urn.title") %}
 
 {% block form %}
+  {{ errorSummary({
+    titleText: "There is a problem",
+    errorList: [
+      {
+        text: __("school.urn.error"),
+        href: "#school-urn-error"
+      }
+    ]
+  }) if data.error }}
+
   {{ appHeading({
     title: title
   }) }}
@@ -12,6 +22,7 @@
     label: {
       text: __("school.urn.label")
     },
-    decorate: "school.urn"
+    decorate: "school.urn",
+    errorMessage: { text: __("school.urn.error") } if data.error
   }) }}
 {% endblock %}

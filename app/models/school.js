@@ -16,8 +16,8 @@ import {
  * @augments Location
  * @param {object} options - Options
  * @param {object} [context] - Context
- * @property {boolean} [send] - SEND school
  * @property {string} [urn] - URN
+ * @property {boolean} [sen] - SEN school
  * @property {string} [site] - Site code
  * @property {import('../enums.js').SchoolPhase} [phase] - Phase
  * @property {Array<number>} [yearGroups] - Year groups
@@ -26,8 +26,8 @@ export class School extends Location {
   constructor(options, context) {
     super(options, context)
 
-    this.send = stringToBoolean(options?.send) || false
     this.urn = options?.urn && String(options.urn)
+    this.sen = stringToBoolean(options?.sen) || false
     this.site = options?.site
     this.phase = options?.phase
     this.yearGroups = options?.yearGroups || []
