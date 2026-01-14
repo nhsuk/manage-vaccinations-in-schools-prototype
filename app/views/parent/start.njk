@@ -7,7 +7,7 @@
     <div class="nhsuk-grid-column-two-thirds">
       {{ appHeading({
         size: "xl",
-        title: serviceName
+        title: __("consent.start.title." + session.presetNames[0])
       }) }}
 
       {% for programme in session.programmes %}

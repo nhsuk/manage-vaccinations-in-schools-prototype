@@ -1,10 +1,6 @@
 {% extends "_layouts/texts.njk" %}
 
-{% if session.programmes.length == 1 %}
-  {% set caption = __("consent.start.title.single", { session: session }) | safe %}
-{% else %}
-  {% set caption = __("consent.start.title.multiple", { session: session }) | safe %}
-{% endif %}
+{% set caption = __("consent.start.title." + session.presetNames[0]) | safe %}
 
 {% set placeholders = {
   programme: programme,
