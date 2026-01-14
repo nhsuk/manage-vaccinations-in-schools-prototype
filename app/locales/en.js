@@ -5,6 +5,7 @@ import {
   ReplyDecision,
   ReplyRefusal,
   ScreenOutcome,
+  SessionPresetName,
   UploadStatus
 } from '../enums.js'
 
@@ -264,10 +265,13 @@ export const en = {
     },
     start: {
       title: {
-        single:
-          'Give or refuse consent for a {{session.vaccinationNames.sentenceCase}}',
-        multiple:
-          'Give or refuse consent for the {{session.vaccinationNames.sentenceCase}}'
+        [SessionPresetName.Flu]: 'Give or refuse consent for a flu vaccination',
+        [SessionPresetName.Doubles]:
+          'Give or refuse consent for the MenACWY and Td/IPV vaccinations',
+        [SessionPresetName.MMR]:
+          'Give or refuse consent for an MMR catch-up vaccination',
+        [SessionPresetName.HPV]:
+          'Give or refuse consent for the HPV vaccination'
       },
       more: `Find out more about the {{programme.vaccineName.sentenceCase}}`,
       confirm: {
