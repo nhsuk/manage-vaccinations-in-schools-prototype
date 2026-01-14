@@ -6,14 +6,20 @@ export default {
     id: '4in1',
     name: '4-in-1',
     title: '4-in-1 pre-school booster',
-    hidden: true
+    hidden: true,
+    ttcv: true,
+    sequence: ['1P', '2P', '3P'],
+    sequenceDefault: '1P'
   },
   [ProgrammeType._5in1]: {
     type: ProgrammeType._5in1,
     id: '5in1',
     name: '5-in-1',
     title: '5-in-1',
-    hidden: true
+    hidden: true,
+    ttcv: true,
+    sequence: ['1B'],
+    sequenceDefault: '1B'
   },
   [ProgrammeType.Flu]: {
     type: ProgrammeType.Flu,
@@ -78,11 +84,12 @@ export default {
       url: 'https://www.gov.uk/government/publications/a-guide-to-the-3-in-1-teenage-booster-tdipv',
       hint: 'with links to information in other languages'
     },
-    sequence: ['1P', '2P', '3P', '1B', '2B'],
+    sequence: ['2B'],
     sequenceDefault: '2B',
     yearGroups: [9, 10, 11],
     targetYearGroup: 9,
     vaccine_smomeds: ['7374311000001101'],
+    ttcv: true,
     nhseSyncable: false
   },
   [ProgrammeType.MenACWY]: {

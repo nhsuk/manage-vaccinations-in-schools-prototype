@@ -2,6 +2,8 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { healthQuestions } from '../datasets/health-questions.js'
 
+import { ordinal } from './number.js'
+
 /**
  * kebab-case to camelCase
  *
@@ -381,6 +383,18 @@ export function formatParentalRelationship(parent) {
   if (!parent) return
 
   return parent.relationship || parent.fullName || 'Name unknown'
+}
+
+/**
+ * Format dose sequence
+ *
+ * @param {string} sequence - Dose sequence
+ * @returns {string|undefined} Formatted dose sequence
+ */
+export function formatSequence(sequence) {
+  if (!sequence) return
+
+  return `${ordinal(Number(sequence.charAt(0)))} dose`
 }
 
 /**

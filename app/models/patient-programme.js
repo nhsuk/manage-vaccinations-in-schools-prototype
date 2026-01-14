@@ -7,7 +7,10 @@ import {
   ProgrammeType
 } from '../enums.js'
 import { Patient, Programme, Vaccination } from '../models.js'
-import { getCurrentAcademicYear } from '../utils/date.js'
+import {
+  getCurrentAcademicYear,
+  getDateValueDifference
+} from '../utils/date.js'
 import { ordinal } from '../utils/number.js'
 import { getReportOutcome } from '../utils/patient-session.js'
 import { getPatientStatus } from '../utils/status.js'
@@ -172,6 +175,17 @@ export class PatientProgramme {
   }
 
   /**
+   * Get TTCV vaccinations given
+   *
+   * @returns {Array<import('./vaccination.js').Vaccination>|undefined} Vaccinations
+   */
+  get ttcvVaccinationsGiven() {
+    return this.patient?.vaccinations
+      .filter((vaccination) => vaccination.programme.ttcv)
+      .filter((vaccination) => vaccination.given)
+  }
+
+  /**
    * Get last vaccination outcome
    *
    * @returns {import('./vaccination.js').Vaccination} Vaccination
@@ -248,7 +262,7 @@ export class PatientProgramme {
     return this.programme.sequence[this.doseDue - 1]
   }
 
-  get ttcv() {
+  get ttcvVaccinations() {
     if (this.programme.type === ProgrammeType.TdIPV) {
       return [
         new Vaccination(
@@ -283,8 +297,8 @@ export class PatientProgramme {
           },
           this.context
         ),
-        ...this.vaccinationsGiven
-      ]
+        ...this.ttcvVaccinationsGiven
+      ].sort((a, b) => getDateValueDifference(a.createdAt, b.createdAt))
     }
   }
 

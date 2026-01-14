@@ -26,7 +26,6 @@ import {
   formatDate,
   today
 } from '../utils/date.js'
-import { ordinal } from '../utils/number.js'
 import {
   getVaccinationOutcomeStatus,
   getVaccinationSyncStatus
@@ -38,6 +37,7 @@ import {
   formatMillilitres,
   formatMarkdown,
   formatMonospace,
+  formatSequence,
   formatTag,
   stringToBoolean,
   formatWithSecondaryText
@@ -406,21 +406,12 @@ export class Vaccination {
    * @returns {object} Formatted values
    */
   get formatted() {
-    let sequence
-    if (this.sequence && this.programme?.sequence) {
-      sequence = this.programme.sequence.indexOf(this.sequence)
-      sequence = `${ordinal(Number(sequence) + 1)} dose`
-    }
-
     const programme = this.variant
       ? formatTag({
           text: 'MMRV',
           colour: 'transparent'
         })
       : this.programme?.nameTag
-
-    const sequenceText =
-      this.sequence && `${ordinal(Number(this.sequence.charAt(0)))} dose`
 
     return {
       createdAt: formatDate(this.createdAt, {
@@ -473,14 +464,14 @@ export class Vaccination {
       batch: this.batch?.summary,
       batch_id: formatMonospace(this.batch_id),
       dose: formatMillilitres(this.dose),
-      sequence,
+      sequence: this.sequence && formatSequence(this.sequence),
       vaccine_snomed: this.vaccine_snomed ? this.vaccine?.brand : 'Unknown',
       note: formatMarkdown(this.note),
       outcome: formatTag(getVaccinationOutcomeStatus(this.outcome)),
       programme,
       programmeWithSequence: formatWithSecondaryText(
         programme,
-        sequenceText,
+        formatSequence(this.sequence),
         false
       ),
       location: this.location || 'Unknown',

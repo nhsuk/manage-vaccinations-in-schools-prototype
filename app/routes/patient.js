@@ -23,7 +23,11 @@ router.get('/:patient_uuid/programmes{/:programme_id}', patient.showProgramme)
 
 router.get(
   '/:patient_uuid/programmes/:programme_id/new/vaccination',
-  patient.vaccination
+  patient.vaccination('new')
+)
+router.get(
+  '/:patient_uuid/programmes/:programme_id/new/ttcv',
+  patient.vaccination('ttcv')
 )
 
 router.get('/:patient_uuid{/:view}', patient.show)

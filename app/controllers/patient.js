@@ -361,36 +361,40 @@ export const patientController = {
     response.redirect(patient.uri)
   },
 
-  vaccination(request, response) {
-    const { account } = request.app.locals
-    const { programme_id } = request.params
-    const { data } = request.session
-    const { patient } = response.locals
+  vaccination(type) {
+    return (request, response) => {
+      const { account } = request.app.locals
+      const { programme_id } = request.params
+      const { data } = request.session
+      const { patient } = response.locals
 
-    const patientProgramme = new PatientProgramme(
-      patient.programmes[programme_id],
-      data
-    )
+      const patientProgramme = new PatientProgramme(
+        patient.programmes[programme_id],
+        data
+      )
 
-    // Vaccination
-    const vaccination = Vaccination.create(
-      {
-        outcome: VaccinationOutcome.AlreadyVaccinated,
-        sequence: patientProgramme.sequence,
-        patient_uuid: patient.uuid,
-        programme_id: patientProgramme.programme_id,
-        reportedBy_uid: account.uid
-      },
-      data.wizard
-    )
+      // Vaccination
+      const vaccination = Vaccination.create(
+        {
+          outcome: VaccinationOutcome.AlreadyVaccinated,
+          sequence: patientProgramme.sequence,
+          patient_uuid: patient.uuid,
+          reportedBy_uid: account.uid,
+          ...(type === 'new' && { programme_id })
+        },
+        data.wizard
+      )
 
-    let startPage = 'created-at'
-    if (patientProgramme.programme.type === ProgrammeType.MMR) {
-      startPage = 'variant'
+      let startPage = 'created-at'
+      if (!vaccination.programme_id) {
+        startPage = 'programme'
+      } else if (patientProgramme.programme.type === ProgrammeType.MMR) {
+        startPage = 'variant'
+      }
+
+      response.redirect(
+        `${patientProgramme.programme.uri}/vaccinations/${vaccination.uuid}/new/${startPage}?referrer=${patientProgramme.uri}`
+      )
     }
-
-    response.redirect(
-      `${patientProgramme.programme.uri}/vaccinations/${vaccination.uuid}/new/${startPage}?referrer=${patientProgramme.uri}`
-    )
   }
 }
