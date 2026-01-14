@@ -1,6 +1,4 @@
-import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import wizard from '@x-govuk/govuk-prototype-wizard'
-import _ from 'lodash'
 
 import {
   VaccinationMethod,
@@ -21,6 +19,7 @@ import {
   Vaccine
 } from '../models.js'
 import { today } from '../utils/date.js'
+import { formatSequence } from '../utils/string.js'
 
 export const vaccinationController = {
   read(request, response, next, vaccination_uuid) {
@@ -238,7 +237,6 @@ export const vaccinationController = {
     return (request, response, next) => {
       const { vaccination_uuid } = request.params
       const { data, referrer } = request.session
-      const { programme } = response.locals
 
       let vaccination
       if (type === 'edit') {
@@ -276,9 +274,24 @@ export const vaccinationController = {
               ...(!patientSession?.session?.address && {
                 [`/${vaccination_uuid}/${type}/location`]: {}
               }),
+              ...(!vaccination.programme
+                ? {
+                    [`/${vaccination_uuid}/${type}/programme`]: {
+                      [`/${vaccination_uuid}/${type}/sequence`]: {
+                        data: 'vaccination.programme_id',
+                        value: '4in1'
+                      }
+                    }
+                  }
+                : {}),
+              ...(vaccination?.programme?.sequence?.length > 1
+                ? {
+                    [`/${vaccination_uuid}/${type}/sequence`]: {}
+                  }
+                : {}),
               ...(vaccination?.outcome === VaccinationOutcome.AlreadyVaccinated
                 ? {
-                    ...(vaccination?.programme.type === ProgrammeType.MMR
+                    ...(vaccination?.programme?.type === ProgrammeType.MMR
                       ? {
                           [`/${vaccination_uuid}/${type}/variant`]: {}
                         }
@@ -327,12 +340,11 @@ export const vaccinationController = {
         }))
 
       response.locals.sequenceItems =
-        programme.sequence &&
-        Object.entries(programme.sequence).map(([index, value]) => {
-          const ordinal = prototypeFilters.ordinal(Number(index) + 1)
+        vaccination.programme?.sequence &&
+        Object.values(vaccination.programme?.sequence).map((sequence) => {
           return {
-            text: `${_.startCase(ordinal)} dose`,
-            value
+            text: formatSequence(sequence),
+            value: sequence
           }
         })
 
@@ -344,7 +356,7 @@ export const vaccinationController = {
         .sort((a, b) => a.text.localeCompare(b.text))
 
       response.locals.vaccineItems = Vaccine.findAll(data)
-        .filter((vaccine) => programme.type.includes(vaccine.type))
+        .filter((vaccine) => vaccination.programme?.type.includes(vaccine.type))
         .map((vaccine) => ({
           text: vaccine.brandWithType,
           value: vaccine.snomed

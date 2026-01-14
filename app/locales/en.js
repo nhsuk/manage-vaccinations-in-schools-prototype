@@ -1,6 +1,5 @@
 import { healthQuestions } from '../datasets/health-questions.js'
 import {
-  ProgrammeType,
   RegistrationOutcome,
   ReplyDecision,
   ReplyRefusal,
@@ -2330,7 +2329,8 @@ export const en = {
       },
       alreadyVaccinated: {
         title: 'Record as already vaccinated',
-        dose: 'Record %s dose as already given'
+        dose: 'Record %s dose as already given',
+        ttcv: 'Record a previous TTCV vaccination'
       },
       notGiven: {
         title: 'Vaccination was not given'
@@ -2436,7 +2436,8 @@ export const en = {
       label: 'TTCV dose'
     },
     programme: {
-      label: 'Programme'
+      label: 'Programme',
+      title: 'Which programme was this vaccination given for?'
     },
     protocol: {
       label: 'Protocol'
@@ -2467,11 +2468,7 @@ export const en = {
     },
     sequence: {
       label: 'Dose sequence',
-      title: {
-        [ProgrammeType.HPV]: 'Which does of the HPV vaccination was this?',
-        [ProgrammeType.TdIPV]:
-          'Which dose of a tetanus-containing vaccine was this?'
-      }
+      title: 'Which dose of the %s vaccination was this?'
     },
     vaccine_snomed: {
       title: 'Which vaccine was given?',
