@@ -48,7 +48,7 @@ export const en = {
       success: 'Default batch updated'
     },
     id: {
-      label: 'Default batch ID',
+      label: 'Default batch number',
       title: 'Default to this batch for this session'
     }
   },
@@ -135,7 +135,7 @@ export const en = {
       hint: 'For example, 27 10 2025'
     },
     id: {
-      label: 'Batch ID'
+      label: 'Batch number'
     }
   },
   clinic: {
@@ -2443,13 +2443,13 @@ export const en = {
       label: 'Protocol'
     },
     batch: {
-      label: 'Batch',
-      title: 'Batch'
+      label: 'Batch number',
+      title: 'Batch number'
     },
     batch_id: {
       title:
         'Which batch did you use for the {{vaccination.programme.name}} vaccination?',
-      label: 'Batch ID'
+      label: 'Batch number'
     },
     note: {
       label: 'Notes',
@@ -2524,7 +2524,7 @@ export const en = {
       success: 'Vaccine deleted'
     },
     id: {
-      label: 'Batch'
+      label: 'Batch number'
     },
     createdAt: {
       label: 'Entered date'
