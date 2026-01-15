@@ -6,7 +6,7 @@ import {
   PatientStatus,
   ProgrammeType
 } from '../enums.js'
-import { Patient, Programme, Vaccination } from '../models.js'
+import { AuditEvent, Patient, Programme, Vaccination } from '../models.js'
 import {
   getCurrentAcademicYear,
   getDateValueDifference
@@ -95,9 +95,11 @@ export class PatientProgramme {
    * @returns {Array<import('./audit-event.js').AuditEvent>} Audit events
    */
   get auditEvents() {
-    return this.patient.auditEvents.filter(({ programme_ids }) =>
-      programme_ids?.some((id) => this.programme_id === id)
-    )
+    return this.patient.events
+      .map((auditEvent) => new AuditEvent(auditEvent, this.context))
+      .filter(({ programme_ids }) =>
+        programme_ids?.some((id) => this.programme_id === id)
+      )
   }
 
   /**
