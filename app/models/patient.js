@@ -7,6 +7,7 @@ import { AuditEventType, NoticeType } from '../enums.js'
 import {
   AuditEvent,
   Child,
+  Move,
   Parent,
   PatientProgramme,
   PatientSession,
@@ -178,15 +179,56 @@ export class Patient extends Child {
     return [...parents.values()]
   }
 
+  get recordEvents() {
+    const recordEvents = []
+
+    recordEvents.push(
+      new AuditEvent({
+        type: AuditEventType.Record,
+        name: 'Child record imported',
+        createdAt: '2025-08-01T12:00:00'
+      })
+    )
+
+    if (this.sensitive) {
+      recordEvents.push(
+        new AuditEvent({
+          type: AuditEventType.Record,
+          name: 'Record flagged as sensitive',
+          createdAt: '2025-08-01T12:00:00'
+        })
+      )
+    }
+
+    const move = Move.findAll(this.context).find(
+      (move) => move.patient_uuid === this.uuid
+    )
+
+    if (move) {
+      recordEvents.push(
+        new AuditEvent({
+          type: AuditEventType.Record,
+          // Fake it to make it look like school move has already occurred
+          name: `Moved from ${move.formatted.to_urn} to ${move.formatted.from_urn}`,
+          createdAt: move.createdAt
+        })
+      )
+    }
+
+    return recordEvents
+  }
+
   /**
    * Get audit events
    *
    * @returns {Array<AuditEvent>} Audit events
    */
   get auditEvents() {
-    return this.events.map(
-      (auditEvent) => new AuditEvent(auditEvent, this.context)
-    )
+    const events = [...this.events, ...this.recordEvents]
+
+    return events
+      .map((auditEvent) => new AuditEvent(auditEvent, this.context))
+      .filter(({ type }) => type === AuditEventType.Record)
   }
 
   /**
@@ -484,6 +526,18 @@ export class Patient extends Child {
     const updatedPatient = _.merge(Patient.findOne(uuid, context), updates)
     updatedPatient.updatedAt = today()
 
+    // Add update to activity log (but only when updating wizard context)
+    // TODO: Make this work with nested values like date of birth
+    if (Object.keys(context.patients).length === 1) {
+      for (const [key, value] of Object.entries(updates)) {
+        updatedPatient.addEvent({
+          name: `Updated \`${key}\` to **${value}**`,
+          type: AuditEventType.Record,
+          createdAt: updatedPatient.updatedAt
+        })
+      }
+    }
+
     // Remove patient context
     delete updatedPatient.context
 
@@ -520,6 +574,7 @@ export class Patient extends Child {
     archivedPatient.addEvent({
       name: `Record archived: ${archive.archiveReason}`,
       note: archive.archiveReasonOther,
+      type: AuditEventType.Record,
       createdBy_uid: archive.createdBy_uid
     })
 

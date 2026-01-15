@@ -115,4 +115,12 @@
     ],
     rows: patientProgrammeRows
   }) }}
+
+  {{ card({
+    heading: __("patient.auditEvents.label"),
+    headingLevel: 3,
+    descriptionHtml: appTimeline({
+      items: timelineItems(patient.auditEvents)
+    })
+  }) if patient.auditEvents.length }}
 {% endblock %}

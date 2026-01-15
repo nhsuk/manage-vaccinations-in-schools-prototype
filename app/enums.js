@@ -53,7 +53,8 @@ export const AuditEventType = {
   Note: 'Session note',
   Notice: 'Notice',
   Pinned: 'Pinned session note',
-  Reminder: 'Reminder'
+  Reminder: 'Reminder',
+  Record: 'Change to child record'
 }
 
 /**
