@@ -919,8 +919,8 @@ export const en = {
         hint: 'This will merge the duplicate records into a single record'
       }
     },
-    events: {
-      title: 'Activity log'
+    auditEvents: {
+      label: 'Activity log'
     },
     pds: {
       title: 'NHS number lookup history',

@@ -9,9 +9,10 @@ import {
 import { Location, User } from './models.js'
 import { getSessionActivityCount } from './utils/session.js'
 import {
+  camelToKebabCase,
   formatHealthAnswer,
   formatLink,
-  camelToKebabCase
+  formatMarkdown
 } from './utils/string.js'
 
 /**
@@ -106,7 +107,7 @@ export default () => {
 
     for (const auditEvent of Object.values(auditEvents)) {
       timelineItems.push({
-        headingText: auditEvent.name,
+        headingText: formatMarkdown(auditEvent.name),
         isPastItem: auditEvent.isPastEvent,
         html: auditEvent.formatted?.note,
         description: filters.safe(auditEvent.formatted.createdAtAndBy)
