@@ -21,13 +21,16 @@
 
   <div class="nhsuk-grid-row">
     <div class="app-grid-column-patient-record" data-module="app-sticky">
-      {{ appHeading({
-        level: 3,
-        size: "s",
-        title: patientSession.patient.fullName
-      }) }}
       {{ summaryList({
-        classes: "nhsuk-u-margin-bottom-2 nhsuk-summary-list--no-border app-summary-list--full-width",
+        card: {
+          heading: patientSession.patient.fullName,
+          headingClasses: "nhsuk-u-margin-bottom-2",
+          headingLevel: 3,
+          headingSize: "s",
+          href: patient.uri + "?referrer=" + referrer,
+          secondary: true
+        },
+        classes: "nhsuk-summary-list--no-border app-summary-list--full-width",
         rows: summaryRows(patient, {
           nhsn: {
             changeLabel: "the child’s NHS number",
@@ -37,7 +40,8 @@
           address: {}
         })
       }) }}
-      {{ link(patient.uri + "?referrer=" + referrer, "View full child record") | nhsukMarkdown }}
+
+      {{ link(patient.uri + "/programmes/" + programme.id + "?referrer=" + referrer, __("patientSession.patientProgramme.label", programme.nameSentenceCase)) | nhsukMarkdown }}
     </div>
 
     <div class="app-grid-column-patient-session">

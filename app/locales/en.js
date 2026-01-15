@@ -1039,6 +1039,9 @@ export const en = {
     pinnedNote: {
       label: 'Session note'
     },
+    patientProgramme: {
+      label: 'View %s record'
+    },
     consent: {
       label: 'Consent status',
       title: 'Consent for %s vaccination'
