@@ -303,9 +303,6 @@ export class Reply {
       }
     }
 
-    // Always ask support question last
-    healthQuestionsForDecision.set('support', {})
-
     return Object.fromEntries(healthQuestionsForDecision)
   }
 

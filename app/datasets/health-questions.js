@@ -140,12 +140,6 @@ export const healthQuestions = {
     options: false,
     detailsHint: false
   },
-  support: {
-    label: 'Does the child need extra support during vaccination sessions?',
-    hint: 'For example, they’re autistic, or extremely anxious',
-    options: false,
-    detailsHint: false
-  },
   vaccinationInLastMonth: {
     label: 'Has the child had any vaccinations in the last month?',
     hint: false,
