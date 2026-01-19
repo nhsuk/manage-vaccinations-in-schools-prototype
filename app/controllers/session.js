@@ -334,6 +334,7 @@ export const sessionController = {
     for (const key of [
       'archived',
       'hasImpairment',
+      'hasAdjustment',
       'hasMissingNhsNumber',
       'post16'
     ]) {
