@@ -39,7 +39,6 @@ export default {
       'immuneSystemCloseContact': {},
       'eggAllergy': {},
       'anaphylaxisNasalFlu': {},
-      'medicalConditions': {},
       'aspirin': {},
       'recentFluVaccination': {}
     },
@@ -79,7 +78,6 @@ export default {
     healthQuestions: {
       'bleeding': {},
       'anaphylaxisInjectedFlu': {},
-      'medicalConditions': {},
       'recentFluVaccination': {}
     },
     preScreenQuestions: [
@@ -115,8 +113,7 @@ export default {
       'allergy': {},
       'bleeding': {},
       'bloodThinning': {},
-      'immuneSystemHpv': {},
-      'medicalConditions': {}
+      'immuneSystemHpv': {}
     },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
@@ -227,8 +224,7 @@ export default {
       'previousReactionMmr': {},
       'previousReactionNeomycinGelatine': {},
       'immuneSystem': {},
-      'immunisations': {},
-      'medicalConditions': {}
+      'immunisations': {}
     },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,
@@ -262,8 +258,7 @@ export default {
       'previousReactionMmr': {},
       'previousReactionNeomycinGelatine': {},
       'immuneSystem': {},
-      'immunisations': {},
-      'medicalConditions': {}
+      'immunisations': {}
     },
     preScreenQuestions: [
       PreScreenQuestion.IsWell,

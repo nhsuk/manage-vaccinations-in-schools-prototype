@@ -99,13 +99,6 @@ export const healthQuestions = {
     options: false,
     detailsHint: false
   },
-  medicalConditions: {
-    label:
-      'Does the child have any other medical conditions we should know about?',
-    hint: false,
-    options: false,
-    detailsHint: false
-  },
   previousReaction: {
     label:
       'Has the child ever had a severe reaction to any medicines, including vaccines?',

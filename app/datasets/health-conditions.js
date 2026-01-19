@@ -1,19 +1,5 @@
 export const healthConditions = {
-  adhd: {
-    medicalConditions:
-      'My child was diagnosed with ADHD and has difficulty focusing and paying attention.',
-    triageNote:
-      'Spoke with parent, child diagnosed with ADHD and takes medication. Vaccinator should be aware of child’s condition and accommodate by allowing extra time for the child to settle, using clear communication and providing a calm environment. Monitor for any adverse reactions during and after vaccine administration.'
-  },
-  anaemia: {
-    medicalConditions:
-      'My child was diagnosed with anaemia and has low iron levels.',
-    triageNote:
-      'Spoke with parent, child diagnosed with anaemia and takes iron supplements. Vaccinator needs to be aware and ensure iron levels are monitored during and after vaccine administration.'
-  },
   anxietyDisorder: {
-    medicalConditions:
-      'My child has an anxiety disorder and experiences excessive worry and fear on a regular basis.',
     support:
       'My child becomes extremely anxious in public settings. I’d like for them to be vaccinated in a private space and not rushed through the vaccination.',
     triageNote:
@@ -35,8 +21,6 @@ export const healthConditions = {
       'Spoke with parent. Safe to vaccinate, but monitor for adverse reactions'
   },
   autism: {
-    medicalConditions:
-      'My child has autism spectrum disorder and has difficulty with social interactions and communication.',
     support:
       'My child becomes extremely anxious in public settings. I’d like for them to be vaccinated in a private space and not rushed through the vaccination.',
     triageNote:
@@ -61,14 +45,10 @@ export const healthConditions = {
   bleedingDisorder: {
     bleeding:
       'My child has frequent nose bleeds, but our doctor says its nothing to be worried about.',
-    medicalConditions:
-      'My child has a bleeding disorder and can easily bruise or bleed.',
     triageNote:
       'Spoke with parent, child has bleeding disorder and takes medication to manage. Vaccinator needs to be aware and cautious when administering vaccine to prevent excessive bleeding.'
   },
   chronicIllness: {
-    medicalConditions:
-      'My child has a chronic illness and requires ongoing medical treatment.',
     immunosuppressant:
       'My child takes immunosuppressant medication to manage their chronic illness and prevent complications.',
     support:
@@ -76,16 +56,8 @@ export const healthConditions = {
     triageNote:
       'Spoke with parent. Safe to vaccinate, but monitor for adverse reactions'
   },
-  chronicPain: {
-    medicalConditions:
-      'My child has chronic pain due to a previous injury and struggles with discomfort daily.',
-    triageNote:
-      'Spoke with parent, child has chronic pain due to previous injury and takes medication. Vaccinator should be aware of child’s condition and take extra care during vaccine administration to minimize any discomfort. Monitor for any adverse reactions during and after vaccine administration.'
-  },
   coeliacDisease: {
     eggAllergy:
-      'My child has coeliac disease and must follow a strict gluten-free diet.',
-    medicalConditions:
       'My child has coeliac disease and must follow a strict gluten-free diet.',
     triageNote:
       'Spoke with parent. Safe to vaccinate, but monitor for adverse reactions'
@@ -96,37 +68,9 @@ export const healthConditions = {
     triageNote:
       'Spoke with parent. Child has sufficiently recovered. It is safe to vaccinate'
   },
-  depression: {
-    medicalConditions:
-      'My child has depression and experiences feelings of sadness and hopelessness on a regular basis.',
-    triageNote:
-      'Spoke with parent. Child has depression, takes medication to manage it, has made progress with therapy. No medical issues that would impact vaccine administration. It is safe to vaccinate.'
-  },
-  diabetes: {
-    medicalConditions:
-      'My child has type 1 diabetes and requires daily insulin injections.',
-    triageNote: 'Spoke with parent, it is safe to vaccinate'
-  },
   dogBite: {
     recentTdIpvVaccination:
       'My child was bitten by a dog last summer and got a Tetanus jab when we visited A&E.'
-  },
-  dyslexia: {
-    medicalConditions:
-      'My child has dyslexia and has difficulty with reading and writing.',
-    triageNote:
-      'Spoke with parent. Child has dyslexia, does not take medication for it, receives extra support in school. No medical issues that would impact vaccine administration. It is safe to vaccinate.'
-  },
-  eczema: {
-    medicalConditions:
-      'My child has eczema and has skin irritation and redness on a regular basis.',
-    triageNote:
-      'Spoke with parent. Safe to vaccinate, but monitor for adverse reactions'
-  },
-  epilepsy: {
-    medicalConditions:
-      'My child has epilepsy and has seizures on a regular basis.',
-    triageNote: 'Spoke with parent, it is safe to vaccinate'
   },
   fainting: {
     previousReaction:
@@ -144,30 +88,15 @@ export const healthConditions = {
     triageNote:
       'Spoke with parent. Safe to vaccinate, but monitor for adverse reactions'
   },
-  heartCondition: {
-    medicalConditions:
-      'My child was born with a heart condition and has had several surgeries to repair it.',
-    triageNote: 'Spoke with parent, it is safe to vaccinate'
-  },
   learningDisability: {
-    medicalConditions:
-      'My child has a learning disability and has difficulty with reading, writing, and other academic skills.',
     support:
       'My child becomes extremely anxious in public settings. I’d like for them to be vaccinated in a private space and not rushed through the vaccination.',
     triageNote:
       'Vaccinator should be aware of the child’s learning disability and provide appropriate support to ensure a smooth vaccination experience'
   },
-  migraines: {
-    medicalConditions:
-      'My child suffers from migraines and has severe headaches on a regular basis.',
-    triageNote:
-      'Spoke with parent. Safe to vaccinate, but monitor for adverse reactions'
-  },
   nutAllergy: {
     allergy:
       'My child has a severe nut allergy and has had an anaphylactic reaction in the past. This is something that is extremely important to me and my husband. We make sure to always have an EpiPen on hand and have educated our child about their allergy.',
-    medicalConditions:
-      'My child has a severe nut allergy, which is their only existing medical condition that we are aware of.',
     triageNote:
       'Spoke with parent. Safe to vaccinate, but monitor for adverse reactions'
   },
