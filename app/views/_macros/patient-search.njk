@@ -221,6 +221,10 @@
             text: __("patient.search.archived")
           },
           {
+            value: "hasImpairment",
+            html: __("patient.search.hasImpairment")
+          },
+          {
             value: "hasMissingNhsNumber",
             html: __("patient.search.hasMissingNhsNumber")
           },
@@ -237,7 +241,7 @@
 
     {{ details({
       summaryText: __("search.advanced"),
-      open: true if data.options,
+      open: true if data.option,
       html: searchDetailsHtml
     }) }}
 

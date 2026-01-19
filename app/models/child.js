@@ -5,7 +5,8 @@ import {
   EthnicBackgroundMixed,
   EthnicBackgroundOther,
   EthnicBackgroundWhite,
-  EthnicGroup
+  EthnicGroup,
+  Impairment
 } from '../enums.js'
 import {
   convertIsoDateToObject,
@@ -14,7 +15,7 @@ import {
   getAge,
   getYearGroup
 } from '../utils/date.js'
-import { formatYearGroup } from '../utils/string.js'
+import { formatList, formatYearGroup, stringToArray } from '../utils/string.js'
 
 /**
  * @class Child
@@ -29,10 +30,12 @@ import { formatYearGroup } from '../utils/string.js'
  * @property {object} [dob_] - Date of birth (from `dateInput`)
  * @property {Date} [dod] - Date of death
  * @property {import('../enums.js).Gender} gender - Gender
- * @property {EthnicGroup')} [ethnicGroup] - Ethnic group
+ * @property {EthnicGroup)} [ethnicGroup] - Ethnic group
  * @property {string} [ethnicGroupOther] - Other ethnic group
  * @property {import('../enums.js).EthnicBackground')} [ethnicBackground] - Ethnic background
  * @property {string} [ethnicBackgroundOther] - Other ethnic background
+ * @property {Array<Impairment>} [impairments] - Impairments
+ * @property {string} [impairmentsOther] - Other impairment
  * @property {boolean} [immunocompromised] - Immunocompromised
  * @property {object} [address] - Address
  * @property {string} [gpSurgery] - GP surgery
@@ -52,6 +55,8 @@ export class Child {
     this.gender = options?.gender
     this.ethnicGroup = options?.ethnicGroup
     this.ethnicBackground = options?.ethnicBackground
+    this.impairments =
+      (options?.impairments && stringToArray(options.impairments)) || []
     this.immunocompromised = options?.immunocompromised
     this.address = options?.address
     this.gpSurgery = options?.gpSurgery
@@ -72,6 +77,10 @@ export class Child {
       ].includes(this.ethnicBackground)
     ) {
       this.ethnicBackgroundOther = options?.ethnicBackgroundOther
+    }
+
+    if (this.impairments.includes(Impairment.Other)) {
+      this.impairmentsOther = options?.impairmentsOther
     }
   }
 
@@ -261,7 +270,8 @@ export class Child {
             ? `${yearGroup} (${this.registrationGroup})`
             : yearGroup,
         school: this?.school && this.school.name
-      })
+      }),
+      impairments: this.impairments && formatList(this.impairments)
     }
   }
 
