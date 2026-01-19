@@ -200,6 +200,9 @@ export const en = {
     ethnicity: {
       label: 'Ethnicity'
     },
+    adjustments: {
+      label: 'Reasonable adjustments'
+    },
     impairments: {
       label: 'Impairments'
     },
@@ -355,6 +358,40 @@ export const en = {
       },
       ethnicBackgroundOther: {
         label: 'How would you describe your child’s background? (optional)'
+      },
+      adjustments: {
+        label: 'Reasonable adjustments',
+        title:
+          'Will your child need any of the following adjustments during their vaccination?',
+        guideDog: {
+          label: 'A guide dog'
+        },
+        distraction: {
+          label: 'A distraction while having the vaccination'
+        },
+        extendedAppointment: {
+          label: 'An extended appointment'
+        },
+        firstAppointment: {
+          label: 'The first appointment'
+        },
+        lastAppointment: {
+          label: 'The last appointment'
+        },
+        privacy: {
+          label: 'A private space',
+          hint: 'Most vaccinations are held in large, open spaces'
+        },
+        homeVisit: {
+          label: 'A home visit'
+        },
+        other: {
+          label: 'Other'
+        }
+      },
+      adjustmentsOther: {
+        label: 'Other reasonable adjustment',
+        title: 'Give details'
       },
       impairments: {
         label: 'Impairments',
@@ -903,6 +940,7 @@ export const en = {
       dob: 'Child’s date of birth',
       showOnly: 'Show only',
       archived: 'Archived records',
+      hasAdjustment: 'Children needing reasonable adjustments',
       hasImpairment: 'Children with impairments',
       hasMissingNhsNumber: 'Children missing an NHS&nbsp;number',
       post16: 'Children aged out of programmes'
@@ -958,6 +996,9 @@ export const en = {
     gender: {
       label: 'Gender',
       title: 'What is the child’s gender?'
+    },
+    adjustments: {
+      label: 'Reasonable adjustments'
     },
     impairments: {
       label: 'Impairments'

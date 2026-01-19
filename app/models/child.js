@@ -1,5 +1,6 @@
 import schools from '../datasets/schools.js'
 import {
+  Adjustment,
   EthnicBackgroundAsian,
   EthnicBackgroundBlack,
   EthnicBackgroundMixed,
@@ -34,6 +35,7 @@ import { formatList, formatYearGroup, stringToArray } from '../utils/string.js'
  * @property {string} [ethnicGroupOther] - Other ethnic group
  * @property {import('../enums.js).EthnicBackground')} [ethnicBackground] - Ethnic background
  * @property {string} [ethnicBackgroundOther] - Other ethnic background
+ * @property {Array<Adjustment>} [adjustments] - Reasonable adjustments
  * @property {Array<Impairment>} [impairments] - Impairments
  * @property {string} [impairmentsOther] - Other impairment
  * @property {boolean} [immunocompromised] - Immunocompromised
@@ -55,6 +57,8 @@ export class Child {
     this.gender = options?.gender
     this.ethnicGroup = options?.ethnicGroup
     this.ethnicBackground = options?.ethnicBackground
+    this.adjustments =
+      (options?.adjustments && stringToArray(options.adjustments)) || []
     this.impairments =
       (options?.impairments && stringToArray(options.impairments)) || []
     this.immunocompromised = options?.immunocompromised
@@ -77,6 +81,10 @@ export class Child {
       ].includes(this.ethnicBackground)
     ) {
       this.ethnicBackgroundOther = options?.ethnicBackgroundOther
+    }
+
+    if (this.adjustments.includes(Adjustment.Other)) {
+      this.adjustmentsOther = options?.adjustmentsOther
     }
 
     if (this.impairments.includes(Impairment.Other)) {
@@ -271,6 +279,7 @@ export class Child {
             : yearGroup,
         school: this?.school && this.school.name
       }),
+      adjustments: this.adjustments && formatList(this.adjustments),
       impairments: this.impairments && formatList(this.impairments)
     }
   }

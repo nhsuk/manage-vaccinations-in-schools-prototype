@@ -117,6 +117,15 @@ export class Patient extends Child {
   }
 
   /**
+   * Needs reasonable adjustments(s)
+   *
+   * @returns {boolean} Needs reasonable adjustments(s)
+   */
+  get hasAdjustment() {
+    return this.adjustments.length > 0
+  }
+
+  /**
    * Has impairment(s)
    *
    * @returns {boolean} Has impairment(s)

@@ -22,6 +22,21 @@ export const AcademicYear = {
  * @readonly
  * @enum {string}
  */
+export const Adjustment = {
+  GuideDog: 'Has a guide dog',
+  Distraction: 'Needs a distraction while having the vaccination',
+  ExtendedAppointment: 'Needs an extended appointment',
+  FirstAppointment: 'Needs the first appointment',
+  LastAppointment: 'Needs the last appointment',
+  Privacy: 'Needs a private space',
+  HomeVisit: 'Needs a home visit',
+  Other: 'Other reasonable adjustment'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const ArchiveRecordReason = {
   Deceased: 'The child was reported as deceased',
   Duplicate: 'It’s a duplicate',

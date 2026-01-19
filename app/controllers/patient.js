@@ -151,6 +151,7 @@ export const patientController = {
     for (const key of [
       'archived',
       'hasImpairment',
+      'hasAdjustment',
       'hasMissingNhsNumber',
       'post16'
     ]) {

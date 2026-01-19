@@ -191,6 +191,7 @@ export const schoolController = {
     for (const key of [
       'archived',
       'hasImpairment',
+      'hasAdjustment',
       'hasMissingNhsNumber',
       'post16'
     ]) {

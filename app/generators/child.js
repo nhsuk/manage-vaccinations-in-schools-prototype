@@ -3,7 +3,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import gpSurgeries from '../datasets/clinics.js'
 import firstNames from '../datasets/first-names.js'
 import schools from '../datasets/schools.js'
-import { Gender, Impairment } from '../enums.js'
+import { Adjustment, Gender, Impairment } from '../enums.js'
 import { Child } from '../models.js'
 import { getCurrentAcademicYear, getYearGroup } from '../utils/date.js'
 
@@ -40,6 +40,25 @@ export function generateChild() {
   if (impairments?.includes(Impairment.Other)) {
     impairmentsOther =
       'My child has a chronic illness and requires ongoing medical treatment.'
+  }
+
+  // Adjustments
+  let adjustments
+  if (faker.datatype.boolean(0.2)) {
+    adjustments = [
+      faker.helpers.weightedArrayElement([
+        { value: Adjustment.Distraction, weight: 2 },
+        { value: Adjustment.ExtendedAppointment, weight: 1 },
+        { value: Adjustment.FirstAppointment, weight: 3 },
+        { value: Adjustment.LastAppointment, weight: 3 },
+        { value: Adjustment.Privacy, weight: 3 },
+        { value: Adjustment.HomeVisit, weight: 2 }
+      ])
+    ]
+  }
+
+  if (impairments?.includes(Impairment.Vision)) {
+    adjustments = [Adjustment.GuideDog]
   }
 
   // Name
@@ -143,6 +162,7 @@ export function generateChild() {
     lastName,
     dob,
     gender,
+    adjustments,
     impairments,
     impairmentsOther,
     immunocompromised: faker.datatype.boolean(0.1),

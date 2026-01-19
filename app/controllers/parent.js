@@ -163,6 +163,7 @@ export const parentController = {
       }),
       ...getHealthQuestionPaths(`/${session_id}/${consent_uuid}/new/`, consent),
       [`/${session_id}/${consent_uuid}/new/impairments`]: {},
+      [`/${session_id}/${consent_uuid}/new/adjustments`]: {},
       [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
       [`/${session_id}/${consent_uuid}/new/ethnicity`]: {
         [`/${session_id}/${consent_uuid}/new/ethnic-group`]: {
