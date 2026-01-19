@@ -3,7 +3,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import gpSurgeries from '../datasets/clinics.js'
 import firstNames from '../datasets/first-names.js'
 import schools from '../datasets/schools.js'
-import { Gender } from '../enums.js'
+import { Gender, Impairment } from '../enums.js'
 import { Child } from '../models.js'
 import { getCurrentAcademicYear, getYearGroup } from '../utils/date.js'
 
@@ -20,6 +20,27 @@ export function generateChild() {
     { value: Gender.NotKnown, weight: 1 },
     { value: Gender.NotSpecified, weight: 1 }
   ])
+
+  // Impairments
+  let impairments
+  if (faker.datatype.boolean(0.2)) {
+    impairments = [
+      faker.helpers.weightedArrayElement([
+        { value: Impairment.Vision, weight: 1 },
+        { value: Impairment.Hearing, weight: 2 },
+        { value: Impairment.Mobility, weight: 1 },
+        { value: Impairment.Memory, weight: 1 },
+        { value: Impairment.MentalHealth, weight: 3 },
+        { value: Impairment.Communicative, weight: 4 }
+      ])
+    ]
+  }
+
+  let impairmentsOther
+  if (impairments?.includes(Impairment.Other)) {
+    impairmentsOther =
+      'My child has a chronic illness and requires ongoing medical treatment.'
+  }
 
   // Name
   const firstName = faker.helpers.arrayElement(firstNames[gender])
@@ -122,6 +143,8 @@ export function generateChild() {
     lastName,
     dob,
     gender,
+    impairments,
+    impairmentsOther,
     immunocompromised: faker.datatype.boolean(0.1),
     address: {
       addressLine1: faker.location.streetAddress(),

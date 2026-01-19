@@ -117,6 +117,15 @@ export class Patient extends Child {
   }
 
   /**
+   * Has impairment(s)
+   *
+   * @returns {boolean} Has impairment(s)
+   */
+  get hasImpairment() {
+    return this.impairments.length > 0
+  }
+
+  /**
    * Get full name, formatted as LASTNAME, Firstname
    *
    * @returns {string} Full name

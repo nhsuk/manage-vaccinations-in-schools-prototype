@@ -200,6 +200,9 @@ export const en = {
     ethnicity: {
       label: 'Ethnicity'
     },
+    impairments: {
+      label: 'Impairments'
+    },
     address: {
       label: 'Home address'
     },
@@ -352,6 +355,32 @@ export const en = {
       },
       ethnicBackgroundOther: {
         label: 'How would you describe your child’s background? (optional)'
+      },
+      impairments: {
+        label: 'Impairments',
+        title: 'Does your child have any of the following impairments?',
+        vision: {
+          hint: 'For example, blindness or partial sight'
+        },
+        hearing: {
+          hint: 'For example, deafness or partial hearing'
+        },
+        mobility: {
+          hint: 'For example, difficulty walking or climbing stairs'
+        },
+        memory: {
+          hint: 'For example, difficulty remembering or understanding information'
+        },
+        mentalHealth: {
+          hint: 'For example, anxiety'
+        },
+        communicative: {
+          hint: 'For example, related to autism or ADHD (attention deficit hyperactivity disorder)'
+        }
+      },
+      impairmentsOther: {
+        label: 'Other impairment',
+        title: 'Give details'
       },
       'confirm-school': {
         title: 'Confirm your child’s school',
@@ -874,6 +903,7 @@ export const en = {
       dob: 'Child’s date of birth',
       showOnly: 'Show only',
       archived: 'Archived records',
+      hasImpairment: 'Children with impairments',
       hasMissingNhsNumber: 'Children missing an NHS&nbsp;number',
       post16: 'Children aged out of programmes'
     },
@@ -928,6 +958,9 @@ export const en = {
     gender: {
       label: 'Gender',
       title: 'What is the child’s gender?'
+    },
+    impairments: {
+      label: 'Impairments'
     },
     address: {
       label: 'Address',

@@ -188,7 +188,12 @@ export const schoolController = {
     }
 
     // Filter by display option
-    for (const key of ['archived', 'hasMissingNhsNumber', 'post16']) {
+    for (const key of [
+      'archived',
+      'hasImpairment',
+      'hasMissingNhsNumber',
+      'post16'
+    ]) {
       if (option?.includes(key)) {
         results = results.filter((patient) => patient[key])
       }

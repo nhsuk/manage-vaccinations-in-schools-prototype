@@ -183,6 +183,20 @@ export const GillickCompetent = {
  * @readonly
  * @enum {string}
  */
+export const Impairment = {
+  Vision: 'Vision',
+  Hearing: 'Hearing',
+  Mobility: 'Mobility',
+  Memory: 'Memory',
+  MentalHealth: 'Mental health',
+  Communicative: 'Social and/or communication differences',
+  Other: 'Other'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const InstructionOutcome = {
   Given: 'PSD added',
   Needed: 'PSD not added'

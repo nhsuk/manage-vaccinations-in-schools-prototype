@@ -120,16 +120,16 @@
       dob: {
         href: editPath("dob")
       },
-      ethnicity: {
-        href: editPath("ethnic-group")
-      },
       address: {
         href: editPath("address")
       } if consent.given,
       school: {
         value: consent.child.formatted.school or session.location.name,
         href: editPath("school")
-      } if session.type === SessionType.School
+      } if session.type === SessionType.School,
+      impairments: {
+        href: editPath("impairments")
+      }
     })
   }) }}
 
