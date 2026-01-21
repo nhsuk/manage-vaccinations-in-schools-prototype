@@ -25,6 +25,9 @@
             header: __("school.name.label"),
             html: school.formatted.nameAndAddress or "Not provided"
           }, {
+            header: __("school.urn.label"),
+            html: school.formatted.id or "Not provided"
+          }, {
             header: __("actions.label"),
             html: appActionList({
               items: [{
@@ -56,6 +59,7 @@
         },
         head: [
           { text: __("school.name.label") },
+          { text: __("school.urn.label") },
           { text: __("actions.label") }
         ],
         rows: schoolRows
