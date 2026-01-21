@@ -60,18 +60,6 @@
       decorate: "status"
     }) }}
 
-    {{ radios({
-      classes: "nhsuk-radios--small",
-      fieldset: {
-        legend: {
-          classes: "nhsuk-fieldset__legend--s",
-          text: __("session.type.label")
-        }
-      },
-      items: radioFilterItems(SessionType),
-      decorate: "type"
-    }) }}
-
     {{ appButtonGroup({
       buttons: [{
         classes: "nhsuk-button--secondary nhsuk-button--small",

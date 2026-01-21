@@ -53,7 +53,7 @@
       "./node_modules/govuk-frontend/dist",
       "./node_modules/@x-govuk/govuk-prototype-components/src"
     ],
-    "serviceName": "Manage vaccinations in schools",
+    "serviceName": "Manage childhood vaccinations",
     "templateExtension": "njk"
   }
 }

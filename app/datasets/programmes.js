@@ -1,15 +1,46 @@
 import { ProgrammeType } from '../enums.js'
 
 export default {
+  [ProgrammeType.Rotavirus]: {
+    type: ProgrammeType.Rotavirus,
+    id: 'rotavirus',
+    name: 'Rotavirus',
+    title: 'Rotavirus',
+    sequence: ['1P', '2P'],
+    sequenceDefault: '1P',
+    targetWeek: 8,
+    vaccine_snomeds: ['34609911000001106']
+  },
+  [ProgrammeType.MenB]: {
+    type: ProgrammeType.MenB,
+    id: 'menb',
+    name: 'MenB',
+    title: 'MenB',
+    sequence: ['1P', '2P', '3P'],
+    sequenceDefault: '1P',
+    targetWeek: 8,
+    vaccine_snomeds: ['23584211000001109']
+  },
+  [ProgrammeType.Pneumococcal]: {
+    type: ProgrammeType.Pneumococcal,
+    id: 'pneumococcal',
+    name: 'Pneumococcal',
+    title: 'Pneumococcal',
+    sequence: ['1P', '2B'],
+    sequenceDefault: '1P',
+    targetWeek: 12,
+    vaccine_snomeds: ['40600011000001101']
+  },
   [ProgrammeType._4in1]: {
     type: ProgrammeType._4in1,
     id: '4in1',
     name: '4-in-1',
     title: '4-in-1 pre-school booster',
-    hidden: true,
     ttcv: true,
     sequence: ['1P', '2P', '3P'],
-    sequenceDefault: '1P'
+    sequenceDefault: '1P',
+    targetWeek: 174, // 3 years and 4 months,
+    vaccine_snomeds: ['26267211000001100']
   },
   [ProgrammeType._5in1]: {
     type: ProgrammeType._5in1,
@@ -20,6 +51,17 @@ export default {
     ttcv: true,
     sequence: ['1B'],
     sequenceDefault: '1B'
+  },
+  [ProgrammeType._6in1]: {
+    type: ProgrammeType._6in1,
+    id: '6in1',
+    name: '6-in-1',
+    title: '6-in-1',
+    ttcv: true,
+    sequence: ['1P', '2P', '3P', '4P'],
+    sequenceDefault: '1P',
+    targetWeek: 8,
+    vaccine_snomeds: ['34765811000001105']
   },
   [ProgrammeType.Flu]: {
     type: ProgrammeType.Flu,
@@ -41,7 +83,8 @@ export default {
     immunocompromisedSequence: ['1P', '2P'],
     sequenceDefault: '1P',
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    vaccine_smomeds: ['43208811000001106', '40085011000001101'],
+    targetWeek: 104, // 2 years
+    vaccine_snomeds: ['43208811000001106', '40085011000001101'],
     nhseSyncable: true
   },
   [ProgrammeType.HPV]: {
@@ -49,6 +92,7 @@ export default {
     id: 'hpv',
     name: 'HPV',
     title: 'Human papillomavirus (HPV)',
+    hidden: true,
     information: {
       startPage:
         'The HPV vaccine helps to prevent HPV related cancers from developing in boys and girls.\n\nThe number of doses you need depends on your age and how well your immune system works. Young people usually only need 1 dose.',
@@ -65,7 +109,7 @@ export default {
     sequenceDefault: '1P',
     targetYearGroup: 8,
     yearGroups: [8, 9, 10, 11],
-    vaccine_smomeds: ['33493111000001108'],
+    vaccine_snomeds: ['33493111000001108'],
     nhseSyncable: true
   },
   [ProgrammeType.TdIPV]: {
@@ -73,6 +117,7 @@ export default {
     id: 'td-ipv',
     name: 'Td/IPV',
     title: 'Td/IPV (3-in-1 teenage booster)',
+    hidden: true,
     information: {
       startPage:
         'The Td/IPV vaccine (also called the 3-in-1 teenage booster) helps protect against tetanus, diphtheria and polio.\n\nIt boosts the protection provided by the [6-in-1 vaccine](https://www.nhs.uk/vaccinations/6-in-1-vaccine/) and [4-in-1 pre-school booster vaccine](https://www.nhs.uk/vaccinations/4-in-1-preschool-booster-vaccine/).',
@@ -88,7 +133,7 @@ export default {
     sequenceDefault: '2B',
     yearGroups: [9, 10, 11],
     targetYearGroup: 9,
-    vaccine_smomeds: ['7374311000001101'],
+    vaccine_snomeds: ['7374311000001101'],
     ttcv: true,
     nhseSyncable: false
   },
@@ -97,6 +142,7 @@ export default {
     id: 'menacwy',
     name: 'MenACWY',
     title: 'MenACWY',
+    hidden: true,
     information: {
       startPage:
         'The MenACWY vaccine helps protect against meningitis and sepsis. It is recommended for all teenagers. Most people only need one dose of the vaccine.',
@@ -112,18 +158,14 @@ export default {
     sequenceDefault: '1P',
     targetYearGroup: 9,
     yearGroups: [9, 10, 11],
-    vaccine_smomeds: ['39779611000001104'],
+    vaccine_snomeds: ['39779611000001104'],
     nhseSyncable: false
   },
   [ProgrammeType.MMR]: {
     type: ProgrammeType.MMR,
     id: 'mmr',
-    name: 'MMR',
-    title: 'Measles, mumps and rubella (MMR)',
-    emailNames: {
-      default: 'MMR catch-up',
-      invite: 'MMR (measles, mumps and rubella) catch-up'
-    },
+    name: 'MMRV',
+    title: 'measles, mumps, rubella and chickenpox (MMRV)',
     information: {
       startPage:
         'The MMR vaccine protects against measles, mumps and rubella. Having 2 doses gives lasting protection against all 3 illnesses. If you’re not sure how many doses your child has had, having further doses will not cause any harm. If your child has had 2 doses, please confirm this using the consent request form.\n\nResearch has shown there is no link between the MMR vaccine and autism.',
@@ -137,9 +179,9 @@ export default {
     },
     sequence: ['1P', '2P'],
     sequenceDefault: '1P',
-    targetYearGroup: -3,
+    targetAgeInDays: 365, // 1 year
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    vaccine_smomeds: ['13968211000001108', '34925111000001104'],
+    vaccine_snomeds: ['13968211000001108', '34925111000001104'],
     nhseSyncable: true
   }
 }

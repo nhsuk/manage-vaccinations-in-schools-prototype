@@ -1,11 +1,6 @@
 import { SessionPresetName } from '../enums.js'
 
-const presetNames = [
-  SessionPresetName.Doubles,
-  SessionPresetName.Flu,
-  SessionPresetName.HPV,
-  SessionPresetName.MMR
-]
+const presetNames = [SessionPresetName.Infant]
 
 export default {
   M84008: {

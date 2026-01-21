@@ -39,9 +39,9 @@ export class Vaccine {
     this.criteria = options.criteria
     this.method = options.method
     this.delegationProtocol = options.delegationProtocol
-    this.sideEffects = options.sideEffects
-    this.healthQuestions = options.healthQuestions
-    this.preScreenQuestions = options.preScreenQuestions
+    this.sideEffects = options.sideEffects || []
+    this.healthQuestions = options.healthQuestions || {}
+    this.preScreenQuestions = options.preScreenQuestions || []
   }
 
   /**
