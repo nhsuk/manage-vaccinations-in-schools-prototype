@@ -105,26 +105,6 @@
       }, {
         text: PatientStatus.Ineligible
       }, {
-        text: PatientStatus.Consent,
-        conditional: {
-          html: checkboxes({
-            classes: "nhsuk-checkboxes--small",
-            items: enumItems(PatientConsentStatus),
-            decorate: "patientConsent"
-          })
-        } if data.report == PatientStatus.Consent
-      }, {
-        text: PatientStatus.Refused,
-        conditional: {
-          html: checkboxes({
-            classes: "nhsuk-checkboxes--small",
-            items: enumItems(PatientRefusedStatus),
-            decorate: "patientRefused"
-          })
-        } if data.report == PatientStatus.Refused
-      }, {
-        text: PatientStatus.Triage
-      }, {
         text: PatientStatus.Due,
         conditional: {
           html: (checkboxes({
@@ -184,18 +164,6 @@
       decorate: "report"
     }) if not params.hideProgrammeStatuses }}
 
-    {{ checkboxes({
-      classes: "nhsuk-checkboxes--small",
-      fieldset: {
-        legend: {
-          classes: "nhsuk-fieldset__legend--s",
-          text: __("patient.yearGroup.label")
-        }
-      },
-      items: yearGroupItems,
-      decorate: "yearGroup"
-    }) if yearGroupItems }}
-
     {% set searchDetailsHtml %}
       {{ dateInput({
         fieldset: {
@@ -231,10 +199,6 @@
           {
             value: "hasMissingNhsNumber",
             html: __("patient.search.hasMissingNhsNumber")
-          },
-          {
-            value: "post16",
-            text: __("patient.search.post16")
           }
         ],
         decorate: "option"

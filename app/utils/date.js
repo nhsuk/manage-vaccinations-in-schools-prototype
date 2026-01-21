@@ -1,5 +1,6 @@
 import process from 'node:process'
 
+import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 import {
   getDayOfYear,
   isAfter,
@@ -164,7 +165,7 @@ export function formatDate(date, options) {
 export function getAge(date) {
   if (!date || isNaN(date.valueOf())) return 0
 
-  return Math.floor((today().valueOf() - date.getTime()) / 3.15576e10)
+  return prototypeFilters.age(date)
 }
 
 /**

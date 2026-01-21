@@ -11,12 +11,10 @@ import {
   PatientDeferredStatus,
   PatientRefusedStatus,
   PatientVaccinatedStatus,
-  RecordVaccineCriteria,
   ReplyDecision,
   RegistrationOutcome,
   ScreenOutcome,
-  VaccinationOutcome,
-  ProgrammeType
+  VaccinationOutcome
 } from '../enums.js'
 import { Gillick, Instruction, Patient, Programme, Session } from '../models.js'
 import { getDateValueDifference, getYearGroup, today } from '../utils/date.js'
@@ -27,7 +25,6 @@ import {
   getSessionOutcome
 } from '../utils/patient-session.js'
 import {
-  getConsentOutcome,
   getConsentHealthAnswers,
   getConsentRefusalReasons
 } from '../utils/reply.js'
@@ -39,12 +36,7 @@ import {
   getScreenOutcomeStatus,
   getVaccinationOutcomeStatus
 } from '../utils/status.js'
-import {
-  formatLink,
-  formatTag,
-  formatVaccineCriteria,
-  formatYearGroup
-} from '../utils/string.js'
+import { formatLink, formatTag, formatYearGroup } from '../utils/string.js'
 import {
   getScreenOutcome,
   getScreenOutcomesForConsentMethod,
@@ -346,55 +338,6 @@ export class PatientSession {
   }
 
   /**
-   * Get vaccine to administer (or was administered) in this patient session
-   *
-   * For all programmes besides flu, this will be an injection.
-   * For the flu programme, this depends on consent responses
-   *
-   * @returns {import('../enums.js').RecordVaccineCriteria|undefined} Vaccination method
-   */
-  get vaccineCriteria() {
-    // If no programme does not offer alternatives, don’t return a method
-    if (!this.programme.alternativeVaccine) {
-      return
-    }
-
-    // Need consent response(s) before we can determine the chosen method
-    if (!this.consentGiven) {
-      return
-    }
-
-    if (this.programme.type === ProgrammeType.Flu) {
-      if (
-        this.consent === ConsentOutcome.GivenForIntranasal ||
-        this.screen === ScreenOutcome.VaccinateIntranasalOnly
-      ) {
-        return RecordVaccineCriteria.IntranasalOnly
-      }
-
-      if (
-        this.consent === ConsentOutcome.GivenForAlternativeInjection ||
-        this.screen === ScreenOutcome.VaccinateAlternativeFluInjectionOnly
-      ) {
-        return RecordVaccineCriteria.AlternativeFluInjectionOnly
-      }
-
-      return RecordVaccineCriteria.IntranasalPreferred
-    }
-
-    if (this.programme.type === ProgrammeType.MMR) {
-      if (
-        this.consent === ConsentOutcome.GivenForAlternativeInjection ||
-        this.screen === ScreenOutcome.VaccinateAlternativeMMRInjectionOnly
-      ) {
-        return RecordVaccineCriteria.AlternativeMMRInjectionOnly
-      }
-
-      return RecordVaccineCriteria.NoMMRPreference
-    }
-  }
-
-  /**
    * Can either vaccine be administered
    *
    * @returns {boolean} Either vaccine be administered
@@ -457,7 +400,7 @@ export class PatientSession {
    * @returns {ConsentOutcome} Consent outcome
    */
   get consent() {
-    return getConsentOutcome(this)
+    return ConsentOutcome.Given
   }
 
   /**
@@ -534,8 +477,6 @@ export class PatientSession {
       return PatientDeferredStatus.DoNotVaccinate
     } else if (this.screen === ScreenOutcome.DelayVaccination) {
       return PatientDeferredStatus.DelayVaccination
-    } else if (this.screen === ScreenOutcome.InviteToClinic) {
-      return PatientDeferredStatus.InviteToClinic
     }
 
     switch (this.outcome) {
@@ -545,8 +486,6 @@ export class PatientSession {
         return PatientDeferredStatus.ChildRefused
       case VaccinationOutcome.Unwell:
         return PatientDeferredStatus.ChildUnwell
-      case VaccinationOutcome.InviteToClinic:
-        return PatientDeferredStatus.InviteToClinic
       case VaccinationOutcome.DelayVaccination:
         return PatientDeferredStatus.DelayVaccination
       case VaccinationOutcome.DoNotVaccinate:
@@ -647,8 +586,6 @@ export class PatientSession {
     switch (this.screen) {
       case ScreenOutcome.NeedsTriage:
         return `You need to decide if it’s safe to vaccinate ${patient.firstName}.`
-      case ScreenOutcome.InviteToClinic:
-        return `${user.fullName} decided that ${patient.firstName}’s vaccination should take place at a clinic.`
       case ScreenOutcome.DelayVaccination:
         return `${user.fullName} decided that ${patient.firstName}’s vaccination should be delayed until ${triageNote.formatted.outcomeAt}.`
       case ScreenOutcome.DoNotVaccinate:
@@ -741,9 +678,7 @@ export class PatientSession {
       case PatientStatus.Vaccinated:
         return `${this.patient.firstName} was vaccinated by ${this.lastVaccinationOutcome.createdBy.fullName} on ${this.lastVaccinationOutcome.formatted.createdAt}.`
       case PatientStatus.Due:
-        return this.vaccineCriteria
-          ? `${this.patient.firstName} is ready to vaccinate (${this.vaccineCriteria.toLowerCase()}).`
-          : `${this.patient.firstName} is ready to vaccinate.`
+        return `${this.patient.firstName} is ready to vaccinate.`
       case PatientStatus.Deferred:
         return this.lastVaccinationOutcome
           ? `${this.patientDeferred} on ${this.lastVaccinationOutcome.formatted.createdAt}.`
@@ -811,7 +746,6 @@ export class PatientSession {
       outcome: this.outcome && formatTag(this.status.outcome),
       report: this.patientProgramme.formatted.programmeStatus,
       outstandingVaccinations: filters.formatList(outstandingVaccinations),
-      vaccineCriteria: formatVaccineCriteria(this.vaccineCriteria),
       yearGroup: formattedYearGroup
     }
   }

@@ -281,15 +281,6 @@ export class Session {
   }
 
   /**
-   * Is closed session
-   *
-   * @returns {boolean} Is closed session
-   */
-  get isClosed() {
-    return this.status === SessionStatus.Closed
-  }
-
-  /**
    * Does session occur in the current academic year?
    *
    * @returns {boolean} Session occurs in current academic year
@@ -307,8 +298,6 @@ export class Session {
     switch (true) {
       case isSameDay(this.date, setMidday(today())):
         return SessionStatus.Active
-      case this.closed:
-        return SessionStatus.Closed
       case !this.date:
         return SessionStatus.Unplanned
       case isAfter(setMidday(today()), this.date):
@@ -568,13 +557,7 @@ export class Session {
    * @returns {string|undefined} Name
    */
   get name() {
-    if (this.clinic) {
-      return `${this.programmeNames.titleCase} community clinic on ${this.formatted.dateShort}`
-    }
-
-    if (this.location) {
-      return `${this.programmeNames.titleCase} session at ${this.location.name} on ${this.formatted.dateShort}`
-    }
+    return `Childhood vaccination clinic on ${this.formatted.dateShort}`
   }
 
   /**

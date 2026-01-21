@@ -344,8 +344,7 @@ export const PatientDeferredStatus = {
   ChildRefused: 'Child refused',
   ChildUnwell: 'Child unwell',
   DoNotVaccinate: 'Contraindicated',
-  DelayVaccination: 'Delay vaccination',
-  InviteToClinic: 'Invited to clinic'
+  DelayVaccination: 'Delay vaccination'
 }
 
 /**
@@ -377,6 +376,9 @@ export const PreScreenQuestion = {
  * @enum {string}
  */
 export const ProgrammeType = {
+  Rotavirus: 'Rotavirus',
+  MenB: 'MenB',
+  Pneumococcal: 'Pneumococcal',
   _4in1: '4-in-1',
   _5in1: '5-in-1',
   _6in1: '6-in-1',
@@ -403,6 +405,7 @@ export const SchoolTerm = {
  * @enum {string}
  */
 export const SessionPresetName = {
+  Infant: 'Infant',
   Flu: 'Flu',
   HPV: 'HPV',
   Doubles: 'Doubles',
@@ -415,7 +418,7 @@ export const SessionPresetName = {
  * @property {boolean} active - Whether preset is active
  * @property {boolean} [adolescent] - Adolescent programme flag
  * @property {Array<ProgrammeType>} programmeTypes - Preset programme types
- * @property {SchoolTerm} term - School term to schedule session
+ * @property {SchoolTerm} [term] - School term to schedule session
  */
 
 /**
@@ -424,6 +427,18 @@ export const SessionPresetName = {
  */
 export const SessionPresets = [
   {
+    name: SessionPresetName.Infant,
+    active: true,
+    programmeTypes: [
+      ProgrammeType._4in1,
+      ProgrammeType._6in1,
+      ProgrammeType.MenB,
+      ProgrammeType.MMR,
+      ProgrammeType.Pneumococcal,
+      ProgrammeType.Rotavirus
+    ]
+  },
+  {
     name: SessionPresetName.Flu,
     active: true,
     programmeTypes: [ProgrammeType.Flu],
@@ -431,14 +446,14 @@ export const SessionPresets = [
   },
   {
     name: SessionPresetName.HPV,
-    active: true,
+    active: false,
     adolescent: true,
     programmeTypes: [ProgrammeType.HPV],
     term: SchoolTerm.Spring
   },
   {
     name: SessionPresetName.Doubles,
-    active: true,
+    active: false,
     adolescent: true,
     programmeTypes: [ProgrammeType.MenACWY, ProgrammeType.TdIPV],
     term: SchoolTerm.Summer
@@ -572,7 +587,6 @@ export const ScreenOutcome = {
     'Safe to vaccinate with gelatine-free injection',
   VaccinateIntranasalOnly: 'Safe to vaccinate with nasal spray',
   NeedsTriage: 'Needs triage',
-  InviteToClinic: 'Invited to clinic',
   DelayVaccination: 'Delay vaccination',
   DoNotVaccinate: 'Do not vaccinate'
 }
@@ -585,8 +599,7 @@ export const SessionStatus = {
   Active: 'In progress',
   Unplanned: 'Not scheduled',
   Planned: 'Scheduled',
-  Completed: 'Completed',
-  Closed: 'Closed'
+  Completed: 'Completed'
 }
 
 /**
@@ -656,7 +669,6 @@ export const VaccinationOutcome = {
   Refused: 'Child refused',
   Absent: 'Child absent',
   Unwell: 'Child unwell',
-  InviteToClinic: 'Invited to clinic',
   DelayVaccination: 'Delay vaccination',
   DoNotVaccinate: 'Contraindicated'
 }
@@ -715,7 +727,8 @@ export const VaccinationSyncStatus = {
 export const VaccineCriteria = {
   AlternativeInjection: 'Gelatine-free injection',
   Injection: 'Injection',
-  Intranasal: 'Nasal spray'
+  Intranasal: 'Nasal spray',
+  Oral: 'Oral'
 }
 
 /**
@@ -724,7 +737,8 @@ export const VaccineCriteria = {
  */
 export const VaccineMethod = {
   Injection: 'Injection',
-  Intranasal: 'Nasal spray'
+  Intranasal: 'Nasal spray',
+  Oral: 'Oral'
 }
 
 /**

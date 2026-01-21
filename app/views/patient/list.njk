@@ -69,11 +69,10 @@
               nhsn: {
                 value: patient.formatted.nhsn | highlightQuery(data.q)
               },
-              dob: {},
+              dobWithAge: {},
               school: {
                 value: patient.school.name | highlightQuery(data.q)
               },
-              yearGroup: {},
               report: {
                 label: __("patientSession.report.label"),
                 value: reportStatusHtml

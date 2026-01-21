@@ -1,3 +1,6 @@
+import { differenceInMonths, differenceInWeeks } from 'date-fns'
+
+import clinics from '../datasets/clinics.js'
 import schools from '../datasets/schools.js'
 import {
   Adjustment,
@@ -14,7 +17,8 @@ import {
   convertObjectToIsoDate,
   formatDate,
   getAge,
-  getYearGroup
+  getYearGroup,
+  today
 } from '../utils/date.js'
 import { formatList, formatYearGroup, stringToArray } from '../utils/string.js'
 
@@ -40,8 +44,8 @@ import { formatList, formatYearGroup, stringToArray } from '../utils/string.js'
  * @property {string} [impairmentsOther] - Other impairment
  * @property {boolean} [immunocompromised] - Immunocompromised
  * @property {object} [address] - Address
- * @property {string} [gpSurgery] - GP surgery
  * @property {string} [registrationGroup] - Registration group
+ * @property {string} [clinic_id] - Clinic
  * @property {string} [school_id] - School
  */
 export class Child {
@@ -63,8 +67,8 @@ export class Child {
       (options?.impairments && stringToArray(options.impairments)) || []
     this.immunocompromised = options?.immunocompromised
     this.address = options?.address
-    this.gpSurgery = options?.gpSurgery
     this.registrationGroup = options?.registrationGroup
+    this.clinic_id = options?.clinic_id
     this.school_id = options?.school_id
 
     if (this.ethnicGroup === EthnicGroup.Other) {
@@ -139,6 +143,24 @@ export class Child {
    */
   get age() {
     return getAge(this.dob)
+  }
+
+  /**
+   * Get age in months
+   *
+   * @returns {number} Age in months
+   */
+  get ageInMonths() {
+    return differenceInMonths(today(), this.dob)
+  }
+
+  /**
+   * Get age in weeks
+   *
+   * @returns {number} Age in weeks
+   */
+  get ageInWeeks() {
+    return differenceInWeeks(today(), this.dob)
   }
 
   /**
@@ -234,6 +256,17 @@ export class Child {
   }
 
   /**
+   * Get clinic
+   *
+   * @returns {object|undefined} Clinic
+   */
+  get clinic() {
+    if (this.clinic_id) {
+      return clinics[this.clinic_id]
+    }
+  }
+
+  /**
    * Get school
    *
    * @returns {object|undefined} School
@@ -241,6 +274,12 @@ export class Child {
   get school() {
     if (this.school_id) {
       return schools[this.school_id]
+    }
+  }
+
+  get gpSurgery() {
+    if (this.clinic) {
+      return this.clinic.name
     }
   }
 

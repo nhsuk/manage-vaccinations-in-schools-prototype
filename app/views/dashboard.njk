@@ -1,6 +1,6 @@
 {% extends "_layouts/default.njk" %}
 
-{% set title = serviceName + " (Mavis)" %}
+{% set title = serviceName %}
 
 {% block content %}
   {{ super() }}
@@ -18,17 +18,7 @@
   }) if notices.length }}
 
   <ul class="nhsuk-grid-row nhsuk-card-group">
-    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
-      {{ card({
-        classes: "app-card--compact",
-        clickable: true,
-        heading: __("school.list.title"),
-        headingSize: "s",
-        href: "/schools",
-        descriptionHtml: __("school.list.description") | nhsukMarkdown
-      }) }}
-    </li>
-    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         classes: "app-card--compact",
         clickable: true,
@@ -38,7 +28,7 @@
         descriptionHtml: __("patient.list.description") | nhsukMarkdown
       }) }}
     </li>
-    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         classes: "app-card--compact",
         clickable: true,
@@ -48,7 +38,7 @@
         descriptionHtml: __("session.list.description") | nhsukMarkdown
       }) }}
     </li>
-    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
+    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
       {{ card({
         classes: "app-card--compact",
         clickable: true,
@@ -61,27 +51,7 @@
   </ul>
 
   <ul class="nhsuk-grid-row nhsuk-card-group">
-    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        clickable: true,
-        secondary: true,
-        heading: __("move.list.title"),
-        headingSize: "xs",
-        href: "/moves",
-        description: __("move.list.description")
-      }) }}
-    </li>
-    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
-      {{ card({
-        clickable: true,
-        secondary: true,
-        heading: __("consent.list.title"),
-        headingSize: "xs",
-        href: "/consents",
-        description: __("consent.list.description")
-      }) }}
-    </li>
-    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
       {{ card({
         clickable: true,
         secondary: true,
@@ -91,7 +61,7 @@
         description: __("upload.list.description")
       }) }}
     </li>
-    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
       {{ card({
         clickable: true,
         secondary: true,
@@ -101,7 +71,7 @@
         descriptionHtml: __("programme.list.description") | nhsukMarkdown
       }) }}
     </li>
-    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
       {{ card({
         clickable: true,
         secondary: true,
@@ -111,7 +81,7 @@
         description: __("team.show.description")
       }) }}
     </li>
-    <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+    <li class="nhsuk-grid-column-one-quarter nhsuk-card-group__item">
       {{ card({
         clickable: true,
         secondary: true,

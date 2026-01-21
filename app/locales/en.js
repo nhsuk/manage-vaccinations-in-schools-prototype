@@ -820,7 +820,7 @@ export const en = {
     pinned: {
       label: 'Pinned',
       title: 'Do you want to pin this note?',
-      hint: 'Pinned notes show at the top of session pages and on search results within a session'
+      hint: 'Pinned notes show at the top of clinic pages and on search results within a session'
     },
     outcome: {
       label: 'Outcome'
@@ -1104,21 +1104,21 @@ export const en = {
       title: 'Child record'
     },
     events: {
-      title: 'Session notes and activity'
+      title: 'Clinic notes and activity'
     },
     notes: {
       label: 'Notes',
       new: {
-        title: 'Add a session note',
-        confirm: 'Save session note',
-        success: 'Session note added'
+        title: 'Add a clinic note',
+        confirm: 'Save clinic note',
+        success: 'Clinic note added'
       }
     },
     pinnedNotes: {
-      label: 'Session notes'
+      label: 'Clinic notes'
     },
     pinnedNote: {
-      label: 'Session note'
+      label: 'Clinic note'
     },
     patientProgramme: {
       label: 'View %s record'
@@ -1140,7 +1140,7 @@ export const en = {
       title: 'Register attendance'
     },
     outcome: {
-      label: 'Session outcome'
+      label: 'Clinic outcome'
     },
     report: {
       label: 'Programme status'
@@ -1528,11 +1528,11 @@ export const en = {
       title: 'Children'
     },
     sessions: {
-      label: 'Sessions',
-      title: 'Sessions',
-      isActive: 'Session in progress',
-      isPlanned: 'Scheduled sessions',
-      isCompleted: 'Completed sessions'
+      label: 'Clinics',
+      title: 'Clinics',
+      isActive: 'Clinic in progress',
+      isPlanned: 'Scheduled clinics',
+      isCompleted: 'Completed clinics'
     },
     results:
       '{count, plural, =0 {No schools matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> schools}}',
@@ -1601,36 +1601,35 @@ export const en = {
     clear: 'Clear filters'
   },
   session: {
-    label: 'Sessions',
+    label: 'Clinics',
     results:
-      '{count, plural, =0 {No sessions matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> sessions}}',
-    count:
-      '{count, plural, =0 {No sessions} one {1 session} other {# sessions}}',
-    summary: 'Session details',
+      '{count, plural, =0 {No clinics matching your search criteria were found} one{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> record} other{Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> clinics}}',
+    count: '{count, plural, =0 {No clinics} one {1 clinic} other {# clinics}}',
+    summary: 'Clinic details',
     search: {
-      label: 'Find session'
+      label: 'Find clinic'
     },
     show: {
       label: 'Overview'
     },
     new: {
-      label: 'Add a new session',
+      label: 'Add a new clinic',
       'check-answers': {
-        confirm: 'Add session',
+        confirm: 'Add clinic',
         title: 'Check and confirm'
       },
       success: '{{session.name}} created'
     },
     edit: {
-      title: 'Edit session',
+      title: 'Edit clinic',
       success: '{{session.name}} updated'
     },
     academicYear: {
       label: 'Academic year'
     },
     report: {
-      label: 'Children in session',
-      title: 'Children in session'
+      label: 'Children in clinic',
+      title: 'Children in clinic'
     },
     consent: {
       label: 'Consent',
@@ -1649,12 +1648,12 @@ export const en = {
     register: {
       label: 'Register attendance',
       title: 'Register attendance',
-      information: 'You can register attendance when a session is in progress.'
+      information: 'You can register attendance when a clinic is in progress.'
     },
     record: {
       label: 'Record vaccinations',
       title: 'Record vaccinations',
-      information: 'You can record vaccinations when a session is in progress.',
+      information: 'You can record vaccinations when a clinic is in progress.',
       count:
         '{count, plural, =0 {no children for {programme}} one {# child for {programme}} other {# children for {programme}}}'
     },
@@ -1691,10 +1690,9 @@ export const en = {
       title: 'Import class lists'
     },
     list: {
-      label: 'Sessions',
-      title: 'Sessions',
-      description:
-        'Review consent responses, triage health questions and record vaccinations'
+      label: 'Clinics',
+      title: 'Clinics',
+      description: 'View clinic appointments and record vaccinations'
     },
     instructions: {
       label: 'Add new PSDs',
@@ -1702,14 +1700,14 @@ export const en = {
         'Are you sure you want to add {count, plural, =0 {no new PSDs} one {a new PSD} other {# new PSDs}}?',
       description: 'This cannot be undone.',
       confirm: 'Yes, add PSDs',
-      cancel: 'No, return to session',
+      cancel: 'No, return to clinic',
       success: 'PSDs added'
     },
     reminders: {
       label: 'Send reminders',
       title: 'Manage consent reminders',
       description:
-        'Mavis automatically sends email and text reminders to parents who have not responded to the initial consent request.\n\nAutomatic reminders are sent 14, 7 and 3 days before a session.\n\nYou can also send reminders manually. Mavis will then skip the next automatic reminder if it’s due to be sent within 3 days.',
+        'Mavis automatically sends email and text reminders to parents who have not responded to the initial consent request.\n\nAutomatic reminders are sent 14, 7 and 3 days before a clinic.\n\nYou can also send reminders manually. Mavis will then skip the next automatic reminder if it’s due to be sent within 3 days.',
       activity:
         '{{parents}} parents out of {{patients}} have not responded yet',
       preConfirm:
@@ -1727,7 +1725,7 @@ export const en = {
       label: 'Consent period'
     },
     schedule: {
-      title: 'Schedule sessions',
+      title: 'Schedule clinics',
       description: 'Add dates for this school.'
     },
     patients: {
@@ -1738,7 +1736,7 @@ export const en = {
     eligible: {
       label: 'Eligible for vaccination',
       count:
-        '{count, plural, =0 {No children are} one {# child is} other {# children are}} eligible for vaccination in this session'
+        '{count, plural, =0 {No children are} one {# child is} other {# children are}} eligible for vaccination in this clinic'
     },
     activity: {
       label: 'Action required',
@@ -1778,7 +1776,7 @@ export const en = {
     },
     tally: {
       vaccinated: {
-        label: 'Vaccinations given in this session'
+        label: 'Vaccinations given in this clinic'
       },
       dueForVaccineCriteria: {
         label: 'Due {{vaccineCriteria}}'
@@ -1788,20 +1786,20 @@ export const en = {
       }
     },
     date: {
-      label: 'Session date',
-      title: 'When will this session be held?',
+      label: 'Clinic date',
+      title: 'When will this clinic be held?',
       hint: 'For example, 27 3 2026',
       check: {
         title: 'Have you imported historical vaccination records for %s?',
         description:
-          '1% of children in {{yearGroups}} in this session have vaccination records. This is unusually low coverage for catch-up year groups.\n\nCheck and confirm that vaccination records have been imported for all children in this school before you continue.\n\nScheduling this session now will send consent requests to 40 parents of children in {{yearGroups}} on {{date}}. Many of them may be parents of already vaccinated children.',
-        confirm: 'Keep session dates',
-        cancel: 'Remove session dates'
+          '1% of children in {{yearGroups}} in this clinic have vaccination records. This is unusually low coverage for catch-up year groups.\n\nCheck and confirm that vaccination records have been imported for all children in this school before you continue.\n\nScheduling this clinic now will send consent requests to 40 parents of children in {{yearGroups}} on {{date}}. Many of them may be parents of already vaccinated children.',
+        confirm: 'Keep clinic dates',
+        cancel: 'Remove clinic dates'
       }
     },
     school: {
       label: 'School',
-      title: 'Where is this school session taking place?'
+      title: 'Where is this school clinic taking place?'
     },
     school_id: {
       label: 'School URN',
@@ -1809,7 +1807,7 @@ export const en = {
     },
     yearGroups: {
       label: 'Year groups',
-      title: 'Which year groups do you want to invite to this session?'
+      title: 'Which year groups do you want to invite to this clinic?'
     },
     clinic: {
       label: 'Clinic',
@@ -1821,14 +1819,14 @@ export const en = {
     },
     programmes: {
       label: 'Programmes',
-      title: 'Which programmes will you run in this session?'
+      title: 'Which programmes will you run in this clinic?'
     },
     status: {
       label: 'Status'
     },
     type: {
       label: 'Type',
-      title: 'What type of session is this?'
+      title: 'What type of clinic is this?'
     },
     consentUrl: {
       label: 'Online consent form'
@@ -1849,7 +1847,7 @@ export const en = {
     reminderWeeks: {
       title: 'When should parents get a reminder to give consent?',
       label: 'Consent reminders',
-      hint: 'Enter the number of weeks before a session takes place'
+      hint: 'Enter the number of weeks before a clinic takes place'
     },
     registration: {
       title:
@@ -1859,7 +1857,7 @@ export const en = {
     offline: {
       title: 'Record offline',
       description:
-        'If the internet connection at the vaccination session is unreliable, you can record offline using a spreadsheet.\n\nYou need to download the blank spreadsheet ahead of the session while you still have internet access.\n\nTo upload a completed spreadsheet, go to the ‘Vaccinations’ area. You also need an internet connection to upload the spreadsheet.',
+        'If the internet connection at the clinic is unreliable, you can record offline using a spreadsheet.\n\nYou need to download the blank spreadsheet ahead of the clinic while you still have internet access.\n\nTo upload a completed spreadsheet, go to the ‘Vaccinations’ area. You also need an internet connection to upload the spreadsheet.',
       confirm: 'Download spreadsheet',
       vaccinator: {
         label: 'Vaccinator',
@@ -1868,10 +1866,10 @@ export const en = {
       }
     },
     close: {
-      title: 'Close session',
+      title: 'Close clinic',
       description:
-        'All sessions for this school have been completed.\n\nWhen you close this session, the following children will be invited to community clinics:',
-      confirm: 'Close session',
+        'All clinics for this school have been completed.\n\nWhen you close this clinic, the following children will be invited to community clinics:',
+      confirm: 'Close clinic',
       success: '{{session.name}} has been closed'
     },
     closingSummary: {
@@ -1983,10 +1981,10 @@ export const en = {
       summary: 'Schools'
     },
     sessions: {
-      title: 'Sessions',
-      defaults: 'Session defaults',
+      title: 'Clinics',
+      defaults: 'Clinic defaults',
       password: 'Shared password',
-      text: 'You can change these values when scheduling new sessions.'
+      text: 'You can change these values when scheduling new clinics.'
     },
     reminders: {
       title: 'Consent reminders'
@@ -2010,12 +2008,12 @@ export const en = {
     sessionOpenWeeks: {
       title: 'When should parents get a request to give consent?',
       label: 'Consent request',
-      hint: 'Enter the number of weeks before the first session takes place'
+      hint: 'Enter the number of weeks before the first clinic takes place'
     },
     sessionReminderWeeks: {
       title: 'When should parents get a reminder to give consent?',
       label: 'Consent reminders',
-      hint: 'Enter the number of weeks before a session takes place'
+      hint: 'Enter the number of weeks before a clinic takes place'
     },
     sessionRegistration: {
       title:

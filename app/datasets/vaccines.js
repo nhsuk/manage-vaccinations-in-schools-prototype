@@ -7,6 +7,71 @@ import {
 } from '../enums.js'
 
 export default {
+  // Rotavirus vaccines
+  '34609911000001106': {
+    snomed: '34609911000001106',
+    type: 'Rotavirus',
+    brand: 'Rotarix',
+    manufacturer: 'GlaxoSmithKline UK Ltd',
+    leaflet: {
+      url: 'https://www.medicines.org.uk/emc/files/pil.2739.pdf',
+      size: '370KB'
+    },
+    criteria: VaccineCriteria.Oral,
+    method: VaccineMethod.Oral
+  },
+  // MenB vaccines
+  '23584211000001109': {
+    snomed: '23584211000001109',
+    type: 'MenB',
+    brand: 'Bexsero',
+    manufacturer: 'GlaxoSmithKline UK Ltd',
+    leaflet: {
+      url: 'https://www.medicines.org.uk/emc/files/pil.5168.pdf',
+      size: '140KB'
+    },
+    criteria: VaccineCriteria.Injection,
+    method: VaccineMethod.Injection
+  },
+  // 6-in-1 vaccines
+  '34765811000001105': {
+    snomed: '34765811000001105',
+    type: '6-in-1',
+    brand: 'Infanrix Hexa',
+    manufacturer: 'GlaxoSmithKline UK Ltd',
+    leaflet: {
+      url: 'https://www.medicines.org.uk/emc/files/pil.2586.pdf',
+      size: '167KB'
+    },
+    criteria: VaccineCriteria.Injection,
+    method: VaccineMethod.Injection
+  },
+  // Pneumococcal vaccines
+  '40600011000001101': {
+    snomed: '40600011000001101',
+    type: 'Pneumococcal',
+    brand: 'Prevenar',
+    manufacturer: 'Pfizer Ltd',
+    leaflet: {
+      url: 'https://www.medicines.org.uk/emc/files/pil.453.pdf',
+      size: '121KB'
+    },
+    criteria: VaccineCriteria.Injection,
+    method: VaccineMethod.Injection
+  },
+  // 4-in-1 vaccines
+  '26267211000001100': {
+    snomed: '26267211000001100',
+    type: '4-in-1',
+    brand: 'Boostrix',
+    manufacturer: 'GlaxoSmithKline UK Ltd',
+    leaflet: {
+      url: 'https://www.medicines.org.uk/emc/files/pil.5302.pdf',
+      size: '150KB'
+    },
+    criteria: VaccineCriteria.Injection,
+    method: VaccineMethod.Injection
+  },
   // Flu vaccines
   // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1107978/Influenza-green-book-chapter19-16September22.pdf
   '43208811000001106': {

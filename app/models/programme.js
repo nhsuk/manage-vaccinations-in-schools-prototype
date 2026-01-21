@@ -26,6 +26,7 @@ import {
  * @property {Array<string>} [sequence] - Vaccine dose sequence
  * @property {Array<string>} [immunocompromisedSequence] - Vaccine dose sequence for immunocompromised patients
  * @property {string} sequenceDefault - Default vaccine dose sequence
+ * @property {number} [targetWeek] - Minimum age for routine vaccination
  * @property {number} [targetYearGroup] - Year group for routine vaccination
  * @property {boolean} ttcv - Tetanus-toxoid containing vaccination programme
  * @property {boolean} nhseSyncable - Vaccination records can be synced
@@ -46,6 +47,7 @@ export class Programme {
     this.immunocompromisedSequence = options?.immunocompromisedSequence
     this.sequenceDefault = options?.sequenceDefault
     this.yearGroups = options?.yearGroups
+    this.targetWeek = options?.targetWeek
     this.targetYearGroup = options?.targetYearGroup
     this.ttcv = options?.ttcv || false
     this.nhseSyncable = options?.nhseSyncable || false

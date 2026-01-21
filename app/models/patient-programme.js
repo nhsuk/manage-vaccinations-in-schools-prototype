@@ -7,10 +7,7 @@ import {
   ProgrammeType
 } from '../enums.js'
 import { AuditEvent, Patient, Programme, Vaccination } from '../models.js'
-import {
-  getCurrentAcademicYear,
-  getDateValueDifference
-} from '../utils/date.js'
+import { formatDate, getDateValueDifference } from '../utils/date.js'
 import { ordinal } from '../utils/number.js'
 import { getReportOutcome } from '../utils/patient-session.js'
 import { getPatientStatus } from '../utils/status.js'
@@ -70,23 +67,44 @@ export class PatientProgramme {
   }
 
   /**
-   * Year patient is eligible for programme
+   * Date patient is eligible for programme
    *
-   * @returns {number} Year patient becomes eligible for programme
+   * @returns {string} Date patient becomes eligible for programme
    */
-  get year() {
+  get eligibleDate() {
     if (!this.programme) {
       return
     }
 
-    if (this.programme.type === ProgrammeType.Flu) {
-      return getCurrentAcademicYear()
+    let date
+
+    if (
+      [
+        ProgrammeType._6in1,
+        ProgrammeType.MenB,
+        ProgrammeType.Rotavirus
+      ].includes(this.programme.type)
+    ) {
+      date = addWeeks(this.patient.dob, 8)
     }
 
-    const yearsUntilEligible =
-      this.programme.targetYearGroup - this.patient.yearGroup
+    if (this.programme.type === ProgrammeType.Pneumococcal) {
+      date = addWeeks(this.patient.dob, 16)
+    }
 
-    return getCurrentAcademicYear() + yearsUntilEligible
+    if (this.programme.type === ProgrammeType.MMR) {
+      date = addMonths(this.patient.dob, 12)
+    }
+
+    if (this.programme.type === ProgrammeType.Flu) {
+      date = addMonths(this.patient.dob, 24)
+    }
+
+    if (this.programme.type === ProgrammeType._4in1) {
+      date = addMonths(this.patient.dob, 40)
+    }
+
+    return formatDate(date, { dateStyle: 'long' })
   }
 
   /**
@@ -142,7 +160,41 @@ export class PatientProgramme {
    * @returns {boolean} Eligible for programme
    */
   get eligible() {
-    return getCurrentAcademicYear() >= this.year
+    if (
+      [
+        ProgrammeType._6in1,
+        ProgrammeType.MenB,
+        ProgrammeType.Rotavirus
+      ].includes(this.programme.type)
+    ) {
+      if (this.patient.ageInWeeks > 8) {
+        return true
+      }
+    }
+
+    if (this.programme.type === ProgrammeType.Pneumococcal) {
+      if (this.patient.ageInWeeks > 16) {
+        return true
+      }
+    }
+
+    if (this.programme.type === ProgrammeType.MMR) {
+      if (this.patient.ageInMonths > 12) {
+        return true
+      }
+    }
+
+    if (this.programme.type === ProgrammeType.Flu) {
+      if (this.patient.ageInMonths > 24) {
+        return true
+      }
+    }
+
+    if (this.programme.type === ProgrammeType._4in1) {
+      if (this.patient.ageInMonths > 40) {
+        return true
+      }
+    }
   }
 
   /**
@@ -359,7 +411,7 @@ export class PatientProgramme {
     }
 
     // Needs to be invited to a session
-    return PatientStatus.Consent
+    return PatientStatus.Due
   }
 
   /**
@@ -380,12 +432,10 @@ export class PatientProgramme {
     switch (this.status) {
       case PatientStatus.Ineligible:
         return this.patient.post16
-          ? 'Not eligible for school age immunisation'
-          : `Eligible from 1 September ${this.year}`
+          ? 'Not eligible for immunisation'
+          : `Eligible from ${this.eligibleDate}`
       case PatientStatus.Vaccinated:
         return `Vaccinated on ${this.lastVaccinationGiven.formatted.createdAt_dateShort}`
-      case PatientStatus.Due:
-        return this.lastPatientSession.vaccineCriteria
       case PatientStatus.Deferred:
         return this.lastVaccinationOutcome
           ? `${this.lastPatientSession.patientDeferred} on ${this.lastVaccinationOutcome.formatted.createdAt_dateShort}`
@@ -397,15 +447,6 @@ export class PatientProgramme {
           ? this.lastPatientSession.patientConsent
           : PatientConsentStatus.NotScheduled
     }
-  }
-
-  /**
-   * Get vaccine to administer (or was administered) in this patient session
-   *
-   * @returns {import('../enums.js').RecordVaccineCriteria} Vaccine criteria
-   */
-  get vaccineCriteria() {
-    return this.lastPatientSession.vaccineCriteria
   }
 
   /**

@@ -62,12 +62,7 @@ export const sessionController = {
                 current: view === 'instruct'
               }
             ]
-          : []),
-        {
-          text: __('session.record.label'),
-          href: `${session.uri}/record`,
-          current: view === 'record'
-        }
+          : [])
       ]
     }
 
