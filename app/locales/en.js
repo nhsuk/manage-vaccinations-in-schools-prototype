@@ -1256,6 +1256,10 @@ export const en = {
       titleWithMethod:
         'Record {{session.programmeNames.sentenceCase}} vaccination with {{method}}'
     },
+    recordPrevious: {
+      title:
+        'Record a previous {{session.programmeNames.sentenceCase}} vaccination'
+    },
     registration: {
       label: 'Is {{patient.fullName}} attending today’s session?',
       title: 'Update attendance',
