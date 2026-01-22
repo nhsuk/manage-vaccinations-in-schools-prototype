@@ -54,6 +54,10 @@ export const patientSessionController = {
       ({ report }) => report === PatientStatus.Due
     )
 
+    const patientProgramme = Object.values(patient.programmes).find(
+      (patientProgramme) => patientProgramme.programme_id === programme_id
+    )
+
     // National protocol
     // Nurses can record all vaccines
     // HCAs can record injected flu vaccine, with supplier
@@ -112,7 +116,9 @@ export const patientSessionController = {
       canRecord:
         account.vaccineMethods?.includes(patientSession.vaccine?.method) &&
         record &&
-        session.isActive
+        session.isActive,
+      canRecordPrevious:
+        !session.isActive && report !== PatientStatus.Vaccinated
     }
 
     response.locals.vaccinationSiteItems = Object.entries(VaccinationSite)
@@ -162,6 +168,7 @@ export const patientSessionController = {
     response.locals.referrer = activity
       ? `${patientSession.uri}?activity=${activity}`
       : patientSession.uri
+    response.locals.patientProgramme = patientProgramme
     response.locals.patientSession = patientSession
     response.locals.patient = patient
     response.locals.programme = programme

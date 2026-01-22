@@ -87,6 +87,8 @@
 
       {% if options.canRecord %}
         {% include "patient-session/_record.njk" %}
+      {% elif options.canRecordPrevious %}
+        {% include "patient-session/_record-previous.njk" %}
       {% endif %}
     </div>
   </div>
