@@ -221,6 +221,17 @@ export const InstructionOutcome = {
  * @readonly
  * @enum {string}
  */
+export const LocationType = {
+  Clinic: 'Community clinic',
+  Home: 'At the child’s home',
+  School: 'School',
+  Other: 'Another location'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const MoveSource = {
   Cohort: 'Cohort record',
   Consent: 'Consent response',

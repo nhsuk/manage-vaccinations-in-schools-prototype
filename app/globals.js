@@ -6,7 +6,7 @@ import {
   PatientConsentStatus,
   PatientRefusedStatus
 } from './enums.js'
-import { School, User } from './models.js'
+import { Location, User } from './models.js'
 import { getSessionActivityCount } from './utils/session.js'
 import {
   formatHealthAnswer,
@@ -66,30 +66,34 @@ export default () => {
   }
 
   /**
-   * Get school form field items
+   * Get location form field items
    *
-   * @param {object} schools - Schools data
+   * @param {object} locations - Locations data
    * @param {string} value - Current value
    * @returns {object} Form field items
    */
-  globals.schoolItems = function (schools, value) {
+  globals.locationItems = function (locations, value) {
+    const type = Object.values(locations).at(1).phase
+      ? 'school'
+      : 'community clinic'
+
     return [
       {
         value: '',
-        text: 'Select a school',
+        text: `Select a ${type}`,
         disabled: true,
         ...(!value && { selected: true })
       },
-      ...Object.values(schools)
-        .map((school) => new School(school))
+      ...Object.values(locations)
+        .map((location) => new Location(location))
         .sort((a, b) => a.name.localeCompare(b.name))
-        .map((school) => ({
-          text: school.name,
-          value: school.id,
-          ...(value && { selected: value === school.id }),
-          ...(school.address && {
+        .map((location) => ({
+          text: location.name,
+          value: location.id,
+          ...(value && { selected: value === location.id }),
+          ...(location.address && {
             attributes: {
-              'data-hint': school.formatted.address
+              'data-hint': location.formatted.address
             }
           })
         }))

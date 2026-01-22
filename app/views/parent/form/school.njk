@@ -13,7 +13,7 @@
 
   {{ select({
     label: { text: __("consent.child.school.label") },
-    items: schoolItems(data.schools, consent.child.school_id),
+    items: locationItems(data.schools, consent.child.school_id),
     decorate: "consent.child.school_id",
     attributes: {
       "data-module": "app-autocomplete"
