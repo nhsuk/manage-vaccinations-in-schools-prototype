@@ -1,9 +1,11 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 import { isBefore } from 'date-fns'
 
+import clinics from '../datasets/clinics.js'
 import schools from '../datasets/schools.js'
 import vaccines from '../datasets/vaccines.js'
 import {
+  LocationType,
   VaccinationMethod,
   VaccinationOutcome,
   VaccinationProtocol,
@@ -13,6 +15,7 @@ import {
 } from '../enums.js'
 import {
   Batch,
+  Clinic,
   PatientSession,
   Patient,
   Programme,
@@ -57,7 +60,7 @@ import {
  * @property {string} [reportedBy_uid] - User who reported vaccination
  * @property {string} [suppliedBy_uid] - Who supplied the vaccine
  * @property {Date} [nhseSyncedAt] - Date synced with NHS England API
- * @property {string} [location] - Location
+ * @property {LocationType} [locationType] - Location
  * @property {string} [country] - Country (in UK)
  * @property {string} [countryOther] - Country (outside UK)
  * @property {boolean} [selfId] - Child confirmed their identity?
@@ -71,7 +74,9 @@ import {
  * @property {string} [sequence] - Dose sequence
  * @property {string} [protocol] - Protocol
  * @property {string} [note] - Note
- * @property {string} [school_id] - School URN
+ * @property {string} [country] - Country
+ * @property {string} [clinic_id] - Clinic ID
+ * @property {string} [school_id] - School ID
  * @property {string} [patient_uuid] - Patient UUID (used outside of a session)
  * @property {string} [patientSession_uuid] - Patient session UUID
  * @property {string} [programme_id] - Programme ID
@@ -91,7 +96,7 @@ export class Vaccination {
     this.createdBy_uid = options?.createdBy_uid
     this.suppliedBy_uid = options?.suppliedBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
-    this.location = options?.location
+    this.locationType = options?.locationType
     this.country = options?.country
     this.countryOther = options?.countryOther
     this.selfId = options?.selfId && stringToBoolean(options.selfId)
@@ -110,6 +115,8 @@ export class Vaccination {
       ? options?.protocol || VaccinationProtocol.PGD
       : undefined
     this.note = options?.note || ''
+    this.country = 'England'
+    this.clinic_id = options?.clinic_id
     this.school_id = options?.school_id
     this.patient_uuid = options?.patient_uuid
     this.patientSession_uuid = options?.patientSession_uuid
@@ -119,6 +126,11 @@ export class Vaccination {
     this.vaccine_snomed = options?.vaccine_snomed
 
     if (this.outcome === VaccinationOutcome.AlreadyVaccinated) {
+      this.locationName = options?.locationName
+      this.addressLine1 = options?.addressLine1
+      this.addressLine2 = options?.addressLine2
+      this.addressLevel1 = options?.addressLevel1
+      this.country = options?.country
       this.reportedAt = today()
       this.reportedBy_uid = options?.reportedBy_uid
       this.protocol = undefined
@@ -142,6 +154,36 @@ export class Vaccination {
   set createdAt_(object) {
     if (object) {
       this.createdAt = convertObjectToIsoDate(object)
+    }
+  }
+
+  /**
+   * Get location (name and address)
+   *
+   * @returns {object} Location
+   */
+  get location() {
+    if (this.locationType === LocationType.Home) {
+      return {
+        name: LocationType.Home
+      }
+    } else if (this.clinic_id) {
+      return this.clinic.location
+    } else if (this.school_id) {
+      return this.school.location
+    } else if (
+      this.locationName ||
+      this.addressLine1 ||
+      this.addressLine2 ||
+      this.addressLevel1
+    ) {
+      return {
+        name: this.locationName || this.locationType,
+        addressLine1: this.addressLine1,
+        addressLine2: this.addressLine2,
+        addressLevel1: this.addressLevel1,
+        country: this.country || this.countryOther
+      }
     }
   }
 
@@ -335,6 +377,17 @@ export class Vaccination {
   }
 
   /**
+   * Get clinic
+   *
+   * @returns {Clinic|undefined} Clinic
+   */
+  get clinic() {
+    if (this.clinic_id) {
+      return new Clinic(clinics[this.clinic_id])
+    }
+  }
+
+  /**
    * Get school
    *
    * @returns {School|undefined} School
@@ -474,7 +527,12 @@ export class Vaccination {
         formatSequence(this.sequence),
         false
       ),
-      location: this.location || 'Unknown',
+      location:
+        (this?.location &&
+          Object.values(this.location)
+            .filter((string) => string)
+            .join(', ')) ||
+        'Unknown',
       country: this.countryOther || this.country || 'England',
       school: this.school && this.school.name,
       identifiedBy: this.selfId

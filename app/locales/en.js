@@ -2394,10 +2394,39 @@ export const en = {
       label: 'Record updated'
     },
     location: {
+      label: 'Location'
+    },
+    locationOther: {
+      hint: 'For example, a GP surgery, hospital or somewhere in another country'
+    },
+    locationType: {
       label: 'Location',
       title:
-        'Where was the {{session.programmeNames.sentenceCase}} vaccination given?',
-      hint: 'Enter name and address'
+        'Where was the {{session.programmeNames.sentenceCase}} vaccination given?'
+    },
+    clinic_id: {
+      label: 'Community clinic',
+      title: 'Select a community clinic'
+    },
+    school_id: {
+      label: 'School',
+      title: 'Select a school'
+    },
+    address: {
+      label: 'Location',
+      title: 'Location name and address'
+    },
+    country: {
+      label: 'Country',
+      title: 'Country',
+      england: 'England',
+      scotland: 'Scotland',
+      wales: 'Wales',
+      ni: 'Northern Ireland',
+      other: 'Another country outside the UK'
+    },
+    countryOther: {
+      title: 'Which country was the vaccination given in?'
     },
     outcome: {
       label: 'Outcome',

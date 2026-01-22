@@ -271,9 +271,6 @@ export const vaccinationController = {
               [`/${vaccination_uuid}/${type}/batch-id`]: () => {
                 return !data.defaultBatchId
               },
-              ...(!patientSession?.session?.address && {
-                [`/${vaccination_uuid}/${type}/location`]: {}
-              }),
               ...(!vaccination.programme
                 ? {
                     [`/${vaccination_uuid}/${type}/programme`]: {
@@ -299,6 +296,16 @@ export const vaccinationController = {
                     [`/${vaccination_uuid}/${type}/created-at`]: {}
                   }
                 : {}),
+              ...(!vaccination.location && {
+                [`/${vaccination_uuid}/${type}/location`]: {
+                  [`/${vaccination_uuid}/${type}/address`]: {
+                    data: 'vaccination.locationType',
+                    value: 'Another location'
+                  },
+                  [`/${vaccination_uuid}/${type}/check-answers`]: true
+                },
+                [`/${vaccination_uuid}/${type}/address`]: {}
+              }),
               [`/${vaccination_uuid}/${type}/check-answers`]: {}
             }),
         [`/${vaccination_uuid}`]: {}
@@ -380,7 +387,7 @@ export const vaccinationController = {
     let { paths, patientSession, vaccination } = response.locals
 
     // Add dose amount and vaccination outcome based on dosage answer
-    const { dosage } = request.body.vaccination
+    const dosage = request.body?.vaccination?.dosage
     if (dosage) {
       request.body.vaccination.dose =
         dosage === 'half'
