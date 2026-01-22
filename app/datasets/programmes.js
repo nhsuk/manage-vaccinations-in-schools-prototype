@@ -41,7 +41,7 @@ export default {
     immunocompromisedSequence: ['1P', '2P'],
     sequenceDefault: '1P',
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    vaccine_smomeds: ['43208811000001106', '40085011000001101'],
+    vaccine_snomeds: ['43208811000001106', '40085011000001101'],
     nhseSyncable: true
   },
   [ProgrammeType.HPV]: {
@@ -65,7 +65,7 @@ export default {
     sequenceDefault: '1P',
     targetYearGroup: 8,
     yearGroups: [8, 9, 10, 11],
-    vaccine_smomeds: ['33493111000001108'],
+    vaccine_snomeds: ['33493111000001108'],
     nhseSyncable: true
   },
   [ProgrammeType.TdIPV]: {
@@ -88,7 +88,7 @@ export default {
     sequenceDefault: '2B',
     yearGroups: [9, 10, 11],
     targetYearGroup: 9,
-    vaccine_smomeds: ['7374311000001101'],
+    vaccine_snomeds: ['7374311000001101'],
     ttcv: true,
     nhseSyncable: false
   },
@@ -112,7 +112,7 @@ export default {
     sequenceDefault: '1P',
     targetYearGroup: 9,
     yearGroups: [9, 10, 11],
-    vaccine_smomeds: ['39779611000001104'],
+    vaccine_snomeds: ['39779611000001104'],
     nhseSyncable: false
   },
   [ProgrammeType.MMR]: {
@@ -139,7 +139,7 @@ export default {
     sequenceDefault: '1P',
     targetYearGroup: -3,
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    vaccine_smomeds: ['13968211000001108', '34925111000001104'],
+    vaccine_snomeds: ['13968211000001108', '34925111000001104'],
     nhseSyncable: true
   }
 }

@@ -443,7 +443,7 @@ export class Session {
       const snomedCodes = new Set()
 
       for (const programme of this.programmes) {
-        for (const vaccine_snomed of programme.vaccine_smomeds) {
+        for (const vaccine_snomed of programme.vaccine_snomeds) {
           snomedCodes.add(vaccine_snomed)
         }
       }
