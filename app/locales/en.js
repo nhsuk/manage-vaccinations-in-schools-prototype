@@ -2410,7 +2410,6 @@ export const en = {
       },
       alreadyVaccinated: {
         title: 'Record as already vaccinated',
-        dose: 'Record %s dose as already given',
         ttcv: 'Record a previous TTCV vaccination'
       },
       notGiven: {
@@ -2568,8 +2567,7 @@ export const en = {
     },
     dose: {
       label: 'Dose volume',
-      title:
-        'What was the dose amount for the {{vaccination.programme.name}} vaccination?'
+      title: 'What was the dose amount for the %s vaccination?'
     },
     dosage: {
       title: 'Did they get the full dose?',

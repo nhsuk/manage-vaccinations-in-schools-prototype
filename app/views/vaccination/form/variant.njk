@@ -1,6 +1,18 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("vaccination.variant.title", { patient: vaccination.patient }) %}
+{% if vaccination.outcome != VaccinationOutcome.AlreadyVaccinated %}
+  {% set title = __("vaccination.variant.title", { patient: vaccination.patient }) %}
+  {% set items = booleanItems %}
+{% else %}
+  {% set title = __("vaccination.programme.title", { patient: vaccination.patient }) %}
+  {% set items = [{
+    text: "MMRV",
+    value: true
+  }, {
+    text: "MMR",
+    value: false
+  }] %}
+{% endif %}
 
 {% block form %}
   {{ radios({
@@ -15,8 +27,8 @@
     },
     hint: {
       text: __("vaccination.variant.hint", { patient: vaccination.patient })
-    },
-    items: booleanItems,
+    } if vaccination.outcome != VaccinationOutcome.AlreadyVaccinated,
+    items: items,
     decorate: "vaccination.variant"
   }) }}
 {% endblock %}
