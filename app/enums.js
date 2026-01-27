@@ -377,11 +377,13 @@ export const PreScreenQuestion = {
 export const ProgrammeType = {
   _4in1: '4-in-1',
   _5in1: '5-in-1',
+  _6in1: '6-in-1',
   Flu: 'Flu',
   HPV: 'HPV',
   TdIPV: 'Td/IPV',
   MenACWY: 'MenACWY',
-  MMR: 'MMR'
+  MMR: 'MMR',
+  Other: 'A programme administered outside the UK'
 }
 
 /**

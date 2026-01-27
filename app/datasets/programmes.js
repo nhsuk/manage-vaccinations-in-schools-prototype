@@ -1,6 +1,16 @@
 import { ProgrammeType } from '../enums.js'
 
 export default {
+  [ProgrammeType.Other]: {
+    type: ProgrammeType.Other,
+    id: 'other',
+    name: 'A programme administered outside the UK',
+    title: 'A programme administered outside the UK',
+    hidden: true,
+    ttcv: true,
+    sequence: ['1P'],
+    sequenceDefault: '1P'
+  },
   [ProgrammeType._4in1]: {
     type: ProgrammeType._4in1,
     id: '4in1',
@@ -20,6 +30,16 @@ export default {
     ttcv: true,
     sequence: ['1B'],
     sequenceDefault: '1B'
+  },
+  [ProgrammeType._6in1]: {
+    type: ProgrammeType._6in1,
+    id: '6in1',
+    name: '6-in-1',
+    title: '6-in-1',
+    hidden: true,
+    ttcv: true,
+    sequence: ['1P', '2P', '3P', '4P'],
+    sequenceDefault: '1P'
   },
   [ProgrammeType.Flu]: {
     type: ProgrammeType.Flu,

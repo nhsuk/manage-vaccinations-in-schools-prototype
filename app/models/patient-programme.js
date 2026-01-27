@@ -181,7 +181,18 @@ export class PatientProgramme {
    */
   get ttcvVaccinationsGiven() {
     return this.patient?.vaccinations
-      .filter((vaccination) => vaccination.programme.ttcv)
+      .filter((vaccination) => vaccination.programme?.ttcv)
+      .filter((vaccination) => vaccination.given)
+  }
+
+  /**
+   * Get other vaccinations given
+   *
+   * @returns {Array<import('./vaccination.js').Vaccination>|undefined} Vaccinations
+   */
+  get otherVaccinationsGiven() {
+    return this.patient?.vaccinations
+      .filter((vaccination) => vaccination.programmeOther)
       .filter((vaccination) => vaccination.given)
   }
 
@@ -297,7 +308,8 @@ export class PatientProgramme {
           },
           this.context
         ),
-        ...this.ttcvVaccinationsGiven
+        ...this.ttcvVaccinationsGiven,
+        ...this.otherVaccinationsGiven
       ].sort((a, b) => getDateValueDifference(a.createdAt, b.createdAt))
     }
   }

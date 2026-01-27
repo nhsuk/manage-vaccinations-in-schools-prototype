@@ -383,7 +383,6 @@ export const patientController = {
       const vaccination = Vaccination.create(
         {
           outcome: VaccinationOutcome.AlreadyVaccinated,
-          sequence: patientProgramme.sequence,
           patient_uuid: patient.uuid,
           reportedBy_uid: account.uid,
           ...(type === 'new' && { programme_id })

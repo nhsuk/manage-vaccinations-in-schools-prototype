@@ -1088,8 +1088,7 @@ export const en = {
       label: 'Notes'
     },
     ttcv: {
-      label:
-        'Previous vaccinations with tetanus-toxoid containing vaccines (TTCV)'
+      label: 'Previous vaccinations for Tetanus, Diptheria and Polio'
     }
   },
   patientSession: {
@@ -2410,8 +2409,7 @@ export const en = {
       },
       alreadyVaccinated: {
         title: 'Record as already vaccinated',
-        dose: 'Record %s dose as already given',
-        ttcv: 'Record a previous TTCV vaccination'
+        ttcv: 'Record a previous vaccination'
       },
       notGiven: {
         title: 'Vaccination was not given'
@@ -2543,7 +2541,7 @@ export const en = {
       title: 'Which injection site was used?'
     },
     ttcv: {
-      label: 'TTCV dose'
+      label: 'Dose'
     },
     programme: {
       label: 'Programme',
@@ -2564,12 +2562,13 @@ export const en = {
     note: {
       label: 'Notes',
       hint: 'For example, if the child had a reaction to the vaccine',
+      hintAlreadyVaccinated:
+        'For example, details given by the parent about the vaccination',
       title: 'Notes'
     },
     dose: {
       label: 'Dose volume',
-      title:
-        'What was the dose amount for the {{vaccination.programme.name}} vaccination?'
+      title: 'What was the dose amount for the %s vaccination?'
     },
     dosage: {
       title: 'Did they get the full dose?',
