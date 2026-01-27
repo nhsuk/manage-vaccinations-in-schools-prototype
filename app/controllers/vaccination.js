@@ -281,16 +281,16 @@ export const vaccinationController = {
                     }
                   }
                 : {}),
-              ...(vaccination?.programme?.sequence?.length > 1
-                ? {
-                    [`/${vaccination_uuid}/${type}/sequence`]: {}
-                  }
-                : {}),
               ...(vaccination?.outcome === VaccinationOutcome.AlreadyVaccinated
                 ? {
                     ...(vaccination?.programme?.type === ProgrammeType.MMR
                       ? {
                           [`/${vaccination_uuid}/${type}/variant`]: {}
+                        }
+                      : {}),
+                    ...(vaccination?.programme?.sequence?.length > 1
+                      ? {
+                          [`/${vaccination_uuid}/${type}/sequence`]: {}
                         }
                       : {}),
                     [`/${vaccination_uuid}/${type}/created-at`]: {}

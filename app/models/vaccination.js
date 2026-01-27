@@ -6,6 +6,7 @@ import schools from '../datasets/schools.js'
 import vaccines from '../datasets/vaccines.js'
 import {
   LocationType,
+  ProgrammeType,
   VaccinationMethod,
   VaccinationOutcome,
   VaccinationProtocol,
@@ -122,7 +123,7 @@ export class Vaccination {
     this.patientSession_uuid = options?.patientSession_uuid
     this.programme_id = options?.programme_id
     this.batch_id = this.given ? options?.batch_id || '' : undefined
-    this.variant = options?.variant
+    this.variant = options?.variant && stringToBoolean(options.variant)
     this.vaccine_snomed = options?.vaccine_snomed
 
     if (this.outcome === VaccinationOutcome.AlreadyVaccinated) {
@@ -454,6 +455,19 @@ export class Vaccination {
   }
 
   /**
+   * Get programme or programme variant name
+   *
+   * @returns {string} Programme or programme variant name
+   */
+  get programmeOrVariantName() {
+    if (this.variant && this.programme.type === ProgrammeType.MMR) {
+      return 'MMRV'
+    }
+
+    return this.programme.name
+  }
+
+  /**
    * Get formatted values
    *
    * @returns {object} Formatted values
@@ -461,7 +475,7 @@ export class Vaccination {
   get formatted() {
     const programme = this.variant
       ? formatTag({
-          text: 'MMRV',
+          text: this.programmeOrVariantName,
           colour: 'transparent'
         })
       : this.programme?.nameTag
