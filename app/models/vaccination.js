@@ -81,6 +81,7 @@ import {
  * @property {string} [patient_uuid] - Patient UUID (used outside of a session)
  * @property {string} [patientSession_uuid] - Patient session UUID
  * @property {string} [programme_id] - Programme ID
+ * @property {string} [programmeOther] - Non-NHS programme name
  * @property {string} [batch_id] - Batch ID
  * @property {string} [variant] - Programme variant
  * @property {string} [vaccine_snomed] - Vaccine SNOMED code
@@ -122,6 +123,7 @@ export class Vaccination {
     this.patient_uuid = options?.patient_uuid
     this.patientSession_uuid = options?.patientSession_uuid
     this.programme_id = options?.programme_id
+    this.programmeOther = options?.programmeOther
     this.batch_id = this.given ? options?.batch_id || '' : undefined
     this.variant = options?.variant && stringToBoolean(options.variant)
     this.vaccine_snomed = options?.vaccine_snomed
@@ -183,7 +185,7 @@ export class Vaccination {
         addressLine1: this.addressLine1,
         addressLine2: this.addressLine2,
         addressLevel1: this.addressLevel1,
-        country: this.country || this.countryOther
+        country: this.countryOther || this.country
       }
     }
   }
@@ -535,12 +537,14 @@ export class Vaccination {
       vaccine_snomed: this.vaccine_snomed ? this.vaccine?.brand : 'Unknown',
       note: formatMarkdown(this.note),
       outcome: formatTag(getVaccinationOutcomeStatus(this.outcome)),
-      programme,
-      programmeWithSequence: formatWithSecondaryText(
-        programme,
-        formatSequence(this.sequence),
-        false
-      ),
+      programme: this.programmeOther || programme,
+      programmeWithSequence:
+        this.programmeOther ||
+        formatWithSecondaryText(
+          programme,
+          formatSequence(this.sequence),
+          false
+        ),
       location:
         (this?.location &&
           Object.values(this.location)

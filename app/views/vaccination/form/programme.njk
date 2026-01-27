@@ -14,14 +14,33 @@
       }
     },
     items: [{
-      text: ProgrammeType._4in1,
-      value: "4in1"
+      text: data.programmes["6in1"].title + " (Children born on or after 1st August 2017)",
+      hint: { text: "DTaP-Hib-HepB-IPV" },
+      value: "6in1"
     }, {
-      text: ProgrammeType._5in1,
+      text: data.programmes["5in1"].title + " (Children born before 1st August 2017)",
+      hint: { text: "DTaP-Hib-IPV" },
       value: "5in1"
     }, {
-      text: ProgrammeType.TdIPV,
+      text: data.programmes["4in1"].title,
+      hint: { text: "DTaP-IPV" },
+      value: "4in1"
+    }, {
+      text: "3-in-1 teenage booster",
+      hint: { text: "Td-IPV" },
       value: "td-ipv"
+    }, {
+      divider: "or"
+    }, {
+      text: data.programmes["other"].title,
+      value: "other",
+      conditional: {
+        html: input({
+          label: { text: "What disease(s) did the vaccination provide protection against?" },
+          hint: { text: "For example, DTaP-IPV" },
+          decorate: "vaccination.programmeOther"
+        })
+      }
     }],
     decorate: "vaccination.programme_id"
   }) }}

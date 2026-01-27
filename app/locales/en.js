@@ -1088,8 +1088,7 @@ export const en = {
       label: 'Notes'
     },
     ttcv: {
-      label:
-        'Previous vaccinations with tetanus-toxoid containing vaccines (TTCV)'
+      label: 'Previous vaccinations for Tetanus, Diptheria and Polio'
     }
   },
   patientSession: {
@@ -2410,7 +2409,7 @@ export const en = {
       },
       alreadyVaccinated: {
         title: 'Record as already vaccinated',
-        ttcv: 'Record a previous TTCV vaccination'
+        ttcv: 'Record a previous vaccination'
       },
       notGiven: {
         title: 'Vaccination was not given'
@@ -2542,7 +2541,7 @@ export const en = {
       title: 'Which injection site was used?'
     },
     ttcv: {
-      label: 'TTCV dose'
+      label: 'Dose'
     },
     programme: {
       label: 'Programme',
