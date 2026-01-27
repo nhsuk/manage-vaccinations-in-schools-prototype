@@ -394,7 +394,14 @@ export function formatParentalRelationship(parent) {
 export function formatSequence(sequence) {
   if (!sequence) return
 
-  return `${ordinal(Number(sequence.charAt(0)))} dose`
+  const number = Number(sequence.charAt(0))
+  const identifier = sequence.charAt(1)
+
+  if (identifier === 'B') {
+    return `${ordinal(number)} booster dose`
+  }
+
+  return `${ordinal(number)} primary dose`
 }
 
 /**
