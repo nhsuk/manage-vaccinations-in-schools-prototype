@@ -123,4 +123,6 @@
       items: timelineItems(patient.auditEvents)
     })
   }) if patient.auditEvents.length }}
+
+  {% include "patient/_note.njk" %}
 {% endblock %}

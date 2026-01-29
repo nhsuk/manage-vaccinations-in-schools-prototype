@@ -399,7 +399,7 @@ export const patientSessionController = {
     pinned = stringToBoolean(pinned)
 
     patientSession.saveNote({
-      name: pinned ? AuditEventType.Pinned : AuditEventType.Note,
+      name: pinned ? AuditEventType.Pinned : AuditEventType.SessionNote,
       note,
       createdBy_uid: account.uid
     })

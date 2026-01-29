@@ -50,11 +50,12 @@ export const ArchiveRecordReason = {
  * @enum {string}
  */
 export const AuditEventType = {
-  Note: 'Session note',
   Notice: 'Notice',
   Pinned: 'Pinned session note',
   Reminder: 'Reminder',
-  Record: 'Change to child record'
+  Record: 'Change to child record',
+  RecordNote: 'Note added to child record',
+  SessionNote: 'Session note'
 }
 
 /**

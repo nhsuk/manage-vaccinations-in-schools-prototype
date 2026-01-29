@@ -2,6 +2,7 @@ import _ from 'lodash'
 
 import {
   ArchiveRecordReason,
+  AuditEventType,
   PatientStatus,
   ProgrammeType,
   VaccinationOutcome
@@ -363,6 +364,26 @@ export const patientController = {
     )
 
     request.flash('success', __(`patient.archive.success`))
+
+    response.redirect(patient.uri)
+  },
+
+  note(request, response) {
+    const { account } = request.app.locals
+    const { note } = request.body
+    const { data } = request.session
+    const { __, patient } = response.locals
+
+    patient.saveNote({
+      name: AuditEventType.RecordNote,
+      note,
+      createdBy_uid: account.uid
+    })
+
+    // Clean up session data
+    delete data.note
+
+    request.flash('success', __(`patient.notes.new.success`, { patient }))
 
     response.redirect(patient.uri)
   },
