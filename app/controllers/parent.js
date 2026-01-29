@@ -1,7 +1,6 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import {
-  EthnicGroup,
   ParentalRelationship,
   ProgrammeType,
   ReplyDecision,
@@ -166,11 +165,11 @@ export const parentController = {
       [`/${session_id}/${consent_uuid}/new/adjustments`]: {},
       [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
       [`/${session_id}/${consent_uuid}/new/ethnicity`]: {
-        [`/${session_id}/${consent_uuid}/new/ethnic-group`]: {
-          data: 'consent.ethnicity',
-          value: true
-        }
+        [`/${session_id}/${consent_uuid}/new/confirmation`]: () =>
+          request.session.data.consent?.ethnicity === 'false'
       },
+      [`/${session_id}/${consent_uuid}/new/ethnic-group`]: {},
+      [`/${session_id}/${consent_uuid}/new/ethnic-background`]: {},
       [`/${session_id}/${consent_uuid}/new/confirmation`]: {},
       // Refusal journey
       [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
@@ -198,16 +197,6 @@ export const parentController = {
       // First and second dose journey
       [`/${session_id}/${consent_uuid}/new/first-dose`]: {},
       [`/${session_id}/${consent_uuid}/new/second-dose`]: {
-        [`/${session_id}/${consent_uuid}/new/check-answers`]: true
-      },
-      // Ethnicity journey
-      [`/${session_id}/${consent_uuid}/new/ethnic-group`]: {
-        [`/${session_id}/${consent_uuid}/new/confirmation`]: {
-          data: 'consent.child.ethnicGroup',
-          value: EthnicGroup.Withheld
-        }
-      },
-      [`/${session_id}/${consent_uuid}/new/ethnic-background`]: {
         [`/${session_id}/${consent_uuid}/new/check-answers`]: true
       }
     }
