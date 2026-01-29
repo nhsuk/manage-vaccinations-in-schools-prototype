@@ -664,6 +664,20 @@ export class Patient extends Child {
   }
 
   /**
+   * Save note
+   *
+   * @param {import('./audit-event.js').AuditEvent} event - Event
+   */
+  saveNote(event) {
+    this.addEvent({
+      type: AuditEventType.Record,
+      name: event.name,
+      note: event.note,
+      createdBy_uid: event.createdBy_uid
+    })
+  }
+
+  /**
    * Add notice
    *
    * @param {import('./notice.js').Notice} notice - Notice

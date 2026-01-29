@@ -16,6 +16,8 @@ router.all('/:patient_uuid/edit/:view', patient.readForm)
 router.get('/:patient_uuid/edit/:view', patient.showForm)
 router.post('/:patient_uuid/edit/:view', patient.updateForm)
 
+router.post('/:patient_uuid/new/note', patient.note)
+
 router.post('/:patient_uuid/archive', patient.archive)
 
 router.all('/:patient_uuid/programmes{/:programme_id}', patient.readProgramme)

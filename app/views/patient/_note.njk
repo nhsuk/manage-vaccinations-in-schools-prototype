@@ -1,0 +1,22 @@
+{% call details({
+  classes: "nhsuk-expander",
+  summaryText: __("patient.notes.new.title")
+}) %}
+  {{ textarea({
+    label: {
+      text: __("event.note.label")
+    },
+    hint: {
+      text: __("event.note.hint")
+    },
+    rows: 5,
+    decorate: "note"
+  }) }}
+
+  {{ button({
+    text: __("patient.notes.new.confirm"),
+    attributes: {
+      formaction: patient.uri + "/new/note"
+    }
+  }) }}
+{% endcall %}

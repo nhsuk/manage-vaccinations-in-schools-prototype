@@ -954,6 +954,14 @@ export const en = {
     archived: {
       label: 'Archived'
     },
+    notes: {
+      label: 'Notes',
+      new: {
+        title: 'Add a note to this record',
+        confirm: 'Save note',
+        success: 'Note added'
+      }
+    },
     nhsn: {
       label: 'NHS number',
       title: 'What is the child’s NHS number?'
