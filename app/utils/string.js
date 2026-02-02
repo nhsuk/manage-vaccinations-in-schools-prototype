@@ -2,6 +2,8 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { healthQuestions } from '../datasets/health-questions.js'
 
+import { ordinal } from './number.js'
+
 /**
  * kebab-case to camelCase
  *
@@ -313,7 +315,7 @@ export function formatNhsNumber(string, invalid) {
 /**
  * Format parent with optional display of contact details
  *
- * @param {import('../models/parent.js').Parent} parent - Parent
+ * @param {import('../models.js').Parent} parent - Parent
  * @param {boolean} [includeContactDetails] - Include contact details
  * @returns {string|undefined} Formatted parent HTML
  */
@@ -374,13 +376,32 @@ export function formatIdentifier(identifiedBy) {
 /**
  * Format parental relationship, falling back to name else unknown
  *
- * @param {import('../models/parent.js').Parent} parent - Parent
+ * @param {import('../models.js').Parent} parent - Parent
  * @returns {string|undefined} Formatted parent HTML
  */
 export function formatParentalRelationship(parent) {
   if (!parent) return
 
   return parent.relationship || parent.fullName || 'Name unknown'
+}
+
+/**
+ * Format dose sequence
+ *
+ * @param {string} sequence - Dose sequence
+ * @returns {string|undefined} Formatted dose sequence
+ */
+export function formatSequence(sequence) {
+  if (!sequence) return
+
+  const number = Number(sequence.charAt(0))
+  const identifier = sequence.charAt(1)
+
+  if (identifier === 'B') {
+    return `${ordinal(number)} booster dose`
+  }
+
+  return `${ordinal(number)} primary dose`
 }
 
 /**

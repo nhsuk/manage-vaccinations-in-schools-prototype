@@ -1,21 +1,13 @@
-{% from "patient-session/_navigation.njk" import patientSessionNavigation with context %}
+{% extends "_layouts/session.njk" %}
 
-{% extends "_layouts/form.njk" %}
-
-{% set gridColumns = "full" %}
-{% set hideConfirmButton = true %}
 {% set title = patient.initials + " – " + session.location.name %}
+{% set heading = patientSession.patient.fullName %}
 
 {% block beforeContent %}
   {{ breadcrumb({
+    classes: "nhsuk-breadcrumb--reverse",
     items: [{
-      text: __("home.show.title"),
-      href: "/"
-    }, {
-      text: __("session.list.title"),
-      href: "/sessions"
-    }, {
-      text: session.location.name,
+      text: session.name,
       href: session.uri
     }, {
       text: __("session." + activity + ".label"),
@@ -24,53 +16,62 @@
   }) }}
 {% endblock %}
 
-{% block form %}
+{% block content %}
   {{ super() }}
-
-  {{ notificationBanner({
-    text: __mf("patientSession.outstandingVaccinations.message", {
-      count: patientSession.outstandingVaccinations.length,
-      names: patientSession.formatted.outstandingVaccinations
-    })
-  }) if options.showOutstandingVaccinations }}
-
-  {{ patientSessionNavigation({
-    patientSession: patientSession,
-    view: "show"
-  }) }}
 
   <div class="nhsuk-grid-row">
     <div class="app-grid-column-patient-record" data-module="app-sticky">
-      {{ appHeading({
-        classes: "nhsuk-u-margin-top-1",
-        level: 3,
-        size: "s",
-        title: patientSession.patient.fullName
-      }) }}
       {{ summaryList({
-        classes: "nhsuk-u-margin-bottom-2 nhsuk-summary-list--no-border app-summary-list--full-width",
+        card: {
+          heading: patientSession.patient.fullName,
+          headingClasses: "nhsuk-u-margin-bottom-2",
+          headingLevel: 3,
+          headingSize: "s",
+          href: patient.uri + "?referrer=" + referrer,
+          secondary: true
+        },
+        classes: "nhsuk-summary-list--no-border app-summary-list--full-width",
         rows: summaryRows(patient, {
           nhsn: {
             changeLabel: "the child’s NHS number",
             href: patient.uri + "/edit/nhsn" if patient.hasMissingNhsNumber
           },
           dob: {},
+          impairments: {},
+          adjustments: {},
           address: {}
         })
       }) }}
-      {{ link(patient.uri + "?referrer=" + referrer, "View full child record") | nhsukMarkdown }}
+
+      {{ link(patient.uri + "/programmes/" + programme.id + "?referrer=" + referrer, __("patientSession.patientProgramme.label", programme.nameSentenceCase)) | nhsukMarkdown }}
     </div>
 
     <div class="app-grid-column-patient-session">
+      {{ warningCallout({
+        classes: "nhsuk-u-margin-top-3",
+        heading: __mf("patientSession.outstandingVaccinations.label", {
+          count: patientSession.outstandingVaccinations.length
+        }),
+        text: __mf("patientSession.outstandingVaccinations.message", {
+          count: patientSession.outstandingVaccinations.length,
+          names: patientSession.formatted.outstandingVaccinations
+        })
+      }) if options.showOutstandingVaccinations }}
+
+      {% include "patient-session/_report.njk" %}
+
       {% for auditEvent in patientSession.pinnedNotes %}
         {{ card({
-          classes: "nhsuk-u-margin-top-3 app-card--yellow",
+          classes: "nhsuk-u-margin-top-2 app-card--orange",
           heading: auditEvent.name,
-          headingLevel: 4,
-          feature: true,
+          headingLevel: 3,
           descriptionHtml: appEvent({ auditEvent: auditEvent, showProgrammes: true })
         }) }}
       {% endfor %}
+
+      {% if options.canGillick or patientSession.gillick %}
+        {% include "patient-session/_gillick.njk" %}
+      {% endif %}
 
       {% include "patient-session/_consent.njk" %}
 
@@ -78,12 +79,18 @@
         {% include "patient-session/_triage.njk" %}
       {% endif %}
 
-      {% if options.canReport %}
-        {% include "patient-session/_report.njk" %}
+      {% if options.hasInstruct %}
+        {% include "patient-session/_instruct.njk" %}
+      {% endif %}
+
+      {% if options.canRegister %}
+        {% include "patient-session/_register.njk" %}
       {% endif %}
 
       {% if options.canRecord %}
         {% include "patient-session/_record.njk" %}
+      {% elif options.canRecordPrevious %}
+        {% include "patient-session/_record-previous.njk" %}
       {% endif %}
     </div>
   </div>

@@ -13,11 +13,13 @@ import {
   VaccinationSite,
   VaccineMethod
 } from '../enums.js'
-import { Gillick } from '../models/gillick.js'
-import { Instruction } from '../models/instruction.js'
-import { PatientSession } from '../models/patient-session.js'
-import { Programme } from '../models/programme.js'
-import { Vaccination } from '../models/vaccination.js'
+import {
+  Gillick,
+  Instruction,
+  PatientSession,
+  Programme,
+  Vaccination
+} from '../models.js'
 import { today } from '../utils/date.js'
 import { stringToBoolean } from '../utils/string.js'
 
@@ -50,6 +52,10 @@ export const patientSessionController = {
 
     const due = patientSession.siblingPatientSessions.filter(
       ({ report }) => report === PatientStatus.Due
+    )
+
+    const patientProgramme = Object.values(patient.programmes).find(
+      (patientProgramme) => patientProgramme.programme_id === programme_id
     )
 
     // National protocol
@@ -90,8 +96,6 @@ export const patientSessionController = {
         session.consentWindow === ConsentWindow.Open &&
         !session.isActive &&
         consent === ConsentOutcome.NoResponse,
-      // Get verbal consent
-      canRespond: !consentGiven,
       // Perform Gillick assessment
       canGillick:
         programme.type !== ProgrammeType.Flu &&
@@ -103,13 +107,18 @@ export const patientSessionController = {
       needsTriage: report === PatientStatus.Triage,
       // Patient already triaged
       hasTriage: triageNotes.length > 0,
+      hasInstruct:
+        session.psdProtocol &&
+        patientSession.instruct &&
+        patientSession.session.isActive,
       hasSupplier: userIsHCA && userHasSupplier,
+      canRegister: session.register && session.isActive,
       canRecord:
         account.vaccineMethods?.includes(patientSession.vaccine?.method) &&
-        record,
-      canReport:
-        report === PatientStatus.Vaccinated &&
-        patientSession.lastVaccinationOutcome
+        record &&
+        session.isActive,
+      canRecordPrevious:
+        !session.isActive && report !== PatientStatus.Vaccinated
     }
 
     response.locals.vaccinationSiteItems = Object.entries(VaccinationSite)
@@ -159,6 +168,7 @@ export const patientSessionController = {
     response.locals.referrer = activity
       ? `${patientSession.uri}?activity=${activity}`
       : patientSession.uri
+    response.locals.patientProgramme = patientProgramme
     response.locals.patientSession = patientSession
     response.locals.patient = patient
     response.locals.programme = programme
@@ -228,7 +238,7 @@ export const patientSessionController = {
       const vaccination = Vaccination.create(
         {
           location: session.location.name,
-          school_urn: session.school_urn,
+          school_id: session.school_id,
           outcome: VaccinationOutcome.Absent,
           patientSession_uuid: patientSession.uuid,
           programme_id: programme.id,
@@ -389,7 +399,7 @@ export const patientSessionController = {
     pinned = stringToBoolean(pinned)
 
     patientSession.saveNote({
-      name: pinned ? AuditEventType.Pinned : AuditEventType.Note,
+      name: pinned ? AuditEventType.Pinned : AuditEventType.SessionNote,
       note,
       createdBy_uid: account.uid
     })

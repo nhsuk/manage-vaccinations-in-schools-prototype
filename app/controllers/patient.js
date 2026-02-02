@@ -2,14 +2,12 @@ import _ from 'lodash'
 
 import {
   ArchiveRecordReason,
+  AuditEventType,
   PatientStatus,
   ProgrammeType,
   VaccinationOutcome
 } from '../enums.js'
-import { PatientProgramme } from '../models/patient-programme.js'
-import { Patient } from '../models/patient.js'
-import { Programme } from '../models/programme.js'
-import { Vaccination } from '../models/vaccination.js'
+import { PatientProgramme, Patient, Programme, Vaccination } from '../models.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
@@ -61,9 +59,9 @@ export const patientController = {
     const { option, programme_id, q, yearGroup } = request.query
     const { data } = request.session
 
-    const programmes = Programme.findAll(data).sort((a, b) =>
-      a.name.localeCompare(b.name)
-    )
+    const programmes = Programme.findAll(data)
+      .filter((programme) => !programme.hidden)
+      .sort((a, b) => a.name.localeCompare(b.name))
 
     const patients = Patient.findAll(data)
 
@@ -151,7 +149,13 @@ export const patientController = {
     }
 
     // Filter by display option
-    for (const key of ['archived', 'hasMissingNhsNumber', 'post16']) {
+    for (const key of [
+      'archived',
+      'hasImpairment',
+      'hasAdjustment',
+      'hasMissingNhsNumber',
+      'post16'
+    ]) {
       if (option?.includes(key)) {
         results = results.filter((patient) => patient[key])
       }
@@ -364,36 +368,59 @@ export const patientController = {
     response.redirect(patient.uri)
   },
 
-  vaccination(request, response) {
+  note(request, response) {
     const { account } = request.app.locals
-    const { programme_id } = request.params
+    const { note } = request.body
     const { data } = request.session
-    const { patient } = response.locals
+    const { __, patient } = response.locals
 
-    const patientProgramme = new PatientProgramme(
-      patient.programmes[programme_id],
-      data
-    )
+    patient.saveNote({
+      name: AuditEventType.RecordNote,
+      note,
+      createdBy_uid: account.uid
+    })
 
-    // Vaccination
-    const vaccination = Vaccination.create(
-      {
-        outcome: VaccinationOutcome.AlreadyVaccinated,
-        sequence: patientProgramme.sequence,
-        patient_uuid: patient.uuid,
-        programme_id: patientProgramme.programme_id,
-        reportedBy_uid: account.uid
-      },
-      data.wizard
-    )
+    // Clean up session data
+    delete data.note
 
-    let startPage = 'created-at'
-    if (patientProgramme.programme.type === ProgrammeType.MMR) {
-      startPage = 'variant'
+    request.flash('success', __(`patient.notes.new.success`, { patient }))
+
+    response.redirect(patient.uri)
+  },
+
+  vaccination(type) {
+    return (request, response) => {
+      const { account } = request.app.locals
+      const { programme_id } = request.params
+      const { data } = request.session
+      const { patient } = response.locals
+
+      const patientProgramme = new PatientProgramme(
+        patient.programmes[programme_id],
+        data
+      )
+
+      // Vaccination
+      const vaccination = Vaccination.create(
+        {
+          outcome: VaccinationOutcome.AlreadyVaccinated,
+          patient_uuid: patient.uuid,
+          reportedBy_uid: account.uid,
+          ...(type === 'new' && { programme_id })
+        },
+        data.wizard
+      )
+
+      let startPage = 'created-at'
+      if (!vaccination.programme_id) {
+        startPage = 'programme'
+      } else if (patientProgramme.programme.type === ProgrammeType.MMR) {
+        startPage = 'variant'
+      }
+
+      response.redirect(
+        `${patientProgramme.programme.uri}/vaccinations/${vaccination.uuid}/new/${startPage}?referrer=${patientProgramme.uri}`
+      )
     }
-
-    response.redirect(
-      `${patientProgramme.programme.uri}/vaccinations/${vaccination.uuid}/new/${startPage}?referrer=${patientProgramme.uri}`
-    )
   }
 }

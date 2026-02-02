@@ -10,9 +10,6 @@
         title: title
       })
     },
-    hint: {
-      text: __("consent.refusalReasonDetails.mmr.hint")
-     } if "MMR" in session.presetNames and consent.refusalReason == ReplyRefusal.AlreadyGiven,
     decorate: "consent.refusalReasonDetails"
   }) }}
 {% endblock %}

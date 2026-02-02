@@ -13,6 +13,15 @@ import {
   ReplyRefusal,
   VaccineCriteria
 } from '../enums.js'
+import {
+  Child,
+  Parent,
+  Patient,
+  Programme,
+  Session,
+  User,
+  Vaccination
+} from '../models.js'
 import { formatDate, today } from '../utils/date.js'
 import {
   getConsentOutcomeStatus,
@@ -26,13 +35,6 @@ import {
   formatWithSecondaryText,
   stringToBoolean
 } from '../utils/string.js'
-
-import { Child } from './child.js'
-import { Parent } from './parent.js'
-import { Patient } from './patient.js'
-import { Programme } from './programme.js'
-import { Session } from './session.js'
-import { User } from './user.js'
 
 /**
  * @class Reply
@@ -50,6 +52,7 @@ import { User } from './user.js'
  * @property {boolean} [confirmed] - Decision confirmed
  * @property {boolean} [consultation] - Consultation requested
  * @property {boolean} declined - Reply declines consent
+ * @property {boolean} ethnicity - Answered ethnicity questions
  * @property {boolean} given - Reply gives consent
  * @property {boolean} invalid - Reply is invalid
  * @property {ReplyMethod} [method] - Reply method
@@ -72,6 +75,7 @@ export class Reply {
     this.createdBy_uid = options?.createdBy_uid
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.child = options?.child && new Child(options.child)
+    this.ethnicity = stringToBoolean(options?.ethnicity)
     this.parent = options?.parent && new Parent(options.parent)
     this.method = options?.method
     this.selfConsent = options?.selfConsent
@@ -82,7 +86,10 @@ export class Reply {
 
     // Some values only valid if the consent request was received
     if (this.delivered) {
-      this.decision = options?.decision
+      this.decision =
+        options.refusalReason === ReplyRefusal.AlreadyVaccinatedMMR
+          ? ReplyDecision.AlreadyVaccinated
+          : options?.decision
       this.alternative =
         options?.alternative && stringToBoolean(options?.alternative)
       this.confirmed = stringToBoolean(options?.confirmed)
@@ -100,6 +107,12 @@ export class Reply {
         this?.decision === ReplyDecision.NoResponse
           ? false // Don’t show non response as invalid
           : stringToBoolean(options?.invalid) || false
+    }
+
+    if (this.decision === ReplyDecision.AlreadyVaccinated) {
+      this.firstDose = options?.firstDose && new Vaccination(options.firstDose)
+      this.secondDose =
+        options?.secondDose && new Vaccination(options.secondDose)
     }
 
     if (
@@ -290,9 +303,6 @@ export class Reply {
       }
     }
 
-    // Always ask support question last
-    healthQuestionsForDecision.set('support', {})
-
     return Object.fromEntries(healthQuestionsForDecision)
   }
 
@@ -383,8 +393,8 @@ export class Reply {
         ? this.relationship
         : formatParent(this.parent, false),
       parent: formatParent(this.parent, true),
-      tel: this.parent.tel,
-      email: this.parent.email,
+      tel: this.parent && this.parent.tel,
+      email: this.parent && this.parent.email,
       programme: this.programme?.nameTag,
       refusalReason: formatOther(this.refusalReasonOther, this.refusalReason),
       refusalReasonDetails: formatMarkdown(this.refusalReasonDetails),
@@ -429,7 +439,7 @@ export class Reply {
   static findAll(context) {
     return Object.values(context.replies)
       .map((reply) => new Reply(reply, context))
-      .filter((reply) => !reply.patient_uuid)
+      .filter((reply) => !reply?.patient_uuid)
   }
 
   /**

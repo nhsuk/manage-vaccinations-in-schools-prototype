@@ -8,16 +8,24 @@ import {
   ConsentOutcome,
   ConsentWindow,
   InstructionOutcome,
-  OrganisationDefaults,
   PatientStatus,
-  SessionPresets,
-  SessionPresetName,
   ProgrammeType,
   RecordVaccineCriteria,
+  SessionPresets,
+  SessionPresetName,
   SessionStatus,
   SessionType,
+  TeamDefaults,
   VaccineCriteria
 } from '../enums.js'
+import {
+  Clinic,
+  Consent,
+  PatientSession,
+  Programme,
+  School,
+  Vaccine
+} from '../models.js'
 import {
   removeDays,
   convertIsoDateToObject,
@@ -38,13 +46,6 @@ import {
   stringToBoolean
 } from '../utils/string.js'
 
-import { Clinic } from './clinic.js'
-import { Consent } from './consent.js'
-import { PatientSession } from './patient-session.js'
-import { Programme } from './programme.js'
-import { School } from './school.js'
-import { Vaccine } from './vaccine.js'
-
 /**
  * @class Session
  * @param {object} options - Options
@@ -63,7 +64,7 @@ import { Vaccine } from './vaccine.js'
  * @property {string} [clinic_id] - Clinic ID
  *
  *   Schools only
- * @property {string} [school_urn] - School URN
+ * @property {string} [school_id] - School URN
  * @property {Array<string>} [yearGroups] - Year groups
  * @property {Date} [openAt] - Date consent window opens
  * @property {object} [openAt_] - Date consent window opens (from `dateInput`)
@@ -91,18 +92,18 @@ export class Session {
     }
 
     if (this.type === SessionType.School) {
-      this.school_urn = options?.school_urn
+      this.school_id = options?.school_id
       this.yearGroups = options?.yearGroups || []
       this.yearGroups_ = options?.yearGroups_
       this.openAt = options?.openAt
         ? new Date(options.openAt)
         : this.date
-          ? removeDays(this.date, OrganisationDefaults.SessionOpenWeeks * 7)
+          ? removeDays(this.date, TeamDefaults.SessionOpenWeeks * 7)
           : undefined
       this.openAt_ = options?.openAt_
       this.closed = options?.closed || false
       this.reminderWeeks =
-        options?.reminderWeeks || OrganisationDefaults.SessionReminderWeeks
+        options?.reminderWeeks || TeamDefaults.SessionReminderWeeks
       this.registration = stringToBoolean(options?.registration)
       this.register = options?.register || {}
       this.psdProtocol = stringToBoolean(options?.psdProtocol) || false
@@ -338,9 +339,9 @@ export class Session {
    * @returns {School|undefined} School
    */
   get school() {
-    if (this.school_urn) {
+    if (this.school_id) {
       try {
-        return School.findOne(this.school_urn, this.context)
+        return School.findOne(this.school_id, this.context)
       } catch (error) {
         console.error('Session.school', error.message)
       }
@@ -378,7 +379,7 @@ export class Session {
     if (this.context?.patients && this.id) {
       return PatientSession.findAll(this.context)
         .filter(({ session }) => session.id === this.id)
-        .filter(({ patient }) => !patient?.pendingChanges?.school_urn)
+        .filter(({ patient }) => !patient?.pendingChanges?.school_id)
     }
 
     return []
@@ -442,7 +443,7 @@ export class Session {
       const snomedCodes = new Set()
 
       for (const programme of this.programmes) {
-        for (const vaccine_snomed of programme.vaccine_smomeds) {
+        for (const vaccine_snomed of programme.vaccine_snomeds) {
           snomedCodes.add(vaccine_snomed)
         }
       }
@@ -562,30 +563,6 @@ export class Session {
   }
 
   /**
-   * Get location
-   *
-   * @returns {object} Location
-   */
-  get location() {
-    const type = this.type === SessionType.School ? 'school' : 'clinic'
-
-    return this[type]?.location
-  }
-
-  /**
-   * Get address
-   *
-   * @returns {import('./address.js').Address} Address
-   */
-  get address() {
-    const type = this.type === SessionType.School ? 'school' : 'clinic'
-
-    if (this[type]) {
-      return this[type].address
-    }
-  }
-
-  /**
    * Get name
    *
    * @returns {string|undefined} Name
@@ -598,6 +575,30 @@ export class Session {
     if (this.location) {
       return `${this.programmeNames.titleCase} session at ${this.location.name} on ${this.formatted.dateShort}`
     }
+  }
+
+  /**
+   * Get address
+   *
+   * @returns {Object} Address
+   */
+  get address() {
+    const type = this.type === SessionType.School ? 'school' : 'clinic'
+
+    if (this[type]) {
+      return this[type].address
+    }
+  }
+
+  /**
+   * Get location (name and address)
+   *
+   * @returns {object} Location
+   */
+  get location() {
+    const type = this.type === SessionType.School ? 'school' : 'clinic'
+
+    return this[type]?.location
   }
 
   /**
@@ -686,15 +687,15 @@ export class Session {
     switch (this.consentWindow) {
       case ConsentWindow.Opening:
         consentWindow = `Opens ${formatDate(this.openAt, consentDateStyle)}`
-        consentWindowSentence = `Consent window opens on ${formatDate(this.openAt, consentDateStyle)}`
+        consentWindowSentence = `Consent window opens on ${formatDate(this.openAt, consentDateStyle)}.`
         break
       case ConsentWindow.Closed:
         consentWindow = `Closed ${formatDate(this.closeAt, consentDateStyle)}`
-        consentWindowSentence = `Consent window closed on ${formatDate(this.closeAt, consentDateStyle)}`
+        consentWindowSentence = `Consent window closed on ${formatDate(this.closeAt, consentDateStyle)}.`
         break
       case ConsentWindow.Open:
         consentWindow = `Open from ${formatDate(this.openAt, consentDateStyle)} until ${formatDate(this.closeAt, consentDateStyle)}`
-        consentWindowSentence = `Consent window is open from ${formatDate(this.openAt, consentDateStyle)} until ${formatDate(this.closeAt, consentDateStyle)}`
+        consentWindowSentence = `Consent window is open from ${formatDate(this.openAt, consentDateStyle)} until ${formatDate(this.closeAt, consentDateStyle)}.`
         break
       default:
         consentWindow = ''
@@ -707,7 +708,11 @@ export class Session {
     const reminderWeeks = filters.plural(this.reminderWeeks, 'week')
 
     return {
-      address: this.address?.formatted.multiline,
+      address:
+        this.address &&
+        Object.values(this.address)
+          .filter((string) => string)
+          .join('<br>'),
       dateShort: formatDate(this.date, {
         dateStyle: 'long'
       }),
@@ -755,7 +760,7 @@ export class Session {
         .join(', '),
       clinic: this.clinic && this.clinic.name,
       school: this.school && this.school.name,
-      school_urn: this.school && this.school.formatted.urn,
+      school_id: this.school && this.school.formatted.id,
       yearGroups: this.yearGroups && formatYearGroups(this.yearGroups)
     }
   }
@@ -786,9 +791,11 @@ export class Session {
    * @static
    */
   static findAll(context) {
-    return Object.values(context.sessions).map(
-      (session) => new Session(session, context)
-    )
+    if (context?.sessions) {
+      return Object.values(context.sessions).map(
+        (session) => new Session(session, context)
+      )
+    }
   }
 
   /**

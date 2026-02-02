@@ -2,17 +2,13 @@ import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import vaccines from '../datasets/vaccines.js'
 import { ProgrammeType, VaccineCriteria } from '../enums.js'
+import { PatientSession, Session, Vaccination, Vaccine } from '../models.js'
 import {
   formatLink,
   formatTag,
   formatYearGroup,
   sentenceCaseProgrammeName
 } from '../utils/string.js'
-
-import { PatientSession } from './patient-session.js'
-import { Session } from './session.js'
-import { Vaccination } from './vaccination.js'
-import { Vaccine } from './vaccine.js'
 
 /**
  * @class Programme
@@ -21,6 +17,7 @@ import { Vaccine } from './vaccine.js'
  * @property {object} [context] - Context
  * @property {ProgrammeType} type - Programme type
  * @property {string} id - ID
+ * @property {boolean} hidden - Hidden
  * @property {string} name - Name
  * @property {string} title - Title
  * @property {object} [emailNames] - Email names
@@ -30,14 +27,16 @@ import { Vaccine } from './vaccine.js'
  * @property {Array<string>} [immunocompromisedSequence] - Vaccine dose sequence for immunocompromised patients
  * @property {string} sequenceDefault - Default vaccine dose sequence
  * @property {number} [targetYearGroup] - Year group for routine vaccination
+ * @property {boolean} ttcv - Tetanus-toxoid containing vaccination programme
  * @property {boolean} nhseSyncable - Vaccination records can be synced
- * @property {Array<string>} vaccine_smomeds - Vaccines administered
+ * @property {Array<string>} vaccine_snomeds - Vaccines administered
  */
 export class Programme {
   constructor(options, context) {
     this.context = context
     this.type = options.type
     this.id = options?.id
+    this.hidden = options?.hidden || false
     this.name = options?.name
     this.title = options?.title
     this.emailNames = options?.emailNames
@@ -48,8 +47,9 @@ export class Programme {
     this.sequenceDefault = options?.sequenceDefault
     this.yearGroups = options?.yearGroups
     this.targetYearGroup = options?.targetYearGroup
-    this.nhseSyncable = options?.nhseSyncable
-    this.vaccine_smomeds = options?.vaccine_smomeds
+    this.ttcv = options?.ttcv || false
+    this.nhseSyncable = options?.nhseSyncable || false
+    this.vaccine_snomeds = options?.vaccine_snomeds || []
   }
 
   /**
@@ -100,8 +100,8 @@ export class Programme {
    * @returns {Array<import('./vaccine.js').Vaccine>} Vaccine
    */
   get vaccines() {
-    return this.vaccine_smomeds.map((smomed) =>
-      Vaccine.findOne(smomed, this.context)
+    return this.vaccine_snomeds.map((snomed) =>
+      Vaccine.findOne(snomed, this.context)
     )
   }
 
@@ -211,8 +211,8 @@ export class Programme {
    * @returns {object} Formatted values
    */
   get formatted() {
-    const vaccineList = Array.isArray(this.vaccine_smomeds)
-      ? this.vaccine_smomeds.map(
+    const vaccineList = Array.isArray(this.vaccine_snomeds)
+      ? this.vaccine_snomeds.map(
           (snomed) => new Vaccine(vaccines[snomed]).brand
         )
       : []

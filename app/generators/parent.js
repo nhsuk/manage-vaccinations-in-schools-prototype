@@ -5,7 +5,7 @@ import {
   ParentalRelationship,
   NotifySmsStatus
 } from '../enums.js'
-import { Parent } from '../models/parent.js'
+import { Parent } from '../models.js'
 
 /**
  * Generate fake parent

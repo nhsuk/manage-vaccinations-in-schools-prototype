@@ -1,22 +1,9 @@
 @use "../vendor/nhsuk-frontend" as *;
-@use "../core" as app;
 
 .nhsuk-tag {
-  &--dark-orange {
-    border-color: nhsuk-shade(app.$dark-orange-colour, 50%);
-    color: nhsuk-shade(app.$dark-orange-colour, 50%);
-    background-color: nhsuk-tint(app.$dark-orange-colour, 80%);
-  }
-
-  &--warm-yellow {
-    border-color: nhsuk-shade(nhsuk-colour("warm-yellow"), 50%);
-    color: nhsuk-shade(nhsuk-colour("warm-yellow"), 50%);
-    background-color: nhsuk-tint(nhsuk-colour("warm-yellow"), 80%);
-  }
-
   &--transparent {
-    border-color: currentcolor;
-    color: currentcolor;
+    border-color: $nhsuk-text-colour;
+    color: $nhsuk-text-colour;
     background-color: transparent;
   }
 }

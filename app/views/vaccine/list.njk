@@ -12,9 +12,9 @@
 
   {% for vaccine in vaccines %}
     {% call card({
-      heading: vaccine.brandWithType,
       feature: true,
-      headingClasses: "nhsuk-heading-m nhsuk-u-margin-bottom-1",
+      heading: vaccine.brandWithType,
+      headingSize: "m",
       href: vaccine.uri
     }) %}
       {{ summaryList({

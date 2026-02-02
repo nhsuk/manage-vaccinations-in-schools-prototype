@@ -3,10 +3,10 @@
 {% extends "_layouts/session.njk" %}
 
 {% set title = session.name + " – " + __("session." + view + ".title") %}
+{% set heading = session.name %}
+{% set caption = session.formatted.yearGroups %}
 
 {% block content %}
-  {{ super() }}
-
   {% if (view == "record") and not session.isActive %}
     {{ appHeading({
       level: 2,
@@ -58,18 +58,16 @@
           }) | safe
         }) }}
 
-        {% set instructHtml %}
-          {{ __("session.instruct.description", session.activity.instruct) | nhsukMarkdown }}
+        {% if view == "instruct" and session.activity.instruct and account.canPrescribe %}
+          {% call insetText() %}
+            {{ __("session.instruct.description", session.activity.instruct) | nhsukMarkdown }}
 
-          {{ actionLink({
-            text: __("session.instructions.label"),
-            href: session.uri + "/instructions"
-          }) }}
-        {% endset %}
-
-        {{ insetText({
-          html: instructHtml
-        }) if view == "instruct" and session.activity.instruct and account.canPrescribe }}
+            {{ actionLink({
+              text: __("session.instructions.label"),
+              href: session.uri + "/instructions"
+            }) }}
+          {% endcall %}
+        {% endif %}
 
         {% for patientSession in results.page %}
           {% set reportStatusHtml %}
@@ -84,7 +82,7 @@
           {% call card({
             classes: "app-card--compact",
             heading: patientSession.patient.fullAndPreferredNames | highlightQuery(data.q),
-            headingClasses: "nhsuk-heading-s",
+            headingSize: "s",
             headingLevel: 4,
             clickable: not showRegistration,
             href: patientSession.uri + "?activity=" + view
@@ -92,6 +90,8 @@
             {{ summaryList({
               rows: summaryRows(patientSession.patient, {
                 dob: {},
+                impairments: {},
+                adjustments: {},
                 yearGroup: {
                   value: patientSession.formatted.yearGroup
                 },

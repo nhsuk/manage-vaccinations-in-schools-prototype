@@ -11,7 +11,7 @@ import {
 /**
  * Get instruction outcome for nasal spray
  *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {import('../models.js').PatientSession} patientSession - Patient session
  * @returns {InstructionOutcome|boolean} Instruction outcome
  */
 export const getInstructionOutcome = (patientSession) => {
@@ -31,7 +31,7 @@ export const getInstructionOutcome = (patientSession) => {
 /**
  * Get registration outcome
  *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {import('../models.js').PatientSession} patientSession - Patient session
  * @returns {RegistrationOutcome} Registration outcome
  */
 export const getRegistrationOutcome = (patientSession) => {
@@ -54,13 +54,13 @@ export const getRegistrationOutcome = (patientSession) => {
  * Get ready to record outcome
  * Check if registration is needed prior to recording vaccination
  *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {import('../models.js').PatientSession} patientSession - Patient session
  * @returns {boolean} Ready to record outcome
  */
 export const getRecordOutcome = (patientSession) => {
   const { register, report, session } = patientSession
 
-  if (report === PatientStatus.Due) {
+  if (report !== PatientStatus.Vaccinated) {
     if (session.registration && register === RegistrationOutcome.Pending) {
       return false
     }
@@ -72,7 +72,7 @@ export const getRecordOutcome = (patientSession) => {
 /**
  * Get vaccination (session) outcome
  *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {import('../models.js').PatientSession} patientSession - Patient session
  * @returns {VaccinationOutcome} Vaccination (session) outcome
  */
 export const getSessionOutcome = (patientSession) => {
@@ -83,7 +83,7 @@ export const getSessionOutcome = (patientSession) => {
       patientSession.consent
     )
   ) {
-    return VaccinationOutcome.Refused
+    return VaccinationOutcome.ConsentRefused
   } else if (patientSession.screen === ScreenOutcome.InviteToClinic) {
     return VaccinationOutcome.InviteToClinic
   } else if (patientSession.screen === ScreenOutcome.DelayVaccination) {
@@ -96,7 +96,7 @@ export const getSessionOutcome = (patientSession) => {
 /**
  * Get patient status
  *
- * @param {import('../models/patient-session.js').PatientSession} patientSession - Patient session
+ * @param {import('../models.js').PatientSession} patientSession - Patient session
  * @returns {PatientStatus} Overall patient status
  */
 export const getReportOutcome = (patientSession) => {

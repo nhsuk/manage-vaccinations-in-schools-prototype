@@ -1,15 +1,11 @@
 {% extends "_layouts/texts.njk" %}
 
-{% if session.programmes.length == 1 %}
-  {% set caption = __("consent.start.title.single", { session: session }) | safe %}
-{% else %}
-  {% set caption = __("consent.start.title.multiple", { session: session }) | safe %}
-{% endif %}
+{% set caption = __("consent.start.title." + session.presetNames[0]) | safe %}
 
 {% set placeholders = {
   programme: programme,
   consent: consent,
-  organisation: data.organisation,
+  team: data.team,
   reason: "they were absent from the session",
   session: session
 } %}
@@ -25,6 +21,7 @@
     "invite-clinic-consent"
   ],
   "Consent": [
+    "consent-already-vaccinated" if programme.type == ProgrammeType.MMR,
     "consent-given",
     "consent-given-child",
     "consent-refused"

@@ -1,3 +1,13 @@
+import { getAllCountries } from 'countries-and-timezones'
+
+/**
+ * @readonly
+ * @enum {import('countries-and-timezones').Country}
+ */
+export const Country = Object.fromEntries(
+  Object.entries(getAllCountries()).map(([key, value]) => [key, value.name])
+)
+
 /**
  * @readonly
  * @enum {string}
@@ -6,6 +16,21 @@ export const AcademicYear = {
   2023: '2023 to 2024',
   2024: '2024 to 2025',
   2025: '2025 to 2026'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const Adjustment = {
+  GuideDog: 'Has a guide dog',
+  Distraction: 'Needs a distraction while having the vaccination',
+  ExtendedAppointment: 'Needs an extended appointment',
+  FirstAppointment: 'Needs the first appointment',
+  LastAppointment: 'Needs the last appointment',
+  Privacy: 'Needs a private space',
+  HomeVisit: 'Needs a home visit',
+  Other: 'Other reasonable adjustment'
 }
 
 /**
@@ -25,10 +50,12 @@ export const ArchiveRecordReason = {
  * @enum {string}
  */
 export const AuditEventType = {
-  Note: 'Session note',
   Notice: 'Notice',
   Pinned: 'Pinned session note',
-  Reminder: 'Reminder'
+  Reminder: 'Reminder',
+  Record: 'Change to child record',
+  RecordNote: 'Note added to child record',
+  SessionNote: 'Session note'
 }
 
 /**
@@ -173,9 +200,34 @@ export const GillickCompetent = {
  * @readonly
  * @enum {string}
  */
+export const Impairment = {
+  Vision: 'Vision',
+  Hearing: 'Hearing',
+  Mobility: 'Mobility',
+  Memory: 'Memory',
+  MentalHealth: 'Mental health',
+  Communicative: 'Social and/or communication differences',
+  Other: 'Other'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
 export const InstructionOutcome = {
   Given: 'PSD added',
   Needed: 'PSD not added'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const LocationType = {
+  Clinic: 'Community clinic',
+  Home: 'At the child’s home',
+  School: 'School',
+  Other: 'Another location'
 }
 
 /**
@@ -220,16 +272,6 @@ export const NotifySmsStatus = {
   Permanent: 'Not delivered',
   Temporary: 'Phone not accepting messages right now',
   Technical: 'Technical failure'
-}
-
-/**
- * @readonly
- * @enum {boolean|number}
- */
-export const OrganisationDefaults = {
-  SessionOpenWeeks: 3,
-  SessionReminderWeeks: 1,
-  SessionRegistration: true
 }
 
 /**
@@ -335,11 +377,15 @@ export const PreScreenQuestion = {
  * @enum {string}
  */
 export const ProgrammeType = {
+  _4in1: '4-in-1',
+  _5in1: '5-in-1',
+  _6in1: '6-in-1',
   Flu: 'Flu',
   HPV: 'HPV',
   TdIPV: 'Td/IPV',
   MenACWY: 'MenACWY',
-  MMR: 'MMR'
+  MMR: 'MMR',
+  Other: 'A programme administered outside the UK'
 }
 
 /**
@@ -433,6 +479,7 @@ export const RegistrationOutcome = {
  * @enum {string}
  */
 export const ReplyDecision = {
+  AlreadyVaccinated: 'Already vaccinated',
   NoResponse: 'No response',
   Given: 'Consent given',
   OnlyAlternativeInjection: 'Consent given for flu injection',
@@ -459,7 +506,8 @@ export const ReplyMethod = {
  */
 export const ReplyRefusal = {
   Gelatine: 'Vaccine contains gelatine',
-  AlreadyGiven: 'Vaccine already received',
+  AlreadyVaccinated: 'Vaccine already received',
+  AlreadyVaccinatedMMR: 'Already had both doses of the MMR vaccination',
   GettingElsewhere: 'Vaccine will be given elsewhere',
   Medical: 'Medical reasons',
   OutsideSchool: 'Don’t want vaccination in school',
@@ -476,6 +524,27 @@ export const SchoolPhase = {
   Primary: 'Primary',
   Secondary: 'Secondary',
   Other: 'Other'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const SchoolYearGroup = {
+  0: 'Reception',
+  1: 'Year 1',
+  2: 'Year 2',
+  3: 'Year 3',
+  4: 'Year 4',
+  5: 'Year 5',
+  6: 'Year 6',
+  7: 'Year 7',
+  8: 'Year 8',
+  9: 'Year 9',
+  10: 'Year 10',
+  11: 'Year 11',
+  12: 'Year 12',
+  13: 'Year 13'
 }
 
 /**
@@ -531,6 +600,16 @@ export const SessionType = {
 
 /**
  * @readonly
+ * @enum {boolean|number}
+ */
+export const TeamDefaults = {
+  SessionOpenWeeks: 3,
+  SessionReminderWeeks: 1,
+  SessionRegistration: true
+}
+
+/**
+ * @readonly
  * @enum {string}
  */
 export const UploadType = {
@@ -544,12 +623,12 @@ export const UploadType = {
  * @enum {string}
  */
 export const UploadStatus = {
-  Approved: 'Approved',
-  Devoid: 'No new records',
+  Processing: 'Processing',
   Failed: 'Failed',
   Invalid: 'Invalid',
-  Processing: 'Processing',
-  Review: 'Review and approve'
+  Devoid: 'No new records',
+  Review: 'Review and approve',
+  Approved: 'Approved'
 }
 
 /**
@@ -573,12 +652,13 @@ export const VaccinationOutcome = {
   Vaccinated: 'Vaccinated',
   PartVaccinated: 'Partially vaccinated',
   AlreadyVaccinated: 'Already had the vaccine',
+  ConsentRefused: 'Parent refused',
   Refused: 'Child refused',
   Absent: 'Child absent',
   Unwell: 'Child unwell',
   InviteToClinic: 'Invited to clinic',
   DelayVaccination: 'Delay vaccination',
-  DoNotVaccinate: 'Do not vaccinate'
+  DoNotVaccinate: 'Contraindicated'
 }
 
 /**

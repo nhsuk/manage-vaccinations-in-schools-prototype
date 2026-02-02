@@ -44,22 +44,19 @@
   })
 }) }}
 
-{{ card({
-  heading: __mf("upload.show.moves.count", {
-    count: moveRows.length
-  }),
-  headingClasses: "nhsuk-heading-s",
-  headingLevel: 3,
-  descriptionHtml: table({
-    tableClasses: "app-table--review",
-    id: "moves",
-    headingLevel: 2,
-    responsive: true,
-    head: [
-      { text: __("patient.fullNameAndNhsn.label") },
-      { text: __("move.label") },
-      { html: __("upload.show.moves.decision.label") }
-    ],
-    rows: moveRows
-  })
+{{ table({
+  classes: "app-table--review",
+  id: "moves",
+  responsive: true,
+  card: {
+    heading: __mf("upload.show.moves.count", { count: moveRows.length }),
+    headingLevel: 3,
+    headingSize: "s"
+  },
+  head: [
+    { text: __("patient.fullNameAndNhsn.label") },
+    { text: __("move.label") },
+    { html: __("upload.show.moves.decision.label") }
+  ],
+  rows: moveRows
 }) }}

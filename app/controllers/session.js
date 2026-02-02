@@ -13,14 +13,16 @@ import {
   SessionType,
   VaccineMethod
 } from '../enums.js'
-import { Clinic } from '../models/clinic.js'
-import { DefaultBatch } from '../models/default-batch.js'
-import { Instruction } from '../models/instruction.js'
-import { Organisation } from '../models/organisation.js'
-import { PatientSession } from '../models/patient-session.js'
-import { Patient } from '../models/patient.js'
-import { School } from '../models/school.js'
-import { Session } from '../models/session.js'
+import {
+  Clinic,
+  DefaultBatch,
+  Instruction,
+  PatientSession,
+  Patient,
+  School,
+  Session,
+  Team
+} from '../models.js'
 import { getDateValueDifference } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { getSessionYearGroups } from '../utils/session.js'
@@ -28,7 +30,9 @@ import { formatYearGroup } from '../utils/string.js'
 
 export const sessionController = {
   read(request, response, next, session_id) {
+    const { view } = request.params
     const { data } = request.session
+    const { __ } = response.locals
 
     const session = Session.findOne(session_id, data)
     response.locals.session = session
@@ -36,6 +40,36 @@ export const sessionController = {
     response.locals.defaultBatches = DefaultBatch.findAll(data).filter(
       (defaultBatch) => defaultBatch.session_id === session_id
     )
+
+    if (!session.isUnplanned) {
+      response.locals.navigationItems = [
+        {
+          text: __('session.show.label'),
+          href: session.uri,
+          ...(session.consents.length && { icon: 'alert' }),
+          current: view === undefined
+        },
+        {
+          text: __('session.report.label'),
+          href: `${session.uri}/report`,
+          current: view === 'report'
+        },
+        ...(session.psdProtocol
+          ? [
+              {
+                text: __('session.instruct.label'),
+                href: `${session.uri}/instruct`,
+                current: view === 'instruct'
+              }
+            ]
+          : []),
+        {
+          text: __('session.record.label'),
+          href: `${session.uri}/record`,
+          current: view === 'record'
+        }
+      ]
+    }
 
     next()
   },
@@ -64,8 +98,8 @@ export const sessionController = {
 
     const session = Session.create(
       {
-        // TODO: This needs contextual organisation data to work
-        registration: data.organisation.sessionRegistration,
+        // TODO: This needs contextual team data to work
+        registration: data.team.sessionRegistration,
         createdBy_uid: account.uid
       },
       data.wizard
@@ -297,7 +331,13 @@ export const sessionController = {
     }
 
     // Filter patient by display option
-    for (const key of ['archived', 'hasMissingNhsNumber', 'post16']) {
+    for (const key of [
+      'archived',
+      'hasImpairment',
+      'hasAdjustment',
+      'hasMissingNhsNumber',
+      'post16'
+    ]) {
       if (option?.includes(key)) {
         results = results.filter(({ patient }) => patient[key])
       }
@@ -486,9 +526,9 @@ export const sessionController = {
     return (request, response, next) => {
       const { session_id } = request.params
       const { data, referrer } = request.session
-      let { organisation } = response.locals
+      let { team } = response.locals
 
-      organisation = Organisation.findOne(organisation?.code || 'RYG', data)
+      team = Team.findOne(team?.code || '001', data)
 
       // Setup wizard if not already setup
       let session = Session.findOne(session_id, data.wizard)
@@ -541,14 +581,14 @@ export const sessionController = {
       response.locals.paths.next =
         response.locals.paths.next || `${session.uri}/new/check-answers`
 
-      response.locals.clinicIdItems = Object.values(organisation.clinics)
+      response.locals.clinicIdItems = Object.values(team.clinics)
         .map((clinic) => new Clinic(clinic))
         .map((clinic) => ({
           text: clinic.name,
           value: clinic.id,
           ...(clinic.address && {
             attributes: {
-              'data-hint': clinic.address.formatted.singleline
+              'data-hint': clinic.formatted.address
             }
           })
         }))
@@ -570,9 +610,9 @@ export const sessionController = {
         }
       }
 
-      if (session.school_urn) {
+      if (session.school_id) {
         response.locals.yearGroupItems = getSessionYearGroups(
-          session.school_urn,
+          session.school_id,
           session.presets
         ).map((year) => ({
           text: formatYearGroup(year),

@@ -43,24 +43,30 @@
     title: title
   }) }}
 
-  {% call card({
-    heading: __("upload.show.summary"),
-    headingClasses: "nhsuk-heading-m"
-  }) %}
-    {{ summaryList({
-      rows: summaryRows(upload, {
-        createdBy: {},
-        updated: {},
-        fileName: {},
-        type: {},
-        status: {},
-        school: {},
-        yearGroups: {},
-        patients: {}
-      })
-    }) }}
-    {{ link(upload.uri + "/bulk-remove-relationships", __("upload.removeRelationships.label")) | nhsukMarkdown if upload.status == UploadStatus.Complete and upload.type != UploadType.Report }}
-  {% endcall %}
+  {{ summaryList({
+    card: {
+      heading: __("upload.show.summary"),
+      headingSize: "m",
+      actions: {
+        items: [
+          {
+            text: __("upload.removeRelationships.label"),
+            href: upload.uri + "/bulk-remove-relationships"
+          }
+        ]
+      } if upload.status == UploadStatus.Approved and upload.type != UploadType.Report
+    },
+    rows: summaryRows(upload, {
+      createdBy: {},
+      updated: {},
+      fileName: {},
+      type: {},
+      status: {},
+      school: {},
+      yearGroups: {},
+      patients: {}
+    })
+  }) }}
 
   {% if upload.status == UploadStatus.Review %}
     {{ patientRecords({
@@ -98,19 +104,21 @@
   {% endif %}
 
   {{ card({
+    feature: true,
     heading: __("upload.devoid.title"),
-    headingClasses: "nhsuk-heading-m app-card__heading--grey",
+    headingClasses: "app-card__heading--grey",
     headingLevel: 2,
-    description: __("upload.devoid.description"),
-    feature: true
+    headingSize: "m",
+    description: __("upload.devoid.description")
   }) if upload.status == UploadStatus.Devoid }}
 
   {% if upload.status == UploadStatus.Invalid %}
     {% call card({
+      feature: true,
       heading: __("upload.invalid.title"),
-      headingClasses: "nhsuk-heading-m app-card__heading--red",
+      headingClasses: "app-card__heading--red",
       headingLevel: 2,
-      feature: true
+      headingSize: "m"
     }) %}
       <div class="nhsuk-u-reading-width">
         {{ __("upload.invalid.description") | nhsukMarkdown }}
@@ -137,10 +145,11 @@
   {% elif upload.status == UploadStatus.Failed %}
     {% call card({
       classes: "nhsuk-u-margin-bottom-6",
+      feature: true,
       heading: __("upload.failed.title"),
-      headingClasses: "nhsuk-heading-m app-card__heading--red",
+      headingClasses: "app-card__heading--red",
       headingLevel: 2,
-      feature: true
+      headingSize: "m"
     }) %}
       <div class="nhsuk-u-reading-width">
         {{ __("upload.failed.description") | nhsukMarkdown }}

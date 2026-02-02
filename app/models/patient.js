@@ -4,6 +4,16 @@ import _ from 'lodash'
 import programmesData from '../datasets/programmes.js'
 import schools from '../datasets/schools.js'
 import { AuditEventType, NoticeType } from '../enums.js'
+import {
+  AuditEvent,
+  Child,
+  Move,
+  Parent,
+  PatientProgramme,
+  PatientSession,
+  Reply,
+  Vaccination
+} from '../models.js'
 import { getDateValueDifference, removeDays, today } from '../utils/date.js'
 import { tokenize } from '../utils/object.js'
 import { getPreferredNames } from '../utils/reply.js'
@@ -19,14 +29,6 @@ import {
   stringToBoolean
 } from '../utils/string.js'
 
-import { AuditEvent } from './audit-event.js'
-import { Child } from './child.js'
-import { Parent } from './parent.js'
-import { PatientProgramme } from './patient-programme.js'
-import { PatientSession } from './patient-session.js'
-import { Reply } from './reply.js'
-import { Vaccination } from './vaccination.js'
-
 /**
  * @class Patient record
  * @augments Child
@@ -37,7 +39,7 @@ import { Vaccination } from './vaccination.js'
  * @property {boolean} invalid - Flagged as invalid
  * @property {boolean} sensitive - Flagged as sensitive
  * @property {Date} [updatedAt] - Updated date
- * @property {import('../enums.js').Address} [address] - Address
+ * @property {object} [address] - Address
  * @property {Parent} [parent1] - Parent 1
  * @property {Parent} [parent2] - Parent 2
  * @property {Patient} [pendingChanges] - Pending changes to record values
@@ -116,6 +118,24 @@ export class Patient extends Child {
   }
 
   /**
+   * Needs reasonable adjustments(s)
+   *
+   * @returns {boolean} Needs reasonable adjustments(s)
+   */
+  get hasAdjustment() {
+    return this.adjustments.length > 0
+  }
+
+  /**
+   * Has impairment(s)
+   *
+   * @returns {boolean} Has impairment(s)
+   */
+  get hasImpairment() {
+    return this.impairments.length > 0
+  }
+
+  /**
    * Get full name, formatted as LASTNAME, Firstname
    *
    * @returns {string} Full name
@@ -159,15 +179,56 @@ export class Patient extends Child {
     return [...parents.values()]
   }
 
+  get recordEvents() {
+    const recordEvents = []
+
+    recordEvents.push(
+      new AuditEvent({
+        type: AuditEventType.Record,
+        name: 'Child record imported',
+        createdAt: '2025-08-01T12:00:00'
+      })
+    )
+
+    if (this.sensitive) {
+      recordEvents.push(
+        new AuditEvent({
+          type: AuditEventType.Record,
+          name: 'Record flagged as sensitive',
+          createdAt: '2025-08-01T12:00:00'
+        })
+      )
+    }
+
+    const move = Move.findAll(this.context).find(
+      (move) => move.patient_uuid === this.uuid
+    )
+
+    if (move) {
+      recordEvents.push(
+        new AuditEvent({
+          type: AuditEventType.Record,
+          // Fake it to make it look like school move has already occurred
+          name: `Moved from ${move.formatted.to_urn} to ${move.formatted.from_urn}`,
+          createdAt: move.createdAt
+        })
+      )
+    }
+
+    return recordEvents
+  }
+
   /**
    * Get audit events
    *
    * @returns {Array<AuditEvent>} Audit events
    */
   get auditEvents() {
-    return this.events.map(
-      (auditEvent) => new AuditEvent(auditEvent, this.context)
-    )
+    const events = [...this.events, ...this.recordEvents]
+
+    return events
+      .map((auditEvent) => new AuditEvent(auditEvent, this.context))
+      .filter(({ type }) => type === AuditEventType.Record)
   }
 
   /**
@@ -237,7 +298,9 @@ export class Patient extends Child {
     /** @type {Record<string, PatientProgramme>} */
     const programmes = {}
 
-    for (const programme of Object.values(programmesData)) {
+    for (const programme of Object.values(programmesData).filter(
+      (programme) => !programme.hidden
+    )) {
       programmes[programme.id] = new PatientProgramme(
         {
           patient_uuid: this.uuid,
@@ -375,8 +438,8 @@ export class Patient extends Child {
       fullNameAndNhsn: formatWithSecondaryText(this.fullName, formattedNhsn),
       nhsn: formattedNhsn,
       newUrn:
-        this.pendingChanges?.school_urn &&
-        schools[this.pendingChanges.school_urn].name,
+        this.pendingChanges?.school_id &&
+        schools[this.pendingChanges.school_id].name,
       parent1: this.parent1 && formatParent(this.parent1),
       parent2: this.parent2 && formatParent(this.parent2),
       parents: formatList(formattedParents),
@@ -463,6 +526,18 @@ export class Patient extends Child {
     const updatedPatient = _.merge(Patient.findOne(uuid, context), updates)
     updatedPatient.updatedAt = today()
 
+    // Add update to activity log (but only when updating wizard context)
+    // TODO: Make this work with nested values like date of birth
+    if (Object.keys(context.patients).length === 1) {
+      for (const [key, value] of Object.entries(updates)) {
+        updatedPatient.addEvent({
+          name: `Updated \`${key}\` to **${value}**`,
+          type: AuditEventType.Record,
+          createdAt: updatedPatient.updatedAt
+        })
+      }
+    }
+
     // Remove patient context
     delete updatedPatient.context
 
@@ -499,6 +574,7 @@ export class Patient extends Child {
     archivedPatient.addEvent({
       name: `Record archived: ${archive.archiveReason}`,
       note: archive.archiveReasonOther,
+      type: AuditEventType.Record,
       createdBy_uid: archive.createdBy_uid
     })
 
@@ -584,6 +660,20 @@ export class Patient extends Child {
       createdAt: vaccination.updatedAt || vaccination.createdAt,
       createdBy_uid: vaccination.createdBy_uid,
       programme_ids: [vaccination.programme_id]
+    })
+  }
+
+  /**
+   * Save note
+   *
+   * @param {import('./audit-event.js').AuditEvent} event - Event
+   */
+  saveNote(event) {
+    this.addEvent({
+      type: AuditEventType.Record,
+      name: event.name,
+      note: event.note,
+      createdBy_uid: event.createdBy_uid
     })
   }
 

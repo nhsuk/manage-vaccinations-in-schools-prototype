@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import prototypeFilters from '@x-govuk/govuk-prototype-filters'
 
 import { UploadStatus, UploadType } from '../enums.js'
+import { Move, Patient, School, User } from '../models.js'
 import { formatDate, today } from '../utils/date.js'
 import { getUploadStatus } from '../utils/status.js'
 import {
@@ -11,11 +12,6 @@ import {
   formatWithSecondaryText,
   formatYearGroup
 } from '../utils/string.js'
-
-import { Move } from './move.js'
-import { Patient } from './patient.js'
-import { School } from './school.js'
-import { User } from './user.js'
 
 /**
  * @class Upload
@@ -50,7 +46,7 @@ export class Upload {
 
     if (this.type === UploadType.School) {
       this.yearGroups = options?.yearGroups
-      this.school_urn = options?.school_urn
+      this.school_id = options?.school_id
     }
   }
 
@@ -184,8 +180,8 @@ export class Upload {
    * @returns {object|undefined} School
    */
   get school() {
-    if (this.type === UploadType.School && this.school_urn) {
-      return School.findOne(this.school_urn, this.context)
+    if (this.type === UploadType.School && this.school_id) {
+      return School.findOne(this.school_id, this.context)
     }
   }
 

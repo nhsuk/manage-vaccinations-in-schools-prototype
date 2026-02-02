@@ -1,7 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
-import { OrganisationDefaults, SessionType } from '../enums.js'
-import { Session } from '../models/session.js'
+import { SessionType, TeamDefaults } from '../enums.js'
+import { Session } from '../models.js'
 import { addDays, getTermDates, removeDays, setMidday } from '../utils/date.js'
 import { getSessionYearGroups } from '../utils/session.js'
 
@@ -9,11 +9,11 @@ import { getSessionYearGroups } from '../utils/session.js'
  * Generate fake session
  *
  * @param {import('../enums.js').SessionPreset} preset - Session preset
- * @param {import('../models/user.js').User} user - User
+ * @param {import('../models.js').User} user - User
  * @param {number} academicYear - Academic year
  * @param {object} options - Options
  * @param {string} [options.clinic_id] - Clinic ID
- * @param {string} [options.school_urn] - School URN
+ * @param {string} [options.school_id] - School URN
  * @returns {Session} Session
  */
 export function generateSession(preset, academicYear, user, options) {
@@ -22,7 +22,7 @@ export function generateSession(preset, academicYear, user, options) {
     return
   }
 
-  const { clinic_id, school_urn } = options
+  const { clinic_id, school_id } = options
   const term = getTermDates(academicYear, preset.term)
 
   let date = faker.date.between({
@@ -47,12 +47,12 @@ export function generateSession(preset, academicYear, user, options) {
       date = removeDays(date, 2)
     }
 
-    openAt = removeDays(date, OrganisationDefaults.SessionOpenWeeks * 7)
+    openAt = removeDays(date, TeamDefaults.SessionOpenWeeks * 7)
   }
 
   let yearGroups
-  if (options.school_urn) {
-    yearGroups = getSessionYearGroups(options.school_urn, [preset])
+  if (options.school_id) {
+    yearGroups = getSessionYearGroups(options.school_id, [preset])
   }
 
   return new Session({
@@ -64,6 +64,6 @@ export function generateSession(preset, academicYear, user, options) {
     academicYear,
     presetNames: [preset.name],
     ...(clinic_id && { type: SessionType.Clinic, clinic_id }),
-    ...(school_urn && { type: SessionType.School, school_urn, yearGroups })
+    ...(school_id && { type: SessionType.School, school_id, yearGroups })
   })
 }

@@ -88,7 +88,7 @@
   {% else %}
     {{ card({
       heading: __("vaccination.new.check-answers.summary"),
-      headingClasses: "nhsuk-heading-m",
+      headingSize: "m",
       descriptionHtml: vaccinationSummaryListHtml
     }) }}
   {% endif %}
@@ -101,7 +101,7 @@
         classes: "nhsuk-label--m nhsuk-u-margin-bottom-2",
         text: __("vaccination.note.label") + " (optional)"
       },
-      hint: { text: __("vaccination.note.hint") },
+      hint: { text: __("vaccination.note.hint") if vaccination.outcome != VaccinationOutcome.AlreadyVaccinated else __("vaccination.note.hintAlreadyVaccinated") },
       decorate: "vaccination.note"
     })
   }) }}

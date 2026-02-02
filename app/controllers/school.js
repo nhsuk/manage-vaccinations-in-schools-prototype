@@ -1,16 +1,17 @@
+import wizard from '@x-govuk/govuk-prototype-wizard'
 import _ from 'lodash'
 
 import { PatientStatus } from '../enums.js'
-import { Patient } from '../models/patient.js'
-import { School } from '../models/school.js'
+import { Patient, School } from '../models.js'
+import { generateNewSiteCode } from '../utils/location.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
 export const schoolController = {
-  read(request, response, next, school_urn) {
+  read(request, response, next, school_id) {
     const { data } = request.session
 
-    const school = School.findOne(school_urn, data)
+    const school = School.findOne(school_id, data)
     response.locals.school = school
 
     next()
@@ -26,6 +27,22 @@ export const schoolController = {
     const view = request.params.view || 'show'
 
     response.render(`school/${view}`)
+  },
+
+  new(type) {
+    return (request, response, next) => {
+      const { data } = request.session
+
+      // @ts-ignore
+      const school = School.create({ team_id: data.team?.id }, data.wizard)
+
+      if (type === 'site') {
+        data.startPath = 'new-site'
+        response.redirect(`${school.uri}/new/site-urn`)
+      } else {
+        response.redirect(`${school.uri}/new/urn`)
+      }
+    }
   },
 
   list(request, response) {
@@ -76,12 +93,13 @@ export const schoolController = {
   },
 
   readPatients(request, response, next) {
+    const { school_id } = request.params
     const { option, programme_id, q, yearGroup } = request.query
     const { data } = request.session
     const { school } = response.locals
 
     const patients = Patient.findAll(data).filter(
-      (patient) => patient.school_urn === school.urn
+      (patient) => patient.school_id === school_id
     )
 
     // Sort
@@ -170,7 +188,13 @@ export const schoolController = {
     }
 
     // Filter by display option
-    for (const key of ['archived', 'hasMissingNhsNumber', 'post16']) {
+    for (const key of [
+      'archived',
+      'hasImpairment',
+      'hasAdjustment',
+      'hasMissingNhsNumber',
+      'post16'
+    ]) {
       if (option?.includes(key)) {
         results = results.filter((patient) => patient[key])
       }
@@ -259,5 +283,174 @@ export const schoolController = {
     response.locals.sessions = school.sessions
 
     response.render('school/sessions')
+  },
+
+  edit(request, response) {
+    const { school_id } = request.params
+    const { data } = request.session
+
+    // Setup wizard if not already setup
+    let school = School.findOne(school_id, data.wizard)
+    if (!school) {
+      school = School.create(response.locals.school, data.wizard)
+    }
+
+    response.locals.school = new School(school, data)
+
+    // Show back link to session page
+    response.locals.back = school.uri
+
+    response.render('school/edit')
+  },
+
+  update(type) {
+    return (request, response) => {
+      const { school_id } = request.params
+      const { data } = request.session
+      const { __ } = response.locals
+
+      // Update session data
+      const school = School.update(
+        school_id,
+        data.wizard.schools[school_id],
+        data
+      )
+
+      // Clean up session data
+      delete data.school
+      delete data.wizard
+
+      // TODO: Add note about site codes if adding a new site
+      request.flash('success', __(`school.${type}.success`, { school }))
+
+      response.redirect(`${school.team.uri}/schools`)
+    }
+  },
+
+  readForm(type) {
+    return (request, response, next) => {
+      const { school_id } = request.params
+      const { data, referrer } = request.session
+
+      // Setup wizard if not already setup
+      let school = School.findOne(school_id, data.wizard)
+      if (!school) {
+        school = School.create(response.locals.school, data.wizard)
+      }
+
+      response.locals.school = new School(school, data)
+
+      const originalSchool = School.findOne(school.urn, data)
+
+      response.locals.originalSchool = originalSchool
+
+      response.locals.type = type
+
+      const journey = {
+        [`/`]: {},
+        ...(data.startPath === 'new-site'
+          ? { [`/${school_id}/${type}/site-urn`]: {} }
+          : { [`/${school_id}/${type}/urn`]: {} }),
+        ...(data.startPath === 'new-site'
+          ? { [`/${school_id}/${type}/site`]: {} }
+          : { [`/${school_id}/${type}/confirm-school`]: {} }),
+        [`/${school_id}/${type}/phase`]: {},
+        [`/${school_id}/${type}/sen`]: {},
+        [`/${school_id}/${type}/year-groups`]: {},
+        [`/${school_id}/${type}/programmes`]: {},
+        [`/${school_id}/${type}/check-answers`]: {},
+        [`/${school_id}`]: {}
+      }
+
+      response.locals.paths = {
+        ...wizard(journey, request),
+        ...(type === 'edit' && {
+          back: `${school.uri}/edit`,
+          next: `${school.uri}/edit`
+        }),
+        ...(referrer && { back: referrer })
+      }
+
+      response.locals.yearGroupItems = [...Array(14).keys()].map(
+        (yearGroup) => ({
+          text: formatYearGroup(yearGroup),
+          value: yearGroup
+        })
+      )
+
+      next()
+    }
+  },
+
+  showForm(request, response) {
+    const { view } = request.params
+
+    response.render(`school/form/${view}`)
+  },
+
+  updateForm(request, response) {
+    const { school_id, view } = request.params
+    const { data } = request.session
+    const { paths, originalSchool } = response.locals
+
+    if (view === 'urn') {
+      request.body.school = {
+        urn: request.body.school.urn || '131442',
+        name: 'Southfields Primary School',
+        addressLine1: 'East Street',
+        addressLevel1: 'Coventry',
+        postalCode: 'CV1 5LS',
+        phase: 'Primary',
+        sen: false,
+        yearGroups: [0, 1, 2, 3, 4, 5, 6]
+      }
+    }
+
+    if (view === 'site-urn') {
+      const id = request.body.school.id || '131442'
+      const originalSchool = School.findOne(id, data)
+
+      response.locals.originalSchool = originalSchool
+
+      request.body.school = {
+        urn: originalSchool.urn,
+        site: generateNewSiteCode(originalSchool.site),
+        addressLine1: originalSchool.addressLine1,
+        addressLine2: originalSchool.addressLine2,
+        addressLevel31: originalSchool.addressLevel1,
+        postalCode: originalSchool.postalCode
+      }
+    }
+
+    // Add `A` to original school, if it doesn’t have a site code already
+    if (view === 'site-codes') {
+      if (!originalSchool.code) {
+        School.update(originalSchool.id, { site: 'A' }, data)
+      }
+    }
+
+    School.update(school_id, request.body.school, data.wizard)
+
+    response.redirect(paths.next)
+  },
+
+  action(type) {
+    return (request, response) => {
+      response.render('school/action', { type })
+    }
+  },
+
+  delete(request, response) {
+    const { school_id } = request.params
+    const { data } = request.session
+    const { __, school } = response.locals
+
+    const referrer = `${school.team.uri}/schools`
+
+    School.delete(school_id, data)
+
+    request.flash('success', __(`school.delete.success`))
+
+    response.redirect(referrer)
   }
 }

@@ -1,4 +1,4 @@
-import { Notice } from '../models/notice.js'
+import { Notice } from '../models.js'
 
 export const noticeController = {
   read(request, response, next, notice_uuid) {

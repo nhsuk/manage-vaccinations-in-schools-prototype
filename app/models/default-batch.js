@@ -1,5 +1,4 @@
-import { Batch } from './batch.js'
-import { Session } from './session.js'
+import { Batch, Session } from '../models.js'
 
 /**
  * @class Default Batch

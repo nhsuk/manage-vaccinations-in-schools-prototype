@@ -1,45 +1,57 @@
-import { fakerEN_GB as faker } from '@faker-js/faker'
 import { default as filters } from '@x-govuk/govuk-prototype-filters'
+import _ from 'lodash'
 
-import { SchoolPhase } from '../enums.js'
+import { Location, Patient, Session } from '../models.js'
 import { formatDate, getDateValueDifference } from '../utils/date.js'
-import { range } from '../utils/number.js'
 import { tokenize } from '../utils/object.js'
-import { formatLink, formatMonospace } from '../utils/string.js'
-
-import { Address } from './address.js'
-import { Patient } from './patient.js'
-import { Programme } from './programme.js'
-import { Session } from './session.js'
+import {
+  formatLink,
+  formatMonospace,
+  formatYearGroups,
+  stringToBoolean
+} from '../utils/string.js'
 
 /**
  * @class School
+ * @augments Location
  * @param {object} options - Options
  * @param {object} [context] - Context
- * @property {object} [context] - Context
- * @property {string} urn - URN
- * @property {string} name - Name
- * @property {SchoolPhase} [phase] - Phase
- * @property {Address} [address] - Address
+ * @property {string} [urn] - URN
+ * @property {boolean} [sen] - SEN school
+ * @property {string} [site] - Site code
+ * @property {import('../enums.js').SchoolPhase} [phase] - Phase
+ * @property {Array<number>} [yearGroups] - Year groups
  */
-export class School {
+export class School extends Location {
   constructor(options, context) {
-    this.context = context
-    this.urn = (options.urn && String(options.urn)) || faker.string.numeric(6)
-    this.name = options?.name
+    super(options, context)
+
+    this.urn = options?.urn && String(options.urn)
+    this.sen = stringToBoolean(options?.sen) || false
+    this.site = options?.site
     this.phase = options?.phase
-    this.address = options?.address && new Address(options.address)
+    this.yearGroups = options?.yearGroups || []
   }
 
   /**
-   * Get location
+   * Get year groups for `checkboxes`s
    *
-   * @returns {object} Location
+   * @returns {Array<string>} `checkboxes` array values
    */
-  get location() {
-    return {
-      name: this.name,
-      ...this.address
+  get yearGroups_() {
+    return this.yearGroups.map((yearGroup) => String(yearGroup))
+  }
+
+  /**
+   * Set year groups from `checkboxes`s
+   *
+   * @param {Array<string>} array - checkboxes array values
+   */
+  set yearGroups_(array) {
+    if (array) {
+      this.yearGroups = array
+        .filter((item) => item !== '_unchecked')
+        .map((yearGroup) => Number(yearGroup))
     }
   }
 
@@ -49,9 +61,9 @@ export class School {
    * @returns {Array<Patient>} Patient records
    */
   get patients() {
-    if (this.context?.patients && this.urn) {
+    if (this.context?.patients && this.id) {
       return Object.values(this.context?.patients)
-        .filter(({ school_urn }) => school_urn === this.urn)
+        .filter(({ school_id }) => school_id === this.id)
         .map((patient) => new Patient(patient, this.context))
     }
 
@@ -73,9 +85,11 @@ export class School {
    * @returns {Array<Session>} Sessions
    */
   get sessions() {
-    return Session.findAll(this.context)
-      .filter((session) => session.school_urn === this.urn)
-      .sort((a, b) => getDateValueDifference(a.date, b.date))
+    if (this.context) {
+      return Session.findAll(this.context)
+        .filter((session) => session.school_id === this.id)
+        .sort((a, b) => getDateValueDifference(a.date, b.date))
+    }
   }
 
   /**
@@ -84,34 +98,9 @@ export class School {
    * @returns {Date|undefined} Next session
    */
   get nextSessionDate() {
-    if (this.sessions.length > 0) {
+    if (this.sessions?.length > 0) {
       return this.sessions.at(-1).date
     }
-  }
-
-  /** Get year groups
-   *
-   * @returns {Array} Year groups
-   */
-  get yearGroups() {
-    if (this.phase === SchoolPhase.Primary) {
-      return [...range(0, 6)]
-    }
-
-    return [...range(7, 11)]
-  }
-
-  /**
-   * Get programmes that run at this school
-   *
-   * @returns {Array<Programme>} Programmes
-   */
-  get programmes() {
-    return Programme.findAll(this.context).filter((programme) =>
-      programme.yearGroups.some((yearGroup) =>
-        this.yearGroups.includes(yearGroup)
-      )
-    )
   }
 
   /**
@@ -132,19 +121,12 @@ export class School {
    */
   get formatted() {
     return {
-      address: this.address?.formatted.multiline,
-      location: Object.values(this.location)
-        .filter((string) => string)
-        .join(', '),
-      nameAndAddress: this.address
-        ? `<span>${this.name}</br><span class="nhsuk-u-secondary-text-colour">${
-            this.address.formatted.singleline
-          }</span></span>`
-        : this.name,
-      nextSessionDate: formatDate(this.nextSessionDate, {
-        dateStyle: 'full'
-      }),
+      ...super.formatted,
+      nextSessionDate: formatDate(this.nextSessionDate, { dateStyle: 'full' }),
       patients: filters.plural(this.patients.length, 'child'),
+      yearGroups: formatYearGroups(this.yearGroups),
+      id: formatMonospace(this.id),
+      site: formatMonospace(this.site),
       urn: formatMonospace(this.urn)
     }
   }
@@ -175,7 +157,7 @@ export class School {
    * @returns {string} URI
    */
   get uri() {
-    return `/schools/${this.urn}`
+    return `/schools/${this.id}`
   }
 
   /**
@@ -194,14 +176,93 @@ export class School {
   /**
    * Find one
    *
-   * @param {string} urn - URN
+   * @param {string} id - School ID
    * @param {object} context - Context
    * @returns {School|undefined} School
    * @static
    */
-  static findOne(urn, context) {
-    if (context?.schools?.[urn]) {
-      return new School(context.schools[urn], context)
+  static findOne(id, context) {
+    if (context?.schools?.[id]) {
+      return new School(context.schools[id], context)
     }
+  }
+
+  /**
+   * Create
+   *
+   * @param {School} school - School
+   * @param {object} context - Context
+   * @returns {School} Created school
+   * @static
+   */
+  static create(school, context) {
+    const createdSchool = new School(school)
+
+    // Add to team
+    if (context.teams) {
+      context.teams[createdSchool.team_id].school_ids.push(createdSchool.id)
+    }
+
+    // Update context
+    context.schools = context.schools || {}
+    context.schools[createdSchool.id] = createdSchool
+
+    return createdSchool
+  }
+
+  /**
+   * Update
+   *
+   * @param {string} id - School ID
+   * @param {object} updates - Updates
+   * @param {object} context - Context
+   * @returns {School} Updated school
+   * @static
+   */
+  static update(id, updates, context) {
+    const updatedSchool = _.mergeWith(
+      School.findOne(id, context),
+      updates,
+      (oldValue, newValue) => {
+        // yearGroups array shouldn’t be merged but replaced entirely
+        if (Array.isArray(oldValue)) {
+          return newValue
+        }
+      }
+    )
+
+    // Update team
+    if (context.teams) {
+      context.teams[updatedSchool.team_id].school_ids.push(updatedSchool.id)
+    }
+
+    // Remove school context
+    delete updatedSchool.context
+
+    // Delete original school (with previous ID)
+    delete context.schools[id]
+
+    // Update context
+    context.schools[updatedSchool.id] = updatedSchool
+
+    return new School(updatedSchool, context)
+  }
+
+  /**
+   * Delete
+   *
+   * @param {string} id - School ID
+   * @param {object} context - Context
+   * @static
+   */
+  static delete(id, context) {
+    const school = School.findOne(id, context)
+
+    // Remove from team
+    context.teams[school.team_id].school_ids = context.teams[
+      school.team_id
+    ].school_ids.filter((item) => item !== id)
+
+    delete context.schools[id]
   }
 }

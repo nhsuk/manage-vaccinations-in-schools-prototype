@@ -12,16 +12,16 @@
       title: title
     }) }}
 
-    {{ card({
-      heading: __("user.show.summary"),
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(user, {
-          uid: {},
-          fullName: {},
-          email: {},
-          role: {}
-        })
+    {{ summaryList({
+      card: {
+        heading: __("user.show.summary"),
+        headingSize: "m"
+      },
+      rows: summaryRows(user, {
+        uid: {},
+        fullName: {},
+        email: {},
+        role: {}
       })
     }) }}
   </div>

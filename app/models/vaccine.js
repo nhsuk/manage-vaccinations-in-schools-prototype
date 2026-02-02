@@ -1,5 +1,6 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
+import { Batch } from '../models.js'
 import { getDateValueDifference } from '../utils/date.js'
 import {
   formatHealthQuestions,
@@ -7,8 +8,6 @@ import {
   formatMillilitres,
   formatMonospace
 } from '../utils/string.js'
-
-import { Batch } from './batch.js'
 
 /**
  * @class Vaccine

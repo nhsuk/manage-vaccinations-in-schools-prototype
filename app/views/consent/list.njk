@@ -58,10 +58,12 @@
   {% if consents.length %}
     {{ table({
       id: "consents",
-      heading: __mf("consent.count", { count: consents.length }),
-      headingLevel: 2,
-      panel: true,
       responsive: true,
+      card: {
+        feature: true,
+        heading: __mf("consent.count", { count: consents.length }),
+        headingLevel: 2
+      },
       head: [
         { text: __("consent.summary.label") },
         { text: __("consent.createdAt.label") },

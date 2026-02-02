@@ -1,6 +1,46 @@
 import { ProgrammeType } from '../enums.js'
 
 export default {
+  [ProgrammeType.Other]: {
+    type: ProgrammeType.Other,
+    id: 'other',
+    name: 'A programme administered outside the UK',
+    title: 'A programme administered outside the UK',
+    hidden: true,
+    ttcv: true,
+    sequence: ['1P'],
+    sequenceDefault: '1P'
+  },
+  [ProgrammeType._4in1]: {
+    type: ProgrammeType._4in1,
+    id: '4in1',
+    name: '4-in-1',
+    title: '4-in-1 pre-school booster',
+    hidden: true,
+    ttcv: true,
+    sequence: ['1P', '2P', '3P'],
+    sequenceDefault: '1P'
+  },
+  [ProgrammeType._5in1]: {
+    type: ProgrammeType._5in1,
+    id: '5in1',
+    name: '5-in-1',
+    title: '5-in-1',
+    hidden: true,
+    ttcv: true,
+    sequence: ['1B'],
+    sequenceDefault: '1B'
+  },
+  [ProgrammeType._6in1]: {
+    type: ProgrammeType._6in1,
+    id: '6in1',
+    name: '6-in-1',
+    title: '6-in-1',
+    hidden: true,
+    ttcv: true,
+    sequence: ['1P', '2P', '3P', '4P'],
+    sequenceDefault: '1P'
+  },
   [ProgrammeType.Flu]: {
     type: ProgrammeType.Flu,
     id: 'flu',
@@ -21,7 +61,7 @@ export default {
     immunocompromisedSequence: ['1P', '2P'],
     sequenceDefault: '1P',
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    vaccine_smomeds: ['43208811000001106', '40085011000001101'],
+    vaccine_snomeds: ['43208811000001106', '40085011000001101'],
     nhseSyncable: true
   },
   [ProgrammeType.HPV]: {
@@ -45,7 +85,7 @@ export default {
     sequenceDefault: '1P',
     targetYearGroup: 8,
     yearGroups: [8, 9, 10, 11],
-    vaccine_smomeds: ['33493111000001108'],
+    vaccine_snomeds: ['33493111000001108'],
     nhseSyncable: true
   },
   [ProgrammeType.TdIPV]: {
@@ -64,11 +104,12 @@ export default {
       url: 'https://www.gov.uk/government/publications/a-guide-to-the-3-in-1-teenage-booster-tdipv',
       hint: 'with links to information in other languages'
     },
-    sequence: ['1P', '2P', '3P', '1B', '2B'],
+    sequence: ['2B'],
     sequenceDefault: '2B',
     yearGroups: [9, 10, 11],
     targetYearGroup: 9,
-    vaccine_smomeds: ['7374311000001101'],
+    vaccine_snomeds: ['7374311000001101'],
+    ttcv: true,
     nhseSyncable: false
   },
   [ProgrammeType.MenACWY]: {
@@ -91,7 +132,7 @@ export default {
     sequenceDefault: '1P',
     targetYearGroup: 9,
     yearGroups: [9, 10, 11],
-    vaccine_smomeds: ['39779611000001104'],
+    vaccine_snomeds: ['39779611000001104'],
     nhseSyncable: false
   },
   [ProgrammeType.MMR]: {
@@ -118,7 +159,7 @@ export default {
     sequenceDefault: '1P',
     targetYearGroup: -3,
     yearGroups: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    vaccine_smomeds: ['13968211000001108', '34925111000001104'],
+    vaccine_snomeds: ['13968211000001108', '34925111000001104'],
     nhseSyncable: true
   }
 }

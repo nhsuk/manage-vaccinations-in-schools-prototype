@@ -36,7 +36,7 @@
       { text: EthnicBackgroundBlack.Caribbean },
       { text: EthnicBackgroundBlack.Other, conditional: conditionalHtml }
     ] %}
-  {% elif consent.child.ethnicGroup == EthnicGroup.Other %}
+  {% else %}
     {% set items = [
       { text: EthnicBackgroundOther.Arab },
       { text: EthnicBackgroundOther.Other, conditional: conditionalHtml }
@@ -46,10 +46,9 @@
   {{ radios({
     fieldset: {
       legend: {
-        html: appHeading({
-          classes: "nhsuk-fieldset__legend--l",
-          title: __("consent.child.ethnicBackground.title", consent.child.ethnicGroup) | replace("Mixed", "mixed") | replace(EthnicGroup.Other, "")
-        })
+        isPageHeading: true,
+        text: __("consent.child.ethnicBackground.title", consent.child.ethnicGroup) | replace("Mixed", "mixed") | replace(EthnicGroup.Other, ""),
+        size: "l"
       }
     },
     items: items | push({

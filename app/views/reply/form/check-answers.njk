@@ -10,107 +10,107 @@
     title: title
   }) }}
 
-  {{ card({
-    heading: __("reply.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(reply, {
-        programme: {
-          href: reply.uri + "/new/programme" if isMultiProgrammeSession
-        },
-        method: {
-          href: reply.uri + "/new/method"
-        },
-        decision: {
-          href: reply.uri + "/new/decision"
-        },
-        alternative: {
-          href: reply.uri + "/new/decision"
-        },
-        refusalReason: {
-          href: reply.uri + "/new/refusal-reason"
-        },
-        refusalReasonDetails: {
-          href: reply.uri + "/new/refusal-reason-details"
-        },
-        note: {
-          href: reply.uri + "/new/note"
-        },
-        createdBy: {}
-      })
+  {{ summaryList({
+    card: {
+      heading: __("reply.label"),
+      headingSize: "m"
+    },
+    rows: summaryRows(reply, {
+      programme: {
+        href: reply.uri + "/new/programme" if isMultiProgrammeSession
+      },
+      method: {
+        href: reply.uri + "/new/method"
+      },
+      decision: {
+        href: reply.uri + "/new/decision"
+      },
+      alternative: {
+        href: reply.uri + "/new/decision"
+      },
+      refusalReason: {
+        href: reply.uri + "/new/refusal-reason"
+      },
+      refusalReasonDetails: {
+        href: reply.uri + "/new/refusal-reason-details"
+      },
+      note: {
+        href: reply.uri + "/new/note"
+      },
+      createdBy: {}
     })
   }) }}
 
-  {{ card({
-    heading: __("child.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(reply.child, {
-        fullName: {},
-        preferredFirstName: {},
-        preferredLastName: {},
-        dob: {},
-        gpSurgery: {},
-        school: {}
-      })
+  {{ summaryList({
+    card: {
+      heading: __("child.label"),
+      headingSize: "m"
+    },
+    rows: summaryRows(reply.child, {
+      fullName: {},
+      preferredFirstName: {},
+      preferredLastName: {},
+      dob: {},
+      gpSurgery: {},
+      school: {}
     })
   }) if reply.child }}
 
-  {{ card({
-    heading: __("parent.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(reply.parent, {
-        fullName: {
-          href: reply.uri + "/new/parent"
-        },
-        relationship: {
-          href: reply.uri + "/new/parent"
-        },
-        hasParentalResponsibility: {
-          href: reply.uri + "/new/parent"
-        },
-        notify: {
-          href: reply.uri + "/new/notify-parent"
-        },
-        email: {
-          href: reply.uri + "/new/parent"
-        },
-        tel: {
-          href: reply.uri + "/new/parent"
-        }
-      })
+  {{ summaryList({
+    card: {
+      heading: __("parent.label"),
+      headingSize: "m"
+    },
+    rows: summaryRows(reply.parent, {
+      fullName: {
+        href: reply.uri + "/new/parent"
+      },
+      relationship: {
+        href: reply.uri + "/new/parent"
+      },
+      hasParentalResponsibility: {
+        href: reply.uri + "/new/parent"
+      },
+      notify: {
+        href: reply.uri + "/new/notify-parent"
+      },
+      email: {
+        href: reply.uri + "/new/parent"
+      },
+      tel: {
+        href: reply.uri + "/new/parent"
+      }
     })
   }) if reply.parent.relationship or reply.parent.notify !== undefined }}
 
-  {{ card({
-    heading: __("reply.healthAnswers.label"),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      classes: "app-summary-list--full-width",
-      rows: healthAnswerRows(
-        reply.healthAnswers,
-        reply.uri + "/new/health-answers"
-      )
-    })
+  {{ summaryList({
+    classes: "app-summary-list--full-width",
+    card: {
+      heading: __("reply.healthAnswers.label"),
+      headingSize: "m"
+    },
+    rows: healthAnswerRows(
+      reply.healthAnswers,
+      reply.uri + "/new/health-answers"
+    )
   }) if reply.healthAnswers }}
 
-  {{ card({
-    heading: __("triage.label", patient.firstName),
-    headingClasses: "nhsuk-heading-m",
-    descriptionHtml: summaryList({
-      rows: summaryRows(triage, {
-        outcome: {
-          label: __("triage.outcome.label"),
-          value: triage.outcome,
-          href: reply.uri + "/new/triage"
-        },
-        note: {
-          label: __("triage.note.label"),
-          value: triage.note,
-          href: reply.uri + "/new/triage"
-        }
-      })
+  {{ summaryList({
+    card: {
+      heading: __("triage.label", patient.firstName),
+      headingSize: "m"
+    },
+    rows: summaryRows(triage, {
+      outcome: {
+        label: __("triage.outcome.label"),
+        value: triage.outcome,
+        href: reply.uri + "/new/triage"
+      },
+      note: {
+        label: __("triage.note.label"),
+        value: triage.note,
+        href: reply.uri + "/new/triage"
+      }
     })
   }) if triage.outcome }}
 {% endblock %}

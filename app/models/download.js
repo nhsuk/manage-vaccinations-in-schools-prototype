@@ -2,6 +2,7 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import xlsx from 'json-as-xlsx'
 
 import { DownloadFormat } from '../enums.js'
+import { Programme, Team, Vaccination } from '../models.js'
 import {
   convertIsoDateToObject,
   convertObjectToIsoDate,
@@ -9,10 +10,6 @@ import {
   today
 } from '../utils/date.js'
 import { formatList } from '../utils/string.js'
-
-import { Organisation } from './organisation.js'
-import { Programme } from './programme.js'
-import { Vaccination } from './vaccination.js'
 
 /**
  * @class Vaccination report download
@@ -29,7 +26,7 @@ import { Vaccination } from './vaccination.js'
  * @property {object} [endAt_] - Date to end report (from `dateInput`)
  * @property {DownloadFormat} [format] - Downloaded file format
  * @property {string} [programme_id] - Programme ID
- * @property {Array<string>} [organisation_codes] - Organisation ODC codes
+ * @property {Array<string>} [team_ids] - Team IDs
  * @property {Array<string>} [vaccination_uuids] - Vaccination UUIDs
  */
 export class Download {
@@ -45,7 +42,7 @@ export class Download {
     this.endAt_ = options?.endAt_
     this.format = options?.format || DownloadFormat.CSV
     this.programme_id = options?.programme_id
-    this.organisation_codes = options?.organisation_codes
+    this.team_ids = options?.team_ids
     this.vaccination_uuids = options?.vaccination_uuids || []
   }
 
@@ -119,18 +116,15 @@ export class Download {
   }
 
   /**
-   * Get organisations
+   * Get teams
    *
-   * @returns {Array<Organisation>} Organisations
+   * @returns {Array<Team>} Teams
    */
-  get organisations() {
-    if (this.context?.organisations && this.organisation_codes) {
-      return this.organisation_codes
-        .filter((code) => code !== '_unchecked')
-        .map(
-          (code) =>
-            new Organisation(this.context?.organisations[code], this.context)
-        )
+  get teams() {
+    if (this.context?.teams && this.team_ids) {
+      return this.team_ids
+        .filter((id) => id !== '_unchecked')
+        .map((id) => new Team(this.context?.teams[id], this.context))
     }
 
     return []
@@ -215,7 +209,7 @@ export class Download {
           date: vaccination.createdAt,
           time: vaccination.createdAt,
           location_type: 'SC',
-          location_urn: vaccination.school_urn,
+          location_urn: vaccination.school_id,
           user_role: '',
           user_code: '',
           attended: vaccination.given ? 'Y' : 'N',
@@ -248,7 +242,7 @@ export class Download {
       'PERSON_GENDER_CODE',
       'PERSON_POSTCODE',
       'SCHOOL_NAME',
-      'SCHOOL_URN',
+      'school_id',
       'REASON_NOT_VACCINATED',
       'DATE_OF_VACCINATION',
       'VACCINE_GIVEN',
@@ -269,7 +263,7 @@ export class Download {
             PERSON_GENDER_CODE: vaccination.patient?.gender,
             PERSON_POSTCODE: vaccination.patient?.postalCode,
             SCHOOL_NAME: vaccination.location,
-            SCHOOL_URN: vaccination.school_urn,
+            school_id: vaccination.school_id,
             REASON_NOT_VACCINATED: !vaccination.given
               ? vaccination.outcome
               : '',
@@ -303,10 +297,10 @@ export class Download {
       endAt: this.endAt
         ? formatDate(this.endAt, { dateStyle: 'long' })
         : 'Latest recorded vaccination',
-      organisations:
-        this.organisations.length > 0
-          ? formatList(this.organisations.map(({ name }) => name))
-          : this.organisations.length,
+      teams:
+        this.teams.length > 0
+          ? formatList(this.teams.map(({ name }) => name))
+          : this.teams.length,
       vaccinations: `${this.vaccinations.length} records`
     }
   }

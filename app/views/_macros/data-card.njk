@@ -16,8 +16,8 @@
   clickable: true if params.href,
   href: params.href,
   heading: params.heading,
-  headingClasses: params.headingClasses | default("nhsuk-heading-xs"),
-  headingLevel: params.headingLevel | default(5)
+  headingLevel: params.headingLevel | default(5),
+  headingSize: params.headingSize | default("xs")
 }) %}
   <p class="nhsuk-card__description app-card__data">
     {{- params.data | default(0) -}}

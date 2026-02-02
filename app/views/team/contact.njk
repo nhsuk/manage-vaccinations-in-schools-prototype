@@ -1,0 +1,40 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("team.show.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ appHeading({
+    caption: team.name,
+    title: title
+  }) }}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-one-quarter">
+      {{ appSubNavigation({
+        items: navigationItems
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-three-quarters">
+      {{ summaryList({
+        card: {
+          heading: __("team.contact.summary"),
+          headingSize: "m"
+        },
+        rows: summaryRows(team, {
+          email: {
+            href: team.uri + "/edit/contact"
+          },
+          tel: {
+            href: team.uri + "/edit/contact"
+          },
+          privacyPolicyUrl: {
+            href: team.uri + "/edit/contact"
+          }
+        })
+      }) }}
+    <div>
+  </div>
+{% endblock %}

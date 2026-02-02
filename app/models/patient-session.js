@@ -18,11 +18,11 @@ import {
   VaccinationOutcome,
   ProgrammeType
 } from '../enums.js'
+import { Gillick, Instruction, Patient, Programme, Session } from '../models.js'
 import { getDateValueDifference, getYearGroup, today } from '../utils/date.js'
 import {
   getInstructionOutcome,
   getRegistrationOutcome,
-  getReportOutcome,
   getRecordOutcome,
   getSessionOutcome
 } from '../utils/patient-session.js'
@@ -35,14 +35,12 @@ import {
   getConsentOutcomeStatus,
   getInstructionOutcomeStatus,
   getPatientConsentStatus,
-  getPatientStatus,
   getRegistrationStatus,
   getScreenOutcomeStatus,
   getVaccinationOutcomeStatus
 } from '../utils/status.js'
 import {
   formatLink,
-  formatProgrammeStatus,
   formatTag,
   formatVaccineCriteria,
   formatYearGroup
@@ -52,12 +50,6 @@ import {
   getScreenOutcomesForConsentMethod,
   getScreenVaccineCriteria
 } from '../utils/triage.js'
-
-import { Gillick } from './gillick.js'
-import { Instruction } from './instruction.js'
-import { Patient } from './patient.js'
-import { Programme } from './programme.js'
-import { Session } from './session.js'
 
 /**
  * @class Patient Session
@@ -105,6 +97,15 @@ export class PatientSession {
     } catch (error) {
       console.error('PatientSession.patient', error.message)
     }
+  }
+
+  /**
+   * Get patient programme
+   *
+   * @returns {import('./patient-programme.js').PatientProgramme|undefined} Patient programme
+   */
+  get patientProgramme() {
+    return this.patient.programmes[this.programme_id]
   }
 
   /**
@@ -468,6 +469,14 @@ export class PatientSession {
     const relationships = filters.formatList(this.parentalRelationships)
     const parentNames = filters.formatList(this.parentsRequestingFollowUp)
 
+    if (this.patient.hasNoContactDetails) {
+      return 'There are no contact details for this child.'
+    }
+
+    if (this.session.consentWindow === ConsentWindow.Opening) {
+      return this.session.formatted.consentWindowSentence
+    }
+
     switch (this.consent) {
       case ConsentOutcome.NoResponse:
         return 'No-one responded to our requests for consent.'
@@ -477,8 +486,12 @@ export class PatientSession {
         return 'You can only vaccinate if all respondents give consent.'
       case ConsentOutcome.Declined:
         return `${parentNames} would like to speak to a member of the team about other options for their child’s vaccination.`
+      case ConsentOutcome.Given:
+      case ConsentOutcome.GivenForAlternativeInjection:
+      case ConsentOutcome.GivenForIntranasal:
+        return `${relationships} gave consent.`
       case ConsentOutcome.Refused:
-        return `${relationships} refused to give consent.`
+        return `${relationships} refused consent.`
       case ConsentOutcome.FinalRefusal:
         return `Refusal to give consent confirmed by ${relationships}.`
       default:
@@ -633,23 +646,23 @@ export class PatientSession {
 
     switch (this.screen) {
       case ScreenOutcome.NeedsTriage:
-        return 'You need to decide if it’s safe to vaccinate.'
+        return `You need to decide if it’s safe to vaccinate ${patient.firstName}.`
       case ScreenOutcome.InviteToClinic:
-        return `${user.fullName} decided that ${patient.fullName}’s vaccination should take place at a clinic.`
+        return `${user.fullName} decided that ${patient.firstName}’s vaccination should take place at a clinic.`
       case ScreenOutcome.DelayVaccination:
-        return `${user.fullName} decided that ${patient.fullName}’s vaccination should be delayed until ${triageNote.formatted.outcomeAt}.`
+        return `${user.fullName} decided that ${patient.firstName}’s vaccination should be delayed until ${triageNote.formatted.outcomeAt}.`
       case ScreenOutcome.DoNotVaccinate:
-        return `${user.fullName} decided that ${patient.fullName} should not be vaccinated.`
+        return `${user.fullName} decided that ${patient.firstName} should not be vaccinated.`
       case ScreenOutcome.Vaccinate:
-        return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate.`
+        return `${user.fullName} decided that ${patient.firstName} is safe to vaccinate.`
       case ScreenOutcome.VaccinateAlternativeFluInjectionOnly:
-        return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the injected vaccine only.`
+        return `${user.fullName} decided that ${patient.firstName} is safe to vaccinate using the injected vaccine only.`
       case ScreenOutcome.VaccinateAlternativeMMRInjectionOnly:
-        return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the gelatine-free injection only.`
+        return `${user.fullName} decided that ${patient.firstName} is safe to vaccinate using the gelatine-free injection only.`
       case ScreenOutcome.VaccinateIntranasalOnly:
-        return `${user.fullName} decided that ${patient.fullName} is safe to vaccinate using the nasal spray only.`
+        return `${user.fullName} decided that ${patient.firstName} is safe to vaccinate using the nasal spray only.`
       default:
-        return `No triage is needed for ${patient.fullName}.`
+        return `No triage is needed for ${patient.firstName}.`
     }
   }
 
@@ -669,6 +682,26 @@ export class PatientSession {
    */
   get register() {
     return getRegistrationOutcome(this)
+  }
+
+  /**
+   * Get explanatory notes about registration outcome
+   *
+   * @returns {string} Explanatory notes
+   */
+  get registerNotes() {
+    const { patient } = this
+
+    switch (this.register) {
+      case RegistrationOutcome.Present:
+        return `${patient.firstName} is attending this session.`
+      case RegistrationOutcome.Absent:
+        return `${patient.firstName} is absent from this session.`
+      case RegistrationOutcome.Pending:
+        return `${patient.firstName} has not been registered as attending yet.`
+      case RegistrationOutcome.Complete:
+        return `${patient.firstName} has completed this session.`
+    }
   }
 
   /**
@@ -695,7 +728,7 @@ export class PatientSession {
    * @returns {PatientStatus} Patient status
    */
   get report() {
-    return getReportOutcome(this)
+    return this.patientProgramme.status
   }
 
   /**
@@ -706,17 +739,21 @@ export class PatientSession {
   get reportNotes() {
     switch (this.report) {
       case PatientStatus.Vaccinated:
-        return `${this.patientVaccinated} on ${this.lastVaccinationOutcome.formatted.createdAt_dateShort}`
+        return `${this.patient.firstName} was vaccinated by ${this.lastVaccinationOutcome.createdBy.fullName} on ${this.lastVaccinationOutcome.formatted.createdAt}.`
       case PatientStatus.Due:
         return this.vaccineCriteria
+          ? `${this.patient.firstName} is ready to vaccinate (${this.vaccineCriteria.toLowerCase()}).`
+          : `${this.patient.firstName} is ready to vaccinate.`
       case PatientStatus.Deferred:
         return this.lastVaccinationOutcome
-          ? `${this.patientDeferred} on ${this.lastVaccinationOutcome.formatted.createdAt_dateShort}`
-          : this.patientDeferred
+          ? `${this.patientDeferred} on ${this.lastVaccinationOutcome.formatted.createdAt}.`
+          : `${this.patientDeferred}.`
+      case PatientStatus.Triage:
+        return this.screenNotes
       case PatientStatus.Refused:
-        return this.patientRefused
+        return `${this.patientRefused}.`
       case PatientStatus.Consent:
-        return this.patientConsent
+        return `${this.patientConsent}.`
     }
   }
 
@@ -744,7 +781,7 @@ export class PatientSession {
       instruct: getInstructionOutcomeStatus(this.instruct),
       register: getRegistrationStatus(this.register),
       outcome: getVaccinationOutcomeStatus(this.outcome),
-      report: getPatientStatus(this.report)
+      report: this.patientProgramme?.status
     }
   }
 
@@ -772,11 +809,7 @@ export class PatientSession {
       instruct: this.session.psdProtocol && formatTag(this.status.instruct),
       register: formatTag(this.status.register),
       outcome: this.outcome && formatTag(this.status.outcome),
-      report: formatProgrammeStatus(
-        this.programme,
-        this.status.report,
-        this.reportNotes
-      ),
+      report: this.patientProgramme.formatted.programmeStatus,
       outstandingVaccinations: filters.formatList(outstandingVaccinations),
       vaccineCriteria: formatVaccineCriteria(this.vaccineCriteria),
       yearGroup: formattedYearGroup

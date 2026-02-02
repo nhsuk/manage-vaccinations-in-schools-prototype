@@ -3,6 +3,7 @@ import {
   Button,
   Checkboxes,
   ErrorSummary,
+  FileUpload,
   Header,
   NotificationBanner,
   Radios,
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createAll(Button, { preventDoubleClick: true })
   createAll(Checkboxes)
   createAll(ErrorSummary)
+  createAll(FileUpload)
   createAll(Header)
   createAll(Sticky)
   createAll(Radios)

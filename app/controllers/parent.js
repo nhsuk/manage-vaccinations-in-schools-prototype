@@ -1,7 +1,6 @@
 import wizard from '@x-govuk/govuk-prototype-wizard'
 
 import {
-  EthnicGroup,
   ParentalRelationship,
   ProgrammeType,
   ReplyDecision,
@@ -11,8 +10,7 @@ import {
 } from '../enums.js'
 import { generateChild } from '../generators/child.js'
 import { generateParent } from '../generators/parent.js'
-import { Consent } from '../models/consent.js'
-import { Session } from '../models/session.js'
+import { Consent, Session } from '../models.js'
 import { getHealthQuestionPaths } from '../utils/consent.js'
 import { formatList, kebabToCamelCase } from '../utils/string.js'
 
@@ -126,16 +124,9 @@ export const parentController = {
 
     const journey = {
       [`/${session_id}`]: {},
+      // Child journey
       [`/${session_id}/${consent_uuid}/new/child`]: {},
       [`/${session_id}/${consent_uuid}/new/dob`]: {},
-      [`/${session_id}/${consent_uuid}/new/ethnic-group`]: {
-        [`/${session_id}/${consent_uuid}/new/confirm-school`]: {
-          data: 'consent.child.ethnicGroup',
-          value: EthnicGroup.Withheld
-        },
-        [`/${session_id}/${consent_uuid}/new/ethnic-background`]: {}
-      },
-      [`/${session_id}/${consent_uuid}/new/ethnic-background`]: {},
       ...(session?.type === SessionType.School
         ? { [`/${session_id}/${consent_uuid}/new/confirm-school`]: {} }
         : {}),
@@ -144,6 +135,7 @@ export const parentController = {
             [`/${session_id}/${consent_uuid}/new/school`]: {}
           }
         : {}),
+      // Parent journey
       [`/${session_id}/${consent_uuid}/new/parent`]: {
         [`/${session_id}/parental-responsibility`]: {
           data: 'consent.parent.hasParentalResponsibility',
@@ -157,34 +149,56 @@ export const parentController = {
         [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
           data: 'consent.decision',
           value: ReplyDecision.Refused
+        },
+        [`/${session_id}/${consent_uuid}/new/first-dose`]: {
+          data: 'consent.decision',
+          value: ReplyDecision.AlreadyVaccinated
         }
       },
+      // Give consent journey
       [`/${session_id}/${consent_uuid}/new/address`]: {},
       ...(getConsentForAlternativeVaccine && {
         [`/${session_id}/${consent_uuid}/new/alternative`]: {}
       }),
       ...getHealthQuestionPaths(`/${session_id}/${consent_uuid}/new/`, consent),
+      [`/${session_id}/${consent_uuid}/new/impairments`]: {},
+      [`/${session_id}/${consent_uuid}/new/adjustments`]: {},
       [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
+      [`/${session_id}/${consent_uuid}/new/ethnicity`]: {
+        [`/${session_id}/${consent_uuid}/new/confirmation`]: () =>
+          request.session.data.consent?.ethnicity === 'false'
+      },
+      [`/${session_id}/${consent_uuid}/new/ethnic-group`]: {},
+      [`/${session_id}/${consent_uuid}/new/ethnic-background`]: {},
       [`/${session_id}/${consent_uuid}/new/confirmation`]: {},
+      // Refusal journey
       [`/${session_id}/${consent_uuid}/new/refusal-reason`]: {
         [`/${session_id}/${consent_uuid}/new/refusal-reason-details`]: {
           data: 'consent.refusalReason',
           values: [
-            ReplyRefusal.AlreadyGiven,
+            ReplyRefusal.AlreadyVaccinated,
             ReplyRefusal.GettingElsewhere,
             ReplyRefusal.Medical
           ]
+        },
+        [`/${session_id}/${consent_uuid}/new/first-dose`]: {
+          data: 'consent.refusalReason',
+          value: ReplyRefusal.AlreadyVaccinatedMMR
         },
         [`/${session_id}/${consent_uuid}/new/consultation`]: true
       },
       [`/${session_id}/${consent_uuid}/new/refusal-reason-details`]: {
         [`/${session_id}/${consent_uuid}/new/${consent.refusalReason === ReplyRefusal.Medical ? 'consultation' : 'check-answers'}`]: true
       },
+      // Consultation journey
       [`/${session_id}/${consent_uuid}/new/consultation`]: {
         [`/${session_id}/${consent_uuid}/new/check-answers`]: true
       },
-      [`/${session_id}/${consent_uuid}/new/check-answers`]: {},
-      [`/${session_id}/${consent_uuid}/new/confirmation`]: {}
+      // First and second dose journey
+      [`/${session_id}/${consent_uuid}/new/first-dose`]: {},
+      [`/${session_id}/${consent_uuid}/new/second-dose`]: {
+        [`/${session_id}/${consent_uuid}/new/check-answers`]: true
+      }
     }
 
     const paths = wizard(journey, request)
@@ -251,8 +265,33 @@ export const parentController = {
           }
         }
       ]
+    } else if (session.presetNames.includes(SessionPresetName.MMR)) {
+      // MMR: Yes, no or already fully vaccinated
+      response.locals.decisionItems = [
+        {
+          text: __('consent.decision.yes.label'),
+          value: ReplyDecision.Given
+        },
+        {
+          text: __('consent.decision.no.label'),
+          value: ReplyDecision.Refused,
+          hint: {
+            text: __('consent.decision.no.hint')
+          }
+        },
+        {
+          divider: 'or'
+        },
+        {
+          text: __('consent.decision.alreadyVaccinated.label'),
+          value: ReplyDecision.AlreadyVaccinated,
+          hint: {
+            text: __('consent.decision.alreadyVaccinated.hint')
+          }
+        }
+      ]
     } else {
-      // HPV and MMR: Yes or no
+      // HPV: Yes or no
       response.locals.decisionItems = [
         {
           text: __('consent.decision.yes.label'),
@@ -281,12 +320,19 @@ export const parentController = {
   showForm(request, response) {
     let { view } = request.params
     const { consent } = response.locals
-
-    // Get health question key from view name
-    const key = kebabToCamelCase(view.replace('health-question-', ''))
+    let key
 
     // All health questions use the same view
-    view = view.startsWith('health-question-') ? 'health-question' : view
+    if (view.startsWith('health-question-')) {
+      key = kebabToCamelCase(view.replace('health-question-', ''))
+      view = 'health-question'
+    }
+
+    // All previous dose questions use the same view
+    if (view.includes('-dose')) {
+      key = `${kebabToCamelCase(view.replace('-dose', ''))}Dose`
+      view = 'previous-dose'
+    }
 
     // Only ask for details if question does not have sub-questions
     const hasSubQuestions = consent.healthQuestionsForDecision[key]?.conditional

@@ -11,25 +11,29 @@
       title: title
     }) }}
 
-    {{ card({
-      heading: vaccine.brand,
-      headingClasses: "nhsuk-heading-m",
-      descriptionHtml: summaryList({
-        rows: summaryRows(vaccine, {
-          manufacturer: {},
-          snomed: {},
-          type: {},
-          method: {},
-          dose: {},
-          healthQuestions: {},
-          preScreenQuestions: {},
-          sideEffects: {}
-        })
+    {{ summaryList({
+      card: {
+        heading: vaccine.brand,
+        headingSize: "m",
+        actions: {
+          items: [
+            {
+              text: __("vaccine.show.delete"),
+              href: vaccine.uri + "/delete"
+            }
+          ]
+        }
+      },
+      rows: summaryRows(vaccine, {
+        manufacturer: {},
+        snomed: {},
+        type: {},
+        method: {},
+        dose: {},
+        healthQuestions: {},
+        preScreenQuestions: {},
+        sideEffects: {}
       })
     }) }}
-
-    <p>
-      <a href="{{ vaccine.uri }}/delete">{{ __("vaccine.show.delete") }}</a>
-    </p>
   </div>
 {% endblock %}

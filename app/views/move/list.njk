@@ -35,10 +35,10 @@
         header: __("move.label"),
         html: move.movement + (appStatus({
           classes: "app-status--small nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-0",
-          text: __("move.from_code.label"),
+          text: __("move.team_id.label"),
           icon: "warning",
           colour: "blue"
-        }) if move.from_code)
+        }) if move.team_id)
       },
       {
         header: __("actions.label"),
@@ -55,10 +55,12 @@
   {% if moves.length %}
     {{ table({
       id: "moves",
-      heading: __mf("move.count", { count: moves.length }),
-      headingLevel: 2,
-      panel: true,
       responsive: true,
+      card: {
+        feature: true,
+        heading: __mf("move.count", { count: moves.length }),
+        headingLevel: 2
+      },
       head: [
         { text: __("move.createdAt.label") },
         { text: __("child.label") },

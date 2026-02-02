@@ -3,9 +3,8 @@ import { fakerEN_GB as faker } from '@faker-js/faker'
 import gpSurgeries from '../datasets/clinics.js'
 import firstNames from '../datasets/first-names.js'
 import schools from '../datasets/schools.js'
-import { Gender } from '../enums.js'
-import { generateAddress } from '../generators/address.js'
-import { Child } from '../models/child.js'
+import { Adjustment, Gender, Impairment } from '../enums.js'
+import { Child } from '../models.js'
 import { getCurrentAcademicYear, getYearGroup } from '../utils/date.js'
 
 /**
@@ -21,6 +20,46 @@ export function generateChild() {
     { value: Gender.NotKnown, weight: 1 },
     { value: Gender.NotSpecified, weight: 1 }
   ])
+
+  // Impairments
+  let impairments
+  if (faker.datatype.boolean(0.2)) {
+    impairments = [
+      faker.helpers.weightedArrayElement([
+        { value: Impairment.Vision, weight: 1 },
+        { value: Impairment.Hearing, weight: 2 },
+        { value: Impairment.Mobility, weight: 1 },
+        { value: Impairment.Memory, weight: 1 },
+        { value: Impairment.MentalHealth, weight: 3 },
+        { value: Impairment.Communicative, weight: 4 }
+      ])
+    ]
+  }
+
+  let impairmentsOther
+  if (impairments?.includes(Impairment.Other)) {
+    impairmentsOther =
+      'My child has a chronic illness and requires ongoing medical treatment.'
+  }
+
+  // Adjustments
+  let adjustments
+  if (faker.datatype.boolean(0.2)) {
+    adjustments = [
+      faker.helpers.weightedArrayElement([
+        { value: Adjustment.Distraction, weight: 2 },
+        { value: Adjustment.ExtendedAppointment, weight: 1 },
+        { value: Adjustment.FirstAppointment, weight: 3 },
+        { value: Adjustment.LastAppointment, weight: 3 },
+        { value: Adjustment.Privacy, weight: 3 },
+        { value: Adjustment.HomeVisit, weight: 2 }
+      ])
+    ]
+  }
+
+  if (impairments?.includes(Impairment.Vision)) {
+    adjustments = [Adjustment.GuideDog]
+  }
 
   // Name
   const firstName = faker.helpers.arrayElement(firstNames[gender])
@@ -45,7 +84,7 @@ export function generateChild() {
     ({ phase }) => phase === 'Secondary'
   )
   const phase = faker.helpers.arrayElement(['Primary', 'Secondary'])
-  let dob, school_urn
+  let dob, school_id
   if (phase === 'Primary') {
     // Primary: Reception (age 4) to Year 6 (age 10)
     const ageOnCutOff = faker.number.int({ min: 4, max: 10 })
@@ -59,7 +98,7 @@ export function generateChild() {
       to: new Date(birthYear, 7, 31) // 31 August birth year
     })
 
-    school_urn = faker.helpers.arrayElement(primarySchools).urn
+    school_id = faker.helpers.arrayElement(primarySchools).id
   } else {
     // Children generally receive adolescent vaccinations when younger
     // Note: This means flu cohorts will skew more towards younger children
@@ -80,18 +119,18 @@ export function generateChild() {
       to: new Date(birthYear, 7, 31) // 31 August birth year
     })
 
-    school_urn = faker.helpers.arrayElement(secondarySchools).urn
+    school_id = faker.helpers.arrayElement(secondarySchools).id
   }
 
   // Add examples of children who are home-schooled or at an unknown school
   if (faker.datatype.boolean(0.01)) {
-    school_urn = faker.helpers.arrayElement(['888888', '999999'])
+    school_id = faker.helpers.arrayElement(['888888', '999999'])
   }
 
   // Add examples of children who have aged out (over 16)
   if (faker.datatype.boolean(0.05)) {
     dob = faker.date.birthdate({ min: 17, max: 18, mode: 'age' })
-    school_urn = ''
+    school_id = ''
   }
 
   // GP surgery
@@ -105,7 +144,7 @@ export function generateChild() {
 
   // Registration group
   let registrationGroup
-  const hasRegistrationGroup = String(school_urn).startsWith('13')
+  const hasRegistrationGroup = String(school_id).startsWith('13')
   if (hasRegistrationGroup) {
     const yearGroup = getYearGroup(dob)
     const registration = faker.string.alpha({
@@ -123,10 +162,17 @@ export function generateChild() {
     lastName,
     dob,
     gender,
+    adjustments,
+    impairments,
+    impairmentsOther,
     immunocompromised: faker.datatype.boolean(0.1),
-    address: generateAddress(),
+    address: {
+      addressLine1: faker.location.streetAddress(),
+      addressLevel1: faker.location.city(),
+      postalCode: faker.location.zipCode({ format: 'CV## #??' })
+    },
     gpSurgery,
     registrationGroup,
-    school_urn
+    school_id
   })
 }

@@ -16,6 +16,8 @@ router.all('/:patient_uuid/edit/:view', patient.readForm)
 router.get('/:patient_uuid/edit/:view', patient.showForm)
 router.post('/:patient_uuid/edit/:view', patient.updateForm)
 
+router.post('/:patient_uuid/new/note', patient.note)
+
 router.post('/:patient_uuid/archive', patient.archive)
 
 router.all('/:patient_uuid/programmes{/:programme_id}', patient.readProgramme)
@@ -23,7 +25,11 @@ router.get('/:patient_uuid/programmes{/:programme_id}', patient.showProgramme)
 
 router.get(
   '/:patient_uuid/programmes/:programme_id/new/vaccination',
-  patient.vaccination
+  patient.vaccination('new')
+)
+router.get(
+  '/:patient_uuid/programmes/:programme_id/new/ttcv',
+  patient.vaccination('ttcv')
 )
 
 router.get('/:patient_uuid{/:view}', patient.show)

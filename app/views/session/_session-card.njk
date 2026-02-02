@@ -1,18 +1,18 @@
-{{ card({
-  classes: "app-card--compact",
-  heading: session.location.name | highlightQuery(data.q),
-  headingClasses: "nhsuk-heading-s",
-  headingLevel: 4,
-  href: session.uri,
-  clickable: true,
-  descriptionHtml: summaryList({
-    rows: summaryRows(session, {
-      patients: {},
-      programmes: {},
-      yearGroups: {},
-      status: {},
-      date: {},
-      consentWindow: {}
-    })
+{{ summaryList({
+  card: {
+    classes: "app-card--compact",
+    heading: session.location.name | highlightQuery(data.q),
+    headingSize: "s",
+    headingLevel: 4,
+    href: session.uri,
+    clickable: true
+  },
+  rows: summaryRows(session, {
+    patients: {},
+    programmes: {},
+    yearGroups: {},
+    status: {},
+    date: {},
+    consentWindow: {}
   })
 }) }}

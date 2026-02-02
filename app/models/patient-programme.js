@@ -1,10 +1,16 @@
+import { addMonths, addWeeks } from 'date-fns'
+
 import {
   PatientConsentStatus,
   PatientDueStatus,
   PatientStatus,
   ProgrammeType
 } from '../enums.js'
-import { getCurrentAcademicYear } from '../utils/date.js'
+import { AuditEvent, Patient, Programme, Vaccination } from '../models.js'
+import {
+  getCurrentAcademicYear,
+  getDateValueDifference
+} from '../utils/date.js'
 import { ordinal } from '../utils/number.js'
 import { getReportOutcome } from '../utils/patient-session.js'
 import { getPatientStatus } from '../utils/status.js'
@@ -13,9 +19,6 @@ import {
   formatTag,
   formatWithSecondaryText
 } from '../utils/string.js'
-
-import { Patient } from './patient.js'
-import { Programme } from './programme.js'
 
 /**
  * @class Patient Programme
@@ -92,9 +95,11 @@ export class PatientProgramme {
    * @returns {Array<import('./audit-event.js').AuditEvent>} Audit events
    */
   get auditEvents() {
-    return this.patient.auditEvents.filter(({ programme_ids }) =>
-      programme_ids?.some((id) => this.programme_id === id)
-    )
+    return this.patient.events
+      .map((auditEvent) => new AuditEvent(auditEvent, this.context))
+      .filter(({ programme_ids }) =>
+        programme_ids?.some((id) => this.programme_id === id)
+      )
   }
 
   /**
@@ -169,6 +174,28 @@ export class PatientProgramme {
    */
   get vaccinationsGiven() {
     return this.vaccinationOutcomes.filter((vaccination) => vaccination.given)
+  }
+
+  /**
+   * Get TTCV vaccinations given
+   *
+   * @returns {Array<import('./vaccination.js').Vaccination>|undefined} Vaccinations
+   */
+  get ttcvVaccinationsGiven() {
+    return this.patient?.vaccinations
+      .filter((vaccination) => vaccination.programme?.ttcv)
+      .filter((vaccination) => vaccination.given)
+  }
+
+  /**
+   * Get other vaccinations given
+   *
+   * @returns {Array<import('./vaccination.js').Vaccination>|undefined} Vaccinations
+   */
+  get otherVaccinationsGiven() {
+    return this.patient?.vaccinations
+      .filter((vaccination) => vaccination.programmeOther)
+      .filter((vaccination) => vaccination.given)
   }
 
   /**
@@ -248,6 +275,47 @@ export class PatientProgramme {
     return this.programme.sequence[this.doseDue - 1]
   }
 
+  get ttcvVaccinations() {
+    if (this.programme.type === ProgrammeType.TdIPV) {
+      return [
+        new Vaccination(
+          {
+            createdAt: addWeeks(this.patient.dob, 8),
+            programme_id: '5in1',
+            sequence: '1P'
+          },
+          this.context
+        ),
+        new Vaccination(
+          {
+            createdAt: addWeeks(this.patient.dob, 12),
+            programme_id: '5in1',
+            sequence: '2P'
+          },
+          this.context
+        ),
+        new Vaccination(
+          {
+            createdAt: addWeeks(this.patient.dob, 16),
+            programme_id: '5in1',
+            sequence: '3P'
+          },
+          this.context
+        ),
+        new Vaccination(
+          {
+            createdAt: addMonths(this.patient.dob, 40),
+            programme_id: '4in1',
+            sequence: '1B'
+          },
+          this.context
+        ),
+        ...this.ttcvVaccinationsGiven,
+        ...this.otherVaccinationsGiven
+      ].sort((a, b) => getDateValueDifference(a.createdAt, b.createdAt))
+    }
+  }
+
   /**
    * Get vaccination due
    *
@@ -295,6 +363,15 @@ export class PatientProgramme {
   }
 
   /**
+   * Get status colour name
+   *
+   * @returns {string} Colour name
+   */
+  get statusColour() {
+    return getPatientStatus(this.status, this.vaccinationDue).colour
+  }
+
+  /**
    * Get explanatory notes
    *
    * @returns {string} Explanatory notes
@@ -302,7 +379,9 @@ export class PatientProgramme {
   get statusNotes() {
     switch (this.status) {
       case PatientStatus.Ineligible:
-        return `Eligible from 1 September ${this.year}`
+        return this.patient.post16
+          ? 'Not eligible for school age immunisation'
+          : `Eligible from 1 September ${this.year}`
       case PatientStatus.Vaccinated:
         return `Vaccinated on ${this.lastVaccinationGiven.formatted.createdAt_dateShort}`
       case PatientStatus.Due:

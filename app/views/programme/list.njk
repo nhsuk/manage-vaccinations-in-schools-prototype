@@ -34,10 +34,12 @@
 
     {{ table({
       id: "programmes",
-      heading: academicYear,
-      headingLevel: 2,
-      panel: true,
       responsive: true,
+      card: {
+        feature: true,
+        heading: academicYear,
+        headingLevel: 2
+      },
       head: [
         {
           text: __("programme.name.label"),

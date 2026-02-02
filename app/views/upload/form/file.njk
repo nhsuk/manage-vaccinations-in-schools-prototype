@@ -1,5 +1,3 @@
-{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
-
 {% extends "_layouts/form.njk" %}
 
 {% set programme = data.programmes[upload.programme_id] %}
@@ -36,14 +34,11 @@
     html: templateFormat
   }) }}
 
-  {{ govukFileUpload({
+  {{ fileUpload({
     id: "upload",
     name: "upload",
-    formGroup: {
-      classes: "nhsuk-u-margin-bottom-4"
-    },
     label: {
-      classes: "govuk-label--m",
+      size: "m",
       text: __("upload.file.label")
     },
     errorMessage: {

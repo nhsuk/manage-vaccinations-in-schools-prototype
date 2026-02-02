@@ -1,7 +1,6 @@
+import { Reply } from '../models.js'
 import { hasAnswersNeedingTriage } from '../utils/reply.js'
 import { formatLinkWithSecondaryText } from '../utils/string.js'
-
-import { Reply } from './reply.js'
 
 /**
  * @class Consent

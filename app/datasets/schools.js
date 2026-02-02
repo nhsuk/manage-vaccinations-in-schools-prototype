@@ -1,154 +1,261 @@
+import { SessionPresetName } from '../enums.js'
+
+const presetNames = [
+  SessionPresetName.Doubles,
+  SessionPresetName.Flu,
+  SessionPresetName.HPV,
+  SessionPresetName.MMR
+]
+
 export default {
   '888888': {
+    id: '888888',
     urn: '888888',
-    name: 'Unknown school'
+    name: 'Unknown school',
+    team_id: '001',
+    presetNames
   },
   '999999': {
+    id: '999999',
     urn: '999999',
-    name: 'Home-schooled'
+    name: 'Home-schooled',
+    team_id: '001',
+    presetNames
   },
   '135335': {
+    id: '135335',
     urn: '135335',
     name: 'Grace Academy Coventry',
     phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11, 12, 13],
     addressLine1: 'Wigston Road',
     addressLine2: '',
     addressLevel1: 'Coventry',
-    postalCode: 'CV2 2RH'
+    postalCode: 'CV2 2RH',
+    team_id: '001',
+    presetNames
   },
   '137209': {
+    id: '137209',
     urn: '137209',
     name: 'West Coventry Academy',
     phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11, 12, 13],
     addressLine1: 'Tile Hill Lane',
     addressLine2: '',
     addressLevel1: 'Coventry',
-    postalCode: 'CV4 9PW'
+    postalCode: 'CV4 9PW',
+    team_id: '001',
+    presetNames
   },
   '137272': {
+    id: '137272',
     urn: '137272',
     name: 'Blue Coat Church of England School and Music College',
     phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11, 12, 13],
     addressLine1: 'Terry Road',
     addressLine2: '',
     addressLevel1: 'Coventry',
-    postalCode: 'CV1 2BA'
+    postalCode: 'CV1 2BA',
+    team_id: '001',
+    presetNames
   },
   '138023': {
+    id: '138023',
     urn: '138023',
     name: 'Coundon Court',
     phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11, 12, 13],
     addressLine1: 'Northbrook Road',
     addressLine2: '',
     addressLevel1: 'Coventry',
-    postalCode: 'CV6 2AJ'
+    postalCode: 'CV6 2AJ',
+    team_id: '001',
+    presetNames
   },
   '139292': {
+    id: '139292',
     urn: '139292',
     name: 'Caludon Castle School',
     phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11, 12, 13],
     addressLine1: 'Axholme Road',
     addressLine2: 'Wyken',
     addressLevel1: 'Coventry',
-    postalCode: 'CV2 5BD'
+    postalCode: 'CV2 5BD',
+    team_id: '001',
+    presetNames
   },
   '140248': {
+    id: '140248',
     urn: '140248',
     name: 'President Kennedy School Academy',
     phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11, 12, 13],
     addressLine1: 'Rookery Lane',
     addressLine2: '',
     addressLevel1: 'Coventry',
-    postalCode: 'CV6 4GL'
+    postalCode: 'CV6 4GL',
+    team_id: '001',
+    presetNames
+  },
+  '141104A': {
+    id: '141104A',
+    urn: '141104',
+    site: 'A',
+    name: 'Seva School - Primary',
+    phase: 'Primary',
+    yearGroups: [1, 2, 3, 4, 5, 6],
+    addressLine1: 'Eden Road',
+    addressLine2: 'Walsgrave Triangle',
+    addressLevel1: 'Coventry',
+    postalCode: 'CV2 2TB',
+    team_id: '001',
+    presetNames: [SessionPresetName.Flu, SessionPresetName.MMR]
+  },
+  '141104B': {
+    id: '141104B',
+    urn: '141104',
+    site: 'B',
+    name: 'Seva School - Secondary',
+    phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11],
+    addressLine1: 'Eden Road',
+    addressLine2: 'Walsgrave Triangle',
+    addressLevel1: 'Coventry',
+    postalCode: 'CV2 2TB',
+    team_id: '001',
+    presetNames
   },
   '141992': {
+    id: '141992',
     urn: '141992',
     name: 'Cardinal Wiseman Catholic School',
     phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11, 12, 13],
     addressLine1: 'Potters Green Road',
     addressLine2: '',
     addressLevel1: 'Coventry',
-    postalCode: 'CV2 2AJ'
+    postalCode: 'CV2 2AJ',
+    team_id: '001',
+    presetNames
   },
   '142205': {
+    id: '142205',
     urn: '142205',
     name: 'Sacred Heart Catholic Primary School',
     phase: 'Primary',
+    yearGroups: [0, 1, 2, 3, 4, 5, 6],
     addressLine1: 'Brays Lane',
     addressLine2: 'Stoke',
     addressLevel1: 'Coventry',
-    postalCode: 'CV2 4DW'
+    postalCode: 'CV2 4DW',
+    team_id: '001',
+    presetNames: [SessionPresetName.Flu, SessionPresetName.MMR]
   },
   '142211': {
+    id: '142211',
     urn: '142211',
     name: 'St Gregory’s Catholic Primary School',
     phase: 'Primary',
+    yearGroups: [1, 2, 3, 4, 5, 6],
     addressLine1: 'Harry Rose Road',
     addressLine2: '',
     addressLevel1: 'Coventry',
-    postalCode: 'CV2 5AT'
+    postalCode: 'CV2 5AT',
+    team_id: '001',
+    presetNames: [SessionPresetName.Flu, SessionPresetName.MMR]
   },
   '142339': {
+    id: '142339',
     urn: '142339',
     name: 'Barr’s Hill School',
     phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11, 12, 13],
     addressLine1: 'Radford Road',
     addressLine2: '',
     addressLevel1: 'Coventry',
-    postalCode: 'CV1 4BU'
+    postalCode: 'CV1 4BU',
+    team_id: '001',
+    presetNames
   },
   '142700': {
+    id: '142700',
     urn: '142700',
     name: 'Finham Primary School',
     phase: 'Primary',
+    yearGroups: [0, 1, 2, 3, 4, 5, 6],
     addressLine1: 'Green Lane',
     addressLine2: '',
     addressLevel1: 'Coventry',
-    postalCode: 'CV3 6EJ'
+    postalCode: 'CV3 6EJ',
+    team_id: '001',
+    presetNames: [SessionPresetName.Flu, SessionPresetName.MMR]
   },
   '142960': {
+    id: '142960',
     urn: '142960',
     name: 'Lyng Hall School',
     phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11, 12, 13],
     addressLine1: 'Blackberry Lane',
     addressLine2: '',
     addressLevel1: 'Coventry',
-    postalCode: 'CV2 3JS'
+    postalCode: 'CV2 3JS',
+    team_id: '001',
+    presetNames
   },
   '143779': {
+    id: '143779',
     urn: '143779',
     name: 'Parkgate Primary School',
     phase: 'Primary',
+    yearGroups: [0, 1, 2, 3, 4, 5, 6],
     addressLine1: 'Parkgate Road',
     addressLine2: '',
     addressLevel1: 'Coventry',
-    postalCode: 'CV6 4GF'
+    postalCode: 'CV6 4GF',
+    team_id: '001',
+    presetNames: [SessionPresetName.Flu, SessionPresetName.MMR]
   },
   '145179': {
+    id: '145179',
     urn: '145179',
     name: 'Stoke Park School',
     phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11, 12, 13],
     addressLine1: 'Dane Road',
     addressLine2: '',
     addressLevel1: 'Coventry',
-    postalCode: 'CV2 4JW'
+    postalCode: 'CV2 4JW',
+    team_id: '001',
+    presetNames
   },
   '147346': {
+    id: '147346',
     urn: '147346',
     name: 'Cardinal Newman Catholic School',
     phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11, 12, 13],
     addressLine1: 'Sandpits Lane',
     addressLine2: 'Keresley',
     addressLevel1: 'Coventry',
-    postalCode: 'CV6 2FR'
+    postalCode: 'CV6 2FR',
+    team_id: '001',
+    presetNames
   },
   '148429': {
+    id: '148429',
     urn: '148429',
     name: 'Meadow Park School',
     phase: 'Secondary',
+    yearGroups: [7, 8, 9, 10, 11, 12, 13],
     addressLine1: 'Abbey Road',
     addressLine2: 'Whitley',
     addressLevel1: 'Coventry',
-    postalCode: 'CV3 4BD'
+    postalCode: 'CV3 4BD',
+    team_id: '001',
+    presetNames
   }
 }

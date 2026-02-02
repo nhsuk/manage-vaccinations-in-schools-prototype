@@ -1,7 +1,7 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
 
 import vaccines from '../datasets/vaccines.js'
-import { Batch } from '../models/batch.js'
+import { Batch } from '../models.js'
 import { addDays } from '../utils/date.js'
 
 /**

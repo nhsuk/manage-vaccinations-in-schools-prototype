@@ -5,7 +5,7 @@ import { uploadController as upload } from '../controllers/upload.js'
 const router = express.Router({ strict: true, mergeParams: true })
 
 router.get('/', upload.readAll, upload.list)
-router.get('/imported', upload.readAll, upload.imported)
+router.post('/', upload.filterList)
 
 router.get('/new', upload.new)
 

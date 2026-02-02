@@ -77,6 +77,13 @@ export const healthQuestions = {
     options: false,
     detailsHint: false
   },
+  immuneSystemHpv: {
+    label:
+      'Does the child have a disease or treatment that severely affects their immune system?',
+    hint: 'Children with a severely weakened immune system will need 3 doses of the vaccine, over a 12-month period.',
+    options: false,
+    detailsHint: false
+  },
   immuneSystemCloseContact: {
     label:
       'Is the child in regular close contact with anyone currently having treatment that severely affects their immune system?',
@@ -88,13 +95,6 @@ export const healthQuestions = {
   immunisations: {
     label:
       'Has your child had any of the following in the last 4 weeks, or are they due to have them in the next 4 weeks: TB skin test, chickenpox vaccine, or yellow fever vaccine?',
-    hint: false,
-    options: false,
-    detailsHint: false
-  },
-  medicalConditions: {
-    label:
-      'Does the child have any other medical conditions we should know about?',
     hint: false,
     options: false,
     detailsHint: false
@@ -137,12 +137,6 @@ export const healthQuestions = {
     label:
       'Has the child had a tetanus, diphtheria and polio vaccination in the last 5 years?',
     hint: 'Most children will not have had this vaccination since their 4-in-1 pre-school booster',
-    options: false,
-    detailsHint: false
-  },
-  support: {
-    label: 'Does the child need extra support during vaccination sessions?',
-    hint: 'For example, they’re autistic, or extremely anxious',
     options: false,
     detailsHint: false
   },

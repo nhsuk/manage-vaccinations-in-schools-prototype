@@ -2,22 +2,19 @@
 
 {% set title = __("consent.child.confirm-school.title") %}
 
-{% set schoolName -%}
-<p>
-  <span class="nhsuk-heading-m nhsuk-u-margin-bottom-0">{{ session.location.name }}</span>
-  {{ session.location.postalCode }}
-</p>
-{%- endset %}
-
 {% block form %}
   {{ appHeading({
     title: title
   }) }}
 
-  {{ insetText({
-    html: schoolName,
+  {% call insetText({
     classes: "nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-4"
-  }) }}
+  }) %}
+    <p>
+      <span class="nhsuk-heading-m nhsuk-u-margin-bottom-0">{{ session.location.name }}</span>
+      {{ session.location.postalCode }}
+    </p>
+  {% endcall %}
 
   {{ radios({
     fieldset: {

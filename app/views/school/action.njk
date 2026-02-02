@@ -1,0 +1,28 @@
+{% extends "_layouts/form.njk" %}
+
+{% set paths = { back: school.uri + "/edit" } %}
+
+{% block form %}
+  {{ appHeading({
+    caption: school.name,
+    title: __("school.action.title", type)
+  }) }}
+
+  {{ __("school.action.description") | nhsukMarkdown }}
+{% endblock %}
+
+{% block afterForm %}
+  {{ appButtonGroup({
+    buttons: [{
+      classes: "nhsuk-button--warning",
+      text: __("school.action.confirm", type),
+      attributes: {
+        formAction: school.uri + "/" + type
+      }
+    }],
+    links: [{
+      text: __("school.action.cancel"),
+      href: school.uri + "/edit"
+    }]
+  }) }}
+{% endblock %}

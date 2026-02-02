@@ -1,5 +1,5 @@
 import { UserRole, VaccineMethod } from '../enums.js'
-import { User } from '../models/user.js'
+import { User } from '../models.js'
 
 export const authentication = (request, response, next) => {
   const { data } = request.session

@@ -7,13 +7,31 @@ const router = express.Router({ strict: true })
 router.get('/', school.readAll, school.list)
 router.post('/', school.filterList)
 
-router.param('school_urn', school.read)
+router.get('/new', school.new('school'))
+router.get('/new-site', school.new('site'))
 
-router.all('/:school_urn', school.readPatients)
-router.post('/:school_urn', school.filterPatients)
+router.param('school_id', school.read)
 
-router.get('/:school_urn/sessions', school.readSessions)
+router.all('/:school_id/new/:view', school.readForm('new'))
+router.get('/:school_id/new/:view', school.showForm)
+router.post('/:school_id/new/check-answers', school.update('new'))
+router.post('/:school_id/new/:view', school.updateForm)
 
-router.get('/:school_urn{/:view}', school.show)
+router.get('/:school_id/edit', school.edit)
+router.post('/:school_id/edit', school.update('edit'))
+
+router.all('/:school_id/edit/:view', school.readForm('edit'))
+router.get('/:school_id/edit/:view', school.showForm)
+router.post('/:school_id/edit/:view', school.updateForm)
+
+router.get('/:school_id/delete', school.action('delete'))
+router.post('/:school_id/delete', school.delete)
+
+router.get('/:school_id/sessions', school.readSessions)
+
+router.all('/:school_id', school.readPatients)
+router.post('/:school_id', school.filterPatients)
+
+router.get('/:school_id{/:view}', school.show)
 
 export const schoolRoutes = router

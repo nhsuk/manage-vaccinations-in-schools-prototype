@@ -5,19 +5,17 @@ import programmesData from '../datasets/programmes.js'
 import schoolsData from '../datasets/schools.js'
 import {
   ConsentWindow,
-  SchoolPhase,
   SessionPresetName,
   SessionStatus,
   SessionType
 } from '../enums.js'
 
 import { today } from './date.js'
-import { range } from './number.js'
 
 /**
  * Get consent window (is it open, opening or closed)
  *
- * @param {import('../models/session.js').Session} session - Session
+ * @param {import('../models.js').Session} session - Session
  * @returns {object} Consent window key and value
  */
 export const getConsentWindow = (session) => {
@@ -41,7 +39,7 @@ export const getConsentWindow = (session) => {
 /**
  * Get consent URL
  *
- * @param {import('../models/session.js').Session[]} sessions - Sessions
+ * @param {import('../models.js').Session[]} sessions - Sessions
  * @param {string} [presetName] - Session preset name
  * @param {boolean} [isSchool] - Get school session
  * @returns {object} Consent window key and value
@@ -66,7 +64,7 @@ export const getSessionConsentUrl = (
 /**
  * Filter array where key has a value
  *
- * @param {import('../models/session.js').Session} session - Session
+ * @param {import('../models.js').Session} session - Session
  * @param {Array} filters - Filters
  * @returns {number} Number
  */
@@ -94,11 +92,11 @@ export const getSessionActivityCount = (session, filters) => {
 /**
  * Get year groups based on intersection of school phase and programme
  *
- * @param {string} school_urn - School URN
+ * @param {string} school_id - School ID
  * @param {Array<import('../enums.js').SessionPreset>} sessionPresets - Session presets
  * @returns {Array<number>} Year groups
  */
-export const getSessionYearGroups = (school_urn, sessionPresets) => {
+export const getSessionYearGroups = (school_id, sessionPresets) => {
   const programmeYearGroups = new Set()
 
   for (const preset of sessionPresets) {
@@ -110,11 +108,9 @@ export const getSessionYearGroups = (school_urn, sessionPresets) => {
     }
   }
 
-  const school = schoolsData[school_urn]
-  const schoolYearGroups =
-    school.phase === SchoolPhase.Primary ? [...range(0, 6)] : [...range(7, 11)]
+  const school = schoolsData[school_id]
 
-  return schoolYearGroups.filter((yearGroup) =>
+  return school.yearGroups.filter((yearGroup) =>
     [...programmeYearGroups].includes(yearGroup)
   )
 }

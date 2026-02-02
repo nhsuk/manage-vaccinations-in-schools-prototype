@@ -6,13 +6,13 @@ import {
   PatientConsentStatus,
   PatientRefusedStatus
 } from './enums.js'
-import { School } from './models/school.js'
-import { User } from './models/user.js'
+import { Location, User } from './models.js'
 import { getSessionActivityCount } from './utils/session.js'
 import {
+  camelToKebabCase,
   formatHealthAnswer,
   formatLink,
-  camelToKebabCase
+  formatMarkdown
 } from './utils/string.js'
 
 /**
@@ -46,31 +46,55 @@ export default () => {
     }))
   }
 
-  /**
-   * Get school form field items
-   *
-   * @param {object} schools - Schools data
-   * @param {string} value - Current value
-   * @returns {object} Form field items
-   */
-  globals.schoolItems = function (schools, value) {
+  globals.otherCountryItems = function (countries, value) {
+    countries = Object.entries(countries).filter(
+      ([, name]) => name !== 'United Kingdom'
+    )
+
     return [
       {
         value: '',
-        text: 'Select a school',
+        text: 'Select a country',
         disabled: true,
         ...(!value && { selected: true })
       },
-      ...Object.values(schools)
-        .map((school) => new School(school))
+      ...countries.map(([value, name]) => ({
+        text: name,
+        value: name,
+        ...(value && { selected: value === name })
+      }))
+    ]
+  }
+
+  /**
+   * Get location form field items
+   *
+   * @param {object} locations - Locations data
+   * @param {string} value - Current value
+   * @returns {object} Form field items
+   */
+  globals.locationItems = function (locations, value) {
+    const type = Object.values(locations).at(1).phase
+      ? 'school'
+      : 'community clinic'
+
+    return [
+      {
+        value: '',
+        text: `Select a ${type}`,
+        disabled: true,
+        ...(!value && { selected: true })
+      },
+      ...Object.values(locations)
+        .map((location) => new Location(location))
         .sort((a, b) => a.name.localeCompare(b.name))
-        .map((school) => ({
-          text: school.name,
-          value: school.urn,
-          ...(value && { selected: value === school.urn }),
-          ...(school.address && {
+        .map((location) => ({
+          text: location.name,
+          value: location.id,
+          ...(value && { selected: value === location.id }),
+          ...(location.address && {
             attributes: {
-              'data-hint': school.address.formatted.singleline
+              'data-hint': location.formatted.address
             }
           })
         }))
@@ -83,7 +107,7 @@ export default () => {
 
     for (const auditEvent of Object.values(auditEvents)) {
       timelineItems.push({
-        headingText: auditEvent.name,
+        headingText: formatMarkdown(auditEvent.name),
         isPastItem: auditEvent.isPastEvent,
         html: auditEvent.formatted?.note,
         description: filters.safe(auditEvent.formatted.createdAtAndBy)
@@ -416,7 +440,7 @@ export default () => {
   /**
    * Get vaccinator summary table row items
    *
-   * @param {import('./models/session.js').Session} session - Session
+   * @param {import('./models.js').Session} session - Session
    * @returns {Array} Table row items
    */
   globals.vaccinationTableRows = function (session) {

@@ -1,11 +1,13 @@
 import schools from '../datasets/schools.js'
 import {
+  Adjustment,
   EthnicBackgroundAsian,
   EthnicBackgroundBlack,
   EthnicBackgroundMixed,
   EthnicBackgroundOther,
   EthnicBackgroundWhite,
-  EthnicGroup
+  EthnicGroup,
+  Impairment
 } from '../enums.js'
 import {
   convertIsoDateToObject,
@@ -14,9 +16,7 @@ import {
   getAge,
   getYearGroup
 } from '../utils/date.js'
-import { formatYearGroup } from '../utils/string.js'
-
-import { Address } from './address.js'
+import { formatList, formatYearGroup, stringToArray } from '../utils/string.js'
 
 /**
  * @class Child
@@ -31,15 +31,18 @@ import { Address } from './address.js'
  * @property {object} [dob_] - Date of birth (from `dateInput`)
  * @property {Date} [dod] - Date of death
  * @property {import('../enums.js).Gender} gender - Gender
- * @property {EthnicGroup')} [ethnicGroup] - Ethnic group
+ * @property {EthnicGroup)} [ethnicGroup] - Ethnic group
  * @property {string} [ethnicGroupOther] - Other ethnic group
  * @property {import('../enums.js).EthnicBackground')} [ethnicBackground] - Ethnic background
  * @property {string} [ethnicBackgroundOther] - Other ethnic background
+ * @property {Array<Adjustment>} [adjustments] - Reasonable adjustments
+ * @property {Array<Impairment>} [impairments] - Impairments
+ * @property {string} [impairmentsOther] - Other impairment
  * @property {boolean} [immunocompromised] - Immunocompromised
- * @property {import('./address.js').Address} [address] - Address
+ * @property {object} [address] - Address
  * @property {string} [gpSurgery] - GP surgery
  * @property {string} [registrationGroup] - Registration group
- * @property {string} [school_urn] - School
+ * @property {string} [school_id] - School
  */
 export class Child {
   constructor(options, context) {
@@ -54,11 +57,15 @@ export class Child {
     this.gender = options?.gender
     this.ethnicGroup = options?.ethnicGroup
     this.ethnicBackground = options?.ethnicBackground
+    this.adjustments =
+      (options?.adjustments && stringToArray(options.adjustments)) || []
+    this.impairments =
+      (options?.impairments && stringToArray(options.impairments)) || []
     this.immunocompromised = options?.immunocompromised
     this.address = options?.address
     this.gpSurgery = options?.gpSurgery
     this.registrationGroup = options?.registrationGroup
-    this.school_urn = options?.school_urn
+    this.school_id = options?.school_id
 
     if (this.ethnicGroup === EthnicGroup.Other) {
       this.ethnicGroupOther = options?.ethnicGroupOther
@@ -74,6 +81,14 @@ export class Child {
       ].includes(this.ethnicBackground)
     ) {
       this.ethnicBackgroundOther = options?.ethnicBackgroundOther
+    }
+
+    if (this.adjustments.includes(Adjustment.Other)) {
+      this.adjustmentsOther = options?.adjustmentsOther
+    }
+
+    if (this.impairments.includes(Impairment.Other)) {
+      this.impairmentsOther = options?.impairmentsOther
     }
   }
 
@@ -224,8 +239,8 @@ export class Child {
    * @returns {object|undefined} School
    */
   get school() {
-    if (this.school_urn) {
-      return schools[this.school_urn]
+    if (this.school_id) {
+      return schools[this.school_id]
     }
   }
 
@@ -251,7 +266,11 @@ export class Child {
     return {
       dob: formatDate(this.dob, { dateStyle: 'long' }),
       dod: formatDate(this.dod, { dateStyle: 'long' }),
-      address: this?.address && new Address(this.address).formatted.multiline,
+      address:
+        this?.address &&
+        Object.values(this.address)
+          .filter((string) => string)
+          .join('<br>'),
       ...(!this.post16 && {
         yearGroup,
         yearGroupWithRegistration:
@@ -259,7 +278,9 @@ export class Child {
             ? `${yearGroup} (${this.registrationGroup})`
             : yearGroup,
         school: this?.school && this.school.name
-      })
+      }),
+      adjustments: this.adjustments && formatList(this.adjustments),
+      impairments: this.impairments && formatList(this.impairments)
     }
   }
 

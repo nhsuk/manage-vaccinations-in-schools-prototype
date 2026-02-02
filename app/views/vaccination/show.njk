@@ -28,65 +28,65 @@
       title: title
     }) }}
 
-    {% call card({
-      heading: __("patient.label"),
-      headingClasses: "nhsuk-heading-m"
-    }) %}
-      {{ summaryList({
-        rows: summaryRows(vaccination.patient, {
-          nhsn: {
-            changeLabel: "the child’s NHS number",
-            href: vaccination.uri + "/patients/" + vaccination.patient.nhsn + "/edit/nhsn" if vaccination.patient.hasMissingNhsNumber
-          },
-          fullName: {},
-          dobWithAge: {},
-          gender: {},
-          postalCode: {},
-          school: {},
-          parents: {}
-        })
-      }) }}
-      <p class="nhsuk-body">
-        {{ button({
-          classes: "nhsuk-button--secondary nhsuk-u-margin-0",
-          text: __("patient.edit.title"),
-          href: vaccination.patient.uri + "/edit?referrer=" + vaccination.uri
-        }) }}
-      </p>
-    {% endcall %}
+    {{ summaryList({
+      card: {
+        heading: __("patient.label"),
+        headingSize: "m",
+        actions: {
+          items: [
+            {
+              text: __("patient.edit.title"),
+              href: vaccination.patient.uri + "/edit?referrer=" + vaccination.uri
+            }
+          ]
+        }
+      },
+      rows: summaryRows(vaccination.patient, {
+        nhsn: {
+          changeLabel: "the child’s NHS number",
+          href: vaccination.uri + "/patients/" + vaccination.patient.nhsn + "/edit/nhsn" if vaccination.patient.hasMissingNhsNumber
+        },
+        fullName: {},
+        dobWithAge: {},
+        gender: {},
+        postalCode: {},
+        school: {},
+        parents: {}
+      })
+    }) }}
 
-    {% call card({
-      heading: __("vaccination.show.summary"),
-      headingClasses: "nhsuk-heading-m"
-    }) %}
-      {{ summaryList({
-        rows: summaryRows(vaccination, {
-          programme: {},
-          outcome: {},
-          vaccine_snomed: {},
-          method: {},
-          site: {},
-          dose: {},
-          sequence: {},
-          batch: {},
-          identifiedBy: {},
-          suppliedBy: {},
-          createdBy: {},
-          createdAt: {},
-          updatedAt: {},
-          location: {},
-          protocol: {},
-          note: {},
-          syncStatus: {}
-        })
-      }) }}
-      <p class="nhsuk-body">
-        {{ button({
-          classes: "nhsuk-button--secondary nhsuk-u-margin-0",
-          text: __("vaccination.edit.title"),
-          href: vaccination.uri + "/edit"
-        }) }}
-      </p>
-    {% endcall %}
+    {{ summaryList({
+      card: {
+        heading: __("vaccination.show.summary"),
+        headingSize: "m",
+        actions: {
+          items: [
+            {
+              text: __("vaccination.edit.title"),
+              href: vaccination.uri + "/edit"
+            }
+          ]
+        }
+      },
+      rows: summaryRows(vaccination, {
+        programme: {},
+        outcome: {},
+        vaccine_snomed: {},
+        method: {},
+        site: {},
+        dose: {},
+        sequence: {},
+        batch: {},
+        identifiedBy: {},
+        suppliedBy: {},
+        createdBy: {},
+        createdAt: {},
+        updatedAt: {},
+        location: {},
+        protocol: {},
+        note: {},
+        syncStatus: {}
+      })
+    }) }}
   </div>
 {% endblock %}

@@ -1,10 +1,10 @@
 import { healthQuestions } from '../datasets/health-questions.js'
 import {
-  ProgrammeType,
   RegistrationOutcome,
   ReplyDecision,
   ReplyRefusal,
   ScreenOutcome,
+  SessionPresetName,
   UploadStatus
 } from '../enums.js'
 
@@ -20,8 +20,11 @@ export const en = {
     update: 'Update',
     archive: 'Archive'
   },
-  address: {
-    label: 'Address',
+  location: {
+    name: {
+      label: 'Name',
+      hint: 'The site name must be unique. It is shown to parents on the consent form and related emails. Existing sites for this school are: %s.'
+    },
     addressLine1: {
       label: 'Address line 1'
     },
@@ -45,7 +48,7 @@ export const en = {
       success: 'Default batch updated'
     },
     id: {
-      label: 'Default batch ID',
+      label: 'Default batch number',
       title: 'Default to this batch for this session'
     }
   },
@@ -92,7 +95,7 @@ export const en = {
     },
     permissions: {
       org: {
-        title: 'Your organisation is not using this service yet',
+        title: 'Your team is not using this service yet',
         description: '{{ra}} is not currently set up to use Mavis.'
       },
       user: {
@@ -132,7 +135,7 @@ export const en = {
       hint: 'For example, 27 10 2025'
     },
     id: {
-      label: 'Batch ID'
+      label: 'Batch number'
     }
   },
   clinic: {
@@ -196,6 +199,12 @@ export const en = {
     },
     ethnicity: {
       label: 'Ethnicity'
+    },
+    adjustments: {
+      label: 'Reasonable adjustments'
+    },
+    impairments: {
+      label: 'Impairments'
     },
     address: {
       label: 'Home address'
@@ -261,10 +270,14 @@ export const en = {
     },
     start: {
       title: {
-        single:
-          'Give or refuse consent for a {{session.vaccinationNames.sentenceCase}}',
-        multiple:
-          'Give or refuse consent for the {{session.vaccinationNames.sentenceCase}}'
+        [SessionPresetName.Flu]:
+          'Give or refuse consent for your child’s flu vaccination',
+        [SessionPresetName.Doubles]:
+          'Give or refuse consent for the MenACWY and Td/IPV vaccinations',
+        [SessionPresetName.HPV]:
+          'Give or refuse consent for the HPV vaccination',
+        [SessionPresetName.MMR]:
+          'Give or refuse consent for an MMR catch-up vaccination'
       },
       more: `Find out more about the {{programme.vaccineName.sentenceCase}}`,
       confirm: {
@@ -280,12 +293,12 @@ export const en = {
     closed: {
       title: 'You can no longer submit a consent response',
       description:
-        'The deadline for responding has passed.\n\n## You can still book a clinic appointment\n\nContact {{organisation.email}} to book a clinic appointment.'
+        'The deadline for responding has passed.\n\n## You can still book a clinic appointment\n\nContact {{team.email}} to book a clinic appointment.'
     },
     'parental-responsibility': {
       title: 'You cannot give or refuse consent through this service',
       description:
-        'To give or refuse consent for a child’s vaccination, you need to have parental responsibility.\n\nIf you have any questions, please contact the local health organisation by calling {{organisation.tel}}, or email {{organisation.email}}.'
+        'To give or refuse consent for a child’s vaccination, you need to have parental responsibility.\n\nIf you have any questions, please contact the local health organisation by calling {{team.tel}}, or email {{team.email}}.'
     },
     new: {
       'check-answers': {
@@ -334,9 +347,7 @@ export const en = {
       },
       ethnicGroup: {
         label: 'Ethnic group',
-        title: 'What is your child’s ethnic group?',
-        description:
-          'We ask about ethnicity so we can better understand the challenges faced by specific communities.'
+        title: 'What is your child’s ethnic group?'
       },
       ethnicBackground: {
         label: 'Ethnic group',
@@ -347,6 +358,66 @@ export const en = {
       },
       ethnicBackgroundOther: {
         label: 'How would you describe your child’s background? (optional)'
+      },
+      adjustments: {
+        label: 'Reasonable adjustments',
+        title:
+          'Will your child need any of the following adjustments during their vaccination?',
+        guideDog: {
+          label: 'A guide dog'
+        },
+        distraction: {
+          label: 'A distraction while having the vaccination'
+        },
+        extendedAppointment: {
+          label: 'An extended appointment'
+        },
+        firstAppointment: {
+          label: 'The first appointment'
+        },
+        lastAppointment: {
+          label: 'The last appointment'
+        },
+        privacy: {
+          label: 'A private space',
+          hint: 'Most vaccinations are held in large, open spaces'
+        },
+        homeVisit: {
+          label: 'A home visit'
+        },
+        other: {
+          label: 'Other'
+        }
+      },
+      adjustmentsOther: {
+        label: 'Other reasonable adjustment',
+        title: 'Give details'
+      },
+      impairments: {
+        label: 'Impairments',
+        title: 'Does your child have any of the following impairments?',
+        vision: {
+          hint: 'For example, blindness or partial sight'
+        },
+        hearing: {
+          hint: 'For example, deafness or partial hearing'
+        },
+        mobility: {
+          hint: 'For example, difficulty walking or climbing stairs'
+        },
+        memory: {
+          hint: 'For example, difficulty remembering or understanding information'
+        },
+        mentalHealth: {
+          hint: 'For example, anxiety'
+        },
+        communicative: {
+          hint: 'For example, related to autism or ADHD (attention deficit hyperactivity disorder)'
+        }
+      },
+      impairmentsOther: {
+        label: 'Other impairment',
+        title: 'Give details'
       },
       'confirm-school': {
         title: 'Confirm your child’s school',
@@ -363,12 +434,25 @@ export const en = {
         title: 'What school does your child go to?',
         label: 'Select a school',
         description:
-          'You can only use this service if your child’s school is listed here. If it’s not, contact {{organisation.email}}. If you’ve moved recently, it’s important to mention this.'
+          'You can only use this service if your child’s school is listed here. If it’s not, contact {{team.email}}. If you’ve moved recently, it’s important to mention this.'
       },
       address: {
         title: 'Home address',
         label: 'Child’s home address',
         hint: 'Give the child’s primary address. We use this to confirm their identity.'
+      }
+    },
+    ethnicity: {
+      label: 'Do you want to answer the ethnicity questions?',
+      hint: 'These questions are optional. Your answers will not affect your consent response.',
+      title: 'We have received your consent response',
+      description:
+        'Before you finish using the service, we’d like to ask some questions about your child’s ethnicity.\n\nWe ask about ethnicity so that when we look at the number of vaccinations received, we can better understand the challenges faced by specific groups. We can then target the support we offer.',
+      yes: {
+        label: 'Yes, answer the ethnicity questions (takes less than a minute)'
+      },
+      no: {
+        label: 'No, skip the ethnicity questions'
       }
     },
     parent: {
@@ -439,8 +523,9 @@ export const en = {
         label: 'Yes, I agree to the alternative flu injection',
         hint: 'This is suitable for children who do not use gelatine products, or if they cannot have the nasal spray vaccine for medical reasons'
       },
-      mmr: {
-        hint: 'This is a catch-up vaccination for those who have not yet had 2 doses of the MMR vaccine. Children usually have these when they are 1 and 3 years old.'
+      alreadyVaccinated: {
+        label: 'My child has already had both doses of the MMR vaccination',
+        hint: 'Children need 2 doses of the MMR vaccine to be fully protected'
       },
       no: {
         label: 'No',
@@ -488,10 +573,12 @@ export const en = {
       title:
         'Please tell us why you do not agree to your child having the {{session.vaccinationNames.sentenceCase}} in school',
       label: 'Refusal reason',
-      alreadyGiven: {
-        one: ReplyRefusal.AlreadyGiven,
-        other: ReplyRefusal.AlreadyGiven.replace('Vaccine', 'Vaccines')
+      alreadyVaccinated: {
+        one: ReplyRefusal.AlreadyVaccinated,
+        other: ReplyRefusal.AlreadyVaccinated.replace('Vaccine', 'Vaccines')
       },
+      alreadyVaccinatedMMR:
+        'My child has already had both doses of the MMR vaccination',
       gettingElsewhere: {
         one: ReplyRefusal.GettingElsewhere,
         other: ReplyRefusal.GettingElsewhere.replace('Vaccine', 'Vaccines')
@@ -499,16 +586,57 @@ export const en = {
     },
     refusalReasonDetails: {
       label: 'Refusal details',
-      mmr: {
-        hint: 'Children need 2 doses of the MMR vaccine to be fully protected. If your child has had more than 1 dose, give details about both doses.'
-      },
       title: {
-        [ReplyRefusal.AlreadyGiven]:
+        [ReplyRefusal.AlreadyVaccinated]:
           'When and where did your child get their vaccination?',
         [ReplyRefusal.GettingElsewhere]:
           'When and where will your child get their vaccination?',
         [ReplyRefusal.Medical]:
           'What medical reasons prevent your child from being vaccinated?'
+      }
+    },
+    firstDose: {
+      label: 'Details of 1st MMR dose',
+      title: 'When and where did your child get their 1st MMR dose?',
+      description: 'The 1st dose is usually offered at 12 months',
+      createdAt: {
+        label: 'Date of vaccination'
+      },
+      location: {
+        label: 'Location'
+      },
+      country: {
+        label: 'Country'
+      }
+    },
+    secondDose: {
+      label: 'Details of 2nd MMR dose',
+      title: 'When and where did your child get their 2nd MMR dose?',
+      description:
+        'The 2nd dose is usually offered when children are 3 years old'
+    },
+    previousDose: {
+      createdAt: {
+        label: 'Date',
+        title: 'Date of vaccination',
+        hint: 'If you do not know the exact date of the vaccination, you can leave the day field empty and enter your best guess for the month'
+      },
+      location: {
+        label: 'Location',
+        title: 'Location',
+        hint: 'Give the name and address of the GP surgery if you can remember it'
+      },
+      country: {
+        label: 'Country',
+        title: 'Country',
+        england: 'England',
+        scotland: 'Scotland',
+        wales: 'Wales',
+        ni: 'Northern Ireland',
+        other: 'Another country outside the UK'
+      },
+      countryOther: {
+        title: 'Which country was the vaccination given in?'
       }
     },
     healthAnswers: {
@@ -525,6 +653,7 @@ export const en = {
     },
     confirmation: {
       title: {
+        [ReplyDecision.AlreadyVaccinated]: 'Thank you',
         [ReplyDecision.Given]: 'Consent confirmed',
         [ReplyDecision.OnlyAlternativeInjection]:
           'Consent for the flu injection vaccination confirmed',
@@ -536,6 +665,8 @@ export const en = {
         [ReplyDecision.Refused]: 'Refusal confirmed'
       },
       text: {
+        [ReplyDecision.AlreadyVaccinated]:
+          'You’ve told us that {{consent.child.fullName}} has had both doses of the MMR vaccine.\n\nWe’ll update our records so you no longer get consent requests for MMR catch-up vaccinations.',
         [ReplyDecision.Given]:
           '{{consent.child.fullName}} is due to get the {{session.vaccinationNames.sentenceCase}} at school on {{session.formatted.nextDate}}',
         [ReplyDecision.OnlyAlternativeInjection]:
@@ -582,7 +713,7 @@ export const en = {
       title: 'Select file format',
       label: 'File format'
     },
-    organisations: {
+    teams: {
       title: 'Select providers',
       label: 'Providers'
     },
@@ -619,6 +750,10 @@ export const en = {
       'invite-clinic-consent': {
         label: 'Clinic invitation',
         name: 'We still need consent for your child’s {{session.vaccinationNames.sentenceCase}}'
+      },
+      'consent-already-vaccinated': {
+        label: 'Already vaccinated',
+        name: 'You’ve told us that {{consent.child.firstName}} is fully vaccinated against MMR'
       },
       'consent-given': {
         label: 'Consent given',
@@ -722,79 +857,6 @@ export const en = {
       cancel: 'No, return to notices'
     }
   },
-  organisation: {
-    show: {
-      label: 'Your team',
-      title: 'Your team',
-      description: 'Manage your team’s settings'
-    },
-    edit: {
-      success: 'Team settings updated'
-    },
-    contact: {
-      title: 'Contact details',
-      summary: 'Contact details'
-    },
-    clinics: {
-      title: 'Clinics',
-      summary: 'Clinics',
-      new: {
-        title: 'Add a new clinic'
-      }
-    },
-    schools: {
-      title: 'Schools',
-      summary: 'Schools',
-      new: {
-        title: 'Add a new school'
-      }
-    },
-    sessions: {
-      title: 'Sessions',
-      defaults: 'Session defaults',
-      password: 'Shared password',
-      text: 'You can change these values when scheduling new sessions.'
-    },
-    reminders: {
-      title: 'Consent reminders'
-    },
-    name: {
-      label: 'Name'
-    },
-    code: {
-      label: 'ODC code'
-    },
-    tel: {
-      label: 'Phone number'
-    },
-    email: {
-      label: 'Email address'
-    },
-    privacyPolicyUrl: {
-      label: 'Privacy policy',
-      hint: 'Linked to from consent forms and consent request emails'
-    },
-    sessionOpenWeeks: {
-      title: 'When should parents get a request to give consent?',
-      label: 'Consent request',
-      hint: 'Enter the number of weeks before the first session takes place'
-    },
-    sessionReminderWeeks: {
-      title: 'When should parents get a reminder to give consent?',
-      label: 'Consent reminders',
-      hint: 'Enter the number of weeks before a session takes place'
-    },
-    sessionRegistration: {
-      title:
-        'Do you want to register children’s attendance before recording vaccinations?',
-      label: 'Register attendance'
-    },
-    password: {
-      label: 'Shared password',
-      title: 'Shared password',
-      hint: 'Use this password to unlock offline vaccination spreadsheets. Don’t share it with anyone outside your team.'
-    }
-  },
   parent: {
     label: 'Parent or guardian',
     fullName: {
@@ -857,8 +919,8 @@ export const en = {
         hint: 'This will merge the duplicate records into a single record'
       }
     },
-    events: {
-      title: 'Activity log'
+    auditEvents: {
+      label: 'Activity log'
     },
     pds: {
       title: 'NHS number lookup history',
@@ -878,6 +940,8 @@ export const en = {
       dob: 'Child’s date of birth',
       showOnly: 'Show only',
       archived: 'Archived records',
+      hasAdjustment: 'Children needing reasonable adjustments',
+      hasImpairment: 'Children with impairments',
       hasMissingNhsNumber: 'Children missing an NHS&nbsp;number',
       post16: 'Children aged out of programmes'
     },
@@ -889,6 +953,14 @@ export const en = {
     },
     archived: {
       label: 'Archived'
+    },
+    notes: {
+      label: 'Notes',
+      new: {
+        title: 'Add a note to this record',
+        confirm: 'Save note',
+        success: 'Note added'
+      }
     },
     nhsn: {
       label: 'NHS number',
@@ -932,6 +1004,12 @@ export const en = {
     gender: {
       label: 'Gender',
       title: 'What is the child’s gender?'
+    },
+    adjustments: {
+      label: 'Reasonable adjustments'
+    },
+    impairments: {
+      label: 'Impairments'
     },
     address: {
       label: 'Address',
@@ -1016,6 +1094,9 @@ export const en = {
     },
     statusNotes: {
       label: 'Notes'
+    },
+    ttcv: {
+      label: 'Previous vaccinations for Tetanus, Diptheria and Polio'
     }
   },
   patientSession: {
@@ -1039,18 +1120,24 @@ export const en = {
     pinnedNote: {
       label: 'Session note'
     },
+    patientProgramme: {
+      label: 'View %s record'
+    },
     consent: {
-      title: 'Consent for %s',
-      label: 'Consent status'
+      label: 'Consent status',
+      title: 'Consent for %s vaccination'
     },
     screen: {
-      label: 'Triage status'
+      label: 'Triage status',
+      title: 'Triage for %s vaccination'
     },
     instruct: {
-      label: 'PSD status'
+      label: 'PSD status',
+      title: 'Patient specific direction (PSD)'
     },
     register: {
-      label: 'Registration status'
+      label: 'Registration status',
+      title: 'Register attendance'
     },
     outcome: {
       label: 'Session outcome'
@@ -1070,12 +1157,18 @@ export const en = {
     vaccineCriteria: {
       label: 'Vaccine type'
     },
+    vaccinationOutcomes: {
+      label: 'Vaccination outcomes'
+    },
     outstandingVaccinations: {
+      label:
+        '{count, plural, one{Outstanding vaccination} other{Outstanding vaccinations}}',
       message:
         '{count, plural, one{You still need to record an outcome for {names}} other{You still need to record outcomes for {names}}}'
     },
     gillick: {
       label: 'Gillick assessment',
+      title: 'Gillick assessment',
       text: 'Before you make your assessment, you should give {{patient.firstName}} a chance to ask questions.',
       new: {
         title: 'Assess Gillick competence',
@@ -1083,7 +1176,7 @@ export const en = {
         success: 'Gillick assessment added'
       },
       edit: {
-        title: 'Edit Gillick competence',
+        title: 'Update Gillick assessment',
         confirm: 'Update your assessment',
         success: 'Gillick assessment updated'
       },
@@ -1115,9 +1208,6 @@ export const en = {
       pending: 'Consent requests',
       requests: 'Consent requests',
       responses: 'Consent responses'
-    },
-    hasNoContactDetails: {
-      description: 'There are no contact details for this child'
     },
     preScreen: {
       label: 'Pre-screening checks',
@@ -1157,7 +1247,7 @@ export const en = {
         hint: 'Pre-screening checks must be completed for vaccination to go ahead',
         yes: 'Yes',
         no: 'No',
-        alternative: 'No — but they can have the injected flu vaccine instead'
+        alternative: 'No – but they can have the injected flu vaccine instead'
       },
       injectionSite: {
         error: 'Select an injection site',
@@ -1173,12 +1263,17 @@ export const en = {
       titleWithMethod:
         'Record {{session.programmeNames.sentenceCase}} vaccination with {{method}}'
     },
+    recordPrevious: {
+      title:
+        'Record a previous {{session.programmeNames.sentenceCase}} vaccination'
+    },
     registration: {
       label: 'Is {{patient.fullName}} attending today’s session?',
       title: 'Update attendance',
       present: 'Yes, they are attending today’s session',
       absent: 'No, they are absent from today’s session',
       pending: 'They have not been registered yet',
+      confirm: 'Update attendance',
       actions: {
         label: 'Attending?',
         present: {
@@ -1221,7 +1316,7 @@ export const en = {
   },
   remind: {
     new: {
-      title: 'Send reminder'
+      title: 'Re-send consent request'
     }
   },
   reply: {
@@ -1361,7 +1456,7 @@ export const en = {
     refusalReasonDetails: {
       label: 'Refusal details',
       title: {
-        [ReplyRefusal.AlreadyGiven]:
+        [ReplyRefusal.AlreadyVaccinated]:
           'Where did the child get their vaccination?',
         [ReplyRefusal.GettingElsewhere]:
           'Where will the child get their vaccination?',
@@ -1389,7 +1484,44 @@ export const en = {
     },
     show: {
       label: 'Children',
-      title: 'Children'
+      title: 'Children',
+      summary: 'School details',
+      delete: 'Delete school'
+    },
+    action: {
+      title: 'Are you sure you want to %s this school?',
+      description: 'This cannot be undone.',
+      confirm: 'Yes, %s this school',
+      cancel: 'No, return to school'
+    },
+    new: {
+      label: 'Add a new school',
+      'check-answers': {
+        confirm: 'Add school',
+        title: 'Check and confirm'
+      },
+      summary: 'School details',
+      success: '{{school.name}} has been added to your team'
+    },
+    'new-site': {
+      label: 'Add a new school site'
+    },
+    edit: {
+      label: 'Edit',
+      title: 'Edit school',
+      summary: 'School details',
+      confirm: 'Save changes',
+      success: '{{school.name}} updated'
+    },
+    delete: {
+      label: 'Delete',
+      success: 'School deleted'
+    },
+    'confirm-school': {
+      title: 'Confirm school',
+      label: 'Is this the correct school?',
+      yes: 'Yes, I want to add this school',
+      no: 'No, I want to add a different school'
     },
     patients: {
       label: 'Children',
@@ -1410,16 +1542,45 @@ export const en = {
       label: 'Find school'
     },
     name: {
-      label: 'Name'
+      label: 'Name',
+      title: 'School name'
     },
     phase: {
-      label: 'Phase'
+      label: 'Phase',
+      title: 'Phase of education'
     },
-    urn: {
+    sen: {
+      label: 'SEN school',
+      title: 'Is this a special educational needs (SEN) school?'
+    },
+    yearGroups: {
+      label: 'Year groups',
+      title: 'Year groups'
+    },
+    programmes: {
+      label: 'Programmes',
+      title: 'Which programmes will you run at this school?'
+    },
+    id: {
       label: 'URN'
     },
+    urn: {
+      label: 'School URN',
+      title: 'Find a school to add to your team',
+      error:
+        'URN must be for a school that is not already assigned to another team'
+    },
+    'site-urn': {
+      title: 'Which school do you want to add a site to?',
+      label: 'Select a school'
+    },
+    site: {
+      title: 'Site details',
+      label: 'Site code'
+    },
     address: {
-      label: 'Address'
+      label: 'Address',
+      title: 'School address'
     },
     nextSessionDate: {
       label: 'Next session'
@@ -1468,8 +1629,8 @@ export const en = {
       label: 'Academic year'
     },
     report: {
-      label: 'Added to session',
-      title: 'Added to session'
+      label: 'Children in session',
+      title: 'Children in session'
     },
     consent: {
       label: 'Consent',
@@ -1486,7 +1647,7 @@ export const en = {
         'There are %s children with consent for the nasal flu vaccine who do not require triage and do not yet have a PSD in place.'
     },
     register: {
-      label: 'Register',
+      label: 'Register attendance',
       title: 'Register attendance',
       information: 'You can register attendance when a session is in progress.'
     },
@@ -1642,7 +1803,7 @@ export const en = {
       label: 'School',
       title: 'Where is this school session taking place?'
     },
-    school_urn: {
+    school_id: {
       label: 'School URN',
       title: 'Select a school'
     },
@@ -1755,10 +1916,15 @@ export const en = {
         name: 'Reminding parent to give or refuse consent',
         text: 'We recently asked for your consent to vaccinate your child against {{session.programmeNames.sentenceCase}}.\n\nGo to [https://give-or-refuse-consent.nhs.uk/{{session.id}}]({{session.consentUrl}}/start) to submit a response. This will take less than 5 minutes.'
       },
+      'consent-already-vaccinated': {
+        label: 'Already vaccinated',
+        name: 'Confirmation that vaccination has already been given',
+        text: 'You’ve told us that {{consent.child.firstName}} has had both doses of the MMR vaccine.\n\nWe’ll update our records so you no longer get consent requests for MMR catch-up vaccinations.'
+      },
       'consent-given': {
         label: 'Consent given',
         name: 'Confirmation that consent has been given',
-        text: 'You’ve given consent for {{consent.child.firstName}} to get their {{session.vaccinationNames.sentenceCase}} at school on {{session.formatted.nextDate}}. Please let them know what to expect.\n\nIf anything changes, phone {{organisation.tel}}.'
+        text: 'You’ve given consent for {{consent.child.firstName}} to get their {{session.vaccinationNames.sentenceCase}} at school on {{session.formatted.nextDate}}. Please let them know what to expect.\n\nIf anything changes, phone {{team.tel}}.'
       },
       'consent-given-child': {
         label: 'Consent given (child)',
@@ -1788,8 +1954,78 @@ export const en = {
       'record-could-not-vaccinate': {
         label: 'Could not vaccinate',
         name: 'Child did not get their vaccination despite having consent',
-        text: '{{consent.child.firstName}} did not have their {{session.vaccinationNames.sentenceCase}} at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact our team by calling [{{organisation.tel}}](#), or email [{{organisation.email}}](#).'
+        text: '{{consent.child.firstName}} did not have their {{session.vaccinationNames.sentenceCase}} at school today. This was because {{reason}}.\n\nIf you’d still like them to be vaccinated on a different date, contact our team by calling [{{team.tel}}](#), or email [{{team.email}}](#).'
       }
+    }
+  },
+  team: {
+    show: {
+      label: 'Your team',
+      title: 'Your team',
+      description: 'Manage your team’s settings'
+    },
+    edit: {
+      success: 'Team settings updated'
+    },
+    contact: {
+      title: 'Contact details',
+      summary: 'Contact details'
+    },
+    clinics: {
+      title: 'Clinics',
+      summary: 'Clinics',
+      new: {
+        title: 'Add a new clinic'
+      }
+    },
+    schools: {
+      title: 'Schools',
+      summary: 'Schools'
+    },
+    sessions: {
+      title: 'Sessions',
+      defaults: 'Session defaults',
+      password: 'Shared password',
+      text: 'You can change these values when scheduling new sessions.'
+    },
+    reminders: {
+      title: 'Consent reminders'
+    },
+    name: {
+      label: 'Name'
+    },
+    code: {
+      label: 'ODC code'
+    },
+    tel: {
+      label: 'Phone number'
+    },
+    email: {
+      label: 'Email address'
+    },
+    privacyPolicyUrl: {
+      label: 'Privacy policy',
+      hint: 'Linked to from consent forms and consent request emails'
+    },
+    sessionOpenWeeks: {
+      title: 'When should parents get a request to give consent?',
+      label: 'Consent request',
+      hint: 'Enter the number of weeks before the first session takes place'
+    },
+    sessionReminderWeeks: {
+      title: 'When should parents get a reminder to give consent?',
+      label: 'Consent reminders',
+      hint: 'Enter the number of weeks before a session takes place'
+    },
+    sessionRegistration: {
+      title:
+        'Do you want to register children’s attendance before recording vaccinations?',
+      label: 'Register attendance'
+    },
+    password: {
+      label: 'Shared password',
+      title: 'Shared password',
+      hint: 'Use this password to unlock offline vaccination spreadsheets. Don’t share it with anyone outside your team.'
     }
   },
   triage: {
@@ -1850,8 +2086,13 @@ export const en = {
       description:
         'Import child, cohort and vaccination records and see important notices',
       introduction:
-        'Use this page to upload and import child, class list and vaccination records.\n\nAfter import, files move to the **Completed imports** tab.\n\nUpload times can vary. Refresh the page to see the latest status.'
+        'Use this page to upload and import child, class list and vaccination records.\n\nUpload times can vary. Refresh the page to see the latest status.'
     },
+    search: {
+      label: 'Find upload'
+    },
+    results:
+      '{count, plural, =0 {No imports matching your search criteria were found} one {Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> import} other {Showing <b>{from}</b> to <b>{to}</b> of <b>{count}</b> imports}}',
     recent: {
       label: 'Uploaded files',
       title: 'Uploaded files',
@@ -2106,10 +2347,10 @@ export const en = {
     source: {
       label: 'Updated in'
     },
-    from_code: {
+    team_id: {
       label: 'This child is moving in from another SAIS team’s area',
       description:
-        'Confirming this school move will bring {{move.patient.firstName}} into your area from {{move.formatted.from_code}}'
+        'Confirming this school move will bring {{move.patient.firstName}} into your area from {{move.formatted.team_id}}'
     },
     from_urn: {
       label: 'School joined from'
@@ -2176,7 +2417,7 @@ export const en = {
       },
       alreadyVaccinated: {
         title: 'Record as already vaccinated',
-        dose: 'Record %s dose as already given'
+        ttcv: 'Record a previous vaccination'
       },
       notGiven: {
         title: 'Vaccination was not given'
@@ -2209,6 +2450,9 @@ export const en = {
     reportedBy: {
       label: 'Reported by'
     },
+    age: {
+      label: 'Age'
+    },
     variant: {
       label: 'Programme variant',
       title: 'Was {{patient.firstName}} vaccinated with the MMRV vaccine?',
@@ -2230,10 +2474,39 @@ export const en = {
       label: 'Record updated'
     },
     location: {
+      label: 'Location'
+    },
+    locationOther: {
+      hint: 'For example, a GP surgery, hospital or somewhere in another country'
+    },
+    locationType: {
       label: 'Location',
       title:
-        'Where was the {{session.programmeNames.sentenceCase}} vaccination given?',
-      hint: 'Enter name and address'
+        'Where was the {{session.programmeNames.sentenceCase}} vaccination given?'
+    },
+    clinic_id: {
+      label: 'Community clinic',
+      title: 'Select a community clinic'
+    },
+    school_id: {
+      label: 'School',
+      title: 'Select a school'
+    },
+    address: {
+      label: 'Location',
+      title: 'Location name and address'
+    },
+    country: {
+      label: 'Country',
+      title: 'Country',
+      england: 'England',
+      scotland: 'Scotland',
+      wales: 'Wales',
+      ni: 'Northern Ireland',
+      other: 'Another country outside the UK'
+    },
+    countryOther: {
+      title: 'Which country was the vaccination given in?'
     },
     outcome: {
       label: 'Outcome',
@@ -2275,30 +2548,35 @@ export const en = {
       label: 'Site',
       title: 'Which injection site was used?'
     },
+    ttcv: {
+      label: 'Dose'
+    },
     programme: {
-      label: 'Programme'
+      label: 'Programme',
+      title: 'Which programme was this vaccination given for?'
     },
     protocol: {
       label: 'Protocol'
     },
     batch: {
-      label: 'Batch',
-      title: 'Batch'
+      label: 'Batch number',
+      title: 'Batch number'
     },
     batch_id: {
       title:
         'Which batch did you use for the {{vaccination.programme.name}} vaccination?',
-      label: 'Batch ID'
+      label: 'Batch number'
     },
     note: {
       label: 'Notes',
       hint: 'For example, if the child had a reaction to the vaccine',
+      hintAlreadyVaccinated:
+        'For example, details given by the parent about the vaccination',
       title: 'Notes'
     },
     dose: {
       label: 'Dose volume',
-      title:
-        'What was the dose amount for the {{vaccination.programme.name}} vaccination?'
+      title: 'What was the dose amount for the %s vaccination?'
     },
     dosage: {
       title: 'Did they get the full dose?',
@@ -2307,11 +2585,7 @@ export const en = {
     },
     sequence: {
       label: 'Dose sequence',
-      title: {
-        [ProgrammeType.HPV]: 'Which does of the HPV vaccination was this?',
-        [ProgrammeType.TdIPV]:
-          'Which dose of a tetanus-containing vaccine was this?'
-      }
+      title: 'Which dose of the %s vaccination was this?'
     },
     vaccine_snomed: {
       title: 'Which vaccine was given?',
@@ -2367,7 +2641,7 @@ export const en = {
       success: 'Vaccine deleted'
     },
     id: {
-      label: 'Batch'
+      label: 'Batch number'
     },
     createdAt: {
       label: 'Entered date'

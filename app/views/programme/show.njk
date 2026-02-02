@@ -84,8 +84,10 @@
   </div>
 
   {{ table({
-    heading: "Reasons for refusal",
-    panel: true,
+    card: {
+      feature: true,
+      heading: "Reasons for refusal"
+    },
     head: [
       { text: __("reply.refusalReason.label") },
       { text: "Frequency", format: "numeric" }
@@ -96,7 +98,7 @@
         { text: "11.1%", format: "numeric" }
       ] if programme.type == ProgrammeType.Flu,
       [
-        { text: ReplyRefusal.AlreadyGiven },
+        { text: ReplyRefusal.AlreadyVaccinated },
         { text: "2.0%", format: "numeric" }
       ],
       [
@@ -131,8 +133,10 @@
     ]) %}
   {% endfor %}
   {{ table({
-    heading: "Consent journey",
-    panel: true,
+    card: {
+      feature: true,
+      heading: "Consent journey"
+    },
     head: [
       { text: "Question" },
       { html: "Dropout", format: "numeric" }

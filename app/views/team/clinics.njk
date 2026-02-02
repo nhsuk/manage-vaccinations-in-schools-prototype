@@ -1,0 +1,69 @@
+{% extends "_layouts/default.njk" %}
+
+{% set title = __("team.show.title") %}
+
+{% block content %}
+  {{ super() }}
+
+  {{ appHeading({
+    caption: team.name,
+    title: title
+  }) }}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-one-quarter">
+      {{ appSubNavigation({
+        items: navigationItems
+      }) }}
+    </div>
+
+    <div class="nhsuk-grid-column-three-quarters">
+      {% set clinicRows = [] %}
+      {% for clinic in team.clinics %}
+        {% set clinicRows = clinicRows | push([
+          {
+            header: __("clinic.name.label"),
+            html: clinic.formatted.nameAndAddress or "Not provided"
+          }, {
+            header: __("actions.label"),
+            html: appActionList({
+              items: [{
+                text: __("clinic.edit.label"),
+                href: clinic.uri + "/edit"
+              }, {
+                text: __("clinic.delete.label"),
+                href: clinic.uri + "/delete"
+              }]
+            })
+          }
+        ]) %}
+      {% endfor %}
+
+      {% if team.clinics.length %}
+        {{ table({
+          id: "clinics",
+          responsive: true,
+          card: {
+            heading: __("team.clinics.summary"),
+            headingSize: "m",
+            actions: {
+              items: [
+                {
+                  text: __("team.clinics.new.title"),
+                  href: team.uri + "/clinics/new"
+                }
+              ]
+            }
+          },
+          head: [
+            { text: __("clinic.name.label") },
+            { text: __("actions.label") }
+          ],
+          rows: clinicRows
+        }) }}
+      {% else %}
+        {{ __mf("clinic.count", { count: 0 }) | nhsukMarkdown }}
+      {% endif %}
+    <div>
+  </div>
+{% endblock %}

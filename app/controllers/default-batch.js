@@ -1,7 +1,4 @@
-import { Batch } from '../models/batch.js'
-import { DefaultBatch } from '../models/default-batch.js'
-import { Session } from '../models/session.js'
-import { Vaccine } from '../models/vaccine.js'
+import { Batch, DefaultBatch, Session, Vaccine } from '../models.js'
 
 export const defaultBatchController = {
   read(request, response, next) {
