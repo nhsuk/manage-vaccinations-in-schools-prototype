@@ -100,7 +100,7 @@ export class Move {
    * @static
    */
   static findAll(context) {
-    return Object.values(context.moves)
+    return Object.values(context?.moves ?? {})
       .map((move) => new Move(move, context))
       .filter((move) => !move.ignored)
       .sort((a, b) => getDateValueDifference(a.createdAt, b.createdAt))
