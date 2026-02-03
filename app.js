@@ -1,94 +1,53 @@
-// External dependencies
-import express from 'express'
-import nunjucks from 'nunjucks'
 import sessionInDatabase from 'connect-pg-simple'
+import express from 'express'
 import session from 'express-session'
+import NHSPrototypeKit from 'nhsuk-prototype-kit'
 import { Pool } from 'pg'
 
-import { join } from 'node:path'
-
-import NHSPrototypeKit from 'nhsuk-prototype-kit'
-
-const serviceName = 'Manage vaccinations in schools'
-
-// Local dependencies
-import routes from './app/routes.js'
-import filters from './app/filters.js'
 import sessionDataDefaults from './app/data.js'
+import filters from './app/filters.js'
+import globals from './app/globals.js'
+import routes from './app/routes.js'
 
-// Set configuration variables
-const port = parseInt(process.env.PORT, 10) || 2000
+const { DATABASE_URL, NODE_ENV } = process.env
 
-// Initialise applications
 const app = express()
 
-
-const sessionName = `manage-vaccinations-in-schools-prototype`
-const sessionOptions = {
-  secret: sessionName,
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 4, // 4 hours
-    secure: process.env.NODE_ENV === 'production'
-  }
-}
-
-const PgSession = sessionInDatabase(session)
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl:
-    process.env.NODE_ENV === 'production'
-      ? {
-          rejectUnauthorized: false
-        }
-      : false
-})
-
 app.use(
-  session(
-    Object.assign(sessionOptions, {
-      store: new PgSession({ pool }),
-      resave: false,
-      saveUninitialized: false
+  session({
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 4, // 4 hours
+      secure: process.env.NODE_ENV === 'production'
+    },
+    resave: false,
+    saveUninitialized: false,
+    secret: 'manage-vaccinations-in-schools-prototype',
+    store: new (sessionInDatabase(session))({
+      pool: new Pool({
+        connectionString: DATABASE_URL,
+        ssl: NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+      })
     })
-  )
+  })
 )
 
-// Nunjucks configuration for application
-const appViews = [
-  join(import.meta.dirname, 'app/views/'),
-  join(import.meta.dirname, 'node_modules/nhsuk-frontend/dist/nhsuk/components'),
-  join(import.meta.dirname, 'node_modules/nhsuk-frontend/dist/nhsuk/macros'),
-  join(import.meta.dirname, 'node_modules/nhsuk-frontend/dist/nhsuk'),
-  join(import.meta.dirname, 'node_modules/nhsuk-frontend/dist'),
-  join(import.meta.dirname, 'node_modules/nhsuk-decorated-components')
-]
-
-const nunjucksConfig = {
-  autoescape: true,
-  noCache: true
-}
-
-nunjucksConfig.express = app
-
-let nunjucksAppEnv = nunjucks.configure(appViews, nunjucksConfig)
-
-// Use public folder for static assets
-app.use(express.static(join(import.meta.dirname, 'public')))
-
-// Use assets from NHS frontend
-app.use(
-  '/nhsuk-frontend',
-  express.static(join(import.meta.dirname, 'node_modules/nhsuk-frontend/dist/nhsuk'))
-)
-
-const prototype = NHSPrototypeKit.init({
-  serviceName: serviceName,
-  express: app,
-  nunjucks: nunjucksAppEnv,
-  routes: routes,
+const prototype = await NHSPrototypeKit.init({
+  serviceName: 'Manage vaccinations in schools',
+  app,
   buildOptions: {
-    entryPoints: ['app/assets/stylesheets/application.scss', 'app/assets/stylesheets/prototype.scss', 'app/assets/stylesheets/public.scss']
-  }
+    entryPoints: [
+      'app/assets/stylesheets/*.scss',
+      'app/assets/javascripts/*.js'
+    ]
+  },
+  viewsPath: ['app/views', 'node_modules/nhsuk-decorated-components'],
+  routes,
+  filters,
+  sessionDataDefaults
 })
 
-prototype.start()
+for (const [key, value] of Object.entries(globals())) {
+  prototype.nunjucks?.addGlobal(key, value)
+}
+
+prototype.start(2000)

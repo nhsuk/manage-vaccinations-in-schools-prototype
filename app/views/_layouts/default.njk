@@ -1,4 +1,4 @@
-{% extends "rig/default.njk" %}
+{% extends "prototype-kit-template.njk" %}
 
 {#- App macros -#}
 {% from "_macros/action-list.njk" import appActionList %}
@@ -20,8 +20,8 @@
   <meta name="format-detection" content="telephone=no">
 
   {% set assetsName = assetsName | default("application") %}
-  <link rel="stylesheet" href="/assets/{{ assetsName }}.css" media="all">
-  <script src="/assets/{{ assetsName }}.js" type="module"></script>
+  <link rel="stylesheet" href="/assets/stylesheets/{{ assetsName }}.css" media="all">
+  <script src="/assets/javascripts/{{ assetsName }}.js" type="module"></script>
 {% endblock %}
 
 {% block header %}
@@ -129,7 +129,7 @@
       }, {
         text: "Clear session data",
         href: "/clear-session-data"
-      } if useAutoStoreData, {
+      }, {
         text: "Design history",
         href: "https://design-history.prevention-services.nhs.uk/manage-vaccinations-in-schools/"
       }]
