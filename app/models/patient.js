@@ -200,9 +200,12 @@ export class Patient extends Child {
       )
     }
 
-    const move = Move.findAll(this.context).find(
-      (move) => move.patient_uuid === this.uuid
-    )
+    let move;
+    if (this.context.moves) {
+      move = Move.findAll(this.context).find(
+        (move) => move.patient_uuid === this.uuid
+      )
+    }
 
     if (move) {
       recordEvents.push(
