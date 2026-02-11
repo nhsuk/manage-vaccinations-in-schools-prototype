@@ -687,23 +687,23 @@ export class Patient extends Child {
    */
   addNotice(notice) {
     let name
-    switch (notice.type) {
-      case NoticeType.Deceased:
+    switch (true) {
+      case notice.type === NoticeType.Deceased:
         // Update patient record with date of death
         this.dod = removeDays(today(), 5)
         name = `Record updated with child’s date of death`
         break
-      case NoticeType.NoNotify:
+      case notice.type === NoticeType.NoNotify && this.parent1.notify:
         // Notify request to not share vaccination with GP
         this.parent1.notify = false
         name = `Child gave consent for HPV and flu vaccinations under Gillick competence and does not want their parents to be notified.\n\nThese records are not automatically synced with GP records.\n\nYour team must let the child’s GP know they were vaccinated.`
         break
-      case NoticeType.Invalid:
+      case notice.type === NoticeType.Invalid:
         // Flag record as invalid
         this.invalid = true
         name = `Record flagged as invalid`
         break
-      case NoticeType.Sensitive:
+      case notice.type === NoticeType.Sensitive:
         // Flag record as sensitive
         this.sensitive = true
         name = `Record flagged as sensitive`
