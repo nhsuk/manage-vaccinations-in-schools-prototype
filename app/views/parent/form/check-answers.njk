@@ -187,18 +187,13 @@
     rows: summaryRows(consent, {
       createdAt: {
         label: __("consent.previousDose.createdAt.label"),
-        value: consent.firstDose.formatted.createdAt,
-        href: editPath("first-dose")
-      },
-      location: {
-        label: __("consent.previousDose.location.label"),
-        value: consent.firstDose.location,
-        href: editPath("first-dose")
+        value: consent.firstDose.formatted.createdAt_date,
+        href: editPath("first-dose-date")
       },
       country: {
         label: __("consent.previousDose.country.label"),
         value: consent.firstDose.formatted.country,
-        href: editPath("first-dose")
+        href: editPath("first-dose-country")
       }
     })
   }) if consent.decision == ReplyDecision.AlreadyVaccinated }}
@@ -211,18 +206,13 @@
     rows: summaryRows(consent, {
       createdAt: {
         label: __("consent.previousDose.createdAt.label"),
-        value: consent.secondDose.formatted.createdAt,
-        href: editPath("second-dose")
-      },
-      location: {
-        label: __("consent.previousDose.location.label"),
-        value: consent.secondDose.location,
-        href: editPath("second-dose")
+        value: consent.secondDose.formatted.createdAt_date,
+        href: editPath("second-dose-date")
       },
       country: {
         label: __("consent.previousDose.country.label"),
         value: consent.secondDose.formatted.country,
-        href: editPath("second-dose")
+        href: editPath("second-dose-country")
       }
     })
   }) if consent.decision == ReplyDecision.AlreadyVaccinated }}

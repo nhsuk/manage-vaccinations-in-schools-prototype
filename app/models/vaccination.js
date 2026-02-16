@@ -74,6 +74,7 @@ import {
  * @property {number} [dose] - Dosage (ml)
  * @property {string} [sequence] - Dose sequence
  * @property {string} [protocol] - Protocol
+ * @property {boolean} [scheduled] - Vaccination date was on schedule
  * @property {string} [note] - Note
  * @property {string} [country] - Country
  * @property {string} [clinic_id] - Clinic ID
@@ -100,7 +101,7 @@ export class Vaccination {
     this.updatedAt = options?.updatedAt && new Date(options.updatedAt)
     this.locationType = options?.locationType
     this.country = options?.country
-    this.countryOther = options?.countryOther
+    this.countryOther = this.country === 'Other' && options?.countryOther
     this.selfId = options?.selfId && stringToBoolean(options.selfId)
     this.identifiedBy = this.selfId !== true && options?.identifiedBy
     this.outcome = options?.outcome
@@ -116,6 +117,7 @@ export class Vaccination {
     this.protocol = this.given
       ? options?.protocol || VaccinationProtocol.PGD
       : undefined
+    this.scheduled = stringToBoolean(options.scheduled)
     this.note = options?.note || ''
     this.country = 'England'
     this.clinic_id = options?.clinic_id

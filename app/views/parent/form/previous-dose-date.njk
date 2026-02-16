@@ -1,0 +1,57 @@
+{% extends "_layouts/form.njk" %}
+
+{% set domestic = consent[key].country in ["England", "Scotland", "Wales", "Northern Ireland"] %}
+{% if domestic %}
+  {% set title = __("consent." + key + ".scheduled.title") %}
+{% else %}
+  {% set title = __("consent." + key + ".createdAt.title") %}
+{% endif %}
+
+{% block form %}
+  {% if domestic %}
+    {{ radios({
+      fieldset: {
+        legend: {
+          isPageHeading: true,
+          text: title,
+          size: "l"
+        }
+      },
+      hint: {
+        text: __("consent." + key + ".scheduled.hint")
+      },
+      items: [
+        {
+          text: __("consent.previousDose.scheduled.yes")
+        },
+        {
+          text: __("consent.previousDose.scheduled.no"),
+          conditional: {
+            html: dateInput({
+              fieldset: {
+                legend: {
+                  text: __("consent." + key + ".createdAt.title")
+                }
+              },
+              hint: { text: __("consent.previousDose.createdAt.hint") },
+              decorate: ["consent", key, "createdAt_"]
+            })
+          }
+        }
+      ],
+      decorate: ["consent", key, "scheduled"]
+    }) }}
+  {% else %}
+    {{ dateInput({
+      fieldset: {
+        legend: {
+          isPageHeading: true,
+          text: title,
+          size: "l"
+        }
+      },
+      hint: { text: __("consent.previousDose.createdAt.hint") },
+      decorate: ["consent", key, "createdAt_"]
+    }) }}
+  {% endif %}
+{% endblock %}

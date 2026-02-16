@@ -1,51 +1,14 @@
 {% extends "_layouts/form.njk" %}
 
-{% set title = __("consent." + key + ".title") %}
+{% set title = __("consent." + key + ".country.title") %}
 
 {% block form %}
-  {{ appHeading({
-    title: title
-  }) }}
-
-  {{ __("consent." + key + ".description") | nhsukMarkdown }}
-
-  {{ input({
-    type: "hidden",
-    value: VaccinationOutcome.AlreadyVaccinated,
-    decorate: ["consent", key, "outcome"]
-  }) }}
-
-  {{ input({
-    type: "hidden",
-    value: "1P" if key == "firstDose" else "2P",
-    decorate: ["consent", key, "sequence"]
-  }) }}
-
-  {{ dateInput({
-    fieldset: {
-      legend: {
-        text: __("consent.previousDose.createdAt.title"),
-        size: "m"
-      }
-    },
-    hint: { text: __("consent.previousDose.createdAt.hint") },
-    decorate: ["consent", key, "createdAt_"]
-  }) }}
-
-  {{ input({
-    label: {
-      text: __("consent.previousDose.location.title"),
-      size: "m"
-    },
-    hint: { text: __("consent.previousDose.location.hint") },
-    decorate: ["consent", key, "location"]
-  }) }}
-
   {{ radios({
     fieldset: {
       legend: {
-        text: __("consent.previousDose.country.title"),
-        size: "m"
+        isPageHeading: true,
+        text: title,
+        size: "l"
       }
     },
     items: [
@@ -66,6 +29,7 @@
       },
       {
         text: __("consent.previousDose.country.other"),
+        value: "Other",
         conditional: {
           html: select({
             label: { text: __("consent.previousDose.countryOther.title") },
@@ -79,5 +43,17 @@
       }
     ],
     decorate: ["consent", key, "country"]
+  }) }}
+
+  {{ input({
+    type: "hidden",
+    value: VaccinationOutcome.AlreadyVaccinated,
+    decorate: ["consent", key, "outcome"]
+  }) }}
+
+  {{ input({
+    type: "hidden",
+    value: "1P" if key == "firstDose" else "2P",
+    decorate: ["consent", key, "sequence"]
   }) }}
 {% endblock %}
