@@ -98,6 +98,10 @@
         { text: "11.1%", format: "numeric" }
       ] if programme.type == ProgrammeType.Flu,
       [
+        { text: ReplyRefusal.GelatineMMR },
+        { text: "11.1%", format: "numeric" }
+      ] if programme.type == ProgrammeType.MMR,
+      [
         { text: ReplyRefusal.AlreadyVaccinated },
         { text: "2.0%", format: "numeric" }
       ],

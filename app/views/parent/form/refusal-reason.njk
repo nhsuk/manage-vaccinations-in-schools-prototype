@@ -38,7 +38,10 @@
       },
       {
         text: ReplyRefusal.Gelatine
-      } if vaccineIncludesGelatine,
+      } if vaccineIncludesGelatine and "Flu" in session.presetNames,
+      {
+        text: ReplyRefusal.GelatineMMR
+      } if vaccineIncludesGelatine and "MMR" in session.presetNames,
       {
         text: ReplyRefusal.Medical
       },
