@@ -1,4 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker'
+import { addMonths } from 'date-fns'
 import _ from 'lodash'
 
 import vaccines from '../datasets/vaccines.js'
@@ -87,7 +88,7 @@ export class Reply {
     // Some values only valid if the consent request was received
     if (this.delivered) {
       this.decision =
-        options.refusalReason === ReplyRefusal.AlreadyVaccinatedMMR
+        options?.refusalReason === ReplyRefusal.AlreadyVaccinatedMMR
           ? ReplyDecision.AlreadyVaccinated
           : options?.decision
       this.alternative =
@@ -111,8 +112,17 @@ export class Reply {
 
     if (this.decision === ReplyDecision.AlreadyVaccinated) {
       this.firstDose = options?.firstDose && new Vaccination(options.firstDose)
+
+      if (options?.firstDose?.scheduled) {
+        this.firstDose.createdAt = addMonths(this.child?.dob, 12)
+      }
+
       this.secondDose =
         options?.secondDose && new Vaccination(options.secondDose)
+
+      if (options?.secondDose?.scheduled) {
+        this.secondDose.createdAt = addMonths(this.child?.dob, 40)
+      }
     }
 
     if (

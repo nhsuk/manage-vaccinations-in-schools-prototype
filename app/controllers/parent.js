@@ -150,7 +150,7 @@ export const parentController = {
           data: 'consent.decision',
           value: ReplyDecision.Refused
         },
-        [`/${session_id}/${consent_uuid}/new/first-dose`]: {
+        [`/${session_id}/${consent_uuid}/new/first-dose-country`]: {
           data: 'consent.decision',
           value: ReplyDecision.AlreadyVaccinated
         }
@@ -181,7 +181,7 @@ export const parentController = {
             ReplyRefusal.Medical
           ]
         },
-        [`/${session_id}/${consent_uuid}/new/first-dose`]: {
+        [`/${session_id}/${consent_uuid}/new/first-dose-country`]: {
           data: 'consent.refusalReason',
           value: ReplyRefusal.AlreadyVaccinatedMMR
         },
@@ -195,8 +195,10 @@ export const parentController = {
         [`/${session_id}/${consent_uuid}/new/check-answers`]: true
       },
       // First and second dose journey
-      [`/${session_id}/${consent_uuid}/new/first-dose`]: {},
-      [`/${session_id}/${consent_uuid}/new/second-dose`]: {
+      [`/${session_id}/${consent_uuid}/new/first-dose-country`]: {},
+      [`/${session_id}/${consent_uuid}/new/first-dose-date`]: {},
+      [`/${session_id}/${consent_uuid}/new/second-dose-country`]: {},
+      [`/${session_id}/${consent_uuid}/new/second-dose-date`]: {
         [`/${session_id}/${consent_uuid}/new/check-answers`]: true
       }
     }
@@ -330,8 +332,8 @@ export const parentController = {
 
     // All previous dose questions use the same view
     if (view.includes('-dose')) {
-      key = `${kebabToCamelCase(view.replace('-dose', ''))}Dose`
-      view = 'previous-dose'
+      key = `${view.match(/^(first|second)-dose/)?.[1]}Dose`
+      view = view.replace(/(?:first|second)(-)/g, 'previous$1')
     }
 
     // Only ask for details if question does not have sub-questions

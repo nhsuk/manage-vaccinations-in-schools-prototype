@@ -518,7 +518,7 @@ export const ReplyRefusal = {
   GelatineMMR:
     'Do not want my child to have the MMR vaccine that contains gelatine',
   AlreadyVaccinated: 'Vaccine already received',
-  AlreadyVaccinatedMMR: 'Already had both doses of the MMR vaccination',
+  AlreadyVaccinatedMMR: 'Already had both doses of the MMR vaccine',
   GettingElsewhere: 'Vaccine will be given elsewhere',
   Medical: 'Medical reasons',
   OutsideSchool: 'Do not want vaccination in school',

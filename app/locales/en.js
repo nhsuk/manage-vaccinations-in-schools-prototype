@@ -524,7 +524,7 @@ export const en = {
         hint: 'This is suitable for children who do not use gelatine products, or if they cannot have the nasal spray vaccine for medical reasons'
       },
       alreadyVaccinated: {
-        label: 'My child has already had both doses of the MMR vaccination',
+        label: 'My child has already had both doses of the MMR vaccine',
         hint: 'Children need 2 doses of the MMR vaccine to be fully protected'
       },
       no: {
@@ -578,7 +578,7 @@ export const en = {
         other: ReplyRefusal.AlreadyVaccinated.replace('Vaccine', 'Vaccines')
       },
       alreadyVaccinatedMMR:
-        'My child has already had both doses of the MMR vaccination',
+        'My child has already had both doses of the MMR vaccine',
       gettingElsewhere: {
         one: ReplyRefusal.GettingElsewhere,
         other: ReplyRefusal.GettingElsewhere.replace('Vaccine', 'Vaccines')
@@ -599,36 +599,43 @@ export const en = {
       label: 'Details of 1st MMR dose',
       title: 'When and where did your child get their 1st MMR dose?',
       description: 'The 1st dose is usually offered at 12 months',
+      country: {
+        title:
+          'Which country was the 1st dose of the MMR vaccination given in?',
+        label: 'Country'
+      },
       createdAt: {
+        title: 'When was the 1st dose given?',
         label: 'Date of vaccination'
       },
-      location: {
-        label: 'Location'
-      },
-      country: {
-        label: 'Country'
+      scheduled: {
+        title: 'Was the 1st dose given when your child was 12 months old?',
+        hint: 'This is usually the child’s age when the 1st dose is offered'
       }
     },
     secondDose: {
       label: 'Details of 2nd MMR dose',
       title: 'When and where did your child get their 2nd MMR dose?',
       description:
-        'The 2nd dose is usually offered when children are 3 years old'
+        'The 2nd dose is usually offered when children are 3 years and 4 months old',
+      country: {
+        title:
+          'Which country was the 2nd dose of the MMR vaccination given in?',
+        label: 'Country'
+      },
+      createdAt: {
+        title: 'When was the 2nd dose given?',
+        label: 'Date of vaccination'
+      },
+      scheduled: {
+        title:
+          'Was the 2nd dose given when your child was 3 years and 4 months old?',
+        hint: 'This is usually the child’s age when the 2nd dose is offered'
+      }
     },
     previousDose: {
-      createdAt: {
-        label: 'Date',
-        title: 'Date of vaccination',
-        hint: 'If you do not know the exact date of the vaccination, you can leave the day field empty and enter your best guess for the month'
-      },
-      location: {
-        label: 'Location',
-        title: 'Location',
-        hint: 'Give the name and address of the GP surgery if you can remember it'
-      },
       country: {
         label: 'Country',
-        title: 'Country',
         england: 'England',
         scotland: 'Scotland',
         wales: 'Wales',
@@ -637,6 +644,14 @@ export const en = {
       },
       countryOther: {
         title: 'Which country was the vaccination given in?'
+      },
+      createdAt: {
+        label: 'Date',
+        hint: 'If you do not know the exact date of the vaccination, leave the day field empty and enter your best guess for the month'
+      },
+      scheduled: {
+        yes: 'Yes',
+        no: 'No'
       }
     },
     healthAnswers: {
