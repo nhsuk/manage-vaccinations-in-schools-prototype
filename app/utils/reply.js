@@ -317,6 +317,11 @@ export const getRefusalReason = (type, decision) => {
     type !== ProgrammeType.Flu ? value !== ReplyRefusal.Gelatine : value
   )
 
+  // Gelatine content only a valid refusal reason for MMR vaccine
+  refusalReasons = Object.values(ReplyRefusal).filter((value) =>
+    type !== ProgrammeType.MMR ? value !== ReplyRefusal.GelatineMMR : value
+  )
+
   // You cannot decline on the basis of already having had the vaccine
   if (decision === ReplyDecision.Declined) {
     refusalReasons = refusalReasons.filter((value) =>
