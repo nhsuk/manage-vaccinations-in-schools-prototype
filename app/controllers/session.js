@@ -41,7 +41,7 @@ export const sessionController = {
       (defaultBatch) => defaultBatch.session_id === session_id
     )
 
-    if (!session.isUnplanned) {
+    if (session && !session.isUnplanned) {
       response.locals.navigationItems = [
         {
           text: __('session.show.label'),
