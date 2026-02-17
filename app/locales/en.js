@@ -1726,6 +1726,19 @@ export const en = {
     consentWindow: {
       label: 'Consent period'
     },
+    mmrConsent: {
+      title:
+        'What type of MMR(V) consent request do you want to send to parents?',
+      label: 'Type of MMR(V) consent request',
+      standard: {
+        label: 'Standard request',
+        hint: 'This is for standard catch-up sessions'
+      },
+      outbreak: {
+        label: 'Outbreak request ',
+        hint: 'This is urgent in tone, and should be used in an outbreak scenario'
+      }
+    },
     schedule: {
       title: 'Schedule sessions',
       description: 'Add dates for this school.'

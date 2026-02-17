@@ -406,7 +406,16 @@ export const SessionPresetName = {
   Flu: 'Flu',
   HPV: 'HPV',
   Doubles: 'Doubles',
-  MMR: 'MMR'
+  MMR: 'MMR(V)'
+}
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const SessionMMRConsent = {
+  Standard: 'Standard request',
+  Outbreak: 'Outbreak request'
 }
 
 /**

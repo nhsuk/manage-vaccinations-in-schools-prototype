@@ -541,16 +541,7 @@ export const sessionController = {
       const journey = {
         [`/`]: {},
         [`/${session_id}/${type}/type`]: {},
-        [`/${session_id}/${type}/programmes`]: {
-          [`/${session_id}/${type}/school`]: {
-            data: 'session.type',
-            value: SessionType.School
-          },
-          [`/${session_id}/${type}/clinic`]: {
-            data: 'session.type',
-            value: SessionType.Clinic
-          }
-        },
+        [`/${session_id}/${type}/programmes`]: {},
         ...(session.type === SessionType.School
           ? {
               [`/${session_id}/${type}/school`]: {},
@@ -562,6 +553,11 @@ export const sessionController = {
               [`/${session_id}/${type}/date`]: {}
             }),
         [`/${session_id}/${type}/date-check`]: {},
+        ...(session.presetNames?.includes(SessionPresetName.MMR)
+          ? {
+              [`/${session_id}/${type}/mmr-consent`]: {}
+            }
+          : {}),
         [`/${session_id}/${type}/check-answers`]: {},
         [`/${session_id}`]: {}
       }
