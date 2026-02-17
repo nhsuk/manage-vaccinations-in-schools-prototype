@@ -1,0 +1,23 @@
+{% extends "_layouts/form.njk" %}
+
+{% set title = __("session.mmrConsent.title") %}
+
+{% block form %}
+  {{ radios({
+    fieldset: {
+      legend: {
+        isPageHeading: true,
+        text: title,
+        size: "l"
+      }
+    },
+    items: [{
+      text: SessionMMRConsent.Standard,
+      hint: { text: __("session.mmrConsent.standard.hint") }
+    }, {
+      text: SessionMMRConsent.Outbreak,
+      hint: { text: __("session.mmrConsent.outbreak.hint") }
+    }],
+    decorate: "session.mmrConsent"
+  }) }}
+{% endblock %}

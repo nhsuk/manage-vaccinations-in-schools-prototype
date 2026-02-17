@@ -22,7 +22,7 @@ export const navigation = (request, response, next) => {
       Flu: getSessionConsentUrl(sessions, SessionPresetName.Flu),
       HPV: getSessionConsentUrl(sessions, SessionPresetName.HPV),
       Doubles: getSessionConsentUrl(sessions, SessionPresetName.Doubles),
-      MMR: getSessionConsentUrl(sessions, SessionPresetName.MMR)
+      'MMR(V)': getSessionConsentUrl(sessions, SessionPresetName.MMR)
     }
   }
 

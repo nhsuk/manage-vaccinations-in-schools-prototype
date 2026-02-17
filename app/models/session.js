@@ -58,6 +58,7 @@ import {
  * @property {object} [date_] - Dates (from `dateInput`s)
  * @property {number} [academicYear] - Programme year
  * @property {Array<SessionPresetName>} [presetNames] - Session preset names
+ * @property {string<SessionMMRConsent>} [mmrConsent] - Does session use MMR outbreak comms?
  * @property {boolean} [registration] - Does session have registration?
  *
  *   Clinics only
@@ -104,6 +105,9 @@ export class Session {
       this.closed = options?.closed || false
       this.reminderWeeks =
         options?.reminderWeeks || TeamDefaults.SessionReminderWeeks
+      this.mmrConsent = this.presetNames?.includes(SessionPresetName.MMR)
+        ? options?.mmrConsent
+        : undefined
       this.registration = stringToBoolean(options?.registration)
       this.register = options?.register || {}
       this.psdProtocol = stringToBoolean(options?.psdProtocol) || false
