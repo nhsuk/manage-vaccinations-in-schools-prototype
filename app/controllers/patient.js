@@ -5,9 +5,19 @@ import {
   AuditEventType,
   PatientStatus,
   ProgrammeType,
+  SessionPresetName,
+  SessionType,
   VaccinationOutcome
 } from '../enums.js'
-import { PatientProgramme, Patient, Programme, Vaccination } from '../models.js'
+import {
+  PatientProgramme,
+  Patient,
+  Programme,
+  Vaccination,
+  PatientSession,
+  Session
+} from '../models.js'
+import { today } from '../utils/date.js'
 import { getResults, getPagination } from '../utils/pagination.js'
 import { formatYearGroup } from '../utils/string.js'
 
@@ -386,6 +396,41 @@ export const patientController = {
     request.flash('success', __(`patient.notes.new.success`, { patient }))
 
     response.redirect(patient.uri)
+  },
+
+  record(request, response) {
+    const { account } = request.app.locals
+    const { programme_id } = request.params
+    const { data } = request.session
+    const { patient } = response.locals
+
+    const session = Session.create(
+      {
+        createdBy_uid: account.uid,
+        date: today(),
+        type: SessionType.Clinic,
+        presetNames: SessionPresetName.Flu,
+        clinic_id: 'X99999'
+      },
+      data
+    )
+
+    const createdPatientSession = PatientSession.create(
+      {
+        createdBy_uid: account.uid,
+        patient_uuid: patient.uuid,
+        programme_id,
+        session_id: session.id
+      },
+      data
+    )
+
+    const patientSession = PatientSession.findOne(
+      createdPatientSession.uuid,
+      data
+    )
+
+    response.redirect(patientSession.uri)
   },
 
   vaccination(type) {

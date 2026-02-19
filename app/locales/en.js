@@ -1272,9 +1272,9 @@ export const en = {
       }
     },
     record: {
-      title: 'Record {{programme.nameSentenceCase}} vaccination',
+      title: 'Record a new {{programme.nameSentenceCase}} vaccination',
       titleWithMethod:
-        'Record {{programme.nameSentenceCase}} vaccination with {{method}}'
+        'Record a new {{programme.nameSentenceCase}} vaccination with {{method}}'
     },
     recordPrevious: {
       title: 'Record a previous {{programme.nameSentenceCase}} vaccination'

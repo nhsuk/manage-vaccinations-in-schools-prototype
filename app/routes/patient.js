@@ -23,6 +23,8 @@ router.post('/:patient_uuid/archive', patient.archive)
 router.all('/:patient_uuid/programmes{/:programme_id}', patient.readProgramme)
 router.get('/:patient_uuid/programmes{/:programme_id}', patient.showProgramme)
 
+router.post('/:patient_uuid/programmes/:programme_id/record', patient.record)
+
 router.get(
   '/:patient_uuid/programmes/:programme_id/new/vaccination',
   patient.vaccination('new')
