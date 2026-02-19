@@ -418,11 +418,9 @@ export class PatientSession {
   get vaccinationOutcomes() {
     try {
       if (this.patient.vaccinations && this.programme_id) {
-        return this.patient.vaccinations
-          .filter(({ programme }) => programme.id === this.programme_id)
-          .filter(
-            ({ patientSession_uuid }) => patientSession_uuid === this.uuid
-          )
+        return this.patient.vaccinations.filter(
+          ({ programme }) => programme.id === this.programme_id
+        )
       }
     } catch (error) {
       console.error('PatientSession.vaccinations', error.message)

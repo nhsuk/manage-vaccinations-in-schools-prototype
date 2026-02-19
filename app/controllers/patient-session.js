@@ -25,12 +25,12 @@ import { stringToBoolean } from '../utils/string.js'
 export const patientSessionController = {
   read(request, response, next, nhsn) {
     const { account } = request.app.locals
-    const { programme_id } = request.params
+    const { programme_id, session_id } = request.params
     const { activity } = request.query
     const { __ } = response.locals
 
     const patientSession = PatientSession.findAll(request.session.data)
-      .filter(({ programme }) => programme.id === programme_id)
+      .filter(({ session }) => session.id === session_id)
       .find(({ patient }) => patient.nhsn === nhsn)
 
     const {

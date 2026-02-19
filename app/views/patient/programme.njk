@@ -1,8 +1,11 @@
 {% from "patient/_navigation.njk" import patientNavigation with context %}
 
-{% extends "_layouts/default.njk" %}
+{% extends "_layouts/form.njk" %}
 
+{% set gridColumns = "full" %}
+{% set hideConfirmButton = true %}
 {% set title = patient.fullName + " – " + patient.programmes[programme.slug].name %}
+{% set formAction = patientProgramme.uri + "/record?referrer=" + referrer %}
 
 {% block beforeContent %}
   {{ breadcrumb({
@@ -16,7 +19,7 @@
   }) }}
 {% endblock %}
 
-{% block content %}
+{% block form %}
   {{ super() }}
 
   {{ patientNavigation({
@@ -110,10 +113,20 @@
       {% endfor %}
     {% endif %}
 
-    {{ button({
-      classes: "nhsuk-button--secondary",
-      text: __("vaccination.new.alreadyVaccinated.title"),
-      href: patientProgramme.uri + "/new/vaccination"
+    {{ appButtonGroup({
+      buttons: [{
+        classes: "nhsuk-button--secondary",
+        text: __("patientSession.record.title", {
+          programme: patientProgramme.programme
+        }) | safe,
+        attributes: {
+          formaction: patientProgramme.uri + "/record?referrer=" + referrer
+        }
+      }, {
+        classes: "nhsuk-button--secondary",
+        text: __("vaccination.new.alreadyVaccinated.title"),
+        href: patientProgramme.uri + "/new/vaccination"
+      }]
     }) if patientProgramme.status != PatientStatus.Vaccinated and patientProgramme.eligible }}
   {% endcall %}
 
