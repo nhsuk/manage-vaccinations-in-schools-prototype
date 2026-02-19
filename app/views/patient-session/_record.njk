@@ -2,14 +2,14 @@
   {%- if patientSession.programme.alternativeVaccine %}
     <span class="app-vaccine-criteria" data-value="{{ patientSession.vaccineCriteria }}">
       {{- __("patientSession.record.titleWithMethod", {
-        session: session,
+        programme: patientSession.programme,
         method: patientSession.vaccineCriteria | lower | replace("only", "") | replace("preferred", "")
-      }) -}}
+      }) | safe -}}
     </span>
   {%- else -%}
     {{- __("patientSession.record.title", {
-      session: session
-    }) -}}
+      programme: patientSession.programme
+    }) | safe -}}
   {%- endif -%}
 {% endset %}
 
@@ -131,7 +131,7 @@
         classes: "nhsuk-fieldset__legend--m nhsuk-u-font-size-22",
         text: __("patientSession.preScreen.ready.label", {
           patient: patient,
-          session: session,
+          programme: patientSession.programme,
           method: patientSession.vaccine.method | lower
         }) | safe
       }
@@ -169,7 +169,7 @@
     _validate: {
       presence: {
         message: __("patientSession.preScreen.ready.error", {
-          session: session
+          programme: patientSession.programme
         })
       }
     }

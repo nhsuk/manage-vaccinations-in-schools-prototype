@@ -1254,9 +1254,9 @@ export const en = {
       },
       ready: {
         error:
-          'Select if the child is ready for their {{session.programmeNames.sentenceCase}} {{method}}',
+          'Select if the child is ready for their {{programme.nameSentenceCase}} {{method}}',
         label:
-          'Is {{patient.firstName}} ready for their {{session.programmeNames.sentenceCase}} {{method}}?',
+          'Is {{patient.firstName}} ready for their {{programme.nameSentenceCase}} {{method}}?',
         hint: 'Pre-screening checks must be completed for vaccination to go ahead',
         yes: 'Yes',
         no: 'No',
@@ -1272,13 +1272,12 @@ export const en = {
       }
     },
     record: {
-      title: 'Record {{session.programmeNames.sentenceCase}} vaccination',
+      title: 'Record {{programme.nameSentenceCase}} vaccination',
       titleWithMethod:
-        'Record {{session.programmeNames.sentenceCase}} vaccination with {{method}}'
+        'Record {{programme.nameSentenceCase}} vaccination with {{method}}'
     },
     recordPrevious: {
-      title:
-        'Record a previous {{session.programmeNames.sentenceCase}} vaccination'
+      title: 'Record a previous {{programme.nameSentenceCase}} vaccination'
     },
     registration: {
       label: 'Is {{patient.fullName}} attending today’s session?',
@@ -2423,12 +2422,10 @@ export const en = {
     count:
       '{count, plural, =0 {No vaccination records} one {1 vaccination record} other {# vaccination records}}',
     administer: {
-      title:
-        'How was the {{session.programmeNames.sentenceCase}} vaccination given?'
+      title: 'How was the {{programme.nameSentenceCase}} vaccination given?'
     },
     decline: {
-      title:
-        'Why was the {{session.programmeNames.sentenceCase}} vaccination not given?'
+      title: 'Why was the {{programme.nameSentenceCase}} vaccination not given?'
     },
     new: {
       'check-answers': {
