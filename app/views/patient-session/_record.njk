@@ -106,7 +106,13 @@
     fieldset: {
       legend: { text: __("patientSession.preScreen.injectionSite.label") }
     },
-    items: vaccinationSiteItems,
+    items: [{
+      text: VaccinationSite.ArmLeftUpper
+    }, {
+      text: VaccinationSite.ArmRightUpper
+    }, {
+      text: VaccinationSite.Other
+    }],
     decorate: "patientSession.preScreen.injectionSite",
     _validate: {
       conditional: {

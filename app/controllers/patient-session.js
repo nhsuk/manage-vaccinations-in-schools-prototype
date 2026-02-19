@@ -10,7 +10,6 @@ import {
   ScreenOutcome,
   UserRole,
   VaccinationOutcome,
-  VaccinationSite,
   VaccineMethod
 } from '../enums.js'
 import {
@@ -120,19 +119,6 @@ export const patientSessionController = {
       canRecordPrevious:
         !session.isActive && report !== PatientStatus.Vaccinated
     }
-
-    response.locals.vaccinationSiteItems = Object.entries(VaccinationSite)
-      .filter(([, value]) =>
-        [
-          VaccinationSite.ArmLeftUpper,
-          VaccinationSite.ArmRightUpper,
-          VaccinationSite.Other
-        ].includes(value)
-      )
-      .map(([key, value]) => ({
-        text: VaccinationSite[key],
-        value
-      }))
 
     // Vaccinator has permission to record using the alternative vaccine
     // and patient has consent to vaccinate using the alternative vaccine
