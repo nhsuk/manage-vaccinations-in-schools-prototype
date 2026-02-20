@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { decorate } from 'nhsuk-decorated-components'
 
 import { healthQuestions } from './datasets/health-questions.js'
 import {
@@ -22,6 +23,8 @@ import {
  */
 export default () => {
   const globals = {}
+
+  globals.decorate = decorate
 
   /**
    * Get boolean form field items
