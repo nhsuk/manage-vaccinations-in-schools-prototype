@@ -13,23 +13,25 @@ const { DATABASE_URL, NODE_ENV } = process.env
 
 const app = express()
 
-app.use(
-  session({
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 4, // 4 hours
-      secure: process.env.NODE_ENV === 'production'
-    },
-    resave: false,
-    saveUninitialized: false,
-    secret: 'manage-vaccinations-in-schools-prototype',
-    store: new (sessionInDatabase(session))({
-      pool: new Pool({
-        connectionString: DATABASE_URL,
-        ssl: NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+if (DATABASE_URL) {
+  app.use(
+    session({
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 4, // 4 hours
+        secure: process.env.NODE_ENV === 'production'
+      },
+      resave: false,
+      saveUninitialized: false,
+      secret: 'manage-vaccinations-in-schools-prototype',
+      store: new (sessionInDatabase(session))({
+        pool: new Pool({
+          connectionString: DATABASE_URL,
+          ssl: NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+        })
       })
     })
-  })
-)
+  )
+}
 
 const prototype = await NHSPrototypeKit.init({
   serviceName: 'Manage vaccinations in schools',
