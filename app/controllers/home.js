@@ -22,10 +22,10 @@ export const homeController = {
       )
     }
 
-    response.render('views/dashboard')
+    response.render('dashboard.njk')
   },
 
   start(request, response) {
-    response.render('views/start')
+    response.render('start.njk')
   }
 }
