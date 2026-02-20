@@ -48,6 +48,8 @@ const prototype = await NHSPrototypeKit.init({
   sessionDataDefaults
 })
 
+prototype.app.set('view engine', 'njk')
+
 for (const [key, value] of Object.entries(globals())) {
   prototype.nunjucks?.addGlobal(key, value)
 }
