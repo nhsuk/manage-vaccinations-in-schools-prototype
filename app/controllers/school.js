@@ -18,7 +18,10 @@ export const schoolController = {
   },
 
   readAll(request, response, next) {
-    response.locals.schools = School.findAll(request.session.data)
+    // Combine children with no known school with home-schooled children)
+    response.locals.schools = School.findAll(request.session.data).filter(
+      (school) => school.id !== '888888'
+    )
 
     next()
   },
@@ -93,17 +96,13 @@ export const schoolController = {
   },
 
   readPatients(request, response, next) {
-    const { school_id } = request.params
-    const { option, programme_id, q, yearGroup } = request.query
+    const { invitedToClinic, option, programme_id, q, yearGroup } =
+      request.query
     const { data } = request.session
     const { school } = response.locals
 
-    const patients = Patient.findAll(data).filter(
-      (patient) => patient.school_id === school_id
-    )
-
     // Sort
-    let results = _.sortBy(patients, 'lastName')
+    let results = _.sortBy(school.patients, 'lastName')
 
     // Query
     if (q) {
@@ -143,6 +142,19 @@ export const schoolController = {
         programme_ids.some(
           (programme_id) =>
             patient.programmes[programme_id].status !== PatientStatus.Ineligible
+        )
+      )
+    }
+
+    // Filter by programme clinic invitations
+    if (programme_id && invitedToClinic === 'true') {
+      results = results.filter(
+        (patient) => patient.programmes[programme_id]?.invitedToClinic
+      )
+    } else if (invitedToClinic === 'true') {
+      results = results.filter((patient) =>
+        Object.values(patient.programmes).some(
+          (programme) => programme.invitedToClinic
         )
       )
     }
@@ -207,7 +219,7 @@ export const schoolController = {
 
     // Results
     response.locals.school = school
-    response.locals.patients = patients
+    response.locals.patients = school.patients
     response.locals.results = getResults(results, request.query)
     response.locals.pages = getPagination(results, request.query)
 
@@ -225,6 +237,7 @@ export const schoolController = {
     }))
 
     // Clean up session data
+    delete data.invitedToClinic
     delete data.option
     delete data.patientConsent
     delete data.patientDeferred
@@ -254,6 +267,7 @@ export const schoolController = {
 
     // Checkboxes
     for (const key of [
+      'invitedToClinic',
       'option',
       'patientConsent',
       'patientDeferred',
@@ -452,5 +466,36 @@ export const schoolController = {
     request.flash('success', __(`school.delete.success`))
 
     response.redirect(referrer)
+  },
+
+  inviteToClinic(request, response) {
+    const { school_id } = request.params
+    const { data } = request.session
+    const { __mf } = response.locals
+
+    const school = School.findOne(school_id, data)
+
+    // Find patients to invite to clinic
+    const patientSessionsForClinic = school.patients.map(
+      (patient) => patient.uuid
+    )
+
+    // Invite parents to book into a clinic
+    for (const patient of school.patients) {
+      const clinicProgramme_ids = request.body.clinicProgramme_ids.filter(
+        (item) => item !== '_unchecked'
+      )
+
+      Patient.update(patient.uuid, { clinicProgramme_ids }, data)
+    }
+
+    request.flash(
+      'success',
+      __mf(`school.inviteToClinic.success`, {
+        count: patientSessionsForClinic.length
+      })
+    )
+
+    response.redirect(school.uri)
   }
 }

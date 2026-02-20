@@ -1083,6 +1083,9 @@ export const en = {
     programmes: {
       label: 'Vaccination programmes'
     },
+    clinicProgramme_ids: {
+      label: 'Clinic invitations'
+    },
     status: {
       label: 'Status'
     }
@@ -1535,6 +1538,25 @@ export const en = {
       yes: 'Yes, I want to add this school',
       no: 'No, I want to add a different school'
     },
+    inviteToClinic: {
+      title: 'Invite parents to book a clinic appointment',
+      label: 'Send clinic invitations',
+      count:
+        '{count, plural, =0 {No children} one {1 child} other {# children}} are due a vaccination for at least 1 programme. They have not been invited to a clinic yet.',
+      description:
+        'You can now send clinic booking invitations to their parents.\n\nThe next clinic is on %s.',
+      programme: 'Which programmes are you running at the clinic?',
+      flu: '{count, plural, =0 {No children} one {1 child} other {# children}} have not had a flu vaccination',
+      hpv: '{count, plural, =0 {No children have} one {1 child has} other {# children have}} not had an HPV vaccination',
+      menacwy:
+        '{count, plural, =0 {No children have} one {1 child has} other {# children have}} not had an MenACWY vaccination',
+      mmr: '{count, plural, =0 {No children have} one {1 child has} other {# children have}} not had an MMR vaccination',
+      'td-ipv':
+        '{count, plural, =0 {No children have} one {1 child has} other {# children have}} not had a Td/IPV vaccination',
+      confirm: 'Send clinic invitations',
+      success:
+        '{count, plural, =0 {No children} one {1 child} other {# children}} invited to the clinic'
+    },
     patients: {
       label: 'Children',
       title: 'Children'
@@ -1892,26 +1914,16 @@ export const en = {
         lastName: 'Last name'
       }
     },
-    close: {
-      title: 'Close session',
+    inviteToClinic: {
+      title: 'Invite parents to book a clinic appointment',
+      label: 'Send clinic invitations',
+      count:
+        '{count, plural, =0 {No children} one {1 child} other {# children}} were not vaccinated at this school and have not already been invited to a clinic.',
       description:
-        'All sessions for this school have been completed.\n\nWhen you close this session, the following children will be invited to community clinics:',
-      confirm: 'Close session',
-      success: '{{session.name}} has been closed'
-    },
-    closingSummary: {
-      noConsentRequest: {
-        count:
-          '{count, plural, =0 {No children} one {1 child} other {# children}} whose parents did not receive a consent request'
-      },
-      noConsentResponse: {
-        count:
-          '{count, plural, =0 {No children} one {1 child} other {# children}} whose parents did not give a consent response'
-      },
-      couldNotVaccinate: {
-        count:
-          '{count, plural, =0 {No children} one {1 child} other {# children}} who could not be vaccinated'
-      }
+        'You can send invitations to their parents to book an appointment to have their children vaccinated at a clinic.\n\nThe next clinic is on %s.',
+      confirm: 'Send clinic invitations',
+      success:
+        '{count, plural, =0 {No children} one {1 child} other {# children}} invited to the clinic'
     }
   },
   texts: {
